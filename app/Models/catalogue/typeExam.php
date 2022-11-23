@@ -9,4 +9,8 @@ class typeExam extends Model
 {
     use HasFactory;
     protected $fillable = ['name'];
+    public function examClass()
+    {
+        return $this->hasMany('App\Models\catalogue\typeClass');
+    }
 }
