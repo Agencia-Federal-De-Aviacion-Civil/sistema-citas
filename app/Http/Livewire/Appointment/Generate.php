@@ -75,7 +75,7 @@ class Generate extends Component
     }
     public function clean()
     {
-        $this->reset(['type_exam_id', 'user_question_id', 'type_class_id', 'clasification_class_id']);
+        $this->reset(['type_exam_id', 'user_question_id', 'type_class_id', 'clasification_class_id','paymentConcept']);
     }
     public function save()
     {
@@ -121,5 +121,8 @@ class Generate extends Component
             'description' => 'Se ha cancelado la cita.',
             'icon'        => 'error'
         ]);
+    }
+    public function messages(){
+        return ['paymentConcept.required'=>'Ingrese clave de pago.'];
     }
 }
