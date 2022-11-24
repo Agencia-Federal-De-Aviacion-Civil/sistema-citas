@@ -13,12 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('type_classes', function (Blueprint $table) {
+        Schema::create('clasification_classes', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('type_exam_id')->nullable();
-            $table->foreign('type_exam_id')->references('id')->on('type_exams')->onDelete('set null');
-            $table->unsignedBigInteger('user_question_id')->nullable();
-            $table->foreign('user_question_id')->references('id')->on('user_questions')->onDelete('set null');
+            $table->unsignedBigInteger('type_class_id')->nullable();
+            $table->foreign('type_class_id')->references('id')->on('type_classes')->onDelete('set null');
             $table->string('name');
             $table->timestamps();
         });
@@ -31,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('type_classes');
+        Schema::dropIfExists('clasification_classes');
     }
 };
