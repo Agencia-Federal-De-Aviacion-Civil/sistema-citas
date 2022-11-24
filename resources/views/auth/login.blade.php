@@ -1,6 +1,6 @@
 <x-guest-layout>
     <section class="min-h-screen bg-cover "
-        style="background-image: url('{{ asset('images/medicina.jpg') }}')">
+        style="background-image: url('{{ asset('images/medicinalogin-01.jpg') }}')">
         <div class="flex flex-col min-h-screen bg-black/40">
             <div class="container flex flex-col flex-1 px-6 py-12 mx-auto">
                 <div class="flex-1 lg:flex lg:items-center lg:-mx-6">
