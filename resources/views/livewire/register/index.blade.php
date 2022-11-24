@@ -25,7 +25,7 @@
                                     información</h1>
                                 <div class="mt-8 grid md:grid-cols-1 md:gap-6">
                                     <div class="relative z-0 mb-6 w-full group">
-                                        <input wire:model="name" type="text" name="floating_first_name"
+                                        <input wire:model.lazy="name" type="text" name="floating_first_name"
                                             id="floating_first_name"
                                             class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                             placeholder=" " required />
@@ -40,7 +40,7 @@
                                 <div class="grid md:grid-cols-2 md:gap-6">
                                     <div class="relative z-0 mb-6 w-full group">
                                         <input type="text" name="floating_last_name" id="floating_last_name"
-                                            wire:model="apParental"
+                                            wire:model.lazy="apParental"
                                             class="uppercase block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                             placeholder=" " required />
                                         <label for="floating_last_name"
@@ -53,7 +53,7 @@
                                     </div>
                                     <div class="relative z-0 mb-6 w-full group">
                                         <input type="text" name="floating_last_name2" id="floating_last_name2"
-                                            wire:model="apMaternal"
+                                            wire:model.lazy="apMaternal"
                                             class="uppercase block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                             placeholder=" " required />
                                         <label for="floating_last_name2"
@@ -72,7 +72,7 @@
                                             class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
                                             <div class="flex items-center pl-3">
                                                 <input id="horizontal-list-radio-license" type="radio"
-                                                    value="Femenino" wire:model="genre" name="list-radio"
+                                                    value="Femenino" wire:model.lazy="genre" name="list-radio"
                                                     class="uppercase w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                                                 <label for="horizontal-list-radio-license"
                                                     class="py-3 ml-2 w-full text-sm font-medium text-gray-900 dark:text-gray-300">Femenino</label>
@@ -82,7 +82,7 @@
                                             class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
                                             <div class="flex items-center pl-3">
                                                 <input id="horizontal-list-radio-id" type="radio" value="Masculino"
-                                                    wire:model="genre" name="list-radio"
+                                                    wire:model.lazy="genre" name="list-radio"
                                                     class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                                                 <label for="horizontal-list-radio-id"
                                                     class="py-3 ml-2 w-full text-sm font-medium text-gray-900 dark:text-gray-300">Masculino</label>
@@ -94,7 +94,7 @@
                                             class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
                                     @enderror
                                     <div class="relative z-0 mt-2 w-full group">
-                                        <input type="text" name="floating_curp" id="floating_curp" wire:model="curp"
+                                        <input type="text" name="floating_curp" id="floating_curp" wire:model.lazy="curp"
                                             class="uppercase block py-2.5 px-0 w-full text-regular text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                             placeholder=" " required />
                                         <label for="floating_curp"
@@ -156,7 +156,7 @@
                                     </div>
                                     <div class="relative z-0 mb-6 w-full group">
                                         <input type="text" name="floating_street" id="floating_street"
-                                            wire:model="street"
+                                            wire:model.lazy="street"
                                             class="uppercase block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                             placeholder=" " required />
                                         <label for="floating_street"
@@ -169,7 +169,7 @@
                                     </div>
                                     <div class="relative z-0 mb-6 w-full group">
                                         <input type="text" name="floating_ninter" id="floating_ninter"
-                                            wire:model="nInterior"
+                                            wire:model.lazy="nInterior"
                                             class="uppercase block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                             placeholder=" " required />
                                         <label for="floating_ninter"
@@ -184,7 +184,7 @@
                                 <div class="mt-2 grid md:grid-cols-2 md:gap-6">
                                     <div class="relative z-0 mb-6 w-full group">
                                         <input type="text" name="floating_nexterior" id="floating_nexterior"
-                                            wire:model="nExterior"
+                                            wire:model.lazy="nExterior"
                                             class="uppercase block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                             placeholder=" " required />
                                         <label for="floating_nexterior"
@@ -193,7 +193,7 @@
                                     </div>
                                     <div class="relative z-0 mb-6 w-full group">
                                         <input type="text" name="floating_colonia" id="floating_colonia"
-                                            wire:model="suburb"
+                                            wire:model.lazy="suburb"
                                             class="uppercase block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                             placeholder=" " required />
                                         <label for="floating_colonia"
@@ -207,7 +207,7 @@
                                 <div class="mt-2 grid md:grid-cols-3 md:gap-6">
                                     <div class="relative z-0 mb-6 w-full group">
                                         <input type="text" name="floating_cp" id="floating_cp"
-                                            wire:model="postalCode"
+                                            wire:model.lazy="postalCode"
                                             class="uppercase block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                             placeholder=" " required />
                                         <label for="floating_cp"
@@ -221,7 +221,7 @@
                                     </div>
                                     <div class="relative z-0 mb-6 w-full group">
                                         <input type="text" name="floating_entity" id="floating_entity"
-                                            wire:model="federalEntity"
+                                            wire:model.lazy="federalEntity"
                                             class="uppercase block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                             placeholder=" " required />
                                         <label for="floating_entity"
@@ -234,7 +234,7 @@
                                     </div>
                                     <div class="relative z-0 mb-6 w-full group">
                                         <input type="text" name="floating_delegacion" id="floating_delegacion"
-                                            wire:model="delegation"
+                                            wire:model.lazy="delegation"
                                             class="uppercase block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                             placeholder=" " required />
                                         <label for="floating_ninter"
@@ -279,7 +279,7 @@
                                 <div class="grid md:grid-cols-2 md:gap-6">
                                     <div class="relative z-0 mb-6 w-full group">
                                         <input type="text" name="floating_ext" id="floating_ext"
-                                            wire:model="extension"
+                                            wire:model.lazy="extension"
                                             class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                             placeholder=" " required />
                                         <label for="floating_ext"
@@ -289,7 +289,7 @@
                                     </div>
                                     <div class="relative z-0 mb-6 w-full group">
                                         <input type="text" name="floating_email" id="floating_email"
-                                            wire:model="email"
+                                            wire:model.lazy="email"
                                             class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                             placeholder=" " required />
                                         <label for="floating_email"
@@ -333,7 +333,7 @@
                                     <div wire:loading.delay.shortest wire:target="register">
                                         <div
                                             class="flex justify-center bg-gray-200 z-40 h-full w-full fixed top-0 left-0 items-center opacity-75">
-                                            <div style="color: #9787ea"
+                                            <div style="color: #0061cf"
                                                 class="la-line-spin-clockwise-fade-rotating la-3x">
                                                 <div></div>
                                                 <div></div>
