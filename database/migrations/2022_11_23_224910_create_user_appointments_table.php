@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
             $table->unsignedBigInteger('type_exam_id')->nullable();
             $table->foreign('type_exam_id')->references('id')->on('type_exams')->onDelete('set null');
+            $table->string('paymentConcept');
             $table->boolean('state');
             $table->timestamps();
         });
