@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\appointment\userAppointment;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -83,5 +84,9 @@ class User extends Authenticatable
     public function user_state()
     {
         return $this->hasMany('App\Models\catalogue\state');
+    }
+    public function userAppointment()
+    {
+        return $this->hasMany(userAppointment::class);
     }
 }
