@@ -4,6 +4,8 @@ namespace App\Http\Livewire\Appointment;
 
 use App\Models\appointment\userAppointment;
 use App\Models\appointment\userQuestion;
+use App\Models\appointment\userRenovation;
+use App\Models\appointment\userStudying;
 use App\Models\catalogue\clasificationClass;
 use App\Models\catalogue\headquarter;
 use App\Models\catalogue\typeClass;
@@ -15,8 +17,10 @@ class Generate extends Component
 {
     // FIRST TABLE//
     public $id_appointment, $user_id, $type_exam_id, $state;
+    // QUESTION STUDYING
+    public $user_appointment_id, $user_question_id, $type_class_id, $clasification_class_id;
 
-    public $sede, $date, $clasification_class_id, $user_question_id, $finishCollegue,  $type_class_id, $aerodromos = [];
+    public $sede, $date, $finishCollegue, $aerodromos = [];
     public function mount()
     {
         $this->reset();
@@ -31,11 +35,18 @@ class Generate extends Component
     {
         return [
             'type_exam_id' => 'required',
+            'user_question_id' => 'required_unless:type_exam_id,2',
+            'type_class_id' => 'required',
+            'clasification_class_id' => 'required',
         ];
     }
     public function render()
     {
         return view('livewire.appointment.generate');
+    }
+    public function updated($propertyName)
+    {
+        $this->validateOnly($propertyName);
     }
     public function updatedtypeExamId($type_exam_id)
     {
@@ -52,7 +63,7 @@ class Generate extends Component
     }
     public function clean()
     {
-        $this->reset(['type_exam_id']);
+        $this->reset(['type_exam_id', 'user_question_id', 'type_class_id', 'clasification_class_id']);
     }
     public function save()
     {
@@ -66,6 +77,20 @@ class Generate extends Component
                 'state' => $this->state = false,
             ]
         );
+        if ($this->type_exam_id == 1) {
+            userStudying::updateOrCreate([
+                'user_appointment_id' => $userAppointment->id,
+                'user_question_id' => $this->user_question_id,
+                'type_class_id' => $this->type_class_id,
+                'clasification_class_id' => $this->clasification_class_id,
+            ]);
+        } else if ($this->type_exam_id == 2) {
+            userRenovation::updateOrCreate([
+                'user_appointment_id' => $userAppointment->id,
+                'type_class_id' => $this->type_class_id,
+                'clasification_class_id' => $this->clasification_class_id,
+            ]);
+        }
         $this->clean();
     }
 }

@@ -5,77 +5,103 @@
             question: @entangle('user_question_id'),
             clasification: @entangle('type_class_id'),
         }">
-            <div class="relative z-0 w-full mb-2 group">
+            {{--  --}}
+            <div class="mb-2">
                 <label for="small" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">¿QUE TIPO DE
                     EXÁMEN VAS
                     A REALIZAR?</label>
                 <select id="small" x-ref="tipoExamen" wire:model.lazy="type_exam_id" placeholder="seleccione..."
-                    class="block w-full p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    class="block w-full p-2 mb-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                     <option selected value="">Seleccione...</option>
                     @foreach ($typeExamens as $typeExam)
                         <option value="{{ $typeExam->id }}">{{ $typeExam->name }}</option>
                     @endforeach
                 </select>
+                @error('type_exam_id')
+                    <span
+                        class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
+                @enderror
             </div>
-            <div x-show="tipoExamen ==='1'" class="relative z-0 w-full mb-2 group">
+            {{--  --}}
+            {{--  --}}
+            <div x-show="tipoExamen ==='1'" class="mt-8">
                 <label for="small" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">¿SIGUES
                     ESTUDIANDO?</label>
                 <select id="small" x-ref="question" wire:model.lazy="user_question_id"
-                    class="block w-full p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    class="block w-full p-2 mb-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                     <option selected>Seleccione...</option>
                     @foreach ($questions as $question)
                         <option value="{{ $question->id }}">{{ $question->name }}</option>
                     @endforeach
                 </select>
+                @error('user_question_id')
+                    <span
+                        class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
+                @enderror
             </div>
+            {{--  --}}
             <div class="grid xl:grid-cols-2 xl:gap-6">
-                <div x-show="question === '1' || question === '2'" class="relative z-0 w-full mb-2 group">
+                <div x-show="question === '1' || question === '2'" class="mt-4 relative z-0 w-full group">
                     @if (!is_null($questionClassess))
                         <label for="small" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">TIPO
                             DE
                             CLASE</label>
                         <select id="small" x-ref="clasification" placeholder="seleccione..."
                             wire:model.lazy="type_class_id"
-                            class="block w-full p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            class="block w-full p-2 mb-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option value="0">Seleccione...</option>
                             @foreach ($questionClassess as $questionClass)
                                 <option value="{{ $questionClass->id }}">{{ $questionClass->name }}</option>
                             @endforeach
                         </select>
+                        @error('type_class_id')
+                            <span
+                                class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
+                        @enderror
                     @endif
                 </div>
                 <div x-show="tipoExamen ==='2'">
-                    <div class="relative z-0 w-full mb-2 group">
+                    <div class="mt-4 relative z-0 w-full group">
                         @if (!is_null($typeClasses))
                             <label for="small"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">TIPO
                                 DE
                                 CLASE</label>
                             <select id="small" wire:model.lazy="type_class_id"
-                                class="block w-full p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                class="block w-full p-2 mb-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected>Seleccione...</option>
                                 @foreach ($typeClasses as $typeClass)
                                     <option value="{{ $typeClass->id }}">{{ $typeClass->name }}</option>
                                 @endforeach
                             </select>
+                            @error('type_class_id')
+                                <span
+                                    class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
+                            @enderror
                         @endif
                     </div>
                 </div>
+                {{--  --}}
                 <div x-show="clasification === '1' || clasification === '2' || clasification === '3' ||  clasification === '4' || clasification === '5'
             || clasification === '6'"
-                    class="relative z-0 w-full mb-2 group">
+                    class="mt-4 relative z-0 w-full group">
                     @if (!is_null($clasificationClass))
-                        <label for="small"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">PILOTO</label>
+                        <label for="small" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">TIPO
+                            DE LICENCIA</label>
                         <select id="small" wire:model.lazy="clasification_class_id"
-                            class="block w-full p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            class="block w-full p-2 mb-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option selected>Seleccione...</option>
                             @foreach ($clasificationClass as $clasification)
                                 <option value="{{ $clasification->id }}">{{ $clasification->name }}</option>
                             @endforeach
                         </select>
+                        @error('clasification_class_id')
+                            <span
+                                class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
+                        @enderror
                     @endif
                 </div>
+                {{--  --}}
             </div>
             <div x-show="clasification === '1' || clasification === '2' || clasification === '3' ||  clasification === '4' || clasification === '5'
         || clasification === '6'"
