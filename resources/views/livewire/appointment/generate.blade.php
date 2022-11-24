@@ -1,4 +1,5 @@
 <div>
+@livewire('home.modal-index')
     <form wire:submit.prevent="save">
         <div x-data="{
             tipoExamen: @entangle('type_exam_id'),
