@@ -9,7 +9,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="px-6 bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div class="mt-5 mb-4">
-                   
+                   @livewire('appointment.generate')
                 </div>
             </div>
         </div>
