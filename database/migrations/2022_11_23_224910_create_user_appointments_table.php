@@ -15,6 +15,11 @@ return new class extends Migration
     {
         Schema::create('user_appointments', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
+            $table->unsignedBigInteger('type_exam_id')->nullable();
+            $table->foreign('type_exam_id')->references('id')->on('type_exams')->onDelete('set null');
+            $table->boolean('state');
             $table->timestamps();
         });
     }
