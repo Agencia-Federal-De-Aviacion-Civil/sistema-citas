@@ -36,6 +36,7 @@
                 </div>
                 <div class="mt-5 sm:flex sm:items-center sm:-mx-2">
                     <a href="https://www.gob.mx/segob/es/documentos/e5cinco-pago-de-derechos-productos-y-aprovechamientos"
+                        target="_blank"
                         class="w-full px-4 py-2 text-sm text-center font-medium tracking-wide text-gray-700 transition-colors duration-300 transform border border-gray-200 rounded-md sm:w-1/2 sm:mx-2 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800 hover:bg-gray-100 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-40">
                         Genera la hoja de pago
                     </a>
