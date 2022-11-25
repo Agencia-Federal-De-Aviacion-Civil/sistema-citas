@@ -2,6 +2,7 @@
 
 namespace App\Models\catalogue;
 
+use App\Models\appointment\userRenovation;
 use App\Models\appointment\userStudying;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -17,5 +18,9 @@ class typeClass extends Model
     public function classStudying()
     {
         return $this->hasMany(userStudying::class);
+    }
+    public function classRenovation()
+    {
+        return $this->hasMany(userRenovation::class);
     }
 }
