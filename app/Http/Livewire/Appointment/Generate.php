@@ -19,7 +19,7 @@ class Generate extends Component
     use Actions;
     public $confirmModal = false;
     // FIRST TABLE//
-    public $id_appointment, $user_id, $type_exam_id, $paymentConcept, $state;
+    public $id_appointment, $user_id, $type_exam_id, $paymentConcept, $paymentDate, $state;
     // QUESTION STUDYING
     public $user_appointment_id, $user_question_id, $type_class_id, $clasification_class_id;
 
@@ -42,6 +42,7 @@ class Generate extends Component
             'type_class_id' => 'required',
             'clasification_class_id' => 'required',
             'paymentConcept' => 'required',
+            'paymentDate' => 'required',
         ];
     }
     public function render()
@@ -67,7 +68,7 @@ class Generate extends Component
     }
     public function clean()
     {
-        $this->reset(['type_exam_id', 'user_question_id', 'type_class_id', 'clasification_class_id', 'paymentConcept']);
+        $this->reset(['type_exam_id', 'user_question_id', 'type_class_id', 'clasification_class_id', 'paymentConcept','paymentDate']);
     }
     public function save()
     {
@@ -79,6 +80,7 @@ class Generate extends Component
                 'user_id' => $user_id,
                 'type_exam_id' => $this->type_exam_id,
                 'paymentConcept' => $this->paymentConcept,
+                'paymentDate' => $this->paymentDate,
                 'state' => $this->state = false,
             ]
         );

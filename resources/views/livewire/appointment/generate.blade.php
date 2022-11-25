@@ -59,7 +59,7 @@
                                                 LA FECHA DE PAGO</label>
                                             <x-datetime-picker class="py-2.5" placeholder="Seleccione fecha..."
                                                 parse-format="YYYY-MM-DD" without-time="false"
-                                                wire:model.defer="" />
+                                                wire:model.defer="paymentDate" />
                                         </div>
 
                                         <div class="mt-1 relative z-0 w-full group">
@@ -306,8 +306,8 @@
                                         <div class="text-base relative z-10 w-full mb-2 group">
                                             <x-datetime-picker id="min-max-times-input" without-timezone
                                                 label="ELIJE EL DIA DE TU CITA" placeholder="Elije el dia de tu cita"
-                                                wire:model.defer="date" interval="60" min-time="07:00" display-format="YY-MM-DD HH:mm"
-                                                max-time="12:00" />
+                                                wire:model.defer="date" interval="60" min-time="07:00"
+                                                display-format="YY-MM-DD HH:mm" max-time="12:00" />
                                         </div>
                                     </div>
                                 </div>

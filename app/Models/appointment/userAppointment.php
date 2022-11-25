@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 class userAppointment extends Model
 {
     use HasFactory;
-    protected $fillable = ['user_id', 'type_exam_id', 'paymentConcept', 'state'];
+    protected $fillable = ['user_id', 'type_exam_id', 'paymentConcept', 'paymentDate', 'state'];
     public function appointmentUser()
     {
         return $this->belongsTo(User::class, 'user_id');
