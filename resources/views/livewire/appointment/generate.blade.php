@@ -252,16 +252,14 @@
                                                         </div>
                                                     </a>
                                                 </label>
-                                                <select id="small" wire:model.lazy="clasification_class_id"
-                                                    x-ref="typelicens"
-                                                    class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                    <option value="0">Seleccione...</option>
+                                                <x-select wire:model.lazy="clasification_class_id"
+                                                    placeholder="Select many statuses" multiselect>
+                                                    <x-select.option label="Seleccione..." selected />
                                                     @foreach ($clasificationClass as $clasification)
-                                                        <option value="{{ $clasification->id }}">
-                                                            {{ $clasification->name }}
-                                                        </option>
+                                                        <x-select.option label="{{ $clasification->name }}"
+                                                            value="{{ $clasification->id }}" />
                                                     @endforeach
-                                                </select>
+                                                </x-select>
                                                 @error('clasification_class_id')
                                                     <span
                                                         class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>

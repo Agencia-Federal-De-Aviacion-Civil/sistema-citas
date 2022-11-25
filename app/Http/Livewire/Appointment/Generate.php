@@ -21,7 +21,7 @@ class Generate extends Component
     // FIRST TABLE//
     public $id_appointment, $user_id, $type_exam_id, $paymentConcept, $paymentDate, $state;
     // QUESTION STUDYING
-    public $user_appointment_id, $user_question_id, $type_class_id, $clasification_class_id;
+    public $user_appointment_id, $user_question_id, $type_class_id, $clasification_class_id = [];
 
     public $sede, $date, $finishCollegue, $aerodromos = [];
     public function mount()
@@ -65,10 +65,11 @@ class Generate extends Component
     public function updatedTypeClassId($type_class_id)
     {
         $this->clasificationClass = clasificationClass::where('type_class_id', $type_class_id)->get();
+        $this->reset(['clasification_class_id']);
     }
     public function clean()
     {
-        $this->reset(['type_exam_id', 'user_question_id', 'type_class_id', 'clasification_class_id', 'paymentConcept','paymentDate']);
+        $this->reset(['type_exam_id', 'user_question_id', 'type_class_id', 'clasification_class_id', 'paymentConcept', 'paymentDate']);
     }
     public function save()
     {
@@ -85,18 +86,22 @@ class Generate extends Component
             ]
         );
         if ($this->type_exam_id == 1) {
-            userStudying::updateOrCreate([
-                'user_appointment_id' => $this->userAppointment->id,
-                'user_question_id' => $this->user_question_id,
-                'type_class_id' => $this->type_class_id,
-                'clasification_class_id' => $this->clasification_class_id,
-            ]);
+            foreach ($this->clasification_class_id as $clasifications) {
+                userStudying::updateOrCreate([
+                    'user_appointment_id' => $this->userAppointment->id,
+                    'user_question_id' => $this->user_question_id,
+                    'type_class_id' => $this->type_class_id,
+                    'clasification_class_id' => $clasifications,
+                ]);
+            }
         } else if ($this->type_exam_id == 2) {
-            userRenovation::updateOrCreate([
-                'user_appointment_id' => $this->userAppointment->id,
-                'type_class_id' => $this->type_class_id,
-                'clasification_class_id' => $this->clasification_class_id,
-            ]);
+            foreach ($this->clasification_class_id as $clasifications) {
+                userRenovation::updateOrCreate([
+                    'user_appointment_id' => $this->userAppointment->id,
+                    'type_class_id' => $this->type_class_id,
+                    'clasification_class_id' => $clasifications,
+                ]);
+            }
         }
         $this->clean();
         $this->openConfirm();
