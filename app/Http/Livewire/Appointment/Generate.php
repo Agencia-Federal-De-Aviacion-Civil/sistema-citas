@@ -65,23 +65,15 @@ class Generate extends Component
     {
         $this->clasificationClass = clasificationClass::where('type_class_id', $type_class_id)->get();
     }
-    public function openConfirm()
-    {
-        $this->confirmModal = true;
-    }
-    public function closeModal()
-    {
-        $this->confirmModal = false;
-    }
     public function clean()
     {
-        $this->reset(['type_exam_id', 'user_question_id', 'type_class_id', 'clasification_class_id','paymentConcept']);
+        $this->reset(['type_exam_id', 'user_question_id', 'type_class_id', 'clasification_class_id', 'paymentConcept']);
     }
     public function save()
     {
         $this->validate();
         $user_id = Auth::user()->id;
-        $userAppointment = userAppointment::updateOrCreate(
+        $this->userAppointment = userAppointment::updateOrCreate(
             ['id' => $this->id_appointment],
             [
                 'user_id' => $user_id,
@@ -92,37 +84,48 @@ class Generate extends Component
         );
         if ($this->type_exam_id == 1) {
             userStudying::updateOrCreate([
-                'user_appointment_id' => $userAppointment->id,
+                'user_appointment_id' => $this->userAppointment->id,
                 'user_question_id' => $this->user_question_id,
                 'type_class_id' => $this->type_class_id,
                 'clasification_class_id' => $this->clasification_class_id,
             ]);
         } else if ($this->type_exam_id == 2) {
             userRenovation::updateOrCreate([
-                'user_appointment_id' => $userAppointment->id,
+                'user_appointment_id' => $this->userAppointment->id,
                 'type_class_id' => $this->type_class_id,
                 'clasification_class_id' => $this->clasification_class_id,
             ]);
         }
+        $this->clean();
+        $this->openConfirm();
+    }
+    public function openConfirm()
+    {
+        $this->appointmentInfo = userAppointment::with(['appointmentTypeExam', 'appointmentStudying', 'appointmentRenovation'])
+            ->where('id', $this->userAppointment->id)->get();
+        $this->confirmModal = true;
+    }
+    public function closeModalFinish()
+    {
+        $this->confirmModal = false;
         $this->notification([
-            'title'       => 'Cita generada exitosamente!',
-            // 'description' => 'No olvides llegar en tiempo y forma al lugar asignado.',
+            'title'       => 'Cita generada éxitosamente',
+            'description' => 'Para mas detalles visita el apartado de citas.',
             'icon'        => 'success'
         ]);
-        $this->clean();
-        $this->closeModal();
     }
-    public function cancelSave()
+    // public function cancelSave()
+    // {
+    //     $this->clean();
+    //     $this->closeModal();
+    //     $this->notification([
+    //         'title'       => 'Datos no guardados!',
+    //         'description' => 'Se ha cancelado la cita.',
+    //         'icon'        => 'error'
+    //     ]);
+    // }
+    public function messages()
     {
-        $this->clean();
-        $this->closeModal();
-        $this->notification([
-            'title'       => 'Datos no guardados!',
-            'description' => 'Se ha cancelado la cita.',
-            'icon'        => 'error'
-        ]);
-    }
-    public function messages(){
-        return ['paymentConcept.required'=>'Ingrese clave de pago.'];
+        return ['paymentConcept.required' => 'Ingrese clave de pago.'];
     }
 }

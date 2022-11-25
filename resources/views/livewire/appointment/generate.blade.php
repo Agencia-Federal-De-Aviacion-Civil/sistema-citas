@@ -4,6 +4,7 @@
     @include('livewire.appointment.confirm')
     @endif
     @livewire('home.modal-index')
+    <form wire:submit.prevent="save">
     <div class="container px-6 py-10 mx-auto">
         <h1 class="text-2xl font-semibold text-gray-800 capitalize lg:text-3xl dark:text-white">Generación de cita</h1>
         <div class="flex mx-auto mt-2">
@@ -12,7 +13,7 @@
             <span class="inline-block w-1 h-1 bg-sky-700 rounded-full"></span>
         </div>
     </div>
-    <form wire:submit.prevent="openConfirm">
+
         <div x-data="{
             tipoExamen: @entangle('type_exam_id'),
             question: @entangle('user_question_id'),
