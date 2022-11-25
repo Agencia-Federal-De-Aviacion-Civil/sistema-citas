@@ -19,6 +19,8 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
             $table->unsignedBigInteger('type_exam_id')->nullable();
             $table->foreign('type_exam_id')->references('id')->on('type_exams')->onDelete('set null');
+            $table->unsignedBigInteger('user_payment_document_id')->nullable();
+            $table->foreign('user_payment_document_id')->references('id')->on('user_payment_documents')->onDelete('set null');
             $table->string('paymentConcept');
             $table->date('paymentDate');
             $table->boolean('state');
