@@ -7,7 +7,7 @@
     <div class="container px-6 py-10 mx-auto">
         <h1 class="text-2xl font-semibold text-gray-800 capitalize lg:text-3xl dark:text-white">Generación de cita</h1>
         <div class="flex mx-auto mt-2">
-            <span class="inline-block w-40 h-1 bg-sky-700 rounded-full"></span>
+            <span class="inline-block w-60 h-1 bg-sky-700 rounded-full"></span>
             <span class="inline-block w-3 h-1 mx-1 bg-sky-700 rounded-full"></span>
             <span class="inline-block w-1 h-1 bg-sky-700 rounded-full"></span>
         </div>
@@ -45,7 +45,7 @@
                                                 LA REFERENCIA DE PAGO</label>
                                             <input type="text" x-ref="payment"
                                                 class="py-3 px-4 block w-full font-bold	border-gray-200 rounded-md text-base focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400"
-                                                placeholder="ingresa la referencia de pago">
+                                                placeholder="Referencia de pago">
                                         </div>
 
                                         <div class="mt-1 relative z-0 w-full group">
@@ -193,7 +193,7 @@
                                                     class="focus:outline-none focus:ring-gray-300 rounded-full focus:ring-offset-2 focus:ring-2 focus:bg-gray-200 relative mt-0 md:mt-0 px-4"
                                                     onmouseover="showTooltip(1)" onfocus="showTooltip(1)"
                                                     onmouseout="hideTooltip(1)">
-                                                    <div class="cursor-pointer text-sky-600">
+                                                    <div class="cursor-pointer text-sky-700">
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5"
                                                             fill="none" viewBox="0 0 24 24" stroke="currentColor"
                                                             stroke-width="2">
