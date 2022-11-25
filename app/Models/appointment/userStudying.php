@@ -2,6 +2,7 @@
 
 namespace App\Models\appointment;
 
+use App\Models\catalogue\typeClass;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,5 +17,9 @@ class userStudying extends Model
     public function studyingQuestion()
     {
         return $this->belongsTo(userQuestion::class, 'user_question_id');
+    }
+    public function studyingClass()
+    {
+        return $this->belongsTo(typeClass::class, 'type_class_id');
     }
 }
