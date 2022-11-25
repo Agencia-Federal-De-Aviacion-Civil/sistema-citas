@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Appointment;
 
 use App\Models\appointment\userAppointment;
+use App\Models\appointment\userPaymentDocument;
 use App\Models\appointment\userQuestion;
 use App\Models\appointment\userRenovation;
 use App\Models\appointment\userStudying;
@@ -12,14 +13,16 @@ use App\Models\catalogue\typeClass;
 use App\Models\catalogue\typeExam;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use WireUi\Traits\Actions;
 
 class Generate extends Component
 {
     use Actions;
+    use WithFileUploads;
     public $confirmModal = false;
     // FIRST TABLE//
-    public $id_appointment, $user_id, $type_exam_id, $paymentConcept, $paymentDate, $state;
+    public $user_id, $type_exam_id, $user_payment_document_id, $document_id, $document, $paymentConcept, $paymentDate, $state;
     // QUESTION STUDYING
     public $user_appointment_id, $user_question_id, $type_class_id, $clasification_class_id = [];
 
@@ -43,6 +46,7 @@ class Generate extends Component
             'clasification_class_id' => 'required',
             'paymentConcept' => 'required',
             'paymentDate' => 'required',
+            'document' => 'required|mimetypes:application/pdf'
         ];
     }
     public function render()
@@ -69,17 +73,21 @@ class Generate extends Component
     }
     public function clean()
     {
-        $this->reset(['type_exam_id', 'user_question_id', 'type_class_id', 'clasification_class_id', 'paymentConcept', 'paymentDate']);
+        $this->reset(['type_exam_id', 'user_question_id', 'type_class_id', 'clasification_class_id', 'paymentConcept', 'paymentDate', 'document']);
     }
     public function save()
     {
         $this->validate();
+        $documentPay = userPaymentDocument::updateOrCreate(
+            ['id' => $this->document_id],
+            ['document' => $this->document->store('documentos', 'public')]
+        );
         $user_id = Auth::user()->id;
         $this->userAppointment = userAppointment::updateOrCreate(
-            ['id' => $this->id_appointment],
             [
                 'user_id' => $user_id,
                 'type_exam_id' => $this->type_exam_id,
+                'user_payment_document_id' => $documentPay->id,
                 'paymentConcept' => $this->paymentConcept,
                 'paymentDate' => $this->paymentDate,
                 'state' => $this->state = false,

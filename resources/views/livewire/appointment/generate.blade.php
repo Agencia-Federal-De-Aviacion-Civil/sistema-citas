@@ -53,7 +53,7 @@
                                                     class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
                                             @enderror
                                         </div>
-                                        <div class="mt-1 relative z-0 w-full group">
+                                        <div class="mt-1 relative z-10 w-full group">
                                             <label for="small"
                                                 class="block mb-2 text-base font-medium text-gray-900 dark:text-white">INGRESA
                                                 LA FECHA DE PAGO</label>
@@ -66,11 +66,22 @@
                                             <label for="small"
                                                 class="block mb-2 text-base font-medium text-gray-900 dark:text-white">ADJUNTA
                                                 EL COMPROBANTE DE PAGO</label>
-                                            <form>
-                                                <label for="file-input" class="sr-only">Adjunta el comprobante</label>
-                                                <input type="file" name="file-input" id="file-input"
-                                                    class="block w-full border border-gray-200 shadow-sm rounded-md text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 file:bg-transparent file:border-0 file:bg-gray-100 file:mr-4 file:py-2.5 file:px-4 dark:file:bg-gray-700 dark:file:text-gray-400">
-                                            </form>
+                                            <label for="file-input" class="sr-only">Adjunta el comprobante</label>
+                                            <input type="file" wire:model="document"
+                                                class="block w-full border border-gray-200 shadow-sm rounded-md text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 file:bg-transparent file:border-0 file:bg-gray-100 file:mr-4 file:py-2.5 file:px-4 dark:file:bg-gray-700 dark:file:text-gray-400">
+                                            <div class="float-left">
+                                                <div wire:loading wire:target="document">Subiendo...
+                                                    <div style="color: #27559b9a" class="la-ball-fall">
+                                                        <div></div>
+                                                        <div></div>
+                                                        <div></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @error('document')
+                                                <span
+                                                    class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
