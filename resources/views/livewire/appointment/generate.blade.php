@@ -41,8 +41,52 @@
                                     <div class="grid xl:grid-cols-3 xl:gap-6">
                                         <div class="mt-1 relative z-0 w-full group">
                                             <label for="small"
-                                                class="block mb-2 text-base font-medium text-gray-900 dark:text-white">INGRESA
-                                                LA REFERENCIA DE PAGO</label>
+                                                class="py-1 flex block w-full bg-white lg:text-base xs:text-xl focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400">
+                                                <a tabindex="0" role="link" aria-label="tooltip 2"
+                                                    class="focus:outline-none focus:ring-gray-300 rounded-full focus:ring-offset-2 focus:ring-2 focus:bg-gray-200 relative mt-0 md:mt-0 px-2"
+                                                    onmouseover="showTooltip(1)" onfocus="showTooltip(1)"
+                                                    onmouseout="hideTooltip(1)">
+                                                    <div class="cursor-pointer text-sky-700">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5"
+                                                            fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                                            stroke-width="2">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                        </svg>
+                                                    </div>
+                                                    <div id="tooltip1" role="tooltip"
+                                                        class="z-20 -mt-20 w-64 absolute transition duration-150 ease-in-out left-0 ml-8 shadow-lg bg-gray-100 p-4 hidden">
+                                                        <svg class="absolute left-0 -ml-2 bottom-0 top-0 h-full"
+                                                            width="9px" height="16px" viewBox="0 0 9 16" version="1.1"
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            xmlns:xlink="http://www.w3.org/1999/xlink">
+                                                            <g id="Page-1" stroke="none" stroke-width="1" fill="none"
+                                                                fill-rule="evenodd">
+                                                                <g id="Tooltips-"
+                                                                    transform="translate(-874.000000, -1029.000000)"
+                                                                    fill="#FFFFFF">
+                                                                    <g id="Group-3-Copy-16"
+                                                                        transform="translate(850.000000, 975.000000)">
+                                                                        <g id="Group-2"
+                                                                            transform="translate(24.000000, 0.000000)">
+                                                                            <polygon id="Triangle"
+                                                                                transform="translate(4.500000, 62.000000) rotate(-90.000000) translate(-4.500000, -62.000000) "
+                                                                                points="4.5 57.5 12.5 66.5 -3.5 66.5">
+                                                                            </polygon>
+                                                                        </g>
+                                                                    </g>
+                                                                </g>
+                                                            </g>
+                                                        </svg>
+                                                        <p class="text-ms font-bold text-gray-800 pb-1">INSTRUCCIONES
+                                                        </p>
+                                                        <p class="text-ms leading-4 text-gray-600 pb-3">
+                                                            Ingresar el número de serie del certificado de seguridad del banco receptor del pago
+                                                        </p>
+                                                    </div>
+                                                </a>
+                                                INGRESA LA REFERENCIA DE PAGO
+                                            </label>
                                             <input type="text" x-ref="payment"
                                                 class="py-2 px-4 block w-full font-bold	border-gray-200 rounded-md text-base focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400"
                                                 placeholder="Referencia de pago">
@@ -51,9 +95,9 @@
                                             <label for="small"
                                                 class="block mb-2 text-base font-medium text-gray-900 dark:text-white">INGRESA
                                                 LA FECHA DE PAGO</label>
-                                            <x-datetime-picker class="py-2.5"
-                                                placeholder="Seleccione fecha..." parse-format="YYYY-MM-DD"
-                                                without-time="false" wire:model.defer="customFormat" />
+                                            <x-datetime-picker class="py-2.5" placeholder="Seleccione fecha..."
+                                                parse-format="YYYY-MM-DD" without-time="false"
+                                                wire:model.defer="customFormat" />
                                         </div>
 
                                         <div class="mt-1 relative z-0 w-full group">
@@ -200,8 +244,8 @@
                                                 DE LICENCIA
                                                 <a tabindex="0" role="link" aria-label="tooltip 2"
                                                     class="focus:outline-none focus:ring-gray-300 rounded-full focus:ring-offset-2 focus:ring-2 focus:bg-gray-200 relative mt-0 md:mt-0 px-4"
-                                                    onmouseover="showTooltip(1)" onfocus="showTooltip(1)"
-                                                    onmouseout="hideTooltip(1)">
+                                                    onmouseover="showTooltip(2)" onfocus="showTooltip(2)"
+                                                    onmouseout="hideTooltip(2)">
                                                     <div class="cursor-pointer text-sky-700">
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5"
                                                             fill="none" viewBox="0 0 24 24" stroke="currentColor"
@@ -210,7 +254,7 @@
                                                                 d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                                         </svg>
                                                     </div>
-                                                    <div id="tooltip1" role="tooltip"
+                                                    <div id="tooltip2" role="tooltip"
                                                         class="z-20 -mt-20 w-64 absolute transition duration-150 ease-in-out left-0 ml-8 shadow-lg bg-white p-4 hidden">
                                                         <svg class="absolute left-0 -ml-2 bottom-0 top-0 h-full"
                                                             width="9px" height="16px" viewBox="0 0 9 16" version="1.1"
@@ -342,6 +386,9 @@ function showTooltip(flag) {
         case 1:
             document.getElementById("tooltip1").classList.remove("hidden");
             break;
+        case 2:
+            document.getElementById("tooltip2").classList.remove("hidden");
+            break;
     }
 }
 
@@ -349,6 +396,9 @@ function hideTooltip(flag) {
     switch (flag) {
         case 1:
             document.getElementById("tooltip1").classList.add("hidden");
+            break;
+        case 2:
+            document.getElementById("tooltip2").classList.add("hidden");
             break;
     }
 }
