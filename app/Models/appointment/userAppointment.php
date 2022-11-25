@@ -23,4 +23,8 @@ class userAppointment extends Model
     {
         return $this->hasMany(userStudying::class);
     }
+    public function appointmentRenovation()
+    {
+        return $this->hasMany(userRenovation::class);
+    }
 }
