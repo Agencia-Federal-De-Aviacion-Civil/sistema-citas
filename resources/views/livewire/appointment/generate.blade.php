@@ -4,7 +4,7 @@
         @include('livewire.appointment.confirm')
     @endif
     @livewire('home.modal-index')
-    <form wire:submit.prevent="openConfirm">
+    <form wire:submit.prevent="save">
         <div x-data="{
             tipoExamen: @entangle('type_exam_id'),
             question: @entangle('user_question_id'),
@@ -123,14 +123,20 @@
                         placeholder="Elije el dia de tu cita" wire:model.defer="date" interval="60" min-time="07:00"
                         max-time="12:00" />
                 </div>
+                <input type="text" name="floating_phone" wire:model.lazy="paymentConcept"
+                id="floating_phone"
+                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                placeholder=" " />
             </div>
         </div>
+        <x-errors
+        title="Se han encontrado {errors} campo(s) vacio(s), por favor completalos para continuar..." />
         <div class="text-right">
             <button
                 class="px-3 py-2 text-sm font-medium text-center text-white bg-sky-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                 GENERAR CITA
             </button>
-            <div wire:loading.delay.shortest wire:target="openConfirm">
+            <div wire:loading.delay.shortest wire:target="save">
                 <div
                     class="flex justify-center bg-gray-200 z-40 h-full w-full fixed top-0 left-0 items-center opacity-75">
                     <div style="color: #0061cf" class="la-line-spin-clockwise-fade-rotating la-3x">
