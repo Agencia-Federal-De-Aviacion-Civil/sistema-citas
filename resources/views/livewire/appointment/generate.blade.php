@@ -59,7 +59,7 @@
                                                 LA FECHA DE PAGO</label>
                                             <x-datetime-picker class="py-2.5" placeholder="Seleccione fecha..."
                                                 parse-format="YYYY-MM-DD" without-time="false"
-                                                wire:model.defer="customFormat" />
+                                                wire:model.defer="" />
                                         </div>
 
                                         <div class="mt-1 relative z-0 w-full group">
