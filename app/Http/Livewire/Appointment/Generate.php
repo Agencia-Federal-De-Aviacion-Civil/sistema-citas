@@ -96,23 +96,23 @@ class Generate extends Component
                 'clasification_class_id' => $this->clasification_class_id,
             ]);
         }
-        $this->notification([
-            'title'       => 'Cita generada exitosamente!',
-            // 'description' => 'No olvides llegar en tiempo y forma al lugar asignado.',
-            'icon'        => 'success'
-        ]);
         $this->clean();
         $this->openConfirm();
     }
     public function openConfirm()
     {
-        $this->appointmentInfo = userAppointment::with(['appointmentTypeExam','appointmentStudying','appointmentRenovation'])
+        $this->appointmentInfo = userAppointment::with(['appointmentTypeExam', 'appointmentStudying', 'appointmentRenovation'])
             ->where('id', $this->userAppointment->id)->get();
         $this->confirmModal = true;
     }
-    public function closeModal()
+    public function closeModalFinish()
     {
         $this->confirmModal = false;
+        $this->notification([
+            'title'       => 'Cita generada éxitosamente',
+            'description' => 'Para mas detalles visita el apartado de citas.',
+            'icon'        => 'success'
+        ]);
     }
     // public function cancelSave()
     // {

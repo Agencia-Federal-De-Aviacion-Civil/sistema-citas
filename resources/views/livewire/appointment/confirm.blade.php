@@ -94,7 +94,7 @@
                             </div>
                         </div>
                     @elseif($appointment->type_exam_id == 2)
-                        <div class="mt-15 grid md:grid-cols-2 md:gap-6">
+                        <div class="mt-20 grid md:grid-cols-2 md:gap-6">
                             <div class="relative z-0 mb-6 w-full group">
                                 <input type="text" name="floating_phone"
                                     value="{{ $appointment->appointmentTypeExam->name }}"
@@ -157,11 +157,11 @@
                         class="w-full px-4 py-2 text-sm text-center font-medium tracking-wide text-gray-700 transition-colors duration-300 transform border border-gray-200 rounded-md sm:w-1/2 sm:mx-2 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800 hover:bg-gray-100 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-40">
                         CANCELAR CITA
                     </button>
-                    <button wire:click.prevent=""
+                    <button wire:click.prevent="closeModalFinish"
                         class="w-full px-4 py-2 mt-4 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-600 rounded-md sm:mt-0 sm:w-1/2 sm:mx-2 hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40">
                         CONCLUIR CITA
                     </button>
-                    <div wire:loading.delay.shortest wire:target="">
+                    <div wire:loading.delay.shortest wire:target="closeModalFinish">
                         <div
                             class="flex justify-center bg-gray-200 z-40 h-full w-full fixed top-0 left-0 items-center opacity-75">
                             <div style="color: #0061cf" class="la-line-spin-clockwise-fade-rotating la-3x">
