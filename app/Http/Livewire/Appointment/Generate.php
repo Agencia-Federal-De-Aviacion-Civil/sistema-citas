@@ -106,7 +106,7 @@ class Generate extends Component
     }
     public function openConfirm()
     {
-        $this->appointmentInfo = userAppointment::with(['appointmentTypeExam','appointmentStudying'])
+        $this->appointmentInfo = userAppointment::with(['appointmentTypeExam','appointmentStudying','appointmentRenovation'])
             ->where('id', $this->userAppointment->id)->get();
         $this->confirmModal = true;
     }
