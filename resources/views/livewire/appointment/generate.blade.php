@@ -328,12 +328,6 @@
     </form>
 </div>
 <script>
-function app() {
-    return {
-        step: 2,
-    }
-}
-
 function showTooltip(flag) {
     switch (flag) {
         case 1:
