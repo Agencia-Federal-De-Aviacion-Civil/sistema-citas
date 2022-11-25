@@ -19,4 +19,8 @@ class userAppointment extends Model
     {
         return $this->belongsTo(typeExam::class, 'type_exam_id');
     }
+    public function appointmentStudying()
+    {
+        return $this->hasMany(userStudying::class);
+    }
 }
