@@ -13,4 +13,8 @@ class userStudying extends Model
     {
         return $this->belongsTo(userAppointment::class, 'user_appointment_id');
     }
+    public function studyingQuestion()
+    {
+        return $this->belongsTo(userQuestion::class, 'user_question_id');
+    }
 }
