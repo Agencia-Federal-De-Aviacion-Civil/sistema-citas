@@ -38,23 +38,32 @@
                                     </svg>
                                 </div>
                                 <div class="flex-grow pl-4">
-                                    <div class="grid xl:grid-cols-2 xl:gap-6">
+                                    <div class="grid xl:grid-cols-3 xl:gap-6">
                                         <div class="mt-1 relative z-0 w-full group">
                                             <label for="small"
                                                 class="block mb-2 text-base font-medium text-gray-900 dark:text-white">INGRESA
                                                 LA REFERENCIA DE PAGO</label>
                                             <input type="text" x-ref="payment"
-                                                class="py-3 px-4 block w-full font-bold	border-gray-200 rounded-md text-base focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400"
+                                                class="py-2 px-4 block w-full font-bold	border-gray-200 rounded-md text-base focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400"
                                                 placeholder="Referencia de pago">
+                                        </div>
+                                        <div class="mt-1 relative z-0 w-full group">
+                                            <label for="small"
+                                                class="block mb-2 text-base font-medium text-gray-900 dark:text-white">INGRESA
+                                                LA FECHA DE PAGO</label>
+                                            <x-datetime-picker class="py-2.5"
+                                                placeholder="Seleccione fecha..." parse-format="YYYY-MM-DD"
+                                                without-time="false" wire:model.defer="customFormat" />
                                         </div>
 
                                         <div class="mt-1 relative z-0 w-full group">
                                             <label for="small"
-                                                class="block mb-2 text-base font-medium text-gray-900 dark:text-white">ADJUNTA EL COMPROBANTE DE PAGO</label>
+                                                class="block mb-2 text-base font-medium text-gray-900 dark:text-white">ADJUNTA
+                                                EL COMPROBANTE DE PAGO</label>
                                             <form>
                                                 <label for="file-input" class="sr-only">Adjunta el comprobante</label>
                                                 <input type="file" name="file-input" id="file-input"
-                                                    class="block w-full border border-gray-200 shadow-sm rounded-md text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 file:bg-transparent file:border-0 file:bg-gray-100 file:mr-4 file:py-3 file:px-4 dark:file:bg-gray-700 dark:file:text-gray-400">
+                                                    class="block w-full border border-gray-200 shadow-sm rounded-md text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 file:bg-transparent file:border-0 file:bg-gray-100 file:mr-4 file:py-2.5 file:px-4 dark:file:bg-gray-700 dark:file:text-gray-400">
                                             </form>
                                         </div>
                                     </div>
@@ -228,7 +237,7 @@
                                                         <p class="text-ms font-bold text-gray-800 pb-1">INSTRUCCIONES
                                                         </p>
                                                         <p class="text-ms leading-4 text-gray-600 pb-3">Puedes
-                                                            seleccionar uno o mas tipos de licencias
+                                                            seleccionar uno o más tipos de licencias
                                                         </p>
                                                     </div>
                                                 </a>
