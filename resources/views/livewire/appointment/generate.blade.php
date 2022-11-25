@@ -295,11 +295,18 @@
                                                         value="{{ $sede->id }}" />
                                                 @endforeach
                                             </x-select>
+                                            {{-- <x-select x-ref="selec_sede" label="ELIJA LA SEDE" placeholder="Selecciona"
+                                                wire:model.defer="sede">
+                                                @foreach ($sedes as $sede)
+                                                    <x-select.option label="{{ $sede->name }}"
+                                                        value="{{ $sede->id }}" />
+                                                @endforeach
+                                            </x-select> --}}
                                         </div>
                                         <div class="text-base relative z-10 w-full mb-2 group">
                                             <x-datetime-picker id="min-max-times-input" without-timezone
                                                 label="ELIJE EL DIA DE TU CITA" placeholder="Elije el dia de tu cita"
-                                                wire:model.defer="date" interval="60" min-time="07:00"
+                                                wire:model.defer="date" interval="60" min-time="07:00" display-format="YY-MM-DD HH:mm"
                                                 max-time="12:00" />
                                         </div>
                                     </div>
@@ -322,7 +329,7 @@
                                             class="px-3 py-2 text-sm font-medium text-center text-white bg-sky-700 rounded-lg hover:bg-sky-800 focus:ring-4 focus:outline-none focus:ring-sky-300 dark:bg-sky-600 dark:hover:bg-sky-700 dark:focus:ring-sky-800">
                                             GENERAR CITA
                                         </button>
-                                        <div wire:loading.delay.shortest wire:target="openConfirm">
+                                        <div wire:loading.delay.shortest wire:target="save">
                                             <div
                                                 class="flex justify-center bg-gray-200 z-40 h-full w-full fixed top-0 left-0 items-center opacity-75">
                                                 <div style="color: #0061cf"
@@ -348,21 +355,21 @@
             {{-- estep --}}
         </div>
     </form>
-</div>
-<script>
-    function showTooltip(flag) {
-        switch (flag) {
-            case 1:
-                document.getElementById("tooltip1").classList.remove("hidden");
-                break;
+    <script>
+        function showTooltip(flag) {
+            switch (flag) {
+                case 1:
+                    document.getElementById("tooltip1").classList.remove("hidden");
+                    break;
+            }
         }
-    }
 
-    function hideTooltip(flag) {
-        switch (flag) {
-            case 1:
-                document.getElementById("tooltip1").classList.add("hidden");
-                break;
+        function hideTooltip(flag) {
+            switch (flag) {
+                case 1:
+                    document.getElementById("tooltip1").classList.add("hidden");
+                    break;
+            }
         }
-    }
-</script>
+    </script>
+</div>
