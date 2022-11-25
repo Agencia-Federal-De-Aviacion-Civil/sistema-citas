@@ -12,11 +12,14 @@ use App\Models\catalogue\typeClass;
 use App\Models\catalogue\typeExam;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use WireUi\Traits\Actions;
 
 class Generate extends Component
 {
+    use Actions;
+    public $confirmModal = false;
     // FIRST TABLE//
-    public $id_appointment, $user_id, $type_exam_id, $state;
+    public $id_appointment, $user_id, $type_exam_id, $paymentConcept, $state;
     // QUESTION STUDYING
     public $user_appointment_id, $user_question_id, $type_class_id, $clasification_class_id;
 
@@ -38,6 +41,7 @@ class Generate extends Component
             'user_question_id' => 'required_unless:type_exam_id,2',
             'type_class_id' => 'required',
             'clasification_class_id' => 'required',
+            'paymentConcept' => 'required',
         ];
     }
     public function render()
@@ -61,9 +65,17 @@ class Generate extends Component
     {
         $this->clasificationClass = clasificationClass::where('type_class_id', $type_class_id)->get();
     }
+    public function openConfirm()
+    {
+        $this->confirmModal = true;
+    }
+    public function closeModal()
+    {
+        $this->confirmModal = false;
+    }
     public function clean()
     {
-        $this->reset(['type_exam_id', 'user_question_id', 'type_class_id', 'clasification_class_id']);
+        $this->reset(['type_exam_id', 'user_question_id', 'type_class_id', 'clasification_class_id','paymentConcept']);
     }
     public function save()
     {
@@ -74,6 +86,7 @@ class Generate extends Component
             [
                 'user_id' => $user_id,
                 'type_exam_id' => $this->type_exam_id,
+                'paymentConcept' => $this->paymentConcept,
                 'state' => $this->state = false,
             ]
         );
@@ -91,6 +104,25 @@ class Generate extends Component
                 'clasification_class_id' => $this->clasification_class_id,
             ]);
         }
+        $this->notification([
+            'title'       => 'Cita generada exitosamente!',
+            // 'description' => 'No olvides llegar en tiempo y forma al lugar asignado.',
+            'icon'        => 'success'
+        ]);
         $this->clean();
+        $this->closeModal();
+    }
+    public function cancelSave()
+    {
+        $this->clean();
+        $this->closeModal();
+        $this->notification([
+            'title'       => 'Datos no guardados!',
+            'description' => 'Se ha cancelado la cita.',
+            'icon'        => 'error'
+        ]);
+    }
+    public function messages(){
+        return ['paymentConcept.required'=>'Ingrese clave de pago.'];
     }
 }

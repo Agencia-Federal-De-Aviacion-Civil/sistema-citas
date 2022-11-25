@@ -1,6 +1,10 @@
 <div>
-@livewire('home.modal-index')
-    <form wire:submit.prevent="save">
+    <x-notifications position="top-center" />
+    @if ($confirmModal)
+        @include('livewire.appointment.confirm')
+    @endif
+    @livewire('home.modal-index')
+    <form wire:submit.prevent="openConfirm">
         <div x-data="{
             tipoExamen: @entangle('type_exam_id'),
             question: @entangle('user_question_id'),
@@ -126,7 +130,7 @@
                 class="px-3 py-2 text-sm font-medium text-center text-white bg-sky-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                 GENERAR CITA
             </button>
-            <div wire:loading.delay.shortest wire:target="save">
+            <div wire:loading.delay.shortest wire:target="openConfirm">
                 <div
                     class="flex justify-center bg-gray-200 z-40 h-full w-full fixed top-0 left-0 items-center opacity-75">
                     <div style="color: #0061cf" class="la-line-spin-clockwise-fade-rotating la-3x">
