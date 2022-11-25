@@ -28,7 +28,7 @@
                             Toma en cuenta lo siguiente
                         </h3>
 
-                        <p class="mt-2 text-regular text-gray-500 dark:text-gray-400">
+                        <p class="mt-2 text-lg text-gray-700 dark:text-gray-400">
                             Antes de realizar tu cita se debe de generar el pago, en caso contrario no se podra
                             agendar su cita
                         </p>
