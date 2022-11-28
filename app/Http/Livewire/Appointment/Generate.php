@@ -120,25 +120,53 @@ class Generate extends Component
                 ]);
             }
         }
-        user_appointment_success::updateOrCreate(
-            ['id' => $this->id_success],
-            [
-                'user_appointment_id' => $this->userAppointment->id,
-                'headquarter_id' => $this->headquarter_id,
-                'appointmentDate' => $this->appointmentDate,
-                'appointments' => 1,
-            ]
-        );
+
+        $user_data = user_appointment_success::where('appointmentDate', $this->appointmentDate)
+            ->where('headquarter_id', $this->headquarter_id)
+            ->first();
+        if ($user_data == null) {
+            user_appointment_success::Create(
+                [
+                    'user_appointment_id' => $this->userAppointment->id,
+                    'headquarter_id' => $this->headquarter_id,
+                    'appointmentDate' => $this->appointmentDate,
+                    'appointments' => 1,
+                ]
+            );
+        } else {
+            if ($user_data->appointments == 3) {
+                session()->flash('appointmentDate');
+            } else {
+                $count = $user_data->appointments + 1;
+                $user_data->update(
+                    [
+                        'user_appointment_id' => $this->userAppointment->id,
+                        'headquarter_id' => $this->headquarter_id,
+                        'appointmentDate' => $this->appointmentDate,
+                        'appointments' => $count,
+                    ]
+                );
+            }
+        }
+        // user_appointment_success::updateOrCreate(
+        //     ['id' => $this->id_success],
+        //     [
+        //         'user_appointment_id' => $this->userAppointment->id,
+        //         'headquarter_id' => $this->headquarter_id,
+        //         'appointmentDate' => $this->appointmentDate,
+        //         'appointments' => 1,
+        //     ]
+        // );
         $this->clean();
         $this->openConfirm();
         // }
     }
     public function openConfirm()
     {
-        $this->appointmentInfo = userAppointment::with(['appointmentTypeExam', 'appointmentStudying', 'appointmentRenovation','appointmentSuccess'])
+        $this->appointmentInfo = userAppointment::with(['appointmentTypeExam', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess'])
             ->where('id', $this->userAppointment->id)->get();
         $Query = $this->appointmentInfo[0]->appointmentSuccess[0]->appointmentDate;
-        $this->key = explode(' ',$Query);
+        $this->key = explode(' ', $Query);
         $this->confirmModal = true;
     }
     public function closeModalFinish()
@@ -162,6 +190,9 @@ class Generate extends Component
     // }
     public function messages()
     {
-        return ['paymentConcept.required' => 'Ingrese clave de pago.'];
+        return [
+            'paymentConcept.required' => 'Ingrese clave de pago.',
+            'appointmentDate.required' => 'Citas no disponibles en la fecha indicada'
+        ];
     }
 }
