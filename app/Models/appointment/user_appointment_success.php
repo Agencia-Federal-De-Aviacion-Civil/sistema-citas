@@ -2,6 +2,7 @@
 
 namespace App\Models\appointment;
 
+use App\Models\catalogue\headquarter;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,5 +13,9 @@ class user_appointment_success extends Model
     public function successAppointment()
     {
         return $this->belongsTo(userAppointment::class, 'user_appointment_id');
+    }
+    public function successHeadquarter()
+    {
+        return $this->belongsTo(headquarter::class, 'headquarter_id');
     }
 }

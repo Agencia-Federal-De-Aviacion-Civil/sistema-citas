@@ -314,11 +314,11 @@
                                             </x-select> --}}
                                         </div>
                                         <div class="text-base relative z-10 w-full mb-2 group">
-                                            <x-datetime-picker id="min-max-times-input"
+                                            <x-datetime-picker without-timezone id="min-max-times-input"
                                                 label="ELIJE EL DIA DE TU CITA" placeholder="Elije el dia de tu cita"
                                                 wire:model.defer="appointmentDate" interval="60" min-time="07:00"
                                                 parse-format="YYYY-MM-DD HH:mm" max-time="12:00" />
-                                                {{-- <x-datetime-picker class="py-2.5" placeholder="Seleccione fecha..."
+                                            {{-- <x-datetime-picker class="py-2.5" placeholder="Seleccione fecha..."
                                                 parse-format="YYYY-MM-DD" without-time="false"
                                                 wire:model.defer="paymentDate" /> --}}
                                         </div>
