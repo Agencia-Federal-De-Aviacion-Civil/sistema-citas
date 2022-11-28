@@ -80,12 +80,12 @@ class Generate extends Component
     }
     public function save()
     {
-        if ($this->appointments != 1) {
-            $this->dialog()->error(
-                $title = 'Error !!!',
-                $description = 'Your profile was not saved'
-            );
-        } else {
+        // if ($this->appointments != 1) {
+        //     $this->dialog()->error(
+        //         $title = 'Error !!!',
+        //         $description = 'Your profile was not saved'
+        //     );
+        // } else {
             $this->validate();
             $documentPay = userPaymentDocument::updateOrCreate(
                 ['id' => $this->document_id],
@@ -130,7 +130,7 @@ class Generate extends Component
             );
             $this->clean();
             $this->openConfirm();
-        }
+        // }
     }
     public function openConfirm()
     {
