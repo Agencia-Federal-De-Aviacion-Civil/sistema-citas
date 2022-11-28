@@ -8,5 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class user_appointment_success extends Model
 {
     use HasFactory;
-    protected $fillable = ['headquarter_id', 'appointmentDate', 'appointments'];
+    protected $fillable = ['user_appointment_id','headquarter_id', 'appointmentDate', 'appointments'];
+    public function successAppointment()
+    {
+        return $this->belongsTo(userAppointment::class, 'user_appointment_id');
+    }
 }

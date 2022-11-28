@@ -86,50 +86,51 @@ class Generate extends Component
         //         $description = 'Your profile was not saved'
         //     );
         // } else {
-            $this->validate();
-            $documentPay = userPaymentDocument::updateOrCreate(
-                ['id' => $this->document_id],
-                ['document' => $this->document->store('documentos', 'public')]
-            );
-            $user_id = Auth::user()->id;
-            $this->userAppointment = userAppointment::updateOrCreate(
-                [
-                    'user_id' => $user_id,
-                    'type_exam_id' => $this->type_exam_id,
-                    'user_payment_document_id' => $documentPay->id,
-                    'paymentConcept' => $this->paymentConcept,
-                    'paymentDate' => $this->paymentDate,
-                    'state' => $this->state = false,
-                ]
-            );
-            if ($this->type_exam_id == 1) {
-                foreach ($this->clasification_class_id as $clasifications) {
-                    userStudying::updateOrCreate([
-                        'user_appointment_id' => $this->userAppointment->id,
-                        'user_question_id' => $this->user_question_id,
-                        'type_class_id' => $this->type_class_id,
-                        'clasification_class_id' => $clasifications,
-                    ]);
-                }
-            } else if ($this->type_exam_id == 2) {
-                foreach ($this->clasification_class_id as $clasifications) {
-                    userRenovation::updateOrCreate([
-                        'user_appointment_id' => $this->userAppointment->id,
-                        'type_class_id' => $this->type_class_id,
-                        'clasification_class_id' => $clasifications,
-                    ]);
-                }
+        $this->validate();
+        $documentPay = userPaymentDocument::updateOrCreate(
+            ['id' => $this->document_id],
+            ['document' => $this->document->store('documentos', 'public')]
+        );
+        $user_id = Auth::user()->id;
+        $this->userAppointment = userAppointment::updateOrCreate(
+            [
+                'user_id' => $user_id,
+                'type_exam_id' => $this->type_exam_id,
+                'user_payment_document_id' => $documentPay->id,
+                'paymentConcept' => $this->paymentConcept,
+                'paymentDate' => $this->paymentDate,
+                'state' => $this->state = false,
+            ]
+        );
+        if ($this->type_exam_id == 1) {
+            foreach ($this->clasification_class_id as $clasifications) {
+                userStudying::updateOrCreate([
+                    'user_appointment_id' => $this->userAppointment->id,
+                    'user_question_id' => $this->user_question_id,
+                    'type_class_id' => $this->type_class_id,
+                    'clasification_class_id' => $clasifications,
+                ]);
             }
-            user_appointment_success::updateOrCreate(
-                ['id' => $this->id_success],
-                [
-                    'headquarter_id' => $this->headquarter_id,
-                    'appointmentDate' => $this->appointmentDate,
-                    'appointments' => 1,
-                ]
-            );
-            $this->clean();
-            $this->openConfirm();
+        } else if ($this->type_exam_id == 2) {
+            foreach ($this->clasification_class_id as $clasifications) {
+                userRenovation::updateOrCreate([
+                    'user_appointment_id' => $this->userAppointment->id,
+                    'type_class_id' => $this->type_class_id,
+                    'clasification_class_id' => $clasifications,
+                ]);
+            }
+        }
+        user_appointment_success::updateOrCreate(
+            ['id' => $this->id_success],
+            [
+                'user_appointment_id' => $this->userAppointment->id,
+                'headquarter_id' => $this->headquarter_id,
+                'appointmentDate' => $this->appointmentDate,
+                'appointments' => 1,
+            ]
+        );
+        $this->clean();
+        $this->openConfirm();
         // }
     }
     public function openConfirm()

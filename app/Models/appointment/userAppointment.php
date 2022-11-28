@@ -31,4 +31,8 @@ class userAppointment extends Model
     {
         return $this->belongsTo(userPaymentDocument::class, 'user_payment_document_id');
     }
+    public function appointmentSuccess()
+    {
+        return $this->hasMany(user_appointment_success::class);
+    }
 }
