@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Appointment;
 
+use App\Models\appointment\user_appointment_success;
 use App\Models\appointment\userAppointment;
 use App\Models\appointment\userPaymentDocument;
 use App\Models\appointment\userQuestion;
@@ -22,11 +23,11 @@ class Generate extends Component
     use WithFileUploads;
     public $confirmModal = false;
     // FIRST TABLE//
-    public $user_id, $type_exam_id, $user_payment_document_id, $document_id, $document, $paymentConcept, $paymentDate, $state;
+    public $id_success, $user_id, $type_exam_id, $user_payment_document_id, $document_id, $document, $paymentConcept, $paymentDate, $state;
     // QUESTION STUDYING
     public $user_appointment_id, $user_question_id, $type_class_id, $clasification_class_id = [];
 
-    public $sede, $date, $finishCollegue, $aerodromos = [];
+    public $headquarter_id, $appointmentDate, $appointments, $finishCollegue, $aerodromos = [];
     public function mount()
     {
         $this->reset();
@@ -46,7 +47,9 @@ class Generate extends Component
             'clasification_class_id' => 'required',
             'paymentConcept' => 'required',
             'paymentDate' => 'required',
-            'document' => 'required|mimetypes:application/pdf'
+            'document' => 'required|mimetypes:application/pdf',
+            'headquarter_id' => 'required',
+            'appointmentDate' => 'required',
         ];
     }
     public function render()
@@ -60,7 +63,7 @@ class Generate extends Component
     public function updatedtypeExamId($type_exam_id)
     {
         $this->typeClasses = typeClass::where('type_exam_id', $type_exam_id)->get();
-        $this->reset(['user_question_id', 'type_class_id', 'clasification_class_id', 'sede', 'date']);
+        $this->reset(['user_question_id', 'type_class_id', 'clasification_class_id', 'headquarter_id', 'appointmentDate']);
     }
     public function updatedUserQuestionId($user_question_id)
     {
@@ -77,42 +80,57 @@ class Generate extends Component
     }
     public function save()
     {
-        $this->validate();
-        $documentPay = userPaymentDocument::updateOrCreate(
-            ['id' => $this->document_id],
-            ['document' => $this->document->store('documentos', 'public')]
-        );
-        $user_id = Auth::user()->id;
-        $this->userAppointment = userAppointment::updateOrCreate(
-            [
-                'user_id' => $user_id,
-                'type_exam_id' => $this->type_exam_id,
-                'user_payment_document_id' => $documentPay->id,
-                'paymentConcept' => $this->paymentConcept,
-                'paymentDate' => $this->paymentDate,
-                'state' => $this->state = false,
-            ]
-        );
-        if ($this->type_exam_id == 1) {
-            foreach ($this->clasification_class_id as $clasifications) {
-                userStudying::updateOrCreate([
-                    'user_appointment_id' => $this->userAppointment->id,
-                    'user_question_id' => $this->user_question_id,
-                    'type_class_id' => $this->type_class_id,
-                    'clasification_class_id' => $clasifications,
-                ]);
+        if ($this->appointments != 1) {
+            $this->dialog()->error(
+                $title = 'Error !!!',
+                $description = 'Your profile was not saved'
+            );
+        } else {
+            $this->validate();
+            $documentPay = userPaymentDocument::updateOrCreate(
+                ['id' => $this->document_id],
+                ['document' => $this->document->store('documentos', 'public')]
+            );
+            $user_id = Auth::user()->id;
+            $this->userAppointment = userAppointment::updateOrCreate(
+                [
+                    'user_id' => $user_id,
+                    'type_exam_id' => $this->type_exam_id,
+                    'user_payment_document_id' => $documentPay->id,
+                    'paymentConcept' => $this->paymentConcept,
+                    'paymentDate' => $this->paymentDate,
+                    'state' => $this->state = false,
+                ]
+            );
+            if ($this->type_exam_id == 1) {
+                foreach ($this->clasification_class_id as $clasifications) {
+                    userStudying::updateOrCreate([
+                        'user_appointment_id' => $this->userAppointment->id,
+                        'user_question_id' => $this->user_question_id,
+                        'type_class_id' => $this->type_class_id,
+                        'clasification_class_id' => $clasifications,
+                    ]);
+                }
+            } else if ($this->type_exam_id == 2) {
+                foreach ($this->clasification_class_id as $clasifications) {
+                    userRenovation::updateOrCreate([
+                        'user_appointment_id' => $this->userAppointment->id,
+                        'type_class_id' => $this->type_class_id,
+                        'clasification_class_id' => $clasifications,
+                    ]);
+                }
             }
-        } else if ($this->type_exam_id == 2) {
-            foreach ($this->clasification_class_id as $clasifications) {
-                userRenovation::updateOrCreate([
-                    'user_appointment_id' => $this->userAppointment->id,
-                    'type_class_id' => $this->type_class_id,
-                    'clasification_class_id' => $clasifications,
-                ]);
-            }
+            user_appointment_success::updateOrCreate(
+                ['id' => $this->id_success],
+                [
+                    'headquarter_id' => $this->headquarter_id,
+                    'appointmentDate' => $this->appointmentDate,
+                    'appointments' => 1,
+                ]
+            );
+            $this->clean();
+            $this->openConfirm();
         }
-        $this->clean();
-        $this->openConfirm();
     }
     public function openConfirm()
     {
