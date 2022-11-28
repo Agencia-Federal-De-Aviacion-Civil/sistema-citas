@@ -25,12 +25,12 @@
                     <div class="px-6">
                         <h1
                             class="py-2  text-lg font-semibold text-center text-gray-800 capitalize xl:text-2xl lg:text-xl dark:text-white">
-                            Verifica tus datos de la <span class="text-blue-500 ">Cita</span>
+                            Verifica tus datos de la <span class="text-sky-700 ">Cita</span>
                         </h1>
                         <div class="flex justify-center mx-auto mt-2">
-                            <span class="inline-block w-40 h-1 bg-blue-500 rounded-full"></span>
-                            <span class="inline-block w-3 h-1 mx-1 bg-blue-500 rounded-full"></span>
-                            <span class="inline-block w-1 h-1 bg-blue-500 rounded-full"></span>
+                            <span class="inline-block w-40 h-1 bg-sky-600 rounded-full"></span>
+                            <span class="inline-block w-3 h-1 mx-1 bg-sky-600 rounded-full"></span>
+                            <span class="inline-block w-1 h-1 bg-sky-600 rounded-full"></span>
                         </div>
                         <br>
                         <x-errors
@@ -380,7 +380,7 @@
                             CANCELAR CITA
                         </button>
                         <button wire:click.prevent="closeModalFinish"
-                            class="w-full px-4 py-2 mt-4 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-600 rounded-md sm:mt-0 sm:w-1/2 sm:mx-2 hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40">
+                            class="w-full px-4 py-2 mt-4 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-sky-600 rounded-md sm:mt-0 sm:w-1/2 sm:mx-2 hover:bg-sky-700 focus:outline-none focus:ring focus:ring-sky-300 focus:ring-opacity-40">
                             CONCLUIR CITA
                         </button>
                         <div wire:loading.delay.shortest wire:target="closeModalFinish">
