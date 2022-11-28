@@ -1,5 +1,6 @@
 <div>
     <x-notifications position="top-center" />
+    <x-dialog z-index="z-50" blur="md" align="center" />
     @if ($confirmModal)
         @include('livewire.appointment.confirm')
     @endif
@@ -20,7 +21,7 @@
             question: @entangle('user_question_id'),
             clasification: @entangle('type_class_id'),
             typelicens: @entangle('clasification_class_id'),
-            selec_sede: @entangle('sede'),
+            selec_sede: @entangle('headquarter_id'),
         }">
             {{-- estep --}}
             <section class="text-gray-600 body-font">
@@ -298,7 +299,7 @@
                                     <div class="grid xl:grid-cols-2 xl:gap-6">
                                         <div class="text-base relative z-0 w-full mb-2 group">
                                             <x-select label="ELIJA LA SEDE" placeholder="Selecciona"
-                                                x-ref="selec_sede" wire:model.lazy="sede">
+                                                x-ref="selec_sede" wire:model.lazy="headquarter_id">
                                                 @foreach ($sedes as $sede)
                                                     <x-select.option label="{{ $sede->name }}"
                                                         value="{{ $sede->id }}" />
@@ -313,10 +314,13 @@
                                             </x-select> --}}
                                         </div>
                                         <div class="text-base relative z-10 w-full mb-2 group">
-                                            <x-datetime-picker id="min-max-times-input" without-timezone
+                                            <x-datetime-picker without-timezone id="min-max-times-input"
                                                 label="ELIJE EL DIA DE TU CITA" placeholder="Elije el dia de tu cita"
-                                                wire:model.defer="date" interval="60" min-time="07:00"
-                                                display-format="YY-MM-DD HH:mm" max-time="12:00" />
+                                                wire:model.defer="appointmentDate" interval="60" min-time="07:00"
+                                                parse-format="YYYY-MM-DD HH:mm" max-time="12:00" />
+                                            {{-- <x-datetime-picker class="py-2.5" placeholder="Seleccione fecha..."
+                                                parse-format="YYYY-MM-DD" without-time="false"
+                                                wire:model.defer="paymentDate" /> --}}
                                         </div>
                                     </div>
                                 </div>
