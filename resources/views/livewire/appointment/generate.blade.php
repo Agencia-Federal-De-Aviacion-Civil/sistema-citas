@@ -15,7 +15,7 @@
                 <span class="inline-block w-1 h-1 bg-sky-700 rounded-full"></span>
             </div>
         </div>
-
+    </button>
         <div x-data="{
             tipoExamen: @entangle('type_exam_id'),
             question: @entangle('user_question_id'),

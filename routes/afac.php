@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\afac\homeController;
+use App\Http\Livewire\Appointment\Generate;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,6 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 Route::get('', [homeController::class, 'index'])->name('afac.home');
-
-
+Route::get('/download', [Generate::class, 'test'])->name('download');

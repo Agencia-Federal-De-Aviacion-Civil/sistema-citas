@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use WireUi\Traits\Actions;
+use PDF;
 
 class Generate extends Component
 {
@@ -135,20 +136,29 @@ class Generate extends Component
     }
     public function openConfirm()
     {
-        $this->appointmentInfo = userAppointment::with(['appointmentTypeExam', 'appointmentStudying', 'appointmentRenovation','appointmentSuccess'])
+        $this->appointmentInfo = userAppointment::with(['appointmentTypeExam', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess'])
             ->where('id', $this->userAppointment->id)->get();
         $Query = $this->appointmentInfo[0]->appointmentSuccess[0]->appointmentDate;
-        $this->key = explode(' ',$Query);
+        $this->key = explode(' ', $Query);
         $this->confirmModal = true;
     }
     public function closeModalFinish()
     {
-        $this->confirmModal = false;
         $this->notification([
             'title'       => 'Cita generada éxitosamente',
             'description' => 'Para mas detalles visita el apartado de citas.',
             'icon'        => 'success'
         ]);
+        $this->confirmModal = false;
+
+    }
+    public function test()
+    {
+        $user_id = Auth::user()->id;
+        $userAppointment = userAppointment::with(['appointmentTypeExam', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess'])
+            ->where('user_id', $user_id)->latest()->first();
+        $pdf = PDF::loadView('afac.pdf.acuse',compact('userAppointment'));
+        return $pdf->download('acuse.pdf');
     }
     // public function cancelSave()
     // {
