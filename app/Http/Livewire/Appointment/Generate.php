@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Appointment;
 
 use App\Models\appointment\userAppointment;
+use App\Models\appointment\userData;
 use App\Models\appointment\userQuestion;
 use App\Models\appointment\userRenovation;
 use App\Models\appointment\userStudying;
@@ -10,6 +11,7 @@ use App\Models\catalogue\clasificationClass;
 use App\Models\catalogue\headquarter;
 use App\Models\catalogue\typeClass;
 use App\Models\catalogue\typeExam;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use WireUi\Traits\Actions;
@@ -73,6 +75,43 @@ class Generate extends Component
     {
         $this->validate();
         $user_id = Auth::user()->id;
+
+        $fecha = Carbon::parse($this->date)->format('Y-m-d h:i');
+
+        $user_data = userData::where('data', $fecha)
+        ->where('headquarter_id',$this->sede)
+        ->first();
+
+        if($user_data==null){
+        userData::Create([
+        'headquarter_id' => $this->sede,
+        'data' => $fecha,
+        'count' => 1,
+        ]);
+        }else{
+
+        $data = userData::find($user_data->id); 
+        $count = $user_data->count + 1;
+        $data->update([
+        'headquarter_id' => $this->sede,
+        'data' => $fecha,
+        'count' => $count,
+        ]);    
+
+            // $NewRegister->procedures_lease()->update([
+            //     'new_procedure_id' =>  $this->register_id,
+            //     'tipBien' => $this->tipBien,
+            //     'descUse' => $this->descUse,
+            //     'features' => $this->features,
+            //     'tarifa' => $this->tarifa,
+            //     'moneda' => $this->moneda,
+            //     'facCobro' => $this->facCobro,
+            //     'iniVigencia' => $this->iniVigencia,
+            //     'observaciones' => $this->observaciones
+            // ]);
+
+        }
+        
         $this->userAppointment = userAppointment::updateOrCreate(
             ['id' => $this->id_appointment],
             [
@@ -82,6 +121,7 @@ class Generate extends Component
                 'state' => $this->state = false,
             ]
         );
+
         if ($this->type_exam_id == 1) {
             userStudying::updateOrCreate([
                 'user_appointment_id' => $this->userAppointment->id,
@@ -96,6 +136,7 @@ class Generate extends Component
                 'clasification_class_id' => $this->clasification_class_id,
             ]);
         }
+
         $this->clean();
         $this->openConfirm();
     }
