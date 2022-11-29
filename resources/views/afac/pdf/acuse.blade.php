@@ -7,15 +7,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
-    <title>{{ $printQuery->appointmentUser->name . ' ' . $printQuery->appointmentUser->apParental . ' ' . $printQuery->appointmentUser->apMaternal }}</title>
+    <title>
+        {{ $printQuery->appointmentUser->name . ' ' . $printQuery->appointmentUser->apParental . ' ' . $printQuery->appointmentUser->apMaternal }}
+    </title>
 </head>
+<style>
+.titulo {
+    text-align: center;
+    font-weight: bold;
+    color: #000000;
+}
+</style>
 
 <body>
     <div>
-        {{-- <img src="{{ asset('images/headerOrigen.jpg') }}" align="center" style="padding-top:1%;margin-left:1%;"
-        width="300" height="110" alt=""> --}}
+        <img src="https://media-aifa.s3.us-east-2.amazonaws.com/afac-1.webp" width="200" height="64" alt="">
         <div class="titulo">
-            <h3>COMPROBANTE DE CITA</h3>
+            <h2>COMPROBANTE DE CITA</h2>
         </div>
 
         <table>
@@ -99,7 +107,8 @@
                 los
                 siguientes puntos:</p>
             <ol class="">
-                <li value="1">En el caso de que las damas que acudan a realizar EPI solicitamos que las <b>uñas</b> estén
+                <li value="1">En el caso de que las damas que acudan a realizar EPI solicitamos que las <b>uñas</b>
+                    estén
                     <b>cortas
                         para evitar dificultad en la captura de sus huellas, acudir con <b>ropa cómoda</b> <u>evitando
                             sea
