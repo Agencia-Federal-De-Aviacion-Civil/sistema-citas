@@ -266,15 +266,15 @@
                                                         </div>
                                                     </a>
                                                 </label>
-                                                @if ($type_class_id == 1)
-                                                    <x-select wire:model.lazy="clasification_class_id"
-                                                        placeholder="Seleccione...">
-                                                        <x-select.option label="Seleccione..." selected />
+                                                @if ($user_question_id == 1)
+                                                    <select wire:model.lazy="clasification_class_id"
+                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                        <option value="" selected>Seleccione...</option>
                                                         @foreach ($clasificationClass as $clasification)
-                                                            <x-select.option label="{{ $clasification->name }}"
-                                                                value="{{ $clasification->id }}" />
+                                                            <option value="{{ $clasification->id }}">
+                                                                {{ $clasification->name }}</option>
                                                         @endforeach
-                                                    </x-select>
+                                                    </select>
                                                 @else
                                                     <x-select wire:model.lazy="clasification_class_id"
                                                         placeholder="Seleccione..." multiselect>
