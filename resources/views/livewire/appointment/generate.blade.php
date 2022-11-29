@@ -217,7 +217,7 @@
                                             class="mt-4 relative z-0 w-full group">
                                             @if (!is_null($clasificationClass))
                                                 <label for="small"
-                                                    class="flex block w-full bg-white lg:text-base xs:text-xl focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400">TIPO
+                                                    class="flex w-full bg-white lg:text-base xs:text-xl focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400">TIPO
                                                     DE LICENCIA
                                                     <a tabindex="0" role="link" aria-label="tooltip 2"
                                                         class="focus:outline-none focus:ring-gray-300 rounded-full focus:ring-offset-2 focus:ring-2 focus:bg-gray-200 relative mt-0 md:mt-0 px-4"
@@ -321,6 +321,7 @@
                                             {{-- <x-datetime-picker class="py-2.5" placeholder="Seleccione fecha..."
                                                 parse-format="YYYY-MM-DD" without-time="false"
                                                 wire:model.defer="paymentDate" /> --}}
+
                                         </div>
                                     </div>
                                 </div>

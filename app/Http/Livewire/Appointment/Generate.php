@@ -12,6 +12,7 @@ use App\Models\catalogue\clasificationClass;
 use App\Models\catalogue\headquarter;
 use App\Models\catalogue\typeClass;
 use App\Models\catalogue\typeExam;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -72,7 +73,7 @@ class Generate extends Component
     public function updatedTypeClassId($type_class_id)
     {
         $this->clasificationClass = clasificationClass::where('type_class_id', $type_class_id)->get();
-        $this->reset(['clasification_class_id']);
+        // $this->reset(['clasification_class_id']);
     }
     public function clean()
     {
@@ -133,9 +134,17 @@ class Generate extends Component
                     'appointments' => 1,
                 ]
             );
+            $this->clean();
+            $this->openConfirm();
+
         } else {
             if ($user_data->appointments == 3) {
-                session()->flash('appointmentDate');
+
+                $this->dialog()->show([
+                    'title' => 'Citas no disponibles en la fecha indicada',
+                    'icon'        => 'warning'
+                ]);
+
             } else {
                 $count = $user_data->appointments + 1;
                 $user_data->update(
@@ -146,6 +155,8 @@ class Generate extends Component
                         'appointments' => $count,
                     ]
                 );
+                $this->clean();
+                $this->openConfirm();
             }
         }
         // user_appointment_success::updateOrCreate(
@@ -157,10 +168,10 @@ class Generate extends Component
         //         'appointments' => 1,
         //     ]
         // );
-        $this->clean();
-        $this->openConfirm();
+
         // }
     }
+
     public function openConfirm()
     {
         $this->appointmentInfo = userAppointment::with(['appointmentTypeExam', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess'])
@@ -177,6 +188,8 @@ class Generate extends Component
             'description' => 'Para mas detalles visita el apartado de citas.',
             'icon'        => 'success'
         ]);
+
+    redirect('afac');
     }
     // public function cancelSave()
     // {
