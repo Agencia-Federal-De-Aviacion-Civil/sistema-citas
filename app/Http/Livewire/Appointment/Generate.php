@@ -150,14 +150,15 @@ class Generate extends Component
             'icon'        => 'success'
         ]);
         $this->confirmModal = false;
-
     }
     public function test()
     {
         $user_id = Auth::user()->id;
         $userAppointment = userAppointment::with(['appointmentTypeExam', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess'])
             ->where('user_id', $user_id)->latest()->first();
-        $pdf = PDF::loadView('afac.pdf.acuse',compact('userAppointment'));
+        $Query = $userAppointment->appointmentSuccess[0]->appointmentDate;
+        $key = explode(' ', $Query);
+        $pdf = PDF::loadView('afac.pdf.acuse', compact('userAppointment','key'));
         return $pdf->download('acuse.pdf');
     }
     // public function cancelSave()
