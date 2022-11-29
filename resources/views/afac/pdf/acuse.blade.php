@@ -74,7 +74,7 @@
         </table>
         <div style="padding-top:5%">
             <label  for="">Requisitos:</label>
-            <div style="padding-left:18%;padding-top:-3%;text-align: justify;"><label >Si alguno de estos documentos no son presentados el día de su cita, no podrá realizar su examen
+            <div style="padding-left:18%;padding-top:-4%;text-align: justify;"><label >Si alguno de estos documentos no son presentados el día de su cita, no podrá realizar su examen
             por lo que este se perderá. Identificación oficial (Se acepta únicamente INE vigente, Cédula de identidad
             ciudadana, Cédula profesional, cartilla militar, licencia federal, título, certificado o libreta de mar y de
             identificación marítima) ORIGINAL Y COPIA. Comprobante de domicilio (con vigencia no mayor a 3
