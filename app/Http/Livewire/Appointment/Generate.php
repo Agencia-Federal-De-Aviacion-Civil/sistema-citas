@@ -99,14 +99,12 @@ class Generate extends Component
             ]
         );
         if ($this->type_exam_id == 1) {
-            foreach ($this->clasification_class_id as $clasifications) {
-                userStudying::updateOrCreate([
-                    'user_appointment_id' => $this->userAppointment->id,
-                    'user_question_id' => $this->user_question_id,
-                    'type_class_id' => $this->type_class_id,
-                    'clasification_class_id' => $clasifications,
-                ]);
-            }
+            userStudying::updateOrCreate([
+                'user_appointment_id' => $this->userAppointment->id,
+                'user_question_id' => $this->user_question_id,
+                'type_class_id' => $this->type_class_id,
+                'clasification_class_id' => $this->clasification_class_id,
+            ]);
         } else if ($this->type_exam_id == 2) {
             foreach ($this->clasification_class_id as $clasifications) {
                 userRenovation::updateOrCreate([
