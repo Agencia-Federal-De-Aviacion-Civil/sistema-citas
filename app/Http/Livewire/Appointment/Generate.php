@@ -82,12 +82,6 @@ class Generate extends Component
     }
     public function save()
     {
-        // if ($this->appointments != 1) {
-        //     $this->dialog()->error(
-        //         $title = 'Error !!!',
-        //         $description = 'Your profile was not saved'
-        //     );
-        // } else {
         $this->validate();
         $documentPay = userPaymentDocument::updateOrCreate(
             ['id' => $this->document_id],
@@ -141,9 +135,9 @@ class Generate extends Component
         $this->appointmentInfo = userAppointment::with(['appointmentTypeExam', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess'])
             ->where('id', $this->userAppointment->id)->get();
         // LICENSE QUERY STUDYING
-        $this->typeLicenses = userStudying::with(['studyingAppointment','studyingClasification'])->where('user_appointment_id',$this->userAppointment->id)->get();
+        $this->typeLicenses = userStudying::with(['studyingAppointment', 'studyingClasification'])->where('user_appointment_id', $this->userAppointment->id)->get();
         // LICENSE QUERY RENOVATIONS
-        $this->typeRenovations = userRenovation::with(['renovationAppointment','renovationClasification'])->where('user_appointment_id',$this->userAppointment->id)->get();
+        $this->typeRenovations = userRenovation::with(['renovationAppointment', 'renovationClasification'])->where('user_appointment_id', $this->userAppointment->id)->get();
 
         $Query = $this->appointmentInfo[0]->appointmentSuccess[0]->appointmentDate;
         $this->key = explode(' ', $Query);
@@ -154,7 +148,8 @@ class Generate extends Component
         $this->confirmModal = false;
         $this->takeClass();
     }
-    public function takeClass(){
+    public function takeClass()
+    {
         $this->dialog()->confirm([
             'title'       => 'CITA GENERADA',
             'description' => '¿DESEAS IMPRIMIR TU ACUSE?',
@@ -169,19 +164,21 @@ class Generate extends Component
                 'method' => '',
             ],
         ]);
-
     }
-    public function print(){
+    public function print()
+    {
+
         return redirect()->route('download');
     }
     public function test()
     {
+        // generate PDF
         $user_id = Auth::user()->id;
-        $userAppointment = userAppointment::with(['appointmentTypeExam', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess'])
+        $printQuery = userAppointment::with(['appointmentTypeExam', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess'])
             ->where('user_id', $user_id)->latest()->first();
-        $Query = $userAppointment->appointmentSuccess[0]->appointmentDate;
+        $Query = $printQuery->appointmentSuccess[0]->appointmentDate;
         $key = explode(' ', $Query);
-        $pdf = PDF::loadView('afac.pdf.acuse', compact('userAppointment','key'));
+        $pdf = PDF::loadView('afac.pdf.acuse', compact('printQuery', 'key'));
         return $pdf->download('acuse.pdf');
     }
     public function messages()
