@@ -14,6 +14,7 @@ use App\Models\catalogue\typeClass;
 use App\Models\catalogue\typeExam;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use Livewire\Redirector;
 use Livewire\WithFileUploads;
 use WireUi\Traits\Actions;
 use PDF;
@@ -144,12 +145,28 @@ class Generate extends Component
     }
     public function closeModalFinish()
     {
-        $this->notification([
-            'title'       => 'Cita generada éxitosamente',
-            'description' => 'Para mas detalles visita el apartado de citas.',
-            'icon'        => 'success'
-        ]);
         $this->confirmModal = false;
+        $this->takeClass();
+    }
+    public function takeClass(){
+        $this->dialog()->confirm([
+            'title'       => 'CITA GENERADA',
+            'description' => '¿DESEAS IMPRIMIR TU ACUSE?',
+            'icon'        => 'success',
+            'accept'      => [
+                'label'  => 'IMPRIMIR',
+                'method' => 'print',
+                'params' => 'Saved',
+            ],
+            'reject' => [
+                'label'  => 'SALIR',
+                'method' => '',
+            ],
+        ]);
+
+    }
+    public function print(){
+        return redirect()->route('download');
     }
     public function test()
     {
