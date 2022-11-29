@@ -86,9 +86,18 @@ class Generate extends Component
             ['id' => $this->document_id],
             ['document' => $this->document->store('documentos', 'public')]
         );
-        $user_data = user_appointment_success::where('appointmentDate', $this->appointmentDate)
+            $user_data = user_appointment_success::where('appointmentDate', $this->appointmentDate)
             ->where('headquarter_id', $this->headquarter_id)
             ->first();
+            // $value =  Str::limit('Laravel es un framework que se utiliza para:', 23);
+            // $valor =  Str::limit($user_data->appointmentDate,10);
+            $hora = 10;
+            if($hora <= 8){
+                dd('13 citas');
+            }else{
+                dd('12 citas');
+            }
+            
             if ($user_data == null) {
             $user_data = user_appointment_success::Create(
                 [
@@ -98,8 +107,15 @@ class Generate extends Component
                 ]
             );
         } else {
+
+
             if ($user_data->appointments == 3) {
-                session()->flash('appointmentDate');
+                $this->dialog()->show([
+                    'title' => 'Citas no disponibles en la fecha indicada',
+                    'icon'        => 'warning'
+                ]);
+
+
             } else {
                 $count = $user_data->appointments + 1;
                 $user_data->update(
@@ -111,6 +127,7 @@ class Generate extends Component
                 );
             }
         }
+
         $user_id = Auth::user()->id;
         $this->userAppointment = userAppointment::updateOrCreate(
             [
