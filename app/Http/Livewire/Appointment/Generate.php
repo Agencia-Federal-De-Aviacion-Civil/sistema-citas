@@ -24,9 +24,9 @@ class Generate extends Component
     use WithFileUploads;
     public $confirmModal = false;
     // FIRST TABLE//
-    public $id_success, $user_id, $type_exam_id, $user_payment_document_id, $document_id, $document, $paymentConcept, $paymentDate, $state;
+    public $id_success, $user_id, $user_appointment_success_id, $type_exam_id, $user_payment_document_id, $document_id, $document, $paymentConcept, $paymentDate, $state;
     // QUESTION STUDYING
-    public $user_appointment_id, $user_question_id, $type_class_id, $clasification_class_id = [];
+    public $dataFiller, $user_appointment_id, $user_question_id, $type_class_id, $clasification_class_id = [];
 
     public $headquarter_id, $appointmentDate, $appointments, $finishCollegue, $aerodromos = [];
     public function mount()
@@ -81,21 +81,41 @@ class Generate extends Component
     }
     public function save()
     {
-        // if ($this->appointments != 1) {
-        //     $this->dialog()->error(
-        //         $title = 'Error !!!',
-        //         $description = 'Your profile was not saved'
-        //     );
-        // } else {
         $this->validate();
         $documentPay = userPaymentDocument::updateOrCreate(
             ['id' => $this->document_id],
             ['document' => $this->document->store('documentos', 'public')]
         );
+        $user_data = user_appointment_success::where('appointmentDate', $this->appointmentDate)
+            ->where('headquarter_id', $this->headquarter_id)
+            ->first();
+            if ($user_data == null) {
+            $user_data = user_appointment_success::Create(
+                [
+                    'headquarter_id' => $this->headquarter_id,
+                    'appointmentDate' => $this->appointmentDate,
+                    'appointments' => 1,
+                ]
+            );
+        } else {
+            if ($user_data->appointments == 3) {
+                session()->flash('appointmentDate');
+            } else {
+                $count = $user_data->appointments + 1;
+                $user_data->update(
+                    [
+                        'headquarter_id' => $this->headquarter_id,
+                        'appointmentDate' => $this->appointmentDate,
+                        'appointments' => $count,
+                    ]
+                );
+            }
+        }
         $user_id = Auth::user()->id;
         $this->userAppointment = userAppointment::updateOrCreate(
             [
                 'user_id' => $user_id,
+                'user_appointment_success_id' => $user_data->id,
                 'type_exam_id' => $this->type_exam_id,
                 'user_payment_document_id' => $documentPay->id,
                 'paymentConcept' => $this->paymentConcept,
@@ -121,26 +141,27 @@ class Generate extends Component
                 ]);
             }
         }
-        user_appointment_success::updateOrCreate(
-            ['id' => $this->id_success],
-            [
-                'user_appointment_id' => $this->userAppointment->id,
-                'headquarter_id' => $this->headquarter_id,
-                'appointmentDate' => $this->appointmentDate,
-                'appointments' => 1,
-            ]
-        );
+
+        // user_appointment_success::updateOrCreate(
+        //     ['id' => $this->id_success],
+        //     [
+        //         'user_appointment_id' => $this->userAppointment->id,
+        //         'headquarter_id' => $this->headquarter_id,
+        //         'appointmentDate' => $this->appointmentDate,
+        //         'appointments' => 1,
+        //     ]
+        // );
         $this->clean();
         $this->openConfirm();
         // }
     }
     public function openConfirm()
     {
-        $this->appointmentInfo = userAppointment::with(['appointmentTypeExam', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess'])
-            ->where('id', $this->userAppointment->id)->get();
-        $Query = $this->appointmentInfo[0]->appointmentSuccess[0]->appointmentDate;
-        $this->key = explode(' ', $Query);
-        $this->confirmModal = true;
+        // $this->appointmentInfo = userAppointment::with(['appointmentTypeExam', 'appointmentStudying', 'appointmentRenovation'])
+        //     ->where('id', $this->userAppointment->id)->get();
+        // $Query = $this->appointmentInfo[0]->appointmentSuccess[0]->appointmentDate;
+        // $this->key = explode(' ', $Query);
+        // $this->confirmModal = true;
     }
     public function closeModalFinish()
     {
@@ -150,16 +171,15 @@ class Generate extends Component
             'icon'        => 'success'
         ]);
         $this->confirmModal = false;
-
     }
-    public function test()
-    {
-        $user_id = Auth::user()->id;
-        $userAppointment = userAppointment::with(['appointmentTypeExam', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess'])
-            ->where('user_id', $user_id)->latest()->first();
-        $pdf = PDF::loadView('afac.pdf.acuse',compact('userAppointment'));
-        return $pdf->download('acuse.pdf');
-    }
+    // public function test()
+    // {
+    //     $user_id = Auth::user()->id;
+    //     $userAppointment = userAppointment::with(['appointmentTypeExam', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess'])
+    //         ->where('user_id', $user_id)->latest()->first();
+    //     $pdf = PDF::loadView('afac.pdf.acuse', compact('userAppointment'));
+    //     return $pdf->download('acuse.pdf');
+    // }
     // public function cancelSave()
     // {
     //     $this->clean();
