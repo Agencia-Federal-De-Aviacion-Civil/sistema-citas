@@ -59,7 +59,7 @@
                                             <label for="small"
                                                 class="block mb-2 text-base font-medium text-gray-900 dark:text-white">INGRESA
                                                 LA FECHA DE PAGO</label>
-                                            <x-datetime-picker label="Appointment Date" placeholder="Appointment Date"
+                                            <x-datetime-picker class="py-2.5" placeholder="Appointment Date"
                                                 without-time="false" parse-format="YYYY-MM-DD"
                                                 display-format="DD-MM-YYYY" wire:model.defer="paymentDate" />
                                         </div>
