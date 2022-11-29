@@ -137,8 +137,14 @@ class Generate extends Component
     }
     public function openConfirm()
     {
+        // GENERAL QUERY
         $this->appointmentInfo = userAppointment::with(['appointmentTypeExam', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess'])
             ->where('id', $this->userAppointment->id)->get();
+        // LICENSE QUERY STUDYING
+        $this->typeLicenses = userStudying::with(['studyingAppointment','studyingClasification'])->where('user_appointment_id',$this->userAppointment->id)->get();
+        // LICENSE QUERY RENOVATIONS
+        $this->typeRenovations = userRenovation::with(['renovationAppointment','renovationClasification'])->where('user_appointment_id',$this->userAppointment->id)->get();
+
         $Query = $this->appointmentInfo[0]->appointmentSuccess[0]->appointmentDate;
         $this->key = explode(' ', $Query);
         $this->confirmModal = true;
@@ -178,16 +184,6 @@ class Generate extends Component
         $pdf = PDF::loadView('afac.pdf.acuse', compact('userAppointment','key'));
         return $pdf->download('acuse.pdf');
     }
-    // public function cancelSave()
-    // {
-    //     $this->clean();
-    //     $this->closeModal();
-    //     $this->notification([
-    //         'title'       => 'Datos no guardados!',
-    //         'description' => 'Se ha cancelado la cita.',
-    //         'icon'        => 'error'
-    //     ]);
-    // }
     public function messages()
     {
         return ['paymentConcept.required' => 'Ingrese clave de pago.'];
