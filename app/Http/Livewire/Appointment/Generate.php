@@ -132,8 +132,6 @@ class Generate extends Component
         // GENERAL QUERY
         $this->appointmentInfo = userAppointment::with(['appointmentTypeExam', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess'])
             ->where('id', $this->userAppointment->id)->get();
-        // LICENSE QUERY STUDYING
-        $this->typeLicenses = userStudying::with(['studyingAppointment', 'studyingClasification'])->where('user_appointment_id', $this->userAppointment->id)->get();
         // LICENSE QUERY RENOVATIONS
         $this->typeRenovations = userRenovation::with(['renovationAppointment', 'renovationClasification'])->where('user_appointment_id', $this->userAppointment->id)->get();
 

@@ -113,11 +113,7 @@
                                         </svg>
                                         <p class="text-lg title-font font-normal">Tipo de Licencia:
                                         <p class="text-lg font-semibold">
-                                            @foreach ($typeLicenses as $licensesPilot)
-                                                <ul>
-                                                    <li>{{ $licensesPilot->studyingClasification->name }}</li>
-                                                </ul>
-                                            @endforeach
+                                            {{ $appointment->appointmentStudying[0]->studyingClasification->name }}</p>
                                         </p>
                                         </p>
                                     </div>
