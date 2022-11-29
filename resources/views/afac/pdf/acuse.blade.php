@@ -7,9 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
-    <title>
-        {{ $userAppointment->appointmentUser->name . ' ' . $userAppointment->appointmentUser->apParental . ' ' . $userAppointment->appointmentUser->apMaternal }}
-    </title>
+    <title>{{ $printQuery->appointmentUser->name . ' ' . $printQuery->appointmentUser->apParental . ' ' . $printQuery->appointmentUser->apMaternal }}</title>
 </head>
 
 <body>
@@ -24,16 +22,16 @@
             <tr>
                 <td colspan="12">NOMBRE</td>
                 <td colspan="24">
-                    {{ $userAppointment->appointmentUser->name . ' ' . $userAppointment->appointmentUser->apParental . ' ' . $userAppointment->appointmentUser->apMaternal }}
+                    {{ $printQuery->appointmentUser->name . ' ' . $printQuery->appointmentUser->apParental . ' ' . $printQuery->appointmentUser->apMaternal }}
                 </td>
             </tr>
             <tr>
                 <td colspan="12">CURP:</td>
-                <td>{{ $userAppointment->appointmentUser->curp }}</td>
+                <td>{{ $printQuery->appointmentUser->curp }}</td>
             </tr>
             <tr>
                 <td colspan="12">NUMERO DE EXPEDIENTE:</td>
-                <td colspan="24">{{ $userAppointment->id }}</td>
+                <td colspan="24">{{ $printQuery->id }}</td>
             </tr>
             <tr>
                 <td colspan="12">MODO DE TRASPORTE:</td>
@@ -41,11 +39,15 @@
             </tr>
             <tr>
                 <td colspan="12">TIPO DE EXAMEN:</td>
-                <td colspan="24">{{ $userAppointment->appointmentTypeExam->name }}</td>
+                <td colspan="24">{{ $printQuery->appointmentTypeExam->name }}</td>
             </tr>
             <tr>
                 <td colspan="12">TIPO DE CLASE</td>
-                <td colspan="24">{{ $userAppointment->appointmentStudying[0]->studyingClass->name }}</td>
+                @if ($printQuery->type_exam_id == 1)
+                <td colspan="24">{{ $printQuery->appointmentStudying[0]->studyingClass->name }}</td>
+                @elseif($printQuery->type_exam_id == 2)
+                <td colspan="24">{{ $printQuery->appointmentRenovation[0]->renovationClass->name }}</td>
+                @endif
             </tr>
             <tr>
                 <td colspan="12">TRAMITE</td>
@@ -53,11 +55,11 @@
             </tr>
             <tr>
                 <td colspan="12">NO. DE CITA</td>
-                <td colspan="24">{{ $userAppointment->id }}</td>
+                <td colspan="24">{{ $printQuery->id }}</td>
             </tr>
             <tr>
                 <td colspan="12">UNIDAD MÉDICA:</td>
-                <td colspan="24"> {{ $userAppointment->appointmentSuccess[0]->successHeadquarter->name }}</p>
+                <td colspan="24"> {{ $printQuery->appointmentSuccess[0]->successHeadquarter->name }}</p>
                 </td>
             </tr>
             <tr>
@@ -70,7 +72,7 @@
             </tr>
             <tr>
                 <td colspan="12">FOLIO:</td>
-                <td colspan="24">{{ $userAppointment->id }}</td>
+                <td colspan="24">{{ $printQuery->id }}</td>
             </tr>
         </table>
         <div style="padding-top:5%">
