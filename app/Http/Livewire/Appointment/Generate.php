@@ -29,7 +29,7 @@ class Generate extends Component
     // QUESTION STUDYING
     public $user_appointment_id, $user_question_id, $type_class_id, $clasification_class_id = [];
 
-    public $headquarter_id, $appointmentDate, $appointments, $finishCollegue, $aerodromos = [];
+    public $headquarter_id, $appointmentDate, $appointmentTime, $appointments, $finishCollegue, $aerodromos = [];
     public function mount()
     {
         $this->reset();
@@ -52,6 +52,7 @@ class Generate extends Component
             'document' => 'required|mimetypes:application/pdf',
             'headquarter_id' => 'required',
             'appointmentDate' => 'required',
+            'appointmentTime' => 'required',
         ];
     }
     public function render()
@@ -120,6 +121,7 @@ class Generate extends Component
                 'user_appointment_id' => $this->userAppointment->id,
                 'headquarter_id' => $this->headquarter_id,
                 'appointmentDate' => $this->appointmentDate,
+                'appointmentTime' => $this->appointmentTime,
                 'appointments' => 1,
             ]
         );

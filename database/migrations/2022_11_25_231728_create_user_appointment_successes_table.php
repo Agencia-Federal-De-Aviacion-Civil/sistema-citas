@@ -19,7 +19,8 @@ return new class extends Migration
             $table->foreign('user_appointment_id')->references('id')->on('user_appointments')->onDelete('set null');
             $table->unsignedBigInteger('headquarter_id')->nullable();
             $table->foreign('headquarter_id')->references('id')->on('headquarters')->onDelete('set null');
-            $table->dateTime('appointmentDate');
+            $table->date('appointmentDate');
+            $table->time('appointmentTime');
             $table->integer('appointments');
             $table->timestamps();
         });

@@ -60,7 +60,7 @@
                                                 class="block mb-2 text-base font-medium text-gray-900 dark:text-white">INGRESA
                                                 LA FECHA DE PAGO</label>
                                             <x-datetime-picker class="py-2.5" placeholder="Seleccione fecha..."
-                                                parse-format="YYYY-MM-DD" without-time="false"
+                                                parse-format="YYYY-MM-DD" without-time="false" without-tips
                                                 wire:model.defer="paymentDate" />
                                         </div>
 
@@ -309,7 +309,7 @@
                                     </svg>
                                 </div>
                                 <div class="flex-grow pl-4">
-                                    <div class="grid xl:grid-cols-2 xl:gap-6">
+                                    <div class="grid xl:grid-cols-3 xl:gap-6">
                                         <div class="text-base relative z-0 w-full mb-2 group">
                                             <x-select label="ELIJA LA SEDE" placeholder="Selecciona"
                                                 x-ref="selec_sede" wire:model.lazy="headquarter_id">
@@ -320,10 +320,17 @@
                                             </x-select>
                                         </div>
                                         <div class="text-base relative z-10 w-full mb-2 group">
-                                            <x-datetime-picker without-timezone id="min-max-times-input"
-                                                label="ELIJE EL DIA DE TU CITA" placeholder="Elije el dia de tu cita"
-                                                wire:model.defer="appointmentDate" interval="60" min-time="07:00"
-                                                parse-format="YYYY-MM-DD HH:mm" max-time="12:00" />
+                                            <x-datetime-picker label="Appointment Date" placeholder="Appointment Date"
+                                                without-time="false" parse-format="YYYY-MM-DD"
+                                                display-format="DD-MM-YYYY" wire:model.defer="appointmentDate" />
+                                        </div>
+                                        <div class="text-base relative z-10 w-full mb-2 group">
+                                            <x-select label="SELECCIONE HORA" placeholder="Seleccione..." wire:model.defer="appointmentTime">
+                                                <x-select.option label="7:00 AM" value="7:00" />
+                                                <x-select.option label="8:00 AM" value="8:00" />
+                                                <x-select.option label="9:00 AM" value="9:00" />
+                                                <x-select.option label="10:00 AM" value="10:00" />
+                                            </x-select>
                                         </div>
                                     </div>
                                 </div>
