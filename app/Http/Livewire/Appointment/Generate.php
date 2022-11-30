@@ -117,7 +117,7 @@ class Generate extends Component
         
         }
 
-        $userappointment = user_appointment_success::updateOrCreate(
+        $this->userappointment = user_appointment_success::updateOrCreate(
             ['id'=>$this->id_user_appointment],
             [
                 // 'user_appointment_id' => $this->userAppointment->id,
@@ -136,7 +136,7 @@ class Generate extends Component
         $this->userAppointment = userAppointment::updateOrCreate(
             [
                 'user_id' => $user_id,
-                'user_appointment_success_id' => $userappointment->id, 
+                'user_appointment_success_id' => $this->userappointment->id, 
                 'type_exam_id' => $this->type_exam_id,
                 'user_payment_document_id' => $documentPay->id,
                 'paymentConcept' => $this->paymentConcept,
