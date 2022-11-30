@@ -129,6 +129,35 @@ class Generate extends Component
         $this->openConfirm();
         // }
     }
+    public function deleteRelationShip()
+    {
+        $this->confirmModal = false;
+        $this->dialog()->confirm([
+            'title'       => '¡ATENCIÓN!',
+            'description' => '¿ESTAS SEGURO DE ELIMINAR ESTA CITA?',
+            'icon'        => 'info',
+            'accept'      => [
+                'label'  => 'SI',
+                'method' => 'deleteAppointment',
+            ],
+            'reject' => [
+                'label'  => 'NO',
+                'method' => 'openModal',
+            ],
+        ]);
+    }
+    public function openModal()
+    {
+        $this->confirmModal = true;
+    }
+    public function deleteAppointment()
+    {
+        $this->appointmentInfo = userAppointment::with(['appointmentTypeExam', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess', 'appointmentDocument'])
+            ->where('id', $this->userAppointment->id)->delete();
+        $this->clean();
+        $this->confirmModal = false;
+        return redirect()->route('afac.home');
+    }
     public function openConfirm()
     {
         // GENERAL QUERY
@@ -152,11 +181,10 @@ class Generate extends Component
             'accept'      => [
                 'label'  => 'IMPRIMIR',
                 'method' => 'print',
-                'params' => 'Saved',
             ],
             'reject' => [
                 'label'  => 'SALIR',
-                'method' => '',
+                'method' => 'returnView',
             ],
         ]);
     }
@@ -165,6 +193,10 @@ class Generate extends Component
 
         return redirect()->route('download');
     }
+    public function returnView()
+    {
+        return redirect()->route('afac.home');
+    }
     public function test()
     {
         // generate PDF
@@ -172,7 +204,7 @@ class Generate extends Component
         $printQuery = userAppointment::with(['appointmentTypeExam', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess'])
             ->where('user_id', $user_id)->latest()->first();
         $pdf = PDF::loadView('livewire.appointment.documents.appointment-pdf', compact('printQuery'));
-        return $pdf->download($printQuery->paymentDate. ' cita.pdf');
+        return $pdf->download($printQuery->paymentDate . ' cita.pdf');
     }
     public function messages()
     {

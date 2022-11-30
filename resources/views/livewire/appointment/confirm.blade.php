@@ -385,10 +385,25 @@
                         @endif
                     @endforeach
                     <div class="mt-5 sm:flex sm:items-center sm:-mx-2">
-                        <button wire:click.prevent=""
+                        <button wire:click.prevent="deleteRelationShip"
                             class="w-full px-4 py-2 text-sm text-center font-medium tracking-wide text-gray-700 transition-colors duration-300 transform border border-gray-200 rounded-md sm:w-1/2 sm:mx-2 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800 hover:bg-gray-100 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-40">
                             CANCELAR CITA
                         </button>
+                        <div wire:loading.delay.shortest wire:target="deleteRelationShip">
+                            <div
+                                class="flex justify-center bg-gray-200 z-40 h-full w-full fixed top-0 left-0 items-center opacity-75">
+                                <div style="color: #0061cf" class="la-line-spin-clockwise-fade-rotating la-3x">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
                         <button wire:click.prevent="closeModalFinish"
                             class="w-full px-4 py-2 mt-4 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-sky-600 rounded-md sm:mt-0 sm:w-1/2 sm:mx-2 hover:bg-sky-700 focus:outline-none focus:ring focus:ring-sky-300 focus:ring-opacity-40">
                             CONCLUIR CITA

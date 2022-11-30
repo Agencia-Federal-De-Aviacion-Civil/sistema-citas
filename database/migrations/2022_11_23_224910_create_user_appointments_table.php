@@ -16,11 +16,11 @@ return new class extends Migration
         Schema::create('user_appointments', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('type_exam_id')->nullable();
-            $table->foreign('type_exam_id')->references('id')->on('type_exams')->onDelete('set null');
+            $table->foreign('type_exam_id')->references('id')->on('type_exams')->onDelete('cascade');
             $table->unsignedBigInteger('user_payment_document_id')->nullable();
-            $table->foreign('user_payment_document_id')->references('id')->on('user_payment_documents')->onDelete('set null');
+            $table->foreign('user_payment_document_id')->references('id')->on('user_payment_documents')->onDelete('cascade');
             $table->string('paymentConcept');
             $table->date('paymentDate');
             $table->boolean('state');
