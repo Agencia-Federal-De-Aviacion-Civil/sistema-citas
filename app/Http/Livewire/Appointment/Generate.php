@@ -136,9 +136,6 @@ class Generate extends Component
             ->where('id', $this->userAppointment->id)->get();
         // LICENSE QUERY RENOVATIONS
         $this->typeRenovations = userRenovation::with(['renovationAppointment', 'renovationClasification'])->where('user_appointment_id', $this->userAppointment->id)->get();
-
-        $Query = $this->appointmentInfo[0]->appointmentSuccess[0]->appointmentDate;
-        $this->key = explode(' ', $Query);
         $this->confirmModal = true;
     }
     public function closeModalFinish()

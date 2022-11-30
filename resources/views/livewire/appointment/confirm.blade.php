@@ -148,7 +148,7 @@
                                             </svg>
 
                                             <p class="text-lg title-font font-normal">Fecha:
-                                            <p class="text-xl font-semibold"> {{ array_shift($key) }}</p>
+                                            <p class="text-xl font-semibold"> {{ $appointment->appointmentSuccess[0]->appointmentDate }} </p>
                                             </p>
                                         </div>
                                     </div>
@@ -161,7 +161,7 @@
                                                     d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                                             </svg>
                                             <p class="text-lg title-font font-normal">hora:
-                                            <p class="text-xl font-semibold"> {{ array_shift($key) }}</p>
+                                            <p class="text-xl font-semibold">{{ $appointment->appointmentSuccess[0]->appointmentTime }} AM</p>
                                             </p>
                                         </div>
                                     </div>
@@ -314,7 +314,7 @@
                                             </svg>
 
                                             <p class="text-lg title-font font-normal">Fecha:
-                                            <p class="text-xl font-semibold">{{ array_shift($key) }}</p>
+                                            <p class="text-xl font-semibold">{{ $appointment->appointmentSuccess[0]->appointmentDate }}</p>
                                             </p>
                                         </div>
                                     </div>
@@ -327,7 +327,7 @@
                                                     d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                                             </svg>
                                             <p class="text-lg title-font font-normal">hora:
-                                            <p class="text-xl font-semibold">{{ array_shift($key) }}</p>
+                                            <p class="text-xl font-semibold">{{ $appointment->appointmentSuccess[0]->appointmentTime }} AM</p>
                                             </p>
                                         </div>
                                     </div>
