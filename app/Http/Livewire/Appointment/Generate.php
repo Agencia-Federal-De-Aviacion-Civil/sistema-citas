@@ -117,6 +117,17 @@ class Generate extends Component
         
         }
 
+        $userappointment = user_appointment_success::updateOrCreate(
+            ['id'=>$this->id_user_appointment],
+            [
+                // 'user_appointment_id' => $this->userAppointment->id,
+                'headquarter_id' => $this->headquarter_id,
+                'appointmentDate' => $this->appointmentDate,
+                'appointmentTime' => $this->appointmentTime,
+                'appointments' => $this->count,
+            ]
+        );
+
         $documentPay = userPaymentDocument::updateOrCreate(
             ['id' => $this->document_id],
             ['document' => $this->document->store('documentos', 'public')]
@@ -125,6 +136,7 @@ class Generate extends Component
         $this->userAppointment = userAppointment::updateOrCreate(
             [
                 'user_id' => $user_id,
+                'user_appointment_success_id' => $userappointment->id, 
                 'type_exam_id' => $this->type_exam_id,
                 'user_payment_document_id' => $documentPay->id,
                 'paymentConcept' => $this->paymentConcept,
@@ -132,6 +144,7 @@ class Generate extends Component
                 'state' => $this->state = false,
             ]
         );
+        
         if ($this->type_exam_id == 1) {
             userStudying::updateOrCreate([
                 'user_appointment_id' => $this->userAppointment->id,
@@ -149,17 +162,6 @@ class Generate extends Component
             }
         }
         
-        user_appointment_success::updateOrCreate(
-            ['id'=>$this->id_user_appointment],
-            [
-                // 'user_appointment_id' => $this->userAppointment->id,
-                'headquarter_id' => $this->headquarter_id,
-                'appointmentDate' => $this->appointmentDate,
-                'appointmentTime' => $this->appointmentTime,
-                'appointments' => $this->count,
-            ]
-        );
-
 
         $this->clean();
         $this->openConfirm();
