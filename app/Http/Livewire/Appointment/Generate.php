@@ -138,7 +138,7 @@ class Generate extends Component
             'icon'        => 'info',
             'accept'      => [
                 'label'  => 'SI',
-                'method' => 'deleteAppointment',
+                'method' => 'saveDelete',
             ],
             'reject' => [
                 'label'  => 'NO',
@@ -150,13 +150,26 @@ class Generate extends Component
     {
         $this->confirmModal = true;
     }
-    public function deleteAppointment()
+    public function deleteAppointment($idDelete)
     {
-        $this->appointmentInfo = userAppointment::with(['appointmentTypeExam', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess', 'appointmentDocument'])
-            ->where('id', $this->userAppointment->id)->delete();
-        $this->clean();
-        $this->confirmModal = false;
-        return redirect()->route('afac.home');
+        $appointmentDelete = userAppointment::findOrFail($idDelete);
+        $this->id_appointmentDelete = $idDelete;
+        $this->state = $appointmentDelete->state;
+        $this->deleteRelationShip();
+    }
+    public function saveDelete()
+    {
+        $delete = userAppointment::find($this->id_appointmentDelete);
+        $delete->update(
+            [
+                'id' => $this->id_appointmentDelete,
+                'state' => $this->state = true
+            ]
+        );
+        $this->notification([
+            'title'       => 'Cita eliminada éxitosamente',
+            'icon'        => 'error'
+        ]);
     }
     public function openConfirm()
     {
