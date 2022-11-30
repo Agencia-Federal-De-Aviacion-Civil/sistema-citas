@@ -171,7 +171,7 @@ class Generate extends Component
         $user_id = Auth::user()->id;
         $printQuery = userAppointment::with(['appointmentTypeExam', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess'])
             ->where('user_id', $user_id)->latest()->first();
-        $pdf = PDF::loadView('afac.pdf.acuse', compact('printQuery'));
+        $pdf = PDF::loadView('livewire.appointment.documents.appointment-pdf', compact('printQuery'));
         return $pdf->download($printQuery->paymentDate. ' cita.pdf');
     }
     public function messages()
