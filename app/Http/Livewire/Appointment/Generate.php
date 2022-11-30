@@ -171,10 +171,8 @@ class Generate extends Component
         $user_id = Auth::user()->id;
         $printQuery = userAppointment::with(['appointmentTypeExam', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess'])
             ->where('user_id', $user_id)->latest()->first();
-        $Query = $printQuery->appointmentSuccess[0]->appointmentDate;
-        $key = explode(' ', $Query);
-        $pdf = PDF::loadView('afac.pdf.acuse', compact('printQuery', 'key'));
-        return $pdf->download('acuse.pdf');
+        $pdf = PDF::loadView('afac.pdf.acuse', compact('printQuery'));
+        return $pdf->download($printQuery->paymentDate. ' cita.pdf');
     }
     public function messages()
     {

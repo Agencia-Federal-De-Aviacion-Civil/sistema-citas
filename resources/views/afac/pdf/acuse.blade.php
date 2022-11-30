@@ -72,11 +72,11 @@
             </tr>
             <tr>
                 <td colspan="12">FECHA:</td>
-                <td colspan="24">{{ array_shift($key) }}</td>
+                <td colspan="24">{{ $printQuery->appointmentSuccess[0]->appointmentDate }}</td>
             </tr>
             <tr>
                 <td colspan="12">HORA:</td>
-                <td colspan="24">{{ array_shift($key) }}</td>
+                <td colspan="24">{{ $printQuery->appointmentSuccess[0]->appointmentTime }} AM</td>
             </tr>
             <tr>
                 <td colspan="12">FOLIO:</td>
