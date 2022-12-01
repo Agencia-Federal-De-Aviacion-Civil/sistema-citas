@@ -12,16 +12,16 @@
     </title>
 </head>
 <style>
-.titulo {
-    text-align: center;
-    font-weight: bold;
-    color: #000000;
-}
+    .titulo {
+        text-align: center;
+        font-weight: bold;
+        color: #000000;
+    }
 </style>
 
 <body>
     <div>
-        {{-- <img src="https://media-aifa.s3.us-east-2.amazonaws.com/afac-1.webp" width="200" height="64" alt=""> --}}
+        <img src="{{public_path('images/AFAC1.png')}}" width="100" height="64" alt="">
         <div class="titulo">
             <h2>COMPROBANTE DE CITA</h2>
         </div>
@@ -52,9 +52,9 @@
             <tr>
                 <td colspan="12">TIPO DE CLASE</td>
                 @if ($printQuery->type_exam_id == 1)
-                <td colspan="24">{{ $printQuery->appointmentStudying[0]->studyingClass->name }}</td>
+                    <td colspan="24">{{ $printQuery->appointmentStudying[0]->studyingClass->name }}</td>
                 @elseif($printQuery->type_exam_id == 2)
-                <td colspan="24">{{ $printQuery->appointmentRenovation[0]->renovationClass->name }}</td>
+                    <td colspan="24">{{ $printQuery->appointmentRenovation[0]->renovationClass->name }}</td>
                 @endif
             </tr>
             <tr>
@@ -97,7 +97,7 @@
         </div>
         <p style="padding-left:15%">FIRMA: </p>
         <hr Style="margin-top:-2%" width="50%">
-        {{--PAGINA 2--}}
+        {{-- PAGINA 2 --}}
         <div style='page-break-before:always;'></div>
         <div style="text-align: center;">
             <h2>GUÍA DE RECOMENDACIONES</h2>
