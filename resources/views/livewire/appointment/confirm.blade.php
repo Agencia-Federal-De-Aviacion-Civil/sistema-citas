@@ -182,7 +182,8 @@
 
                                             <p class="text-lg title-font font-normal">Sede:
                                             <p class="text-xl font-semibold">
-                                                {{-- {{ $userAppointment->appointmentSuccess[0]->successHeadquarter->name }} --}}
+     {{ $userAppointment->appointmentSuccess[0].'<-'}}
+{{-- {{ $userAppointment->appointmentSuccess[0]->successHeadquarter->name }} --}}
                                             </p>
                                             </p>
                                         </div>

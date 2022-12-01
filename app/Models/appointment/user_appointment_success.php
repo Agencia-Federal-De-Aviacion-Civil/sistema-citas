@@ -18,4 +18,7 @@ class user_appointment_success extends Model
     {
         return $this->belongsTo(headquarter::class, 'headquarter_id');
     }
+    public function successAppointments(){
+        return $this->hasMany(userAppointment::class);
+    }
 }

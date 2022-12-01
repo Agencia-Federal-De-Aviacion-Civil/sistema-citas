@@ -171,16 +171,28 @@ class Generate extends Component
     {
         // dd($this->userAppointment->id);
         // GENERAL QUERY
+
+        // $this->appointmentInfo = userAppointment::with([
+        //     'appointmentTypeExam', 
+        //     'appointmentStudying', 
+        //     'appointmentRenovation', 
+        //     'appointmentSuccess']
         $this->appointmentInfo = userAppointment::with([
             'appointmentTypeExam', 
             'appointmentStudying', 
-            'appointmentRenovation'])
+            'appointmentRenovation',
+            'appointmentSuccess'            
+            ])
 
         ->where('id', $this->userAppointment->id)->get();
         // LICENSE QUERY RENOVATIONS
+
+            // dd($this->appointmentInfo[0]->appointmentSuccess->appointmentDate);
+
         $this->typeRenovations = userRenovation::with(['renovationAppointment', 'renovationClasification'])->where('user_appointment_id', $this->userAppointment->id)->get();
-        $Query = $this->appointmentInfo[0]->paymentConcept;
+       // $Query = $this->appointmentInfo[0]->paymentConcept;
         //$this->appointmentInfo[0]->appointmentSuccess[0]->appointmentDate;
+        $Query = $this->appointmentInfo[0]->appointmentSuccess->appointmentDate;
         $this->key = explode(' ', $Query);
         $this->confirmModal = true;
     }
