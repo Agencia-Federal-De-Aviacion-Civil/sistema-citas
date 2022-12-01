@@ -99,13 +99,22 @@ class Generate extends Component
                 'state' => $this->state = false,
             ]
         );
-        if ($this->type_exam_id == 1) {
+        if ($this->type_exam_id == 1 && $this->user_question_id == 1) {
             userStudying::updateOrCreate([
                 'user_appointment_id' => $this->userAppointment->id,
                 'user_question_id' => $this->user_question_id,
                 'type_class_id' => $this->type_class_id,
                 'clasification_class_id' => $this->clasification_class_id,
             ]);
+        } else if ($this->type_exam_id == 1 && $this->user_question_id == 2) {
+            foreach ($this->clasification_class_id as $clasifications) {
+                userStudying::updateOrCreate([
+                    'user_appointment_id' => $this->userAppointment->id,
+                    'user_question_id' => $this->user_question_id,
+                    'type_class_id' => $this->type_class_id,
+                    'clasification_class_id' => $clasifications,
+                ]);
+            }
         } else if ($this->type_exam_id == 2) {
             foreach ($this->clasification_class_id as $clasifications) {
                 userRenovation::updateOrCreate([
@@ -127,7 +136,6 @@ class Generate extends Component
         );
         $this->clean();
         $this->openConfirm();
-        // }
     }
     public function deleteRelationShip()
     {
@@ -177,6 +185,8 @@ class Generate extends Component
         $this->appointmentInfo = userAppointment::with(['appointmentTypeExam', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess'])
             ->where('id', $this->userAppointment->id)->get();
         // LICENSE QUERY RENOVATIONS
+        $this->typeStudyings = userStudying::with(['studyingAppointment', 'studyingClasification'])
+            ->where('user_appointment_id', $this->userAppointment->id)->get();
         $this->typeRenovations = userRenovation::with(['renovationAppointment', 'renovationClasification'])->where('user_appointment_id', $this->userAppointment->id)->get();
         $this->confirmModal = true;
     }

@@ -21,7 +21,7 @@
 
 <body>
     <div>
-        <img src="https://media-aifa.s3.us-east-2.amazonaws.com/afac-1.webp" width="200" height="64" alt="">
+        {{-- <img src="https://media-aifa.s3.us-east-2.amazonaws.com/afac-1.webp" width="200" height="64" alt=""> --}}
         <div class="titulo">
             <h2>COMPROBANTE DE CITA</h2>
         </div>
