@@ -323,11 +323,18 @@
                                             <x-datetime-picker label="SELECCIONE FECHA" placeholder="Seleccione..."
                                                 without-time="false" parse-format="YYYY-MM-DD"
                                                 display-format="DD-MM-YYYY" wire:model.defer="appointmentDate" />
-                                        </div>
+                                        </div>                                        
+
                                         <div class="text-base relative z-10 w-full mb-2 group">
                                             <x-select label="SELECCIONE HORA" placeholder="Seleccione..."
                                                 wire:model.defer="appointmentTime">
-                                                <x-select.option label="7:00 AM" value="7:00" />
+                                                @foreach ($var as $user_appointment_succes)
+                                                @if ($user_appointment_succes->appointments == 2)
+                                                <x-select.option label="7:00 AM" value="7:00" disabled/>
+                                                @elseif($user_appointment_succes->appointments < 2)
+                                                <x-select.option label="7:00 AM" value="7:00"/>
+                                                @endif
+                                                @endforeach
                                                 <x-select.option label="8:00 AM" value="8:00" />
                                                 <x-select.option label="9:00 AM" value="9:00" />
                                                 <x-select.option label="10:00 AM" value="10:00" />

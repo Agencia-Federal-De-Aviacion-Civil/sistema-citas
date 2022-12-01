@@ -12,6 +12,7 @@ use App\Models\catalogue\clasificationClass;
 use App\Models\catalogue\headquarter;
 use App\Models\catalogue\typeClass;
 use App\Models\catalogue\typeExam;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\Redirector;
@@ -39,6 +40,17 @@ class Generate extends Component
         $this->typeClasses = collect();
         $this->questionClassess = collect();
         $this->clasificationClass = collect();
+
+        // $todayDate = Carbon::now()->format('Y-m-d');
+        $this->var = user_appointment_success::where('appointmentDate',$this->appointmentDate)->get();
+            //  where('appointmentDate', $this->appointmentDate)
+            // ->where('appointmentTime', $this->appointmentTime)
+            // ->where('headquarter_id', $this->headquarter_id)
+
+            // ->first();
+
+
+
     }
     public function rules()
     {
@@ -93,14 +105,14 @@ class Generate extends Component
             $this->id_user_appointment = 0;
             $this->count = 1;
         } else {
-            if ($user_appointment->appointmentTime <= '08:00:00' && $user_appointment->appointments == 13) {
+            if ($user_appointment->appointmentTime <= '08:00:00' && $user_appointment->appointments == 2) {
                 //dd('13 citas');
                 return $this->dialog()->show([
                     'title' => 'Citas no disponibles en la fecha indicada',
                     'icon'        => 'warning'
                 ]);
             } else
-            if ($user_appointment->appointmentTime > '08:00:00' && $user_appointment->appointments == 12) {
+            if ($user_appointment->appointmentTime > '08:00:00' && $user_appointment->appointments == 2) {
                 //dd('12 citas');
                 return $this->dialog()->show([
                     'title' => 'Citas no disponibles en la fecha indicada',
