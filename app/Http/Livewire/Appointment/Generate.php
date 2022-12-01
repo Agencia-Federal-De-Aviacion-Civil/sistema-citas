@@ -177,22 +177,16 @@ class Generate extends Component
         //     'appointmentStudying', 
         //     'appointmentRenovation', 
         //     'appointmentSuccess']
-        $this->appointmentInfo = userAppointment::with([
-            'appointmentTypeExam', 
-            'appointmentStudying', 
-            'appointmentRenovation',
-            'appointmentSuccess'            
-            ])
-
+        $this->appointmentInfo = userAppointment::with(['appointmentTypeExam', 'appointmentStudying', 'appointmentRenovation','appointmentSuccess'])
         ->where('id', $this->userAppointment->id)->get();
-        // LICENSE QUERY RENOVATIONS
+         // LICENSE QUERY RENOVATIONS
 
-            // dd($this->appointmentInfo[0]->appointmentSuccess->appointmentDate);
-
+        // dd($this->appointmentInfo[0]->appointmentSuccess->appointmentDate);
         $this->typeRenovations = userRenovation::with(['renovationAppointment', 'renovationClasification'])->where('user_appointment_id', $this->userAppointment->id)->get();
-       // $Query = $this->appointmentInfo[0]->paymentConcept;
+        // $Query = $this->appointmentInfo[0]->paymentConcept;
         //$this->appointmentInfo[0]->appointmentSuccess[0]->appointmentDate;
         $Query = $this->appointmentInfo[0]->appointmentSuccess->appointmentDate;
+
         $this->key = explode(' ', $Query);
         $this->confirmModal = true;
     }
@@ -229,7 +223,10 @@ class Generate extends Component
         $user_id = Auth::user()->id;
         $printQuery = userAppointment::with(['appointmentTypeExam', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess'])
             ->where('user_id', $user_id)->latest()->first();
-        $Query = $printQuery->appointmentSuccess[0]->appointmentDate;
+        $Query = $printQuery->appointmentSuccess->appointmentDate;
+//        dd($Query);
+//        $Query = $this->appointmentInfo[0]->appointmentSuccess->appointmentDate;
+
         $key = explode(' ', $Query);
         $pdf = PDF::loadView('afac.pdf.acuse', compact('printQuery', 'key'));
         return $pdf->download('acuse.pdf');

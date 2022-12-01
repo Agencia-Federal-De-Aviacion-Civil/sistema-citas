@@ -161,6 +161,7 @@
                                                     d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                                             </svg>
                                             <p class="text-lg title-font font-normal">hora:
+                                                {{$appointmentInfo[0]->appointmentSuccess->appointmentTime}}
                                             <p class="text-xl font-semibold"> {{ array_shift($key) }}</p>
                                             </p>
                                         </div>
@@ -182,8 +183,8 @@
 
                                             <p class="text-lg title-font font-normal">Sede:
                                             <p class="text-xl font-semibold">
-     {{ $userAppointment->appointmentSuccess[0].'<-'}}
-{{-- {{ $userAppointment->appointmentSuccess[0]->successHeadquarter->name }} --}}
+                                            {{ $userAppointment->appointmentSuccess->successHeadquarter->name }}
+                                            {{-- {{ $userAppointment->appointmentSuccess[0]->successHeadquarter->name }} --}}
                                             </p>
                                             </p>
                                         </div>
@@ -328,6 +329,7 @@
                                                     d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                                             </svg>
                                             <p class="text-lg title-font font-normal">hora:
+                                                {{$appointmentInfo[0]->appointmentSuccess->appointmentTime}}
                                             <p class="text-xl font-semibold">{{ array_shift($key) }}</p>
                                             </p>
                                         </div>
@@ -349,7 +351,9 @@
 
                                             <p class="text-lg title-font font-normal">Sede:
                                             <p class="text-xl font-semibold">
-                                                {{-- {{ $userAppointment->appointmentSuccess[0]->successHeadquarter->name }} --}}
+                                            {{ $userAppointment->appointmentSuccess->successHeadquarter->name }}
+                                            {{-- {{ $userAppointment->appointmentSuccess[0]->successHeadquarter->name }} --}}
+
                                             </p>
                                             </p>
                                         </div>
