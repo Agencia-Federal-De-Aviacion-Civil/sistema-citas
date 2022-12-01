@@ -27,7 +27,7 @@ class Generate extends Component
     // FIRST TABLE//
     public $id_success, $user_id, $type_exam_id, $user_payment_document_id, $document_id, $document, $paymentConcept, $paymentDate, $state;
     // QUESTION STUDYING
-    public $user_appointment_id, $user_question_id, $type_class_id, $clasification_class_id = [];
+    public $user_appointment_success_id, $count, $user_appointment_id, $user_question_id, $type_class_id, $clasification_class_id = [];
 
     public $headquarter_id, $appointmentDate, $appointmentTime, $appointments, $finishCollegue, $aerodromos = [];
     public function mount()
@@ -84,6 +84,42 @@ class Generate extends Component
     public function save()
     {
         $this->validate();
+        // ALGORITMIC ANGEL
+        $user_appointment = user_appointment_success::where('appointmentDate', $this->appointmentDate)
+            ->where('appointmentTime', $this->appointmentTime)
+            ->where('headquarter_id', $this->headquarter_id)
+            ->first();
+        if ($user_appointment == null) {
+            $this->id_user_appointment = 0;
+            $this->count = 1;
+        } else {
+            if ($user_appointment->appointmentTime <= '08:00:00' && $user_appointment->appointments == 13) {
+                //dd('13 citas');
+                return $this->dialog()->show([
+                    'title' => 'Citas no disponibles en la fecha indicada',
+                    'icon'        => 'warning'
+                ]);
+            } else
+            if ($user_appointment->appointmentTime > '08:00:00' && $user_appointment->appointments == 12) {
+                //dd('12 citas');
+                return $this->dialog()->show([
+                    'title' => 'Citas no disponibles en la fecha indicada',
+                    'icon'        => 'warning'
+                ]);
+            }
+
+            $this->id_user_appointment = $user_appointment->id;
+            $this->count = $user_appointment->appointments + 1;
+        }
+        $this->userappointment = user_appointment_success::updateOrCreate(
+            ['id' => $this->id_user_appointment],
+            [
+                'headquarter_id' => $this->headquarter_id,
+                'appointmentDate' => $this->appointmentDate,
+                'appointmentTime' => $this->appointmentTime,
+                'appointments' => $this->count,
+            ]
+        );
         $documentPay = userPaymentDocument::updateOrCreate(
             ['id' => $this->document_id],
             ['document' => $this->document->store('documentos', 'public')]
@@ -92,6 +128,7 @@ class Generate extends Component
         $this->userAppointment = userAppointment::updateOrCreate(
             [
                 'user_id' => $user_id,
+                'user_appointment_success_id' => $this->userappointment->id,
                 'type_exam_id' => $this->type_exam_id,
                 'user_payment_document_id' => $documentPay->id,
                 'paymentConcept' => $this->paymentConcept,
@@ -124,16 +161,6 @@ class Generate extends Component
                 ]);
             }
         }
-        user_appointment_success::updateOrCreate(
-            ['id' => $this->id_success],
-            [
-                'user_appointment_id' => $this->userAppointment->id,
-                'headquarter_id' => $this->headquarter_id,
-                'appointmentDate' => $this->appointmentDate,
-                'appointmentTime' => $this->appointmentTime,
-                'appointments' => 1,
-            ]
-        );
         $this->clean();
         $this->openConfirm();
     }

@@ -159,7 +159,7 @@
 
                         <p class="text-lg title-font font-normal">Fecha:
                         <p class="text-xl font-semibold">
-                            {{ $appointment->appointmentSuccess[0]->appointmentDate }} </p>
+                            {{ $appointment->appointmentSuccess->appointmentDate }} </p>
                         </p>
                     </div>
                 </div>
@@ -172,7 +172,7 @@
                         </svg>
                         <p class="text-lg title-font font-normal">hora:
                         <p class="text-xl font-semibold">
-                            {{ $appointment->appointmentSuccess[0]->appointmentTime }} AM</p>
+                            {{ $appointment->appointmentSuccess->appointmentTime }} AM</p>
                         </p>
                     </div>
                 </div>
@@ -192,7 +192,7 @@
 
                         <p class="text-lg title-font font-normal">Sede:
                         <p class="text-xl font-semibold">
-                            {{ $userAppointment->appointmentSuccess[0]->successHeadquarter->name }}
+                            {{ $userAppointment->appointmentSuccess->successHeadquarter->name }}
                         </p>
                         </p>
                     </div>
