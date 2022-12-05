@@ -42,12 +42,12 @@ class Generate extends Component
         $this->clasificationClass = collect();
 
         // $todayDate = Carbon::now()->format('Y-m-d');
-        $this->var = user_appointment_success::where('appointmentDate',$this->appointmentDate)->get();
-            //  where('appointmentDate', $this->appointmentDate)
-            // ->where('appointmentTime', $this->appointmentTime)
-            // ->where('headquarter_id', $this->headquarter_id)
+        $this->var = user_appointment_success::where('appointmentDate', $this->appointmentDate)->get();
+        //  where('appointmentDate', $this->appointmentDate)
+        // ->where('appointmentTime', $this->appointmentTime)
+        // ->where('headquarter_id', $this->headquarter_id)
 
-            // ->first();
+        // ->first();
 
 
 
@@ -261,19 +261,16 @@ class Generate extends Component
     }
     public function test()
     {
-
         // generate PDF
         $user_id = Auth::user()->id;
         $printQuery = userAppointment::with(['appointmentTypeExam', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess'])
             ->where('user_id', $user_id)->latest()->first();
 
-            
         // sumando las citas
         $sumappointment = user_appointment_success::where('appointmentDate', $printQuery->appointmentSuccess->appointmentDate)
-        ->sum('appointments');
+            ->sum('appointments');
 
-
-        $pdf = PDF::loadView('livewire.appointment.documents.appointment-pdf', compact('printQuery','sumappointment'));
+        $pdf = PDF::loadView('livewire.appointment.documents.appointment-pdf', compact('printQuery', 'sumappointment'));
         return $pdf->download($printQuery->paymentDate . ' cita.pdf');
     }
     public function messages()

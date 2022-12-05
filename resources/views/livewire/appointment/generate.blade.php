@@ -323,7 +323,7 @@
                                             <x-datetime-picker label="SELECCIONE FECHA" placeholder="Seleccione..."
                                                 without-time="false" parse-format="YYYY-MM-DD"
                                                 display-format="DD-MM-YYYY" wire:model.defer="appointmentDate" />
-                                        </div>                                        
+                                        </div>
 
                                         <div class="text-base relative z-10 w-full mb-2 group">
                                             <x-select label="SELECCIONE HORA" placeholder="Seleccione..."
