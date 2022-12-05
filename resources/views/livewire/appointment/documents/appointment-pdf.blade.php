@@ -63,7 +63,7 @@
             </tr>
             <tr>
                 <td colspan="12">NO. DE CITA</td>
-                <td colspan="24">{{ $printQuery->id }}</td>
+                <td colspan="24">{{ $sumappointment }}</td>
             </tr>
             <tr>
                 <td colspan="12">UNIDAD MÉDICA:</td>

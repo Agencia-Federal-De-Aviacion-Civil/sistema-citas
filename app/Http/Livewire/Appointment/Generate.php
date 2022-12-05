@@ -261,11 +261,19 @@ class Generate extends Component
     }
     public function test()
     {
+
         // generate PDF
         $user_id = Auth::user()->id;
         $printQuery = userAppointment::with(['appointmentTypeExam', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess'])
             ->where('user_id', $user_id)->latest()->first();
-        $pdf = PDF::loadView('livewire.appointment.documents.appointment-pdf', compact('printQuery'));
+
+            
+        // sumando las citas
+        $sumappointment = user_appointment_success::where('appointmentDate', $printQuery->appointmentSuccess->appointmentDate)
+        ->sum('appointments');
+
+
+        $pdf = PDF::loadView('livewire.appointment.documents.appointment-pdf', compact('printQuery','sumappointment'));
         return $pdf->download($printQuery->paymentDate . ' cita.pdf');
     }
     public function messages()
