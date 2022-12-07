@@ -122,28 +122,28 @@
                 examen psicofísico:</p>
             <ol class="">
                 <li value="1">Acudir con ropa cómoda, evitando sea de una sola pieza.
-                </li><br>
+                </li>
                 <li>Presentarse en ayuno, no tomar alimentos las 8 horas previas a su hora de cita
-                </li><br>
+                </li>
                 <li>No suspender medicación prescrita.</u>
-                </li><br>
+                </li>
                 <li>En examen de primera vez, deberá acudir con comprobante de grupo y Rh sanguíneos.
-                </li><br>
+                </li>
                 <li>En caso de haber tenido algún procedimiento dental, esperar mínimo 72 horas posteriores al mismo
                     para agendar su cita.
-                </li><br>
+                </li>
                 <li>En caso de haber sido diagnosticado con alguna(s) enfermedad(es) crónica(s) (enfermedades
                     cardiacas, respiratorias, hipertiroidismo, etc.), presentar un resumen clínico expedido por su
                     médico tratante y estudios <b>adicionales</b> (ver Anexo) con vigencia no mayor a 3 meses para
                     acreditar el
                     estado actual de salud.
-                </li><br>
+                </li>
                 <li>En caso de presentar disminución en la agudeza visual, deberá presentarse con lentes de armazón o
                     de contacto con graduación actualizada. Si alterna el uso de ambos, deberá presentarlos.
-                </li><br>
+                </li>
                 <li>En caso de presentar embarazo, presentar constancia de control del mismo, actualizada y hacerlo
                     saber al servicio de rayos X al acudir a su examen.
-                </li><br>
+                </li>
                 <li>Acudir con los estudios de laboratorio que a continuación se enlistan, los cuales deberán
                     realizarse en una institución acreditada por la <b>Norma ISO15189-2012</b>, la cual deberá contener:
                     nombre
@@ -157,17 +157,15 @@
                     <p tyle="padding-left:10%">d) Examen General de Orina.</p>
                     <p tyle="padding-left:10%">e) Prueba de detección de VIH.</p>
                     <p tyle="padding-left:10%">f) Radiografía de tórax posteroanterior.</p>
-                </li><br>
+                </li>
                 <li>Los estudios previamente descritos deberán tener fecha de emisión no mayor a un mes.
-                </li><br>
+                </li>
                 <li>Imprimir el formato de Consentimiento Informado y firmarlo.
-                </li><br>
+                </li>
                 <li>Imprimir el formato de Declaración de salud.
                 </li>
             </ol>
         </div>
-        {{-- PAGINA 3 --}}
-        <div style='page-break-before:always;'></div>
         <div style="text-align:center;">
             <h2>ANEXO</h2>
             <h4>Estudios de laboratorio en caso de tener diagnóstico de enfermedad crónica</h4>
