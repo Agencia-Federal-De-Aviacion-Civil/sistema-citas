@@ -36,7 +36,7 @@
         </div>
         <table>
             <tr>
-                <td colspan="12">NOMBRE</td>
+                <td colspan="12">NOMBRE:</td>
                 <td colspan="24">
                     {{ $printQuery->appointmentUser->name . ' ' . $printQuery->appointmentUser->apParental . ' ' . $printQuery->appointmentUser->apMaternal }}
                 </td>
@@ -50,7 +50,7 @@
                 <td colspan="24">{{ $printQuery->id }}</td>
             </tr>
             <tr>
-                <td colspan="12">MODO DE TRASPORTE:</td>
+                <td colspan="12">MODO DE TRANSPORTE:</td>
                 <td colspan="24">AÉREO</td>
             </tr>
             <tr>
@@ -58,7 +58,7 @@
                 <td colspan="24">{{ $printQuery->appointmentTypeExam->name }}</td>
             </tr>
             <tr>
-                <td colspan="12">TIPO DE CLASE</td>
+                <td colspan="12">TIPO DE CLASE:</td>
                 @if ($printQuery->type_exam_id == 1)
                 <td colspan="24">{{ $printQuery->appointmentStudying[0]->studyingClass->name }}</td>
                 @elseif($printQuery->type_exam_id == 2)
@@ -66,11 +66,11 @@
                 @endif
             </tr>
             <tr>
-                <td colspan="12">TRAMITE</td>
+                <td colspan="12">TRAMITE:</td>
                 <td colspan="24">EXAMEN PSICOFISICO INTEGRAL</td>
             </tr>
             <tr>
-                <td colspan="12">NO. DE CITA</td>
+                <td colspan="12">NO. DE CITA:</td>
                 <td colspan="24">{{ $sumappointment }}</td>
             </tr>
             <tr>
