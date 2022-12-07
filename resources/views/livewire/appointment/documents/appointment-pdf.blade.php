@@ -63,20 +63,20 @@
             </tr>
             <tr>
                 <td colspan="12">NO. DE CITA</td>
-                <td colspan="24">{{ $printQuery->id }}</td>
+                <td colspan="24">{{ $sumappointment }}</td>
             </tr>
             <tr>
                 <td colspan="12">UNIDAD MÉDICA:</td>
-                <td colspan="24"> {{ $printQuery->appointmentSuccess[0]->successHeadquarter->name }}</p>
+                <td colspan="24"> {{ $printQuery->appointmentSuccess->successHeadquarter->name }}</p>
                 </td>
             </tr>
             <tr>
                 <td colspan="12">FECHA:</td>
-                <td colspan="24">{{ $printQuery->appointmentSuccess[0]->appointmentDate }}</td>
+                <td colspan="24">{{ $printQuery->appointmentSuccess->appointmentDate }}</td>
             </tr>
             <tr>
                 <td colspan="12">HORA:</td>
-                <td colspan="24">{{ $printQuery->appointmentSuccess[0]->appointmentTime }} AM</td>
+                <td colspan="24">{{ $printQuery->appointmentSuccess->appointmentTime }} AM</td>
             </tr>
             <tr>
                 <td colspan="12">FOLIO:</td>

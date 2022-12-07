@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 class userAppointment extends Model
 {
     use HasFactory;
-    protected $fillable = ['user_id', 'type_exam_id', 'user_payment_document_id', 'paymentConcept', 'paymentDate', 'state'];
+    protected $fillable = ['user_id','user_appointment_success_id','type_exam_id', 'user_payment_document_id', 'paymentConcept', 'paymentDate', 'state'];
     public function appointmentUser()
     {
         return $this->belongsTo(User::class, 'user_id');
@@ -31,8 +31,11 @@ class userAppointment extends Model
     {
         return $this->belongsTo(userPaymentDocument::class, 'user_payment_document_id');
     }
-    public function appointmentSuccess()
-    {
-        return $this->hasMany(user_appointment_success::class);
+    // public function appointmentSuccess()
+    // {
+    //     return $this->hasMany(user_appointment_success::class);
+    // }
+    public function appointmentSuccess(){
+        return $this->belongsTo(user_appointment_success::class, 'user_appointment_success_id');
     }
 }

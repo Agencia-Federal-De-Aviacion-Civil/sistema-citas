@@ -324,9 +324,13 @@
                                                 without-time="false" parse-format="YYYY-MM-DD"
                                                 display-format="DD-MM-YYYY" wire:model.defer="appointmentDate" />
                                         </div>
+
                                         <div class="text-base relative z-10 w-full mb-2 group">
                                             <x-select label="SELECCIONE HORA" placeholder="Seleccione..."
                                                 wire:model.defer="appointmentTime">
+                                                {{-- @foreach ($var as $user_appointment_succes)
+                                                
+                                                @endforeach --}}
                                                 <x-select.option label="7:00 AM" value="7:00" />
                                                 <x-select.option label="8:00 AM" value="8:00" />
                                                 <x-select.option label="9:00 AM" value="9:00" />
