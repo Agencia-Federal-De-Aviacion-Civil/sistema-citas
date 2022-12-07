@@ -12,20 +12,28 @@
     </title>
 </head>
 <style>
-    .titulo {
-        text-align: center;
-        font-weight: bold;
-        color: #000000;
-    }
+.titulo {
+    text-align: center;
+    font-weight: bold;
+    color: #000000;
+}
+.normal {
+  width: 250px;
+  border: 1px solid #000;
+  border-collapse: collapse;
+}
+.normal th, .normal td {
+  border: 1px solid #000;
+}
+ 
 </style>
 
 <body>
     <div>
-        <img src="{{public_path('images/AFAC1.png')}}" width="100" height="64" alt="">
+        <img src="{{public_path('images/AFAC1.png')}}" width="130" height="100" alt="">
         <div class="titulo">
             <h2>COMPROBANTE DE CITA</h2>
         </div>
-
         <table>
             <tr>
                 <td colspan="12">NOMBRE</td>
@@ -52,9 +60,9 @@
             <tr>
                 <td colspan="12">TIPO DE CLASE</td>
                 @if ($printQuery->type_exam_id == 1)
-                    <td colspan="24">{{ $printQuery->appointmentStudying[0]->studyingClass->name }}</td>
+                <td colspan="24">{{ $printQuery->appointmentStudying[0]->studyingClass->name }}</td>
                 @elseif($printQuery->type_exam_id == 2)
-                    <td colspan="24">{{ $printQuery->appointmentRenovation[0]->renovationClass->name }}</td>
+                <td colspan="24">{{ $printQuery->appointmentRenovation[0]->renovationClass->name }}</td>
                 @endif
             </tr>
             <tr>
@@ -84,76 +92,105 @@
             </tr>
         </table>
         <div style="padding-top:5%">
-            <label for="">Requisitos:</label>
-            <div style="padding-left:18%;padding-top:-4%;text-align: justify;"><label>Si alguno de estos documentos no
-                    son presentados el día de su cita, no podrá realizar su examen
-                    por lo que este se perderá. Identificación oficial (Se acepta únicamente INE vigente, Cédula de
-                    identidad
-                    ciudadana, Cédula profesional, cartilla militar, licencia federal, título, certificado o libreta de
-                    mar y de
-                    identificación marítima) ORIGINAL Y COPIA. Comprobante de domicilio (con vigencia no mayor a 3
-                    meses)COPIA. Comprobante de pago. ORIGINAL. CURP COPIA. </label></div>
-
+            <label style="text-align: justify;font-size:18px" for="">Estimado usuario, con el fin de facilitar el
+                procedimiento de
+                registro y apoyarle en el proceso de su examen psicofísico, le presentamos los siguientes<b> requisitos
+                    indispensables </b>para presentarse a su cita; es indispensable que acuda con el <u>original y
+                    copia</u> de los
+                siguientes documentos, de lo contrario, no podrá realizar su examen y éste se perderá:</label>
         </div>
-        <p style="padding-left:15%">FIRMA: </p>
-        <hr Style="margin-top:-2%" width="50%">
+        <div style="padding-top:2%;font-size:18px">
+            <ol class="">
+                <li value="1">Comprobante de domicilio con vigencia no mayor a 3 meses.</li>
+                <li>Comprobante de pago.</li>
+                <li>Una de las siguientes identificaciones:</li>
+                <p tyle="padding-left:2%">a) Cédula de identidad ciudadana (INE) vigente.</p>
+                <p tyle="padding-left:2%">b) Clave Única de Registro de Población (CURP).</p>
+                <p tyle="padding-left:2%">c) Cédula profesional.</p>
+                <p tyle="padding-left:2%">d) Cartilla Militar (personal masculino).</p>
+                <p tyle="padding-left:2%">e) Licencia Federal.</p>
+                <p tyle="padding-left:2%">f) Título.</p>
+            </ol>
+        </div>
         {{-- PAGINA 2 --}}
         <div style='page-break-before:always;'></div>
-        <div style="text-align: center;">
+        <!-- <div style="text-align: center;">
             <h2>GUÍA DE RECOMENDACIONES</h2>
-        </div>
-        <div class="mt-10 mx-7 text-justify">
-            <p>Estimado usuario con el fin de apoyarle y hacer más ágil su examen psicofísico, deberá tomar en cuenta
-                los
-                siguientes puntos:</p>
+        </div> -->
+        <div class="mt-4 mx-7 text-justify ">
+            <p>Se hace de su conocimiento la siguiente <b>guía de recomendaciones</b>para agilizar su
+                examen psicofísico:</p>
             <ol class="">
-                <li value="1">En el caso de que las damas que acudan a realizar EPI solicitamos que las <b>uñas</b>
-                    estén
-                    <b>cortas
-                        para evitar dificultad en la captura de sus huellas, acudir con <b>ropa cómoda</b> <u>evitando
-                            sea
-                            de una sola pieza</u></b>.
+                <li value="1">Acudir con ropa cómoda, evitando sea de una sola pieza.
                 </li><br>
-                <li>
-                    Presentarse en <b>ayuno</b> el cual debe ser con un promedio <u>de 8 horas</u> <b>sin suspender
-                        medicación</b> prescrita por su médico.
+                <li>Presentarse en ayuno, no tomar alimentos las 8 horas previas a su hora de cita
                 </li><br>
-                <li>
-                    Conocer su grupo y Rh; cuando vaya a realizar <u>Examen Psicofísico Integral por primera vez traer
-                        comprobante de Grupo y Rh</u>
+                <li>No suspender medicación prescrita.</u>
                 </li><br>
-                <li>
-                    En case de haber tenido algún <b>procedimiento dental esperar mínimo 72 horas</b> posteriores a este
-                    procedimiento para agendar su cita.
+                <li>En examen de primera vez, deberá acudir con comprobante de grupo y Rh sanguíneos.
                 </li><br>
-                <li>
-                    Si presentas alguna <b>enfermedad crónica</b>, deberás presentar un resumen clínico expedido por tu
-                    médico tratante y/o estudios adicionales con vigencia no mayor a tres meses para acreditar el estado
-                    actual de salud (enfermedades cardiacas, respiratorias, hipertiroidismo, entre otras...).
+                <li>En caso de haber tenido algún procedimiento dental, esperar mínimo 72 horas posteriores al mismo
+                    para agendar su cita.
                 </li><br>
-                <li>
-                    Si presentas alguna <b>disminución en la capacidad visual</b>, deberás presentarte con lentes de
-                    armazón
-                    o de contacto con graduación actualizada. En caso de que alternes el uso de ambos tendrás que
-                    presentar
-                    ambos (no olvida estuche y líquidos necesarios en caso de usar lentes de contacto).
+                <li>En caso de haber sido diagnosticado con alguna(s) enfermedad(es) crónica(s) (enfermedades
+                    cardiacas, respiratorias, hipertiroidismo, etc.), presentar un resumen clínico expedido por su
+                    médico tratante y estudios <b>adicionales</b> (ver Anexo) con vigencia no mayor a 3 meses para
+                    acreditar el
+                    estado actual de salud.
                 </li><br>
-                <li>
-                    Si estás <b>embarazada</b>, deberás presentar constancia de control de embarazo actualizada y
-                    hacérselo
-                    saber al servicio de rayos X cuando acudas a realizar el EPI.
+                <li>En caso de presentar disminución en la agudeza visual, deberá presentarse con lentes de armazón o
+                    de contacto con graduación actualizada. Si alterna el uso de ambos, deberá presentarlos.
                 </li><br>
-                <li>
-                    Tendrás que <b>presentar el resultado de una química sanguínea</b> la cual contenga los valores de:
-                    glucosa, Hemoglobina Glucosilada, colesterol, HDL, LDL, Triglicéridos y ácido úrico; así como un
-                    Examen
-                    General de Orina (EGO) ambos estudios con fecha de emisión de resultados no mayor a un mes, VIH y Rx
-                    de torax.
+                <li>En caso de presentar embarazo, presentar constancia de control del mismo, actualizada y hacerlo
+                    saber al servicio de rayos X al acudir a su examen.
                 </li><br>
-                <li>
-                    Imprimir el <u>consentimiento</u>. <u>Declaración salud</u>.
+                <li>Acudir con los estudios de laboratorio que a continuación se enlistan, los cuales deberán
+                    realizarse en una institución acreditada por la <b>Norma ISO15189-2012</b>, la cual deberá contener:
+                    nombre
+                    de la institución, dirección, nombre completo del laboratorista, su cédula profesional y número
+                    telefónico, a fin de que la Autoridad de Aviación Civil cuente con los elementos para acreditar su
+                    validez.
+                    <p tyle="padding-left:10%">a) Biometría hemática.</p>
+                    <p tyle="padding-left:10%">b) Química sanguínea de 6 elementos (Glucosa, Nitrógeno Ureico en Sangre,
+                        Creatinina, Ácido úrico, Colesterol total y Triglicéridos).</p>
+                    <p tyle="padding-left:10%">c) Hemoglobina glucosilada.</p>
+                    <p tyle="padding-left:10%">d) Examen General de Orina.</p>
+                    <p tyle="padding-left:10%">e) Prueba de detección de VIH.</p>
+                    <p tyle="padding-left:10%">f) Radiografía de tórax posteroanterior.</p>
+                </li><br>
+                <li>Los estudios previamente descritos deberán tener fecha de emisión no mayor a un mes.
+                </li><br>
+                <li>Imprimir el formato de Consentimiento Informado y firmarlo.
+                </li><br>
+                <li>Imprimir el formato de Declaración de salud.
                 </li>
             </ol>
+        </div>
+        {{-- PAGINA 3 --}}
+        <div style='page-break-before:always;'></div>
+        <div style="text-align:center;">
+            <h2>ANEXO</h2>
+            <h4>Estudios de laboratorio en caso de tener diagnóstico de enfermedad crónica</h4>
+        </div>
+        <div class="mt-4 mx-7">
+            <table class="normal" style="width:100%">
+                <tr>
+                    <th>Hiper o hipertiroidismo</th>
+                    <th>Perfil tiroideo</th>
+                </tr>
+                <tr>
+                    <td>Antecedente de Infarto Agudo al Miocardio</td>
+                    <td>Electrolitos séricos, Pruebas de tendencia hemorrágica, Prueba de esfuerzo, Ecocardiograma.</td>
+                </tr>
+                <tr>
+                    <td>Artritis reumatoide</td>
+                    <td>Perfil reumatoide (Factor reumatoide, VSG, PCR, Complemento C3-C4)</td>
+                </tr>
+                <tr>
+                    <td>HIV positivo</td>
+                    <td>Carga viral y recuento de linfocitos CD4 y CD8</td>
+                </tr>
+            </table>
         </div>
     </div>
 </body>
