@@ -265,13 +265,16 @@ class Generate extends Component
         $user_id = Auth::user()->id;
         $printQuery = userAppointment::with(['appointmentTypeExam', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess'])
             ->where('user_id', $user_id)->latest()->first();
-
         // sumando las citas
         $sumappointment = user_appointment_success::where('appointmentDate', $printQuery->appointmentSuccess->appointmentDate)
             ->sum('appointments');
-
-        $pdf = PDF::loadView('livewire.appointment.documents.appointment-pdf', compact('printQuery', 'sumappointment'));
-        return $pdf->download($printQuery->paymentDate . ' cita.pdf');
+        if ($printQuery->type_exam_id == 1) {
+            $pdf = PDF::loadView('livewire.appointment.documents.appointment-pdf', compact('printQuery', 'sumappointment'));
+            return $pdf->download($printQuery->paymentDate . '-' . $printQuery->appointmentTypeExam->name . ' cita.pdf');
+        } else if ($printQuery->type_exam_id == 2) {
+            $pdf = PDF::loadView('livewire.appointment.documents.appointment-pdf2', compact('printQuery', 'sumappointment'));
+            return $pdf->download($printQuery->paymentDate . '-' . $printQuery->appointmentTypeExam->name . ' cita.pdf');
+        }
     }
     public function messages()
     {
