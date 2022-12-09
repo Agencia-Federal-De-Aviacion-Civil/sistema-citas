@@ -32,7 +32,7 @@
     <div>
         <img src="{{public_path('images/AFAC1.png')}}" width="130" height="100" alt="">
         <div class="titulo">
-            <h2>COMPROBANTE DE CITA</h2>
+            <h2>CITA PARA EXAMEN MÉDICO INICIAL</h2>
         </div>
         <table>
             <tr>
