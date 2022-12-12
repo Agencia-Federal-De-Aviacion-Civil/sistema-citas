@@ -15,5 +15,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('', [homeController::class, 'index'])->name('afac.home');
+// Route::get('', [homeController::class, 'index'])->name('afac.home');
 Route::get('/download', [Generate::class, 'test'])->name('download');
