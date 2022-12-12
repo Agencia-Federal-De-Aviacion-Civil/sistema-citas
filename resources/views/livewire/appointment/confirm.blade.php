@@ -27,7 +27,7 @@
                             class="py-2  text-lg font-semibold text-center text-gray-800 capitalize xl:text-2xl lg:text-xl dark:text-white">
                             Verifica tus datos de la <span class="text-sky-700 ">Cita</span>
                         </h1>
-                        <button wire:click="test()">GENERAR</button>
+                        {{-- <button wire:click="test()">GENERAR</button> --}}
                         <div class="flex justify-center mx-auto mt-2">
                             <span class="inline-block w-40 h-1 bg-sky-600 rounded-full"></span>
                             <span class="inline-block w-3 h-1 mx-1 bg-sky-600 rounded-full"></span>
