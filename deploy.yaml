@@ -1,0 +1,31 @@
+import: 
+  - recipe/laravel.php
+  - contrib/npm.php
+
+config:
+  repository: 'https://github.com/Agencia-Federal-De-Aviacion-Civil/sistema-citas.git'
+
+hosts:
+  prod:
+    remote_user: root
+    hostname: citas.afac-avciv.com
+    deploy_path: '/var/www/citas.afac-avciv.com'
+
+tasks:
+  deploy: 
+    - deploy:prepare
+    - deploy:vendors
+    - artisan:storage:link
+    - artisan:config:cache
+    - artisan:route:cache
+    - artisan:view:cache
+    - artisan:event:cache
+    - artisan:migrate
+    - npm:install
+    - deploy:publish
+  build:
+    - cd: "{{release_path}}"
+    - run: "npm run prod"  
+
+after:
+  deploy:failed: deploy:unlock
