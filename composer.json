@@ -13,7 +13,8 @@
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
         "livewire/livewire": "^2.5",
-        "wireui/wireui": "^1.17"
+        "wireui/wireui": "^1.17",
+        "ext-gd": "*"
     },
     "require-dev": {
         "deployer/deployer": "^7.0",
