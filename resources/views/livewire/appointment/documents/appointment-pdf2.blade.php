@@ -160,7 +160,7 @@
                     <p style="padding-left:14%;font-size:14px">1. Clase I – cada 3 años.</p>
                     <p style="padding-left:14%;font-size:14px">2. Clase II – cada 4 años.</p>
                     <p style="padding-left:14%;font-size:14px">3. Clase III – cada 3 años.</p>
-                    <p style="padding-left:14%;font-size:14px">4. O antes a indicación de su médico examinador..</p>
+                    <p style="padding-left:14%;font-size:14px">4. O antes a indicación de su médico examinador.</p>
                 </li>
                 <li>Los estudios previamente descritos deberán tener fecha de emisión no mayor a un mes.
                 </li>
