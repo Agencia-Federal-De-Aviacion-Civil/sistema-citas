@@ -8,8 +8,7 @@
                         <h1 class="text-blue-400 dark:text-gray-300 md:text-4xl">Bienvenido</h1>
                         <h1 class="text-3xl font-semibold capitalize lg:text-5xl">Medicina de Aviación</h1>
                         <p class="max-w-xl mt-6">
-                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatem quo
-                            aliquid molestiae hic incidunt beatae.
+                            
                         </p>
                         <div class="py-2 flex items-center justify-center opacity-50">
                             <img class="lg:w-52 lg:h-40 w-40 h-30 mr-2" src="{{ asset('images/AFAC1.png') }}"
