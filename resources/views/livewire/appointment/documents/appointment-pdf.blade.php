@@ -101,15 +101,15 @@
         </div>
         <div style="padding-top:2%;font-size:18px">
             <ol class="">
-                <li value="1">Comprobante de domicilio con vigencia no mayor a 3 meses.</li>
+                <li value="1">Acta de Nacimiento (Original)</li>
+                <li>Clave Única de Registro de Población (CURP).</li>
+                <li>Comprobante de domicilio con vigencia no mayor a 3 meses.</li>
                 <li>Comprobante de pago.</li>
-                <li>Una de las siguientes identificaciones:</li>
-                <p tyle="padding-left:2%">a) Cédula de identidad ciudadana (INE) vigente.</p>
-                <p tyle="padding-left:2%">b) Clave Única de Registro de Población (CURP).</p>
-                <p tyle="padding-left:2%">c) Cédula profesional.</p>
-                <p tyle="padding-left:2%">d) Cartilla Militar (personal masculino).</p>
-                <p tyle="padding-left:2%">e) Licencia Federal.</p>
-                <p tyle="padding-left:2%">f) Título.</p>
+                <li>Alguna de las siguientes identificaciones:</li>
+                <p tyle="padding-left:2%">a) Cédula de identidad ciudadana (INE) vigente.</p>             
+                <p tyle="padding-left:2%">b) Cédula profesional.</p>
+                <p tyle="padding-left:2%">c) Licencia Federal.</p>
+                <p tyle="padding-left:2%">d) Pasaporte vigente.</p>
             </ol>
         </div>
         {{-- PAGINA 2 --}}
@@ -118,26 +118,51 @@
             <h2>GUÍA DE RECOMENDACIONES</h2>
         </div> -->
         <div class="mt-4 mx-7 text-justify ">
-            <p>Se hace de su conocimiento la siguiente <b>guía de recomendaciones</b>para agilizar su
+            <p>Se hace de su conocimiento la siguiente <b>guía de recomendaciones</b> para agilizar su
                 examen psicofísico:</p>
             <ol class="">
-                <li value="1">Acudir con ropa cómoda, evitando sea de una sola pieza.
-                </li>
-                <li>Presentarse en ayuno, no tomar alimentos las 8 horas previas a su hora de cita
+                {{-- <li value="1">Acudir con ropa cómoda, evitando sea de una sola pieza.
+                </li> --}}
+                <li value="1">Presentarse en ayuno, no tomar alimentos las 8 horas previas a su hora de cita
                 </li>
                 <li>No suspender medicación prescrita.</u>
                 </li>
-                <li>En examen de primera vez, deberá acudir con comprobante de grupo y Rh sanguíneos.
+                <li>En examen de <b>primera vez</b>, deberá acudir con comprobante de grupo y Rh sanguíneos.
                 </li>
                 <li>En caso de haber tenido algún procedimiento dental, esperar mínimo 72 horas posteriores al mismo
                     para agendar su cita.
                 </li>
                 <li>En caso de haber sido diagnosticado con alguna(s) enfermedad(es) crónica(s) (enfermedades
-                    cardiacas, respiratorias, hipertiroidismo, etc.), presentar un resumen clínico expedido por su
+                    cardiacas, respiratorias, tiroides, etc.), presentar un resumen clínico expedido por su
                     médico tratante y estudios <b>adicionales</b> (ver Anexo) con vigencia no mayor a 3 meses para
                     acreditar el
                     estado actual de salud.
                 </li>
+                <div style="text-align:center;">
+                    <h2>EJEMPLO</h2>
+                    {{-- <h4>Estudios de laboratorio en caso de tener diagnóstico de enfermedad crónica</h4> --}}
+                </div>
+                <div class="mt-4 mx-7">
+                    <table class="normal" style="width:100%">
+                        <tr>
+                            <th></th>
+                            <th>Enfermedad tiroides</th>
+                        </tr>
+                        <tr>
+                            <td>Antecedente de Infarto Agudo al Miocardio y/o Cardiopatía</td>
+                            <td>Electrolitos séricos, Pruebas de tendencia hemorrágica, Prueba de esfuerzo, Ecocardiograma.</td>
+                        </tr>
+                        {{-- <tr>
+                            <td>Artritis reumatoide</td>
+                            <td>Perfil reumatoide (Factor reumatoide, VSG, PCR, Complemento C3-C4)</td>
+                        </tr> --}}
+                        <tr>
+                            <td>Cero positivo a HIV</td>
+                            <td>Carga viral y recuento de linfocitos CD4 y CD8</td>
+                        </tr>
+                    </table>
+                </div>
+                <br>
                 <li>En caso de presentar disminución en la agudeza visual, deberá presentarse con lentes de armazón o
                     de contacto con graduación actualizada. Si alterna el uso de ambos, deberá presentarlos.
                 </li>
@@ -155,7 +180,7 @@
                         Creatinina, Ácido úrico, Colesterol total y Triglicéridos).</p>
                     <p tyle="padding-left:10%">c) Hemoglobina glucosilada.</p>
                     <p tyle="padding-left:10%">d) Examen General de Orina.</p>
-                    <p tyle="padding-left:10%">e) Prueba de detección de VIH.</p>
+                    <p tyle="padding-left:10%">e) Prueba ELISA.</p>
                     <p tyle="padding-left:10%">f) Radiografía de tórax posteroanterior.</p>
                 </li>
                 <li>Los estudios previamente descritos deberán tener fecha de emisión no mayor a un mes.
@@ -165,31 +190,7 @@
                 <li>Imprimir el formato de Declaración de salud.
                 </li>
             </ol>
-        </div>
-        <div style="text-align:center;">
-            <h2>ANEXO</h2>
-            <h4>Estudios de laboratorio en caso de tener diagnóstico de enfermedad crónica</h4>
-        </div>
-        <div class="mt-4 mx-7">
-            <table class="normal" style="width:100%">
-                <tr>
-                    <th>Hiper o hipertiroidismo</th>
-                    <th>Perfil tiroideo</th>
-                </tr>
-                <tr>
-                    <td>Antecedente de Infarto Agudo al Miocardio</td>
-                    <td>Electrolitos séricos, Pruebas de tendencia hemorrágica, Prueba de esfuerzo, Ecocardiograma.</td>
-                </tr>
-                <tr>
-                    <td>Artritis reumatoide</td>
-                    <td>Perfil reumatoide (Factor reumatoide, VSG, PCR, Complemento C3-C4)</td>
-                </tr>
-                <tr>
-                    <td>HIV positivo</td>
-                    <td>Carga viral y recuento de linfocitos CD4 y CD8</td>
-                </tr>
-            </table>
-        </div>
+        </div>        
     </div>
 </body>
 

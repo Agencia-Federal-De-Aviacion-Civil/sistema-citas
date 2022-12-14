@@ -111,9 +111,7 @@
                 <p tyle="padding-left:2%">a) Cédula de identidad ciudadana (INE) vigente.</p>
                 <p tyle="padding-left:2%">b) Clave Única de Registro de Población (CURP).</p>
                 <p tyle="padding-left:2%">c) Cédula profesional.</p>
-                <p tyle="padding-left:2%">d) Cartilla Militar (personal masculino).</p>
-                <p tyle="padding-left:2%">e) Licencia Federal.</p>
-                <p tyle="padding-left:2%">f) Título.</p>
+                <p tyle="padding-left:2%">d) Licencia Federal.</p>
             </ol>
         </div>
         {{-- PAGINA 2 --}}
@@ -125,22 +123,39 @@
             <p>Se hace de su conocimiento la siguiente <b>guía de recomendaciones</b>para agilizar su
                 examen psicofísico:</p>
             <ol class="">
-                <li value="1">Acudir con ropa cómoda, evitando sea de una sola pieza.
-                </li>
-                <li>Presentarse en ayuno, no tomar alimentos las 8 horas previas a su hora de cita.
+                <li value="1">Presentarse en ayuno, no tomar alimentos las 8 horas previas a su hora de cita.
                 </li>
                 <li>No suspender medicación prescrita.</u>
-                </li>
-                <li>En examen de primera vez, deberá acudir con comprobante de grupo y Rh sanguíneos.
                 </li>
                 <li>En caso de haber tenido algún procedimiento dental, esperar mínimo 72 horas posteriores al mismo
                     para agendar su cita.
                 </li>
-                <li>6. En caso de haber sido diagnosticado con alguna(s) enfermedad(es) crónica(s) (enfermedades
+                <li>En caso de haber sido diagnosticado con alguna(s) enfermedad(es) crónica(s) (enfermedades
                     cardiacas, respiratorias, hipertiroidismo, etc.), presentar un resumen clínico expedido por su
                     médico tratante y estudios <b>adicionales (ver ANEXO)</b> con vigencia no mayor a 3 meses para
                     acreditar el estado actual de salud.
                 </li>
+                <div style="text-align:center;">
+                    <h2>EJEMPLO</h2>
+                    {{-- <h4>Estudios de laboratorio en caso de tener diagnóstico de enfermedad crónica</h4> --}}
+                </div>
+                <div class="mt-4 mx-7">
+                    <table class="normal" style="width:100%">
+                        <tr>
+                            <td></td>
+                            <td>Perfil tiroideo</td>
+                        </tr>
+                        {{-- <tr>
+                            <td>Artritis reumatoide</td>
+                            <td></td>
+                        </tr> --}}
+                        <tr>
+                            <td>Cero positivo a HIV</td>
+                            <td>Carga viral y recuento de linfocitos CD4 y CD8</td>
+                        </tr>
+                    </table>
+                </div>
+                <br>
                 <li>En caso de presentar disminución en la agudeza visual, deberá presentarse con lentes de armazón o de
                     contacto con graduación actualizada. Si alterna el uso de ambos, deberá presentarlos.
                 </li>
@@ -169,38 +184,6 @@
                 <li>Imprimir el formato de Declaración de salud.
                 </li>
             </ol>
-        </div>
-        <div style="text-align:center;">
-            <h2>ANEXO</h2>
-            <h4>Estudios de laboratorio en caso de tener diagnóstico de enfermedad crónica</h4>
-        </div>
-        <div class="mt-4 mx-7">
-            <table class="normal" style="width:100%">
-                <tr>
-                    <th>Diabetes tipo 2</th>
-                    <th>Hemoglobina glucosilada</th>
-                </tr>
-                <tr>
-                    <td>Hiper o hipotiroidismo</td>
-                    <td>Perfil tiroideo</td>
-                </tr>
-                <tr>
-                    <td>Antecedente de COVID 19</td>
-                    <td>Radiografía de Tórax Posteroanterior y posteriormente a indicación de su médico examinador.</td>
-                </tr>
-                <tr>
-                    <td>Antecedente de Infarto Agudo al Miocardio</td>
-                    <td>Electrolitos séricos, Pruebas de tendencia hemorrágica, Prueba de esfuerzo, Ecocardiograma.</td>
-                </tr>
-                <tr>
-                    <td>Artritis reumatoide</td>
-                    <td>Perfil reumatoide (Factor reumatoide, VSG, PCR, Complemento C3-C4)</td>
-                </tr>
-                <tr>
-                    <td>HIV positivo</td>
-                    <td>Carga viral y recuento de linfocitos CD4 y CD8</td>
-                </tr>
-            </table>
         </div>
     </div>
 </body>
