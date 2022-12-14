@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::create('headquarters', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            // $table->string('direction');
+            // $table->string('url');
             $table->timestamps();
         });
     }
