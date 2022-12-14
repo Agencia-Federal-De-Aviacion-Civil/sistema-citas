@@ -206,10 +206,8 @@
             <div class="grid xl:grid-cols-2 xl:gap-24">
                 <div class="sm:w-full w-full">
                     <div class="rounded flex p-0 h-full items-center">
-                        <p class="text-lg title-font font-normal">Av. Nichupté, Manzana 10,
-                            Edificio Laura,
-                            512, 77535 Cancún, Q.R.
-                            <a href="https://www.google.com/maps/place/Escuela+de+Aviaci%C3%B3n+Canc%C3%BAn/@21.1605443,-86.9006894,13z/data=!4m10!1m2!2m1!1sCanc%C3%BAn+Quintana+Roo+sacra+licencias+de+piloto!3m6!1s0x80d7af7aa2c04609:0x95d079877c3c9b8b!8m2!3d21.1397753!4d-86.8624571!15sCi5DYW5jw7puIFF1aW50YW5hIFJvbyBzYWNyYSBsaWNlbmNpYXMgZGUgcGlsb3RvWjAiLmNhbmPDum4gcXVpbnRhbmEgcm9vIHNhY3JhIGxpY2VuY2lhcyBkZSBwaWxvdG-SAQZzY2hvb2zgAQA!16s%2Fg%2F1tjjpqg7"
+                        <p class="text-lg title-font font-normal">{{ $userAppointment->appointmentSuccess->successHeadquarter->direction }}
+                            <a href="{{ $userAppointment->appointmentSuccess->successHeadquarter->url }}"
                                 target="_blank" class="text-lg font-semibold text-sky-600">Consultar
                                 mapa</a>
                         </p>
@@ -365,10 +363,9 @@
             <div class="grid xl:grid-cols-2 xl:gap-24">
                 <div class="sm:w-full w-full">
                     <div class="rounded flex p-0 h-full items-center">
-                        <p class="text-lg title-font font-normal">Av. Nichupté, Manzana 10,
-                            Edificio Laura,
-                            512, 77535 Cancún, Q.R.
-                            <a href="https://www.google.com/maps/place/Escuela+de+Aviaci%C3%B3n+Canc%C3%BAn/@21.1605443,-86.9006894,13z/data=!4m10!1m2!2m1!1sCanc%C3%BAn+Quintana+Roo+sacra+licencias+de+piloto!3m6!1s0x80d7af7aa2c04609:0x95d079877c3c9b8b!8m2!3d21.1397753!4d-86.8624571!15sCi5DYW5jw7puIFF1aW50YW5hIFJvbyBzYWNyYSBsaWNlbmNpYXMgZGUgcGlsb3RvWjAiLmNhbmPDum4gcXVpbnRhbmEgcm9vIHNhY3JhIGxpY2VuY2lhcyBkZSBwaWxvdG-SAQZzY2hvb2zgAQA!16s%2Fg%2F1tjjpqg7"
+                        <p class="text-lg title-font font-normal">
+                            {{ $userAppointment->appointmentSuccess->successHeadquarter->direction }}
+                            <a href="{{ $userAppointment->appointmentSuccess->successHeadquarter->url }}"
                                 target="_blank" class="text-lg font-semibold text-sky-600">Consultar
                                 mapa</a>
                         </p>
