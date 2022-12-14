@@ -10,7 +10,7 @@
                                 Medicina De Aviación
                             </h1>
                             <p class="max-w-xl mt-6">
-                                Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                                
                             </p>
                             <br>
                             <a href="{{ route('login') }}"
