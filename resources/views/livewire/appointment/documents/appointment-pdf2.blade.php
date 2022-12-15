@@ -166,15 +166,15 @@
                     la institución, dirección, nombre completo del laboratorista, su cédula profesional y número
                     telefónico, a fin de que la Autoridad de Aviación Civil cuente con los elementos para acreditar su
                     validez.
-                    <p style="padding-left:10%;font-size:14px">a) Biometría hemática.</p>
-                    <p style="padding-left:10%;font-size:14px">b) Química sanguínea de 6 elementos (Glucosa, Nitrógeno Ureico en Sangre,
+                    <p style="padding-left:10%;">a) Biometría hemática.</p>
+                    <p style="padding-left:10%;">b) Química sanguínea de 6 elementos (Glucosa, Nitrógeno Ureico en Sangre,
                         Creatinina, Ácido úrico, Colesterol total y Triglicéridos).</p>
-                    <p style="padding-left:10%;font-size:14px">c) Examen General de Orina</p>
-                    <p style="padding-left:10%;font-size:14px">d) Radiografía de Tórax Posteroanterior de la siguiente manera:</p>
-                    <p style="padding-left:14%;font-size:14px">1. Clase I – cada 3 años.</p>
-                    <p style="padding-left:14%;font-size:14px">2. Clase II – cada 4 años.</p>
-                    <p style="padding-left:14%;font-size:14px">3. Clase III – cada 3 años.</p>
-                    <p style="padding-left:14%;font-size:14px">4. O antes a indicación de su médico examinador.</p>
+                    <p style="padding-left:10%;">c) Examen General de Orina</p>
+                    <p style="padding-left:10%;">d) Radiografía de Tórax Posteroanterior de la siguiente manera:</p>
+                    <p style="padding-left:14%;">1. Clase I – cada 3 años.</p>
+                    <p style="padding-left:14%;">2. Clase II – cada 4 años.</p>
+                    <p style="padding-left:14%;">3. Clase III – cada 3 años.</p>
+                    <p style="padding-left:14%;">4. O antes a indicación de su médico examinador.</p>
                 </li>
                 <li>Los estudios previamente descritos deberán tener fecha de emisión no mayor a un mes.
                 </li>
