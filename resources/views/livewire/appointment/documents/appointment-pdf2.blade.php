@@ -98,7 +98,7 @@
                 Estimado usuario, con el fin de facilitar el procedimiento de registro y apoyarle en el proceso de su
                 examen psicofísico, le presentamos los siguientes <b>requisitos</b> para presentarse a su
                 cita;
-                es<b> indispensable</b> que acuda con el <u>original y copia</u>de los siguientes documentos, de lo contrario,
+                es<b> indispensable</b> que acuda con el <u>original y copia</u> de los siguientes documentos, de lo contrario,
                 no
                 podrá realizar su examen y éste se perderá:
             </label>
