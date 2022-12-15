@@ -96,9 +96,9 @@
         <div style="padding-top:5%">
             <label style="text-align: justify;font-size:18px" for="">
                 Estimado usuario, con el fin de facilitar el procedimiento de registro y apoyarle en el proceso de su
-                examen psicofísico, le presentamos los siguientes <b>requisitos indispensables</b> para presentarse a su
+                examen psicofísico, le presentamos los siguientes <b>requisitos</b> para presentarse a su
                 cita;
-                es indispensable que acuda con el <u>original y copia</u>de los siguientes documentos, de lo contrario,
+                es<b> indispensable</b> que acuda con el <u>original y copia</u>de los siguientes documentos, de lo contrario,
                 no
                 podrá realizar su examen y éste se perderá:
             </label>
@@ -107,11 +107,10 @@
             <ol class="">
                 <li value="1">Comprobante de domicilio con vigencia no mayor a 3 meses.</li>
                 <li>Comprobante de pago.</li>
-                <li>Una de las siguientes identificaciones:</li>
-                <p tyle="padding-left:2%">a) Cédula de identidad ciudadana (INE) vigente.</p>
-                <p tyle="padding-left:2%">b) Clave Única de Registro de Población (CURP).</p>
-                <p tyle="padding-left:2%">c) Cédula profesional.</p>
-                <p tyle="padding-left:2%">d) Licencia Federal.</p>
+                <li>Cédula de identidad ciudadana (INE) vigente en caso de no contar con ella puede presentar:</li>
+                <p tyle="padding-left:2%">a) Clave Única de Registro de Población (CURP) vigente.</p>
+                <p tyle="padding-left:2%">b) Cédula profesional.</p>
+                <p tyle="padding-left:2%">c) Licencia Federal.</p>
             </ol>
         </div>
         {{-- PAGINA 2 --}}
@@ -130,8 +129,8 @@
                 <li>En caso de haber tenido algún procedimiento dental, esperar mínimo 72 horas posteriores al mismo
                     para agendar su cita.
                 </li>
-                <li>En caso de haber sido diagnosticado con alguna(s) enfermedad(es) crónica(s) (enfermedades
-                    cardiacas, respiratorias, hipertiroidismo, etc.), presentar un resumen clínico expedido por su
+                <li>En caso de haber sido diagnosticado con alguna(s) enfermedad(es) crónica(s) como: enfermedades
+                    cardiacas, respiratorias, hipertiroidismo, etc., presentar un resumen clínico expedido por su
                     médico tratante y estudios <b>adicionales (ver ANEXO)</b> con vigencia no mayor a 3 meses para
                     acreditar el estado actual de salud.
                 </li>
@@ -142,24 +141,24 @@
                 <div class="mt-4 mx-7">
                     <table class="normal" style="width:100%">
                         <tr>
-                            <td></td>
-                            <td>Perfil tiroideo</td>
+                        <th>PADECIMIENTOS</th>
+                            <th>TIPO DE ESTUDIOS</th>
                         </tr>
                         {{-- <tr>
                             <td>Artritis reumatoide</td>
                             <td></td>
                         </tr> --}}
                         <tr>
-                            <td>Cero positivo a HIV</td>
-                            <td>Carga viral y recuento de linfocitos CD4 y CD8</td>
+                            <td>Enfermedad tiroides</td>
+                            <td>Perfil Tiroideo</td>
                         </tr>
                     </table>
                 </div>
                 <br>
-                <li>En caso de presentar disminución en la agudeza visual, deberá presentarse con lentes de armazón o de
+                <li>En caso de padecer disminución en la agudeza visual, deberá presentarse con lentes de armazón o de
                     contacto con graduación actualizada. Si alterna el uso de ambos, deberá presentarlos.
                 </li>
-                <li>En caso de presentar embarazo, presentar constancia de control del mismo, actualizada y hacerlo
+                <li>En caso de embarazo, presentar constancia de control del mismo, actualizada y hacerlo
                     saber al servicio de rayos X al acudir a su examen.
                 </li>
                 <li>Acudir con los estudios de laboratorio que a continuación se enlistan, los cuales deberán realizarse
