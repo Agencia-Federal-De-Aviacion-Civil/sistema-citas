@@ -61,7 +61,7 @@ class Generate extends Component
             'clasification_class_id' => 'required',
             'paymentConcept' => 'required',
             'paymentDate' => 'required',
-            'document' => 'required|mimetypes:application/pdf',
+            'document' => 'required|mimetypes:application/pdf|max:500',
             'headquarter_id' => 'required',
             'appointmentDate' => 'required',
             'appointmentTime' => 'required',
@@ -281,6 +281,11 @@ class Generate extends Component
     }
     public function messages()
     {
-        return ['paymentConcept.required' => 'Ingrese clave de pago.'];
+        return [
+            'paymentConcept.required' => 'Ingrese clave de pago.',
+            'document.required' => 'Documento obligatorio.',
+            'document.mimetypes' => 'Solo documentos .PDF.',
+            'document.max' => 'No permitido, tamaño maximo 500 KB',
+        ];
     }
 }

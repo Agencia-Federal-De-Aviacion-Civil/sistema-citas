@@ -40,7 +40,7 @@
             <tr>
                 <td colspan="12">NOMBRE:</td>
                 <td colspan="24">
-                    {{ $printQuery->appointmentUser->name . ' ' . $printQuery->appointmentUser->apParental . ' ' . $printQuery->appointmentUser->apMaternal }}
+                    {{ strtoupper($printQuery->appointmentUser->name . ' ' . $printQuery->appointmentUser->apParental . ' ' . $printQuery->appointmentUser->apMaternal) }}
                 </td>
             </tr>
             <tr>
