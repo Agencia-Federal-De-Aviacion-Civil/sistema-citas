@@ -29,8 +29,8 @@ class Index extends Component
             'federalEntity' => 'required',
             'delegation' => 'required',
             'mobilePhone' => 'required|max:10',
-            'officePhone' => 'required|max:10',
-            'extension' => 'required',
+            'officePhone' => 'max:10',
+            'extension' => '',
             'curp' => 'required|unique:users',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6|same:passwordConfirmation'

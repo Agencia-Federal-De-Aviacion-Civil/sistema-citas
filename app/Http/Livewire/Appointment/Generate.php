@@ -87,7 +87,7 @@ class Generate extends Component
     public function updatedTypeClassId($type_class_id)
     {
         $this->clasificationClass = clasificationClass::where('type_class_id', $type_class_id)->get();
-        $this->reset(['clasification_class_id']);
+        // $this->reset(['clasification_class_id']);
     }
     public function clean()
     {
@@ -255,7 +255,7 @@ class Generate extends Component
     }
     public function print()
     {
-
+        $this->clean();
         return redirect()->route('download');
     }
     public function returnView()
@@ -282,7 +282,11 @@ class Generate extends Component
     public function messages()
     {
         return [
+            'type_exam_id.required' => 'Campo obligatorio',
+            'type_class_id.required' => 'Campo obligatorio',
+            'clasification_class_id.required' => 'Campo obligatorio',
             'paymentConcept.required' => 'Ingrese clave de pago.',
+            'paymentDate.required' => 'Campo obligatorio.',
             'document.required' => 'Documento obligatorio.',
             'document.mimetypes' => 'Solo documentos .PDF.',
             'document.max' => 'No permitido, tamaño maximo 500 KB',
