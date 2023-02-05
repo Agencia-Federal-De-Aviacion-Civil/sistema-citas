@@ -132,9 +132,12 @@ class Generate extends Component
                 'appointments' => $this->count,
             ]
         );
+        $extension = $this->document->extension();
         $documentPay = userPaymentDocument::updateOrCreate(
             ['id' => $this->document_id],
-            ['document' => $this->document->store('documentos', 'public')]
+            [
+                'document' => $this->document->storeAs('uploads/citas-app', $this->appointmentDate . '-' . $this->appointmentTime .  '.' . $extension, 'do'),
+            ]
         );
         $user_id = Auth::user()->id;
         $this->userAppointment = userAppointment::updateOrCreate(
