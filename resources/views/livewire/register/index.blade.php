@@ -88,7 +88,7 @@
                                             class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
                                             <div class="flex items-center pl-3">
                                                 <x-radio id="right-labelM" label="MASCULINO" value="Masculino"
-                                                wire:model.defer="genre" />
+                                                    wire:model.defer="genre" />
                                                 {{-- <input id="horizontal-list-radio-id" type="radio" value="Masculino"
                                                     wire:model.lazy="genre" name="list-radio"
                                                     class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
@@ -212,17 +212,21 @@
                                     </div>
                                 </div>
                                 <div class="mt-2 grid md:grid-cols-2 md:gap-6">
-                                    <div class="relative z-0 mb-6 w-full group">
-                                        <input type="text" name="floating_nexterior" id="floating_nexterior"
+                                    <div class="relative mb-6 w-full group">
+                                        <x-input class="uppercase" wire:model.lazy="nExterior" label="NÚMERO EXTERIOR"
+                                            placeholder="ESCRIBE..." />
+                                        {{-- <input type="text" name="floating_nexterior" id="floating_nexterior"
                                             wire:model.lazy="nExterior"
                                             class="uppercase block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                             placeholder=" " required />
                                         <label for="floating_nexterior"
                                             class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">#
-                                            Exterior</label>
+                                            Exterior</label> --}}
                                     </div>
-                                    <div class="relative z-0 mb-6 w-full group">
-                                        <input type="text" name="floating_colonia" id="floating_colonia"
+                                    <div class="relative mb-6 w-full group">
+                                        <x-input class="uppercase" wire:model.lazy="suburb" label="COLONIA"
+                                            placeholder="ESCRIBE..." />
+                                        {{-- <input type="text" name="floating_colonia" id="floating_colonia"
                                             wire:model.lazy="suburb"
                                             class="uppercase block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                             placeholder=" " required />
@@ -231,12 +235,15 @@
                                         @error('suburb')
                                             <span
                                                 class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
-                                        @enderror
+                                        @enderror --}}
                                     </div>
                                 </div>
                                 <div class="mt-2 grid md:grid-cols-3 md:gap-6">
-                                    <div class="relative z-0 mb-6 w-full group">
-                                        <input type="text" name="floating_cp" id="floating_cp"
+                                    <div class="relative mb-6 w-full group">
+                                        <x-inputs.maskable mask="#####" class="uppercase"
+                                            wire:model.lazy="postalCode" label="CÓDIGO POSTAL"
+                                            placeholder="ESCRIBE..." />
+                                        {{-- <input type="text" name="floating_cp" id="floating_cp"
                                             wire:model.lazy="postalCode"
                                             class="uppercase block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                             placeholder=" " required />
@@ -247,10 +254,12 @@
                                         @error('postalCode')
                                             <span
                                                 class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
-                                        @enderror
+                                        @enderror --}}
                                     </div>
-                                    <div class="relative z-0 mb-6 w-full group">
-                                        <input type="text" name="floating_entity" id="floating_entity"
+                                    <div class="relative mb-6 w-full group">
+                                        <x-input class="uppercase" wire:model.lazy="federalEntity"
+                                            label="ENTIDAD FEDERATIVA" placeholder="ESCRIBE..." />
+                                        {{-- <input type="text" name="floating_entity" id="floating_entity"
                                             wire:model.lazy="federalEntity"
                                             class="uppercase block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                             placeholder=" " required />
@@ -260,10 +269,12 @@
                                         @error('federalEntity')
                                             <span
                                                 class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
-                                        @enderror
+                                        @enderror --}}
                                     </div>
-                                    <div class="relative z-0 mb-6 w-full group">
-                                        <input type="text" name="floating_delegacion" id="floating_delegacion"
+                                    <div class="relative mb-6 w-full group">
+                                        <x-input class="uppercase" wire:model.lazy="delegation" label="DELEGACIÓN"
+                                            placeholder="ESCRIBE..." />
+                                        {{-- <input type="text" name="floating_delegacion" id="floating_delegacion"
                                             wire:model.lazy="delegation"
                                             class="uppercase block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                             placeholder=" " required />
@@ -273,12 +284,14 @@
                                         @error('delegation')
                                             <span
                                                 class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
-                                        @enderror
+                                        @enderror --}}
                                     </div>
                                 </div>
                                 <div class="grid md:grid-cols-2 md:gap-6">
-                                    <div class="relative z-0 mb-6 w-full group">
-                                        <input type="text" name="floating_phone" id="floating_phone"
+                                    <div class="relative mb-6 w-full group">
+                                        <x-inputs.maskable label="TELÉFONO MOVIL" wire:model.lazy="mobilePhone"
+                                            mask="(##)####-####" placeholder="INGRESE..." />
+                                        {{-- <input type="text" name="floating_phone" id="floating_phone"
                                             wire:model.lazy="mobilePhone"
                                             class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                             placeholder=" " required />
@@ -289,10 +302,12 @@
                                         @error('mobilePhone')
                                             <span
                                                 class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
-                                        @enderror
+                                        @enderror --}}
                                     </div>
-                                    <div class="relative z-0 mb-6 w-full group">
-                                        <input type="text" name="floating_officePhone" id="floating_officePhone"
+                                    <div class="relative mb-6 w-full group">
+                                        <x-inputs.maskable label="TELÉFONO DE OFICINA" wire:model.lazy="officePhone"
+                                            mask="(##)####-####" placeholder="INGRESE..." />
+                                        {{-- <input type="text" name="floating_officePhone" id="floating_officePhone"
                                             wire:model.lazy="officePhone"
                                             class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                             placeholder=" " required />
@@ -303,22 +318,26 @@
                                         @error('officePhone')
                                             <span
                                                 class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
-                                        @enderror
+                                        @enderror --}}
                                     </div>
                                 </div>
                                 <div class="grid md:grid-cols-2 md:gap-6">
-                                    <div class="relative z-0 mb-6 w-full group">
-                                        <input type="text" name="floating_ext" id="floating_ext"
+                                    <div class="relative mb-6 w-full group">
+                                        <x-inputs.maskable label="EXTENSIÓN" wire:model.lazy="extension"
+                                            mask="####" placeholder="INGRESE..." />
+                                        {{-- <input type="text" name="floating_ext" id="floating_ext"
                                             wire:model.lazy="extension"
                                             class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                             placeholder=" " required />
                                         <label for="floating_ext"
                                             class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
                                             Ext.
-                                        </label>
+                                        </label> --}}
                                     </div>
                                     <div class="relative z-0 mb-6 w-full group">
-                                        <input type="text" name="floating_email" id="floating_email"
+                                        <x-input class="pr-28" label="CORREO ELECTRÓNICO" wire:model.lazy="email"
+                                            placeholder="INGRESE..." />
+                                        {{-- <input type="text" name="floating_email" id="floating_email"
                                             wire:model.lazy="email"
                                             class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                             placeholder=" " required />
@@ -329,12 +348,14 @@
                                         @error('email')
                                             <span
                                                 class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
-                                        @enderror
+                                        @enderror --}}
                                     </div>
                                 </div>
                                 <div class="grid md:grid-cols-2 md:gap-6">
-                                    <div class="relative z-0 mb-6 w-full group">
-                                        <input type="password" name="floating_password" id="floating_password"
+                                    <div class="relative mb-6 w-full group">
+                                         <x-input class="pr-28" type="password" label="CONTRASEÑA" wire:model.lazy="passwordConfirmation"
+                                            placeholder="INGRESE..." />
+                                        {{-- <input type="password" name="floating_password" id="floating_password"
                                             wire:model="passwordConfirmation"
                                             class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                             placeholder=" " required />
@@ -343,16 +364,18 @@
                                         @error('password')
                                             <span
                                                 class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
-                                        @enderror
+                                        @enderror --}}
                                     </div>
-                                    <div class="relative z-0 mb-6 w-full group">
-                                        <input type="password" name="repeat_password" id="floating_repeat_password"
+                                    <div class="relative mb-6 w-full group">
+                                           <x-input class="pr-28" type="password" label="CONFIRMAR CONTRASEÑA" wire:model.lazy="password"
+                                            placeholder="INGRESE..." />
+                                        {{-- <input type="password" name="repeat_password" id="floating_repeat_password"
                                             wire:model="password"
                                             class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                             placeholder=" " required />
                                         <label for="floating_repeat_password"
                                             class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Confirmar
-                                            contraseña</label>
+                                            contraseña</label> --}}
                                     </div>
                                 </div>
                                 <div class="text-right">
