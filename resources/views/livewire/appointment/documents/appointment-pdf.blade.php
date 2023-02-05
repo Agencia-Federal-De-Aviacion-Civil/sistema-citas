@@ -12,25 +12,27 @@
     </title>
 </head>
 <style>
-.titulo {
-    text-align: center;
-    font-weight: bold;
-    color: #000000;
-}
-.normal {
-  width: 250px;
-  border: 1px solid #000;
-  border-collapse: collapse;
-}
-.normal th, .normal td {
-  border: 1px solid #000;
-}
- 
+    .titulo {
+        text-align: center;
+        font-weight: bold;
+        color: #000000;
+    }
+
+    .normal {
+        width: 250px;
+        border: 1px solid #000;
+        border-collapse: collapse;
+    }
+
+    .normal th,
+    .normal td {
+        border: 1px solid #000;
+    }
 </style>
 
 <body>
     <div>
-        <img src="{{public_path('images/AFAC1.png')}}" width="130" height="100" alt="">
+        <img src="{{ public_path('images/AFAC1.png') }}" width="130" height="100" alt="">
         <div class="titulo">
             <h2>CITA PARA EXAMEN MÉDICO INICIAL</h2>
         </div>
@@ -43,7 +45,7 @@
             </tr>
             <tr>
                 <td colspan="12">CURP:</td>
-                <td>{{ $printQuery->appointmentUser->curp }}</td>
+                <td>{{ strtoupper($printQuery->appointmentUser->curp) }}</td>
             </tr>
             <tr>
                 <td colspan="12">NUMERO DE EXPEDIENTE:</td>
@@ -55,14 +57,14 @@
             </tr>
             <tr>
                 <td colspan="12">TIPO DE EXAMEN:</td>
-                <td colspan="24">{{ $printQuery->appointmentTypeExam->name }}</td>
+                <td colspan="24">{{ strtoupper($printQuery->appointmentTypeExam->name) }}</td>
             </tr>
             <tr>
                 <td colspan="12">TIPO DE CLASE:</td>
                 @if ($printQuery->type_exam_id == 1)
-                <td colspan="24">{{ $printQuery->appointmentStudying[0]->studyingClass->name }}</td>
+                    <td colspan="24">{{ $printQuery->appointmentStudying[0]->studyingClass->name }}</td>
                 @elseif($printQuery->type_exam_id == 2)
-                <td colspan="24">{{ $printQuery->appointmentRenovation[0]->renovationClass->name }}</td>
+                    <td colspan="24">{{ $printQuery->appointmentRenovation[0]->renovationClass->name }}</td>
                 @endif
             </tr>
             <tr>
@@ -75,7 +77,7 @@
             </tr>
             <tr>
                 <td colspan="12">UNIDAD MÉDICA:</td>
-                <td colspan="24"> {{ $printQuery->appointmentSuccess->successHeadquarter->name }}</p>
+                <td colspan="24"> {{ strtoupper($printQuery->appointmentSuccess->successHeadquarter->name) }}</p>
                 </td>
             </tr>
             <tr>
@@ -92,21 +94,23 @@
             </tr>
         </table>
         <div style="padding-top:5%">
-            <label style="text-align: justify;font-size:18px" for="">Estimado usuario, con el fin de facilitar el
+            <label style="text-align: justify;font-size:18px" for="">Estimado usuario, con el fin de facilitar
+                el
                 procedimiento de
-                registro y apoyarle en el proceso de su examen psicofísico, le presentamos los siguientes <b>requisitos</b> para presentarse a su cita; es <b>indispensable</b> que acuda con el <u>original y
+                registro y apoyarle en el proceso de su examen psicofísico, le presentamos los siguientes
+                <b>requisitos</b> para presentarse a su cita; es <b>indispensable</b> que acuda con el <u>original y
                     copia</u> de los
                 siguientes documentos, de lo contrario, no podrá realizar su examen y éste se perderá:</label>
         </div>
         <div style="padding-top:2%;font-size:18px">
             <ol class="">
                 <li value="1">Acta de Nacimiento (Original)</li>
-                <li>Clave Única de Registro de Población (CURP) actualizado.</li>
+                {{-- <li>Clave Única de Registro de Población (CURP) actualizado.</li> --}}
                 <li>Comprobante de domicilio con vigencia no mayor a 3 meses.</li>
                 <li>Comprobante de pago.</li>
-                <li>Cédula de identidad ciudadana (INE) vigente en caso de no contar con ella puede presentar:</li>           
+                <li>Cédula de identidad ciudadana (INE) vigente en caso de no contar con ella puede presentar:</li>
                 <p tyle="padding-left:2%">a) Cédula profesional.</p>
-                <p tyle="padding-left:2%">b) Licencia Federal.</p>
+                <p tyle="padding-left:2%">b) Licencia de conducir.</p>
                 <p tyle="padding-left:2%">c) Pasaporte vigente.</p>
             </ol>
         </div>
@@ -157,7 +161,7 @@
                         <tr>
                             <td>Cero positivo a HIV</td>
                             <td>Carga viral y recuento de linfocitos CD4 y CD8</td>
-                        </tr>--}}
+                        </tr> --}}
                     </table>
                 </div>
                 <br>
@@ -180,15 +184,16 @@
                     <p tyle="padding-left:10%">d) Examen General de Orina.</p>
                     <p tyle="padding-left:10%">e) Prueba ELISA.</p>
                     <p tyle="padding-left:10%">f) Radiografía de tórax posteroanterior.</p>
+                    <p tyle="padding-left:10%">g) Prueba de detección de sustancias psicoactivas.</p>
                 </li>
                 <li>Los estudios previamente descritos deberán tener fecha de emisión no mayor a un mes.
                 </li>
                 <li>Imprimir el formato de Consentimiento Informado y firmarlo.
                 </li>
-                <li>Imprimir el formato de Declaración de salud.
-                </li>
+                {{-- <li>Imprimir el formato de Declaración de salud.
+                </li> --}}
             </ol>
-        </div>        
+        </div>
     </div>
 </body>
 
