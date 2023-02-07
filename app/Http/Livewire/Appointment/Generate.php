@@ -25,6 +25,7 @@ class Generate extends Component
     use Actions;
     use WithFileUploads;
     public $confirmModal = false;
+    public $modal = false;
     // FIRST TABLE//
     public $id_success, $user_id, $type_exam_id, $user_payment_document_id, $document_id, $document, $paymentConcept, $paymentDate, $state;
     // QUESTION STUDYING
@@ -232,32 +233,37 @@ class Generate extends Component
         $this->typeRenovations = userRenovation::with(['renovationAppointment', 'renovationClasification'])->where('user_appointment_id', $this->userAppointment->id)->get();
         $this->confirmModal = true;
     }
-    public function closeModalFinish()
+    public function openModalPdf()
     {
         $this->confirmModal = false;
-        $this->takeClass();
+        $this->modal = true;
     }
-    public function takeClass()
-    {
-        $this->dialog()->confirm([
-            'title'       => 'CITA GENERADA',
-            'description' => '¿DESEAS IMPRIMIR TU ACUSE?',
-            'icon'        => 'success',
-            'accept'      => [
-                'label'  => 'IMPRIMIR',
-                'method' => 'print',
-            ],
-            'reject' => [
-                'label'  => 'SALIR',
-                'method' => 'returnView',
-            ],
-        ]);
-    }
-    public function print()
-    {
-        $this->clean();
-        return redirect()->route('download');
-    }
+    // public function closeModalFinish()
+    // {
+    //     $this->confirmModal = false;
+    //     $this->takeClass();
+    // }
+    // public function takeClass()
+    // {
+    //     $this->dialog()->confirm([
+    //         'title'       => 'CITA GENERADA',
+    //         'description' => '¿DESEAS IMPRIMIR TU ACUSE?',
+    //         'icon'        => 'success',
+    //         'accept'      => [
+    //             'label'  => 'IMPRIMIR',
+    //             'method' => 'print',
+    //         ],
+    //         'reject' => [
+    //             'label'  => 'SALIR',
+    //             'method' => 'returnView',
+    //         ],
+    //     ]);
+    // }
+    // public function print()
+    // {
+    //     $this->clean();
+    //     return redirect()->route('download');
+    // }
     public function returnView()
     {
         return redirect()->route('afac.home');
