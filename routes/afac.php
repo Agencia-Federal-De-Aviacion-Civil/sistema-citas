@@ -17,5 +17,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('', [homeController::class, 'index'])->name('afac.home');
-Route::get('appointments', AppointmentHistory::class)->name('afac.appointment');
+Route::group(['middleware' => ['role:admin']], function () {
+    Route::get('appointments', AppointmentHistory::class)->name('afac.appointment');
+});
 Route::get('/download', [Generate::class, 'test'])->name('download');
