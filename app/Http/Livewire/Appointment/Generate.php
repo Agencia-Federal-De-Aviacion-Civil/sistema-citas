@@ -30,8 +30,9 @@ class Generate extends Component
     public $id_success, $user_id, $type_exam_id, $user_payment_document_id, $document_id, $document, $paymentConcept, $paymentDate, $state;
     // QUESTION STUDYING
     public $user_appointment_success_id, $count, $user_appointment_id, $user_question_id, $type_class_id, $clasification_class_id = [];
-
     public $headquarter_id, $appointmentDate, $appointmentTime, $appointments, $finishCollegue, $aerodromos = [];
+
+    public $typeexamid;
     public function mount()
     {
         $this->reset();
@@ -80,10 +81,20 @@ class Generate extends Component
     {
         $this->typeClasses = typeClass::where('type_exam_id', $type_exam_id)->get();
         $this->reset(['user_question_id', 'type_class_id', 'clasification_class_id', 'headquarter_id', 'appointmentDate']);
+        if ($type_exam_id == 1) {
+            $this->typeexamid = 1;
+        } else {
+            $this->typeexamid = 2;
+        }
     }
     public function updatedUserQuestionId($user_question_id)
     {
         $this->questionClassess = typeClass::where('user_question_id', $user_question_id)->get();
+        if ($user_question_id == 1) {
+            $this->typeexamid = 1;
+        } else {
+            $this->typeexamid = 2;
+        }
     }
     public function updatedTypeClassId($type_class_id)
     {
@@ -266,7 +277,10 @@ class Generate extends Component
     // }
     public function returnView()
     {
-        return redirect()->route('afac.home');
+        // return redirect()->route('afac.home');
+        // $this->confirmModal = false;
+        $this->modal = false;
+        $this->typeexamid = 0;
     }
     public function test()
     {

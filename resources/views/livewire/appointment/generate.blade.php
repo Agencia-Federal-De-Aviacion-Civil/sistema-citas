@@ -269,7 +269,7 @@
                                                         </div>
                                                     </a>
                                                 </label>
-                                                @if ($user_question_id == 1)
+                                                @if ($typeexamid == 1)
                                                     <select wire:model.lazy="clasification_class_id"
                                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                                         <option value="" selected>Seleccione...</option>
@@ -278,7 +278,8 @@
                                                                 {{ $clasification->name }}</option>
                                                         @endforeach
                                                     </select>
-                                                @else
+                                                @endif
+                                                @if ($typeexamid == 2)
                                                     <div class="z-50">
                                                         <x-select wire:model.lazy="clasification_class_id"
                                                             placeholder="Seleccione..." multiselect>
@@ -290,10 +291,10 @@
                                                         </x-select>
                                                     </div>
                                                 @endif
-                                                @error('clasification_class_id')
+                                                {{-- @error('clasification_class_id')
                                                     <span
                                                         class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
-                                                @enderror
+                                                @enderror --}}
                                             @endif
                                         </div>
                                         {{--  --}}

@@ -34,8 +34,8 @@
                             <span class="inline-block w-1 h-1 bg-sky-600 rounded-full"></span>
                         </div>
                         <br>
-                        <x-errors
-                            title="Se han encontrado {errors} campo(s) vacio(s), por favor completalos para continuar..." />
+                        {{-- <x-errors
+                            title="Se han encontrado {errors} campo(s) vacio(s), por favor completalos para continuar..." /> --}}
                     </div>
                     <div class="bg-yellow-50 border border-yellow-200 rounded-md p-4" role="alert">
                         <div class="flex">
