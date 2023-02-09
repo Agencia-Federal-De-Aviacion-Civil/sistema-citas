@@ -38,7 +38,7 @@ class Index extends Component
             'password' => 'required|min:6|same:passwordConfirmation'
         ];
     }
-    public $user_id, $name, $apParental, $apMaternal, $genre, $birth, $state_id, $municipal_id, $age, $street, $nInterior, $nExterior, $suburb, $postalCode, $federalEntity,
+    public $user_id, $id_register, $name, $apParental, $apMaternal, $genre, $birth, $state_id, $municipal_id, $age, $street, $nInterior, $nExterior, $suburb, $postalCode, $federalEntity,
         $delegation, $mobilePhone, $officePhone, $extension, $curp, $email, $password = '', $passwordConfirmation = '';
 
 
@@ -55,7 +55,7 @@ class Index extends Component
 
     public function updatedStateId($id)
     {
-        $this->municipals = municipal::with('municipal_state')->where('state_id', $id)->get();
+        $this->municipals = municipal::with('municipalState')->where('state_id', $id)->get();
     }
     public function updatedEmail()
     {
@@ -72,12 +72,15 @@ class Index extends Component
     public function register()
     {
         $this->validate();
-        $user = User::create([
-            'name' => $this->name,
-            'email' => $this->email,
-            'password' => Hash::make($this->password),
-        ])->assignRole('user');
-        $userParticipant = UserParticipant::create([
+        $user = User::updateOrCreate(
+            ['id' => $this->id_register],
+            [
+                'name' => $this->name,
+                'email' => $this->email,
+                'password' => Hash::make($this->password),
+            ]
+        )->assignRole('user');
+        $user->userParticipant()->create([
             'user_id' => $user->id,
             'apParental' => $this->apParental,
             'apMaternal' => $this->apMaternal,
