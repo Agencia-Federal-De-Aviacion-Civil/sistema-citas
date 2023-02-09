@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\appointment\userAppointment;
+use App\Models\appointment\UserParticipant;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -11,6 +12,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+
 class User extends Authenticatable
 {
     use HasApiTokens;
@@ -78,13 +80,9 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
-    public function user_municipal()
+    public function userParticipant()
     {
-        return $this->hasMany('App\Models\catalogue\municipal');
-    }
-    public function user_state()
-    {
-        return $this->hasMany('App\Models\catalogue\state');
+        return $this->hasMany(UserParticipant::class);
     }
     public function userAppointment()
     {

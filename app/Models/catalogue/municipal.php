@@ -2,18 +2,19 @@
 
 namespace App\Models\catalogue;
 
+use App\Models\appointment\UserParticipant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class municipal extends Model
 {
     use HasFactory;
-    public function municipal_state()
+    public function municipalParticipant()
     {
-        return $this->belongsTo('App\Models\catalogue\state', 'state_id');
+        return $this->hasMany(UserParticipant::class);
     }
-    public function municipal_user()
+    public function municipalState()
     {
-        return $this->belongsTo('App\Models\User', 'user_id');
+        return $this->belongsTo(state::class, 'state_id');
     }
 }
