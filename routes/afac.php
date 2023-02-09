@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\afac\homeController;
+use App\Http\Livewire\Appointment\AppointmentHistory;
 use App\Http\Livewire\Appointment\Generate;
 use Illuminate\Support\Facades\Route;
 
@@ -16,4 +17,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('', [homeController::class, 'index'])->name('afac.home');
+Route::get('appointments', AppointmentHistory::class)->name('afac.appointment');
 Route::get('/download', [Generate::class, 'test'])->name('download');
