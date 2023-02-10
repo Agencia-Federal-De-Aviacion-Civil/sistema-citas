@@ -22,6 +22,11 @@
                             {{ __('Citas agendadas') }}
                         </x-jet-nav-link>
                     @endcan
+                    @can('admin.see.headquarters')
+                        <x-jet-nav-link href="{{ route('afac.headquarters') }}" :active="request()->routeIs('afac.headquarters')">
+                            {{ __('Catálogo Sedes') }}
+                        </x-jet-nav-link>
+                    @endcan
                 </div>
             </div>
 

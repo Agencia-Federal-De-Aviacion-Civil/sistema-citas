@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\appointment\userAppointment;
 use App\Models\appointment\UserParticipant;
+use App\Models\catalogue\headquarter;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -87,5 +88,9 @@ class User extends Authenticatable
     public function userAppointment()
     {
         return $this->hasMany(userAppointment::class);
+    }
+    public function userHeadquarter()
+    {
+        return $this->hasMany(headquarter::class);
     }
 }
