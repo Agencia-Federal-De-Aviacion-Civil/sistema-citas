@@ -22,5 +22,12 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678')
             ]
         )->assignRole('admin');
+        // User::create(
+        //     [
+        //         'name' => 'Cancun Quintana Roo',
+        //         'email' => 'cancun@gmail.com',
+        //         'password' => bcrypt('12345678')
+        //     ]
+        // )->assignRole('headquarters');
     }
 }
