@@ -320,7 +320,7 @@
                                                 x-ref="selec_sede" wire:model.lazy="headquarter_id">
                                                 @foreach ($sedes as $sede)
                                                     <x-select.option label="{{ $sede->headquarterUser->name }}"
-                                                        value="{{ $sede->headquarterUser->id }}" />
+                                                        value="{{ $sede->id }}" />
                                                 @endforeach
                                             </x-select>
                                         </div>

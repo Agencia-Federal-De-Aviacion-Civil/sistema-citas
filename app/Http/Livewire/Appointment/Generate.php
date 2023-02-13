@@ -38,28 +38,16 @@ class Generate extends Component
         $this->typeExamens = typeExam::all();
         $this->questions = userQuestion::all();
         // $this->sedes = headquarter::all();
-
         $this->sedes = headquarter::with('headquarterUser')->get();
-
-
-        //  dd($this->sedes->headquarterUser);
-
         $this->typeClasses = collect();
         $this->questionClassess = collect();
         $this->clasificationClass = collect();
-
         // $todayDate = Carbon::now()->format('Y-m-d');
-        $this->var = user_appointment_success::where('appointmentDate', $this->appointmentDate)->get();
-
-        
+        $this->var = user_appointment_success::where('appointmentDate', $this->appointmentDate)->get();        
         //  where('appointmentDate', $this->appointmentDate)
         // ->where('appointmentTime', $this->appointmentTime)
         // ->where('headquarter_id', $this->headquarter_id)
-
         // ->first();
-
-
-
     }
     public function rules()
     {
