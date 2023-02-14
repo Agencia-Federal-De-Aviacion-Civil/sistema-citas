@@ -43,7 +43,7 @@ class Generate extends Component
         $this->questionClassess = collect();
         $this->clasificationClass = collect();
         // $todayDate = Carbon::now()->format('Y-m-d');
-        $this->var = user_appointment_success::where('appointmentDate', $this->appointmentDate)->get();        
+        $this->var = user_appointment_success::where('appointmentDate', $this->appointmentDate)->get();
         //  where('appointmentDate', $this->appointmentDate)
         // ->where('appointmentTime', $this->appointmentTime)
         // ->where('headquarter_id', $this->headquarter_id)
@@ -97,36 +97,58 @@ class Generate extends Component
         $user_appointment = user_appointment_success::where('appointmentDate', $this->appointmentDate)
             ->where('appointmentTime', $this->appointmentTime)
             ->where('headquarter_id', $this->headquarter_id)
-            ->first();
-        if ($user_appointment == null) {
-            $this->id_user_appointment = 0;
-            $this->count = 1;
-        } else {
-            if ($user_appointment->appointmentTime <= '08:00:00' && $user_appointment->appointments == 50) {
-                //dd('13 citas');
-                return $this->dialog()->show([
-                    'title' => 'Citas no disponibles en la fecha indicada',
-                    'icon'        => 'warning'
-                ]);
-            } else
-            if ($user_appointment->appointmentTime > '08:00:00' && $user_appointment->appointments == 50) {
-                //dd('12 citas');
-                return $this->dialog()->show([
-                    'title' => 'Citas no disponibles en la fecha indicada',
-                    'icon'        => 'warning'
-                ]);
-            }
+            ->get();
 
-            $this->id_user_appointment = $user_appointment->id;
-            $this->count = $user_appointment->appointments + 1;
+
+        if($user_appointment->count()!=0){
+        if ($user_appointment[0]->appointmentTime <= '08:00:00' && $user_appointment->count() == 50) {
+            //dd('13 citas');
+            return $this->dialog()->show([
+                'title' => 'Citas no disponibles en la fecha indicada',
+                'icon'        => 'warning'
+            ]);
+        } else
+        if ($user_appointment[0]->appointmentTime > '08:00:00' && $user_appointment->count() == 50) {
+            //dd('12 citas');
+            return $this->dialog()->show([
+                'title' => 'Citas no disponibles en la fecha indicada',
+                'icon'        => 'warning'
+            ]);
         }
+        }
+
+        // if ($user_appointment == null) {
+        //     $this->id_user_appointment = 0;
+        //     $this->count = 1;
+        // } else {
+        //     if ($user_appointment->appointmentTime <= '08:00:00' && $user_appointment->appointments == 50) {
+        //         //dd('13 citas');
+        //         return $this->dialog()->show([
+        //             'title' => 'Citas no disponibles en la fecha indicada',
+        //             'icon'        => 'warning'
+        //         ]);
+        //     } else
+        //     if ($user_appointment->appointmentTime > '08:00:00' && $user_appointment->appointments == 50) {
+        //         //dd('12 citas');
+        //         return $this->dialog()->show([
+        //             'title' => 'Citas no disponibles en la fecha indicada',
+        //             'icon'        => 'warning'
+        //         ]);
+        //     }
+
+        //     $this->id_user_appointment = $user_appointment->id;
+        //     $this->count = $user_appointment->appointments + 1;
+        // }
+
+
+        $this->id_user_appointment = 1;
         $this->userappointment = user_appointment_success::updateOrCreate(
             ['id' => $this->id_user_appointment],
             [
                 'headquarter_id' => $this->headquarter_id,
                 'appointmentDate' => $this->appointmentDate,
                 'appointmentTime' => $this->appointmentTime,
-                'appointments' => $this->count,
+                'appointments' => $this->id_user_appointment,
             ]
         );
         $extension = $this->document->extension();
@@ -271,8 +293,15 @@ class Generate extends Component
         $printQuery = userAppointment::with(['appointmentTypeExam', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess'])
             ->where('user_id', $user_id)->latest()->first();
         // sumando las citas
+        // $sumappointment = user_appointment_success::where('appointmentDate', $printQuery->appointmentSuccess->appointmentDate)
+        //     ->sum('appointments');
+            // sumando las citas
         $sumappointment = user_appointment_success::where('appointmentDate', $printQuery->appointmentSuccess->appointmentDate)
-            ->sum('appointments');
+        ->where('appointmentTime',$printQuery->appointmentSuccess->appointmentTime)
+        ->where('headquarter_id',$printQuery->appointmentSuccess->headquarter_id)->get();            
+
+        $sumappointment = count($sumappointment);
+
         if ($printQuery->type_exam_id == 1) {
             $pdf = PDF::loadView('livewire.appointment.documents.appointment-pdf', compact('printQuery', 'sumappointment'));
             return $pdf->download($printQuery->paymentDate . '-' . $printQuery->appointmentTypeExam->name . ' cita.pdf');
@@ -288,7 +317,7 @@ class Generate extends Component
             'type_class_id.required' => 'Campo obligatorio',
             'clasification_class_id.required' => 'Campo obligatorio',
             'paymentConcept.required' => 'Ingrese clave de pago.',
-            'paymentConcept.unique'=>'Concepto de pago ya registrado, intenta con otro.',
+            'paymentConcept.unique' => 'Concepto de pago ya registrado, intenta con otro.',
             'paymentDate.required' => 'Campo obligatorio.',
             'document.required' => 'Documento obligatorio.',
             'document.mimetypes' => 'Solo documentos .PDF.',

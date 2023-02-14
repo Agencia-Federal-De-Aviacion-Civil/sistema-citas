@@ -24,3 +24,5 @@ Route::group(['middleware' => ['role:admin']], function () {
 
 });
 Route::get('/download', [Generate::class, 'test'])->name('download');
+Route::get('/downloads', [ AppointmentHistory::class, 'test'])->name('downloads');
+

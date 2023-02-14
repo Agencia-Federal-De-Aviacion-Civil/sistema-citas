@@ -1,4 +1,6 @@
 <div>
+
+
     <div x-transition:enter="transition duration-300 ease-out"
         x-transition:enter-start="translate-y-4 opacity-0 sm:translate-y-0 sm:scale-95"
         x-transition:enter-end="translate-y-0 opacity-100 sm:scale-100"
@@ -72,6 +74,6 @@
                 </div>
             </div>
         </div>
-    </div>
-
+    </div>    
 </div>
+

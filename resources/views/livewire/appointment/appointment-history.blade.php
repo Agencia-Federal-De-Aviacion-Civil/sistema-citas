@@ -1,4 +1,7 @@
 <div>
+
+    <x-notifications position="top-center" />
+    <x-dialog z-index="z-50" blur="md" align="center" />
     @if ($modal)
     @include('livewire.appointment.headquarters.modals.modal-reschedule')
     @endif

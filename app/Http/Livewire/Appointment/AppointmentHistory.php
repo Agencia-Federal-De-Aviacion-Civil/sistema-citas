@@ -7,14 +7,20 @@ use App\Models\appointment\userAppointment;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use Livewire\WithFileUploads;
+use WireUi\Traits\Actions;
+use PDF;
 
 class AppointmentHistory extends Component
 {
+    use Actions;
+    use WithFileUploads;
     public $n = 1;
     public $modal = false;
-    public $name,$type,$class,$typLicense,$sede,$date,$time,$idAppointmet;
+    public $name,$type,$class,$typLicense,$sede,$date,$time,$idAppointmet,$headquarterid;
     public function render()
     {
+
         $appointments = userAppointment::with([
             'appointmentUser', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess',
             'appointmentTypeExam', 'appointmentDocument'
@@ -47,6 +53,7 @@ class AppointmentHistory extends Component
         $this->date = $appointment[0]->appointmentSuccess->appointmentDate;
         $this->time = $appointment[0]->appointmentSuccess->appointmentTime;
         $this->idAppointmet = $appointment[0]->appointmentSuccess->id;
+        $this->headquarterid = $appointment[0]->appointmentSuccess->headquarter_id;
         $this->openModal();
     }
     public function openModal()
@@ -57,6 +64,29 @@ class AppointmentHistory extends Component
         $this->modal = false;        
     }
     public function reschedule(){
+
+        $user_appointment = user_appointment_success::where('appointmentDate', $this->date)
+            ->where('appointmentTime', $this->time)
+            ->where('headquarter_id', $this->headquarterid)
+            ->get();
+
+        if ($this->time <= '08:00:00' && $user_appointment->count() == 4) {
+            //dd('13 citas');
+            $this->modal = false;
+            return $this->notification([
+            'title'       => 'Citas no disponibles en la fecha indicada',
+            'icon'        => 'warning'
+        ]);
+        } else
+        if ($this->time > '08:00:00' && $user_appointment->count() == 4) {
+            //dd('12 citas');
+            $this->modal = false;
+            return $this->notification([
+            'title'       => 'Citas no disponibles en la fecha indicada',
+            'icon'        => 'warning'
+        ]);
+        }
+
         $appointmet =  user_appointment_success::find($this->idAppointmet);
         $appointmet->update(
             [
@@ -64,6 +94,57 @@ class AppointmentHistory extends Component
                 'appointmentTime' => $this->time
             ]
         );
-
+        $this->modal = false;
+        $this->acuse();
+        
+        // $this->notification([
+        //     'title'       => 'Cita reagendada',
+        //     'icon'        => 'success'
+        // ]);        
     }
+    public function acuse()
+    {
+        $this->dialog()->confirm([
+            'title'       => 'CITA REAGENDADA',
+            'description' => '¿DESEAS IMPRIMIR ACUSE?',
+            'icon'        => 'success',
+            'accept'      => [
+                'label'  => 'IMPRIMIR',
+                'method' => 'download',
+            ],
+            'reject' => [
+                'label'  => 'SALIR',
+            ],
+        ]);
+    }
+
+    // public function returnView()
+    // {
+    //     return redirect()->route('afac.home');
+    // }
+    public function download(){
+        $id = $this->idAppointmet;
+        return redirect()->route('downloads',compact('id'));        
+    }
+    public function test()
+    {
+
+        $printQuery = userAppointment::with(['appointmentTypeExam', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess'])
+        ->where('user_appointment_success_id', $_GET['id'])->latest()->first();
+            // sumando las citas
+        $sumappointment = user_appointment_success::where('appointmentDate', $printQuery->appointmentSuccess->appointmentDate)
+            ->where('appointmentTime',$printQuery->appointmentSuccess->appointmentTime)
+            ->where('headquarter_id',$printQuery->appointmentSuccess->headquarter_id)->get();            
+
+            $sumappointment = count($sumappointment);
+
+        if ($printQuery->type_exam_id == 1) {
+            $pdf = PDF::loadView('livewire.appointment.documents.appointment-pdf', compact('printQuery', 'sumappointment'));
+            return $pdf->download($printQuery->paymentDate . '-' . $printQuery->appointmentTypeExam->name . ' cita.pdf');
+        } else if ($printQuery->type_exam_id == 2) {
+            $pdf = PDF::loadView('livewire.appointment.documents.appointment-pdf2', compact('printQuery', 'sumappointment'));
+            return $pdf->download($printQuery->paymentDate . '-' . $printQuery->appointmentTypeExam->name . ' cita.pdf');
+        }
+    }    
+
 }
