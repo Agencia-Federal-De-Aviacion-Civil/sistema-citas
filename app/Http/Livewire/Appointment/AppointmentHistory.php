@@ -30,10 +30,7 @@ class AppointmentHistory extends Component
         return view('livewire.appointment.appointment-history', compact('appointments'))
             ->layout('layouts.app');
     }
-
-
-
-    public function reagendarcita($id){
+    public function rescheduleAppointment($id){
                
         $appointment = userAppointment::with([
             'appointmentUser', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess',
@@ -56,6 +53,33 @@ class AppointmentHistory extends Component
         $this->headquarterid = $appointment[0]->appointmentSuccess->headquarter_id;
         $this->openModal();
     }
+    public function deletAppointment($id){
+
+        $appointment = userAppointment::with([
+            'appointmentUser', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess',
+            'appointmentTypeExam', 'appointmentDocument'
+        ])
+            ->where('user_appointment_success_id', $id)->get();
+        $this->idAppointmet = $appointment[0]->appointmentSuccess->id;
+
+        $this->dialog()->confirm([
+            'title'       => 'CITA DE '.$appointment[0]->appointmentUser->name,
+            'description' => '¿DESEAS ELIMINAR ESTA CITA?',
+            'icon'        => 'question',
+            'accept'      => [
+                'label'  => 'SI',
+                'method' => 'delete',
+            ],
+            'reject' => [
+                'label'  => 'NO',
+            ],
+        ]);
+    }
+
+    public function delete(){
+        dd($this->idAppointmet);
+    }
+
     public function openModal()
     {
         $this->modal = true;

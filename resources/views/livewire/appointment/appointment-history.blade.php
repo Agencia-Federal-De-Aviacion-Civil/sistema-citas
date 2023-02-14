@@ -78,12 +78,12 @@
                                     </td>
                                     <td class="px-6 py-4">
                                         {{-- {{ $RequestList->requestExamTypeExam->name }} --}}
-                                        <button wire:click="reagendarcita({{ $appointment->appointmentSuccess->id }})"
+                                        <button wire:click="rescheduleAppointment({{ $appointment->appointmentSuccess->id }})"
                                             {{-- wire:click="reagandar({{$appointment->appointmentSuccess->id}})" --}}
                                             class="px-3 py-2 text-xs font-medium text-center text-white bg-sky-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                             Reagenda
                                         </button>
-                                        <button wire:click=""
+                                        <button wire:click="deletAppointment({{$appointment->appointmentSuccess->id}})"
                                             class="px-3 py-2 text-xs font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-blue-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
                                             Eliminar
                                         </button>
