@@ -3,7 +3,7 @@
     <x-notifications position="top-center" />
     <x-dialog z-index="z-50" blur="md" align="center" />
     @if ($modal)
-    @include('livewire.appointment.headquarters.modals.modal-reschedule')
+        @include('livewire.appointment.headquarters.modals.modal-reschedule')
     @endif
     <div class="py-12">
         <div class="container mx-auto px-4 py-4 bg-white shadow-xl sm:rounded-lg">
@@ -71,22 +71,22 @@
                                     @endif
                                     <td class="px-6 py-4">
                                         {{-- appointmentUser --}}
-                                        {{$appointment->appointmentSuccess->successHeadquarter->headquarterUser->name}}
+                                        {{ $appointment->appointmentSuccess->successHeadquarter->headquarterUser->name }}
                                     </td>
                                     <td class="px-6 py-4">
                                         {{ $appointment->appointmentSuccess->appointmentDate . ' ' . $appointment->appointmentSuccess->appointmentTime }}
                                     </td>
                                     <td class="px-6 py-4">
                                         {{-- {{ $RequestList->requestExamTypeExam->name }} --}}
-<button wire:click="reagendarcita({{$appointment->appointmentSuccess->id}})" 
-{{-- wire:click="reagandar({{$appointment->appointmentSuccess->id}})" --}}
-class="px-3 py-2 text-xs font-medium text-center text-white bg-sky-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-Reagenda
-</button>
-<button wire:click=""
-class="px-3 py-2 text-xs font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-blue-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
-Eliminar
-</button>
+                                        <button wire:click="reagendarcita({{ $appointment->appointmentSuccess->id }})"
+                                            {{-- wire:click="reagandar({{$appointment->appointmentSuccess->id}})" --}}
+                                            class="px-3 py-2 text-xs font-medium text-center text-white bg-sky-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                            Reagenda
+                                        </button>
+                                        <button wire:click=""
+                                            class="px-3 py-2 text-xs font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-blue-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                                            Eliminar
+                                        </button>
                                     </td>
                                 </tr>
                         </tbody>

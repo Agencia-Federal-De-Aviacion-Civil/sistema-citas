@@ -1,3 +1,4 @@
+<div>
     <div x-transition:enter="transition duration-300 ease-out"
         x-transition:enter-start="translate-y-4 opacity-0 sm:translate-y-0 sm:scale-95"
         x-transition:enter-end="translate-y-0 opacity-100 sm:scale-100"
@@ -35,7 +36,7 @@
                         </h3> --}}
                         <div class="grid xl:grid-cols-2 xl:gap-6">
                             <div class="mt-1 relative w-full group">
-                                <x-input wire:model.lazy="name" label="NOMBRE" placeholder="ESCRIBE..." />
+                                <x-input wire:model.lazy="name" label="NOMBRE" placeholder="ESCRIBE..." disabled/>
                             </div>
                             <div class="mt-1 relative w-full group">
                                 <x-input wire:model.lazy="direction" label="DIRECCIÓN" placeholder="ESCRIBE..." />
@@ -43,10 +44,10 @@
                         </div>
                         <div class="grid xl:grid-cols-2 xl:gap-6">
                             <div class="mt-4 relative w-full group">
-                                <x-inputs.password wire:model.lazy="passwordConfirmation" label="CONTRASEÑA" />
+                                <x-inputs.password wire:model.lazy="passwordConfirmation" label="CONTRASEÑA" disabled/>
                             </div>
                             <div class="mt-4 relative w-full group">
-                                <x-inputs.password wire:model.lazy="password" label="CONFIRMAR CONTRASEÑA" />
+                                <x-inputs.password wire:model.lazy="password" label="CONFIRMAR CONTRASEÑA" disabled/>
                             </div>
                         </div>
                         <div class="grid xl:grid-cols-2 xl:gap-6">
@@ -61,7 +62,7 @@
                     </div>
                 </div>
                 <div class="float-right mt-6">
-                    <x-button wire:click.prevent="save()" label="GUARDAR" blue right-icon="save-as" />
+                    <x-button wire:click.prevent="edit()" label="GUARDAR" blue right-icon="save-as" />
                 </div>
                 <div class="float-left mt-6">
                     <x-button wire:click.prevent="salir()" label="SALIR" silver />
@@ -69,3 +70,5 @@
             </div>
         </div>
     </div>
+
+</div>

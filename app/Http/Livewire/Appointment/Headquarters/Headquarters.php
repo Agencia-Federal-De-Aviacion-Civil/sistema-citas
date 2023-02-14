@@ -6,11 +6,15 @@ use App\Models\catalogue\headquarter;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
+use Livewire\WithFileUploads;
+use WireUi\Traits\Actions;
 
 class Headquarters extends Component
 {
-    public $modal = false;
-    public $id_save, $name, $email, $password, $direction, $url, $passwordConfirmation;
+    use Actions;
+    use WithFileUploads;
+    public $modal = false, $modalEdit = false;
+    public $id_save, $name, $email, $password, $direction, $url, $passwordConfirmation, $sedes, $id_edit;
     public function rules()
     {
         return [
@@ -24,7 +28,7 @@ class Headquarters extends Component
     public function render()
     {
         $headquarters = headquarter::with('headquarterUser')->get();
-        return view('livewire.appointment.headquarters.headquarters',compact('headquarters'))
+        return view('livewire.appointment.headquarters.headquarters', compact('headquarters'))
             ->layout('layouts.app');
     }
     public function updated($propertyName)
@@ -42,6 +46,23 @@ class Headquarters extends Component
     public function addHeadquarter()
     {
         $this->openModal();
+    }
+    public function editModal($id)
+    {
+        $this->modalEdit = true;
+        $this->sedes = headquarter::with('headquarterUser')->where('id', $id)->get();
+        $this->name = $this->sedes[0]->headquarterUser->name;
+        $this->direction = $this->sedes[0]->direction;
+        $this->passwordConfirmation = '********';
+        $this->password = '********';
+        $this->email = $this->sedes[0]->headquarterUser->email;
+        $this->url = $this->sedes[0]->url;
+        $this->id_edit = $id;
+    }
+    public function salir()
+    {
+        $this->modal = false;
+        $this->modalEdit = false;
     }
     public function save()
     {
@@ -64,5 +85,30 @@ class Headquarters extends Component
         );
         $this->reset();
         $this->closeModal();
+        $this->notification([
+            'title'       => 'Sede agrada con éxito',
+            'icon'        => 'success'
+        ]);
+    }
+    public function edit()
+    {
+        $headquarter =  headquarter::find($this->id_edit);
+        $headquarter->update(
+            [
+                'direction' => $this->direction,
+                'url' => $this->url
+            ]
+        );
+        $user = User::find($headquarter->user_id);
+        $user->update(
+            [
+                'email' => $this->email
+            ]
+        );
+        $this->modalEdit = false;
+        $this->notification([
+            'title'       => 'Sede actualizada correctamente',
+            'icon'        => 'success'
+        ]);
     }
 }
