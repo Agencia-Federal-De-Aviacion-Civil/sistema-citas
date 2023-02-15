@@ -77,7 +77,7 @@
             </tr>
             <tr>
                 <td colspan="12">UNIDAD MÉDICA:</td>
-                <td colspan="24"> {{ strtoupper($printQuery->appointmentSuccess->successHeadquarter->name) }}</p>
+                <td colspan="24"> {{ strtoupper($printQuery->appointmentSuccess->successUser->name) }}</p>
                 </td>
             </tr>
             <tr>

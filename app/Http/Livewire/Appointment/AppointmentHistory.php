@@ -22,7 +22,7 @@ class AppointmentHistory extends Component
     {
 
         $appointments = userAppointment::with([
-            'appointmentUser', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess',
+            'appointmentUser', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess.successUser',
             'appointmentTypeExam', 'appointmentDocument'
         ])
             ->where('user_id', '<>', Auth::user()->id)->get();
@@ -46,11 +46,11 @@ class AppointmentHistory extends Component
         $this->class = $appointment[0]->appointmentRenovation[0]->renovationClass->name;
         $this->typLicense = $appointment[0]->appointmentRenovation[0]->renovationClasification->name;    
         }
-        $this->sede = $appointment[0]->appointmentSuccess->successHeadquarter->headquarterUser->name;
+        $this->sede = $appointment[0]->appointmentSuccess->successUser->name;
         $this->date = $appointment[0]->appointmentSuccess->appointmentDate;
         $this->time = $appointment[0]->appointmentSuccess->appointmentTime;
         $this->idAppointmet = $appointment[0]->appointmentSuccess->id;
-        $this->headquarterid = $appointment[0]->appointmentSuccess->headquarter_id;
+        $this->headquarterid = $appointment[0]->appointmentSuccess->to_user_headquarters;
         $this->openModal();
     }
     public function deletAppointment($id){
@@ -91,7 +91,7 @@ class AppointmentHistory extends Component
 
         $user_appointment = user_appointment_success::where('appointmentDate', $this->date)
             ->where('appointmentTime', $this->time)
-            ->where('headquarter_id', $this->headquarterid)
+            ->where('to_user_headquarters', $this->headquarterid)
             ->get();
 
         if ($this->time <= '08:00:00' && $user_appointment->count() == 4) {
@@ -158,7 +158,7 @@ class AppointmentHistory extends Component
             // sumando las citas
         $sumappointment = user_appointment_success::where('appointmentDate', $printQuery->appointmentSuccess->appointmentDate)
             ->where('appointmentTime',$printQuery->appointmentSuccess->appointmentTime)
-            ->where('headquarter_id',$printQuery->appointmentSuccess->headquarter_id)->get();            
+            ->where('to_user_headquarters',$printQuery->appointmentSuccess->to_user_headquarters)->get();            
 
             $sumappointment = count($sumappointment);
 

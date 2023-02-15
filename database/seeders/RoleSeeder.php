@@ -19,6 +19,8 @@ class RoleSeeder extends Seeder
         $role1 = Role::create(['name' => 'admin']);
         $role2 = Role::create(['name' => 'user']);
         $role3 = Role::create(['name' => 'headquarters']);
+        Permission::create(['name' => 'user.generate.appointment', 'description' => 'The user will could appointment generate'])->syncRoles([$role2]);
+        Permission::create(['name' => 'navigation.see.notifications', 'description' => 'This permission is to see the notifications'])->syncRoles([$role3]);
         Permission::create(['name' => 'admin.see.history', 'description' => 'See history appointments'])->syncRoles([$role1]);
         Permission::create(['name' => 'admin.see.headquarters', 'description' => 'See headquarters appointments'])->syncRoles([$role1]);
         Permission::create(['name' => 'admin.see.reAppointment', 'description' => 'Only see reAppoointment'])->syncRoles([$role3]);

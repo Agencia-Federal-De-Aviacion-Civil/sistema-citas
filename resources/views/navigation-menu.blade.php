@@ -14,12 +14,14 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-jet-nav-link href="{{ route('afac.home') }}" :active="request()->routeIs('afac.home')">
-                        {{ __('Generación de Citas') }}
-                    </x-jet-nav-link>
+                    @can('user.generate.appointment')
+                        <x-jet-nav-link href="{{ route('afac.home') }}" :active="request()->routeIs('afac.home')">
+                            {{ __('Inicio') }}
+                        </x-jet-nav-link>
+                    @endcan
                     @can('admin.see.history')
                         <x-jet-nav-link href="{{ route('afac.appointment') }}" :active="request()->routeIs('afac.appointment')">
-                            {{ __('Citas agendadas') }}
+                            {{ __('Inicio') }}
                         </x-jet-nav-link>
                     @endcan
                     @can('admin.see.headquarters')
@@ -28,16 +30,18 @@
                         </x-jet-nav-link>
                     @endcan
                     @can('admin.see.reAppointment')
-                    <x-jet-nav-link href="">
-                        {{ __('Citas agendadas') }}
-                    </x-jet-nav-link>
+                        <x-jet-nav-link href="">
+                            {{ __('Citas agendadas') }}
+                        </x-jet-nav-link>
                     @endcan
                 </div>
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:ml-6">
                 <!-- Teams Dropdown -->
-                @livewire('notifications.appointment')
+                @can('navigation.see.notifications')
+                    @livewire('notifications.appointment')
+                @endcan
                 <!-- Settings Dropdown -->
                 <div class="ml-3 relative">
                     <x-jet-dropdown align="right" width="48">

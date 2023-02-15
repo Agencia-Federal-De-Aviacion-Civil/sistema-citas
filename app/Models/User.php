@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\appointment\user_appointment_success;
 use App\Models\appointment\userAppointment;
 use App\Models\appointment\UserParticipant;
 use App\Models\catalogue\headquarter;
@@ -89,8 +90,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(userAppointment::class);
     }
-    public function userHeadquarter()
+    public function userAppointmentSuccess()
     {
-        return $this->hasMany(headquarter::class);
+        return $this->hasMany(user_appointment_success::class);
     }
 }

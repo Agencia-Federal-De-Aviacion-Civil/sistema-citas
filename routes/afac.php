@@ -16,13 +16,10 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::get('', [homeController::class, 'index'])->name('afac.home');
 Route::group(['middleware' => ['role:admin']], function () {
     Route::get('appointments', AppointmentHistory::class)->name('afac.appointment');
     Route::get('headquarters', Headquarters::class)->name('afac.headquarters');
-
 });
 Route::get('/download', [Generate::class, 'test'])->name('download');
-Route::get('/downloads', [ AppointmentHistory::class, 'test'])->name('downloads');
-
+Route::get('/downloads', [AppointmentHistory::class, 'test'])->name('downloads');

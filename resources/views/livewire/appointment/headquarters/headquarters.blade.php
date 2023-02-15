@@ -4,9 +4,8 @@
         @include('livewire.appointment.headquarters.modals.modal-new')
     @endif
     @if ($modalEdit)
-    @include('livewire.appointment.headquarters.modals.modal-edit')
+        @include('livewire.appointment.headquarters.modals.modal-edit')
     @endif
-
     <div class="relative py-6 lg:py-4">
         <img class="z-0 w-full h-full absolute inset-0 object-cover" src="{{ asset('images/banner_testing.jpg') }}"
             alt="bg" />
@@ -75,7 +74,7 @@
 
                                         </th>
                                         <th scope="col" class="px-6 py-3">
-                                
+
                                         </th>
                                     </tr>
                                 </thead>
@@ -104,14 +103,15 @@
                                             </td>
                                             <td class="px-6 py-4">
 
-<button wire:click="editModal({{$headquarter->id}})" class="px-3 py-2 text-xs font-medium text-center text-white bg-sky-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-Editar
-</button>
-<button wire:click=""
-class="px-3 py-2 text-xs font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-blue-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
-Eliminar
-</button>
-        
+                                                <button wire:click="editModal({{ $headquarter->id }})"
+                                                    class="px-3 py-2 text-xs font-medium text-center text-white bg-sky-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                                    Editar
+                                                </button>
+                                                <button wire:click=""
+                                                    class="px-3 py-2 text-xs font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-blue-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                                                    Eliminar
+                                                </button>
+
                                             </td>
                                         </tr>
                                     @endforeach
