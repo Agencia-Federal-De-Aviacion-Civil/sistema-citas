@@ -27,6 +27,9 @@
                             {{ __('Catálogo Sedes') }}
                         </x-jet-nav-link>
                     @endcan
+                    @can('admin.see.reAppointment')
+                        JAJAJAJA SOLO LO VERAN LAS SEDES QUE TIENEN QUE REAGENDAR
+                    @endcan
                 </div>
             </div>
 

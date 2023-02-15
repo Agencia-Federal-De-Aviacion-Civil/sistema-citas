@@ -74,7 +74,7 @@ class Headquarters extends Component
                 'email' => $this->email,
                 'password' => Hash::make($this->password),
             ]
-        );
+        )->assignRole('headquarters');
         $saveHeadrquearter = headquarter::updateOrCreate(
             ['id' => $this->id_save],
             [
