@@ -24,7 +24,7 @@
             question: @entangle('user_question_id'),
             clasification: @entangle('type_class_id'),
             typelicens: @entangle('clasification_class_id'),
-            selec_sede: @entangle('headquarter_id'),
+            selec_sede: @entangle('to_user_headquarters'),
             fileName: '',
         }">
             {{-- estep --}}
@@ -317,10 +317,10 @@
                                     <div class="grid xl:grid-cols-3 xl:gap-6">
                                         <div class="text-base relative z-auto w-full mb-2 group">
                                             <x-select label="ELIJA LA SEDE" placeholder="Selecciona"
-                                                x-ref="selec_sede" wire:model.lazy="headquarter_id">
+                                                x-ref="selec_sede" wire:model.lazy="to_user_headquarters">
                                                 @foreach ($sedes as $sede)
                                                     <x-select.option label="{{ $sede->headquarterUser->name }}"
-                                                        value="{{ $sede->id }}" />
+                                                        value="{{ $sede->headquarterUser->id }}" />
                                                 @endforeach
                                             </x-select>
                                         </div>

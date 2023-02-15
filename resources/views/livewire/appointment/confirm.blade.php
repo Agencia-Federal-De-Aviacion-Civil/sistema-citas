@@ -193,7 +193,7 @@
 
                         <p class="text-lg title-font font-normal">Sede:
                         <p class="text-xl font-semibold">
-                            {{ $userAppointment->appointmentSuccess->successHeadquarter->name }}
+                            {{-- {{ $userAppointment->appointmentSuccess->successHeadquarter->name }} --}}
                         </p>
                         </p>
                     </div>
@@ -206,11 +206,11 @@
             <div class="grid xl:grid-cols-2 xl:gap-24">
                 <div class="sm:w-full w-full">
                     <div class="rounded flex p-0 h-full items-center">
-                        <p class="text-lg title-font font-normal">{{ $userAppointment->appointmentSuccess->successHeadquarter->direction }}
+                        {{-- <p class="text-lg title-font font-normal">{{ $userAppointment->appointmentSuccess->successHeadquarter->direction }}
                             <a href="{{ $userAppointment->appointmentSuccess->successHeadquarter->url }}"
                                 target="_blank" class="text-lg font-semibold text-sky-600">Consultar
                                 mapa</a>
-                        </p>
+                        </p> --}}
                     </div>
                 </div>
                 <div class="sm:w-full w-full">

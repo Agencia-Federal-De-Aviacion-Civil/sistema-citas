@@ -12,6 +12,8 @@ use App\Models\catalogue\clasificationClass;
 use App\Models\catalogue\headquarter;
 use App\Models\catalogue\typeClass;
 use App\Models\catalogue\typeExam;
+use App\Models\User;
+use App\Notifications\AppointmentGenerate;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -31,7 +33,7 @@ class Generate extends Component
     // QUESTION STUDYING
     public $user_appointment_success_id, $count, $user_appointment_id, $user_question_id, $type_class_id, $clasification_class_id = [];
 
-    public $headquarter_id, $appointmentDate, $appointmentTime, $appointments, $finishCollegue, $aerodromos = [];
+    public $to_user_headquarters, $appointmentDate, $appointmentTime, $appointments, $finishCollegue, $aerodromos = [];
     public function mount()
     {
         $this->reset();
@@ -46,7 +48,7 @@ class Generate extends Component
         $this->var = user_appointment_success::where('appointmentDate', $this->appointmentDate)->get();
         //  where('appointmentDate', $this->appointmentDate)
         // ->where('appointmentTime', $this->appointmentTime)
-        // ->where('headquarter_id', $this->headquarter_id)
+        // ->where('to_user_headquarters', $this->to_user_headquarters)
         // ->first();
     }
     public function rules()
@@ -59,7 +61,7 @@ class Generate extends Component
             'paymentConcept' => 'required|unique:user_appointments',
             'paymentDate' => 'required',
             'document' => 'required|mimetypes:application/pdf|max:500',
-            'headquarter_id' => 'required',
+            'to_user_headquarters' => 'required',
             'appointmentDate' => 'required',
             'appointmentTime' => 'required',
         ];
@@ -75,7 +77,7 @@ class Generate extends Component
     public function updatedtypeExamId($type_exam_id)
     {
         $this->typeClasses = typeClass::where('type_exam_id', $type_exam_id)->get();
-        $this->reset(['user_question_id', 'type_class_id', 'clasification_class_id', 'headquarter_id', 'appointmentDate']);
+        $this->reset(['user_question_id', 'type_class_id', 'clasification_class_id', 'to_user_headquarters', 'appointmentDate']);
     }
     public function updatedUserQuestionId($user_question_id)
     {
@@ -96,25 +98,25 @@ class Generate extends Component
         // ALGORITMIC ANGEL
         $user_appointment = user_appointment_success::where('appointmentDate', $this->appointmentDate)
             ->where('appointmentTime', $this->appointmentTime)
-            ->where('headquarter_id', $this->headquarter_id)
+            ->where('to_user_headquarters', $this->to_user_headquarters)
             ->get();
 
 
-        if($user_appointment->count()!=0){
-        if ($user_appointment[0]->appointmentTime <= '08:00:00' && $user_appointment->count() == 50) {
-            //dd('13 citas');
-            return $this->dialog()->show([
-                'title' => 'Citas no disponibles en la fecha indicada',
-                'icon'        => 'warning'
-            ]);
-        } else
+        if ($user_appointment->count() != 0) {
+            if ($user_appointment[0]->appointmentTime <= '08:00:00' && $user_appointment->count() == 50) {
+                //dd('13 citas');
+                return $this->dialog()->show([
+                    'title' => 'Citas no disponibles en la fecha indicada',
+                    'icon'        => 'warning'
+                ]);
+            } else
         if ($user_appointment[0]->appointmentTime > '08:00:00' && $user_appointment->count() == 50) {
-            //dd('12 citas');
-            return $this->dialog()->show([
-                'title' => 'Citas no disponibles en la fecha indicada',
-                'icon'        => 'warning'
-            ]);
-        }
+                //dd('12 citas');
+                return $this->dialog()->show([
+                    'title' => 'Citas no disponibles en la fecha indicada',
+                    'icon'        => 'warning'
+                ]);
+            }
         }
 
         // if ($user_appointment == null) {
@@ -145,12 +147,16 @@ class Generate extends Component
         $this->userappointment = user_appointment_success::updateOrCreate(
             ['id' => $this->id_user_appointment],
             [
-                'headquarter_id' => $this->headquarter_id,
+                'from_user_appointment' => Auth::user()->id,
+                'to_user_headquarters' => $this->to_user_headquarters,
                 'appointmentDate' => $this->appointmentDate,
                 'appointmentTime' => $this->appointmentTime,
                 'appointments' => $this->id_user_appointment,
             ]
         );
+        $userAppointment = $this->userappointment;
+        $notifyHeadquarter = User::find($this->userappointment->to_user_headquarters);
+        $notifyHeadquarter->notify(new AppointmentGenerate($userAppointment));
         $extension = $this->document->extension();
         $documentPay = userPaymentDocument::updateOrCreate(
             ['id' => $this->document_id],
@@ -295,10 +301,10 @@ class Generate extends Component
         // sumando las citas
         // $sumappointment = user_appointment_success::where('appointmentDate', $printQuery->appointmentSuccess->appointmentDate)
         //     ->sum('appointments');
-            // sumando las citas
+        // sumando las citas
         $sumappointment = user_appointment_success::where('appointmentDate', $printQuery->appointmentSuccess->appointmentDate)
-        ->where('appointmentTime',$printQuery->appointmentSuccess->appointmentTime)
-        ->where('headquarter_id',$printQuery->appointmentSuccess->headquarter_id)->get();            
+            ->where('appointmentTime', $printQuery->appointmentSuccess->appointmentTime)
+            ->where('to_user_headquarters', $printQuery->appointmentSuccess->to_user_headquarters)->get();
 
         $sumappointment = count($sumappointment);
 

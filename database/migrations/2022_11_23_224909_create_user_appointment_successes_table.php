@@ -15,8 +15,10 @@ return new class extends Migration
     {
         Schema::create('user_appointment_successes', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('headquarter_id')->nullable();
-            $table->foreign('headquarter_id')->references('id')->on('headquarters')->onDelete('cascade');
+            $table->unsignedBigInteger('from_user_appointment')->nullable();
+            $table->foreign('from_user_appointment')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('to_user_headquarters')->nullable();
+            $table->foreign('to_user_headquarters')->references('id')->on('users')->onDelete('cascade');
             $table->date('appointmentDate');
             $table->time('appointmentTime');
             $table->integer('appointments');

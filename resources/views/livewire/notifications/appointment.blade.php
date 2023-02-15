@@ -21,7 +21,7 @@
                         {{ __('Solicitudes de Examen') }}
                     </div>
                     <ul class="divide-y-2">
-                        {{-- @foreach ($notifications as $notification)
+                        @foreach ($notifications as $notification)
                             <li wire:click="read('{{ $notification->id }}')"
                                 class="{{ !$notification->read_at ? 'bg-gray-200' : '' }}">
                                 <x-jet-dropdown-link class="text-gray-700" href="{{ $notification->data['url'] }}">
@@ -29,7 +29,7 @@
                                     <span
                                         class="text-xs font-bold">{{ $notification->created_at->diffForHumans() }}</span>
                                 </x-jet-dropdown-link>
-                        @endforeach --}}
+                        @endforeach
                         </li>
                     </ul>
                 </div>

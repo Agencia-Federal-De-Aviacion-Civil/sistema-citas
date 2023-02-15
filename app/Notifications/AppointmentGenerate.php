@@ -2,12 +2,13 @@
 
 namespace App\Notifications;
 
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class AppointmentGenerate extends Notification
+class AppointmentGenerate extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -16,9 +17,9 @@ class AppointmentGenerate extends Notification
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(public $userAppointment)
     {
-        //
+        // dd($this->userAppointment->from_user_appointment)->name;
     }
 
     /**
@@ -29,7 +30,7 @@ class AppointmentGenerate extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['mail', 'database'];
     }
 
     /**
@@ -41,17 +42,20 @@ class AppointmentGenerate extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+            ->line('Se ha agendado una nueva cita.')
+            ->action('Notification Action', url('/'))
+            ->line('Gracias!');
     }
 
-    /**
-     * Get the array representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
+    public function toDatabase($notifiable)
+    {
+        $notifiable->notification += 1;
+        $notifiable->save();
+        return [
+            'url' => 'www.google.com',
+            'message' => User::find($this->userAppointment->from_user_appointment)->name . ' ' . 'ha agendado una nueva cita.',
+        ];
+    }
     public function toArray($notifiable)
     {
         return [

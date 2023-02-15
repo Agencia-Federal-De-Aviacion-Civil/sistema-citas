@@ -28,7 +28,9 @@
                         </x-jet-nav-link>
                     @endcan
                     @can('admin.see.reAppointment')
-                        JAJAJAJA SOLO LO VERAN LAS SEDES QUE TIENEN QUE REAGENDAR
+                    <x-jet-nav-link href="">
+                        {{ __('Citas agendadas') }}
+                    </x-jet-nav-link>
                     @endcan
                 </div>
             </div>
