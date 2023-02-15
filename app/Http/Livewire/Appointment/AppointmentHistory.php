@@ -77,7 +77,7 @@ class AppointmentHistory extends Component
     }
 
     public function delete(){
-        dd($this->idAppointmet);
+        // dd($this->idAppointmet);
     }
 
     public function openModal()
