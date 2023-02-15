@@ -19,7 +19,7 @@
                             {{ __('Inicio') }}
                         </x-jet-nav-link>
                     @endcan
-                    @can('admin.see.history')
+                    @can('see.appointments')
                         <x-jet-nav-link href="{{ route('afac.appointment') }}" :active="request()->routeIs('afac.appointment')">
                             {{ __('Inicio') }}
                         </x-jet-nav-link>
@@ -27,11 +27,6 @@
                     @can('admin.see.headquarters')
                         <x-jet-nav-link href="{{ route('afac.headquarters') }}" :active="request()->routeIs('afac.headquarters')">
                             {{ __('Catálogo Sedes') }}
-                        </x-jet-nav-link>
-                    @endcan
-                    @can('admin.see.reAppointment')
-                        <x-jet-nav-link href="">
-                            {{ __('Citas agendadas') }}
                         </x-jet-nav-link>
                     @endcan
                 </div>

@@ -18,7 +18,7 @@
                 <div class="w-60">
                     <!-- Team Management -->
                     <div class="block px-4 py-2 text-xs text-gray-400">
-                        {{ __('Solicitudes de Examen') }}
+                        {{ __('Citas agendadas') }}
                     </div>
                     <ul class="divide-y-2">
                         @foreach ($notifications as $notification)

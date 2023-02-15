@@ -17,21 +17,22 @@ class AppointmentHistory extends Component
     use WithFileUploads;
     public $n = 1;
     public $modal = false;
-    public $name,$type,$class,$typLicense,$sede,$date,$time,$idAppointmet,$headquarterid;
+    public $name, $type, $class, $typLicense, $sede, $date, $time, $idAppointmet, $headquarterid;
     public function render()
     {
 
         $appointments = userAppointment::with([
             'appointmentUser', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess.successUser',
             'appointmentTypeExam', 'appointmentDocument'
-        ])
-            ->where('user_id', '<>', Auth::user()->id)->get();
-
+        ])->whereHas('appointmentSuccess', function ($q) {
+            $q->where('to_user_headquarters', Auth::user()->id);
+        })->get();
         return view('livewire.appointment.appointment-history', compact('appointments'))
             ->layout('layouts.app');
     }
-    public function rescheduleAppointment($id){
-               
+    public function rescheduleAppointment($id)
+    {
+
         $appointment = userAppointment::with([
             'appointmentUser', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess',
             'appointmentTypeExam', 'appointmentDocument'
@@ -39,12 +40,12 @@ class AppointmentHistory extends Component
             ->where('user_appointment_success_id', $id)->get();
         $this->name = $appointment[0]->appointmentUser->name . ' ' . $appointment[0]->appointmentUser->apParental . ' ' . $appointment[0]->appointmentUser->apMaternal;
         $this->type = $appointment[0]->appointmentTypeExam->name;
-        if($appointment[0]->appointmentTypeExam->id==1){
-        $this->class = $appointment[0]->appointmentStudying[0]->studyingClass->name;
-        $this->typLicense = $appointment[0]->appointmentStudying[0]->studyingClasification->name;
-        }else{
-        $this->class = $appointment[0]->appointmentRenovation[0]->renovationClass->name;
-        $this->typLicense = $appointment[0]->appointmentRenovation[0]->renovationClasification->name;    
+        if ($appointment[0]->appointmentTypeExam->id == 1) {
+            $this->class = $appointment[0]->appointmentStudying[0]->studyingClass->name;
+            $this->typLicense = $appointment[0]->appointmentStudying[0]->studyingClasification->name;
+        } else {
+            $this->class = $appointment[0]->appointmentRenovation[0]->renovationClass->name;
+            $this->typLicense = $appointment[0]->appointmentRenovation[0]->renovationClasification->name;
         }
         $this->sede = $appointment[0]->appointmentSuccess->successUser->name;
         $this->date = $appointment[0]->appointmentSuccess->appointmentDate;
@@ -53,7 +54,8 @@ class AppointmentHistory extends Component
         $this->headquarterid = $appointment[0]->appointmentSuccess->to_user_headquarters;
         $this->openModal();
     }
-    public function deletAppointment($id){
+    public function deletAppointment($id)
+    {
 
         $appointment = userAppointment::with([
             'appointmentUser', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess',
@@ -63,7 +65,7 @@ class AppointmentHistory extends Component
         $this->idAppointmet = $appointment[0]->appointmentSuccess->id;
 
         $this->dialog()->confirm([
-            'title'       => 'CITA DE '.$appointment[0]->appointmentUser->name,
+            'title'       => 'CITA DE ' . $appointment[0]->appointmentUser->name,
             'description' => '¿DESEAS ELIMINAR ESTA CITA?',
             'icon'        => 'question',
             'accept'      => [
@@ -76,18 +78,21 @@ class AppointmentHistory extends Component
         ]);
     }
 
-    public function delete(){
+    public function delete()
+    {
         // dd($this->idAppointmet);
     }
 
     public function openModal()
     {
         $this->modal = true;
-    }    
-    public function salir(){
-        $this->modal = false;        
     }
-    public function reschedule(){
+    public function salir()
+    {
+        $this->modal = false;
+    }
+    public function reschedule()
+    {
 
         $user_appointment = user_appointment_success::where('appointmentDate', $this->date)
             ->where('appointmentTime', $this->time)
@@ -98,17 +103,17 @@ class AppointmentHistory extends Component
             //dd('13 citas');
             $this->modal = false;
             return $this->notification([
-            'title'       => 'Citas no disponibles en la fecha indicada',
-            'icon'        => 'warning'
-        ]);
+                'title'       => 'Citas no disponibles en la fecha indicada',
+                'icon'        => 'warning'
+            ]);
         } else
         if ($this->time > '08:00:00' && $user_appointment->count() == 4) {
             //dd('12 citas');
             $this->modal = false;
             return $this->notification([
-            'title'       => 'Citas no disponibles en la fecha indicada',
-            'icon'        => 'warning'
-        ]);
+                'title'       => 'Citas no disponibles en la fecha indicada',
+                'icon'        => 'warning'
+            ]);
         }
 
         $appointmet =  user_appointment_success::find($this->idAppointmet);
@@ -120,7 +125,7 @@ class AppointmentHistory extends Component
         );
         $this->modal = false;
         $this->acuse();
-        
+
         // $this->notification([
         //     'title'       => 'Cita reagendada',
         //     'icon'        => 'success'
@@ -146,21 +151,22 @@ class AppointmentHistory extends Component
     // {
     //     return redirect()->route('afac.home');
     // }
-    public function download(){
+    public function download()
+    {
         $id = $this->idAppointmet;
-        return redirect()->route('downloads',compact('id'));        
+        return redirect()->route('downloads', compact('id'));
     }
     public function test()
     {
 
         $printQuery = userAppointment::with(['appointmentTypeExam', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess'])
-        ->where('user_appointment_success_id', $_GET['id'])->latest()->first();
-            // sumando las citas
+            ->where('user_appointment_success_id', $_GET['id'])->latest()->first();
+        // sumando las citas
         $sumappointment = user_appointment_success::where('appointmentDate', $printQuery->appointmentSuccess->appointmentDate)
-            ->where('appointmentTime',$printQuery->appointmentSuccess->appointmentTime)
-            ->where('to_user_headquarters',$printQuery->appointmentSuccess->to_user_headquarters)->get();            
+            ->where('appointmentTime', $printQuery->appointmentSuccess->appointmentTime)
+            ->where('to_user_headquarters', $printQuery->appointmentSuccess->to_user_headquarters)->get();
 
-            $sumappointment = count($sumappointment);
+        $sumappointment = count($sumappointment);
 
         if ($printQuery->type_exam_id == 1) {
             $pdf = PDF::loadView('livewire.appointment.documents.appointment-pdf', compact('printQuery', 'sumappointment'));
@@ -169,6 +175,5 @@ class AppointmentHistory extends Component
             $pdf = PDF::loadView('livewire.appointment.documents.appointment-pdf2', compact('printQuery', 'sumappointment'));
             return $pdf->download($printQuery->paymentDate . '-' . $printQuery->appointmentTypeExam->name . ' cita.pdf');
         }
-    }    
-
+    }
 }

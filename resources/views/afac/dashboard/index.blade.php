@@ -2,7 +2,7 @@
     @can('user.generate.appointment')
         @livewire('appointment.generate')
     @endcan
-    @can('admin.see.history')
+    @can('see.appointments')
         @livewire('appointment.appointment-history')
     @endcan
 </x-app-layout>
