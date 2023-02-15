@@ -4,7 +4,7 @@
     @if ($modal)
         @include('livewire.appointment.headquarters.modals.modal-reschedule')
     @endif
-     <div class="relative py-6 lg:py-4">
+    <div class="relative py-6 lg:py-4">
         <img class="z-0 w-full h-full absolute inset-0 object-cover" src="{{ asset('images/banner_testing.jpg') }}"
             alt="bg" />
         <div
@@ -53,8 +53,8 @@
                                     FECHA Y HORA
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    <div class="flex items-center w-36">
-                                    </div>
+                                </th>
+                                <th scope="col" class="px-6 py-3">
                                 </th>
                             </tr>
                         </thead>
@@ -96,16 +96,10 @@
                                         {{ $appointment->appointmentSuccess->appointmentDate . ' ' . $appointment->appointmentSuccess->appointmentTime }}
                                     </td>
                                     <td class="px-6 py-4">
-                                        {{-- {{ $RequestList->requestExamTypeExam->name }} --}}
-                                        <button wire:click="rescheduleAppointment({{ $appointment->appointmentSuccess->id }})"
-                                            {{-- wire:click="reagandar({{$appointment->appointmentSuccess->id}})" --}}
-                                            class="px-3 py-2 text-xs font-medium text-center text-white bg-sky-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                            Reagenda
-                                        </button>
-                                        <button wire:click="deletAppointment({{$appointment->appointmentSuccess->id}})"
-                                            class="px-3 py-2 text-xs font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-blue-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
-                                            Eliminar
-                                        </button>
+                                        <x-button wire:click="rescheduleAppointment({{ $appointment->appointmentSuccess->id }})" label="REAGENDAR" xs blue right-icon="calendar" />
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <x-button wire:click="deletAppointment({{ $appointment->appointmentSuccess->id }})" label="ELIMINAR" xs red right-icon="trash" />
                                     </td>
                                 </tr>
                         </tbody>
