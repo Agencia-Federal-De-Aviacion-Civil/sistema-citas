@@ -17,7 +17,7 @@ class AppointmentGenerate extends Notification implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(public $userAppointment)
+    public function __construct(public $appointmentNotify)
     {
         // dd($this->userAppointment->from_user_appointment)->name;
     }
@@ -53,7 +53,7 @@ class AppointmentGenerate extends Notification implements ShouldQueue
         $notifiable->save();
         return [
             'url' => 'www.google.com',
-            'message' => User::find($this->userAppointment->from_user_appointment)->name . ' ' . 'ha agendado una nueva cita.',
+            'message' => User::find($this->appointmentNotify->from_user_appointment)->name . ' ' . 'ha agendado una nueva cita.',
         ];
     }
     public function toArray($notifiable)

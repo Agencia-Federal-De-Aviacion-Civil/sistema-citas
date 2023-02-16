@@ -94,4 +94,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(user_appointment_success::class);
     }
+    public function userHeadquarter()
+    {
+        return $this->hasMany(headquarter::class);
+    }
 }
