@@ -20,13 +20,19 @@ class AppointmentHistory extends Component
     public $name, $type, $class, $typLicense, $sede, $date, $time, $idAppointmet, $headquarterid;
     public function render()
     {
-
-        $appointments = userAppointment::with([
-            'appointmentUser', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess.successUser',
-            'appointmentTypeExam', 'appointmentDocument'
-        ])->whereHas('appointmentSuccess', function ($q) {
-            $q->where('to_user_headquarters', Auth::user()->id);
-        })->get();
+        if (Auth::user()->HasRole('admin')) {
+            $appointments = userAppointment::with([
+                'appointmentUser', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess.successUser',
+                'appointmentTypeExam', 'appointmentDocument'
+            ])->get();
+        } else {
+            $appointments = userAppointment::with([
+                'appointmentUser', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess.successUser',
+                'appointmentTypeExam', 'appointmentDocument'
+            ])->whereHas('appointmentSuccess', function ($q) {
+                $q->where('to_user_headquarters', Auth::user()->id);
+            })->get();
+        }
         return view('livewire.appointment.appointment-history', compact('appointments'))
             ->layout('layouts.app');
     }

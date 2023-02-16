@@ -144,8 +144,8 @@ class Generate extends Component
 
 
         $this->id_user_appointment = 1;
-        $this->userappointment = user_appointment_success::updateOrCreate(
-            ['id' => $this->id_user_appointment],
+        $this->userappointment = user_appointment_success::create(
+            // ['id' => $this->id_user_appointment],
             [
                 'from_user_appointment' => Auth::user()->id,
                 'to_user_headquarters' => $this->to_user_headquarters,
