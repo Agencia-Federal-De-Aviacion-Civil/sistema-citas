@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\afac\homeController;
+use App\Http\Livewire\Home\Dashboard;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,5 +27,5 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
-    Route::get('/', [homeController::class, 'index'])->name('afac.login');
+    Route::get('/', Dashboard::class)->name('afac.login');
 });
