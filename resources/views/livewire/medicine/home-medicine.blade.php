@@ -2,12 +2,12 @@
     <x-notifications position="top-center" />
     <x-dialog z-index="z-50" blur="md" align="center" />
     @if ($confirmModal)
-        @include('livewire.appointment.confirm')
+        @include('livewire.medicine.modals.confirm')
     @endif
     @if ($modal)
-        @include('livewire.appointment.readyPdf')
+        @include('livewire.medicine.modals.readyPdf')
     @endif
-    @livewire('home.modal-index')
+    @livewire('medicine.modals.modal-index')
     <form wire:submit.prevent="save">
         <div class="container px-6 py-10 mx-auto">
             <h1 class="text-2xl font-semibold text-gray-800 capitalize lg:text-3xl dark:text-white">Generación de cita
