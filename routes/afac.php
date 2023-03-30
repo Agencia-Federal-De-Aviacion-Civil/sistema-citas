@@ -3,6 +3,7 @@
 use App\Http\Controllers\afac\homeController;
 use App\Http\Livewire\Appointment\Generate;
 use App\Http\Livewire\Home\Dashboard;
+use App\Http\Livewire\Linguistics\HomeLinguistics;
 use App\Http\Livewire\Medicine\HomeMedicine;
 use Illuminate\Support\Facades\Route;
 
@@ -19,4 +20,5 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('', Dashboard::class)->name('afac.home');
 Route::get('/medicine', HomeMedicine::class)->name('afac.medicine');
+Route::get('/linguistics', HomeLinguistics::class)->name('afac.linguistics');
 Route::get('/download', [HomeMedicine::class, 'test'])->name('download');

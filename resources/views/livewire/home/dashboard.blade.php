@@ -54,7 +54,7 @@
                                 </div>
                             </div>
                         </a>
-                        <a href="">
+                        <a href="{{route('afac.linguistics')}}">
                             <div
                                 class="group bg-white h-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden transition duration-100 transform hover:scale-105 hover:cursor-pointer">
                                 <div class="overflow-hidden bg-cover cursor-pointer lg:h-48 md:h-36 w-full object-cover object-center group"
