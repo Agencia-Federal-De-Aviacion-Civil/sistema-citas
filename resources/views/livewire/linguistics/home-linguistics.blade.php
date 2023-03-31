@@ -26,6 +26,13 @@
                         <x-input wire:model.lazy="referenceNumber" label="REFERENCIA DE PAGO"
                             placeholder="INGRESE..." />
                     </div>
+                    <div class="relative z-0 w-full mb-6 group">
+                        <x-input wire:model.lazy="headquarters" label="SEDE" placeholder="INGRESE..." />
+                    </div>
+                    <div class="relative z-0 w-full mb-6 group">
+                        <x-input wire:model.lazy="dateReserve" id="selector-fecha" label="FECHA DE CITA"
+                            placeholder="INGRESE..." readonly />
+                    </div>
                 </div>
                 <div class="text-right">
                     <x-button wire:click.prevent="save" label="GUARDAR" cyan right-icon="archive" />
@@ -34,3 +41,31 @@
         </div>
     </div>
 </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        Livewire.on("fechaSeleccionada", (dateReserve) => {
+            console.log("Fecha seleccionada: " + dateReserve);
+        });
+        flatpickr("#selector-fecha", {
+            enableTime: true,
+            time_24hr: true,
+            dateFormat: "Y-m-d H:i",
+            minTime: "10:00",
+            maxTime: "17:00",
+            disableMobile: "true",
+            minuteIncrement: 30,
+            disable: [
+                function(date) {
+                    // Devuelve 'true' si la fecha es un sábado o domingo
+                    return date.getDay() === 6 || date.getDay() === 0;
+                },
+            ],
+            onChange: function(selectedDates) {
+                Livewire.emit(
+                    "fechaSeleccionada",
+                    selectedDates[0].toISOString().slice(0, 10)
+                );
+            },
+        });
+    });
+</script>
