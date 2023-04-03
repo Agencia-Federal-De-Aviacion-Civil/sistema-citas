@@ -17,10 +17,11 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('linguistic_id')->nullable();
             $table->foreign('linguistic_id')->references('id')->on('linguistics')->onDelete('cascade');
-            $table->string('headquarters');
+            $table->unsignedBigInteger('headquarters_id')->nullable();
+            $table->foreign('headquarters_id')->references('id')->on('headquarters')->onDelete('cascade');
             $table->dateTime('dateReserve');
             $table->timestamps();
-            $table->unique(['headquarters', 'dateReserve']); // Restricción única
+            $table->unique(['headquarters_id', 'dateReserve']); // Restricción única
         });
     }
 

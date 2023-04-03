@@ -23,11 +23,58 @@
             <div class="mt-12 max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="grid md:grid-cols-3 md:gap-6">
                     <div class="relative z-0 w-full mb-6 group">
-                        <x-input wire:model.lazy="referenceNumber" label="REFERENCIA DE PAGO"
+                        <x-input wire:model.lazy="reference_number" label="REFERENCIA DE PAGO"
                             placeholder="INGRESE..." />
                     </div>
                     <div class="relative z-0 w-full mb-6 group">
-                        <x-input wire:model.lazy="headquarters" label="SEDE" placeholder="INGRESE..." />
+                        <x-input wire:model.lazy="pay_date" id="fecha-pago" label="FECHA DE PAGO"
+                            placeholder="INGRESE..." readonly />
+                    </div>
+                    <div class="relative z-0 w-full mb-6 group">
+                        <label for="small" class="block text-base font-medium text-gray-900 dark:text-white">ADJUNTA
+                            EL COMPROBANTE DE PAGO</label>
+                        <input type="file" wire:model="name_document"
+                            class="block w-full border border-gray-200 shadow-sm rounded-md text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 file:bg-transparent file:border-0 file:bg-gray-100 file:mr-4 file:py-2.5 file:px-4 dark:file:bg-gray-700 dark:file:text-gray-400">
+                        <div class="float-left">
+                            <div wire:loading wire:target="">Subiendo...
+                                <div style="color: #27559b9a" class="la-ball-fall">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-3 md:gap-6">
+                    <div class="relative z-0 w-full mb-6 group">
+                        <x-select wire:model.lazy="type_exam_id" label="TIPO DE EVALUACIÓN" placeholder="Seleccione...">
+                            @foreach ($exams as $exam)
+                                <x-select.option label="{{ $exam->name }}" value="{{ $exam->id }}" />
+                            @endforeach
+                        </x-select>
+                    </div>
+                    <div class="relative z-0 w-full mb-6 group">
+                        <x-select wire:model.lazy="type_license" label="TIPO DE LICENCIA" placeholder="Seleccione...">
+                            <x-select.option label="PILOTO" value="PILOTO" />
+                            <x-select.option label="CONTROLADOR ÁEREO" value="CONTROLADOR ÁEREO" />
+                        </x-select>
+                    </div>
+                    <div class="relative z-0 w-full mb-6 group">
+                        <x-input wire:model.lazy="license_number" label="NÚMERO DE LICENCIA" placeholder="INGRESE..." />
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-3 md:gap-6">
+                    <div class="relative z-0 w-full mb-6 group">
+                        <x-input wire:model.lazy="red_number" label="NÚMERO ROJO" placeholder="INGRESE..." />
+                    </div>
+                    <div class="relative z-0 w-full mb-6 group">
+                        <x-select wire:model.lazy="headquarters_id" label="SEDE" placeholder="Seleccione...">
+                            @foreach ($headquartersQueries as $headquartersQuery)
+                                <x-select.option label="{{ $headquartersQuery->name }}"
+                                    value="{{ $headquartersQuery->id }}" />
+                            @endforeach
+                        </x-select>
                     </div>
                     <div class="relative z-0 w-full mb-6 group">
                         <x-input wire:model.lazy="dateReserve" id="selector-fecha" label="FECHA DE CITA"
@@ -43,6 +90,12 @@
 </div>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
+        flatpickr("#fecha-pago", {
+            dateFormat: "Y-m-d",
+            disableMobile: "true",
+        });
+
+        // SECOND DATE 
         Livewire.on("fechaSeleccionada", (dateReserve) => {
             console.log("Fecha seleccionada: " + dateReserve);
         });
