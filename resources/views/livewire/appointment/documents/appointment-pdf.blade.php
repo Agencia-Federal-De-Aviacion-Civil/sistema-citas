@@ -40,12 +40,12 @@
             <tr>
                 <td colspan="12">NOMBRE:</td>
                 <td colspan="24">
-                    {{ strtoupper($printQuery->appointmentUser->name . ' ' . $printQuery->appointmentUser->apParental . ' ' . $printQuery->appointmentUser->apMaternal) }}
+                    {{ strtoupper($printQuery->appointmentUser->name . ' ' . $printQuery->appointmentUser->userParticipant[0]->apParental . ' ' . $printQuery->appointmentUser->userParticipant[0]->apMaternal) }}
                 </td>
             </tr>
             <tr>
                 <td colspan="12">CURP:</td>
-                <td>{{ strtoupper($printQuery->appointmentUser->curp) }}</td>
+                <td>{{ strtoupper($printQuery->appointmentUser->userParticipant[0]->curp) }}</td>
             </tr>
             <tr>
                 <td colspan="12">NUMERO DE EXPEDIENTE:</td>
@@ -77,7 +77,7 @@
             </tr>
             <tr>
                 <td colspan="12">UNIDAD MÉDICA:</td>
-                <td colspan="24"> {{ strtoupper($printQuery->appointmentSuccess->successHeadquarter->name) }}</p>
+                <td colspan="24"> {{ strtoupper($printQuery->appointmentSuccess->successUser->name) }}</p>
                 </td>
             </tr>
             <tr>

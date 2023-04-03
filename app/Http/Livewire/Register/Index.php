@@ -2,12 +2,14 @@
 
 namespace App\Http\Livewire\Register;
 
+use App\Models\appointment\UserParticipant;
 use App\Models\catalogue\municipal;
 use App\Models\catalogue\state;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+
 class Index extends Component
 {
     public function rules()
@@ -31,16 +33,17 @@ class Index extends Component
             'mobilePhone' => 'required|max:10',
             'officePhone' => 'max:10',
             'extension' => '',
-            'curp' => 'required|unique:users',
+            'curp' => 'required|unique:user_participants',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6|same:passwordConfirmation'
         ];
     }
-    public $name, $apParental, $apMaternal, $genre, $birth, $state_id, $municipal_id, $age, $street, $nInterior, $nExterior, $suburb, $postalCode, $federalEntity,
+    public $user_id, $id_register, $name, $apParental, $apMaternal, $genre, $birth, $state_id, $municipal_id, $age, $street, $nInterior, $nExterior, $suburb, $postalCode, $federalEntity,
         $delegation, $mobilePhone, $officePhone, $extension, $curp, $email, $password = '', $passwordConfirmation = '';
-    
-    
-    public function mount(){
+
+
+    public function mount()
+    {
         $this->states = state::all();
         $this->municipals = collect();
     }
@@ -50,8 +53,9 @@ class Index extends Component
         return view('livewire.register.index');
     }
 
-    public function updatedStateId($id){
-        $this->municipals = municipal::with('municipal_state')->where('state_id',$id)->get();
+    public function updatedStateId($id)
+    {
+        $this->municipals = municipal::with('municipalState')->where('state_id', $id)->get();
     }
     public function updatedEmail()
     {
@@ -59,7 +63,7 @@ class Index extends Component
     }
     public function updatedCurp()
     {
-        $this->validate(['curp' => 'unique:users']);
+        $this->validate(['curp' => 'unique:user_participants']);
     }
     public function updated($propertyName)
     {
@@ -68,8 +72,16 @@ class Index extends Component
     public function register()
     {
         $this->validate();
-        $user = User::create([
-            'name' => $this->name,
+        $user = User::updateOrCreate(
+            ['id' => $this->id_register],
+            [
+                'name' => $this->name,
+                'email' => $this->email,
+                'password' => Hash::make($this->password),
+            ]
+        )->assignRole('user');
+        $user->userParticipant()->create([
+            'user_id' => $user->id,
             'apParental' => $this->apParental,
             'apMaternal' => $this->apMaternal,
             'genre' => $this->genre,
@@ -88,8 +100,6 @@ class Index extends Component
             'officePhone' => $this->officePhone,
             'extension' => $this->extension,
             'curp' => $this->curp,
-            'email' => $this->email,
-            'password' => Hash::make($this->password),
         ]);
         Auth::login($user);
         return redirect()->route('afac.home');
