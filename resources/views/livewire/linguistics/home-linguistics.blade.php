@@ -87,38 +87,29 @@
             </div>
         </div>
     </div>
-</div>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        flatpickr("#fecha-pago", {
-            dateFormat: "Y-m-d",
-            disableMobile: "true",
-        });
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            flatpickr("#fecha-pago", {
+                dateFormat: "Y-m-d",
+                disableMobile: "true",
+            });
 
-        // SECOND DATE 
-        Livewire.on("fechaSeleccionada", (dateReserve) => {
-            console.log("Fecha seleccionada: " + dateReserve);
+            // SECOND DATE 
+            flatpickr("#selector-fecha", {
+                enableTime: true,
+                time_24hr: true,
+                dateFormat: "Y-m-d H:i",
+                minTime: "10:00",
+                maxTime: "17:00",
+                disableMobile: "true",
+                minuteIncrement: 30,
+                disable: [
+                    function(date) {
+                        // Devuelve 'true' si la fecha es un sábado o domingo
+                        return date.getDay() === 6 || date.getDay() === 0;
+                    },
+                ],
+            });
         });
-        flatpickr("#selector-fecha", {
-            enableTime: true,
-            time_24hr: true,
-            dateFormat: "Y-m-d H:i",
-            minTime: "10:00",
-            maxTime: "17:00",
-            disableMobile: "true",
-            minuteIncrement: 30,
-            disable: [
-                function(date) {
-                    // Devuelve 'true' si la fecha es un sábado o domingo
-                    return date.getDay() === 6 || date.getDay() === 0;
-                },
-            ],
-            onChange: function(selectedDates) {
-                Livewire.emit(
-                    "fechaSeleccionada",
-                    selectedDates[0].toISOString().slice(0, 10)
-                );
-            },
-        });
-    });
-</script>
+    </script>
+</div>
