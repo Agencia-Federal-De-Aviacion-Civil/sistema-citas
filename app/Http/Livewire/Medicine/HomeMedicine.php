@@ -155,9 +155,9 @@ class HomeMedicine extends Component
                 'appointments' => $this->id_user_appointment,
             ]
         );
-        $userAppointment = $this->userappointment;
-        $notifyHeadquarter = User::find($this->userappointment->to_user_headquarters);
-        $notifyHeadquarter->notify(new AppointmentGenerate($userAppointment));
+        // $userAppointment = $this->userappointment;
+        // $notifyHeadquarter = User::find($this->userappointment->to_user_headquarters);
+        // $notifyHeadquarter->notify(new AppointmentGenerate($userAppointment));
         $extension = $this->document->extension();
         $documentPay = userPaymentDocument::updateOrCreate(
             ['id' => $this->document_id],
