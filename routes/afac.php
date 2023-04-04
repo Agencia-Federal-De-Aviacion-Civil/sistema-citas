@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('', Dashboard::class)->name('afac.home');
+Route::get('', [homeController::class, 'index'])->name('afac.home');
 Route::group(['middleware' => ['role:super_admin|user']], function () {
     Route::get('/medicine', HomeMedicine::class)->name('afac.medicine');
     Route::get('/download', [HomeMedicine::class, 'test'])->name('download');
@@ -27,7 +27,7 @@ Route::group(['middleware' => ['role:super_admin|user']], function () {
 // Route::group(['middleware' => ['role:admin|headquarters']], function () {
 //     Route::get('appointments', AppointmentHistory::class)->name('afac.appointment');
 // });
-Route::group(['middleware' => ['role:super_admin']], function () {
+Route::group(['middleware' => ['role:super_admin|medicine_admin']], function () {
     Route::get('headquarters', Headquarters::class)->name('afac.headquarterMedicine');
     Route::get('appointments', HistoryAppointment::class)->name('afac.historyMedicine');
 });

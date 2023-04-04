@@ -53,16 +53,14 @@
                             </ul>
                         </div>
                     @endcan
-                    {{-- @can('see.appointments')
-                        <x-jet-nav-link href="{{ route('afac.appointment') }}" :active="request()->routeIs('afac.appointment')">
-                            {{ __('Inicio') }}
+                    @can('see.navigation.medicine')
+                        <x-jet-nav-link href="{{ route('afac.historyMedicine') }}" :active="request()->routeIs('afac.historyMedicine')">
+                            {{ __('INICIO') }}
                         </x-jet-nav-link>
-                    @endcan --}}
-                    {{-- @can('admin.see.headquarters')
-                        <x-jet-nav-link href="{{ route('afac.headquarters') }}" :active="request()->routeIs('afac.headquarters')">
-                            {{ __('Catálogo Sedes') }}
+                        <x-jet-nav-link href="{{ route('afac.headquarterMedicine') }}" :active="request()->routeIs('afac.headquarterMedicine')">
+                            {{ __('SEDES') }}
                         </x-jet-nav-link>
-                    @endcan --}}
+                    @endcan
                 </div>
             </div>
 

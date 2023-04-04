@@ -24,5 +24,5 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified'
 ])->group(function () {
-    Route::get('/', Dashboard::class)->name('afac.login');
+    Route::get('/', [homeController::class, 'index'])->name('afac.login');
 });
