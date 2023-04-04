@@ -5,7 +5,7 @@
                 <div class="flex-1 lg:flex lg:items-center lg:-mx-6">
                     <div class="text-white lg:w-1/2 lg:mx-6">
                         <h1 class="text-blue-400 dark:text-gray-300 md:text-4xl">Bienvenido</h1>
-                        <h1 class="text-3xl font-semibold lg:text-5xl">Sistema Complementario de citas de la AFAC</h1>
+                        <h1 class="text-3xl font-semibold lg:text-5xl">Sistema General de citas de la AFAC</h1>
                         <p class="max-w-xl mt-6">
 
                         </p>
