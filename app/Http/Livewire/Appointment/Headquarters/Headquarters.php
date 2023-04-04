@@ -3,7 +3,7 @@
 namespace App\Http\Livewire\Appointment\Headquarters;
 
 use App\Models\catalogue\headquarter;
-use App\Models\Catalogue\System;
+use App\Models\catalogue\System;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
