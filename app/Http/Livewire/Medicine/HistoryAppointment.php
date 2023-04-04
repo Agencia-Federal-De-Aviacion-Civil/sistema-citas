@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Appointment;
+namespace App\Http\Livewire\Medicine;
 
 use App\Models\appointment\user_appointment_success;
 use App\Models\appointment\userAppointment;
@@ -11,7 +11,7 @@ use Livewire\WithFileUploads;
 use WireUi\Traits\Actions;
 use PDF;
 
-class AppointmentHistory extends Component
+class HistoryAppointment extends Component
 {
     use Actions;
     use WithFileUploads;
@@ -33,7 +33,7 @@ class AppointmentHistory extends Component
                 $q->where('to_user_headquarters', Auth::user()->id);
             })->get();
         }
-        return view('livewire.appointment.appointment-history', compact('appointments'))
+        return view('livewire.medicine.history-appointment', compact('appointments'))
             ->layout('layouts.app');
     }
     public function rescheduleAppointment($id)

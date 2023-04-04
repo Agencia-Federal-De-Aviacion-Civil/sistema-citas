@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\afac\homeController;
-use App\Http\Livewire\Appointment\AppointmentHistory;
 use App\Http\Livewire\Appointment\Generate;
 use App\Http\Livewire\Appointment\Headquarters\Headquarters;
+use App\Http\Livewire\Home\Dashboard;
+use App\Http\Livewire\Medicine\HistoryAppointment;
+use App\Http\Livewire\Medicine\HomeMedicine;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,12 +19,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('', [homeController::class, 'index'])->name('afac.home');
-Route::group(['middleware' => ['role:admin|headquarters']], function () {
-    Route::get('appointments', AppointmentHistory::class)->name('afac.appointment');
+Route::get('', Dashboard::class)->name('afac.home');
+Route::group(['middleware' => ['role:super_admin|user']], function () {
+    Route::get('/medicine', HomeMedicine::class)->name('afac.medicine');
+    Route::get('/download', [HomeMedicine::class, 'test'])->name('download');
 });
-Route::group(['middleware' => ['role:admin']], function () {
-    Route::get('headquarters', Headquarters::class)->name('afac.headquarters');
+// Route::group(['middleware' => ['role:admin|headquarters']], function () {
+//     Route::get('appointments', AppointmentHistory::class)->name('afac.appointment');
+// });
+Route::group(['middleware' => ['role:super_admin']], function () {
+    Route::get('headquarters', Headquarters::class)->name('afac.headquarterMedicine');
+    Route::get('appointments', HistoryAppointment::class)->name('afac.historyMedicine');
 });
-Route::get('/download', [Generate::class, 'test'])->name('download');
-Route::get('/downloads', [AppointmentHistory::class, 'test'])->name('downloads');
+// Route::get('/downloads', [AppointmentHistory::class, 'test'])->name('downloads');

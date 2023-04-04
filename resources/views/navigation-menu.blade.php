@@ -14,21 +14,55 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    @can('user.generate.appointment')
+                    @can('generate.appointment')
                         <x-jet-nav-link href="{{ route('afac.home') }}" :active="request()->routeIs('afac.home')">
                             {{ __('Inicio') }}
                         </x-jet-nav-link>
                     @endcan
-                    @can('see.appointments')
+                    @can('see.navigation.controller.systems')
+                        <div x-cloak x-data="{ open: false }" class="py-3 z-50">
+                            <button x-on:click="open = true"
+                                class="flex items-center bg-white focus:bg-gray-50 text-gray-700 focus:text-gray-900 rounded py-2 px-4"
+                                type="button">
+                                <span class="mr-1 text-base">MEDICINA DE AVIACION</span>
+                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                    style="margin-top:3px">
+                                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                                </svg>
+                            </button>
+                            <ul x-show="open" x-on:click.away="open = false"
+                                class="bg-white text-gray-700 rounded shadow-lg absolute py-2 mt-1" style="min-width:15rem">
+                                <li>
+                                    <a href="{{ route('afac.medicine') }}"
+                                        class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
+                                        GENERAR CITA
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('afac.historyMedicine') }}"
+                                        class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
+                                        CITAS AGENDADAS
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('afac.headquarterMedicine') }}"
+                                        class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
+                                        SEDES
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    @endcan
+                    {{-- @can('see.appointments')
                         <x-jet-nav-link href="{{ route('afac.appointment') }}" :active="request()->routeIs('afac.appointment')">
                             {{ __('Inicio') }}
                         </x-jet-nav-link>
-                    @endcan
-                    @can('admin.see.headquarters')
+                    @endcan --}}
+                    {{-- @can('admin.see.headquarters')
                         <x-jet-nav-link href="{{ route('afac.headquarters') }}" :active="request()->routeIs('afac.headquarters')">
                             {{ __('Catálogo Sedes') }}
                         </x-jet-nav-link>
-                    @endcan
+                    @endcan --}}
                 </div>
             </div>
 
@@ -114,9 +148,9 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-jet-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+            {{-- <x-jet-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
-            </x-jet-responsive-nav-link>
+            </x-jet-responsive-nav-link> --}}
         </div>
 
         <!-- Responsive Settings Options -->
