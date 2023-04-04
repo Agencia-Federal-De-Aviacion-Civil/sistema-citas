@@ -40,7 +40,8 @@ class HomeMedicine extends Component
         $this->typeExamens = typeExam::all();
         $this->questions = userQuestion::all();
         // $this->sedes = headquarter::all();
-        $this->sedes = headquarter::with('headquarterUser')->get();
+        $this->sedes = headquarter::with('headquarterUser')
+            ->where('system_id', 1)->get();
         $this->typeClasses = collect();
         $this->questionClassess = collect();
         $this->clasificationClass = collect();
