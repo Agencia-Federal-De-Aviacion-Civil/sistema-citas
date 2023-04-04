@@ -32,9 +32,9 @@ class Headquarters extends Component
     }
     public function render()
     {
-        // $qSystems = System::all();
+        $qSystems = System::all();
         $headquarters = headquarter::with('headquarterUser')->get();
-        return view('livewire.appointment.headquarters.headquarters', compact('headquarters'))
+        return view('livewire.appointment.headquarters.headquarters', compact('headquarters', 'qSystems'))
             ->layout('layouts.app');
     }
     public function updated($propertyName)

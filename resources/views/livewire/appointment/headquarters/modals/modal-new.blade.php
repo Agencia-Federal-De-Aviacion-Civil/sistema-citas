@@ -55,9 +55,9 @@
                             </div>
                             <div class="mt-4 relative w-full group">
                                 <x-select wire:model.lazy="system_id" label="SISTEMA" placeholder="Seleccione...">
-                                    {{-- @foreach ($qSystems as $qSystem)
+                                    @foreach ($qSystems as $qSystem)
                                         <x-select.option label="{{ $qSystem->name }}" value="{{ $qSystem->id }}" />
-                                    @endforeach --}}
+                                    @endforeach
                                 </x-select>
                             </div>
                         </div>
