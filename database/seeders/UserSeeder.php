@@ -21,7 +21,7 @@ class UserSeeder extends Seeder
                 'email' => 'admin@afac.gob.mx',
                 'password' => bcrypt('12345678')
             ]
-        )->assignRole('admin');
+        )->assignRole('super_admin');
         // User::create(
         //     [
         //         'name' => 'Cancun Quintana Roo',

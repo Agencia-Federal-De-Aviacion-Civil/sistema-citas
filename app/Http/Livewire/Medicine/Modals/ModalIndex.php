@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Home;
+namespace App\Http\Livewire\Medicine\Modals;
 
 use Livewire\Component;
 
@@ -10,7 +10,7 @@ class ModalIndex extends Component
     public $modalSelect = false;
     public function render()
     {
-        return view('livewire.home.modal-index');
+        return view('livewire.medicine.modals.modal-index');
     }
     public function showModalSelect()
     {

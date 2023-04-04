@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Appointment\Headquarters;
 
 use App\Models\catalogue\headquarter;
+use App\Models\Catalogue\System;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
@@ -14,10 +15,14 @@ class Headquarters extends Component
     use Actions;
     use WithFileUploads;
     public $modal = false, $modalEdit = false;
-    public $id_save, $name, $email, $password, $direction, $url, $passwordConfirmation, $sedes, $id_edit;
+    public $id_save, $system_id, $name, $email, $password, $direction, $url, $passwordConfirmation, $sedes, $id_edit;
+    public function mount()
+    {
+    }
     public function rules()
     {
         return [
+            'system_id' => 'required',
             'name' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6|same:passwordConfirmation',
@@ -27,8 +32,9 @@ class Headquarters extends Component
     }
     public function render()
     {
+        $qSystems = System::all();
         $headquarters = headquarter::with('headquarterUser')->get();
-        return view('livewire.appointment.headquarters.headquarters', compact('headquarters'))
+        return view('livewire.appointment.headquarters.headquarters', compact('headquarters', 'qSystems'))
             ->layout('layouts.app');
     }
     public function updated($propertyName)
@@ -64,6 +70,10 @@ class Headquarters extends Component
         $this->modal = false;
         $this->modalEdit = false;
     }
+    public function clean()
+    {
+        $this->reset(['name', 'email', 'password', 'system_id', 'direction', 'url']);
+    }
     public function save()
     {
         $this->validate();
@@ -79,11 +89,12 @@ class Headquarters extends Component
             ['id' => $this->id_save],
             [
                 'user_id' => $saveHeadrquearter->id,
+                'system_id' => $this->system_id,
                 'direction' => $this->direction,
                 'url' => $this->url
             ]
         );
-        $this->reset();
+        $this->reset([]);
         $this->closeModal();
         $this->notification([
             'title'       => 'Sede agrada con éxito',

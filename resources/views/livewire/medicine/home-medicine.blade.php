@@ -2,12 +2,12 @@
     <x-notifications position="top-center" />
     <x-dialog z-index="z-50" blur="md" align="center" />
     @if ($confirmModal)
-        @include('livewire.appointment.confirm')
+        @include('livewire.medicine.modals.confirm')
     @endif
     @if ($modal)
-        @include('livewire.appointment.readyPdf')
+        @include('livewire.medicine.modals.readyPdf')
     @endif
-    @livewire('home.modal-index')
+    @livewire('medicine.modals.modal-index')
     <div class="relative py-6 lg:py-4">
         <img class="z-0 w-full h-full absolute inset-0 object-cover" src="{{ asset('images/banner_testing.jpg') }}"
             alt="bg" />

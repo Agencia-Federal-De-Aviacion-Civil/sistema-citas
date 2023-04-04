@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Appointment;
+namespace App\Http\Livewire\Medicine;
 
 use App\Models\appointment\user_appointment_success;
 use App\Models\appointment\userAppointment;
@@ -22,7 +22,7 @@ use Livewire\WithFileUploads;
 use WireUi\Traits\Actions;
 use PDF;
 
-class Generate extends Component
+class HomeMedicine extends Component
 {
     use Actions;
     use WithFileUploads;
@@ -40,7 +40,8 @@ class Generate extends Component
         $this->typeExamens = typeExam::all();
         $this->questions = userQuestion::all();
         // $this->sedes = headquarter::all();
-        $this->sedes = headquarter::with('headquarterUser')->get();
+        $this->sedes = headquarter::with('headquarterUser')
+            ->where('system_id', 1)->get();
         $this->typeClasses = collect();
         $this->questionClassess = collect();
         $this->clasificationClass = collect();
@@ -68,7 +69,7 @@ class Generate extends Component
     }
     public function render()
     {
-        return view('livewire.appointment.generate');
+        return view('livewire.medicine.home-medicine');
     }
     public function updated($propertyName)
     {
@@ -309,10 +310,10 @@ class Generate extends Component
         $sumappointment = count($sumappointment);
 
         if ($printQuery->type_exam_id == 1) {
-            $pdf = PDF::loadView('livewire.appointment.documents.appointment-pdf', compact('printQuery', 'sumappointment'));
+            $pdf = PDF::loadView('livewire.medicine.documents.medicine-initial', compact('printQuery', 'sumappointment'));
             return $pdf->download($printQuery->paymentDate . '-' . $printQuery->appointmentTypeExam->name . ' cita.pdf');
         } else if ($printQuery->type_exam_id == 2) {
-            $pdf = PDF::loadView('livewire.appointment.documents.appointment-pdf2', compact('printQuery', 'sumappointment'));
+            $pdf = PDF::loadView('livewire.medicine.documents.medicine-renovation', compact('printQuery', 'sumappointment'));
             return $pdf->download($printQuery->paymentDate . '-' . $printQuery->appointmentTypeExam->name . ' cita.pdf');
         }
     }

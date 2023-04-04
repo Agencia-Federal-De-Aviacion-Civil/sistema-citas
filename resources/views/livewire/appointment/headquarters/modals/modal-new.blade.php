@@ -54,6 +54,15 @@
                                 <x-input wire:model.lazy="email" label="CORREO" placeholder="ESCRIBE..." />
                             </div>
                             <div class="mt-4 relative w-full group">
+                                <x-select wire:model.lazy="system_id" label="SISTEMA" placeholder="Seleccione...">
+                                    @foreach ($qSystems as $qSystem)
+                                        <x-select.option label="{{ $qSystem->name }}" value="{{ $qSystem->id }}" />
+                                    @endforeach
+                                </x-select>
+                            </div>
+                        </div>
+                        <div class="grid xl:grid-cols-1 xl:gap-6">
+                            <div class="mt-4 relative w-full group">
                                 <x-textarea wire:model.lazy="url" label="URL"
                                     placeholder="INGRESA URL DE GOOGLE MAPS..." />
                             </div>
@@ -65,7 +74,7 @@
                 </div>
                 <div class="float-left mt-6">
                     <x-button wire:click.prevent="salir()" label="SALIR" silver />
-                </div>                
+                </div>
             </div>
         </div>
     </div>
