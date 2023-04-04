@@ -32,15 +32,6 @@
         <div class="container mx-auto px-4 py-4 bg-white shadow-xl sm:rounded-lg">
             <div class="mt-12 max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <form wire:submit.prevent="save">
-                    {{-- <div class="container px-6 py-10 mx-auto">
-            <h1 class="text-2xl font-semibold text-gray-800 capitalize lg:text-3xl dark:text-white">Generación de cita
-            </h1>
-            <div class="flex mx-auto mt-2">
-                <span class="inline-block w-60 h-1 bg-sky-700 rounded-full"></span>
-                <span class="inline-block w-3 h-1 mx-1 bg-sky-700 rounded-full"></span>
-                <span class="inline-block w-1 h-1 bg-sky-700 rounded-full"></span>
-            </div>
-        </div> --}}
                     </button>
                     <div x-data="{
                         tipoExamen: @entangle('type_exam_id'),
@@ -71,31 +62,18 @@
                                             <div class="flex-grow pl-4">
                                                 <div class="grid xl:grid-cols-3 xl:gap-6">
                                                     <div class="mt-1 relative z-0 w-full group">
-                                                        <label for="small"
-                                                            class="block mb-2 text-base font-medium text-gray-900 dark:text-white">INGRESA
-                                                            LA REFERENCIA DE PAGO</label>
-                                                        <input type="text" x-ref="payment"
-                                                            wire:model.lazy="paymentConcept"
-                                                            class="py-2 px-4 block w-full font-bold	border-gray-200 rounded-md text-base focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400"
-                                                            placeholder="Referencia de pago">
-                                                        @error('paymentConcept')
-                                                            <span
-                                                                class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
-                                                        @enderror
+                                                        <x-input x-ref="payment" wire:model.lazy="paymentConcept"
+                                                            label="INGRESA LA REFERENCIA DE PAGO"
+                                                            placeholder="INGRESE..." />
                                                     </div>
                                                     <div class="mt-1 relative z-auto w-full group">
-                                                        <label for="small"
-                                                            class="block mb-2 text-base font-medium text-gray-900 dark:text-white">INGRESA
-                                                            LA FECHA DE PAGO</label>
-                                                        <x-datetime-picker class="py-2.5" placeholder="Ingrese..."
-                                                            without-time="false" parse-format="YYYY-MM-DD"
-                                                            display-format="DD-MM-YYYY"
-                                                            wire:model.defer="paymentDate" />
+                                                        <x-input wire:model.lazy="paymentDate" id="fecha-pago"
+                                                            label="FECHA DE PAGO" placeholder="INGRESE..." readonly />
                                                     </div>
 
-                                                    <div class="mt-1 relative z-0 w-full group">
+                                                    <div class="mt-1 relative w-full group">
                                                         <label for="small"
-                                                            class="block mb-2 text-base font-medium text-gray-900 dark:text-white">ADJUNTA
+                                                            class="block text-sm font-medium text-gray-900 dark:text-white">ADJUNTA
                                                             EL COMPROBANTE DE PAGO</label>
                                                         <label for="file-input" class="sr-only">Adjunta el
                                                             comprobante</label>
@@ -435,7 +413,6 @@
                                 </div>
                             </div>
                         </section>
-                        {{-- estep --}}
                     </div>
                 </form>
             </div>
@@ -457,5 +434,11 @@
                     break;
             }
         }
+        document.addEventListener("DOMContentLoaded", function() {
+            flatpickr("#fecha-pago", {
+                dateFormat: "Y-m-d",
+                disableMobile: "true",
+            });
+        });
     </script>
 </div>
