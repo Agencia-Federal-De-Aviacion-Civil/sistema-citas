@@ -33,7 +33,8 @@ class HomeLinguistics extends Component
     public function mount()
     {
         $this->exams = typeExam::all();
-        $this->headquartersQueries = headquarter::where('system_id', 2)->get();
+        $this->headquartersQueries = headquarter::with('headquarterUser')
+            ->where('system_id', 2)->get();
     }
     public function updated($propertyName)
     {

@@ -71,7 +71,7 @@
                     <div class="relative z-0 w-full mb-6 group">
                         <x-select wire:model.lazy="headquarters_id" label="SEDE" placeholder="Seleccione...">
                             @foreach ($headquartersQueries as $headquartersQuery)
-                                <x-select.option label="{{ $headquartersQuery->name }}"
+                                <x-select.option label="{{ $headquartersQuery->headquarterUser->name }}"
                                     value="{{ $headquartersQuery->id }}" />
                             @endforeach
                         </x-select>
