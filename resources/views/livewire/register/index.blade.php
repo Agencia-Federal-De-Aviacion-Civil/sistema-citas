@@ -1,13 +1,13 @@
 <div>
     <div class="relative">
-        <section class="min-h-screen bg-cover " style="background-image: url('{{ asset('images/medical-exam.jpg') }}')">
+        <section class="min-h-screen bg-cover " style="background-image: url('{{ asset('images/citas_internet.jpg') }}')">
             <div class="flex flex-col min-h-screen bg-black/50">
                 <div class="container flex flex-col flex-1 px-6 py-12 mx-auto">
                     <div class="flex-1 lg:flex lg:items-center lg:-mx-6">
                         <div class="text-white lg:w-4/12 lg:mx-6">
                             <h1 class="text-blue-400 dark:text-gray-300 md:text-4xl">Registro</h1>
                             <h1 class="text-2xl font-semibold text-white capitalize dark:text-white lg:text-4xl">
-                                Medicina De Aviación
+                                Sistema General de citas de la AFAC
                             </h1>
                             <p class="max-w-xl mt-6">
 
