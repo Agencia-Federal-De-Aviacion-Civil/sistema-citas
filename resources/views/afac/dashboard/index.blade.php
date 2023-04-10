@@ -3,7 +3,7 @@
         @livewire('medicine.history-appointment')
     @endcan
     @can('see.navigation.controller.systems')
-        AQUI PUEDE VER EL DASHBOARD
+        @include('afac.dashboard.dashboard_superadmin')
     @endcan
     {{-- GENERAL USER --}}
     @can('generate.appointment')
