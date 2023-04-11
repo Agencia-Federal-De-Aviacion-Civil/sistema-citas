@@ -3,12 +3,14 @@
 namespace App\Http\Livewire\Medicine;
 
 use App\Models\Appointment\Document;
+use App\Models\appointment\userQuestion;
 use App\Models\catalogue\clasificationClass;
 use App\Models\catalogue\headquarter;
 use App\Models\catalogue\typeClass;
 use App\Models\catalogue\typeExam;
 use App\Models\Medicine\Medicine;
 use App\Models\Medicine\MedicineInitial;
+use App\Models\Medicine\MedicineRenovation;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -19,16 +21,18 @@ class HomeMedicine extends Component
     use Actions;
     use WithFileUploads;
     public $user_question_id, $type_class_id, $clasificationClass, $clasification_class_id;
-    public $name_document, $reference_number, $pay_date, $type_exam_id;
-    public $questionClassess, $typeExams, $sedes;
+    public $name_document, $reference_number, $pay_date, $type_exam_id, $typeRenovationExams;
+    public $questionClassess, $typeExams, $sedes, $userQuestions;
     // MEDICINE INITIAL TABLE
     public $question;
     public function mount()
     {
         $this->typeExams = typeExam::all();
         $this->sedes = headquarter::where('system_id', 1)->get();
+        $this->userQuestions = userQuestion::all();
         $this->questionClassess = collect();
         $this->clasificationClass = collect();
+        $this->typeRenovationExams = collect();
     }
     public function rules()
     {
@@ -69,6 +73,10 @@ class HomeMedicine extends Component
     {
         $this->questionClassess = typeClass::where('user_question_id', $user_question_id)->get();
     }
+    public function updatedTypeExamId($type_exam_id)
+    {
+        $this->typeRenovationExams = typeClass::where('type_exam_id', $type_exam_id)->get();
+    }
     public function updatedTypeClassId($type_class_id)
     {
         $this->clasificationClass = clasificationClass::where('type_class_id', $type_class_id)->get();
@@ -77,10 +85,11 @@ class HomeMedicine extends Component
     {
         $this->clasificationClass = [];
     }
-    // public function resetQuestions()
-    // {
-    //     $this->user_question_id = '';
-    // }
+    public function resetQuestions()
+    {
+        $this->user_question_id = [];
+        // $this->dispatchBrowserEvent('reset-select-question');
+    }
     public function save()
     {
         $this->validate();
@@ -111,6 +120,14 @@ class HomeMedicine extends Component
                     'user_question_id' => $this->user_question_id,
                     'type_class_id' => $this->type_class_id,
                     'clasification_class_id' => $clasification_class_ids
+                ]);
+            }
+        } else if ($this->type_exam_id == 2) {
+            foreach ($this->clasification_class_id as $clasifications) {
+                MedicineRenovation::create([
+                    'medicine_id' => $saveMedicine->id,
+                    'type_class_id' => $this->type_class_id,
+                    'clasification_class_id' => $clasifications
                 ]);
             }
         }

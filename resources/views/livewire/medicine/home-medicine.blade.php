@@ -115,7 +115,7 @@
                                                     EXÁMEN VAS
                                                     A REALIZAR?</label>
                                                 <select id="small" x-ref="tipoExamen" wire:model.lazy="type_exam_id"
-                                                    {{-- wire:change="resetQuestions()"  --}}
+                                                    wire:change="resetQuestions()" 
                                                     placeholder="seleccione..."
                                                     class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                                     <option value="" selected>Seleccione...</option>
@@ -152,9 +152,11 @@
                                                     wire:model.lazy="user_question_id"
                                                     wire:change="resetClasificationClass()"
                                                     class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                    <option value="" selected>Seleccione...</option>
-                                                    <option value="1">SI</option>
-                                                    <option value="2">NO</option>
+                                                    <option value="0" selected>Seleccione...</option>
+                                                    @foreach ($userQuestions as $userQuestion)
+                                                        <option value="{{ $userQuestion->id }}">
+                                                            {{ $userQuestion->name }}</option>
+                                                    @endforeach
                                                 </select>
                                                 @error('')
                                                     <span
@@ -180,7 +182,7 @@
                                             </div>
                                             <div class="flex-grow pl-4">
                                                 <div class="grid xl:grid-cols-2 xl:gap-6">
-                                                    <div x-show="question === '1' || question === '2' || tipoExamen === '2'"
+                                                    <div x-show="question === '1' || question === '2'"
                                                         class="mt-1 relative z-0 w-full group">
                                                         @if (!is_null($questionClassess))
                                                             <label for="small"
@@ -195,6 +197,30 @@
                                                                 @foreach ($questionClassess as $questionClass)
                                                                     <option value="{{ $questionClass->id }}">
                                                                         {{ $questionClass->name }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                            @error('type_class_id')
+                                                                <span
+                                                                    class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
+                                                            @enderror
+                                                        @endif
+                                                    </div>
+                                                    <div x-show="tipoExamen === '2'"
+                                                        class="mt-1 relative z-0 w-full group">
+                                                        @if (!is_null($questionClassess))
+                                                            <label for="small"
+                                                                class="block mb-2 text-base font-medium text-gray-900 dark:text-white">TIPO
+                                                                DE
+                                                                CLASE</label>
+                                                            <select id="small" x-ref="clasification"
+                                                                placeholder="seleccione..."
+                                                                wire:model.lazy="type_class_id"
+                                                                class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                                <option value="">Seleccione...</option>
+                                                                @foreach ($typeRenovationExams as $typeRenovationExam)
+                                                                    <option value="{{ $typeRenovationExam->id }}">
+                                                                        {{ $typeRenovationExam->name }}
                                                                     </option>
                                                                 @endforeach
                                                             </select>
@@ -230,7 +256,8 @@
                                                             <x-select label="TIPO DE LICENCIA"
                                                                 placeholder="Seleccione uno o más..." :options="$clasificationClass"
                                                                 option-label="name" option-value="id"
-                                                                wire:model.defer="clasification_class_id" multiselect />
+                                                                wire:model.defer="clasification_class_id"
+                                                                multiselect />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -329,6 +356,14 @@
         </div>
     </div>
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Alpine.directive('reset-select-question', (el) => {
+                const selectQuestion = el.querySelector('[x-ref="question"]');
+                selectQuestion.__x.$data.value = null;
+                selectQuestion.selectedIndex = 0;
+            })
+        });
+
         function showTooltip(flag) {
             switch (flag) {
                 case 1:
