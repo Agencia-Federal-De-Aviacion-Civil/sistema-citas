@@ -1,5 +1,6 @@
 <div>
     <x-notifications position="top-center" />
+    <x-errors></x-errors>
     <x-dialog z-index="z-50" blur="md" align="center" />
     {{-- @if ($confirmModal)
         @include('livewire.medicine.modals.confirm')
@@ -114,9 +115,10 @@
                                                     EXÁMEN VAS
                                                     A REALIZAR?</label>
                                                 <select id="small" x-ref="tipoExamen" wire:model.lazy="type_exam_id"
+                                                    {{-- wire:change="resetQuestions()"  --}}
                                                     placeholder="seleccione..."
                                                     class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                    <option selected value="">Seleccione...</option>
+                                                    <option value="" selected>Seleccione...</option>
                                                     @foreach ($typeExams as $typeExam)
                                                         <option value="{{ $typeExam->id }}">{{ $typeExam->name }}
                                                         </option>
@@ -147,11 +149,12 @@
                                                     class="block mb-2 text-base font-medium text-gray-900 dark:text-white">¿SIGUES
                                                     ESTUDIANDO?</label>
                                                 <select id="small" x-ref="question"
-                                                    wire:model.lazy=""
+                                                    wire:model.lazy="user_question_id"
+                                                    wire:change="resetClasificationClass()"
                                                     class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                    <option selected>Seleccione...</option>
-                                                    <option value="SI">SI</option>
-                                                    <option value="NO">NO</option>
+                                                    <option value="" selected>Seleccione...</option>
+                                                    <option value="1">SI</option>
+                                                    <option value="2">NO</option>
                                                 </select>
                                                 @error('')
                                                     <span
@@ -160,7 +163,8 @@
                                             </div>
                                         </div>
                                         {{-- paso3 --}}
-                                        <div x-show="question == 'SI' || question === '2'||tipoExamen ==='2'"
+
+                                        <div x-show="question === '1' || question === '2' || tipoExamen ==='2'"
                                             class="flex relative pb-6">
                                             <div class="h-full w-10 absolute inset-0 flex items-center justify-center">
                                                 <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
@@ -176,9 +180,9 @@
                                             </div>
                                             <div class="flex-grow pl-4">
                                                 <div class="grid xl:grid-cols-2 xl:gap-6">
-                                                    <div x-show="question === '1' || question === '2'"
+                                                    <div x-show="question === '1' || question === '2' || tipoExamen === '2'"
                                                         class="mt-1 relative z-0 w-full group">
-                                                        {{-- @if (!is_null($questionClassess))
+                                                        @if (!is_null($questionClassess))
                                                             <label for="small"
                                                                 class="block mb-2 text-base font-medium text-gray-900 dark:text-white">TIPO
                                                                 DE
@@ -187,7 +191,7 @@
                                                                 placeholder="seleccione..."
                                                                 wire:model.lazy="type_class_id"
                                                                 class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                                <option value="0">Seleccione...</option>
+                                                                <option value="">Seleccione...</option>
                                                                 @foreach ($questionClassess as $questionClass)
                                                                     <option value="{{ $questionClass->id }}">
                                                                         {{ $questionClass->name }}
@@ -198,128 +202,42 @@
                                                                 <span
                                                                     class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
                                                             @enderror
-                                                        @endif --}}
+                                                        @endif
                                                     </div>
-                                                    <div x-show="tipoExamen ==='2'">
+                                                    <div x-show="question === '1'">
                                                         <div class="mt-1 relative z-0 w-full group">
-                                                            {{-- @if (!is_null($typeClasses))
-                                                                <label for="small"
-                                                                    class="block mb-2 text-base font-medium text-gray-900 dark:text-white">TIPO
-                                                                    DE
-                                                                    CLASE</label>
-                                                                <select id="small" wire:model.lazy="type_class_id"
-                                                                    class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                                    <option value="0">Seleccione...</option>
-                                                                    @foreach ($typeClasses as $typeClass)
-                                                                        <option value="{{ $typeClass->id }}">
-                                                                            {{ $typeClass->name }}</option>
-                                                                    @endforeach
-                                                                </select>
-                                                                @error('type_class_id')
-                                                                    <span
-                                                                        class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
-                                                                @enderror
-                                                            @endif --}}
+                                                            <label for="small"
+                                                                class="block mb-2 text-base font-medium text-gray-900 dark:text-white">TIPO
+                                                                DE
+                                                                LICENCIA</label>
+                                                            <select wire:model.lazy="clasification_class_id"
+                                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                                <option selected>Seleccione...
+                                                                </option>
+                                                                @foreach ($clasificationClass as $clasification)
+                                                                    <option value="{{ $clasification->id }}">
+                                                                        {{ $clasification->name }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                            @error('clasification_class_id')
+                                                                <span
+                                                                    class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
+                                                            @enderror
                                                         </div>
                                                     </div>
-                                                    {{-- paso4  --}}
-                                                    <div x-show="clasification === '1' || clasification === '2' || clasification === '3' ||  clasification === '4' || clasification === '5'
-                                            || clasification === '6'"
-                                                        class="mt-4 relative z-0 w-full group">
-                                                        {{-- @if (!is_null($clasificationClass))
-                                                            <label for="small"
-                                                                class="flex block w-full bg-white lg:text-base xs:text-xl focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400">TIPO
-                                                                DE LICENCIA
-                                                                <a tabindex="0" role="link"
-                                                                    aria-label="tooltip 2"
-                                                                    class="focus:outline-none focus:ring-gray-300 rounded-full focus:ring-offset-2 focus:ring-2 focus:bg-gray-200 relative mt-0 md:mt-0 px-4"
-                                                                    onmouseover="showTooltip(1)"
-                                                                    onfocus="showTooltip(1)"
-                                                                    onmouseout="hideTooltip(1)">
-                                                                    <div class="cursor-pointer text-sky-700">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                                                            class="h-5 w-5" fill="none"
-                                                                            viewBox="0 0 24 24" stroke="currentColor"
-                                                                            stroke-width="2">
-                                                                            <path stroke-linecap="round"
-                                                                                stroke-linejoin="round"
-                                                                                d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                                        </svg>
-                                                                    </div>
-                                                                    <div id="tooltip1" role="tooltip"
-                                                                        class="z-20 -mt-20 w-64 relative transition duration-150 ease-in-out left-0 ml-8 shadow-lg bg-white p-4 hidden">
-                                                                        <svg class="absolute left-0 -ml-2 bottom-0 top-0 h-full"
-                                                                            width="9px" height="16px"
-                                                                            viewBox="0 0 9 16" version="1.1"
-                                                                            xmlns="http://www.w3.org/2000/svg"
-                                                                            xmlns:xlink="http://www.w3.org/1999/xlink">
-                                                                            <g id="Page-1" stroke="none"
-                                                                                stroke-width="1" fill="none"
-                                                                                fill-rule="evenodd">
-                                                                                <g id="Tooltips-"
-                                                                                    transform="translate(-874.000000, -1029.000000)"
-                                                                                    fill="#FFFFFF">
-                                                                                    <g id="Group-3-Copy-16"
-                                                                                        transform="translate(850.000000, 975.000000)">
-                                                                                        <g id="Group-2"
-                                                                                            transform="translate(24.000000, 0.000000)">
-                                                                                            <polygon id="Triangle"
-                                                                                                transform="translate(4.500000, 62.000000) rotate(-90.000000) translate(-4.500000, -62.000000) "
-                                                                                                points="4.5 57.5 12.5 66.5 -3.5 66.5">
-                                                                                            </polygon>
-                                                                                        </g>
-                                                                                    </g>
-                                                                                </g>
-                                                                            </g>
-                                                                        </svg>
-                                                                        <p
-                                                                            class="text-ms font-bold text-gray-800 pb-1">
-                                                                            INSTRUCCIONES
-                                                                        </p>
-                                                                        <p
-                                                                            class="text-ms leading-4 text-gray-600 pb-3">
-                                                                            Puedes
-                                                                            seleccionar uno o más tipos de licencias
-                                                                        </p>
-                                                                    </div>
-                                                                </a>
-                                                            </label>
-                                                            @if ($user_question_id == 1)
-                                                                <select wire:model.lazy="clasification_class_id"
-                                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                                    <option value="" selected>Seleccione...
-                                                                    </option>
-                                                                    @foreach ($clasificationClass as $clasification)
-                                                                        <option value="{{ $clasification->id }}">
-                                                                            {{ $clasification->name }}</option>
-                                                                    @endforeach
-                                                                </select>
-                                                            @else
-                                                                <div class="z-50">
-                                                                    <x-select wire:model.lazy="clasification_class_id"
-                                                                        placeholder="Seleccione..." multiselect>
-                                                                        <x-select.option label="Seleccione..."
-                                                                            selected />
-                                                                        @foreach ($clasificationClass as $clasification)
-                                                                            <x-select.option
-                                                                                label="{{ $clasification->name }}"
-                                                                                value="{{ $clasification->id }}" />
-                                                                        @endforeach
-                                                                    </x-select>
-                                                                </div>
-                                                            @endif --}}
-                                                        @error('clasification_class_id')
-                                                            <span
-                                                                class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
-                                                        @enderror
-                                                        {{-- @endif --}}
+                                                    <div x-show="question === '2' || tipoExamen === '2'">
+                                                        <div class="mt-4 relative z-0 w-full group">
+                                                            <x-select label="TIPO DE LICENCIA"
+                                                                placeholder="Seleccione uno o más..." :options="$clasificationClass"
+                                                                option-label="name" option-value="id"
+                                                                wire:model.defer="clasification_class_id" multiselect />
+                                                        </div>
                                                     </div>
-                                                    {{--  --}}
                                                 </div>
                                             </div>
                                         </div>
                                         {{-- paso5 --}}
-                                        <div x-show="typelicens > '0'" class="flex relative pb-6">
+                                        <div x-show="clasification > '0'" class="flex relative pb-6">
                                             <div class="h-full w-10 absolute inset-0 flex items-center justify-center">
                                                 <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
                                             </div>
@@ -336,12 +254,13 @@
                                                 <div class="grid xl:grid-cols-3 xl:gap-6">
                                                     <div class="text-base relative z-auto w-full mb-2 group">
                                                         <x-select label="ELIJA LA SEDE" placeholder="Selecciona"
-                                                            x-ref="selec_sede" wire:model.lazy="to_user_headquarters">
-                                                            {{-- @foreach ($sedes as $sede)
+                                                            x-model="selec_sede"
+                                                            wire:model.lazy="to_user_headquarters">
+                                                            @foreach ($sedes as $sede)
                                                                 <x-select.option
                                                                     label="{{ $sede->headquarterUser->name }}"
                                                                     value="{{ $sede->headquarterUser->id }}" />
-                                                            @endforeach --}}
+                                                            @endforeach
                                                         </x-select>
                                                     </div>
                                                     <div class="text-base relative z-auto w-full mb-2 group">
@@ -352,11 +271,9 @@
                                                     </div>
 
                                                     <div class="text-base relative z-auto w-full mb-2 group">
-                                                        <x-select label="SELECCIONE HORA" placeholder="Seleccione..."
+                                                        <x-select x-ref="dateAppointment" label="SELECCIONE HORA"
+                                                            placeholder="Seleccione..."
                                                             wire:model.defer="appointmentTime">
-                                                            {{-- @foreach ($var as $user_appointment_succes)
-                                                
-                                                @endforeach --}}
                                                             <x-select.option label="7:00 AM" value="7:00" />
                                                             <x-select.option label="8:00 AM" value="8:00" />
                                                             <x-select.option label="9:00 AM" value="9:00" />
@@ -379,28 +296,28 @@
                                             </div>
                                         </div>
                                         <div class="flex-grow pl-4">
-                                            <div class="">
-                                                <button
-                                                    class="px-3 py-2 text-sm font-medium text-center text-white bg-sky-700 rounded-lg hover:bg-sky-800 focus:ring-4 focus:outline-none focus:ring-sky-300 dark:bg-sky-600 dark:hover:bg-sky-700 dark:focus:ring-sky-800">
-                                                    GENERAR CITA
-                                                </button>
-                                                <div wire:loading.delay.shortest wire:target="save">
-                                                    <div
-                                                        class="flex justify-center bg-gray-200 z-40 h-full w-full fixed top-0 left-0 items-center opacity-75">
-                                                        <div style="color: #0061cf"
-                                                            class="la-line-spin-clockwise-fade-rotating la-3x">
-                                                            <div></div>
-                                                            <div></div>
-                                                            <div></div>
-                                                            <div></div>
-                                                            <div></div>
-                                                            <div></div>
-                                                            <div></div>
-                                                            <div></div>
-                                                        </div>
+                                            {{-- <div x-show="selec_sede > '0'"> --}}
+                                            <button
+                                                class="px-3 py-2 text-sm font-medium text-center text-white bg-sky-700 rounded-lg hover:bg-sky-800 focus:ring-4 focus:outline-none focus:ring-sky-300 dark:bg-sky-600 dark:hover:bg-sky-700 dark:focus:ring-sky-800">
+                                                GENERAR CITA
+                                            </button>
+                                            <div wire:loading.delay.shortest wire:target="save">
+                                                <div
+                                                    class="flex justify-center bg-gray-200 z-40 h-full w-full fixed top-0 left-0 items-center opacity-75">
+                                                    <div style="color: #0061cf"
+                                                        class="la-line-spin-clockwise-fade-rotating la-3x">
+                                                        <div></div>
+                                                        <div></div>
+                                                        <div></div>
+                                                        <div></div>
+                                                        <div></div>
+                                                        <div></div>
+                                                        <div></div>
+                                                        <div></div>
                                                     </div>
                                                 </div>
                                             </div>
+                                            {{-- </div> --}}
                                         </div>
                                     </div>
                                 </div>
