@@ -14,6 +14,7 @@ use Livewire\WithFileUploads;
 class HomeLinguistics extends Component
 {
     use WithFileUploads;
+    public $confirmModal = false;
     public $name_document, $reference_number, $pay_date, $type_exam_id, $type_license, $license_number, $red_number, $headquarters_id, $dateReserve;
     public $exams, $headquartersQueries;
     public function rules()
@@ -44,6 +45,10 @@ class HomeLinguistics extends Component
     {
         return view('livewire.linguistics.home-linguistics')
             ->layout('layouts.app');
+    }
+    public function openModal()
+    {
+        $this->confirmModal = true;
     }
     public function save()
     {
