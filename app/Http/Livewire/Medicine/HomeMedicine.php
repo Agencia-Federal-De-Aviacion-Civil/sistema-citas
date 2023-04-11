@@ -11,6 +11,7 @@ use App\Models\catalogue\typeExam;
 use App\Models\Medicine\Medicine;
 use App\Models\Medicine\MedicineInitial;
 use App\Models\Medicine\MedicineRenovation;
+use App\Models\Medicine\MedicineReserve;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -22,7 +23,7 @@ class HomeMedicine extends Component
     use WithFileUploads;
     public $user_question_id, $type_class_id, $clasificationClass, $clasification_class_id;
     public $name_document, $reference_number, $pay_date, $type_exam_id, $typeRenovationExams;
-    public $questionClassess, $typeExams, $sedes, $userQuestions;
+    public $questionClassess, $typeExams, $sedes, $userQuestions, $to_user_headquarters, $dateReserve, $user;
     // MEDICINE INITIAL TABLE
     public $question;
     public function mount()
@@ -44,6 +45,8 @@ class HomeMedicine extends Component
             'user_question_id' => 'required_if:type_exam_id,1',
             'type_class_id' => '',
             'clasification_class_id' => '',
+            'to_user_headquarters' => 'required',
+            'dateReserve' => 'required'
         ];
     }
     public function render()
@@ -130,6 +133,43 @@ class HomeMedicine extends Component
                     'clasification_class_id' => $clasifications
                 ]);
             }
+        }
+        $citas = MedicineReserve::where('to_user_headquarters', $this->to_user_headquarters)
+            ->where('dateReserve', $this->dateReserve)
+            ->count();
+        switch ($this->to_user_headquarters) {
+            case 2: // Cancun
+            case 3: // Ciudad de México
+                $maxCitas = 5;
+                break;
+            case 4: // Guadalajara
+                $maxCitas = 20;
+                break;
+            case 1: // Tijuana
+            case 3: // Monterrey
+            case 6: // Toluca
+                $maxCitas = 10;
+                break;
+            default:
+                $maxCitas = 0;
+                break;
+        }
+        if ($citas >= $maxCitas) {
+            $this->notification([
+                'title'       => 'ERROR DE CITA!',
+                'description' => 'No hay citas disponibles para ese dia',
+                'icon'        => 'error'
+            ]);
+        } else {
+            $cita = new MedicineReserve();
+            $cita->to_user_headquarters = $this->to_user_headquarters;
+            $cita->dateReserve = $this->dateReserve;
+            $cita->save();
+            $this->notification([
+                'title'       => 'CITA GENERADA',
+                'description' => 'SE HA GENERADO LA CITA EXITOSAMENTE',
+                'icon'        => 'success'
+            ]);
         }
         $this->clean();
     }

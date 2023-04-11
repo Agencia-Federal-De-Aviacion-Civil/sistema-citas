@@ -115,8 +115,7 @@
                                                     EXÁMEN VAS
                                                     A REALIZAR?</label>
                                                 <select id="small" x-ref="tipoExamen" wire:model.lazy="type_exam_id"
-                                                    wire:change="resetQuestions()" 
-                                                    placeholder="seleccione..."
+                                                    wire:change="resetQuestions()" placeholder="seleccione..."
                                                     class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                                     <option value="" selected>Seleccione...</option>
                                                     @foreach ($typeExams as $typeExam)
@@ -291,13 +290,12 @@
                                                         </x-select>
                                                     </div>
                                                     <div class="text-base relative z-auto w-full mb-2 group">
-                                                        <x-datetime-picker label="SELECCIONE FECHA"
-                                                            placeholder="Seleccione..." without-time="false"
-                                                            parse-format="YYYY-MM-DD" display-format="DD-MM-YYYY"
-                                                            wire:model.defer="appointmentDate" />
+                                                        <x-input wire:model.lazy="dateReserve" id="fecha-appointment"
+                                                            label="SELECCIONE FECHA" placeholder="INGRESE..."
+                                                            readonly />
                                                     </div>
 
-                                                    <div class="text-base relative z-auto w-full mb-2 group">
+                                                    {{-- <div class="text-base relative z-auto w-full mb-2 group">
                                                         <x-select x-ref="dateAppointment" label="SELECCIONE HORA"
                                                             placeholder="Seleccione..."
                                                             wire:model.defer="appointmentTime">
@@ -306,7 +304,7 @@
                                                             <x-select.option label="9:00 AM" value="9:00" />
                                                             <x-select.option label="10:00 AM" value="10:00" />
                                                         </x-select>
-                                                    </div>
+                                                    </div> --}}
                                                 </div>
                                             </div>
                                         </div>
@@ -356,14 +354,6 @@
         </div>
     </div>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            Alpine.directive('reset-select-question', (el) => {
-                const selectQuestion = el.querySelector('[x-ref="question"]');
-                selectQuestion.__x.$data.value = null;
-                selectQuestion.selectedIndex = 0;
-            })
-        });
-
         function showTooltip(flag) {
             switch (flag) {
                 case 1:
@@ -383,6 +373,22 @@
             flatpickr("#fecha-pago", {
                 dateFormat: "Y-m-d",
                 disableMobile: "true",
+            });
+            // CITAS MEDICAS
+            flatpickr("#fecha-appointment", {
+                enableTime: true,
+                time_24hr: true,
+                dateFormat: "Y-m-d H:i",
+                minTime: "08:00",
+                maxTime: "11:00",
+                disableMobile: "true",
+                minuteIncrement: 30,
+                disable: [
+                    function(date) {
+                        // Devuelve 'true' si la fecha es un sábado o domingo
+                        return date.getDay() === 6 || date.getDay() === 0;
+                    },
+                ],
             });
         });
     </script>

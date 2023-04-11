@@ -6,6 +6,7 @@ use App\Models\appointment\user_appointment_success;
 use App\Models\appointment\userAppointment;
 use App\Models\appointment\UserParticipant;
 use App\Models\catalogue\headquarter;
+use App\Models\Medicine\MedicineReserve;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -97,5 +98,10 @@ class User extends Authenticatable
     public function userHeadquarter()
     {
         return $this->hasMany(headquarter::class);
+    }
+    // new table
+    public function UserMedicineReserve()
+    {
+        return $this->hasMany(MedicineReserve::class);
     }
 }
