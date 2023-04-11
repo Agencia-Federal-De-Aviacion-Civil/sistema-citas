@@ -51,7 +51,7 @@
                         question: @entangle('user_question_id'),
                         clasification: @entangle('type_class_id'),
                         typelicens: @entangle('clasification_class_id'),
-                        selec_sede: @entangle('to_user_headquarters'),
+                        dateAppointment: @entangle('appointmentTime'),
                         fileName: '',
                     }">
                         {{-- estep --}}
@@ -73,7 +73,7 @@
                                                 </svg>
                                             </div>
                                             <div class="flex-grow pl-4">
-                                                <div class="grid xl:grid-cols-3 xl:gap-6">
+                                                <div class="grid xl:grid-cols-4 xl:gap-6">
                                                     <div class="mt-1 relative z-0 w-full group">
                                                         <x-input x-ref="payment" wire:model.lazy="reference_number"
                                                             label="INGRESA LA REFERENCIA DE PAGO"
@@ -83,8 +83,7 @@
                                                         <x-input wire:model.lazy="pay_date" id="fecha-pago"
                                                             label="FECHA DE PAGO" placeholder="INGRESE..." readonly />
                                                     </div>
-
-                                                    <div class="mt-1 relative w-full group">
+                                                    <div class="mt-1 relative w-full group col-span-2">
                                                         <label for="small"
                                                             class="block text-sm font-medium text-gray-900 dark:text-white">ADJUNTA
                                                             EL COMPROBANTE DE PAGO</label>
@@ -126,11 +125,7 @@
                                             </div>
                                             <div class="flex-grow pl-4">
                                                 <label for="small"
-                                                    class="block mb-2 text-base font-medium text-gray-900 dark:text-white">¿QUE
-                                                    TIPO
-                                                    DE
-                                                    EXÁMEN VAS
-                                                    A REALIZAR?</label>
+                                                    class="block mb-2 text-base font-medium text-gray-900 dark:text-white">¿QUE TIPO DE EXÁMEN VAS A REALIZAR?</label>
                                                 <select id="small" x-ref="tipoExamen" wire:model.lazy="type_exam_id"
                                                     wire:change="resetQuestions()" 
                                                     placeholder="seleccione..."
@@ -182,8 +177,7 @@
                                             </div>
                                         </div>
                                         {{-- paso3 --}}
-
-                                        <div x-show="question === '1' || question === '2' || tipoExamen ==='2'"
+                                        <div x-show="tipoExamen === '1' && question === '1' || tipoExamen === '1' && question === '2'"
                                             class="flex relative pb-6">
                                             <div class="h-full w-10 absolute inset-0 flex items-center justify-center">
                                                 <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
@@ -199,45 +193,18 @@
                                             </div>
                                             <div class="flex-grow pl-4">
                                                 <div class="grid xl:grid-cols-2 xl:gap-6">
-                                                    <div x-show="question === '1' || question === '2'"
-                                                        class="mt-1 relative z-0 w-full group">
+                                                    <div class="mt-1 relative z-0 w-full group">
                                                         @if (!is_null($questionClassess))
                                                             <label for="small"
-                                                                class="block mb-2 text-base font-medium text-gray-900 dark:text-white">TIPO
-                                                                DE
-                                                                CLASE</label>
+                                                                class="block mb-2 text-base font-medium text-gray-900 dark:text-white">TIPO DE CLASE</label>
                                                             <select id="small" x-ref="clasification"
                                                                 placeholder="seleccione..."
                                                                 wire:model.lazy="type_class_id"
                                                                 class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                                <option value="">Seleccione...</option>
+                                                                <option value="0">Seleccione...</option>
                                                                 @foreach ($questionClassess as $questionClass)
                                                                     <option value="{{ $questionClass->id }}">
                                                                         {{ $questionClass->name }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
-                                                            @error('type_class_id')
-                                                                <span
-                                                                    class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
-                                                            @enderror
-                                                        @endif
-                                                    </div>
-                                                    <div x-show="tipoExamen === '2'"
-                                                        class="mt-1 relative z-0 w-full group">
-                                                        @if (!is_null($questionClassess))
-                                                            <label for="small"
-                                                                class="block mb-2 text-base font-medium text-gray-900 dark:text-white">TIPO
-                                                                DE
-                                                                CLASE</label>
-                                                            <select id="small" x-ref="clasification"
-                                                                placeholder="seleccione..."
-                                                                wire:model.lazy="type_class_id"
-                                                                class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                                <option value="">Seleccione...</option>
-                                                                @foreach ($typeRenovationExams as $typeRenovationExam)
-                                                                    <option value="{{ $typeRenovationExam->id }}">
-                                                                        {{ $typeRenovationExam->name }}
                                                                     </option>
                                                                 @endforeach
                                                             </select>
@@ -268,8 +235,57 @@
                                                             @enderror
                                                         </div>
                                                     </div>
-                                                    <div x-show="question === '2' || tipoExamen === '2'">
-                                                        <div class="mt-4 relative z-0 w-full group">
+                                                    <div x-show="question === '2'">
+                                                        <div class="mt-4 relative z-auto w-full group">
+                                                            <x-select label="TIPO DE LICENCIA"
+                                                                placeholder="Seleccione uno o más..." :options="$clasificationClass"
+                                                                option-label="name" option-value="id"
+                                                                wire:model.defer="clasification_class_id"
+                                                                multiselect />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div x-show="tipoExamen === '2'"
+                                            class="flex relative pb-6">
+                                            <div class="h-full w-10 absolute inset-0 flex items-center justify-center">
+                                                <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
+                                            </div>
+                                            <div
+                                                class="flex-shrink-0 w-10 h-10 rounded-full bg-sky-700 inline-flex items-center justify-center text-white relative z-10">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                    class="w-6 h-6">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M12 9v3.75m0-10.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.75c0 5.592 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.57-.598-3.75h-.152c-3.196 0-6.1-1.249-8.25-3.286zm0 13.036h.008v.008H12v-.008z" />
+                                                </svg>
+                                            </div>
+                                            <div class="flex-grow pl-4">
+                                                <div class="grid xl:grid-cols-2 xl:gap-6">
+                                                    <div class="mt-1 relative z-0 w-full group">
+                                                        @if (!is_null($questionClassess))
+                                                            <label for="small"
+                                                                class="block mb-2 text-base font-medium text-gray-900 dark:text-white">TIPO DE CLASE</label>
+                                                            <select id="small" x-ref="clasification"
+                                                                placeholder="seleccione..."
+                                                                wire:model.lazy="type_class_id"
+                                                                class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                                <option value="">Seleccione...</option>
+                                                                @foreach ($typeRenovationExams as $typeRenovationExam)
+                                                                    <option value="{{ $typeRenovationExam->id }}">
+                                                                        {{ $typeRenovationExam->name }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                            @error('type_class_id')
+                                                                <span
+                                                                    class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
+                                                            @enderror
+                                                        @endif
+                                                    </div>
+                                                    <div>
+                                                        <div class="mt-4 relative z-auto w-full group">
                                                             <x-select label="TIPO DE LICENCIA"
                                                                 placeholder="Seleccione uno o más..." :options="$clasificationClass"
                                                                 option-label="name" option-value="id"
@@ -298,7 +314,7 @@
                                                 <div class="grid xl:grid-cols-3 xl:gap-6">
                                                     <div class="text-base relative z-auto w-full mb-2 group">
                                                         <x-select label="ELIJA LA SEDE" placeholder="Selecciona"
-                                                            x-model="selec_sede"
+                                                            x-ref="selec_sede"
                                                             wire:model.lazy="to_user_headquarters">
                                                             @foreach ($sedes as $sede)
                                                                 <x-select.option
@@ -328,7 +344,8 @@
                                             </div>
                                         </div>
                                         {{-- paso6 --}}
-                                        <div x-show="selec_sede > '0'" class="flex relative">
+                                        {{-- <div x-show="dateAppointment > '0'" class="flex relative"> --}}
+                                        <div class="flex relative">
                                             <div
                                                 class="flex-shrink-0 w-10 h-10 rounded-full bg-green-500 inline-flex items-center justify-center text-white relative z-10">
                                                 <svg fill="none" stroke="currentColor" stroke-linecap="round"
@@ -338,30 +355,30 @@
                                                     <path d="M22 4L12 14.01l-3-3"></path>
                                                 </svg>
                                             </div>
-                                        </div>
-                                        <div class="flex-grow pl-4">
-                                            {{-- <div x-show="selec_sede > '0'"> --}}
-                                            <button
-                                                class="px-3 py-2 text-sm font-medium text-center text-white bg-sky-700 rounded-lg hover:bg-sky-800 focus:ring-4 focus:outline-none focus:ring-sky-300 dark:bg-sky-600 dark:hover:bg-sky-700 dark:focus:ring-sky-800">
-                                                GENERAR CITA
-                                            </button>
-                                            <div wire:loading.delay.shortest wire:target="save">
-                                                <div
-                                                    class="flex justify-center bg-gray-200 z-40 h-full w-full fixed top-0 left-0 items-center opacity-75">
-                                                    <div style="color: #0061cf"
-                                                        class="la-line-spin-clockwise-fade-rotating la-3x">
-                                                        <div></div>
-                                                        <div></div>
-                                                        <div></div>
-                                                        <div></div>
-                                                        <div></div>
-                                                        <div></div>
-                                                        <div></div>
-                                                        <div></div>
+                                            <div class="flex-grow pl-4">
+                                                <div>
+                                                <button
+                                                    class="px-3 py-2 text-sm font-medium text-center text-white bg-sky-700 rounded-lg hover:bg-sky-800 focus:ring-4 focus:outline-none focus:ring-sky-300 dark:bg-sky-600 dark:hover:bg-sky-700 dark:focus:ring-sky-800">
+                                                    GENERAR CITA
+                                                </button>
+                                                <div wire:loading.delay.shortest wire:target="save">
+                                                    <div
+                                                        class="flex justify-center bg-gray-200 z-40 h-full w-full fixed top-0 left-0 items-center opacity-75">
+                                                        <div style="color: #0061cf"
+                                                            class="la-line-spin-clockwise-fade-rotating la-3x">
+                                                            <div></div>
+                                                            <div></div>
+                                                            <div></div>
+                                                            <div></div>
+                                                            <div></div>
+                                                            <div></div>
+                                                            <div></div>
+                                                            <div></div>
+                                                        </div>
                                                     </div>
                                                 </div>
+                                                </div>
                                             </div>
-                                            {{-- </div> --}}
                                         </div>
                                     </div>
                                 </div>

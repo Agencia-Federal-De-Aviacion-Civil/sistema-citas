@@ -95,7 +95,7 @@
                                                     </x-select>
                                                 </div>
                                                 <div class="relative z-auto w-full mb-6 group">
-                                                    <x-input x-ref="numberlice" wire:model.lazy="license_number" label="NÚMERO DE LICENCIA" placeholder="INGRESE..." />
+                                                    <x-input x-ref="licensenumber" wire:model.lazy="license_number" label="NÚMERO DE LICENCIA" placeholder="INGRESE..." />
                                                 </div>
                                             </div>
                                         </div>
