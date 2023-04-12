@@ -14,6 +14,10 @@ class MedicineReserve extends Model
     {
         return $this->belongsTo(User::class, 'from_user_appointment');
     }
+    public function medicineReserveMedicine()
+    {
+        return $this->belongsTo(Medicine::class, 'medicine_id');
+    }
     public function user()
     {
         return $this->belongsTo(User::class, 'to_user_headquarters');
