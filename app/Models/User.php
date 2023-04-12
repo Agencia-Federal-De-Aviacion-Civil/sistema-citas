@@ -98,7 +98,11 @@ class User extends Authenticatable
     {
         return $this->hasMany(Medicine::class);
     }
-    public function UserMedicineReserve()
+    public function userMedicineReserveTo()
+    {
+        return $this->hasMany(MedicineReserve::class, 'to_user_headquarters');
+    }
+    public function usermedicineReserveFrom()
     {
         return $this->hasMany(MedicineReserve::class);
     }

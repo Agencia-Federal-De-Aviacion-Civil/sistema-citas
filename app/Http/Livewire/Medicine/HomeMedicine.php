@@ -25,7 +25,7 @@ class HomeMedicine extends Component
     public $name_document, $reference_number, $pay_date, $type_exam_id, $typeRenovationExams;
     public $questionClassess, $typeExams, $sedes, $userQuestions, $to_user_headquarters, $dateReserve, $saveMedicine;
     public $confirmModal = false;
-    public $medicineQueries;
+    public $medicineQueries, $medicineReserves;
     // MEDICINE INITIAL TABLE
     public $question;
     public function mount()
@@ -185,9 +185,11 @@ class HomeMedicine extends Component
     public function openConfirm()
     {
         $this->medicineQueries = MedicineInitial::with([
-            'InitialMedicine', 'MedicineInitialQuestion', 'MedicineInitialTypeClass',
-            'MedicineInitialClasificationClass'
+            'initialMedicine', 'medicineInitialQuestion', 'medicineInitialTypeClass',
+            'medicineInitialClasificationClass'
         ])->where('medicine_id', $this->saveMedicine->id)->get();
+        $this->medicineReserves = MedicineReserve::with(['medicineReserveFromUser', 'user'])
+            ->where('medicine_id', $this->saveMedicine->id)->get();;
         // GENERAL QUERY
         // $this->appointmentInfo = userAppointment::with(['appointmentTypeExam', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess'])
         //     ->where('id', $this->userAppointment->id)->get();

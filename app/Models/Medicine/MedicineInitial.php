@@ -11,19 +11,19 @@ class MedicineInitial extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
-    public function InitialMedicine()
+    public function initialMedicine()
     {
         return $this->belongsTo(Medicine::class, 'medicine_id');
     }
-    public function MedicineInitialQuestion()
+    public function medicineInitialQuestion()
     {
         return $this->belongsTo(MedicineQuestion::class, 'medicine_question_id');
     }
-    public function MedicineInitialTypeClass()
+    public function medicineInitialTypeClass()
     {
         return $this->belongsTo(TypeClass::class, 'type_class_id');
     }
-    public function MedicineInitialClasificationClass()
+    public function medicineInitialClasificationClass()
     {
         return $this->belongsTo(ClasificationClass::class, 'clasification_class_id');
     }
