@@ -54,8 +54,8 @@
                         </div>
                     </div>
                     <br>
-                    @foreach ($appointmentInfo as $appointment)
-                        @if ($appointment->type_exam_id == 1)
+                    {{-- @foreach ($appointmentInfo as $appointment) --}}
+                        {{-- @if ($appointment->type_exam_id == 1) --}}
                             <div class="flex flex-wrap sm:mx-auto sm:mb-4 -mx-2">
                                 <div class="sm:w-1/2 w-full">
                                     <div class="rounded flex p-0 h-full items-center">
@@ -66,7 +66,9 @@
                                                 d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
                                         </svg>
                                         <p class="text-lg title-font font-normal">Folio:
-                                        <p class="text-xl text-sky-800 font-semibold"> {{ $appointmentInfo[0]->id }}</p>
+                                        <p class="text-xl text-sky-800 font-semibold"> 
+                                            {{-- {{ $appointmentInfo[0]->id }} --}}
+                                        </p>
                                         </p>
                                     </div>
                                 </div>
@@ -83,7 +85,8 @@
                                             </svg>
                                             <p class="text-lg title-font font-normal">Tipo de examen:
                                             <p class="text-xl font-semibold">
-                                                {{ $appointment->appointmentTypeExam->name }}</p>
+                                                {{-- {{ $appointment->appointmentTypeExam->name }} --}}
+                                            </p>
                                             </p>
                                         </div>
                                     </div>
@@ -97,7 +100,8 @@
                                             </svg>
                                             <p class="text-lg title-font font-normal">Tipo de clase:
                                             <p class="text-xl font-semibold">
-                                                {{ $appointment->appointmentStudying[0]->studyingClass->name }}</p>
+                                                {{-- {{ $appointment->appointmentStudying[0]->studyingClass->name }} --}}
+                                            </p>
                                             </p>
                                         </div>
                                     </div>
@@ -114,18 +118,18 @@
                                         </svg>
                                         <p class="text-lg title-font font-normal">Tipo de Licencia:
                                         <p class="text-lg font-semibold">
-                                            @if ($appointment->appointmentStudying[0]->user_question_id == 1)
-                                                {{ $appointment->appointmentStudying[0]->studyingClasification->name }}
+                                            {{-- @if ($appointment->appointmentStudying[0]->user_question_id == 1)
+                                                {{ $appointment->appointmentStudying[0]->studyingClasification->name }} --}}
                                         </p>
-                                    @elseif($appointment->appointmentStudying[0]->user_question_id == 2)
-                                        @foreach ($typeStudyings as $typeStudying)
+                                    {{-- @elseif($appointment->appointmentStudying[0]->user_question_id == 2)
+                                        @foreach ($typeStudyings as $typeStudying) --}}
                                             <ul>
                                                 <li>
-                                                    {{ $typeStudying->studyingClasification->name }}
+                                                    {{-- {{ $typeStudying->studyingClasification->name }} --}}
                                                 </li>
                                             </ul>
-                                        @endforeach
-                        @endif
+                                        {{-- @endforeach --}}
+                        {{-- @endif --}}
 
                         </p>
                         </p>
@@ -142,7 +146,7 @@
                     </svg>
                     <p class="text-lg title-font font-normal">Referencia de pago:
                     <p class="text-lg font-semibold">
-                        {{ $appointment->paymentConcept }}
+                        {{-- {{ $appointment->paymentConcept }} --}}
                     </p>
                     </p>
                 </div>
@@ -160,7 +164,8 @@
 
                         <p class="text-lg title-font font-normal">Fecha:
                         <p class="text-xl font-semibold">
-                            {{ $appointment->appointmentSuccess->appointmentDate }} </p>
+                            {{-- {{ $appointment->appointmentSuccess->appointmentDate }}  --}}
+                        </p>
                         </p>
                     </div>
                 </div>
@@ -173,7 +178,8 @@
                         </svg>
                         <p class="text-lg title-font font-normal">hora:
                         <p class="text-xl font-semibold">
-                            {{ $appointment->appointmentSuccess->appointmentTime }} AM</p>
+                            {{-- {{ $appointment->appointmentSuccess->appointmentTime }} AM --}}
+                        </p>
                         </p>
                     </div>
                 </div>
@@ -193,7 +199,7 @@
 
                         <p class="text-lg title-font font-normal">Sede:
                         <p class="text-xl font-semibold">
-                            {{ $userAppointment->appointmentSuccess->successUser->name }}
+                            {{-- {{ $userAppointment->appointmentSuccess->successUser->name }} --}}
                         </p>
                         </p>
                     </div>
@@ -207,8 +213,10 @@
                 <div class="sm:w-full w-full">
                     <div class="rounded flex p-0 h-full items-center">
                         <p class="text-lg title-font font-normal">
-                            {{ $userAppointment->appointmentSuccess->successUser->userHeadquarter[0]->direction }}
-                            <a href="{{ $userAppointment->appointmentSuccess->successUser->userHeadquarter[0]->url }}" target="_blank"
+                            {{-- {{ $userAppointment->appointmentSuccess->successUser->userHeadquarter[0]->direction }} --}}
+                            <a href="
+                            {{-- {{ $userAppointment->appointmentSuccess->successUser->userHeadquarter[0]->url }} --}}
+                            " target="_blank"
                                 class="text-lg font-semibold text-sky-600">Consultar
                                 mapa</a>
                         </p>
@@ -225,7 +233,7 @@
             <div class="w-full h-1 rounded-full bg-sky-600 inline-flex"></div>
         </div>
         <br>
-    @elseif($appointment->type_exam_id == 2)
+    {{-- @elseif($appointment->type_exam_id == 2) --}}
         <div class="flex flex-wrap sm:mx-auto sm:mb-4 -mx-2">
             <div class="sm:w-1/2 w-full">
                 <div class="rounded flex p-0 h-full items-center">
@@ -235,7 +243,9 @@
                             d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
                     </svg>
                     <p class="text-lg title-font font-normal">Folio:
-                    <p class="text-xl text-sky-800 font-semibold">{{ $appointmentInfo[0]->id }}</p>
+                    <p class="text-xl text-sky-800 font-semibold">
+                        {{-- {{ $appointmentInfo[0]->id }} --}}
+                    </p>
                     </p>
                 </div>
             </div>
@@ -251,7 +261,8 @@
                         </svg>
                         <p class="text-lg title-font font-normal">Tipo de examen:
                         <p class="text-xl font-semibold">
-                            {{ $appointment->appointmentTypeExam->name }}</p>
+                            {{-- {{ $appointment->appointmentTypeExam->name }} --}}
+                        </p>
                         </p>
                     </div>
                 </div>
@@ -264,7 +275,8 @@
                         </svg>
                         <p class="text-lg title-font font-normal">Tipo de clase:
                         <p class="text-xl font-semibold">
-                            {{ $appointment->appointmentRenovation[0]->renovationClass->name }}</p>
+                            {{-- {{ $appointment->appointmentRenovation[0]->renovationClass->name }} --}}
+                        </p>
                         </p>
                     </div>
                 </div>
@@ -280,11 +292,13 @@
                     </svg>
                     <p class="text-lg title-font font-normal">Tipo de Licencia:
                     <p class="text-lg font-semibold">
-                        @foreach ($typeRenovations as $renovationsPilot)
+                        {{-- @foreach ($typeRenovations as $renovationsPilot) --}}
                             <ul>
-                                <li>{{ $renovationsPilot->renovationClasification->name }}</li>
+                                <li>
+                                    {{-- {{ $renovationsPilot->renovationClasification->name }} --}}
+                                </li>
                             </ul>
-                        @endforeach
+                        {{-- @endforeach --}}
                     </p>
                     </p>
                 </div>
@@ -300,7 +314,7 @@
                     </svg>
                     <p class="text-lg title-font font-normal">Referencia de pago:
                     <p class="text-lg font-semibold">
-                        {{ $appointment->paymentConcept }}
+                        {{-- {{ $appointment->paymentConcept }} --}}
                     </p>
                     </p>
                 </div>
@@ -318,7 +332,8 @@
 
                         <p class="text-lg title-font font-normal">Fecha:
                         <p class="text-xl font-semibold">
-                            {{ $appointment->appointmentSuccess->appointmentDate }}</p>
+                            {{-- {{ $appointment->appointmentSuccess->appointmentDate }} --}}
+                        </p>
                         </p>
                     </div>
                 </div>
@@ -331,7 +346,8 @@
                         </svg>
                         <p class="text-lg title-font font-normal">hora:
                         <p class="text-xl font-semibold">
-                            {{ $appointment->appointmentSuccess->appointmentTime }} AM</p>
+                            {{-- {{ $appointment->appointmentSuccess->appointmentTime }} AM --}}
+                        </p>
                         </p>
                     </div>
                 </div>
@@ -351,7 +367,7 @@
 
                         <p class="text-lg title-font font-normal">Sede:
                         <p class="text-xl font-semibold">
-                            {{ $userAppointment->appointmentSuccess->successUser->name }}
+                            {{-- {{ $userAppointment->appointmentSuccess->successUser->name }} --}}
                         </p>
                         </p>
                     </div>
@@ -365,8 +381,10 @@
                 <div class="sm:w-full w-full">
                     <div class="rounded flex p-0 h-full items-center">
                         <p class="text-lg title-font font-normal">
-                            {{ $userAppointment->appointmentSuccess->successUser->userHeadquarter[0]->direction }}
-                            <a href="{{ $userAppointment->appointmentSuccess->successUser->userHeadquarter[0]->url }}" target="_blank"
+                            {{-- {{ $userAppointment->appointmentSuccess->successUser->userHeadquarter[0]->direction }} --}}
+                            <a href="
+                            {{-- {{ $userAppointment->appointmentSuccess->successUser->userHeadquarter[0]->url }} --}}
+                            " target="_blank"
                                 class="text-lg font-semibold text-sky-600">Consultar
                                 mapa</a>
                         </p>
@@ -383,13 +401,15 @@
             <div class="w-full h-1 rounded-full bg-sky-600 inline-flex"></div>
         </div>
         <br>
-        @endif
+        {{-- @endif --}}
         <div class="mt-5 sm:flex sm:items-center sm:-mx-2">
-            <button wire:click.prevent="deleteAppointment({{ $appointmentInfo[0]->id }})"
+            <button wire:click.prevent="
+            {{-- deleteAppointment({{ $appointmentInfo[0]->id }}) --}}
+            "
                 class="w-full px-4 py-2 text-sm text-center font-medium tracking-wide text-gray-700 transition-colors duration-300 transform border border-gray-200 rounded-md sm:w-1/2 sm:mx-2 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800 hover:bg-gray-100 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-40">
                 CANCELAR CITA
             </button>
-            @endforeach
+            {{-- @endforeach --}}
             <div wire:loading.delay.shortest wire:target="deleteAppointment">
                 <div
                     class="flex justify-center bg-gray-200 z-40 h-full w-full fixed top-0 left-0 items-center opacity-75">
