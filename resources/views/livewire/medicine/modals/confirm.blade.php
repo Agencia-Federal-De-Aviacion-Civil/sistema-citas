@@ -65,7 +65,7 @@
                                 </svg>
                                 <p class="text-lg title-font font-normal">Folio:
                                 <p class="text-xl text-sky-800 font-semibold">
-                                    {{-- {{ $appointmentInfo[0]->id }} --}}
+                                    MED-{{ $medicineReserves[0]->id }}
                                 </p>
                                 </p>
                             </div>
@@ -83,7 +83,7 @@
                                     </svg>
                                     <p class="text-lg title-font font-normal">Tipo de examen:
                                     <p class="text-xl font-semibold">
-                                        {{ $medicineQueries[0]->InitialMedicine->medicineTypeExam->name }}
+                                        {{ $medicineQueries[0]->initialMedicine->medicineTypeExam->name }}
                                     </p>
                                     </p>
                                 </div>
@@ -98,7 +98,7 @@
                                     </svg>
                                     <p class="text-lg title-font font-normal">Tipo de clase:
                                     <p class="text-xl font-semibold">
-                                        {{ $medicineQueries[0]->MedicineInitialTypeClass->name }}
+                                        {{ $medicineQueries[0]->medicineInitialTypeClass->name }}
                                     </p>
                                     </p>
                                 </div>
@@ -117,24 +117,19 @@
                                 <p class="text-lg title-font font-normal">Tipo de Licencia:
                                 <p class="text-lg font-semibold">
                                     @if ($medicineQueries[0]->medicine_question_id == 1)
-                                        {{ $medicineQueries[0]->MedicineInitialClasificationClass->name }}
+                                        {{ $medicineQueries[0]->medicineInitialClasificationClass->name }}
                                     @elseif($medicineQueries[0]->medicine_question_id == 2)
                                         @foreach ($medicineQueries as $medicineQuery)
                                             <ul>
                                                 <li>
-                                                    {{ $medicineQuery->MedicineInitialClasificationClass->name }}
+                                                    {{ $medicineQuery->medicineInitialClasificationClass->name }}
                                                 </li>
                                             </ul>
                                         @endforeach
                                     @endif
-                                    {{-- @if ($appointment->appointmentStudying[0]->user_question_id == 1)
-                                                {{ $appointment->appointmentStudying[0]->studyingClasification->name }} --}}
                                 </p>
-                                {{-- @elseif($appointment->appointmentStudying[0]->user_question_id == 2)
-                                        @foreach ($typeStudyings as $typeStudying) --}}
                                 <ul>
                                     <li>
-                                        {{-- {{ $typeStudying->studyingClasification->name }} --}}
                                     </li>
                                 </ul>
                                 </p>
@@ -153,7 +148,7 @@
                                 </svg>
                                 <p class="text-lg title-font font-normal">Referencia de pago:
                                 <p class="text-lg font-semibold">
-                                    {{ $medicineQueries[0]->InitialMedicine->reference_number }}
+                                    {{ $medicineQueries[0]->initialMedicine->reference_number }}
                                 </p>
                                 </p>
                             </div>
@@ -170,14 +165,14 @@
                                             d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
                                     </svg>
 
-                                    <p class="text-lg title-font font-normal">Fecha:
+                                    <p class="text-lg title-font font-normal">Fecha y Hora
                                     <p class="text-xl font-semibold">
-                                        {{-- {{ $appointment->appointmentSuccess->appointmentDate }}  --}}
+                                        {{ $medicineReserves[0]->dateReserve }}
                                     </p>
                                     </p>
                                 </div>
                             </div>
-                            <div class="sm:w-full w-full">
+                            {{-- <div class="sm:w-full w-full">
                                 <div class="rounded flex p-0 h-full items-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor"
@@ -187,11 +182,10 @@
                                     </svg>
                                     <p class="text-lg title-font font-normal">hora:
                                     <p class="text-xl font-semibold">
-                                        {{-- {{ $appointment->appointmentSuccess->appointmentTime }} AM --}}
                                     </p>
                                     </p>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                     <div class="py-8 flex flex-wrap sm:mx-auto sm:-mb-8 -mx-2">
@@ -209,7 +203,7 @@
 
                                     <p class="text-lg title-font font-normal">Sede:
                                     <p class="text-xl font-semibold">
-                                        {{-- {{ $userAppointment->appointmentSuccess->successUser->name }} --}}
+                                        {{ $medicineReserves[0]->user->name }}
                                     </p>
                                     </p>
                                 </div>
@@ -223,10 +217,8 @@
                             <div class="sm:w-full w-full">
                                 <div class="rounded flex p-0 h-full items-center">
                                     <p class="text-lg title-font font-normal">
-                                        {{-- {{ $userAppointment->appointmentSuccess->successUser->userHeadquarter[0]->direction }} --}}
-                                        <a href="
-                            {{-- {{ $userAppointment->appointmentSuccess->successUser->userHeadquarter[0]->url }} --}}
-                            "
+                                        {{ $medicineReserves[0]->user->userHeadquarter[0]->direction }}"
+                                        <a href="{{ $medicineReserves[0]->user->userHeadquarter[0]->url }}"
                                             target="_blank" class="text-lg font-semibold text-sky-600">Consultar
                                             mapa</a>
                                     </p>

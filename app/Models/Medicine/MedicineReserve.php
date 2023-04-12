@@ -10,7 +10,11 @@ class MedicineReserve extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
-    public function medicineReserveUser()
+    public function medicineReserveFromUser()
+    {
+        return $this->belongsTo(User::class, 'from_user_appointment');
+    }
+    public function user()
     {
         return $this->belongsTo(User::class, 'to_user_headquarters');
     }
