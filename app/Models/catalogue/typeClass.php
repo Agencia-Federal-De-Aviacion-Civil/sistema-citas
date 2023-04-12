@@ -4,6 +4,7 @@ namespace App\Models\Catalogue;
 
 use App\Models\Medicine\MedicineInitial;
 use App\Models\Medicine\MedicineQuestion;
+use App\Models\Medicine\MedicineRenovation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -26,5 +27,9 @@ class TypeClass extends Model
     public function typeClassMedicineInitial()
     {
         return $this->hasMany(MedicineInitial::class);
+    }
+    public function typeClassRenovation()
+    {
+        return $this->hasMany(MedicineRenovation::class);
     }
 }

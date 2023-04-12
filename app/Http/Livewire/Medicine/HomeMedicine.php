@@ -25,7 +25,7 @@ class HomeMedicine extends Component
     public $name_document, $reference_number, $pay_date, $type_exam_id, $typeRenovationExams;
     public $questionClassess, $typeExams, $sedes, $userQuestions, $to_user_headquarters, $dateReserve, $saveMedicine;
     public $confirmModal = false;
-    public $medicineQueries, $medicineReserves;
+    public $medicineQueries, $medicineReserves, $medicineInitials, $medicineRenovations, $id_medicineReserve;
     // MEDICINE INITIAL TABLE
     public $question;
     public function mount()
@@ -95,9 +95,9 @@ class HomeMedicine extends Component
         $this->medicine_question_id = [];
         // $this->dispatchBrowserEvent('reset-select-question');
     }
-    public function closeConfirmModal()
+    public function openModal()
     {
-        $this->confirmModal = false;
+        $this->confirmModal = true;
     }
     public function save()
     {
@@ -178,26 +178,52 @@ class HomeMedicine extends Component
                 'description' => 'SE HA GENERADO LA CITA EXITOSAMENTE',
                 'icon'        => 'success'
             ]);
-            // $this->clean();
+            $this->clean();
             $this->openConfirm();
         }
     }
     public function openConfirm()
     {
-        $this->medicineQueries = MedicineInitial::with([
+        $this->medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'user'])
+            ->where('medicine_id', $this->saveMedicine->id)->get();
+        $this->medicineInitials = MedicineInitial::with([
             'initialMedicine', 'medicineInitialQuestion', 'medicineInitialTypeClass',
             'medicineInitialClasificationClass'
         ])->where('medicine_id', $this->saveMedicine->id)->get();
-        $this->medicineReserves = MedicineReserve::with(['medicineReserveFromUser', 'user'])
-            ->where('medicine_id', $this->saveMedicine->id)->get();;
-        // GENERAL QUERY
-        // $this->appointmentInfo = userAppointment::with(['appointmentTypeExam', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess'])
-        //     ->where('id', $this->userAppointment->id)->get();
-        // // LICENSE QUERY RENOVATIONS
-        // $this->typeStudyings = userStudying::with(['studyingAppointment', 'studyingClasification'])
-        //     ->where('user_appointment_id', $this->userAppointment->id)->get();
-        // $this->typeRenovations = userRenovation::with(['renovationAppointment', 'renovationClasification'])->where('user_appointment_id', $this->userAppointment->id)->get();
+        $this->medicineRenovations = MedicineRenovation::with(['renovationMedicine', 'renovationTypeClass', 'renovationClasificationClass'])
+            ->where('medicine_id', $this->saveMedicine->id)->get();
         $this->confirmModal = true;
+    }
+    public function deleteRelationShip()
+    {
+        $this->confirmModal = false;
+        $this->dialog()->confirm([
+            'title'       => '¡ATENCIÓN!',
+            'description' => '¿ESTAS SEGURO DE ELIMINAR ESTA CITA?',
+            'icon'        => 'info',
+            'accept'      => [
+                'label'  => 'SI',
+                'method' => 'confirmDelete',
+            ],
+            'reject' => [
+                'label'  => 'NO',
+                'method' => 'openModal',
+            ],
+        ]);
+    }
+    public function delete($idDelete)
+    {
+        MedicineReserve::findOrFail($idDelete);
+        $this->id_medicineReserve = $idDelete;
+        $this->deleteRelationShip();
+    }
+    public function confirmDelete()
+    {
+        MedicineReserve::find($this->id_medicineReserve)->delete();
+        $this->notification([
+            'title'       => 'Cita eliminada éxitosamente',
+            'icon'        => 'error'
+        ]);
     }
     public function messages()
     {

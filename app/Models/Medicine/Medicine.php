@@ -30,7 +30,10 @@ class Medicine extends Model
     }
     public function medicineReserve()
     {
-        return $this->hasMany(medicineReserve::class);
+        return $this->hasMany(MedicineReserve::class);
     }
-
+    public function medicineRenovation()
+    {
+        return $this->hasMany(MedicineRenovation::class);
+    }
 }
