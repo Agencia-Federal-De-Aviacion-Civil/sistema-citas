@@ -2,11 +2,11 @@
 
 namespace App\Http\Livewire\Medicine;
 
-use App\Models\Appointment\Document;
 use App\Models\Catalogue\ClasificationClass;
 use App\Models\Catalogue\Headquarter;
 use App\Models\Catalogue\TypeClass;
 use App\Models\Catalogue\TypeExam;
+use App\Models\Document;
 use App\Models\Medicine\Medicine;
 use App\Models\Medicine\MedicineInitial;
 use App\Models\Medicine\MedicineQuestion;
@@ -23,7 +23,7 @@ class HomeMedicine extends Component
     use WithFileUploads;
     public $medicine_question_id, $type_class_id, $clasificationClass, $clasification_class_id;
     public $name_document, $reference_number, $pay_date, $type_exam_id, $typeRenovationExams;
-    public $questionClassess, $typeExams, $sedes, $userQuestions, $to_user_headquarters, $dateReserve, $user;
+    public $questionClassess, $typeExams, $sedes, $userQuestions, $to_user_headquarters, $dateReserve, $saveMedicine;
     public $confirmModal = false;
     public $medicineQueries;
     // MEDICINE INITIAL TABLE
@@ -95,17 +95,9 @@ class HomeMedicine extends Component
         $this->medicine_question_id = [];
         // $this->dispatchBrowserEvent('reset-select-question');
     }
-    public function openConfirm()
+    public function closeConfirmModal()
     {
-        // $this->medicineQueries = Medicine::with(['medicineUser']);
-        // GENERAL QUERY
-        // $this->appointmentInfo = userAppointment::with(['appointmentTypeExam', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess'])
-        //     ->where('id', $this->userAppointment->id)->get();
-        // // LICENSE QUERY RENOVATIONS
-        // $this->typeStudyings = userStudying::with(['studyingAppointment', 'studyingClasification'])
-        //     ->where('user_appointment_id', $this->userAppointment->id)->get();
-        // $this->typeRenovations = userRenovation::with(['renovationAppointment', 'renovationClasification'])->where('user_appointment_id', $this->userAppointment->id)->get();
-        $this->confirmModal = true;
+        $this->confirmModal = false;
     }
     public function save()
     {
@@ -140,7 +132,7 @@ class HomeMedicine extends Component
             $saveDocument = Document::create([
                 'name_document' => $this->name_document->store('documentos', 'public')
             ]);
-            $saveMedicine = Medicine::create([
+            $this->saveMedicine = Medicine::create([
                 'user_id' => Auth::user()->id,
                 'reference_number' => $this->reference_number,
                 'pay_date' => $this->pay_date,
@@ -152,7 +144,7 @@ class HomeMedicine extends Component
                 if (is_array($clasification_class_ids)) {
                     foreach ($clasification_class_ids as $clasifications) {
                         MedicineInitial::create([
-                            'medicine_id' => $saveMedicine->id,
+                            'medicine_id' => $this->saveMedicine->id,
                             'medicine_question_id' => $this->medicine_question_id,
                             'type_class_id' => $this->type_class_id,
                             'clasification_class_id' => $clasifications
@@ -160,7 +152,7 @@ class HomeMedicine extends Component
                     }
                 } else {
                     MedicineInitial::create([
-                        'medicine_id' => $saveMedicine->id,
+                        'medicine_id' => $this->saveMedicine->id,
                         'medicine_question_id' => $this->medicine_question_id,
                         'type_class_id' => $this->type_class_id,
                         'clasification_class_id' => $clasification_class_ids
@@ -169,13 +161,15 @@ class HomeMedicine extends Component
             } else if ($this->type_exam_id == 2) {
                 foreach ($this->clasification_class_id as $clasifications) {
                     MedicineRenovation::create([
-                        'medicine_id' => $saveMedicine->id,
+                        'medicine_id' => $this->saveMedicine->id,
                         'type_class_id' => $this->type_class_id,
                         'clasification_class_id' => $clasifications
                     ]);
                 }
             }
             $cita = new MedicineReserve();
+            $cita->from_user_appointment = Auth::user()->id;
+            $cita->medicine_id = $this->saveMedicine->id;
             $cita->to_user_headquarters = $this->to_user_headquarters;
             $cita->dateReserve = $this->dateReserve;
             $cita->save();
@@ -184,11 +178,25 @@ class HomeMedicine extends Component
                 'description' => 'SE HA GENERADO LA CITA EXITOSAMENTE',
                 'icon'        => 'success'
             ]);
-            $this->clean();
+            // $this->clean();
             $this->openConfirm();
         }
     }
-
+    public function openConfirm()
+    {
+        $this->medicineQueries = MedicineInitial::with([
+            'InitialMedicine', 'MedicineInitialQuestion', 'MedicineInitialTypeClass',
+            'MedicineInitialClasificationClass'
+        ])->where('medicine_id', $this->saveMedicine->id)->get();
+        // GENERAL QUERY
+        // $this->appointmentInfo = userAppointment::with(['appointmentTypeExam', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess'])
+        //     ->where('id', $this->userAppointment->id)->get();
+        // // LICENSE QUERY RENOVATIONS
+        // $this->typeStudyings = userStudying::with(['studyingAppointment', 'studyingClasification'])
+        //     ->where('user_appointment_id', $this->userAppointment->id)->get();
+        // $this->typeRenovations = userRenovation::with(['renovationAppointment', 'renovationClasification'])->where('user_appointment_id', $this->userAppointment->id)->get();
+        $this->confirmModal = true;
+    }
     public function messages()
     {
         return [

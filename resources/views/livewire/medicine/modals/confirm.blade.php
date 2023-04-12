@@ -54,399 +54,415 @@
                         </div>
                     </div>
                     <br>
-                    {{-- @foreach ($appointmentInfo as $appointment) --}}
-                        {{-- @if ($appointment->type_exam_id == 1) --}}
-                            <div class="flex flex-wrap sm:mx-auto sm:mb-4 -mx-2">
-                                <div class="sm:w-1/2 w-full">
-                                    <div class="rounded flex p-0 h-full items-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            stroke-width="1.5" stroke="currentColor"
-                                            class="text-sky-700 w-6 h-6 flex-shrink-0 mr-2">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
-                                        </svg>
-                                        <p class="text-lg title-font font-normal">Folio:
-                                        <p class="text-xl text-sky-800 font-semibold"> 
-                                            {{-- {{ $appointmentInfo[0]->id }} --}}
-                                        </p>
-                                        </p>
-                                    </div>
+                    <div class="flex flex-wrap sm:mx-auto sm:mb-4 -mx-2">
+                        <div class="sm:w-1/2 w-full">
+                            <div class="rounded flex p-0 h-full items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor"
+                                    class="text-sky-700 w-6 h-6 flex-shrink-0 mr-2">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                                </svg>
+                                <p class="text-lg title-font font-normal">Folio:
+                                <p class="text-xl text-sky-800 font-semibold">
+                                    {{-- {{ $appointmentInfo[0]->id }} --}}
+                                </p>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap sm:mx-auto sm:mb-4 -mx-2">
+                        <div class="grid xl:grid-cols-2 xl:gap-6">
+                            <div class="sm:w-full w-full">
+                                <div class="rounded flex p-0 h-full items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor"
+                                        class="text-sky-700 w-6 h-6 flex-shrink-0 mr-2">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    <p class="text-lg title-font font-normal">Tipo de examen:
+                                    <p class="text-xl font-semibold">
+                                        {{ $medicineQueries[0]->InitialMedicine->medicineTypeExam->name }}
+                                    </p>
+                                    </p>
                                 </div>
                             </div>
-                            <div class="flex flex-wrap sm:mx-auto sm:mb-4 -mx-2">
-                                <div class="grid xl:grid-cols-2 xl:gap-6">
-                                    <div class="sm:w-full w-full">
-                                        <div class="rounded flex p-0 h-full items-center">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                stroke-width="1.5" stroke="currentColor"
-                                                class="text-sky-700 w-6 h-6 flex-shrink-0 mr-2">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                            </svg>
-                                            <p class="text-lg title-font font-normal">Tipo de examen:
-                                            <p class="text-xl font-semibold">
-                                                {{-- {{ $appointment->appointmentTypeExam->name }} --}}
-                                            </p>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="sm:w-full w-full">
-                                        <div class="rounded flex p-0 h-full items-center">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                stroke-width="1.5" stroke="currentColor"
-                                                class="text-sky-700 w-6 h-6 flex-shrink-0 mr-2">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                            </svg>
-                                            <p class="text-lg title-font font-normal">Tipo de clase:
-                                            <p class="text-xl font-semibold">
-                                                {{-- {{ $appointment->appointmentStudying[0]->studyingClass->name }} --}}
-                                            </p>
-                                            </p>
-                                        </div>
-                                    </div>
+                            <div class="sm:w-full w-full">
+                                <div class="rounded flex p-0 h-full items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor"
+                                        class="text-sky-700 w-6 h-6 flex-shrink-0 mr-2">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    <p class="text-lg title-font font-normal">Tipo de clase:
+                                    <p class="text-xl font-semibold">
+                                        {{ $medicineQueries[0]->MedicineInitialTypeClass->name }}
+                                    </p>
+                                    </p>
                                 </div>
                             </div>
-                            <div class="flex flex-wrap sm:mx-auto sm:mb-4 -mx-2">
-                                <div class="sm:w-full w-full">
-                                    <div class="rounded flex p-0 h-full items-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            stroke-width="1.5" stroke="currentColor"
-                                            class="text-sky-700 w-6 h-6 flex-shrink-0 mr-2">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
-                                        </svg>
-                                        <p class="text-lg title-font font-normal">Tipo de Licencia:
-                                        <p class="text-lg font-semibold">
-                                            {{-- @if ($appointment->appointmentStudying[0]->user_question_id == 1)
-                                                {{ $appointment->appointmentStudying[0]->studyingClasification->name }} --}}
-                                        </p>
-                                    {{-- @elseif($appointment->appointmentStudying[0]->user_question_id == 2)
-                                        @foreach ($typeStudyings as $typeStudying) --}}
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap sm:mx-auto sm:mb-4 -mx-2">
+                        <div class="sm:w-full w-full">
+                            <div class="rounded flex p-0 h-full items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor"
+                                    class="text-sky-700 w-6 h-6 flex-shrink-0 mr-2">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                                </svg>
+                                <p class="text-lg title-font font-normal">Tipo de Licencia:
+                                <p class="text-lg font-semibold">
+                                    @if ($medicineQueries[0]->medicine_question_id == 1)
+                                        {{ $medicineQueries[0]->MedicineInitialClasificationClass->name }}
+                                    @elseif($medicineQueries[0]->medicine_question_id == 2)
+                                        @foreach ($medicineQueries as $medicineQuery)
                                             <ul>
                                                 <li>
-                                                    {{-- {{ $typeStudying->studyingClasification->name }} --}}
+                                                    {{ $medicineQuery->MedicineInitialClasificationClass->name }}
                                                 </li>
                                             </ul>
-                                        {{-- @endforeach --}}
-                        {{-- @endif --}}
-
-                        </p>
-                        </p>
-                </div>
-            </div>
-        </div>
-        <div class="flex flex-wrap sm:mx-auto sm:mb-4 -mx-2">
-            <div class="sm:w-full w-full">
-                <div class="rounded flex p-0 h-full items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="text-sky-700 w-6 h-6 flex-shrink-0 mr-2">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
-                    </svg>
-                    <p class="text-lg title-font font-normal">Referencia de pago:
-                    <p class="text-lg font-semibold">
-                        {{-- {{ $appointment->paymentConcept }} --}}
-                    </p>
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="flex flex-wrap sm:mx-auto sm:mb-4 -mx-2">
-            <div class="grid xl:grid-cols-2 xl:gap-52">
-                <div class="sm:w-full w-full">
-                    <div class="rounded flex p-0 h-full items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                            stroke-width="1.5" stroke="currentColor" class="text-sky-700 w-6 h-6 flex-shrink-0 mr-2">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
-                        </svg>
-
-                        <p class="text-lg title-font font-normal">Fecha:
-                        <p class="text-xl font-semibold">
-                            {{-- {{ $appointment->appointmentSuccess->appointmentDate }}  --}}
-                        </p>
-                        </p>
+                                        @endforeach
+                                    @endif
+                                    {{-- @if ($appointment->appointmentStudying[0]->user_question_id == 1)
+                                                {{ $appointment->appointmentStudying[0]->studyingClasification->name }} --}}
+                                </p>
+                                {{-- @elseif($appointment->appointmentStudying[0]->user_question_id == 2)
+                                        @foreach ($typeStudyings as $typeStudying) --}}
+                                <ul>
+                                    <li>
+                                        {{-- {{ $typeStudying->studyingClasification->name }} --}}
+                                    </li>
+                                </ul>
+                                </p>
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="sm:w-full w-full">
-                    <div class="rounded flex p-0 h-full items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                            stroke-width="1.5" stroke="currentColor" class="text-sky-700 w-6 h-6 flex-shrink-0 mr-2">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <p class="text-lg title-font font-normal">hora:
-                        <p class="text-xl font-semibold">
-                            {{-- {{ $appointment->appointmentSuccess->appointmentTime }} AM --}}
-                        </p>
-                        </p>
+                    <div class="flex flex-wrap sm:mx-auto sm:mb-4 -mx-2">
+                        <div class="sm:w-full w-full">
+                            <div class="rounded flex p-0 h-full items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor"
+                                    class="text-sky-700 w-6 h-6 flex-shrink-0 mr-2">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                                </svg>
+                                <p class="text-lg title-font font-normal">Referencia de pago:
+                                <p class="text-lg font-semibold">
+                                    {{ $medicineQueries[0]->InitialMedicine->reference_number }}
+                                </p>
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </div>
-        <div class="py-8 flex flex-wrap sm:mx-auto sm:-mb-8 -mx-2">
-            <div class="grid xl:grid-cols-2 xl:gap-24">
-                <div class="sm:w-full w-full">
-                    <div class="rounded flex p-0 h-full items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                            stroke-width="1.5" stroke="currentColor" class="text-sky-700 w-6 h-6 flex-shrink-0 mr-2">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-                        </svg>
+                    <div class="flex flex-wrap sm:mx-auto sm:mb-4 -mx-2">
+                        <div class="grid xl:grid-cols-2 xl:gap-52">
+                            <div class="sm:w-full w-full">
+                                <div class="rounded flex p-0 h-full items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor"
+                                        class="text-sky-700 w-6 h-6 flex-shrink-0 mr-2">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
+                                    </svg>
 
-                        <p class="text-lg title-font font-normal">Sede:
-                        <p class="text-xl font-semibold">
-                            {{-- {{ $userAppointment->appointmentSuccess->successUser->name }} --}}
-                        </p>
-                        </p>
+                                    <p class="text-lg title-font font-normal">Fecha:
+                                    <p class="text-xl font-semibold">
+                                        {{-- {{ $appointment->appointmentSuccess->appointmentDate }}  --}}
+                                    </p>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="sm:w-full w-full">
+                                <div class="rounded flex p-0 h-full items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor"
+                                        class="text-sky-700 w-6 h-6 flex-shrink-0 mr-2">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    <p class="text-lg title-font font-normal">hora:
+                                    <p class="text-xl font-semibold">
+                                        {{-- {{ $appointment->appointmentSuccess->appointmentTime }} AM --}}
+                                    </p>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="sm:w-full w-full">
-                </div>
-            </div>
-        </div>
-        <div class="p-y-6 px-6 flex flex-wrap sm:mx-auto sm:-mb-2 -mx-2">
-            <div class="grid xl:grid-cols-2 xl:gap-24">
-                <div class="sm:w-full w-full">
-                    <div class="rounded flex p-0 h-full items-center">
-                        <p class="text-lg title-font font-normal">
-                            {{-- {{ $userAppointment->appointmentSuccess->successUser->userHeadquarter[0]->direction }} --}}
-                            <a href="
+                    <div class="py-8 flex flex-wrap sm:mx-auto sm:-mb-8 -mx-2">
+                        <div class="grid xl:grid-cols-2 xl:gap-24">
+                            <div class="sm:w-full w-full">
+                                <div class="rounded flex p-0 h-full items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor"
+                                        class="text-sky-700 w-6 h-6 flex-shrink-0 mr-2">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                                    </svg>
+
+                                    <p class="text-lg title-font font-normal">Sede:
+                                    <p class="text-xl font-semibold">
+                                        {{-- {{ $userAppointment->appointmentSuccess->successUser->name }} --}}
+                                    </p>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="sm:w-full w-full">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-y-6 px-6 flex flex-wrap sm:mx-auto sm:-mb-2 -mx-2">
+                        <div class="grid xl:grid-cols-2 xl:gap-24">
+                            <div class="sm:w-full w-full">
+                                <div class="rounded flex p-0 h-full items-center">
+                                    <p class="text-lg title-font font-normal">
+                                        {{-- {{ $userAppointment->appointmentSuccess->successUser->userHeadquarter[0]->direction }} --}}
+                                        <a href="
                             {{-- {{ $userAppointment->appointmentSuccess->successUser->userHeadquarter[0]->url }} --}}
-                            " target="_blank"
-                                class="text-lg font-semibold text-sky-600">Consultar
-                                mapa</a>
-                        </p>
+                            "
+                                            target="_blank" class="text-lg font-semibold text-sky-600">Consultar
+                                            mapa</a>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="sm:w-full w-full">
+                                <div class="rounded flex p-0 h-full items-center">
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="sm:w-full w-full">
-                    <div class="rounded flex p-0 h-full items-center">
+                    <br>
+                    <div class="flex mt-6 justify-center">
+                        <div class="w-full h-1 rounded-full bg-sky-600 inline-flex"></div>
                     </div>
-                </div>
-            </div>
-        </div>
-        <br>
-        <div class="flex mt-6 justify-center">
-            <div class="w-full h-1 rounded-full bg-sky-600 inline-flex"></div>
-        </div>
-        <br>
-    {{-- @elseif($appointment->type_exam_id == 2) --}}
-        <div class="flex flex-wrap sm:mx-auto sm:mb-4 -mx-2">
-            <div class="sm:w-1/2 w-full">
-                <div class="rounded flex p-0 h-full items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="text-sky-700 w-6 h-6 flex-shrink-0 mr-2">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
-                    </svg>
-                    <p class="text-lg title-font font-normal">Folio:
-                    <p class="text-xl text-sky-800 font-semibold">
-                        {{-- {{ $appointmentInfo[0]->id }} --}}
-                    </p>
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="flex flex-wrap sm:mx-auto sm:mb-4 -mx-2">
-            <div class="grid xl:grid-cols-2 xl:gap-6">
-                <div class="sm:w-full w-full">
-                    <div class="rounded flex p-0 h-full items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                            stroke-width="1.5" stroke="currentColor" class="text-sky-700 w-6 h-6 flex-shrink-0 mr-2">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <p class="text-lg title-font font-normal">Tipo de examen:
-                        <p class="text-xl font-semibold">
-                            {{-- {{ $appointment->appointmentTypeExam->name }} --}}
-                        </p>
-                        </p>
+                    <br>
+                    {{-- @elseif($appointment->type_exam_id == 2) --}}
+                    <div class="flex flex-wrap sm:mx-auto sm:mb-4 -mx-2">
+                        <div class="sm:w-1/2 w-full">
+                            <div class="rounded flex p-0 h-full items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor"
+                                    class="text-sky-700 w-6 h-6 flex-shrink-0 mr-2">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                                </svg>
+                                <p class="text-lg title-font font-normal">Folio:
+                                <p class="text-xl text-sky-800 font-semibold">
+                                    {{-- {{ $appointmentInfo[0]->id }} --}}
+                                </p>
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="sm:w-full w-full">
-                    <div class="rounded flex p-0 h-full items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                            stroke-width="1.5" stroke="currentColor" class="text-sky-700 w-6 h-6 flex-shrink-0 mr-2">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <p class="text-lg title-font font-normal">Tipo de clase:
-                        <p class="text-xl font-semibold">
-                            {{-- {{ $appointment->appointmentRenovation[0]->renovationClass->name }} --}}
-                        </p>
-                        </p>
+                    <div class="flex flex-wrap sm:mx-auto sm:mb-4 -mx-2">
+                        <div class="grid xl:grid-cols-2 xl:gap-6">
+                            <div class="sm:w-full w-full">
+                                <div class="rounded flex p-0 h-full items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor"
+                                        class="text-sky-700 w-6 h-6 flex-shrink-0 mr-2">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    <p class="text-lg title-font font-normal">Tipo de examen:
+                                    <p class="text-xl font-semibold">
+                                        {{-- {{ $appointment->appointmentTypeExam->name }} --}}
+                                    </p>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="sm:w-full w-full">
+                                <div class="rounded flex p-0 h-full items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor"
+                                        class="text-sky-700 w-6 h-6 flex-shrink-0 mr-2">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    <p class="text-lg title-font font-normal">Tipo de clase:
+                                    <p class="text-xl font-semibold">
+                                        {{-- {{ $appointment->appointmentRenovation[0]->renovationClass->name }} --}}
+                                    </p>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </div>
-        <div class="flex flex-wrap sm:mx-auto sm:mb-4 -mx-2">
-            <div class="sm:w-full w-full">
-                <div class="rounded flex p-0 h-full items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="text-sky-700 w-6 h-6 flex-shrink-0 mr-2">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
-                    </svg>
-                    <p class="text-lg title-font font-normal">Tipo de Licencia:
-                    <p class="text-lg font-semibold">
-                        {{-- @foreach ($typeRenovations as $renovationsPilot) --}}
-                            <ul>
-                                <li>
-                                    {{-- {{ $renovationsPilot->renovationClasification->name }} --}}
-                                </li>
-                            </ul>
+                    <div class="flex flex-wrap sm:mx-auto sm:mb-4 -mx-2">
+                        <div class="sm:w-full w-full">
+                            <div class="rounded flex p-0 h-full items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor"
+                                    class="text-sky-700 w-6 h-6 flex-shrink-0 mr-2">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                                </svg>
+                                <p class="text-lg title-font font-normal">Tipo de Licencia:
+                                <p class="text-lg font-semibold">
+                                    {{-- @foreach ($typeRenovations as $renovationsPilot) --}}
+                                <ul>
+                                    <li>
+                                        {{-- {{ $renovationsPilot->renovationClasification->name }} --}}
+                                    </li>
+                                </ul>
+                                {{-- @endforeach --}}
+                                </p>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap sm:mx-auto sm:mb-4 -mx-2">
+                        <div class="sm:w-full w-full">
+                            <div class="rounded flex p-0 h-full items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor"
+                                    class="text-sky-700 w-6 h-6 flex-shrink-0 mr-2">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                                </svg>
+                                <p class="text-lg title-font font-normal">Referencia de pago:
+                                <p class="text-lg font-semibold">
+                                    {{-- {{ $appointment->paymentConcept }} --}}
+                                </p>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap sm:mx-auto sm:mb-4 -mx-2">
+                        <div class="grid xl:grid-cols-2 xl:gap-52">
+                            <div class="sm:w-full w-full">
+                                <div class="rounded flex p-0 h-full items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor"
+                                        class="text-sky-700 w-6 h-6 flex-shrink-0 mr-2">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
+                                    </svg>
+
+                                    <p class="text-lg title-font font-normal">Fecha:
+                                    <p class="text-xl font-semibold">
+                                        {{-- {{ $appointment->appointmentSuccess->appointmentDate }} --}}
+                                    </p>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="sm:w-full w-full">
+                                <div class="rounded flex p-0 h-full items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor"
+                                        class="text-sky-700 w-6 h-6 flex-shrink-0 mr-2">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    <p class="text-lg title-font font-normal">hora:
+                                    <p class="text-xl font-semibold">
+                                        {{-- {{ $appointment->appointmentSuccess->appointmentTime }} AM --}}
+                                    </p>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="py-8 flex flex-wrap sm:mx-auto sm:-mb-8 -mx-2">
+                        <div class="grid xl:grid-cols-2 xl:gap-24">
+                            <div class="sm:w-full w-full">
+                                <div class="rounded flex p-0 h-full items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor"
+                                        class="text-sky-700 w-6 h-6 flex-shrink-0 mr-2">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                                    </svg>
+
+                                    <p class="text-lg title-font font-normal">Sede:
+                                    <p class="text-xl font-semibold">
+                                        {{-- {{ $userAppointment->appointmentSuccess->successUser->name }} --}}
+                                    </p>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="sm:w-full w-full">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-y-6 px-6 flex flex-wrap sm:mx-auto sm:-mb-2 -mx-2">
+                        <div class="grid xl:grid-cols-2 xl:gap-24">
+                            <div class="sm:w-full w-full">
+                                <div class="rounded flex p-0 h-full items-center">
+                                    <p class="text-lg title-font font-normal">
+                                        {{-- {{ $userAppointment->appointmentSuccess->successUser->userHeadquarter[0]->direction }} --}}
+                                        <a href="
+                            {{-- {{ $userAppointment->appointmentSuccess->successUser->userHeadquarter[0]->url }} --}}
+                            "
+                                            target="_blank" class="text-lg font-semibold text-sky-600">Consultar
+                                            mapa</a>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="sm:w-full w-full">
+                                <div class="rounded flex p-0 h-full items-center">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="flex mt-6 justify-center">
+                        <div class="w-full h-1 rounded-full bg-sky-600 inline-flex"></div>
+                    </div>
+                    <br>
+                    {{-- @endif --}}
+                    <div class="mt-5 sm:flex sm:items-center sm:-mx-2">
+                        <button wire:click.prevent="closeConfirmModal" {{-- deleteAppointment({{ $appointmentInfo[0]->id }}) --}}
+                            class="w-full px-4 py-2 text-sm text-center font-medium tracking-wide text-gray-700 transition-colors duration-300 transform border border-gray-200 rounded-md sm:w-1/2 sm:mx-2 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800 hover:bg-gray-100 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-40">
+                            CANCELAR CITA
+                        </button>
                         {{-- @endforeach --}}
-                    </p>
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="flex flex-wrap sm:mx-auto sm:mb-4 -mx-2">
-            <div class="sm:w-full w-full">
-                <div class="rounded flex p-0 h-full items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="text-sky-700 w-6 h-6 flex-shrink-0 mr-2">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
-                    </svg>
-                    <p class="text-lg title-font font-normal">Referencia de pago:
-                    <p class="text-lg font-semibold">
-                        {{-- {{ $appointment->paymentConcept }} --}}
-                    </p>
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="flex flex-wrap sm:mx-auto sm:mb-4 -mx-2">
-            <div class="grid xl:grid-cols-2 xl:gap-52">
-                <div class="sm:w-full w-full">
-                    <div class="rounded flex p-0 h-full items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                            stroke-width="1.5" stroke="currentColor" class="text-sky-700 w-6 h-6 flex-shrink-0 mr-2">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
-                        </svg>
-
-                        <p class="text-lg title-font font-normal">Fecha:
-                        <p class="text-xl font-semibold">
-                            {{-- {{ $appointment->appointmentSuccess->appointmentDate }} --}}
-                        </p>
-                        </p>
-                    </div>
-                </div>
-                <div class="sm:w-full w-full">
-                    <div class="rounded flex p-0 h-full items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                            stroke-width="1.5" stroke="currentColor" class="text-sky-700 w-6 h-6 flex-shrink-0 mr-2">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <p class="text-lg title-font font-normal">hora:
-                        <p class="text-xl font-semibold">
-                            {{-- {{ $appointment->appointmentSuccess->appointmentTime }} AM --}}
-                        </p>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="py-8 flex flex-wrap sm:mx-auto sm:-mb-8 -mx-2">
-            <div class="grid xl:grid-cols-2 xl:gap-24">
-                <div class="sm:w-full w-full">
-                    <div class="rounded flex p-0 h-full items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                            stroke-width="1.5" stroke="currentColor" class="text-sky-700 w-6 h-6 flex-shrink-0 mr-2">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-                        </svg>
-
-                        <p class="text-lg title-font font-normal">Sede:
-                        <p class="text-xl font-semibold">
-                            {{-- {{ $userAppointment->appointmentSuccess->successUser->name }} --}}
-                        </p>
-                        </p>
-                    </div>
-                </div>
-                <div class="sm:w-full w-full">
-                </div>
-            </div>
-        </div>
-        <div class="p-y-6 px-6 flex flex-wrap sm:mx-auto sm:-mb-2 -mx-2">
-            <div class="grid xl:grid-cols-2 xl:gap-24">
-                <div class="sm:w-full w-full">
-                    <div class="rounded flex p-0 h-full items-center">
-                        <p class="text-lg title-font font-normal">
-                            {{-- {{ $userAppointment->appointmentSuccess->successUser->userHeadquarter[0]->direction }} --}}
-                            <a href="
-                            {{-- {{ $userAppointment->appointmentSuccess->successUser->userHeadquarter[0]->url }} --}}
-                            " target="_blank"
-                                class="text-lg font-semibold text-sky-600">Consultar
-                                mapa</a>
-                        </p>
-                    </div>
-                </div>
-                <div class="sm:w-full w-full">
-                    <div class="rounded flex p-0 h-full items-center">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <br>
-        <div class="flex mt-6 justify-center">
-            <div class="w-full h-1 rounded-full bg-sky-600 inline-flex"></div>
-        </div>
-        <br>
-        {{-- @endif --}}
-        <div class="mt-5 sm:flex sm:items-center sm:-mx-2">
-            <button wire:click.prevent="
-            {{-- deleteAppointment({{ $appointmentInfo[0]->id }}) --}}
-            "
-                class="w-full px-4 py-2 text-sm text-center font-medium tracking-wide text-gray-700 transition-colors duration-300 transform border border-gray-200 rounded-md sm:w-1/2 sm:mx-2 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800 hover:bg-gray-100 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-40">
-                CANCELAR CITA
-            </button>
-            {{-- @endforeach --}}
-            <div wire:loading.delay.shortest wire:target="deleteAppointment">
-                <div
-                    class="flex justify-center bg-gray-200 z-40 h-full w-full fixed top-0 left-0 items-center opacity-75">
-                    <div style="color: #0061cf" class="la-line-spin-clockwise-fade-rotating la-3x">
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                    </div>
-                </div>
-            </div>
-            <button wire:click.prevent="openModalPdf"
-                class="w-full px-4 py-2 mt-4 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-sky-600 rounded-md sm:mt-0 sm:w-1/2 sm:mx-2 hover:bg-sky-700 focus:outline-none focus:ring focus:ring-sky-300 focus:ring-opacity-40">
-                CONCLUIR CITA
-            </button>
-            <div wire:loading.delay.shortest wire:target="openModalPdf">
-                <div
-                    class="flex justify-center bg-gray-200 z-40 h-full w-full fixed top-0 left-0 items-center opacity-75">
-                    <div style="color: #0061cf" class="la-line-spin-clockwise-fade-rotating la-3x">
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
+                        <div wire:loading.delay.shortest wire:target="deleteAppointment">
+                            <div
+                                class="flex justify-center bg-gray-200 z-40 h-full w-full fixed top-0 left-0 items-center opacity-75">
+                                <div style="color: #0061cf" class="la-line-spin-clockwise-fade-rotating la-3x">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <button wire:click.prevent="openModalPdf"
+                            class="w-full px-4 py-2 mt-4 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-sky-600 rounded-md sm:mt-0 sm:w-1/2 sm:mx-2 hover:bg-sky-700 focus:outline-none focus:ring focus:ring-sky-300 focus:ring-opacity-40">
+                            CONCLUIR CITA
+                        </button>
+                        <div wire:loading.delay.shortest wire:target="openModalPdf">
+                            <div
+                                class="flex justify-center bg-gray-200 z-40 h-full w-full fixed top-0 left-0 items-center opacity-75">
+                                <div style="color: #0061cf" class="la-line-spin-clockwise-fade-rotating la-3x">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-</div>
-</div>
 </div>

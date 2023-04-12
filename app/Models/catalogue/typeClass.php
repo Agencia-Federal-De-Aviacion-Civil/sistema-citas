@@ -2,6 +2,7 @@
 
 namespace App\Models\Catalogue;
 
+use App\Models\Medicine\MedicineInitial;
 use App\Models\Medicine\MedicineQuestion;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -21,5 +22,9 @@ class TypeClass extends Model
     public function typeClassClasificationClass()
     {
         return $this->hasMany(ClasificationClass::class);
+    }
+    public function typeClassMedicineInitial()
+    {
+        return $this->hasMany(MedicineInitial::class);
     }
 }

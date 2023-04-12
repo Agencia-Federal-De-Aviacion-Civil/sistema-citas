@@ -14,4 +14,8 @@ class MedicineQuestion extends Model
     {
         return $this->hasMany(TypeClass::class);
     }
+    public function questionMedicineInitial()
+    {
+        return $this->hasMany(MedicineInitial::class);
+    }
 }
