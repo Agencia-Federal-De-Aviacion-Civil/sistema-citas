@@ -4,6 +4,8 @@ namespace App\Http\Livewire\Medicine;
 
 use App\Models\appointment\user_appointment_success;
 use App\Models\appointment\userAppointment;
+use App\Models\Medicine\MedicineInitial;
+use App\Models\Medicine\MedicineReserve;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -18,22 +20,37 @@ class HistoryAppointment extends Component
     public $n = 1;
     public $modal = false;
     public $name, $type, $class, $typLicense, $sede, $date, $time, $idAppointmet, $headquarterid;
+    public $medicineQueries,$medicineReserves;
     public function render()
     {
-        if (Auth::user()->HasRole('admin')) {
-            $appointments = userAppointment::with([
-                'appointmentUser', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess.successUser',
-                'appointmentTypeExam', 'appointmentDocument'
-            ])->get();
-        } else {
-            $appointments = userAppointment::with([
-                'appointmentUser', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess.successUser',
-                'appointmentTypeExam', 'appointmentDocument'
-            ])->whereHas('appointmentSuccess', function ($q) {
-                $q->where('to_user_headquarters', Auth::user()->id);
-            })->get();
-        }
-        return view('livewire.medicine.history-appointment', compact('appointments'))
+        // if (Auth::user()->HasRole('admin')) {
+        //     $appointments = userAppointment::with([
+        //         'appointmentUser', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess.successUser',
+        //         'appointmentTypeExam', 'appointmentDocument'
+        //     ])->get();
+        // } else {
+        //     $appointments = userAppointment::with([
+        //         'appointmentUser', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess.successUser',
+        //         'appointmentTypeExam', 'appointmentDocument'
+        //     ])->whereHas('appointmentSuccess', function ($q) {
+        //         $q->where('to_user_headquarters', Auth::user()->id);
+        //     })->get();
+        // }
+        // 
+        
+        //,compact('appointments')
+
+        $this->medicineQueries = MedicineInitial::with([
+            'initialMedicine', 'medicineInitialQuestion', 'medicineInitialTypeClass',
+            'medicineInitialClasificationClass'
+        ])->get();
+        $this->medicineReserves = MedicineReserve::with(['medicineReserveFromUser', 'user'])->get();
+
+
+        
+
+
+        return view('livewire.medicine.history-appointment')
             ->layout('layouts.app');
     }
     public function rescheduleAppointment($id)

@@ -53,7 +53,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($appointments as $appointment)
+                            {{$medicineQueries[0]->InitialMedicine}}
+                            @foreach ($medicineQueries as $medicineQuerie)
                                 <tr
                                     class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                     <th scope="row"
@@ -62,38 +63,38 @@
                                     </th>
 
                                     <td class="px-6 py-4">
-                                        {{ $appointment->appointmentUser->name . ' ' . $appointment->appointmentUser->apParental . ' ' . $appointment->appointmentUser->apMaternal }}
+                                        {{-- {{ $appointment->appointmentUser->name . ' ' . $appointment->appointmentUser->apParental . ' ' . $appointment->appointmentUser->apMaternal }} --}}
                                     </td>
                                     <td class="px-6 py-4">
-                                        {{ $appointment->appointmentTypeExam->name }}
+                                        {{-- {{ $appointment->appointmentTypeExam->name }} --}}
                                     </td>
-                                    @if ($appointment->appointmentTypeExam->id == 1)
+                                    {{-- @if ($appointment->appointmentTypeExam->id == 1) --}}
                                         <td class="px-6 py-4">
-                                            {{ $appointment->appointmentStudying[0]->studyingClass->name }}
+                                            {{-- {{ $appointment->appointmentStudying[0]->studyingClass->name }} --}}
                                         </td>
                                         <td class="px-6 py-4">
-                                            {{ $appointment->appointmentStudying[0]->studyingClasification->name }}
+                                            {{-- {{ $appointment->appointmentStudying[0]->studyingClasification->name }} --}}
                                         </td>
-                                    @elseif($appointment->appointmentTypeExam->id == 2)
+                                    {{-- @elseif($appointment->appointmentTypeExam->id == 2) --}}
                                         <td class="px-6 py-4">
-                                            {{ $appointment->appointmentRenovation[0]->renovationClass->name }}
+                                            {{-- {{ $appointment->appointmentRenovation[0]->renovationClass->name }} --}}
                                         </td>
                                         <td class="px-6 py-4">
-                                            {{ $appointment->appointmentRenovation[0]->renovationClasification->name }}
+                                            {{-- {{ $appointment->appointmentRenovation[0]->renovationClasification->name }} --}}
                                         </td>
-                                    @endif
+                                    {{-- @endif --}}
                                     <td class="px-6 py-4">
                                         {{-- appointmentUser --}}
-                                        {{ $appointment->appointmentSuccess->successUser->name }}
+                                        {{-- {{ $appointment->appointmentSuccess->successUser->name }} --}}
                                     </td>
                                     <td class="px-6 py-4">
-                                        {{ $appointment->appointmentSuccess->appointmentDate . ' ' . $appointment->appointmentSuccess->appointmentTime }}
+                                        {{-- {{ $appointment->appointmentSuccess->appointmentDate . ' ' . $appointment->appointmentSuccess->appointmentTime }} --}}
                                     </td>
                                     <td class="px-6 py-4">
-                                        <x-button wire:click="rescheduleAppointment({{ $appointment->appointmentSuccess->id }})" label="REAGENDAR" xs blue right-icon="calendar" />
+                                        {{-- <x-button wire:click="rescheduleAppointment({{ $appointment->appointmentSuccess->id }})" label="REAGENDAR" xs blue right-icon="calendar" /> --}}
                                     </td>
                                     <td class="px-6 py-4">
-                                        <x-button wire:click="deletAppointment({{ $appointment->appointmentSuccess->id }})" label="ELIMINAR" xs red right-icon="trash" />
+                                        {{-- <x-button wire:click="deletAppointment({{ $appointment->appointmentSuccess->id }})" label="ELIMINAR" xs red right-icon="trash" /> --}}
                                     </td>
                                 </tr>
                         </tbody>
