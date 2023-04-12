@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Models\catalogue;
+namespace App\Models\Catalogue;
 
-use App\Models\appointment\userAppointment;
+use App\Models\Medicine\Medicine;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class typeExam extends Model
+class TypeExam extends Model
 {
     use HasFactory;
-    protected $fillable = ['name'];
-    public function examClass()
+    protected $guarded = ['id'];
+    public function typeExamTypeClass()
     {
-        return $this->hasMany('App\Models\catalogue\typeClass');
+        return $this->hasMany(TypeClass::class);
     }
-    public function typeExamAppointment()
+    public function typeExamMedicine()
     {
-        return $this->hasMany(userAppointment::class);
+        return $this->hasMany(Medicine::class);
     }
 }

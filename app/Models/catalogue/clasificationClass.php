@@ -1,21 +1,26 @@
 <?php
 
-namespace App\Models\catalogue;
+namespace App\Models\Catalogue;
 
-use App\Models\appointment\userRenovation;
-use App\Models\appointment\userStudying;
+use App\Models\Medicine\MedicineInitial;
+use App\Models\Medicine\MedicineRenovation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class clasificationClass extends Model
+class ClasificationClass extends Model
 {
     use HasFactory;
-    public function clasificationStudying()
+    protected $guarded = ['id'];
+    public function clasificationClassTypeClass()
     {
-        return $this->hasMany(userStudying::class);
+        return $this->belongsTo(TypeClass::class, 'type_class_id');
     }
-    public function clasificationRenovation()
+    public function clasificationClassMedicineInitial()
     {
-        return $this->hasMany(userRenovation::class);
+        return $this->hasMany(MedicineInitial::class);
+    }
+    public function clasificationClassRenovation()
+    {
+        return $this->hasMany(MedicineRenovation::class);
     }
 }

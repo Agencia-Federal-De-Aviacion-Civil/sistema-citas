@@ -1,11 +1,10 @@
 <div>
     <x-notifications position="top-center" />
-    <x-errors></x-errors>
     <x-dialog z-index="z-50" blur="md" align="center" />
-    {{-- @if ($confirmModal)
+    @if ($confirmModal)
         @include('livewire.medicine.modals.confirm')
     @endif
-    @if ($modal)
+    {{-- @if ($modal)
         @include('livewire.medicine.modals.readyPdf')
     @endif --}}
     @livewire('medicine.modals.modal-index')
@@ -37,24 +36,27 @@
                     </button>
                     <div class="bg-blue-50 border border-blue-200 rounded-md p-4" role="alert">
                         <div class="flex">
-                          <div class="flex-shrink-0">
-                            <svg class="h-4 w-4 text-blue-600 mt-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                              <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
-                            </svg>
-                          </div>
-                          <div class="ml-4">
-                            <h3 class="text-gray-800 font-semibold">
-                             Verifique la información
-                            </h3>
-                            <div class="mt-2 text-sm text-gray-600">
-                                Por favor verifique que la sede seleccionada del pago corresponda con la de su preferencia para su evaluación médica.
+                            <div class="flex-shrink-0">
+                                <svg class="h-4 w-4 text-blue-600 mt-1" xmlns="http://www.w3.org/2000/svg"
+                                    width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                    <path
+                                        d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
+                                </svg>
                             </div>
-                          </div>
+                            <div class="ml-4">
+                                <h3 class="text-gray-800 font-semibold">
+                                    Verifique la información
+                                </h3>
+                                <div class="mt-2 text-sm text-gray-600">
+                                    Por favor verifique que la sede seleccionada del pago corresponda con la de su
+                                    preferencia para su evaluación médica.
+                                </div>
+                            </div>
                         </div>
-                      </div>
+                    </div>
                     <div x-data="{
                         tipoExamen: @entangle('type_exam_id'),
-                        question: @entangle('user_question_id'),
+                        question: @entangle('medicine_question_id'),
                         clasification: @entangle('type_class_id'),
                         typelicens: @entangle('clasification_class_id'),
                         reservedate: @entangle('dateReserve'),
@@ -131,7 +133,8 @@
                                             </div>
                                             <div class="flex-grow pl-4">
                                                 <label for="small"
-                                                    class="block mb-2 text-base font-medium text-gray-900 dark:text-white">¿QUE TIPO DE EXÁMEN VAS A REALIZAR?</label>
+                                                    class="block mb-2 text-base font-medium text-gray-900 dark:text-white">¿QUE
+                                                    TIPO DE EXÁMEN VAS A REALIZAR?</label>
                                                 <select id="small" x-ref="tipoExamen" wire:model.lazy="type_exam_id"
                                                     wire:change="resetQuestions()" placeholder="seleccione..."
                                                     class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
@@ -166,7 +169,7 @@
                                                     class="block mb-2 text-base font-medium text-gray-900 dark:text-white">¿SIGUES
                                                     ESTUDIANDO?</label>
                                                 <select id="small" x-ref="question"
-                                                    wire:model.lazy="user_question_id"
+                                                    wire:model.lazy="medicine_question_id"
                                                     wire:change="resetClasificationClass()"
                                                     class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                                     <option value="0" selected>Seleccione...</option>
@@ -201,7 +204,8 @@
                                                     <div class="mt-1 relative z-0 w-full group">
                                                         @if (!is_null($questionClassess))
                                                             <label for="small"
-                                                                class="block mb-2 text-base font-medium text-gray-900 dark:text-white">TIPO DE CLASE</label>
+                                                                class="block mb-2 text-base font-medium text-gray-900 dark:text-white">TIPO
+                                                                DE CLASE</label>
                                                             <select id="small" x-ref="clasification"
                                                                 placeholder="seleccione..."
                                                                 wire:model.lazy="type_class_id"
@@ -252,8 +256,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div x-show="tipoExamen === '2'"
-                                            class="flex relative pb-6">
+                                        <div x-show="tipoExamen === '2'" class="flex relative pb-6">
                                             <div class="h-full w-10 absolute inset-0 flex items-center justify-center">
                                                 <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
                                             </div>
@@ -271,7 +274,8 @@
                                                     <div class="mt-1 relative z-0 w-full group">
                                                         @if (!is_null($questionClassess))
                                                             <label for="small"
-                                                                class="block mb-2 text-base font-medium text-gray-900 dark:text-white">TIPO DE CLASE</label>
+                                                                class="block mb-2 text-base font-medium text-gray-900 dark:text-white">TIPO
+                                                                DE CLASE</label>
                                                             <select id="small" x-ref="clasification"
                                                                 placeholder="seleccione..."
                                                                 wire:model.lazy="type_class_id"
@@ -319,8 +323,7 @@
                                                 <div class="grid xl:grid-cols-3 xl:gap-6">
                                                     <div class="text-base relative z-auto w-full mb-2 group">
                                                         <x-select label="ELIJA LA SEDE" placeholder="Selecciona"
-                                                            x-ref="selec_sede"
-                                                            wire:model.lazy="to_user_headquarters">
+                                                            x-ref="selec_sede" wire:model.lazy="to_user_headquarters">
                                                             @foreach ($sedes as $sede)
                                                                 <x-select.option
                                                                     label="{{ $sede->headquarterUser->name }}"
@@ -361,23 +364,24 @@
                                             </div>
                                             <div class="flex-grow pl-4">
                                                 <div>
-                                                <button
-                                                    class="px-3 py-2 text-sm font-medium text-center text-white bg-sky-700 rounded-lg hover:bg-sky-800 focus:ring-4 focus:outline-none focus:ring-sky-300 dark:bg-sky-600 dark:hover:bg-sky-700 dark:focus:ring-sky-800">
-                                                    GENERAR CITA
-                                                </button>
-                                                <div wire:loading.delay.shortest wire:target="save">
-                                                    <div
-                                                        class="flex justify-center bg-gray-200 z-40 h-full w-full fixed top-0 left-0 items-center opacity-75">
-                                                        <div style="color: #0061cf"
-                                                            class="la-line-spin-clockwise-fade-rotating la-3x">
-                                                            <div></div>
-                                                            <div></div>
-                                                            <div></div>
-                                                            <div></div>
-                                                            <div></div>
-                                                            <div></div>
-                                                            <div></div>
-                                                            <div></div>
+                                                    <button
+                                                        class="px-3 py-2 text-sm font-medium text-center text-white bg-sky-700 rounded-lg hover:bg-sky-800 focus:ring-4 focus:outline-none focus:ring-sky-300 dark:bg-sky-600 dark:hover:bg-sky-700 dark:focus:ring-sky-800">
+                                                        GENERAR CITA
+                                                    </button>
+                                                    <div wire:loading.delay.shortest wire:target="save">
+                                                        <div
+                                                            class="flex justify-center bg-gray-200 z-40 h-full w-full fixed top-0 left-0 items-center opacity-75">
+                                                            <div style="color: #0061cf"
+                                                                class="la-line-spin-clockwise-fade-rotating la-3x">
+                                                                <div></div>
+                                                                <div></div>
+                                                                <div></div>
+                                                                <div></div>
+                                                                <div></div>
+                                                                <div></div>
+                                                                <div></div>
+                                                                <div></div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>

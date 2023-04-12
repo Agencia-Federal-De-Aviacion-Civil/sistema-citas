@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('user_payment_documents', function (Blueprint $table) {
+        Schema::create('medicine_questions', function (Blueprint $table) {
             $table->id();
-            $table->string('document');
+            $table->string('name');
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_payment_documents');
+        Schema::dropIfExists('medicine_questions');
     }
 };
