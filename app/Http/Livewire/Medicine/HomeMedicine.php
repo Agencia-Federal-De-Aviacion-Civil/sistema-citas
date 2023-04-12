@@ -96,44 +96,6 @@ class HomeMedicine extends Component
     public function save()
     {
         $this->validate();
-        $saveDocument = Document::create([
-            'name_document' => $this->name_document->store('documentos', 'public')
-        ]);
-        $saveMedicine = Medicine::create([
-            'user_id' => Auth::user()->id,
-            'reference_number' => $this->reference_number,
-            'pay_date' => $this->pay_date,
-            'document_id' => $saveDocument->id,
-            'type_exam_id' => $this->type_exam_id
-        ]);
-        if ($this->type_exam_id == 1) {
-            $clasification_class_ids = $this->clasification_class_id;
-            if (is_array($clasification_class_ids)) {
-                foreach ($clasification_class_ids as $clasifications) {
-                    MedicineInitial::create([
-                        'medicine_id' => $saveMedicine->id,
-                        'user_question_id' => $this->user_question_id,
-                        'type_class_id' => $this->type_class_id,
-                        'clasification_class_id' => $clasifications
-                    ]);
-                }
-            } else {
-                MedicineInitial::create([
-                    'medicine_id' => $saveMedicine->id,
-                    'user_question_id' => $this->user_question_id,
-                    'type_class_id' => $this->type_class_id,
-                    'clasification_class_id' => $clasification_class_ids
-                ]);
-            }
-        } else if ($this->type_exam_id == 2) {
-            foreach ($this->clasification_class_id as $clasifications) {
-                MedicineRenovation::create([
-                    'medicine_id' => $saveMedicine->id,
-                    'type_class_id' => $this->type_class_id,
-                    'clasification_class_id' => $clasifications
-                ]);
-            }
-        }
         $citas = MedicineReserve::where('to_user_headquarters', $this->to_user_headquarters)
             ->where('dateReserve', $this->dateReserve)
             ->count();
@@ -161,6 +123,44 @@ class HomeMedicine extends Component
                 'icon'        => 'error'
             ]);
         } else {
+            $saveDocument = Document::create([
+                'name_document' => $this->name_document->store('documentos', 'public')
+            ]);
+            $saveMedicine = Medicine::create([
+                'user_id' => Auth::user()->id,
+                'reference_number' => $this->reference_number,
+                'pay_date' => $this->pay_date,
+                'document_id' => $saveDocument->id,
+                'type_exam_id' => $this->type_exam_id
+            ]);
+            if ($this->type_exam_id == 1) {
+                $clasification_class_ids = $this->clasification_class_id;
+                if (is_array($clasification_class_ids)) {
+                    foreach ($clasification_class_ids as $clasifications) {
+                        MedicineInitial::create([
+                            'medicine_id' => $saveMedicine->id,
+                            'user_question_id' => $this->user_question_id,
+                            'type_class_id' => $this->type_class_id,
+                            'clasification_class_id' => $clasifications
+                        ]);
+                    }
+                } else {
+                    MedicineInitial::create([
+                        'medicine_id' => $saveMedicine->id,
+                        'user_question_id' => $this->user_question_id,
+                        'type_class_id' => $this->type_class_id,
+                        'clasification_class_id' => $clasification_class_ids
+                    ]);
+                }
+            } else if ($this->type_exam_id == 2) {
+                foreach ($this->clasification_class_id as $clasifications) {
+                    MedicineRenovation::create([
+                        'medicine_id' => $saveMedicine->id,
+                        'type_class_id' => $this->type_class_id,
+                        'clasification_class_id' => $clasifications
+                    ]);
+                }
+            }
             $cita = new MedicineReserve();
             $cita->to_user_headquarters = $this->to_user_headquarters;
             $cita->dateReserve = $this->dateReserve;
@@ -170,8 +170,8 @@ class HomeMedicine extends Component
                 'description' => 'SE HA GENERADO LA CITA EXITOSAMENTE',
                 'icon'        => 'success'
             ]);
+            $this->clean();
         }
-        $this->clean();
     }
 
     public function messages()
