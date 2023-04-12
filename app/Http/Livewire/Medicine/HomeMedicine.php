@@ -26,7 +26,7 @@ class HomeMedicine extends Component
     public $name_document, $reference_number, $pay_date, $type_exam_id, $typeRenovationExams;
     public $questionClassess, $typeExams, $sedes, $userQuestions, $to_user_headquarters, $dateReserve, $saveMedicine;
     public $confirmModal = false;
-    public $medicineQueries, $medicineReserves, $medicineInitials, $medicineRenovations;
+    public $medicineQueries, $medicineReserves, $medicineInitials, $medicineRenovations, $id_medicineReserve;
     // MEDICINE INITIAL TABLE
     public $question,$date;
     public function mount()
@@ -99,9 +99,9 @@ class HomeMedicine extends Component
         $this->medicine_question_id = [];
         // $this->dispatchBrowserEvent('reset-select-question');
     }
-    public function closeConfirmModal()
+    public function openModal()
     {
-        $this->confirmModal = false;
+        $this->confirmModal = true;
     }
     public function save()
     {
@@ -197,6 +197,37 @@ class HomeMedicine extends Component
         $this->medicineRenovations = MedicineRenovation::with(['renovationMedicine', 'renovationTypeClass', 'renovationClasificationClass'])
             ->where('medicine_id', $this->saveMedicine->id)->get();
         $this->confirmModal = true;
+    }
+    public function deleteRelationShip()
+    {
+        $this->confirmModal = false;
+        $this->dialog()->confirm([
+            'title'       => '¡ATENCIÓN!',
+            'description' => '¿ESTAS SEGURO DE ELIMINAR ESTA CITA?',
+            'icon'        => 'info',
+            'accept'      => [
+                'label'  => 'SI',
+                'method' => 'confirmDelete',
+            ],
+            'reject' => [
+                'label'  => 'NO',
+                'method' => 'openModal',
+            ],
+        ]);
+    }
+    public function delete($idDelete)
+    {
+        MedicineReserve::findOrFail($idDelete);
+        $this->id_medicineReserve = $idDelete;
+        $this->deleteRelationShip();
+    }
+    public function confirmDelete()
+    {
+        MedicineReserve::find($this->id_medicineReserve)->delete();
+        $this->notification([
+            'title'       => 'Cita eliminada éxitosamente',
+            'icon'        => 'error'
+        ]);
     }
     public function messages()
     {
