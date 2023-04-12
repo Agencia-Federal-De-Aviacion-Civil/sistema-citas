@@ -53,7 +53,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {{$medicineQueries[0]->InitialMedicine}}
+
                             @foreach ($medicineQueries as $medicineQuerie)
                                 <tr
                                     class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
@@ -63,31 +63,32 @@
                                     </th>
 
                                     <td class="px-6 py-4">
-                                        {{-- {{ $appointment->appointmentUser->name . ' ' . $appointment->appointmentUser->apParental . ' ' . $appointment->appointmentUser->apMaternal }} --}}
+                                        {{ $medicineQuerie->initialMedicine->medicineUser->name }}
                                     </td>
                                     <td class="px-6 py-4">
-                                        {{-- {{ $appointment->appointmentTypeExam->name }} --}}
+                                        {{ $medicineQuerie->initialMedicine->medicineTypeExam->name }}
                                     </td>
-                                    {{-- @if ($appointment->appointmentTypeExam->id == 1) --}}
+                                    @if ($medicineQuerie->medicineInitialTypeClass->type_exam_id == 1)
                                         <td class="px-6 py-4">
-                                            {{-- {{ $appointment->appointmentStudying[0]->studyingClass->name }} --}}
+                                            {{ $medicineQuerie->medicineInitialTypeClass->name }}
                                         </td>
                                         <td class="px-6 py-4">
-                                            {{-- {{ $appointment->appointmentStudying[0]->studyingClasification->name }} --}}
+                                            {{ $medicineQuerie->medicineInitialClasificationClass->name }}
                                         </td>
-                                    {{-- @elseif($appointment->appointmentTypeExam->id == 2) --}}
+                                    @elseif($medicineQuerie->medicineInitialTypeClass->type_exam_id == 2)
                                         <td class="px-6 py-4">
                                             {{-- {{ $appointment->appointmentRenovation[0]->renovationClass->name }} --}}
                                         </td>
                                         <td class="px-6 py-4">
                                             {{-- {{ $appointment->appointmentRenovation[0]->renovationClasification->name }} --}}
                                         </td>
-                                    {{-- @endif --}}
+                                    @endif
                                     <td class="px-6 py-4">
                                         {{-- appointmentUser --}}
-                                        {{-- {{ $appointment->appointmentSuccess->successUser->name }} --}}
+                                        {{ $medicineQuerie->initialMedicine->medicineReserve[0]->user->name }}
                                     </td>
                                     <td class="px-6 py-4">
+                                        {{$medicineQuerie->initialMedicine->medicineReserve[0]->dateReserve}}
                                         {{-- {{ $appointment->appointmentSuccess->appointmentDate . ' ' . $appointment->appointmentSuccess->appointmentTime }} --}}
                                     </td>
                                     <td class="px-6 py-4">

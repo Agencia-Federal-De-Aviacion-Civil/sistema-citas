@@ -41,11 +41,12 @@ class HistoryAppointment extends Component
         //,compact('appointments')
 
         $this->medicineQueries = MedicineInitial::with([
-            'initialMedicine', 'medicineInitialQuestion', 'medicineInitialTypeClass',
+            'initialMedicine', 'initialMedicine.medicineUser','initialMedicine.medicineReserve','initialMedicine.medicineReserve.user','medicineInitialQuestion', 'medicineInitialTypeClass',
             'medicineInitialClasificationClass'
         ])->get();
-        $this->medicineReserves = MedicineReserve::with(['medicineReserveFromUser', 'user'])->get();
+        // $this->medicineReserves = MedicineReserve::with(['medicineReserveFromUser', 'user'])->get();
 
+            //  dd($this->medicineReserves[0]->medicineReserveFromUser->name);
 
         
 
