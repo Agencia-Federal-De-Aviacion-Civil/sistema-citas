@@ -22,7 +22,9 @@
                         <div class="mr-1">
                             <img src="https://tuk-cdn.s3.amazonaws.com/can-uploader/background_with_sub_text-svg3.svg" alt="date">
                         </div>
-                        <span tabindex="0" class="focus:outline-none">29 Jan 2020</span>
+                        <span tabindex="0" class="focus:outline-none">
+                            {{$date->format('d')}} {{ Str::ucfirst($date->format('F'))}} {{$date->format('Y')}}
+                        </span>
                     </li>
                 </ul>
             </div>
