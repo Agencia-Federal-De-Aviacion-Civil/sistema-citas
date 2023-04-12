@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('medicine_id')->nullable();
             $table->foreign('medicine_id')->references('id')->on('medicines')->onDelete('cascade');
             $table->unsignedBigInteger('type_class_id')->nullable();
-            $table->foreign('type_class_id')->references('id')->on('medicines')->onDelete('cascade');
+            $table->foreign('type_class_id')->references('id')->on('type_classes')->onDelete('cascade');
             $table->unsignedBigInteger('clasification_class_id')->nullable();
             $table->foreign('clasification_class_id')->references('id')->on('clasification_classes')->onDelete('cascade');
             $table->timestamps();

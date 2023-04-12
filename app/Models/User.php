@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
-use App\Models\appointment\user_appointment_success;
-use App\Models\appointment\userAppointment;
-use App\Models\appointment\UserParticipant;
-use App\Models\catalogue\headquarter;
+// use App\Models\appointment\user_appointment_success;
+// use App\Models\appointment\userAppointment;
+// use App\Models\appointment\UserParticipant;
+// use App\Models\catalogue\headquarter;
+
+use App\Models\Catalogue\Headquarter;
 use App\Models\Medicine\Medicine;
 use App\Models\Medicine\MedicineReserve;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -84,11 +86,14 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
-    public function userParticipant()
+    public function UserParticipant()
     {
         return $this->hasMany(UserParticipant::class);
     }
-    // new table
+    public function userHeadquarter()
+    {
+        return $this->hasMany(Headquarter::class);
+    }
     public function userMedicine()
     {
         return $this->hasMany(Medicine::class);

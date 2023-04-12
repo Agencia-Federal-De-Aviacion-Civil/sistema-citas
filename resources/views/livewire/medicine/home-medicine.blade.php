@@ -50,7 +50,7 @@
                     </div>
                     <div x-data="{
                         tipoExamen: @entangle('type_exam_id'),
-                        question: @entangle('user_question_id'),
+                        question: @entangle('medicine_question_id'),
                         clasification: @entangle('type_class_id'),
                         typelicens: @entangle('clasification_class_id'),
                         dateAppointment: @entangle('appointmentTime'),
@@ -163,7 +163,7 @@
                                                     class="block mb-2 text-base font-medium text-gray-900 dark:text-white">¿SIGUES
                                                     ESTUDIANDO?</label>
                                                 <select id="small" x-ref="question"
-                                                    wire:model.lazy="user_question_id"
+                                                    wire:model.lazy="medicine_question_id"
                                                     wire:change="resetClasificationClass()"
                                                     class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                                     <option value="0" selected>Seleccione...</option>

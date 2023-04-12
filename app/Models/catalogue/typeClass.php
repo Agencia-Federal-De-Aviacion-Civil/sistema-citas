@@ -1,31 +1,25 @@
 <?php
 
-namespace App\Models\catalogue;
+namespace App\Models\Catalogue;
 
-use App\Models\appointment\userQuestion;
-use App\Models\appointment\userRenovation;
-use App\Models\appointment\userStudying;
+use App\Models\Medicine\MedicineQuestion;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class typeClass extends Model
+class TypeClass extends Model
 {
     use HasFactory;
-    protected $fillable = ['type_exam_id','user_question_id','name'];
-    public function classExam()
+    protected $guarded = ['id'];
+    public function typeClassTypeExam()
     {
-        return $this->belongsTo('App\Models\catalogue\typeExam', 'type_exam_id');
+        return $this->belongsTo(TypeExam::class, 'type_exam_id');
     }
-    public function classQuestion()
+    public function typeClassMedicineQuestion()
     {
-        return $this->belongsTo(userQuestion::class,'');
+        return $this->belongsTo(MedicineQuestion::class, 'medicine_question_id');
     }
-    public function classStudying()
+    public function typeClassClasificationClass()
     {
-        return $this->hasMany(userStudying::class);
-    }
-    public function classRenovation()
-    {
-        return $this->hasMany(userRenovation::class);
+        return $this->hasMany(ClasificationClass::class);
     }
 }

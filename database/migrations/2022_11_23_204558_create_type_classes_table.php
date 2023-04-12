@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('type_exam_id')->nullable();
             $table->foreign('type_exam_id')->references('id')->on('type_exams')->onDelete('set null');
-            $table->unsignedBigInteger('user_question_id')->nullable();
-            $table->foreign('user_question_id')->references('id')->on('user_questions')->onDelete('set null');
+            $table->unsignedBigInteger('medicine_question_id')->nullable();
+            $table->foreign('medicine_question_id')->references('id')->on('medicine_questions')->onDelete('set null');
             $table->string('name');
             $table->timestamps();
         });

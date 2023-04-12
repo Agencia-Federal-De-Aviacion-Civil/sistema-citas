@@ -3,13 +3,13 @@
 namespace App\Http\Livewire\Medicine;
 
 use App\Models\Appointment\Document;
-use App\Models\appointment\userQuestion;
-use App\Models\catalogue\clasificationClass;
-use App\Models\catalogue\headquarter;
-use App\Models\catalogue\typeClass;
-use App\Models\catalogue\typeExam;
+use App\Models\Catalogue\ClasificationClass;
+use App\Models\Catalogue\Headquarter;
+use App\Models\Catalogue\TypeClass;
+use App\Models\Catalogue\TypeExam;
 use App\Models\Medicine\Medicine;
 use App\Models\Medicine\MedicineInitial;
+use App\Models\Medicine\MedicineQuestion;
 use App\Models\Medicine\MedicineRenovation;
 use App\Models\Medicine\MedicineReserve;
 use Illuminate\Support\Facades\Auth;
@@ -21,7 +21,7 @@ class HomeMedicine extends Component
 {
     use Actions;
     use WithFileUploads;
-    public $user_question_id, $type_class_id, $clasificationClass, $clasification_class_id;
+    public $medicine_question_id, $type_class_id, $clasificationClass, $clasification_class_id;
     public $name_document, $reference_number, $pay_date, $type_exam_id, $typeRenovationExams;
     public $questionClassess, $typeExams, $sedes, $userQuestions, $to_user_headquarters, $dateReserve, $user;
     public $confirmModal = false;
@@ -30,9 +30,9 @@ class HomeMedicine extends Component
     public $question;
     public function mount()
     {
-        $this->typeExams = typeExam::all();
-        $this->sedes = headquarter::where('system_id', 1)->get();
-        $this->userQuestions = userQuestion::all();
+        $this->typeExams = TypeExam::all();
+        $this->sedes = Headquarter::where('system_id', 1)->get();
+        $this->userQuestions = MedicineQuestion::all();
         $this->questionClassess = collect();
         $this->clasificationClass = collect();
         $this->typeRenovationExams = collect();
@@ -44,7 +44,7 @@ class HomeMedicine extends Component
             'reference_number' => 'required',
             'pay_date' => 'required',
             'type_exam_id' => 'required',
-            'user_question_id' => 'required_if:type_exam_id,1',
+            'medicine_question_id' => 'required_if:type_exam_id,1',
             'type_class_id' => '',
             'clasification_class_id' => '',
             'to_user_headquarters' => 'required',
@@ -68,15 +68,15 @@ class HomeMedicine extends Component
             'reference_number',
             'pay_date',
             'type_exam_id',
-            'user_question_id',
+            'medicine_question_id',
             'type_class_id',
             'clasification_class_id',
-            'user_question_id',
+            'medicine_question_id',
         ]);
     }
-    public function updatedUserQuestionId($user_question_id)
+    public function updatedMedicineQuestionId($medicine_question_id)
     {
-        $this->questionClassess = typeClass::where('user_question_id', $user_question_id)->get();
+        $this->questionClassess = TypeClass::where('medicine_question_id', $medicine_question_id)->get();
     }
     public function updatedTypeExamId($type_exam_id)
     {
@@ -84,7 +84,7 @@ class HomeMedicine extends Component
     }
     public function updatedTypeClassId($type_class_id)
     {
-        $this->clasificationClass = clasificationClass::where('type_class_id', $type_class_id)->get();
+        $this->clasificationClass = ClasificationClass::where('type_class_id', $type_class_id)->get();
     }
     public function resetClasificationClass()
     {
@@ -92,12 +92,12 @@ class HomeMedicine extends Component
     }
     public function resetQuestions()
     {
-        $this->user_question_id = [];
+        $this->medicine_question_id = [];
         // $this->dispatchBrowserEvent('reset-select-question');
     }
     public function openConfirm()
     {
-        $this->medicineQueries = Medicine::with(['medicineUser']);
+        // $this->medicineQueries = Medicine::with(['medicineUser']);
         // GENERAL QUERY
         // $this->appointmentInfo = userAppointment::with(['appointmentTypeExam', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess'])
         //     ->where('id', $this->userAppointment->id)->get();
@@ -153,7 +153,7 @@ class HomeMedicine extends Component
                     foreach ($clasification_class_ids as $clasifications) {
                         MedicineInitial::create([
                             'medicine_id' => $saveMedicine->id,
-                            'user_question_id' => $this->user_question_id,
+                            'medicine_question_id' => $this->medicine_question_id,
                             'type_class_id' => $this->type_class_id,
                             'clasification_class_id' => $clasifications
                         ]);
@@ -161,7 +161,7 @@ class HomeMedicine extends Component
                 } else {
                     MedicineInitial::create([
                         'medicine_id' => $saveMedicine->id,
-                        'user_question_id' => $this->user_question_id,
+                        'medicine_question_id' => $this->medicine_question_id,
                         'type_class_id' => $this->type_class_id,
                         'clasification_class_id' => $clasification_class_ids
                     ]);

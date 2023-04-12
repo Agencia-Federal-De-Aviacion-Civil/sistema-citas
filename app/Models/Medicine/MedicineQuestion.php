@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Models\Catalogue;
+namespace App\Models\Medicine;
 
+use App\Models\Catalogue\TypeClass;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TypeExam extends Model
+class MedicineQuestion extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
-    public function typeExamTypeClass()
+    public function medicineQuestionTypeClass()
     {
         return $this->hasMany(TypeClass::class);
     }
