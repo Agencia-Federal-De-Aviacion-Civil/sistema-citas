@@ -49,7 +49,7 @@
                             </div>
                           </div>
                         </div>
-                      </div>
+                    </div>
                     <div x-data="{
                         tipoExamen: @entangle('type_exam_id'),
                         question: @entangle('user_question_id'),
