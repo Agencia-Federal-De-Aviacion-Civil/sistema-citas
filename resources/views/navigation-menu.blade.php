@@ -24,7 +24,7 @@
                             <button x-on:click="open = true"
                                 class="flex items-center bg-white focus:bg-gray-50 text-gray-700 focus:text-gray-900 rounded py-2 px-4"
                                 type="button">
-                                <span class="mr-1 text-base">MEDICINA DE AVIACION</span>
+                                <span class="mr-1 text-base">Medicina de Aviacion</span>
                                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                                     style="margin-top:3px">
                                     <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
@@ -35,7 +35,7 @@
                                 <li>
                                     <a href="{{ route('afac.medicine') }}"
                                         class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
-                                        GENERAR CITA
+                                        Generar cita
                                     </a>
                                 </li>
                                 <li>

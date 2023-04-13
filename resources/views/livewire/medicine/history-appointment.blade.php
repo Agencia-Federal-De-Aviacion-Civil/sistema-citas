@@ -10,7 +10,7 @@
         <div
             class="z-10 relative container px-6 mx-auto flex flex-col md:flex-row items-start md:items-center justify-between">
             <div>
-                <h4 tabindex="0" class="focus:outline-none text-2xl font-bold leading-tight text-white">CITAS AGENDADAS</h4>
+                <h4 tabindex="0" class="focus:outline-none text-2xl font-bold leading-tight text-white">Citas agendadas</h4>
                 <ul class="flex flex-col md:flex-row items-start md:items-center text-gray-300 text-sm mt-3">
                     <li class="flex items-center mt-4 md:mt-0">
                     </li>
