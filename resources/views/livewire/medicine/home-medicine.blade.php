@@ -14,10 +14,16 @@
         <div
             class="z-10 relative container px-6 mx-auto flex flex-col md:flex-row items-start md:items-center justify-between">
             <div>
-                <h4 tabindex="0" class="focus:outline-none text-2xl font-bold leading-tight text-white">GENERACIÓN DE
-                    CITAS</h4>
+                <h4 tabindex="0" class="focus:outline-none text-2xl font-bold leading-tight text-white">Generación de
+                    citas medicina de Aviación</h4>
                 <ul class="flex flex-col md:flex-row items-start md:items-center text-gray-300 text-sm mt-3">
                     <li class="flex items-center mt-4 md:mt-0">
+                        <div class="mr-1">
+                            <img src="https://tuk-cdn.s3.amazonaws.com/can-uploader/background_with_sub_text-svg3.svg" alt="date">
+                        </div>
+                        <span tabindex="0" class="focus:outline-none">
+                            {{$date->format('d')}} {{ Str::ucfirst($date->format('F'))}} {{$date->format('Y')}}
+                        </span>
                     </li>
                 </ul>
             </div>
@@ -53,7 +59,7 @@
                         question: @entangle('medicine_question_id'),
                         clasification: @entangle('type_class_id'),
                         typelicens: @entangle('clasification_class_id'),
-                        dateAppointment: @entangle('appointmentTime'),
+                        reservedate: @entangle('dateReserve'),
                         fileName: '',
                     }">
                         {{-- estep --}}
@@ -326,8 +332,8 @@
                                                         </x-select>
                                                     </div>
                                                     <div class="text-base relative z-auto w-full mb-2 group">
-                                                        <x-input wire:model.lazy="dateReserve" id="fecha-appointment"
-                                                            label="SELECCIONE FECHA" placeholder="INGRESE..."
+                                                        <x-input x-ref="reservedate" wire:model.lazy="dateReserve" id="fecha-appointment"
+                                                            label="SELECCIONE FECHA Y LA HORA" placeholder="INGRESE..."
                                                             readonly />
                                                     </div>
 
@@ -345,8 +351,8 @@
                                             </div>
                                         </div>
                                         {{-- paso6 --}}
-                                        {{-- <div x-show="dateAppointment > '0'" class="flex relative"> --}}
-                                        <div class="flex relative">
+                                        <div x-show="reservedate > '0'" class="flex relative">
+                                        {{-- <div class="flex relative">  $date--}}
                                             <div
                                                 class="flex-shrink-0 w-10 h-10 rounded-full bg-green-500 inline-flex items-center justify-center text-white relative z-10">
                                                 <svg fill="none" stroke="currentColor" stroke-linecap="round"

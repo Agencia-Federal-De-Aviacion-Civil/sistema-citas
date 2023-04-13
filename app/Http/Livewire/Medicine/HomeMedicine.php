@@ -13,6 +13,7 @@ use App\Models\Medicine\MedicineQuestion;
 use App\Models\Medicine\MedicineRenovation;
 use App\Models\Medicine\MedicineReserve;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Date;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use WireUi\Traits\Actions;
@@ -28,7 +29,7 @@ class HomeMedicine extends Component
     public $confirmModal = false, $modal = false;
     public $medicineQueries, $medicineReserves, $medicineInitials, $medicineRenovations, $id_medicineReserve, $savedMedicineId;
     // MEDICINE INITIAL TABLE
-    public $question;
+    public $question,$date;
     public function mount()
     {
         $this->typeExams = TypeExam::all();
@@ -37,6 +38,9 @@ class HomeMedicine extends Component
         $this->questionClassess = collect();
         $this->clasificationClass = collect();
         $this->typeRenovationExams = collect();
+        Date::setLocale('ES');
+        $this->date = Date::now()->parse();
+ 
     }
     public function rules()
     {
