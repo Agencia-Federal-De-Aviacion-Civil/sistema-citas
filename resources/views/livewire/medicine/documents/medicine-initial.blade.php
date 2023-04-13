@@ -77,12 +77,12 @@
             <tr>
                 <td colspan="12">NOMBRE:</td>
                 <td colspan="24">
-                    {{ strtoupper($medicineReserves[0]->medicineReserveMedicine->medicineUser->name . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant[0]->apParental . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant[0]->apMaternal) }}
+                    {{-- {{ strtoupper($medicineReserves[0]->medicineReserveMedicine->medicineUser->name . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant[0]->apParental . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant[0]->apMaternal) }} --}}
                 </td>
             </tr>
             <tr>
                 <td colspan="12">CURP:</td>
-                <td>{{ strtoupper($medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant[0]->curp) }}
+                {{-- <td>{{ strtoupper($medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->curp) }} --}}
                 </td>
             </tr>
             <tr>
@@ -91,11 +91,14 @@
             </tr>
             <tr>
                 <td colspan="12">TIPO DE EXAMEN:</td>
-                <td colspan="24">{{ strtoupper($medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->name) }}</td>
+                <td colspan="24">
+                    {{ strtoupper($medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->name) }}</td>
             </tr>
             <tr>
                 <td colspan="12">TIPO DE CLASE:</td>
-                    <td colspan="24">{{ $medicineReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name }}</td>
+                <td colspan="24">
+                    {{ $medicineReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name }}
+                </td>
             </tr>
             <tr>
                 <td colspan="12">TRAMITE:</td>
@@ -139,6 +142,8 @@
                 <li>En caso de ser renovación deberá presentar el examen médico anterior</li>
             </ol>
         </div>
+        <img
+            src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ $medicineReserves[0]->dateReserve }}" />
         {{-- PAGINA 2 --}}
         <div style='page-break-before:always;'></div>
         <div class="mt-4 mx-4 text-justify">
