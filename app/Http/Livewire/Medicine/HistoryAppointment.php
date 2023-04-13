@@ -24,47 +24,7 @@ class HistoryAppointment extends Component
     public $medicineInitial,$medicineReserves;
     public function render()
     {
-        // if (Auth::user()->HasRole('admin')) {
-        //     $appointments = userAppointment::with([
-        //         'appointmentUser', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess.successUser',
-        //         'appointmentTypeExam', 'appointmentDocument'
-        //     ])->get();
-        // } else {
-        //     $appointments = userAppointment::with([
-        //         'appointmentUser', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess.successUser',
-        //         'appointmentTypeExam', 'appointmentDocument'
-        //     ])->whereHas('appointmentSuccess', function ($q) {
-        //         $q->where('to_user_headquarters', Auth::user()->id);
-        //     })->get();
-        // }
-        // 
-        
-        //,compact('appointments')
-
-        $this->medicineInitial = MedicineInitial::with([
-            'initialMedicine', 
-            
-            'initialMedicine.medicineUser',
-            'initialMedicine.medicineReserve',
-            'initialMedicine.medicineReserve.user',
-            
-            'medicineInitialQuestion', 
-            'medicineInitialTypeClass',
-            'medicineInitialClasificationClass'
-        ])->get();
-        $this->medicineReserves = MedicineRenovation::with([
-            'renovationMedicine',
-            
-            'renovationMedicine.medicineUser',
-            'renovationMedicine.medicineReserve',
-            'renovationMedicine.medicineReserve.user',
-
-            'renovationTypeClass',
-            'renovationClasificationClass'
-            ])->get();
-
-            //   dd($this->medicineReserves);
-
+        $this->medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'user'])->get();
         return view('livewire.medicine.history-appointment')
             ->layout('layouts.app');
     }
