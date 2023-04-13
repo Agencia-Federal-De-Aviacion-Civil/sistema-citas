@@ -143,8 +143,9 @@ class HomeMedicine extends Component
                 'icon'        => 'error'
             ]);
         } else {
+            $extension = $this->name_document->extension();
             $saveDocument = Document::create([
-                'name_document' => $this->name_document->store('documentos', 'public')
+                'name_document' => $this->name_document->storeAs('uploads/citas-app/medicine', $this->reference_number . '-' . $this->pay_date .  '.' . $extension, 'do'),
             ]);
             $this->saveMedicine = Medicine::create([
                 'user_id' => Auth::user()->id,
