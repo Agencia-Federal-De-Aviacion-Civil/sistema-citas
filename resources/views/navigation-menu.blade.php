@@ -41,13 +41,19 @@
                                 <li>
                                     <a href="{{ route('afac.historyMedicine') }}"
                                         class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
-                                        CITAS AGENDADAS
+                                        Citas agendadas
                                     </a>
                                 </li>
                                 <li>
                                     <a href="{{ route('afac.headquarterMedicine') }}"
                                         class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
-                                        SEDES
+                                        Sedes
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('validate') }}"
+                                        class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
+                                        Validación de QR
                                     </a>
                                 </li>
                             </ul>

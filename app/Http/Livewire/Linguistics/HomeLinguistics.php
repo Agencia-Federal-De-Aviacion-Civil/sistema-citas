@@ -8,6 +8,7 @@ use App\Models\catalogue\typeExam;
 use App\Models\Linguistic\Linguistic;
 use App\Models\Linguistic\Reserve;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Date;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -16,7 +17,7 @@ class HomeLinguistics extends Component
     use WithFileUploads;
     public $confirmModal = false;
     public $name_document, $reference_number, $pay_date, $type_exam_id, $type_license, $license_number, $red_number, $headquarters_id, $dateReserve;
-    public $exams, $headquartersQueries;
+    public $exams, $headquartersQueries,$date;
     public function rules()
     {
         return [
@@ -36,6 +37,8 @@ class HomeLinguistics extends Component
         $this->exams = typeExam::all();
         $this->headquartersQueries = headquarter::with('headquarterUser')
             ->where('system_id', 2)->get();
+            Date::setLocale('ES');
+            $this->date = Date::now()->parse();   
     }
     public function updated($propertyName)
     {
