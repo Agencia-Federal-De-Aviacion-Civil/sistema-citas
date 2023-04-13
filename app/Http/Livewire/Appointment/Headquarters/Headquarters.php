@@ -56,7 +56,7 @@ class Headquarters extends Component
     public function editModal($id)
     {
         $this->modalEdit = true;
-        $this->sedes = headquarter::with('headquarterUser')->where('id', $id)->get();
+        $this->sedes = Headquarter::with('headquarterUser')->where('id', $id)->get();
         $this->name = $this->sedes[0]->headquarterUser->name;
         $this->direction = $this->sedes[0]->direction;
         $this->passwordConfirmation = '********';
@@ -85,7 +85,7 @@ class Headquarters extends Component
                 'password' => Hash::make($this->password),
             ]
         )->assignRole('headquarters');
-        $saveHeadrquearter = headquarter::updateOrCreate(
+        $saveHeadrquearter = Headquarter::updateOrCreate(
             ['id' => $this->id_save],
             [
                 'user_id' => $saveHeadrquearter->id,
@@ -103,7 +103,7 @@ class Headquarters extends Component
     }
     public function edit()
     {
-        $headquarter =  headquarter::find($this->id_edit);
+        $headquarter =  Headquarter::find($this->id_edit);
         $headquarter->update(
             [
                 'direction' => $this->direction,
