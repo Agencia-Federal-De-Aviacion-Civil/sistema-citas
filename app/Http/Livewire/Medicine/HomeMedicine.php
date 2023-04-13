@@ -13,6 +13,7 @@ use App\Models\Medicine\MedicineQuestion;
 use App\Models\Medicine\MedicineRenovation;
 use App\Models\Medicine\MedicineReserve;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Date;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -240,11 +241,13 @@ class HomeMedicine extends Component
         $savedMedicineId = session('saved_medicine_id');
         $medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'user'])
             ->where('medicine_id', $savedMedicineId)->get();
+        $curpKey = $medicineReserves[0]->medicineReserveMedicine->medicineUser->userParticipant->pluck('id')->first();
+        $keyEncrypt =  Crypt::encryptString($curpKey);
         if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 1) {
-            $pdf = PDF::loadView('livewire.medicine.documents.medicine-initial', compact('medicineReserves'));
+            $pdf = PDF::loadView('livewire.medicine.documents.medicine-initial', compact('medicineReserves', 'keyEncrypt'));
             return $pdf->download($medicineReserves[0]->dateReserve . '-' . 'cita.pdf');
         } else if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 2) {
-            $pdf = PDF::loadView('livewire.medicine.documents.medicine-renovation', compact('medicineReserves'));
+            $pdf = PDF::loadView('livewire.medicine.documents.medicine-renovation', compact('medicineReserves', 'keyEncrypt'));
             return $pdf->download($medicineReserves[0]->dateReserve . '-' . 'cita.pdf');
         }
     }

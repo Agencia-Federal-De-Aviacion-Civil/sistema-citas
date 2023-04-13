@@ -61,7 +61,8 @@
         background-repeat: no-repeat;
         background-size: 65%;
     }
-    .codigoqr{
+
+    .codigoqr {
         text-align: right;
     }
 </style>
@@ -151,8 +152,8 @@
             </ol>
         </div>
         <div class="codigoqr">
-            <img
-            src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ $medicineReserves[0]->dateReserve }}" width="120" height="120"/>
+            <img src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ $keyEncrypt }}"
+                width="120" height="120" />
         </div>
         {{-- PAGINA 2 --}}
         <div style='page-break-before:always;'></div>

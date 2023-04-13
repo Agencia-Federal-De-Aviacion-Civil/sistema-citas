@@ -3,6 +3,9 @@
 namespace App\Http\Livewire\Validate;
 
 use App\Models\LicensePdf;
+use App\Models\Medicine\MedicineReserve;
+use App\Models\UserParticipant;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Crypt;
 use Livewire\Component;
 use WireUi\Traits\Actions;
@@ -10,33 +13,44 @@ use WireUi\Traits\Actions;
 class Qr extends Component
 {
     use Actions;
-    public $textRead, $licenses;
+    public $textRead, $licenses,$medicineReserves;
     protected $rules = [
         'textRead' => 'required'
     ];
-    /*public function updated($propertyName)
+    public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
-    }*/
+    }
     public function render()
     {
         return view('livewire.validate.qr')
             ->layout('layouts.app');
     }
-    /*public function read()
+    public function read()
     {
         $this->validate();
-        $decrypted = Crypt::decryptString($this->textRead);
-        $queryLicenses = LicensePdf::where('curp', $decrypted)->get();
-        $this->dialog([
-            'title'       => '¡CITAS MÉDICA VERIFICADA!',
-            'description' => 'NOMBRE: ' . $queryLicenses[0]->name . '<br> CURP: ' . strtoupper($queryLicenses[0]->curp) . '<br> NACIONALIDAD: ' . $queryLicenses[0]->nacionality . '<br> EDAD: ' . $queryLicenses[0]->age
-                . '<br> FECHA DE EVALUACIÓN: ' . $queryLicenses[0]->evaluationDay . '<br> LUGAR DEL EXAMEN: ' . $queryLicenses[0]->testPlace . '<br> VIGENCIA: ' . $queryLicenses[0]->validity
-                . '<br> MEDICO EXAMINADOR: ' . $queryLicenses[0]->medical . '<br> CLASE: ' . $queryLicenses[0]->class . '<br> RESULTADO: ' . $queryLicenses[0]->result,
-            'icon'        => 'success'
-        ]);
+        try {
+            $decrypted = Crypt::decryptString($this->textRead);
+            $this->medicineReserves = MedicineReserve::with(['medicineReserveMedicine.medicineUser.userParticipant', 'medicineReserveFromUser', 'user'])
+                ->whereHas('medicineReserveMedicine.medicineUser.userParticipant', function ($q) use ($decrypted) {
+                    $q->where('curp', $decrypted);
+                })->first();
+            // dd($this->medicineReserves);  
+            $this->dialog([
+                'title'       => '¡CITA MÉDICA VERIFICADA!',
+                // 'description' => 'NOMBRE: ' . $medicineReserves . '',
+                'icon'        => 'success'
+            ]);
+        } catch (DecryptException $e) {
+            $this->dialog([
+                'title'       => 'Error',
+                'description' => 'Se han detectado anomalías en el cifrado, la información del codigo QR no coincide con nuestros registros',
+                'icon'        => 'error'
+            ]);
+        }
         $this->reset(['textRead']);
-    }*/
+    }
+
     public function messages()
     {
         return [
@@ -45,3 +59,5 @@ class Qr extends Component
         ];
     }
 }
+
+// eyJpdiI6IlRHSGdjakRKZUpjSXpEMlFoWkRWd1E9PSIsInZhbHVlIjoiSjk0M1kxSVMyWWFPc0FVblIwUC9PQT09IiwibWFjIjoiMmMyNTc0ZGUxODMyNzQwZWQwYzE1ZmFlMmZmODBiMzMwZDM0MTU0Y2FmNTZhNzdjMDVlYjYwZTlkNDUyZjYzNCIsInRhZyI6IiJ9
