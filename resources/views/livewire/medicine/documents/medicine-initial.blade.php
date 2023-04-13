@@ -116,6 +116,11 @@
                 </td>
             </tr>
             <tr>
+                <td colspan="12">DIRECCIÓN SEDE:</td>
+                <td colspan="24"> {{ strtoupper($medicineReserves[0]->user->userHeadquarter[0]->direction) }}</p>
+                </td>
+            </tr>
+            <tr>
                 <td colspan="12">FECHA Y HORA:</td>
                 <td colspan="24">{{ $medicineReserves[0]->dateReserve }}</td>
             </tr>

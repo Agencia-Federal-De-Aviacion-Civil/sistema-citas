@@ -62,11 +62,12 @@
         background-repeat: no-repeat;
         background-size: 65%;
     }
-    .codigoqr{
+
+    .codigoqr {
         text-align: right;
     }
-
 </style>
+
 <body class="bgsize">
     <div>
         {{-- <img src="{{ public_path('images/AFAC1.png') }}" width="130" height="100" alt=""> --}}
@@ -102,7 +103,8 @@
             <tr>
                 <td colspan="12">TIPO DE CLASE:</td>
                 <td colspan="24">
-                {{ mb_strtoupper($medicineReserves[0]->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name) }}</td>
+                    {{ mb_strtoupper($medicineReserves[0]->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name) }}
+                </td>
             </tr>
             <tr>
                 <td colspan="12">TRAMITE:</td>
@@ -111,6 +113,11 @@
             <tr>
                 <td colspan="12">UNIDAD MÉDICA:</td>
                 <td colspan="24"> <b>{{ mb_strtoupper($medicineReserves[0]->user->name) }}</b></p>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="12">DIRECCIÓN SEDE:</td>
+                <td colspan="24"> {{ strtoupper($medicineReserves[0]->user->userHeadquarter[0]->direction) }}</p>
                 </td>
             </tr>
             <tr>
@@ -144,8 +151,8 @@
             </ol>
         </div>
         <div class="codigoqr">
-            <img
-            src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ $medicineReserves[0]->dateReserve }}" width="120" height="120"/>
+            <img src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ $medicineReserves[0]->dateReserve }}"
+                width="120" height="120" />
         </div>
         {{-- PAGINA 2 --}}
         <div style='page-break-before:always;'></div>
@@ -344,4 +351,5 @@
         </div>
     </div>
 </body>
+
 </html>
