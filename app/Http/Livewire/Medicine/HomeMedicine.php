@@ -85,7 +85,7 @@ class HomeMedicine extends Component
     }
     public function updatedTypeExamId($type_exam_id)
     {
-        $this->typeRenovationExams = typeClass::where('type_exam_id', $type_exam_id)->get();
+        $this->typeRenovationExams = TypeClass::where('type_exam_id', $type_exam_id)->get();
     }
     public function updatedTypeClassId($type_class_id)
     {
