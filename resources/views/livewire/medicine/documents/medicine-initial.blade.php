@@ -145,10 +145,10 @@
                 <li>En caso de ser renovación deberá presentar el examen médico anterior</li>
             </ol>
         </div>
-        <p class="codigoqr">
+        <div class="codigoqr">
             <img
-            src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ $medicineReserves[0]->dateReserve }}" width="140" height="140"/>
-        </p>
+            src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ $medicineReserves[0]->dateReserve }}" width="120" height="120"/>
+        </div>
         {{-- PAGINA 2 --}}
         <div style='page-break-before:always;'></div>
         <div class="mt-4 mx-4 text-justify">

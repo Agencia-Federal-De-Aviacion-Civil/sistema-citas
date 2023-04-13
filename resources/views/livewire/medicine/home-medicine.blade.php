@@ -436,6 +436,7 @@
                 maxTime: "11:00",
                 disableMobile: "true",
                 minuteIncrement: 30,
+                minDate: "today",
                 disable: [
                     function(date) {
                         // Devuelve 'true' si la fecha es un sábado o domingo
