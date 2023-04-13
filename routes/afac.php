@@ -25,7 +25,7 @@ Route::get('', [homeController::class, 'index'])->name('afac.home');
 Route::group(['middleware' => ['role:super_admin|user']], function () {
     Route::get('/medicine', HomeMedicine::class)->name('afac.medicine');
     Route::get('/linguistics', HomeLinguistics::class)->name('afac.linguistics');
-    Route::get('/download', [HomeMedicine::class, 'test'])->name('download');
+    Route::get('/download', [HomeMedicine::class, 'generatePdf'])->name('download');
 });
 // Route::group(['middleware' => ['role:admin|headquarters']], function () {
 //     Route::get('appointments', AppointmentHistory::class)->name('afac.appointment');

@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Date;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use WireUi\Traits\Actions;
+use PDF;
 
 class HomeMedicine extends Component
 {
@@ -25,8 +26,8 @@ class HomeMedicine extends Component
     public $medicine_question_id, $type_class_id, $clasificationClass, $clasification_class_id;
     public $name_document, $reference_number, $pay_date, $type_exam_id, $typeRenovationExams;
     public $questionClassess, $typeExams, $sedes, $userQuestions, $to_user_headquarters, $dateReserve, $saveMedicine;
-    public $confirmModal = false;
-    public $medicineQueries, $medicineReserves, $medicineInitials, $medicineRenovations, $id_medicineReserve;
+    public $confirmModal = false, $modal = false;
+    public $medicineQueries, $medicineReserves, $medicineInitials, $medicineRenovations, $id_medicineReserve, $savedMedicineId;
     // MEDICINE INITIAL TABLE
     public $question,$date;
     public function mount()
@@ -103,6 +104,15 @@ class HomeMedicine extends Component
     {
         $this->confirmModal = true;
     }
+    public function openModalPdf()
+    {
+        $this->confirmModal = false;
+        $this->modal = true;
+    }
+    public function returnDashboard()
+    {
+        return redirect()->route('afac.home');
+    }
     public function save()
     {
         $this->validate();
@@ -177,11 +187,8 @@ class HomeMedicine extends Component
             $cita->to_user_headquarters = $this->to_user_headquarters;
             $cita->dateReserve = $this->dateReserve;
             $cita->save();
-            $this->notification([
-                'title'       => 'CITA GENERADA',
-                'description' => 'SE HA GENERADO LA CITA EXITOSAMENTE',
-                'icon'        => 'success'
-            ]);
+            session(['saved_medicine_id' => $this->saveMedicine->id]);
+            $this->generatePdf();
             $this->clean();
             $this->openConfirm();
         }
@@ -228,6 +235,19 @@ class HomeMedicine extends Component
             'title'       => 'Cita eliminada éxitosamente',
             'icon'        => 'error'
         ]);
+    }
+    public function generatePdf()
+    {
+        $savedMedicineId = session('saved_medicine_id');
+        $medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'user'])
+            ->where('medicine_id', $savedMedicineId)->get();
+        if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 1) {
+            $pdf = PDF::loadView('livewire.medicine.documents.medicine-initial', compact('medicineReserves'));
+            return $pdf->download($medicineReserves[0]->dateReserve . '-' . 'cita.pdf');
+        } else if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 1) {
+            // $pdf = PDF::loadView('livewire.medicine.documents.medicine-renovation', compact('printQuery', 'sumappointment'));
+            // return $pdf->download($printQuery->paymentDate . '-' . $printQuery->appointmentTypeExam->name . ' cita.pdf');
+        }
     }
     public function messages()
     {

@@ -4,9 +4,9 @@
     @if ($confirmModal)
         @include('livewire.medicine.modals.confirm')
     @endif
-    {{-- @if ($modal)
+    @if ($modal)
         @include('livewire.medicine.modals.readyPdf')
-    @endif --}}
+    @endif
     @livewire('medicine.modals.modal-index')
     <div class="relative py-6 lg:py-4">
         <img class="z-0 w-full h-full absolute inset-0 object-cover" src="{{ asset('images/banner_testing.jpg') }}"
