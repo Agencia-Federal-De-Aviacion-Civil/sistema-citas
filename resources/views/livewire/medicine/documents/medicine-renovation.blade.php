@@ -58,10 +58,12 @@
         background-repeat: no-repeat;
         background-size: 65%;
     }
+    .codigoqr{
+        text-align: right;
+    }
 
 </style>
-
-<body>
+<body class="bgsize">
     <div>
         {{-- <img src="{{ public_path('images/AFAC1.png') }}" width="130" height="100" alt=""> --}}
         <img src="{{ public_path('images/logoafac.png') }}" width="225" height="85" alt="">
@@ -144,6 +146,10 @@
                 <p style="padding-left:2%;margin-top:-2%;">D. Licencia de manejo.</p>	
                 <p style="padding-left:2%;margin-top:-2%;">E. Pasaporte.</p>
             </ol>
+        </div>
+        <div class="codigoqr">
+            <img
+            src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ $medicineReserves[0]->dateReserve }}" width="120" height="120"/>
         </div>
         {{-- PAGINA 2 --}}
         <div style='page-break-before:always;'></div>
