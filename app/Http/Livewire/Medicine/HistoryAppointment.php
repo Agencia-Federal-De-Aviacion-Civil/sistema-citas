@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Medicine;
 use App\Models\appointment\user_appointment_success;
 use App\Models\appointment\userAppointment;
 use App\Models\Medicine\MedicineInitial;
+use App\Models\Medicine\MedicineRenovation;
 use App\Models\Medicine\MedicineReserve;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +21,7 @@ class HistoryAppointment extends Component
     public $n = 1;
     public $modal = false;
     public $name, $type, $class, $typLicense, $sede, $date, $time, $idAppointmet, $headquarterid;
-    public $medicineQueries,$medicineReserves;
+    public $medicineInitial,$medicineReserves;
     public function render()
     {
         // if (Auth::user()->HasRole('admin')) {
@@ -40,16 +41,29 @@ class HistoryAppointment extends Component
         
         //,compact('appointments')
 
-        $this->medicineQueries = MedicineInitial::with([
-            'initialMedicine', 'initialMedicine.medicineUser','initialMedicine.medicineReserve','initialMedicine.medicineReserve.user','medicineInitialQuestion', 'medicineInitialTypeClass',
+        $this->medicineInitial = MedicineInitial::with([
+            'initialMedicine', 
+            
+            'initialMedicine.medicineUser',
+            'initialMedicine.medicineReserve',
+            'initialMedicine.medicineReserve.user',
+            
+            'medicineInitialQuestion', 
+            'medicineInitialTypeClass',
             'medicineInitialClasificationClass'
         ])->get();
-        // $this->medicineReserves = MedicineReserve::with(['medicineReserveFromUser', 'user'])->get();
+        $this->medicineReserves = MedicineRenovation::with([
+            'renovationMedicine',
+            
+            'renovationMedicine.medicineUser',
+            'renovationMedicine.medicineReserve',
+            'renovationMedicine.medicineReserve.user',
 
-            //  dd($this->medicineReserves[0]->medicineReserveFromUser->name);
+            'renovationTypeClass',
+            'renovationClasificationClass'
+            ])->get();
 
-        
-
+            //   dd($this->medicineReserves);
 
         return view('livewire.medicine.history-appointment')
             ->layout('layouts.app');
