@@ -66,6 +66,9 @@
                         <x-jet-nav-link href="{{ route('afac.headquarterMedicine') }}" :active="request()->routeIs('afac.headquarterMedicine')">
                             {{ __('SEDES') }}
                         </x-jet-nav-link>
+                        <x-jet-nav-link href="{{ route('validate') }}" :active="request()->routeIs('validate')">
+                            {{ __('VALIDACIÓN DE CITAS') }}
+                        </x-jet-nav-link>
                     @endcan
                 </div>
             </div>
