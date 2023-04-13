@@ -65,8 +65,6 @@ class HomeLinguistics extends Component
         $extension = $this->name_document->extension();
         $saveDocument = Document::create([
             'name_document' => $this->document->storeAs('uploads/citas-app', 'prueba' .  '.' . $extension, 'do'),
-
-            'name_document' => $this->name_document->store('documentos', 'public')
         ]);
         $saveLinguistic = Linguistic::create([
             'user_id' => Auth::user()->id,
