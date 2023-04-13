@@ -61,6 +61,9 @@
         background-repeat: no-repeat;
         background-size: 65%;
     }
+    .codigoqr{
+        text-align: right;
+    }
 </style>
 
 <body class="bgsize">
@@ -142,8 +145,10 @@
                 <li>En caso de ser renovación deberá presentar el examen médico anterior</li>
             </ol>
         </div>
-        <img
-            src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ $medicineReserves[0]->dateReserve }}" />
+        <p class="codigoqr">
+            <img
+            src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ $medicineReserves[0]->dateReserve }}" width="140" height="140"/>
+        </p>
         {{-- PAGINA 2 --}}
         <div style='page-break-before:always;'></div>
         <div class="mt-4 mx-4 text-justify">
