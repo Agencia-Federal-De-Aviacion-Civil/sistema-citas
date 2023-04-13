@@ -61,11 +61,11 @@ final class HistoryTable extends PowerGridComponent
     *
     * @return Builder<\App\Models\Medicine\MedicineReserve>
     */
-    public function datasource()
+    public function datasource(): Builder
     {
-
-        $MedicineReserve = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'user'])->get();
-        return $MedicineReserve;
+        
+        return MedicineReserve::query()->with(['medicineReserveMedicine', 'medicineReserveFromUser', 'user']);
+    
     }
 
     /*
@@ -101,9 +101,22 @@ final class HistoryTable extends PowerGridComponent
     {
         return PowerGrid::eloquent()
             ->addColumn('id')
-            ->addColumn('from_user_appointment')
-            ->addColumn('created_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'))
-            ->addColumn('updated_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'));
+            ->addColumn('FullName',function ($row){
+                return $row->medicineReserveMedicine->medicineUser->name;                
+            })
+            ->addColumn('Type',function ($row){
+                return $row->medicineReserveMedicine->medicineTypeExam->name;                
+            })
+            ->addColumn('Class',function ($row){
+                if($row->medicineReserveMedicine->medicineTypeExam->id == 1){
+                    return $row->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name;                
+                }
+            })
+
+            ;
+
+
+
     }
 
     /*
@@ -123,24 +136,11 @@ final class HistoryTable extends PowerGridComponent
     public function columns(): array
     {
         return [
-            Column::make('ID', 'id')
-                ->makeInputRange(),
-
-                Column::make('NOMBRE', 'MedicineReserve->user->name')
-                ->makeInputRange(),
-
-                Column::make('CREATED AT', 'created_at_formatted', 'created_at')
-                ->searchable()
-                ->sortable()
-                ->makeInputDatePicker(),
-
-            Column::make('UPDATED AT', 'updated_at_formatted', 'updated_at')
-                ->searchable()
-                ->sortable()
-                ->makeInputDatePicker(),
-
-        ]
-;
+            Column::make('ID', 'id'),
+            Column::make('NOMBRE', 'FullName'),
+            Column::Make('TIPO', 'Type'),
+            Column::Make('CLASE', 'Class'),            
+        ];
     }
 
     /*

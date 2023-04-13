@@ -21,6 +21,12 @@
     </div>
     <div class="py-12">
         <div class="container mx-auto px-4 py-4 bg-white shadow-xl sm:rounded-lg">
+    <livewire:history-table type="pasta" tableName="table1"/>
+        </div>
+    </div>
+    
+    <div class="py-12">
+        <div class="container mx-auto px-4 py-4 bg-white shadow-xl sm:rounded-lg">
             <div class="mt-12 max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="ml-4 py-6 mr-4">
                     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
