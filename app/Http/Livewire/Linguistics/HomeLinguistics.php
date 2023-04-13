@@ -2,9 +2,9 @@
 
 namespace App\Http\Livewire\Linguistics;
 
-use App\Models\Appointment\Document;
 use App\Models\catalogue\headquarter;
 use App\Models\catalogue\typeExam;
+use App\Models\Document;
 use App\Models\Linguistic\Linguistic;
 use App\Models\Linguistic\Reserve;
 use Illuminate\Support\Facades\Auth;
@@ -17,7 +17,7 @@ class HomeLinguistics extends Component
     use WithFileUploads;
     public $confirmModal = false;
     public $name_document, $reference_number, $pay_date, $type_exam_id, $type_license, $license_number, $red_number, $headquarters_id, $dateReserve;
-    public $exams, $headquartersQueries,$date;
+    public $exams, $headquartersQueries, $date;
     public function rules()
     {
         return [
@@ -37,8 +37,8 @@ class HomeLinguistics extends Component
         $this->exams = typeExam::all();
         $this->headquartersQueries = headquarter::with('headquarterUser')
             ->where('system_id', 2)->get();
-            Date::setLocale('ES');
-            $this->date = Date::now()->parse();   
+        Date::setLocale('ES');
+        $this->date = Date::now()->parse();
     }
     public function updated($propertyName)
     {
@@ -62,7 +62,10 @@ class HomeLinguistics extends Component
             $this->addError('dateReserve', 'La hora seleccionada ya está ocupada. Por favor seleccione otra.');
             return;
         }
+        $extension = $this->name_document->extension();
         $saveDocument = Document::create([
+            'name_document' => $this->document->storeAs('uploads/citas-app', 'prueba' .  '.' . $extension, 'do'),
+
             'name_document' => $this->name_document->store('documentos', 'public')
         ]);
         $saveLinguistic = Linguistic::create([
