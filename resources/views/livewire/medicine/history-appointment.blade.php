@@ -10,7 +10,7 @@
         <div
             class="z-10 relative container px-6 mx-auto flex flex-col md:flex-row items-start md:items-center justify-between">
             <div>
-                <h4 tabindex="0" class="focus:outline-none text-2xl font-bold leading-tight text-white">CITAS AGENDADAS</h4>
+                <h4 tabindex="0" class="focus:outline-none text-2xl font-bold leading-tight text-white">Citas agendadas</h4>
                 <ul class="flex flex-col md:flex-row items-start md:items-center text-gray-300 text-sm mt-3">
                     <li class="flex items-center mt-4 md:mt-0">
                     </li>
@@ -53,7 +53,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($appointments as $appointment)
+
+                            @foreach ($medicineInitial as $medicineQuerie)
                                 <tr
                                     class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                     <th scope="row"
@@ -62,42 +63,103 @@
                                     </th>
 
                                     <td class="px-6 py-4">
-                                        {{ $appointment->appointmentUser->name . ' ' . $appointment->appointmentUser->apParental . ' ' . $appointment->appointmentUser->apMaternal }}
+                                        {{ $medicineQuerie->initialMedicine->medicineUser->name }}
                                     </td>
                                     <td class="px-6 py-4">
-                                        {{ $appointment->appointmentTypeExam->name }}
+                                        {{ $medicineQuerie->initialMedicine->medicineTypeExam->name }}
                                     </td>
-                                    @if ($appointment->appointmentTypeExam->id == 1)
+
+                                    @if ($medicineQuerie->medicineInitialTypeClass->type_exam_id == 1)
                                         <td class="px-6 py-4">
-                                            {{ $appointment->appointmentStudying[0]->studyingClass->name }}
+                                            {{ $medicineQuerie->medicineInitialTypeClass->name }}
                                         </td>
                                         <td class="px-6 py-4">
-                                            {{ $appointment->appointmentStudying[0]->studyingClasification->name }}
-                                        </td>
-                                    @elseif($appointment->appointmentTypeExam->id == 2)
-                                        <td class="px-6 py-4">
-                                            {{ $appointment->appointmentRenovation[0]->renovationClass->name }}
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            {{ $appointment->appointmentRenovation[0]->renovationClasification->name }}
+                                            {{ $medicineQuerie->medicineInitialClasificationClass->name }}
                                         </td>
                                     @endif
                                     <td class="px-6 py-4">
-                                        {{-- appointmentUser --}}
-                                        {{ $appointment->appointmentSuccess->successUser->name }}
+                                        {{ $medicineQuerie->initialMedicine->medicineReserve[0]->user->name }}
                                     </td>
                                     <td class="px-6 py-4">
-                                        {{ $appointment->appointmentSuccess->appointmentDate . ' ' . $appointment->appointmentSuccess->appointmentTime }}
+                                        {{$medicineQuerie->initialMedicine->medicineReserve[0]->dateReserve}}
+                                        {{-- {{ $appointment->appointmentSuccess->appointmentDate . ' ' . $appointment->appointmentSuccess->appointmentTime }} --}}
                                     </td>
                                     <td class="px-6 py-4">
-                                        <x-button wire:click="rescheduleAppointment({{ $appointment->appointmentSuccess->id }})" label="REAGENDAR" xs blue right-icon="calendar" />
+                                        {{-- <x-button wire:click="rescheduleAppointment({{ $appointment->appointmentSuccess->id }})" label="REAGENDAR" xs blue right-icon="calendar" /> --}}
+                                        {{-- <x-button wire:click="rescheduleAppointment()" label="REAGENDAR" xs blue right-icon="calendar" />                                             --}}
                                     </td>
                                     <td class="px-6 py-4">
-                                        <x-button wire:click="deletAppointment({{ $appointment->appointmentSuccess->id }})" label="ELIMINAR" xs red right-icon="trash" />
+                                        {{-- <x-button wire:click="deletAppointment({{ $appointment->appointmentSuccess->id }})" label="ELIMINAR" xs red right-icon="trash" /> --}}
+                                       {{-- <x-button wire:click="deletAppointment()" label="ELIMINAR" xs red right-icon="trash" /> --}}
+
                                     </td>
                                 </tr>
                         </tbody>
                         @endforeach
+
+
+
+
+                        @foreach ($medicineReserves as $medicineReserve)
+                        <tr
+                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                            <th scope="row"
+                                class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {{ $n++ }}
+                            </th>
+
+                            <td class="px-6 py-4">
+                                {{ $medicineReserve->renovationMedicine->medicineUser->name }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ $medicineReserve->renovationMedicine->medicineTypeExam->name }}
+                            </td>
+
+                            @if($medicineReserve->renovationTypeClass->type_exam_id == 2)
+                                <td class="px-6 py-4">
+                                    {{ $medicineReserve->renovationTypeClass->name }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ $medicineReserve->renovationClasificationClass->name }}
+                                </td>
+                            @endif
+                            <td class="px-6 py-4">
+                                {{ $medicineReserve->renovationMedicine->medicineReserve[0]->user->name }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ $medicineReserve->renovationMedicine->medicineReserve[0]->dateReserve}}
+                                {{-- {{ $appointment->appointmentSuccess->appointmentDate . ' ' . $appointment->appointmentSuccess->appointmentTime }} --}}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{-- <x-button wire:click="rescheduleAppointment({{ $appointment->appointmentSuccess->id }})" label="REAGENDAR" xs blue right-icon="calendar" /> --}}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{-- <x-button wire:click="deletAppointment({{ $appointment->appointmentSuccess->id }})" label="ELIMINAR" xs red right-icon="trash" /> --}}
+                            </td>
+                        </tr>
+                </tbody>
+                @endforeach
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                     </table>
                     <div class="mt-6 ml-6 mr-6 mb-6">
                     </div>

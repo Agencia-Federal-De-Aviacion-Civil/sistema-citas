@@ -2,8 +2,8 @@
 
 namespace App\Http\Livewire\Appointment\Headquarters;
 
-use App\Models\catalogue\headquarter;
-use App\Models\catalogue\System;
+use App\Models\Catalogue\Headquarter;
+use App\Models\System;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
@@ -33,7 +33,7 @@ class Headquarters extends Component
     public function render()
     {
         $qSystems = System::all();
-        $headquarters = headquarter::with('headquarterUser')->get();
+        $headquarters = Headquarter::with('headquarterUser')->get();
         return view('livewire.appointment.headquarters.headquarters', compact('headquarters', 'qSystems'))
             ->layout('layouts.app');
     }

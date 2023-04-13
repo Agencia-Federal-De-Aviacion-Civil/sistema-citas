@@ -8,6 +8,7 @@ use App\Http\Livewire\Linguistics\HomeLinguistics;
 use App\Http\Livewire\Medicine\HistoryAppointment;
 use App\Http\Livewire\Medicine\HomeMedicine;
 use Illuminate\Support\Facades\Route;
+use App\Http\Livewire\Validate\Qr as ValidateQr;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,7 +25,7 @@ Route::get('', [homeController::class, 'index'])->name('afac.home');
 Route::group(['middleware' => ['role:super_admin|user']], function () {
     Route::get('/medicine', HomeMedicine::class)->name('afac.medicine');
     Route::get('/linguistics', HomeLinguistics::class)->name('afac.linguistics');
-    Route::get('/download', [HomeMedicine::class, 'test'])->name('download');
+    Route::get('/download', [HomeMedicine::class, 'generatePdf'])->name('download');
 });
 // Route::group(['middleware' => ['role:admin|headquarters']], function () {
 //     Route::get('appointments', AppointmentHistory::class)->name('afac.appointment');
@@ -32,5 +33,6 @@ Route::group(['middleware' => ['role:super_admin|user']], function () {
 Route::group(['middleware' => ['role:super_admin|medicine_admin']], function () {
     Route::get('headquarters', Headquarters::class)->name('afac.headquarterMedicine');
     Route::get('appointments', HistoryAppointment::class)->name('afac.historyMedicine');
+    Route::get('/validate', ValidateQr::class)->name('validate');
 });
 // Route::get('/downloads', [AppointmentHistory::class, 'test'])->name('downloads');

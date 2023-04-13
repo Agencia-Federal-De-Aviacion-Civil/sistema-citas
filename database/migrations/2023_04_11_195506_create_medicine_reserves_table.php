@@ -13,15 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('user_appointment_successes', function (Blueprint $table) {
+        Schema::create('medicine_reserves', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('from_user_appointment')->nullable();
             $table->foreign('from_user_appointment')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('medicine_id')->nullable();
+            $table->foreign('medicine_id')->references('id')->on('medicines')->onDelete('cascade');
             $table->unsignedBigInteger('to_user_headquarters')->nullable();
             $table->foreign('to_user_headquarters')->references('id')->on('users')->onDelete('cascade');
-            $table->date('appointmentDate');
-            $table->time('appointmentTime');
-            $table->integer('appointments');
+            $table->dateTime('dateReserve');
             $table->timestamps();
         });
     }
@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_appointment_successes');
+        Schema::dropIfExists('medicine_reserves');
     }
 };

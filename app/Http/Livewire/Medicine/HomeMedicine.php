@@ -2,22 +2,20 @@
 
 namespace App\Http\Livewire\Medicine;
 
-use App\Models\appointment\user_appointment_success;
-use App\Models\appointment\userAppointment;
-use App\Models\appointment\userPaymentDocument;
-use App\Models\appointment\userQuestion;
-use App\Models\appointment\userRenovation;
-use App\Models\appointment\userStudying;
-use App\Models\catalogue\clasificationClass;
-use App\Models\catalogue\headquarter;
-use App\Models\catalogue\typeClass;
-use App\Models\catalogue\typeExam;
-use App\Models\User;
-use App\Notifications\AppointmentGenerate;
-use Carbon\Carbon;
+use App\Models\Catalogue\ClasificationClass;
+use App\Models\Catalogue\Headquarter;
+use App\Models\Catalogue\TypeClass;
+use App\Models\Catalogue\TypeExam;
+use App\Models\Document;
+use App\Models\Medicine\Medicine;
+use App\Models\Medicine\MedicineInitial;
+use App\Models\Medicine\MedicineQuestion;
+use App\Models\Medicine\MedicineRenovation;
+use App\Models\Medicine\MedicineReserve;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Date;
 use Livewire\Component;
-use Livewire\Redirector;
 use Livewire\WithFileUploads;
 use WireUi\Traits\Actions;
 use PDF;
@@ -26,184 +24,186 @@ class HomeMedicine extends Component
 {
     use Actions;
     use WithFileUploads;
-    public $confirmModal = false;
-    public $modal = false;
-    // FIRST TABLE//
-    public $id_success, $user_id, $type_exam_id, $user_payment_document_id, $document_id, $document, $paymentConcept, $paymentDate, $state;
-    // QUESTION STUDYING
-    public $user_appointment_success_id, $count, $user_appointment_id, $user_question_id, $type_class_id, $clasification_class_id = [];
-
-    public $to_user_headquarters, $appointmentDate, $appointmentTime, $appointments, $finishCollegue, $aerodromos = [];
+    public $medicine_question_id, $type_class_id, $clasificationClass, $clasification_class_id;
+    public $name_document, $reference_number, $pay_date, $type_exam_id, $typeRenovationExams;
+    public $questionClassess, $typeExams, $sedes, $userQuestions, $to_user_headquarters, $dateReserve, $saveMedicine;
+    public $confirmModal = false, $modal = false;
+    public $medicineQueries, $medicineReserves, $medicineInitials, $medicineRenovations, $id_medicineReserve, $savedMedicineId;
+    // MEDICINE INITIAL TABLE
+    public $question, $date;
     public function mount()
     {
-        $this->reset();
-        $this->typeExamens = typeExam::all();
-        $this->questions = userQuestion::all();
-        // $this->sedes = headquarter::all();
-        $this->sedes = headquarter::with('headquarterUser')
-            ->where('system_id', 1)->get();
-        $this->typeClasses = collect();
+        $this->typeExams = TypeExam::all();
+        $this->sedes = Headquarter::where('system_id', 1)->get();
+        $this->userQuestions = MedicineQuestion::all();
         $this->questionClassess = collect();
         $this->clasificationClass = collect();
-        // $todayDate = Carbon::now()->format('Y-m-d');
-        $this->var = user_appointment_success::where('appointmentDate', $this->appointmentDate)->get();
-        //  where('appointmentDate', $this->appointmentDate)
-        // ->where('appointmentTime', $this->appointmentTime)
-        // ->where('to_user_headquarters', $this->to_user_headquarters)
-        // ->first();
+        $this->typeRenovationExams = collect();
+        Date::setLocale('ES');
+        $this->date = Date::now()->parse();
     }
     public function rules()
     {
         return [
+            'name_document' => 'required',
+            'reference_number' => 'required',
+            'pay_date' => 'required',
             'type_exam_id' => 'required',
-            'user_question_id' => 'required_unless:type_exam_id,2',
-            'type_class_id' => 'required',
-            'clasification_class_id' => 'required',
-            'paymentConcept' => 'required|unique:user_appointments',
-            'paymentDate' => 'required',
-            'document' => 'required|mimetypes:application/pdf|max:500',
+            'medicine_question_id' => 'required_if:type_exam_id,1',
+            'type_class_id' => '',
+            'clasification_class_id' => '',
             'to_user_headquarters' => 'required',
-            'appointmentDate' => 'required',
-            'appointmentTime' => 'required',
+            'dateReserve' => 'required'
         ];
     }
     public function render()
     {
-        return view('livewire.medicine.home-medicine');
+        return view('livewire.medicine.home-medicine')
+            ->layout('layouts.app');
     }
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
     }
-    public function updatedtypeExamId($type_exam_id)
+
+    public function clean()
     {
-        $this->typeClasses = typeClass::where('type_exam_id', $type_exam_id)->get();
-        $this->reset(['user_question_id', 'type_class_id', 'clasification_class_id', 'to_user_headquarters', 'appointmentDate']);
+        $this->reset([
+            'name_document',
+            'reference_number',
+            'pay_date',
+            'type_exam_id',
+            'medicine_question_id',
+            'type_class_id',
+            'clasification_class_id',
+            'medicine_question_id',
+        ]);
     }
-    public function updatedUserQuestionId($user_question_id)
+    public function updatedMedicineQuestionId($medicine_question_id)
     {
-        $this->questionClassess = typeClass::where('user_question_id', $user_question_id)->get();
+        $this->questionClassess = TypeClass::where('medicine_question_id', $medicine_question_id)->get();
+    }
+    public function updatedTypeExamId($type_exam_id)
+    {
+        $this->typeRenovationExams = typeClass::where('type_exam_id', $type_exam_id)->get();
     }
     public function updatedTypeClassId($type_class_id)
     {
-        $this->clasificationClass = clasificationClass::where('type_class_id', $type_class_id)->get();
-        // $this->reset(['clasification_class_id']);
+        $this->clasificationClass = ClasificationClass::where('type_class_id', $type_class_id)->get();
     }
-    public function clean()
+    public function resetClasificationClass()
     {
-        $this->reset(['type_exam_id', 'user_question_id', 'type_class_id', 'clasification_class_id', 'paymentConcept', 'paymentDate', 'document']);
+        $this->clasificationClass = [];
+    }
+    public function resetQuestions()
+    {
+        $this->medicine_question_id = [];
+        // $this->dispatchBrowserEvent('reset-select-question');
+    }
+    public function openModal()
+    {
+        $this->confirmModal = true;
+    }
+    public function openModalPdf()
+    {
+        $this->confirmModal = false;
+        $this->modal = true;
+    }
+    public function returnDashboard()
+    {
+        return redirect()->route('afac.home');
     }
     public function save()
     {
         $this->validate();
-        // ALGORITMIC ANGEL
-        $user_appointment = user_appointment_success::where('appointmentDate', $this->appointmentDate)
-            ->where('appointmentTime', $this->appointmentTime)
-            ->where('to_user_headquarters', $this->to_user_headquarters)
-            ->get();
-
-
-        if ($user_appointment->count() != 0) {
-            if ($user_appointment[0]->appointmentTime <= '08:00:00' && $user_appointment->count() == 50) {
-                //dd('13 citas');
-                return $this->dialog()->show([
-                    'title' => 'Citas no disponibles en la fecha indicada',
-                    'icon'        => 'warning'
-                ]);
-            } else
-        if ($user_appointment[0]->appointmentTime > '08:00:00' && $user_appointment->count() == 50) {
-                //dd('12 citas');
-                return $this->dialog()->show([
-                    'title' => 'Citas no disponibles en la fecha indicada',
-                    'icon'        => 'warning'
-                ]);
-            }
+        $citas = MedicineReserve::where('to_user_headquarters', $this->to_user_headquarters)
+            ->where('dateReserve', $this->dateReserve)
+            ->count();
+        switch ($this->to_user_headquarters) {
+            case 2: // Cancun
+            case 3: // Ciudad de México
+                $maxCitas = 5;
+                break;
+            case 4: // Guadalajara
+                $maxCitas = 20;
+                break;
+            case 1: // Tijuana
+            case 3: // Monterrey
+            case 6: // Toluca
+                $maxCitas = 10;
+                break;
+            default:
+                $maxCitas = 0;
+                break;
         }
-
-        // if ($user_appointment == null) {
-        //     $this->id_user_appointment = 0;
-        //     $this->count = 1;
-        // } else {
-        //     if ($user_appointment->appointmentTime <= '08:00:00' && $user_appointment->appointments == 50) {
-        //         //dd('13 citas');
-        //         return $this->dialog()->show([
-        //             'title' => 'Citas no disponibles en la fecha indicada',
-        //             'icon'        => 'warning'
-        //         ]);
-        //     } else
-        //     if ($user_appointment->appointmentTime > '08:00:00' && $user_appointment->appointments == 50) {
-        //         //dd('12 citas');
-        //         return $this->dialog()->show([
-        //             'title' => 'Citas no disponibles en la fecha indicada',
-        //             'icon'        => 'warning'
-        //         ]);
-        //     }
-
-        //     $this->id_user_appointment = $user_appointment->id;
-        //     $this->count = $user_appointment->appointments + 1;
-        // }
-
-
-        $this->id_user_appointment = 1;
-        $this->userappointment = user_appointment_success::create(
-            // ['id' => $this->id_user_appointment],
-            [
-                'from_user_appointment' => Auth::user()->id,
-                'to_user_headquarters' => $this->to_user_headquarters,
-                'appointmentDate' => $this->appointmentDate,
-                'appointmentTime' => $this->appointmentTime,
-                'appointments' => $this->id_user_appointment,
-            ]
-        );
-        // $userAppointment = $this->userappointment;
-        // $notifyHeadquarter = User::find($this->userappointment->to_user_headquarters);
-        // $notifyHeadquarter->notify(new AppointmentGenerate($userAppointment));
-        $extension = $this->document->extension();
-        $documentPay = userPaymentDocument::updateOrCreate(
-            ['id' => $this->document_id],
-            [
-                'document' => $this->document->storeAs('uploads/citas-app', $this->appointmentDate . '-' . $this->appointmentTime .  '.' . $extension, 'do'),
-            ]
-        );
-        $user_id = Auth::user()->id;
-        $this->userAppointment = userAppointment::updateOrCreate(
-            [
-                'user_id' => $user_id,
-                'user_appointment_success_id' => $this->userappointment->id,
-                'type_exam_id' => $this->type_exam_id,
-                'user_payment_document_id' => $documentPay->id,
-                'paymentConcept' => $this->paymentConcept,
-                'paymentDate' => $this->paymentDate,
-                'state' => $this->state = false,
-            ]
-        );
-        if ($this->type_exam_id == 1 && $this->user_question_id == 1) {
-            userStudying::updateOrCreate([
-                'user_appointment_id' => $this->userAppointment->id,
-                'user_question_id' => $this->user_question_id,
-                'type_class_id' => $this->type_class_id,
-                'clasification_class_id' => $this->clasification_class_id,
+        if ($citas >= $maxCitas) {
+            $this->notification([
+                'title'       => 'ERROR DE CITA!',
+                'description' => 'No hay citas disponibles para ese dia',
+                'icon'        => 'error'
             ]);
-        } else if ($this->type_exam_id == 1 && $this->user_question_id == 2) {
-            foreach ($this->clasification_class_id as $clasifications) {
-                userStudying::updateOrCreate([
-                    'user_appointment_id' => $this->userAppointment->id,
-                    'user_question_id' => $this->user_question_id,
-                    'type_class_id' => $this->type_class_id,
-                    'clasification_class_id' => $clasifications,
-                ]);
+        } else {
+            $saveDocument = Document::create([
+                'name_document' => $this->name_document->store('documentos', 'public')
+            ]);
+            $this->saveMedicine = Medicine::create([
+                'user_id' => Auth::user()->id,
+                'reference_number' => $this->reference_number,
+                'pay_date' => $this->pay_date,
+                'document_id' => $saveDocument->id,
+                'type_exam_id' => $this->type_exam_id
+            ]);
+            if ($this->type_exam_id == 1) {
+                $clasification_class_ids = $this->clasification_class_id;
+                if (is_array($clasification_class_ids)) {
+                    foreach ($clasification_class_ids as $clasifications) {
+                        MedicineInitial::create([
+                            'medicine_id' => $this->saveMedicine->id,
+                            'medicine_question_id' => $this->medicine_question_id,
+                            'type_class_id' => $this->type_class_id,
+                            'clasification_class_id' => $clasifications
+                        ]);
+                    }
+                } else {
+                    MedicineInitial::create([
+                        'medicine_id' => $this->saveMedicine->id,
+                        'medicine_question_id' => $this->medicine_question_id,
+                        'type_class_id' => $this->type_class_id,
+                        'clasification_class_id' => $clasification_class_ids
+                    ]);
+                }
+            } else if ($this->type_exam_id == 2) {
+                foreach ($this->clasification_class_id as $clasifications) {
+                    MedicineRenovation::create([
+                        'medicine_id' => $this->saveMedicine->id,
+                        'type_class_id' => $this->type_class_id,
+                        'clasification_class_id' => $clasifications
+                    ]);
+                }
             }
-        } else if ($this->type_exam_id == 2) {
-            foreach ($this->clasification_class_id as $clasifications) {
-                userRenovation::updateOrCreate([
-                    'user_appointment_id' => $this->userAppointment->id,
-                    'type_class_id' => $this->type_class_id,
-                    'clasification_class_id' => $clasifications,
-                ]);
-            }
+            $cita = new MedicineReserve();
+            $cita->from_user_appointment = Auth::user()->id;
+            $cita->medicine_id = $this->saveMedicine->id;
+            $cita->to_user_headquarters = $this->to_user_headquarters;
+            $cita->dateReserve = $this->dateReserve;
+            $cita->save();
+            session(['saved_medicine_id' => $this->saveMedicine->id]);
+            $this->generatePdf();
+            $this->clean();
+            $this->openConfirm();
         }
-        $this->clean();
-        $this->openConfirm();
+    }
+    public function openConfirm()
+    {
+        $this->medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'user'])
+            ->where('medicine_id', $this->saveMedicine->id)->get();
+        $this->medicineInitials = MedicineInitial::with([
+            'initialMedicine', 'medicineInitialQuestion', 'medicineInitialTypeClass',
+            'medicineInitialClasificationClass'
+        ])->where('medicine_id', $this->saveMedicine->id)->get();
+        $this->medicineRenovations = MedicineRenovation::with(['renovationMedicine', 'renovationTypeClass', 'renovationClasificationClass'])
+            ->where('medicine_id', $this->saveMedicine->id)->get();
+        $this->confirmModal = true;
     }
     public function deleteRelationShip()
     {
@@ -214,7 +214,7 @@ class HomeMedicine extends Component
             'icon'        => 'info',
             'accept'      => [
                 'label'  => 'SI',
-                'method' => 'saveDelete',
+                'method' => 'confirmDelete',
             ],
             'reject' => [
                 'label'  => 'NO',
@@ -222,99 +222,33 @@ class HomeMedicine extends Component
             ],
         ]);
     }
-    public function openModal()
+    public function delete($idDelete)
     {
-        $this->confirmModal = true;
-    }
-    public function deleteAppointment($idDelete)
-    {
-        $appointmentDelete = userAppointment::findOrFail($idDelete);
-        $this->id_appointmentDelete = $idDelete;
-        $this->state = $appointmentDelete->state;
+        MedicineReserve::findOrFail($idDelete);
+        $this->id_medicineReserve = $idDelete;
         $this->deleteRelationShip();
     }
-    public function saveDelete()
+    public function confirmDelete()
     {
-        $delete = userAppointment::find($this->id_appointmentDelete);
-        $delete->update(
-            [
-                'id' => $this->id_appointmentDelete,
-                'state' => $this->state = true
-            ]
-        );
+        MedicineReserve::find($this->id_medicineReserve)->delete();
         $this->notification([
             'title'       => 'Cita eliminada éxitosamente',
             'icon'        => 'error'
         ]);
     }
-    public function openConfirm()
+    public function generatePdf()
     {
-        // GENERAL QUERY
-        $this->appointmentInfo = userAppointment::with(['appointmentTypeExam', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess'])
-            ->where('id', $this->userAppointment->id)->get();
-        // LICENSE QUERY RENOVATIONS
-        $this->typeStudyings = userStudying::with(['studyingAppointment', 'studyingClasification'])
-            ->where('user_appointment_id', $this->userAppointment->id)->get();
-        $this->typeRenovations = userRenovation::with(['renovationAppointment', 'renovationClasification'])->where('user_appointment_id', $this->userAppointment->id)->get();
-        $this->confirmModal = true;
-    }
-    public function openModalPdf()
-    {
-        $this->confirmModal = false;
-        $this->modal = true;
-    }
-    // public function closeModalFinish()
-    // {
-    //     $this->confirmModal = false;
-    //     $this->takeClass();
-    // }
-    // public function takeClass()
-    // {
-    //     $this->dialog()->confirm([
-    //         'title'       => 'CITA GENERADA',
-    //         'description' => '¿DESEAS IMPRIMIR TU ACUSE?',
-    //         'icon'        => 'success',
-    //         'accept'      => [
-    //             'label'  => 'IMPRIMIR',
-    //             'method' => 'print',
-    //         ],
-    //         'reject' => [
-    //             'label'  => 'SALIR',
-    //             'method' => 'returnView',
-    //         ],
-    //     ]);
-    // }
-    // public function print()
-    // {
-    //     $this->clean();
-    //     return redirect()->route('download');
-    // }
-    public function returnView()
-    {
-        return redirect()->route('afac.home');
-    }
-    public function test()
-    {
-        // generate PDF
-        $user_id = Auth::user()->id;
-        $printQuery = userAppointment::with(['appointmentTypeExam', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess'])
-            ->where('user_id', $user_id)->latest()->first();
-        // sumando las citas
-        // $sumappointment = user_appointment_success::where('appointmentDate', $printQuery->appointmentSuccess->appointmentDate)
-        //     ->sum('appointments');
-        // sumando las citas
-        $sumappointment = user_appointment_success::where('appointmentDate', $printQuery->appointmentSuccess->appointmentDate)
-            ->where('appointmentTime', $printQuery->appointmentSuccess->appointmentTime)
-            ->where('to_user_headquarters', $printQuery->appointmentSuccess->to_user_headquarters)->get();
-
-        $sumappointment = count($sumappointment);
-
-        if ($printQuery->type_exam_id == 1) {
-            $pdf = PDF::loadView('livewire.medicine.documents.medicine-initial', compact('printQuery', 'sumappointment'));
-            return $pdf->download($printQuery->paymentDate . '-' . $printQuery->appointmentTypeExam->name . ' cita.pdf');
-        } else if ($printQuery->type_exam_id == 2) {
-            $pdf = PDF::loadView('livewire.medicine.documents.medicine-renovation', compact('printQuery', 'sumappointment'));
-            return $pdf->download($printQuery->paymentDate . '-' . $printQuery->appointmentTypeExam->name . ' cita.pdf');
+        $savedMedicineId = session('saved_medicine_id');
+        $medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'user'])
+            ->where('medicine_id', $savedMedicineId)->get();
+        $curpKey = $medicineReserves[0]->medicineReserveMedicine->medicineUser->userParticipant->pluck('id')->first();
+        $keyEncrypt =  Crypt::encryptString($curpKey);
+        if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 1) {
+            $pdf = PDF::loadView('livewire.medicine.documents.medicine-initial', compact('medicineReserves', 'keyEncrypt'));
+            return $pdf->download($medicineReserves[0]->dateReserve . '-' . 'cita.pdf');
+        } else if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 2) {
+            $pdf = PDF::loadView('livewire.medicine.documents.medicine-renovation', compact('medicineReserves', 'keyEncrypt'));
+            return $pdf->download($medicineReserves[0]->dateReserve . '-' . 'cita.pdf');
         }
     }
     public function messages()

@@ -2,10 +2,14 @@
 
 namespace App\Models;
 
-use App\Models\appointment\user_appointment_success;
-use App\Models\appointment\userAppointment;
-use App\Models\appointment\UserParticipant;
-use App\Models\catalogue\headquarter;
+// use App\Models\appointment\user_appointment_success;
+// use App\Models\appointment\userAppointment;
+// use App\Models\appointment\UserParticipant;
+// use App\Models\catalogue\headquarter;
+
+use App\Models\Catalogue\Headquarter;
+use App\Models\Medicine\Medicine;
+use App\Models\Medicine\MedicineReserve;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -82,20 +86,24 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
-    public function userParticipant()
+    public function UserParticipant()
     {
         return $this->hasMany(UserParticipant::class);
     }
-    public function userAppointment()
-    {
-        return $this->hasMany(userAppointment::class);
-    }
-    public function userAppointmentSuccess()
-    {
-        return $this->hasMany(user_appointment_success::class);
-    }
     public function userHeadquarter()
     {
-        return $this->hasMany(headquarter::class);
+        return $this->hasMany(Headquarter::class);
+    }
+    public function userMedicine()
+    {
+        return $this->hasMany(Medicine::class);
+    }
+    public function userMedicineReserveTo()
+    {
+        return $this->hasMany(MedicineReserve::class, 'to_user_headquarters');
+    }
+    public function usermedicineReserveFrom()
+    {
+        return $this->hasMany(MedicineReserve::class);
     }
 }
