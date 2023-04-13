@@ -29,7 +29,7 @@ class HomeMedicine extends Component
     public $confirmModal = false, $modal = false;
     public $medicineQueries, $medicineReserves, $medicineInitials, $medicineRenovations, $id_medicineReserve, $savedMedicineId;
     // MEDICINE INITIAL TABLE
-    public $question,$date;
+    public $question, $date;
     public function mount()
     {
         $this->typeExams = TypeExam::all();
@@ -40,7 +40,6 @@ class HomeMedicine extends Component
         $this->typeRenovationExams = collect();
         Date::setLocale('ES');
         $this->date = Date::now()->parse();
- 
     }
     public function rules()
     {
@@ -244,9 +243,9 @@ class HomeMedicine extends Component
         if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 1) {
             $pdf = PDF::loadView('livewire.medicine.documents.medicine-initial', compact('medicineReserves'));
             return $pdf->download($medicineReserves[0]->dateReserve . '-' . 'cita.pdf');
-        } else if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 1) {
-            // $pdf = PDF::loadView('livewire.medicine.documents.medicine-renovation', compact('printQuery', 'sumappointment'));
-            // return $pdf->download($printQuery->paymentDate . '-' . $printQuery->appointmentTypeExam->name . ' cita.pdf');
+        } else if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 2) {
+            $pdf = PDF::loadView('livewire.medicine.documents.medicine-renovation', compact('medicineReserves'));
+            return $pdf->download($medicineReserves[0]->dateReserve . '-' . 'cita.pdf');
         }
     }
     public function messages()

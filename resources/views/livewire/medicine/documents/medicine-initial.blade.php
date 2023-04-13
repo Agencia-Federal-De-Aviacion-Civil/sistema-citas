@@ -74,13 +74,12 @@
             <h3>ACUSE DE CITA PARA EXAMEN MÉDICO INICIAL</h3>
         </div>
         <div class="cuadrado-2">
-            <p>Folio de cita: <b>{{ $medicineReserves[0]->id }}</b></p>
+            <p>Folio de cita: <b>MED-{{ $medicineReserves[0]->id }}</b></p>
         </div>
         <table class="info">
             <tr>
                 <td colspan="12">NOMBRE:</td>
                 <td colspan="24">
-                    {{-- {{ strtoupper($medicineReserves[0]->medicineReserveMedicine->medicineUser->name) }} --}}
                     {{ strtoupper($medicineReserves[0]->medicineReserveMedicine->medicineUser->name . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apParental')->first() . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apMaternal')->first()) }}
                 </td>
             </tr>
