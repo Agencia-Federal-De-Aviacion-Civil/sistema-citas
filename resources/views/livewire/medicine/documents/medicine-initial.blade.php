@@ -77,12 +77,13 @@
             <tr>
                 <td colspan="12">NOMBRE:</td>
                 <td colspan="24">
-                    {{-- {{ strtoupper($medicineReserves[0]->medicineReserveMedicine->medicineUser->name . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant[0]->apParental . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant[0]->apMaternal) }} --}}
+                    {{-- {{ strtoupper($medicineReserves[0]->medicineReserveMedicine->medicineUser->name) }} --}}
+                    {{ strtoupper($medicineReserves[0]->medicineReserveMedicine->medicineUser->name . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apParental')->first() . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apMaternal')->first()) }}
                 </td>
             </tr>
             <tr>
                 <td colspan="12">CURP:</td>
-                {{-- <td>{{ strtoupper($medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->curp) }} --}}
+                <td>{{ $medicineReserves[0]->medicineReserveMedicine->medicineUser->userParticipant->pluck('curp')->first() }}
                 </td>
             </tr>
             <tr>
