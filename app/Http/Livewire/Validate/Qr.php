@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire\Validate;
 
-use App\Models\Catalogue\State;
+use App\Models\Catalogue\state;
 use App\Models\LicensePdf;
 use App\Models\Medicine\MedicineReserve;
 use App\Models\UserParticipant;
@@ -24,7 +24,7 @@ class Qr extends Component
     }
     public function render()
     {
-        $prueba = State::all();
+        $prueba = state::all();
         return view('livewire.validate.qr', compact('prueba'))
             ->layout('layouts.app');
     }
