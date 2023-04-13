@@ -21,7 +21,7 @@ class Qr extends Component
     }
     public function render()
     {
-        return view('livewire.validate.qr', compact('prueba'))
+        return view('livewire.validate.qr')
             ->layout('layouts.app');
     }
     public function read()
