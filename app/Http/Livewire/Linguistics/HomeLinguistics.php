@@ -2,8 +2,8 @@
 
 namespace App\Http\Livewire\Linguistics;
 
-use App\Models\catalogue\headquarter;
-use App\Models\catalogue\typeExam;
+use App\Models\Catalogue\Headquarter;
+use App\Models\Catalogue\TypeExam;
 use App\Models\Document;
 use App\Models\Linguistic\Linguistic;
 use App\Models\Linguistic\Reserve;
@@ -34,8 +34,8 @@ class HomeLinguistics extends Component
     }
     public function mount()
     {
-        $this->exams = typeExam::all();
-        $this->headquartersQueries = headquarter::with('headquarterUser')
+        $this->exams = TypeExam::all();
+        $this->headquartersQueries = Headquarter::with('headquarterUser')
             ->where('system_id', 2)->get();
         Date::setLocale('ES');
         $this->date = Date::now()->parse();
