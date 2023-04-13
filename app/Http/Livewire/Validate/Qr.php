@@ -13,7 +13,7 @@ use WireUi\Traits\Actions;
 class Qr extends Component
 {
     use Actions;
-    public $textRead, $licenses,$medicineReserves;
+    public $textRead, $licenses, $medicineReserves;
     protected $rules = [
         'textRead' => 'required'
     ];
@@ -23,7 +23,8 @@ class Qr extends Component
     }
     public function render()
     {
-        return view('livewire.validate.qr')
+        $prueba = MedicineReserve::all();
+        return view('livewire.validate.qr', compact('prueba'))
             ->layout('layouts.app');
     }
     public function read()

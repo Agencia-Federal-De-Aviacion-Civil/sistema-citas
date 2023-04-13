@@ -3,8 +3,8 @@
 namespace App\Http\Livewire\Register;
 
 use App\Models\appointment\UserParticipant;
-use App\Models\catalogue\municipal;
-use App\Models\catalogue\state;
+use App\Models\Catalogue\Municipal;
+use App\Models\Catalogue\State;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -44,7 +44,7 @@ class Index extends Component
 
     public function mount()
     {
-        $this->states = state::all();
+        $this->states = State::all();
         $this->municipals = collect();
     }
 
@@ -55,7 +55,7 @@ class Index extends Component
 
     public function updatedStateId($id)
     {
-        $this->municipals = municipal::with('municipalState')->where('state_id', $id)->get();
+        $this->municipals = Municipal::with('municipalState')->where('state_id', $id)->get();
     }
     public function updatedEmail()
     {
