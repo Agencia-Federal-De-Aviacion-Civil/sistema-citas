@@ -3,8 +3,8 @@
 namespace App\Http\Livewire\Register;
 
 use App\Models\appointment\UserParticipant;
-use App\Models\Catalogue\Municipal;
-use App\Models\Catalogue\State;
+use App\Models\catalogue\Municipal;
+use App\Models\catalogue\State;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
