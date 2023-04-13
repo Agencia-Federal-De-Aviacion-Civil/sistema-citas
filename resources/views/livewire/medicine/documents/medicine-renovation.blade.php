@@ -87,7 +87,7 @@
             </tr>
             <tr>
                 <td colspan="12">CURP:</td>
-                <td>
+                <td colspan="24">
                     {{ $medicineReserves[0]->medicineReserveMedicine->medicineUser->userParticipant->pluck('curp')->first() }}
                 </td>
             </tr>
