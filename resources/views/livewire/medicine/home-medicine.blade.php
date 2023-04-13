@@ -437,12 +437,18 @@
                 disableMobile: "true",
                 minuteIncrement: 30,
                 minDate: "today",
-                disable: [
+                /*disable: [
                     function(date) {
                         // Devuelve 'true' si la fecha es un sábado o domingo
                         return date.getDay() === 6 || date.getDay() === 0;
                     },
-                ],
+                ],*/
+                disable: [@json($blocking)],
+                onDayCreate: function (dObj, dStr, fp, dayElem) {
+                        if (dayElem.dateObj.getDay() === 0 || dayElem.dateObj.getDay() === 6) {
+                            dayElem.className += " flatpickr-disabled nextMonthDayflatpickr-disabled";
+                        }
+                },
                 locale: {
                     weekdays: {
                         shorthand: ['Dom', 'Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab'],

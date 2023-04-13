@@ -25,7 +25,7 @@ class HomeMedicine extends Component
     use WithFileUploads;
     public $medicine_question_id, $type_class_id, $clasificationClass, $clasification_class_id;
     public $name_document, $reference_number, $pay_date, $type_exam_id, $typeRenovationExams;
-    public $questionClassess, $typeExams, $sedes, $userQuestions, $to_user_headquarters, $dateReserve, $saveMedicine;
+    public $questionClassess, $typeExams, $sedes,$blocking, $userQuestions, $to_user_headquarters, $dateReserve, $saveMedicine;
     public $confirmModal = false, $modal = false;
     public $medicineQueries, $medicineReserves, $medicineInitials, $medicineRenovations, $id_medicineReserve, $savedMedicineId;
     // MEDICINE INITIAL TABLE
@@ -40,6 +40,7 @@ class HomeMedicine extends Component
         $this->typeRenovationExams = collect();
         Date::setLocale('ES');
         $this->date = Date::now()->parse();
+        $this->blocking = '2023-04-20';
     }
     public function rules()
     {
