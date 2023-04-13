@@ -20,7 +20,6 @@
             </div>
         </div>
     </div>
-    {{$prueba}}
     <div class="py-12">
         <div class="container mx-auto px-4 py-2 bg-white shadow-xl sm:rounded-lg">
             <div class="mt-2 max-w-6xl mx-auto sm:px-6 lg:px-8">
