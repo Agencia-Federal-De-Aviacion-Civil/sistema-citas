@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Medicine;
 use App\Models\appointment\user_appointment_success;
 use App\Models\appointment\userAppointment;
 use App\Models\Medicine\MedicineReserve;
+use Illuminate\Support\Facades\Crypt;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use WireUi\Traits\Actions;
@@ -16,8 +17,8 @@ class HistoryAppointment extends Component
     use WithFileUploads;
     public $n = 1;
     public $modal = false;
-    public $name, $type, $class, $typLicense, $sede, $date, $time, $idAppointmet, $headquarterid;
-    public $medicineInitial, $medicineReserves, $medicineDelete,$typeExam;
+    public $name, $type, $class, $typLicense, $sede, $date, $time, $idAppointmet, $headquarterid,$dateReserve;
+    public $medicineInitial, $medicineReserves, $medicineDelete,$typeExam,$to_user_headquarters,$idReserve;
     public function render()
     {
         $this->medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'user'])->get();
@@ -27,25 +28,23 @@ class HistoryAppointment extends Component
     public function rescheduleAppointment($id)
     {
         // dd($id);
-        // $appointment = userAppointment::with([
-        //     'appointmentUser', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess',
-        //     'appointmentTypeExam', 'appointmentDocument'
-        // ])
-        //     ->where('user_appointment_success_id', $id)->get();
-        // $this->name = $appointment[0]->appointmentUser->name . ' ' . $appointment[0]->appointmentUser->apParental . ' ' . $appointment[0]->appointmentUser->apMaternal;
-        // $this->type = $appointment[0]->appointmentTypeExam->name;
-        // if ($appointment[0]->appointmentTypeExam->id == 1) {
-        //     $this->class = $appointment[0]->appointmentStudying[0]->studyingClass->name;
-        //     $this->typLicense = $appointment[0]->appointmentStudying[0]->studyingClasification->name;
-        // } else {
-        //     $this->class = $appointment[0]->appointmentRenovation[0]->renovationClass->name;
-        //     $this->typLicense = $appointment[0]->appointmentRenovation[0]->renovationClasification->name;
-        // }
-        // $this->sede = $appointment[0]->appointmentSuccess->successUser->name;
-        // $this->date = $appointment[0]->appointmentSuccess->appointmentDate;
-        // $this->time = $appointment[0]->appointmentSuccess->appointmentTime;
-        // $this->idAppointmet = $appointment[0]->appointmentSuccess->id;
-        // $this->headquarterid = $appointment[0]->appointmentSuccess->to_user_headquarters;
+        $medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'user'])
+        ->where('id',$id)->get();        
+        $this->name = $medicineReserves[0]->medicineReserveMedicine->medicineUser->name.' '.$medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant[0]->apParental.' '.$medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant[0]->apMaternal; 
+        $this->type = $medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->name;
+
+        if ($medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->id == 1) {
+            $this->class = $medicineReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name;
+            $this->typLicense = $medicineReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass->name;
+        } else if($medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->id == 2){
+            $this->class = $medicineReserves[0]->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name;
+            $this->typLicense = $medicineReserves[0]->medicineReserveMedicine->medicineRenovation[0]->renovationClasificationClass->name;
+        }
+        $this->sede = $medicineReserves[0]->user->name;
+        $this->dateReserve = $medicineReserves[0]->dateReserve;
+        $this->to_user_headquarters = $medicineReserves[0]->to_user_headquarters;
+        $this->idReserve = $id;
+
         $this->openModal();
     }
     public function deletAppointment($id)
@@ -69,7 +68,6 @@ class HistoryAppointment extends Component
             ],
         ]);
     }
-
     public function delete()
     {
         $medicineDelete = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'user'])
@@ -90,41 +88,47 @@ class HistoryAppointment extends Component
     {
         $this->modal = false;
     }
+    
     public function reschedule()
     {
-
-        $user_appointment = user_appointment_success::where('appointmentDate', $this->date)
-            ->where('appointmentTime', $this->time)
-            ->where('to_user_headquarters', $this->headquarterid)
-            ->get();
-
-        if ($this->time <= '08:00:00' && $user_appointment->count() == 4) {
-            //dd('13 citas');
-            $this->modal = false;
-            return $this->notification([
-                'title'       => 'Citas no disponibles en la fecha indicada',
-                'icon'        => 'warning'
-            ]);
-        } else
-        if ($this->time > '08:00:00' && $user_appointment->count() == 4) {
-            //dd('12 citas');
-            $this->modal = false;
-            return $this->notification([
-                'title'       => 'Citas no disponibles en la fecha indicada',
-                'icon'        => 'warning'
-            ]);
+        $citas = MedicineReserve::where('to_user_headquarters', $this->to_user_headquarters)
+            ->where('dateReserve', $this->dateReserve)
+            ->count();
+        switch ($this->to_user_headquarters) {
+            case 2: // Cancun
+            case 3: // Tijuana
+            case 4: // Toluca
+            case 5: // Monterrey
+                $maxCitas = 10;
+                break;
+            case 7: // Guadalajara
+                $maxCitas = 20;
+                break;
+            case 9: // Ciudad de Mexico
+                $maxCitas = 50;
+                break;
+            default:
+                $maxCitas = 0;
+                break;
         }
+        if ($citas >= $maxCitas) {
+            $this->notification([
+                'title'       => 'ERROR DE CITA!',
+                'description' => 'No hay citas disponibles para ese dia',
+                'icon'        => 'error'
+            ]);
+        } else {
 
-        $appointmet =  user_appointment_success::find($this->idAppointmet);
-        $appointmet->update(
+            $appointmet =  MedicineReserve::find($this->idReserve);
+            $appointmet->update(
             [
-                'appointmentDate' => $this->date,
-                'appointmentTime' => $this->time
+            'dateReserve' => $this->dateReserve
             ]
-        );
+            );            
+        }
         $this->modal = false;
         $this->acuse();
-
+        session(['saved_reserv_id' => $this->idReserve]);
         // $this->notification([
         //     'title'       => 'Cita reagendada',
         //     'icon'        => 'success'
@@ -145,34 +149,23 @@ class HistoryAppointment extends Component
             ],
         ]);
     }
-
-    // public function returnView()
-    // {
-    //     return redirect()->route('afac.home');
-    // }
     public function download()
     {
-        $id = $this->idAppointmet;
-        return redirect()->route('downloads', compact('id'));
+        return redirect()->route('downloads');
     }
     public function test()
     {
-
-        $printQuery = userAppointment::with(['appointmentTypeExam', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess'])
-            ->where('user_appointment_success_id', $_GET['id'])->latest()->first();
-        // sumando las citas
-        $sumappointment = user_appointment_success::where('appointmentDate', $printQuery->appointmentSuccess->appointmentDate)
-            ->where('appointmentTime', $printQuery->appointmentSuccess->appointmentTime)
-            ->where('to_user_headquarters', $printQuery->appointmentSuccess->to_user_headquarters)->get();
-
-        $sumappointment = count($sumappointment);
-
-        if ($printQuery->type_exam_id == 1) {
-            $pdf = PDF::loadView('livewire.appointment.documents.appointment-pdf', compact('printQuery', 'sumappointment'));
-            return $pdf->download($printQuery->paymentDate . '-' . $printQuery->appointmentTypeExam->name . ' cita.pdf');
-        } else if ($printQuery->type_exam_id == 2) {
-            $pdf = PDF::loadView('livewire.appointment.documents.appointment-pdf2', compact('printQuery', 'sumappointment'));
-            return $pdf->download($printQuery->paymentDate . '-' . $printQuery->appointmentTypeExam->name . ' cita.pdf');
+        $updateReservId = session('saved_reserv_id');
+        $medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'user'])
+            ->where('medicine_id', $updateReservId)->get();
+        $curpKey = $medicineReserves[0]->medicineReserveMedicine->medicineUser->userParticipant->pluck('id')->first();
+        $keyEncrypt =  Crypt ::encryptString($curpKey);
+        if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 1) {
+            $pdf = PDF::loadView('livewire.medicine.documents.medicine-initial', compact('medicineReserves', 'keyEncrypt'));
+            return $pdf->download($medicineReserves[0]->dateReserve . '-' . 'cita.pdf');
+        } else if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 2) {
+            $pdf = PDF::loadView('livewire.medicine.documents.medicine-renovation', compact('medicineReserves', 'keyEncrypt'));
+            return $pdf->download($medicineReserves[0]->dateReserve . '-' . 'cita.pdf');
         }
     }
 }
