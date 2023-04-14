@@ -84,51 +84,51 @@
         <div class="cuadrado-2">
             <p>Folio de cita: <b>MED-{{ $medicineReserves[0]->id }}</b></p>
         </div>
-        <table style="margin-top: 6%;"">
+        <table style="margin-top: 6%;">
             <tr>
-                <td colspan="20">NOMBRE:</td>
-                <td colspan="24">
+                <td>NOMBRE:</td>
+                <td>
                     {{ mb_strtoupper($medicineReserves[0]->medicineReserveMedicine->medicineUser->name . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apParental')->first() . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apMaternal')->first()) }}
                 </td>
             </tr>
             <tr>
-                <td colspan="20">CURP:</td>
-                <td colspan="24">
+                <td>CURP:</td>
+                <td>
                     {{ $medicineReserves[0]->medicineReserveMedicine->medicineUser->userParticipant->pluck('curp')->first() }}
                 </td>
             </tr>
             <tr>
-                <td colspan="20">MODO DE TRANSPORTE:</td>
-                <td colspan="24">AÉREO</td>
+                <td>MODO DE TRANSPORTE:</td>
+                <td>AÉREO</td>
             </tr>
             <tr>
-                <td colspan="20">TIPO DE EXAMEN:</td>
-                <td colspan="24">
+                <td>TIPO DE EXAMEN:</td>
+                <td>
                     {{ mb_strtoupper($medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->name) }}</td>
             </tr>
             <tr>
-                <td colspan="20">TIPO DE CLASE:</td>
-                <td colspan="24">
+                <td>TIPO DE CLASE:</td>
+                <td>
                     {{ mb_strtoupper($medicineReserves[0]->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name) }}
                 </td>
             </tr>
             <tr>
-                <td colspan="20">TRAMITE:</td>
-                <td colspan="24">EXAMEN PSICOFISICO INTEGRAL</td>
+                <td>TRAMITE:</td>
+                <td>EXAMEN PSICOFISICO INTEGRAL</td>
             </tr>
             <tr>
-                <td colspan="20">UNIDAD MÉDICA:</td>
-                <td colspan="24"> <b>{{ mb_strtoupper($medicineReserves[0]->user->name) }}</b></p>
+                <td>UNIDAD MÉDICA:</td>
+                <td><b>{{ mb_strtoupper($medicineReserves[0]->user->name) }}</b></p>
                 </td>
             </tr>
             <tr>
-                <td colspan="20">DIRECCIÓN SEDE:</td>
-                <td colspan="24"> {{ strtoupper($medicineReserves[0]->user->userHeadquarter[0]->direction) }}</p>
+                <td>DIRECCIÓN SEDE:</td>
+                <td> {{ strtoupper($medicineReserves[0]->user->userHeadquarter[0]->direction) }}</p>
                 </td>
             </tr>
             <tr>
-                <td colspan="20">FECHA Y HORA:</td>
-                <td colspan="24">{{ $medicineReserves[0]->dateReserve }}</td>
+                <td>FECHA Y HORA:</td>
+                <td>{{ $medicineReserves[0]->dateReserve }}</td>
             </tr>
         </table>
         <div style="background-color: #e6e6e6;height: 25px; ">
