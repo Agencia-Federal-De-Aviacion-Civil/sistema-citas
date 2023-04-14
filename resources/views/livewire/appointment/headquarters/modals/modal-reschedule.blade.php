@@ -46,22 +46,11 @@
                                 <x-input wire:model="sede" label="SEDE" disabled />
                             </div>
                         </div>
-
-
-
-
-
-
-
                         <div class="text-base relative z-auto w-full mb-2 group">
                             <x-input x-ref="reservedate" wire:model="dateReserve" id="fecha-appointment"
                                 label="SELECCIONE FECHA Y LA HORA" placeholder="INGRESE..."
                                 readonly />
                         </div>
-
-
-
-
 
                         {{-- <div class="grid xl:grid-cols-1 xl:gap-6">
                             <div class="text-base relative z-auto w-full mb-2 group">
