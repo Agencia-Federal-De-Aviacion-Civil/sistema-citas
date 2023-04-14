@@ -159,7 +159,51 @@
                 {{ __('Dashboard') }}
             </x-jet-responsive-nav-link> --}}
         </div>
-
+        @can('generate.appointment')
+                <x-jet-nav-link href="{{ route('afac.home') }}" :active="request()->routeIs('afac.home')">
+                    {{ __('Inicio') }}
+                </x-jet-nav-link>
+                @endcan
+                    @can('see.navigation.controller.systems')
+                        <div x-cloak x-data="{ open: false }" class="py-3 z-50">
+                            <button x-on:click="open = true"
+                                class="flex items-center bg-white focus:bg-gray-50 text-gray-700 focus:text-gray-900 rounded py-2 px-4"
+                                type="button">
+                                <span class="mr-1 text-base">Medicina de Aviacion</span>
+                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                    style="margin-top:3px">
+                                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                                </svg>
+                            </button>
+                            <ul x-show="open" x-on:click.away="open = false"
+                                class="bg-white text-gray-700 rounded shadow-lg absolute py-2 mt-1" style="min-width:15rem">
+                                <li>
+                                    <a href="{{ route('afac.medicine') }}"
+                                        class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
+                                        Generar cita
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('afac.historyMedicine') }}"
+                                        class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
+                                        Citas agendadas
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('afac.headquarterMedicine') }}"
+                                        class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
+                                        Sedes
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('validate') }}"
+                                        class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
+                                        Validación de QR
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    @endcan
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">
             <div class="flex items-center px-4">
@@ -179,7 +223,7 @@
             <div class="mt-3 space-y-1">
                 <!-- Account Management -->
                 <x-jet-responsive-nav-link href="{{ route('profile.show') }}" :active="request()->routeIs('profile.show')">
-                    {{ __('Profile') }}
+                    {{ __('Cuenta') }}
                 </x-jet-responsive-nav-link>
 
                 @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
@@ -193,7 +237,7 @@
                     @csrf
 
                     <x-jet-responsive-nav-link href="{{ route('logout') }}" @click.prevent="$root.submit();">
-                        {{ __('Log Out') }}
+                        {{ __('Cerrar sessión') }}
                     </x-jet-responsive-nav-link>
                 </form>
 
