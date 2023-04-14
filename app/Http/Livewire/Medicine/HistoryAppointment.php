@@ -18,7 +18,7 @@ class HistoryAppointment extends Component
     public $n = 1;
     public $modal = false;
     public $name, $type, $class, $typLicense, $sede, $date, $time, $idAppointmet, $headquarterid,$dateReserve;
-    public $medicineInitial, $medicineReserves, $medicineDelete,$typeExam,$to_user_headquarters,$idReserve;
+    public $medicineInitial, $medicineReserves, $medicineDelete,$typeExam,$to_user_headquarters,$idReserve,$dateReserves;
     public function render()
     {
         $this->medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'user'])->get();
@@ -42,6 +42,13 @@ class HistoryAppointment extends Component
         }
         $this->sede = $medicineReserves[0]->user->name;
         $this->dateReserve = $medicineReserves[0]->dateReserve;
+
+        $fechaHora = $this->dateReserve;
+        // dump($fechaHora);   
+        $separar = (explode(" ",$fechaHora));
+        $this->date = $separar[0];
+        // dump($this->date);
+        $this->time = $separar[1];  
         $this->to_user_headquarters = $medicineReserves[0]->to_user_headquarters;
         $this->idReserve = $id;
 
@@ -91,8 +98,10 @@ class HistoryAppointment extends Component
     
     public function reschedule()
     {
+        $dateReserves = $this->date.' '.$this->time;
+
         $citas = MedicineReserve::where('to_user_headquarters', $this->to_user_headquarters)
-            ->where('dateReserve', $this->dateReserve)
+            ->where('dateReserve', $dateReserves)
             ->count();
         switch ($this->to_user_headquarters) {
             case 2: // Cancun
@@ -122,7 +131,7 @@ class HistoryAppointment extends Component
             $appointmet =  MedicineReserve::find($this->idReserve);
             $appointmet->update(
             [
-            'dateReserve' => $this->dateReserve
+            'dateReserve' => $dateReserves
             ]
             );            
         }
