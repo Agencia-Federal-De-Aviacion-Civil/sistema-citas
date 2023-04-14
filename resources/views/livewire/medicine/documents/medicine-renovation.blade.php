@@ -66,6 +66,12 @@
     .codigoqr {
         text-align: right;
     }
+    footer {
+        position: fixed;
+        bottom: 30px;
+        right: 0px;
+        height: 60px;
+    }  
 </style>
 
 <body class="bgsize">
@@ -150,10 +156,12 @@
                 <p style="padding-left:2%;margin-top:-2%;">E. Pasaporte.</p>
             </ol>
         </div>
-        <div class="codigoqr">
-            <img src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ $keyEncrypt }}"
-                width="120" height="120" />
-        </div>
+        <footer>
+            <div class="codigoqr">
+                <img src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ $keyEncrypt }}"
+                    width="120" height="120" />
+            </div>
+        </footer>
         {{-- PAGINA 2 --}}
         <div style='page-break-before:always;'></div>
         <!-- <div style="text-align: center;">
@@ -200,6 +208,7 @@
                     <p style="padding-left:5%;margin-top:-2%">3. Clase III – cada 3 años.</p>
                     <p style="padding-left:5%;margin-top:-2%">4. O antes a indicación de su médico examinador.</p>
                 </li>
+                <p style="margin-top:-2%">****En caso de hacer cita en la UM Aeropuerto no será necesario presentar RX de Tórax</p>
                 <li>Los estudios previamente descritos deberán tener fecha de emisión no mayor a un mes.
                 </li>
                 {{-- <li>Imprimir el formato de Declaración de salud.
