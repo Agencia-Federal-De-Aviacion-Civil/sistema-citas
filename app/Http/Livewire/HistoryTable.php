@@ -22,6 +22,7 @@ final class HistoryTable extends PowerGridComponent
     | Setup Table's general features
     |
     */
+    
     public function setUp(): array
     {
         // $this->showCheckBox();
@@ -62,10 +63,8 @@ final class HistoryTable extends PowerGridComponent
     * @return Builder<\App\Models\Medicine\MedicineReserve>
     */
     public function datasource(): Builder
-    {
-        
+    {        
         return MedicineReserve::query()->with(['medicineReserveMedicine', 'medicineReserveFromUser', 'user']);
-    
     }
 
     /*
@@ -83,7 +82,9 @@ final class HistoryTable extends PowerGridComponent
      */
     public function relationSearch(): array
     {
-        return [];
+        return [
+           
+        ];
     }
 
     /*
@@ -110,10 +111,26 @@ final class HistoryTable extends PowerGridComponent
             ->addColumn('Class',function ($row){
                 if($row->medicineReserveMedicine->medicineTypeExam->id == 1){
                     return $row->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name;                
+                }else{
+                    return $row->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name;
                 }
             })
+            ->addColumn('TypeLicense',function ($row){
+                if($row->medicineReserveMedicine->medicineTypeExam->id == 1){
+                    return $row->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass->name;                
+                }else{
+                    return $row->medicineReserveMedicine->medicineRenovation[0]->renovationClasificationClass->name;
+                }
+            })
+            ->addColumn('Sede',function ($row){
+                return $row->user->name;                
+            })
+            ->addColumn('dateReserve', fn (MedicineReserve $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'),function ($row){
+                return $row->dateReserve;                
+            });
 
-            ;
+// ->addColumn('created_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'))
+// ->addColumn('updated_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'));
 
 
 
@@ -139,7 +156,11 @@ final class HistoryTable extends PowerGridComponent
             Column::make('ID', 'id'),
             Column::make('NOMBRE', 'FullName'),
             Column::Make('TIPO', 'Type'),
-            Column::Make('CLASE', 'Class'),            
+            Column::Make('CLASE', 'Class'),
+            Column::Make('TIPO DE LICENCIA','TypeLicense'),
+            Column::Make('SEDE','Sede'),
+            Column::Make('RESERVACIÓN','dateReserve'),
+                        
         ];
     }
 

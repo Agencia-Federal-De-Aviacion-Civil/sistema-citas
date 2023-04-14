@@ -25,7 +25,7 @@
         </div>
     </div>
     
-    <div class="py-12">
+    {{-- <div class="py-12">
         <div class="container mx-auto px-4 py-4 bg-white shadow-xl sm:rounded-lg">
             <div class="mt-12 max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="ml-4 py-6 mr-4">
@@ -97,13 +97,10 @@
                                         {{ $medicineReserve->dateReserve }}
                                     </td>
                                     <td class="px-6 py-4">
-                                        {{-- <x-button wire:click="rescheduleAppointment({{ $appointment->appointmentSuccess->id }})" label="REAGENDAR" xs blue right-icon="calendar" /> --}}
-                                        {{-- <x-button wire:click="rescheduleAppointment()" label="REAGENDAR" xs blue right-icon="calendar" />                                             --}}
+                                        <x-button wire:click="rescheduleAppointment({{ $appointment->appointmentSuccess->id }})" label="REAGENDAR" xs blue right-icon="calendar" />
                                     </td>
                                     <td class="px-6 py-4">
-                                        {{-- <x-button wire:click="deletAppointment({{ $appointment->appointmentSuccess->id }})" label="ELIMINAR" xs red right-icon="trash" /> --}}
-                                        {{-- <x-button wire:click="deletAppointment()" label="ELIMINAR" xs red right-icon="trash" /> --}}
-
+                                        <x-button wire:click="deletAppointment({{ $appointment->appointmentSuccess->id }})" label="ELIMINAR" xs red right-icon="trash" />
                                     </td>
                                 </tr>
                         </tbody>
@@ -114,5 +111,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
+
+
 </div>
