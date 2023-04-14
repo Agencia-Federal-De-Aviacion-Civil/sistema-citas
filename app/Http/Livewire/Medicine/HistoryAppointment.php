@@ -4,11 +4,7 @@ namespace App\Http\Livewire\Medicine;
 
 use App\Models\appointment\user_appointment_success;
 use App\Models\appointment\userAppointment;
-use App\Models\Medicine\MedicineInitial;
-use App\Models\Medicine\MedicineRenovation;
 use App\Models\Medicine\MedicineReserve;
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use WireUi\Traits\Actions;
@@ -21,7 +17,7 @@ class HistoryAppointment extends Component
     public $n = 1;
     public $modal = false;
     public $name, $type, $class, $typLicense, $sede, $date, $time, $idAppointmet, $headquarterid;
-    public $medicineInitial, $medicineReserves, $medicineDelete;
+    public $medicineInitial, $medicineReserves, $medicineDelete,$typeExam;
     public function render()
     {
         $this->medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'user'])->get();
@@ -30,38 +26,36 @@ class HistoryAppointment extends Component
     }
     public function rescheduleAppointment($id)
     {
-
-        $appointment = userAppointment::with([
-            'appointmentUser', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess',
-            'appointmentTypeExam', 'appointmentDocument'
-        ])
-            ->where('user_appointment_success_id', $id)->get();
-        $this->name = $appointment[0]->appointmentUser->name . ' ' . $appointment[0]->appointmentUser->apParental . ' ' . $appointment[0]->appointmentUser->apMaternal;
-        $this->type = $appointment[0]->appointmentTypeExam->name;
-        if ($appointment[0]->appointmentTypeExam->id == 1) {
-            $this->class = $appointment[0]->appointmentStudying[0]->studyingClass->name;
-            $this->typLicense = $appointment[0]->appointmentStudying[0]->studyingClasification->name;
-        } else {
-            $this->class = $appointment[0]->appointmentRenovation[0]->renovationClass->name;
-            $this->typLicense = $appointment[0]->appointmentRenovation[0]->renovationClasification->name;
-        }
-        $this->sede = $appointment[0]->appointmentSuccess->successUser->name;
-        $this->date = $appointment[0]->appointmentSuccess->appointmentDate;
-        $this->time = $appointment[0]->appointmentSuccess->appointmentTime;
-        $this->idAppointmet = $appointment[0]->appointmentSuccess->id;
-        $this->headquarterid = $appointment[0]->appointmentSuccess->to_user_headquarters;
+        // dd($id);
+        // $appointment = userAppointment::with([
+        //     'appointmentUser', 'appointmentStudying', 'appointmentRenovation', 'appointmentSuccess',
+        //     'appointmentTypeExam', 'appointmentDocument'
+        // ])
+        //     ->where('user_appointment_success_id', $id)->get();
+        // $this->name = $appointment[0]->appointmentUser->name . ' ' . $appointment[0]->appointmentUser->apParental . ' ' . $appointment[0]->appointmentUser->apMaternal;
+        // $this->type = $appointment[0]->appointmentTypeExam->name;
+        // if ($appointment[0]->appointmentTypeExam->id == 1) {
+        //     $this->class = $appointment[0]->appointmentStudying[0]->studyingClass->name;
+        //     $this->typLicense = $appointment[0]->appointmentStudying[0]->studyingClasification->name;
+        // } else {
+        //     $this->class = $appointment[0]->appointmentRenovation[0]->renovationClass->name;
+        //     $this->typLicense = $appointment[0]->appointmentRenovation[0]->renovationClasification->name;
+        // }
+        // $this->sede = $appointment[0]->appointmentSuccess->successUser->name;
+        // $this->date = $appointment[0]->appointmentSuccess->appointmentDate;
+        // $this->time = $appointment[0]->appointmentSuccess->appointmentTime;
+        // $this->idAppointmet = $appointment[0]->appointmentSuccess->id;
+        // $this->headquarterid = $appointment[0]->appointmentSuccess->to_user_headquarters;
         $this->openModal();
     }
     public function deletAppointment($id)
     {
-        
         $medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'user'])
         ->whereHas('medicineReserveMedicine.medicineUser', function ($q1) use ($id) {
         $q1->where('id', $id);
-        })->get();
-        
+        })->get();        
         $this->medicineDelete = $medicineReserves[0]->id;
-        
+        $this->typeExam = $medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->id;        
         $this->dialog()->confirm([
             'title'       => 'CITA DE ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->name,
             'description' => '¿DESEAS ELIMINAR ESTA CITA?',
@@ -78,14 +72,14 @@ class HistoryAppointment extends Component
 
     public function delete()
     {
-        $medicineDelete = MedicineReserve::find($this->medicineDelete);
-        $medicineDelete->delete();
+        $medicineDelete = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'user'])
+        ->where('id',$this->medicineDelete)->get();        
+        $medicineDelete[0]->medicineReserveMedicine->delete();
         $this->notification([
             'title'       => 'SE ELIMINO CITA CON ÉXITO',
             'icon'        => 'error',
             'timeout' => 3300
         ]);
-
     }
 
     public function openModal()
