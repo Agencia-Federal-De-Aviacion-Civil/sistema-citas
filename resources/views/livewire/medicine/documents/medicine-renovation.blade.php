@@ -148,7 +148,7 @@
                 <li>Comprobante de pago.</li>
                 <li>Comprobante de cita.</li>
                 <li>Clave Única de Registro de Población (CURP).</li>
-                <li>Deberá presentar en forma impresa los formatos de declaración de salud, consentimiento informado (mismos que debe llenar y firmar) así como el vale de servicios que se incluyen al final de este documento.</li>
+                <li>Deberá presentar en forma impresa los formatos de declaración de salud, consentimiento informado (mismos que debe llenar y firmar) así como el vale de servicios.</li>
                 <li>Una de las siguientes identificaciones con fotografía:</li>
                 <p style="padding-left:2%;">A. Cédula de identidad ciudadana (INE) vigente.</p>
                 <p style="padding-left:2%;margin-top:-2%;">B. Cédula profesional.</p>
@@ -172,11 +172,11 @@
             <p>Se hace de su conocimiento la siguiente <b> guía de recomendaciones </b> para agilizar su evaluación
                 médica:</p>
             <ol class="">
-                <li value="1">Acudir con ropa cómoda, evitando sea de una sola pieza
+                <li value="1">Acudir con ropa cómoda, evitando sea de una sola pieza.
                 </li>
-                <li>Presentarse en ayuno, no tomar alimentos las 8 horas previas a su hora de cita</u>
+                <li>Presentarse en ayuno, no tomar alimentos las 8 horas previas a su hora de cita.</u>
                 </li>
-                <li>No suspender medicación prescrita
+                <li>No suspender medicación prescrita.
                 </li>
                 <li>En caso de haber tenido algún procedimiento dental, esperar mínimo 72 horas posteriores al mismo
                     para agendar su cita.
