@@ -148,7 +148,8 @@
                 <li>Comprobante de pago.</li>
                 <li>Comprobante de cita.</li>
                 <li>Clave Única de Registro de Población (CURP).</li>
-                <li>5. Una de las siguientes identificaciones con fotografía:</li>
+                <li>Deberá presentar en forma impresa los formatos de declaración de salud, consentimiento informado (mismos que debe llenar y firmar) así como el vale de servicios que se incluyen al final de este documento.</li>
+                <li>Una de las siguientes identificaciones con fotografía:</li>
                 <p style="padding-left:2%;">A. Cédula de identidad ciudadana (INE) vigente.</p>
                 <p style="padding-left:2%;margin-top:-2%;">B. Cédula profesional.</p>
                 <p style="padding-left:2%;margin-top:-2%;">C. Cartilla Militar (personal masculino).</p>
@@ -180,6 +181,8 @@
                 <li>En caso de haber tenido algún procedimiento dental, esperar mínimo 72 horas posteriores al mismo
                     para agendar su cita.
                 </li>
+                <li>En caso de haber sido diagnosticado con alguna(s) enfermedad(es) crónica(s) (enfermedades cardiacas, respiratorias, hipertiroidismo, etc.), presentar un resumen clínico expedido por su médico tratante de especialidad acorde a la patología y estudios <b>adicionales (Ver ANEXO)</b> con vigencia no mayor a 2 meses para acreditar el estado actual de salud. 
+                </li>
                 <li>En caso de presentar disminución en la agudeza visual, deberá presentarse con lentes de armazón
                     o de contacto con graduación actualizada. Si alterna el uso de ambos, deberá presentarlos. Para el
                     personal de pilotos en caso de usar lentes de contacto deberá acudir con sus lentes de armazón de
@@ -188,7 +191,7 @@
                 <li>En caso de presentar embarazo, presentar constancia de control del mismo, actualizada y hacerlo
                     saber al servicio de rayos X al acudir a su examen.
                 </li>
-                <li>8. Acudir con los estudios de laboratorio que a continuación se enlistan, los cuales deberán
+                <li>Acudir con los estudios de laboratorio que a continuación se enlistan, los cuales deberán
                     realizarse en una institución acreditada por la
                     <b>Norma ISO15189-2012</b>, la cual deberá contener: nombre de la institución, dirección, nombre
                     completo del laboratorista,
@@ -199,9 +202,9 @@
                     <p style="padding-left:3%">B) Química sanguínea de 6 elementos (Glucosa, Nitrógeno Ureico en Sangre,
                         Creatinina, Ácido úrico, Colesterol total y Triglicéridos).</p>
                     <p style="padding-left:3%">C) Examen General de Orina.</p>
-                    <p style="padding-left:3%">E) D. Prueba de detección de sustancias psicoactivas en orina, de 5
+                    <p style="padding-left:3%">E) Prueba de detección de sustancias psicoactivas en orina, de 5
                         reactivos (Cocaína, Cannabinoides (Marihuana), Barbitúricos, Anfetaminas y Benzodiazepinas).</p>
-                    <p style="padding-left:3%">F) E. Radiografía de Tórax Posteroanterior, la cual se deberá presentar
+                    <p style="padding-left:3%">F) Radiografía de Tórax Posteroanterior, la cual se deberá presentar
                         con la siguiente periodicidad de acuerdo a la clase:</p>
                     <p style="padding-left:5%;margin-top:-2%">1. Clase I – cada 3 años.</p>
                     <p style="padding-left:5%;margin-top:-2%">2. Clase II – cada 3 años.</p>
@@ -240,7 +243,7 @@
                 </tr>
                 <tr>
                     <td>Antecedente de Infarto Agudo al Miocardio</td>
-                    <td>Perfil lipídico (Colesterol total, triglicéridos, HDL, LDL)</td>
+                    <td>Perfil lipídico (Colesterol total, triglicéridos, HDL, LDL) Deberá proporcionar los estudios con que cuente desde el inicio de su padecimiento.</td>
                 </tr>
                 <tr>
                     <td>HIV positivo</td>

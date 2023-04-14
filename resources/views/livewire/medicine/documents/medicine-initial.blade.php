@@ -149,6 +149,7 @@
                 <li>Comprobante de pago.</li>
                 <li>Comprobante de cita.</li>
                 <li>Clave Única de Registro de Población (CURP).</li>
+                <li>Deberá presentar en forma impresa los formatos de declaración de salud, consentimiento informado (mismos que debe llenar y firmar) así como el vale de servicios.</li>
                 <li>Una de las siguientes identificaciones con fotografía:</li>
                 <p style="padding-left:2%;">A. Cédula de identidad ciudadana (INE) vigente.</p>
                 <p style="padding-left:2%;margin-top:-2%;">B. Cédula profesional.</p>
@@ -204,8 +205,8 @@
                     <p style="padding-left:3%">D) Prueba de detección de VIH (Anticuerpos).</p>
                     <p style="padding-left:3%">E) Prueba de detección de sustancias psicoactivas en orina, de 5
                         reactivos (Cocaína, Cannabinoides (Marihuana), Opiaceos, Anfetaminas y Benzodiazepinas).</p>
-                    <p style="padding-left:3%">F) En el caso del examen médico inicial, presentar radiografía de tórax
-                        posteroanterior, y para el examen médico de renovación como a continuación se indica:</p>
+                    <p style="padding-left:3%">F) En el caso del <u>examen médico inicial</u>, presentar radiografía de tórax
+                        posteroanterior, y para el <u>examen médico de renovación</u> como a continuación se indica:</p>
                     <p style="padding-left:5%;margin-top:-2%">1. Clase I – cada 3 años.</p>
                     <p style="padding-left:5%;margin-top:-2%">2. Clase II – cada 3 años.</p>
                     <p style="padding-left:5%;margin-top:-2%">3. Clase III – cada 3 años.</p>
