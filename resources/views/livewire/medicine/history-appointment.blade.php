@@ -48,6 +48,7 @@
                                     FECHA Y HORA
                                 </th>
                                 <th scope="col" class="px-6 py-3">
+                                    CORREO
                                 </th>
                                 <th scope="col" class="px-6 py-3">
                                 </th>
@@ -91,6 +92,7 @@
                                         {{ $medicineReserve->dateReserve }}
                                     </td>
                                     <td class="px-6 py-4">
+                                        {{ $medicineReserve->user->email }}
                                         {{-- <x-button wire:click="rescheduleAppointment({{ $medicineReserve->from_user_appointment  }})" label="REAGENDAR" xs blue right-icon="calendar" /> --}}
                                         {{-- <x-button wire:click="rescheduleAppointment()" label="REAGENDAR" xs blue right-icon="calendar" />                                             --}}
                                     </td>
