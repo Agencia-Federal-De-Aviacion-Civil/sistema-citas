@@ -92,11 +92,12 @@
                                         {{ $medicineReserve->dateReserve }}
                                     </td>
                                     <td class="px-6 py-4">
-                                        {{ $medicineReserve->user->email }}
+                                        {{ $medicineReserve->medicineReserveMedicine->medicineUser->email }}
                                         {{-- <x-button wire:click="rescheduleAppointment({{ $medicineReserve->from_user_appointment  }})" label="REAGENDAR" xs blue right-icon="calendar" /> --}}
                                         {{-- <x-button wire:click="rescheduleAppointment()" label="REAGENDAR" xs blue right-icon="calendar" />                                             --}}
                                     </td>
                                     <td class="px-6 py-4">
+                                        {{ $medicineReserve->medicineReserveMedicine->medicineUser->mobilePhone }}
                                         {{-- <x-button wire:click="deletAppointment({{ $medicineReserve->from_user_appointment  }})" label="ELIMINAR" xs red right-icon="trash" /> --}}
                                         {{-- <x-button wire:click="deletAppointment()" label="ELIMINAR" xs red right-icon="trash" /> --}}
 
