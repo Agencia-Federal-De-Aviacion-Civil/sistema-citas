@@ -12,6 +12,7 @@ use App\Models\Medicine\MedicineInitial;
 use App\Models\Medicine\MedicineQuestion;
 use App\Models\Medicine\MedicineRenovation;
 use App\Models\Medicine\MedicineReserve;
+use App\Models\Medicine\MedicineSchedule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Date;
@@ -28,7 +29,7 @@ class HomeMedicine extends Component
     public $name_document, $reference_number, $pay_date, $type_exam_id, $typeRenovationExams;
     public $questionClassess, $typeExams, $sedes, $userQuestions, $to_user_headquarters, $dateReserve, $saveMedicine;
     public $confirmModal = false, $modal = false;
-    public $medicineQueries, $medicineReserves, $medicineInitials, $medicineRenovations, $id_medicineReserve, $savedMedicineId;
+    public $medicineQueries, $medicineReserves, $medicineInitials, $medicineRenovations, $id_medicineReserve, $savedMedicineId, $scheduleMedicines, $medicine_schedule_id;
     // MEDICINE INITIAL TABLE
     public $question, $date;
     public function mount()
@@ -39,6 +40,7 @@ class HomeMedicine extends Component
         $this->questionClassess = collect();
         $this->clasificationClass = collect();
         $this->typeRenovationExams = collect();
+        $this->scheduleMedicines = collect();
         Date::setLocale('ES');
         $this->date = Date::now()->parse();
     }
@@ -98,11 +100,24 @@ class HomeMedicine extends Component
     public function resetQuestions()
     {
         $this->medicine_question_id = [];
-        // $this->dispatchBrowserEvent('reset-select-question');
     }
     public function openModal()
     {
         $this->confirmModal = true;
+    }
+    public function updatedToUserHeadquarters($value)
+    {
+        // Obtener los horarios disponibles para la fecha especificada
+        $this->scheduleMedicines = MedicineSchedule::where('user_id', $value)
+            ->whereNotIn('id', function ($query) {
+                // Subconsulta para obtener los horarios reservados
+                $query->select('medicine_schedule_id')
+                    ->from('medicine_reserves')
+                    ->where('dateReserve', $this->dateReserve)
+                    ->groupBy('medicine_schedule_id')
+                    ->havingRaw('COUNT(*) >= max_schedules');
+            })
+            ->get();
     }
     public function openModalPdf()
     {
@@ -118,6 +133,8 @@ class HomeMedicine extends Component
         $this->validate();
         $citas = MedicineReserve::where('to_user_headquarters', $this->to_user_headquarters)
             ->where('dateReserve', $this->dateReserve)
+            ->where('dateReserve', $this->dateReserve)
+            ->where('medicine_schedule_id', $this->medicine_schedule_id)
             ->count();
         switch ($this->to_user_headquarters) {
             case 2: // Cancun
@@ -136,7 +153,9 @@ class HomeMedicine extends Component
                 $maxCitas = 0;
                 break;
         }
-        if ($citas >= $maxCitas) {
+        $schedule = MedicineSchedule::find($this->medicine_schedule_id);
+        $maxCitasHorario = $schedule->max_schedules;
+        if ($citas >= $maxCitas || $citas >= $maxCitasHorario) {
             $this->notification([
                 'title'       => 'ERROR DE CITA!',
                 'description' => 'No hay citas disponibles para ese dia',
@@ -187,6 +206,7 @@ class HomeMedicine extends Component
             $cita->medicine_id = $this->saveMedicine->id;
             $cita->to_user_headquarters = $this->to_user_headquarters;
             $cita->dateReserve = $this->dateReserve;
+            $cita->medicine_schedule_id = $this->medicine_schedule_id;
             $cita->save();
             session(['saved_medicine_id' => $this->saveMedicine->id]);
             $this->generatePdf();

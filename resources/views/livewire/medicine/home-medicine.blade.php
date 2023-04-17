@@ -19,10 +19,11 @@
                 <ul class="flex flex-col md:flex-row items-start md:items-center text-gray-300 text-sm mt-3">
                     <li class="flex items-center mt-4 md:mt-0">
                         <div class="mr-1">
-                            <img src="https://tuk-cdn.s3.amazonaws.com/can-uploader/background_with_sub_text-svg3.svg" alt="date">
+                            <img src="https://tuk-cdn.s3.amazonaws.com/can-uploader/background_with_sub_text-svg3.svg"
+                                alt="date">
                         </div>
                         <span tabindex="0" class="focus:outline-none">
-                            {{$date->format('d')}} {{ Str::ucfirst($date->format('F'))}} {{$date->format('Y')}}
+                            {{ $date->format('d') }} {{ Str::ucfirst($date->format('F')) }} {{ $date->format('Y') }}
                         </span>
                     </li>
                 </ul>
@@ -323,6 +324,11 @@
                                             <div class="flex-grow pl-4">
                                                 <div class="grid xl:grid-cols-3 xl:gap-6">
                                                     <div class="text-base relative z-auto w-full mb-2 group">
+                                                        <x-input x-ref="reservedate" wire:model.lazy="dateReserve"
+                                                            id="fecha-appointment" label="SELECCIONE FECHA"
+                                                            placeholder="INGRESE..." readonly />
+                                                    </div>
+                                                    <div class="text-base relative z-auto w-full mb-2 group">
                                                         <x-select label="ELIJA LA SEDE" placeholder="Selecciona"
                                                             x-ref="selec_sede" wire:model.lazy="to_user_headquarters">
                                                             @foreach ($sedes as $sede)
@@ -333,27 +339,23 @@
                                                         </x-select>
                                                     </div>
                                                     <div class="text-base relative z-auto w-full mb-2 group">
-                                                        <x-input x-ref="reservedate" wire:model.lazy="dateReserve" id="fecha-appointment"
-                                                            label="SELECCIONE FECHA Y LA HORA" placeholder="INGRESE..."
-                                                            readonly />
-                                                    </div>
-
-                                                    {{-- <div class="text-base relative z-auto w-full mb-2 group">
-                                                        <x-select x-ref="dateAppointment" label="SELECCIONE HORA"
-                                                            placeholder="Seleccione..."
-                                                            wire:model.defer="appointmentTime">
-                                                            <x-select.option label="7:00 AM" value="7:00" />
-                                                            <x-select.option label="8:00 AM" value="8:00" />
-                                                            <x-select.option label="9:00 AM" value="9:00" />
-                                                            <x-select.option label="10:00 AM" value="10:00" />
+                                                        <x-select label="SELECCIONE HORA" placeholder="Seleccione..."
+                                                            wire:model.lazy="medicine_schedule_id">
+                                                            <x-select.option value="" label="SELECCIONE..." />
+                                                            </option>
+                                                            @foreach ($scheduleMedicines as $scheduleMedicine)
+                                                                <x-select.option
+                                                                    label="{{ $scheduleMedicine->time_start }} - {{ $scheduleMedicine->time_end }}"
+                                                                    value="{{ $scheduleMedicine->id }}" />
+                                                            @endforeach
                                                         </x-select>
-                                                    </div> --}}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                         {{-- paso6 --}}
                                         <div x-show="reservedate > '0'" class="flex relative">
-                                        {{-- <div class="flex relative">  $date--}}
+                                            {{-- <div class="flex relative">  $date --}}
                                             <div
                                                 class="flex-shrink-0 w-10 h-10 rounded-full bg-green-500 inline-flex items-center justify-center text-white relative z-10">
                                                 <svg fill="none" stroke="currentColor" stroke-linecap="round"
@@ -420,23 +422,29 @@
                 locale: {
                     weekdays: {
                         shorthand: ['Dom', 'Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab'],
-                        longhand: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],         
-                    }, 
+                        longhand: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes',
+                            'Sábado'
+                        ],
+                    },
                     months: {
-                        shorthand: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-                        longhand: ['Enero', 'Febrero', 'Marzo', 'Abril','Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre','Diciembre'],
+                        shorthand: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct',
+                            'Nov', 'Dic'
+                        ],
+                        longhand: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto',
+                            'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+                        ],
                     },
                 },
             });
             // CITAS MEDICAS
             flatpickr("#fecha-appointment", {
-                enableTime: true,
-                time_24hr: true,
-                dateFormat: "Y-m-d H:i",
-                minTime: "08:00",
-                maxTime: "11:00",
+                // enableTime: true,
+                // time_24hr: true,
+                dateFormat: "Y-m-d",
+                // minTime: "07:00",
+                // maxTime: "10:59",
                 disableMobile: "true",
-                minuteIncrement: 30,
+                // minuteIncrement: 10,
                 minDate: "today",
                 disable: [
                     function(date) {
@@ -447,11 +455,17 @@
                 locale: {
                     weekdays: {
                         shorthand: ['Dom', 'Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab'],
-                        longhand: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],         
-                    }, 
+                        longhand: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes',
+                            'Sábado'
+                        ],
+                    },
                     months: {
-                        shorthand: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-                        longhand: ['Enero', 'Febrero', 'Marzo', 'Abril','Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre','Diciembre'],
+                        shorthand: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct',
+                            'Nov', 'Dic'
+                        ],
+                        longhand: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto',
+                            'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+                        ],
                     },
                 },
             });

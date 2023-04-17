@@ -10,6 +10,7 @@ namespace App\Models;
 use App\Models\Catalogue\Headquarter;
 use App\Models\Medicine\Medicine;
 use App\Models\Medicine\MedicineReserve;
+use App\Models\Medicine\MedicineSchedule;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -105,5 +106,9 @@ class User extends Authenticatable
     public function usermedicineReserveFrom()
     {
         return $this->hasMany(MedicineReserve::class);
+    }
+    public function userMedicineSchedule()
+    {
+        return $this->hasMany(MedicineSchedule::class);
     }
 }

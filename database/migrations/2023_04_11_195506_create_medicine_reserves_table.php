@@ -21,7 +21,9 @@ return new class extends Migration
             $table->foreign('medicine_id')->references('id')->on('medicines')->onDelete('cascade');
             $table->unsignedBigInteger('to_user_headquarters')->nullable();
             $table->foreign('to_user_headquarters')->references('id')->on('users')->onDelete('cascade');
-            $table->dateTime('dateReserve');
+            $table->date('dateReserve');
+            $table->unsignedBigInteger('medicine_schedule_id')->nullable();
+            $table->foreign('medicine_schedule_id')->references('id')->on('medicine_schedules')->onDelete('cascade');
             $table->timestamps();
         });
     }
