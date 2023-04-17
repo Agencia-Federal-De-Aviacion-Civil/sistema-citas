@@ -58,7 +58,7 @@
                                 </li>
                             </ul>
                         </div>
-                        <x-jet-nav-link href="{{ route('afac.historyMedicine') }}">
+                        <x-jet-nav-link href="{{ route('afac.historyRegister') }}">
                             {{ __('Personas Registrada') }}
                         </x-jet-nav-link>
                     @endcan
@@ -206,7 +206,7 @@
                                 </li>
                             </ul>
                         </div>
-                        <x-jet-nav-link href="{{ route('afac.home') }}">
+                        <x-jet-nav-link href="{{ route('afac.historyRegister') }}">
                             {{ __('Personas Registradas') }}
                         </x-jet-nav-link>
                     @endcan
