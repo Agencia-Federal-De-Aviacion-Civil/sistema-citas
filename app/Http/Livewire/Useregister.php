@@ -31,7 +31,7 @@ final class Useregister extends PowerGridComponent
                 ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
             Header::make()->showSearchInput(),
             Footer::make()
-                ->showPerPage()
+                ->showPerPage(50)
                 ->showRecordCount(),
         ];
     }
