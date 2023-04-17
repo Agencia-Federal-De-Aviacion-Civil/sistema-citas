@@ -58,6 +58,9 @@
                                 </li>
                             </ul>
                         </div>
+                        <x-jet-nav-link href="{{ route('afac.historyRegister') }}">
+                            {{ __('Personas Registrada') }}
+                        </x-jet-nav-link>
                     @endcan
                     @can('see.navigation.medicine')
                         <x-jet-nav-link href="{{ route('afac.historyMedicine') }}" :active="request()->routeIs('afac.historyMedicine')">
@@ -203,6 +206,9 @@
                                 </li>
                             </ul>
                         </div>
+                        <x-jet-nav-link href="{{ route('afac.historyRegister') }}">
+                            {{ __('Personas Registradas') }}
+                        </x-jet-nav-link>
                     @endcan
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">

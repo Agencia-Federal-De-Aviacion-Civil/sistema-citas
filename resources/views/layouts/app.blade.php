@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="{{ asset('css/loader.css') }}">
     <link rel="stylesheet" href="{{ asset('css/upload.css') }}">
     @livewireStyles
+    @powerGridStyles
 </head>
 
 <body class="font-sans antialiased">
