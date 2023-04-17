@@ -13,9 +13,11 @@ use App\Models\Medicine\MedicineQuestion;
 use App\Models\Medicine\MedicineRenovation;
 use App\Models\Medicine\MedicineReserve;
 use App\Models\Medicine\MedicineSchedule;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use WireUi\Traits\Actions;
@@ -119,6 +121,18 @@ class HomeMedicine extends Component
             })
             ->get();
     }
+    public function updatedDateReserve($value)
+    {
+        $this->scheduleMedicines = MedicineSchedule::where('user_id', $this->to_user_headquarters)
+            ->whereNotIn('id', function ($query) use ($value) {
+                $query->select('medicine_schedule_id')
+                    ->from('medicine_reserves')
+                    ->where('to_user_headquarters', $this->to_user_headquarters)
+                    ->where('dateReserve', $value);
+            })
+            ->orderBy('time_start')
+            ->get();
+    }
     public function openModalPdf()
     {
         $this->confirmModal = false;
@@ -133,7 +147,6 @@ class HomeMedicine extends Component
         $this->validate();
         $citas = MedicineReserve::where('to_user_headquarters', $this->to_user_headquarters)
             ->where('dateReserve', $this->dateReserve)
-            ->where('dateReserve', $this->dateReserve)
             ->where('medicine_schedule_id', $this->medicine_schedule_id)
             ->count();
         switch ($this->to_user_headquarters) {
@@ -141,7 +154,7 @@ class HomeMedicine extends Component
             case 3: // Tijuana
             case 4: // Toluca
             case 5: // Monterrey
-                $maxCitas = 10;
+                $maxCitas = 50;
                 break;
             case 7: // Guadalajara
                 $maxCitas = 20;
