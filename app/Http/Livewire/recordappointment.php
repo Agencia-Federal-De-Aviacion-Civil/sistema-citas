@@ -28,7 +28,9 @@ final class recordappointment extends PowerGridComponent
             Exportable::make('export')
                 ->striped()
                 ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
-            Header::make()->showSearchInput(),
+            Header::make()
+            ->showSearchInput()
+            ->showToggleColumns(),
             Footer::make()
                 ->showPerPage(25)
                 ->showRecordCount(),
@@ -72,12 +74,12 @@ final class recordappointment extends PowerGridComponent
     public function relationSearch(): array
     {
         return [
-            // 'medicineReserveFromUser' => [
-            //     'name',
-            // ],
-            // 'medicineReserveFromUser' => [
-            //     'apParental',
-            // ],
+             'medicineReserveFromUser' => [
+                 'name',
+             ],
+             /*'medicineReserveFromUser?' => [
+                 'apParental',
+             ],*/
             
         ];
     }
@@ -98,8 +100,8 @@ final class recordappointment extends PowerGridComponent
         return PowerGrid::eloquent()
             ->addColumn('id')
             ->addColumn('name',function (MedicineReserve $regiser) {
-                //return $regiser->medicineReserveFromUser->name.' '.$regiser->userParticipantUser->apParental.' '.$regiser->userParticipantUser->apMaternal;
-                return $regiser->medicineReserveFromUser->name;
+                return $regiser->medicineReserveFromUser->name.' '.$regiser->userParticipantUser?->apParental.' '.$regiser->userParticipantUser?->apMaternal;
+                //return $regiser->medicineReserveFromUser->name;
             })
             ->addColumn('folio',function (MedicineReserve $type) {
                 return 'MED-'.$type->medicineReserveMedicine->id;
@@ -108,14 +110,26 @@ final class recordappointment extends PowerGridComponent
                 return $type->medicineReserveMedicine->medicineTypeExam->name;
             })
             ->addColumn('class',function (MedicineReserve $class) {
-                return $class->medicineReserveMedicine->type_exam_id;
+                if ($class->medicineReserveMedicine->medicineTypeExam->id == 1) {
+                    return $class->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name;
+                } else if ($class->medicineReserveMedicine->type_exam_id == 2) {
+                    return $class->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name;
+                }
+            })
+            ->addColumn('typelicens',function (MedicineReserve $class) {
+                if ($class->medicineReserveMedicine->medicineTypeExam->id == 1) {
+                    return $class->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass->name;
+                } else if ($class->medicineReserveMedicine->type_exam_id == 2) {
+                    return $class->medicineReserveMedicine->medicineRenovation[0]->renovationClasificationClass->name;
+                }
+                
             })
             ->addColumn('headquarters',function (MedicineReserve $headquarters) {
                 return $headquarters->user->name;
             })
-            //->addColumn('curp',function (MedicineReserve $regiser) {
-            //    return $regiser->userParticipantUser->curp;
-            //})
+            ->addColumn('curp',function (MedicineReserve $regiser) {
+                return $regiser->userParticipantUser?->curp;
+            })
             ->addColumn('created_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->dateReserve)->format('d/m/Y H:i:s'))
             ->addColumn('created_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
             //->addColumn('updated_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'));
