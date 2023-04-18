@@ -113,9 +113,9 @@ final class recordappointment extends PowerGridComponent
             ->addColumn('headquarters',function (MedicineReserve $headquarters) {
                 return $headquarters->user->name;
             })
-            ->addColumn('curp',function (MedicineReserve $regiser) {
-                return $regiser->userParticipantUser->curp;
-            })
+            //->addColumn('curp',function (MedicineReserve $regiser) {
+            //    return $regiser->userParticipantUser->curp;
+            //})
             ->addColumn('created_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->dateReserve)->format('d/m/Y H:i:s'))
             ->addColumn('created_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
             //->addColumn('updated_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'));
