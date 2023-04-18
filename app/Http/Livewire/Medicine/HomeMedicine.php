@@ -54,8 +54,8 @@ class HomeMedicine extends Component
             'pay_date' => 'required',
             'type_exam_id' => 'required',
             'medicine_question_id' => 'required_if:type_exam_id,1',
-            'type_class_id' => '',
-            'clasification_class_id' => '',
+            'type_class_id' => 'required',
+            'clasification_class_id' => 'required',
             'to_user_headquarters' => 'required',
             'dateReserve' => 'required'
         ];
@@ -191,7 +191,7 @@ class HomeMedicine extends Component
                         'title'       => 'ERROR DE CITA!',
                         'description' => 'YA TIENES UNA CITA AGENDADA PARA EXAMEN INICIAL' . ' ' . $userMedicine->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name,
                         'icon'        => 'error',
-                        'timeout' => '2500'
+                        'timeout' => '3100'
                     ]);
                     return;
                 } else if ($userMedicine->medicineReserveMedicine->medicineRenovation->count() > 0 && $userMedicine->medicineReserveMedicine->medicineRenovation[0]->type_class_id == $this->type_class_id) {

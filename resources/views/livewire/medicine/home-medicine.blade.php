@@ -1,5 +1,5 @@
 <div>
-    <x-notifications position="top-center" />
+    <x-notifications position="top-bottom" />
     <x-dialog z-index="z-50" blur="md" align="center" />
     @if ($confirmModal)
         @include('livewire.medicine.modals.confirm')
