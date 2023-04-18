@@ -72,12 +72,12 @@ final class recordappointment extends PowerGridComponent
     public function relationSearch(): array
     {
         return [
-            'medicineReserveFromUser' => [
-                'name',
-            ],
-            'medicineReserveFromUser' => [
-                'apParental',
-            ],
+            // 'medicineReserveFromUser' => [
+            //     'name',
+            // ],
+            // 'medicineReserveFromUser' => [
+            //     'apParental',
+            // ],
             
         ];
     }
