@@ -75,7 +75,7 @@ class Index extends Component
             ['id' => $this->id_register],
             [
                 'name' => strtoupper($this->name),
-                'email' => strtoupper($this->email),
+                'email' => $this->email,
                 'password' => Hash::make($this->password),
             ]
         )->assignRole('user');

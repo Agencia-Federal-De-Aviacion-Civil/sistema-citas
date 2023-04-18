@@ -87,7 +87,7 @@
             <tr>
                 <td>NOMBRE:</td>
                 <td>
-                    {{ strtoupper($medicineReserves[0]->medicineReserveMedicine->medicineUser->name . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apParental')->first() . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apMaternal')->first()) }}
+                    {{ $medicineReserves[0]->medicineReserveMedicine->medicineUser->name . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apParental')->first() . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apMaternal')->first() }}
                 </td>
             </tr>
             <tr>
@@ -102,7 +102,7 @@
             <tr>
                 <td>TIPO DE EXAMEN:</td>
                 <td>
-                    {{ strtoupper($medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->name) }}</td>
+                    {{ $medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->name }}</td>
             </tr>
             <tr>
                 <td>TIPO DE CLASE:</td>
@@ -119,12 +119,12 @@
             </tr> --}}
             <tr>
                 <td>UNIDAD MÉDICA:</td>
-                <td> <b>{{ strtoupper($medicineReserves[0]->user->name) }}</b></p>
+                <td> <b>{{ $medicineReserves[0]->user->name }}</b></p>
                 </td>
             </tr>
             <tr>
                 <td>DIRECCIÓN SEDE:</td>
-                <td> {{ strtoupper($medicineReserves[0]->user->userHeadquarter[0]->direction) }}</p>
+                <td> {{ $medicineReserves[0]->user->userHeadquarter[0]->direction }}</p>
                 </td>
             </tr>
             <tr>

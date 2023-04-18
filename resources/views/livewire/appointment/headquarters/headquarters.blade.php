@@ -1,5 +1,5 @@
 <div>
-    <x-notifications position="top-right" />
+    <x-notifications position="top-bottom" />
     @if ($modal)
         @include('livewire.appointment.headquarters.modals.modal-new')
     @endif
