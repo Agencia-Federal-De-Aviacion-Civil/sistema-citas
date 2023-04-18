@@ -24,8 +24,12 @@ class HistoryAppointment extends Component
     public $medicineInitial, $medicineReserves, $medicineDelete;
     public function render()
     {
+        $appointment = MedicineReserve::query()
+        ->selectRaw("count(id) as registradas")
+        ->first();
+        $registradas = $appointment->registradas;
         $this->medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'user'])->get();
-        return view('livewire.medicine.history-appointment')
+        return view('livewire.medicine.history-appointment',compact('registradas'))
             ->layout('layouts.app');
     }
     public function rescheduleAppointment($id)
