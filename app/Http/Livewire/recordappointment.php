@@ -12,9 +12,7 @@ use PowerComponents\LivewirePowerGrid\{Button, Column, Exportable, Footer, Heade
 final class recordappointment extends PowerGridComponent
 {
     use ActionButton;
-
-
-
+   
     /*
     |--------------------------------------------------------------------------
     |  Features Setup

@@ -12,9 +12,10 @@ class scheduleComponent extends Component
      * @return void
      */
     public $scheduleId;
+    public $modal;
     public function __construct($scheduleId)
     {
-        $this->scheduleId = $scheduleId;
+        $this->scheduleId = $scheduleId;   
     }
 
     /**
@@ -22,6 +23,8 @@ class scheduleComponent extends Component
      *
      * @return \Illuminate\Contracts\View\View|\Closure|string
      */
+    
+
     public function render()
     {
         return view('components.schedule-component');
