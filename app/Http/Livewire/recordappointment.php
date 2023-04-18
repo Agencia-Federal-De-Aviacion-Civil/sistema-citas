@@ -2,15 +2,14 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\UserParticipant;
+use App\Models\Medicine\MedicineReserve;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
-//use App\Models\UserParticipant;
 use PowerComponents\LivewirePowerGrid\Rules\{Rule, RuleActions};
 use PowerComponents\LivewirePowerGrid\Traits\ActionButton;
 use PowerComponents\LivewirePowerGrid\{Button, Column, Exportable, Footer, Header, PowerGrid, PowerGridComponent, PowerGridEloquent};
 
-final class Useregister extends PowerGridComponent
+final class recordappointment extends PowerGridComponent
 {
     use ActionButton;
 
@@ -29,11 +28,9 @@ final class Useregister extends PowerGridComponent
             Exportable::make('export')
                 ->striped()
                 ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
-            Header::make()
-            ->showSearchInput()
-            ->showToggleColumns(),
+            Header::make()->showSearchInput(),
             Footer::make()
-                ->showPerPage(50)
+                ->showPerPage(25)
                 ->showRecordCount(),
         ];
     }
@@ -49,13 +46,14 @@ final class Useregister extends PowerGridComponent
     /**
     * PowerGrid datasource.
     *
-    * @return Builder<\App\Models\UserParticipant>
+    * @return Builder<\App\Models\Medicine\MedicineReserve>
     */
     public function datasource(): Builder
     {
-        return UserParticipant::query()->with([
-            'userParticipantUser'
+        return MedicineReserve::query()->with([
+            'medicineReserveMedicine', 'medicineReserveFromUser', 'user','userParticipantUser'
         ]);
+        
     }
 
     /*
@@ -74,12 +72,13 @@ final class Useregister extends PowerGridComponent
     public function relationSearch(): array
     {
         return [
-            'userParticipantUser' => [
+            'medicineReserveFromUser' => [
                 'name',
             ],
-            'userParticipantUser' => [
-                'curp',
+            'medicineReserveFromUser' => [
+                'apParental',
             ],
+            
         ];
     }
 
@@ -98,29 +97,28 @@ final class Useregister extends PowerGridComponent
     {
         return PowerGrid::eloquent()
             ->addColumn('id')
-            ->addColumn('name',function (UserParticipant $user) {
-                return $user->userParticipantUser->name.' '.$user->apParental.' '.$user->apMaternal;
+            ->addColumn('name',function (MedicineReserve $regiser) {
+                return $regiser->medicineReserveFromUser->name.' '.$regiser->userParticipantUser->apParental.' '.$regiser->userParticipantUser->apMaternal;
             })
-            ->addColumn('curp')
-           /** Example of custom column using a closure **/
-            ->addColumn('name_lower', function (UserParticipant $model) {
-                return strtolower(e($model->name));
+            ->addColumn('folio',function (MedicineReserve $type) {
+                return 'MED-'.$type->medicineReserveMedicine->id;
             })
-            ->addColumn('email',function (UserParticipant $user) {
-                return $user->userParticipantUser->email;
+            ->addColumn('type',function (MedicineReserve $type) {
+                return $type->medicineReserveMedicine->medicineTypeExam->name;
             })
-           
-            ->addColumn('genre')
-            ->addColumn('birth', fn (UserParticipant $model) => Carbon::parse($model->birth)->format('d/m/Y'))
-            ->addColumn('age')
-            ->addColumn('domicile',function (UserParticipant $user) {
-                return $user->street.' No.'.$user->nInterior.' No.ext.'.$user->nExterior.' '.$user->suburb.' ,'.$user->postalCode.' ,'.$user->delegation.' ,'.$user->federalEntity;
+            ->addColumn('class',function (MedicineReserve $class) {
+                return $class->medicineReserveMedicine->type_exam_id;
             })
-            ->addColumn('mobilePhone')
-            ->addColumn('officePhone')
-            ->addColumn('extension')
-            ->addColumn('created_at_formatted', fn (UserParticipant $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'))
-            ->addColumn('updated_at_formatted', fn (UserParticipant $model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'));
+            ->addColumn('headquarters',function (MedicineReserve $headquarters) {
+                return $headquarters->user->name;
+            })
+            ->addColumn('curp',function (MedicineReserve $regiser) {
+                return $regiser->userParticipantUser->curp;
+            })
+            ->addColumn('created_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->dateReserve)->format('d/m/Y H:i:s'))
+            ->addColumn('created_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
+            //->addColumn('updated_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'));
+            
     }
 
     /*
@@ -142,64 +140,56 @@ final class Useregister extends PowerGridComponent
         return [
             Column::make('ID', 'id'),
                 //->makeInputRange(),
-            Column::make('Nombre', 'name')
-                ->sortable()
+            
+            Column::make('FOLIO', 'folio')
                 ->searchable(),
-                //->makeInputText(),
+                //->sortable(),
+                //->makeInputDatePicker(),
+
+            Column::make('NOMBRE', 'name')
+                ->searchable(),
+                //->sortable(),
+                //->makeInputDatePicker(),
+            
+            Column::make('TIPO', 'type')
+                ->searchable()
+                ->sortable(),
+                //->makeInputDatePicker(),
+
+            Column::make('CLASE', 'class')
+                ->searchable()
+                ->sortable(),
+                //->makeInputDatePicker(),
+            
+            Column::make('TIPO DE LICENCIA', 'typelicens')
+                ->searchable()
+                ->sortable(),
+                //->makeInputDatePicker(),
+            
+            Column::make('SEDE', 'headquarters')
+                ->searchable()
+                ->sortable(),
+                //->makeInputDatePicker(),
+            
+            Column::make('FECHA Y HORA DE LA CITA', 'dateReserve')
+                ->searchable()
+                ->sortable(),
+                //->makeInputDatePicker(),
+            
             Column::make('CURP', 'curp')
-                ->sortable()
-                ->searchable(),
-                //->makeInputText(),
+                ->searchable()
+                ->sortable(),
+                //->makeInputDatePicker(),
 
-           Column::make('correo', 'email')
-                ->sortable()
-                ->searchable(),
-                //->makeInputText(),
+            Column::make('CREADA EL', 'created_at_formatted', 'created_at')
+                ->searchable()
+                ->sortable(),
+                //->makeInputDatePicker(),
 
-            Column::make('Genero', 'genre')
-                ->sortable()
-                ->searchable(),
-                //->makeInputText(),
-            
-            Column::make('Fecha de nacimiento', 'birth')
-                ->sortable()
-                ->searchable(),
-                //->makeInputText(),
-            Column::make('Edad', 'age')
-                ->sortable()
-                ->searchable(),
-                //->makeInputText(),
-            Column::make('Dirección', 'domicile')
-                ->sortable()
-                ->searchable(),
-                //->makeInputText(),
-            
-            Column::make('Celular', 'mobilePhone')
-                ->sortable()
-                ->searchable(),
-                //->makeInputText(),
-            
-            Column::make('Oficina', 'officePhone')
-                ->sortable()
-                ->searchable(),
-                //->makeInputText(),
-            
-            Column::make('Extensión', 'extension')
-                ->sortable()
-                ->searchable(),
-                //->makeInputText(),
-
-
-
-            Column::make('CREATED AT', 'created_at_formatted', 'created_at')
-                ->sortable()
-                ->searchable(),
-                //->makeInputText(),
-
-            Column::make('UPDATED AT', 'updated_at_formatted', 'updated_at')
-                ->sortable()
-                ->searchable(),
-                //->makeInputText(),
+            //Column::make('UPDATED AT', 'updated_at_formatted', 'updated_at')
+            //    ->searchable()
+            //    ->sortable(),
+                //->makeInputDatePicker(),
 
         ]
 ;
@@ -214,7 +204,7 @@ final class Useregister extends PowerGridComponent
     */
 
      /**
-     * PowerGrid User Action Buttons.
+     * PowerGrid MedicineReserve Action Buttons.
      *
      * @return array<int, Button>
      */
@@ -225,11 +215,11 @@ final class Useregister extends PowerGridComponent
        return [
            Button::make('edit', 'Edit')
                ->class('bg-indigo-500 cursor-pointer text-white px-3 py-2.5 m-1 rounded text-sm')
-               ->route('user.edit', ['user' => 'id']),
+               ->route('medicine-reserve.edit', ['medicine-reserve' => 'id']),
 
            Button::make('destroy', 'Delete')
                ->class('bg-red-500 cursor-pointer text-white px-3 py-2 m-1 rounded text-sm')
-               ->route('user.destroy', ['user' => 'id'])
+               ->route('medicine-reserve.destroy', ['medicine-reserve' => 'id'])
                ->method('delete')
         ];
     }
@@ -244,7 +234,7 @@ final class Useregister extends PowerGridComponent
     */
 
      /**
-     * PowerGrid User Action Rules.
+     * PowerGrid MedicineReserve Action Rules.
      *
      * @return array<int, RuleActions>
      */
@@ -256,7 +246,7 @@ final class Useregister extends PowerGridComponent
 
            //Hide button edit for ID 1
             Rule::button('edit')
-                ->when(fn($user) => $user->id === 1)
+                ->when(fn($medicine-reserve) => $medicine-reserve->id === 1)
                 ->hide(),
         ];
     }

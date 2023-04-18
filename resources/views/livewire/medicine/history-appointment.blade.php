@@ -21,9 +21,10 @@
     </div>
     <div class="py-12">
         <div class="container mx-auto px-4 py-4 bg-white shadow-xl sm:rounded-lg">
-            <div class="mt-12 max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="ml-4 py-6 mr-4">
-                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <div class="mt-12 max-w-8xl mx-auto sm:px-6 lg:px-8">
+                <div class="ml-4 py-6 mr-4 uppercase text-sm">
+                    <livewire:recordappointment/>
+                    {{-- <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" class="px-6 py-3">
@@ -95,17 +96,17 @@
                                         {{ $medicineReserve->medicineReserveMedicine->medicineUser->email }}
                                         {{-- <x-button wire:click="rescheduleAppointment({{ $medicineReserve->from_user_appointment  }})" label="REAGENDAR" xs blue right-icon="calendar" /> --}}
                                         {{-- <x-button wire:click="rescheduleAppointment()" label="REAGENDAR" xs blue right-icon="calendar" />                                             --}}
-                                    </td>
+                                    {{-- </td>
                                     <td class="px-6 py-4">
-                                        {{ $medicineReserve->medicineReserveMedicine->medicineUser->mobilePhone }}
+                                        {{ $medicineReserve->medicineReserveMedicine->medicineUser->mobilePhone }} --}}
                                         {{-- <x-button wire:click="deletAppointment({{ $medicineReserve->from_user_appointment  }})" label="ELIMINAR" xs red right-icon="trash" /> --}}
                                         {{-- <x-button wire:click="deletAppointment()" label="ELIMINAR" xs red right-icon="trash" /> --}}
 
-                                    </td>
+                                    {{-- </td>
                                 </tr>
-                        </tbody>
-                        @endforeach
-                    </table>
+                        </tbody> --}}
+                        {{-- @endforeach --}}
+                    {{-- </table> --}}
                     <div class="mt-6 ml-6 mr-6 mb-6">
                     </div>
                 </div>
