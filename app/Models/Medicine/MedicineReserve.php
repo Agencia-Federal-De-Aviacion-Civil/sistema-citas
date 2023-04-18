@@ -3,6 +3,7 @@
 namespace App\Models\Medicine;
 
 use App\Models\User;
+use App\Models\UserParticipant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -26,6 +27,11 @@ class MedicineReserve extends Model
     {
         return $this->belongsTo(Medicine::class);
     }
+    public function userParticipantUser()
+    {
+        return $this->belongsTo(UserParticipant::class, 'from_user_appointment','user_id');
+    }
+    
 
 
 }

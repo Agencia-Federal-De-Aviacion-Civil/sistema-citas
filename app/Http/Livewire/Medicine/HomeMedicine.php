@@ -142,6 +142,9 @@ class HomeMedicine extends Component
     {
         return redirect()->route('afac.home');
     }
+    public function downloadpdf(){
+        return response()->download(public_path('documents/Formatos_Cita_medica.pdf'));
+    }
     public function save()
     {
         $this->validate();

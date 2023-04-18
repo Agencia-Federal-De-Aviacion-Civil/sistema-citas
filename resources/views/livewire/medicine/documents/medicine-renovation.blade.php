@@ -66,6 +66,12 @@
     .codigoqr {
         text-align: right;
     }
+    footer {
+        position: fixed;
+        bottom: 30px;
+        right: 0px;
+        height: 60px;
+    }  
 </style>
 
 <body class="bgsize">
@@ -78,51 +84,51 @@
         <div class="cuadrado-2">
             <p>Folio de cita: <b>MED-{{ $medicineReserves[0]->id }}</b></p>
         </div>
-        <table style="margin-top: 6%;"">
+        <table style="margin-top: 6%;">
             <tr>
-                <td colspan="12">NOMBRE:</td>
-                <td colspan="24">
+                <td>NOMBRE:</td>
+                <td>
                     {{ mb_strtoupper($medicineReserves[0]->medicineReserveMedicine->medicineUser->name . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apParental')->first() . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apMaternal')->first()) }}
                 </td>
             </tr>
             <tr>
-                <td colspan="12">CURP:</td>
-                <td colspan="24">
+                <td>CURP:</td>
+                <td>
                     {{ $medicineReserves[0]->medicineReserveMedicine->medicineUser->userParticipant->pluck('curp')->first() }}
                 </td>
             </tr>
             <tr>
-                <td colspan="12">MODO DE TRANSPORTE:</td>
-                <td colspan="24">AÉREO</td>
+                <td>MODO DE TRANSPORTE:</td>
+                <td>AÉREO</td>
             </tr>
             <tr>
-                <td colspan="12">TIPO DE EXAMEN:</td>
-                <td colspan="24">
+                <td>TIPO DE EXAMEN:</td>
+                <td>
                     {{ mb_strtoupper($medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->name) }}</td>
             </tr>
             <tr>
-                <td colspan="12">TIPO DE CLASE:</td>
-                <td colspan="24">
+                <td>TIPO DE CLASE:</td>
+                <td>
                     {{ mb_strtoupper($medicineReserves[0]->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name) }}
                 </td>
             </tr>
             <tr>
-                <td colspan="12">TRAMITE:</td>
-                <td colspan="24">EXAMEN PSICOFISICO INTEGRAL</td>
+                <td>TRAMITE:</td>
+                <td>EXAMEN PSICOFISICO INTEGRAL</td>
             </tr>
             <tr>
-                <td colspan="12">UNIDAD MÉDICA:</td>
-                <td colspan="24"> <b>{{ mb_strtoupper($medicineReserves[0]->user->name) }}</b></p>
+                <td>UNIDAD MÉDICA:</td>
+                <td><b>{{ mb_strtoupper($medicineReserves[0]->user->name) }}</b></p>
                 </td>
             </tr>
             <tr>
-                <td colspan="12">DIRECCIÓN SEDE:</td>
-                <td colspan="24"> {{ strtoupper($medicineReserves[0]->user->userHeadquarter[0]->direction) }}</p>
+                <td>DIRECCIÓN SEDE:</td>
+                <td> {{ strtoupper($medicineReserves[0]->user->userHeadquarter[0]->direction) }}</p>
                 </td>
             </tr>
             <tr>
-                <td colspan="12">FECHA Y HORA:</td>
-                <td colspan="24">{{ $medicineReserves[0]->dateReserve }}</td>
+                <td>FECHA Y HORA:</td>
+                <td>{{ $medicineReserves[0]->dateReserve }}</td>
             </tr>
         </table>
         <div style="background-color: #e6e6e6;height: 25px; ">
@@ -142,7 +148,8 @@
                 <li>Comprobante de pago.</li>
                 <li>Comprobante de cita.</li>
                 <li>Clave Única de Registro de Población (CURP).</li>
-                <li>5. Una de las siguientes identificaciones con fotografía:</li>
+                <li>Deberá presentar en forma impresa los formatos de declaración de salud, consentimiento informado (mismos que debe llenar y firmar) así como el vale de servicios.</li>
+                <li>Una de las siguientes identificaciones con fotografía:</li>
                 <p style="padding-left:2%;">A. Cédula de identidad ciudadana (INE) vigente.</p>
                 <p style="padding-left:2%;margin-top:-2%;">B. Cédula profesional.</p>
                 <p style="padding-left:2%;margin-top:-2%;">C. Cartilla Militar (personal masculino).</p>
@@ -150,10 +157,12 @@
                 <p style="padding-left:2%;margin-top:-2%;">E. Pasaporte.</p>
             </ol>
         </div>
-        <div class="codigoqr">
-            <img src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ $keyEncrypt }}"
-                width="120" height="120" />
-        </div>
+        <footer>
+            <div class="codigoqr">
+                <img src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ $keyEncrypt }}"
+                    width="120" height="120" />
+            </div>
+        </footer>
         {{-- PAGINA 2 --}}
         <div style='page-break-before:always;'></div>
         <!-- <div style="text-align: center;">
@@ -163,14 +172,16 @@
             <p>Se hace de su conocimiento la siguiente <b> guía de recomendaciones </b> para agilizar su evaluación
                 médica:</p>
             <ol class="">
-                <li value="1">Acudir con ropa cómoda, evitando sea de una sola pieza
+                <li value="1">Acudir con ropa cómoda, evitando sea de una sola pieza.
                 </li>
-                <li>Presentarse en ayuno, no tomar alimentos las 8 horas previas a su hora de cita</u>
+                <li>Presentarse en ayuno, no tomar alimentos las 8 horas previas a su hora de cita.</u>
                 </li>
-                <li>No suspender medicación prescrita
+                <li>No suspender medicación prescrita.
                 </li>
                 <li>En caso de haber tenido algún procedimiento dental, esperar mínimo 72 horas posteriores al mismo
                     para agendar su cita.
+                </li>
+                <li>En caso de haber sido diagnosticado con alguna(s) enfermedad(es) crónica(s) (enfermedades cardiacas, respiratorias, hipertiroidismo, etc.), presentar un resumen clínico expedido por su médico tratante de especialidad acorde a la patología y estudios <b>adicionales (Ver ANEXO)</b> con vigencia no mayor a 2 meses para acreditar el estado actual de salud. 
                 </li>
                 <li>En caso de presentar disminución en la agudeza visual, deberá presentarse con lentes de armazón
                     o de contacto con graduación actualizada. Si alterna el uso de ambos, deberá presentarlos. Para el
@@ -180,7 +191,7 @@
                 <li>En caso de presentar embarazo, presentar constancia de control del mismo, actualizada y hacerlo
                     saber al servicio de rayos X al acudir a su examen.
                 </li>
-                <li>8. Acudir con los estudios de laboratorio que a continuación se enlistan, los cuales deberán
+                <li>Acudir con los estudios de laboratorio que a continuación se enlistan, los cuales deberán
                     realizarse en una institución acreditada por la
                     <b>Norma ISO15189-2012</b>, la cual deberá contener: nombre de la institución, dirección, nombre
                     completo del laboratorista,
@@ -191,15 +202,16 @@
                     <p style="padding-left:3%">B) Química sanguínea de 6 elementos (Glucosa, Nitrógeno Ureico en Sangre,
                         Creatinina, Ácido úrico, Colesterol total y Triglicéridos).</p>
                     <p style="padding-left:3%">C) Examen General de Orina.</p>
-                    <p style="padding-left:3%">E) D. Prueba de detección de sustancias psicoactivas en orina, de 5
+                    <p style="padding-left:3%">E) Prueba de detección de sustancias psicoactivas en orina, de 5
                         reactivos (Cocaína, Cannabinoides (Marihuana), Barbitúricos, Anfetaminas y Benzodiazepinas).</p>
-                    <p style="padding-left:3%">F) E. Radiografía de Tórax Posteroanterior, la cual se deberá presentar
+                    <p style="padding-left:3%">F) Radiografía de Tórax Posteroanterior, la cual se deberá presentar
                         con la siguiente periodicidad de acuerdo a la clase:</p>
                     <p style="padding-left:5%;margin-top:-2%">1. Clase I – cada 3 años.</p>
                     <p style="padding-left:5%;margin-top:-2%">2. Clase II – cada 3 años.</p>
                     <p style="padding-left:5%;margin-top:-2%">3. Clase III – cada 3 años.</p>
                     <p style="padding-left:5%;margin-top:-2%">4. O antes a indicación de su médico examinador.</p>
                 </li>
+                <p style="margin-top:-2%">****En caso de hacer cita en la UM Aeropuerto no será necesario presentar RX de Tórax</p>
                 <li>Los estudios previamente descritos deberán tener fecha de emisión no mayor a un mes.
                 </li>
                 {{-- <li>Imprimir el formato de Declaración de salud.
@@ -231,7 +243,7 @@
                 </tr>
                 <tr>
                     <td>Antecedente de Infarto Agudo al Miocardio</td>
-                    <td>Perfil lipídico (Colesterol total, triglicéridos, HDL, LDL)</td>
+                    <td>Perfil lipídico (Colesterol total, triglicéridos, HDL, LDL) Deberá proporcionar los estudios con que cuente desde el inicio de su padecimiento.</td>
                 </tr>
                 <tr>
                     <td>HIV positivo</td>

@@ -4,7 +4,7 @@ namespace App\Models;
 
 // use App\Models\appointment\user_appointment_success;
 // use App\Models\appointment\userAppointment;
-// use App\Models\appointment\UserParticipant;
+//use App\Models\UserParticipant;
 // use App\Models\catalogue\headquarter;
 
 use App\Models\Catalogue\Headquarter;

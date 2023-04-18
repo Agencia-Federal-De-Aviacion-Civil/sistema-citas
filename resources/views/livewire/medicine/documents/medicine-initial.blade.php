@@ -65,6 +65,12 @@
     .codigoqr {
         text-align: right;
     }
+    footer {
+        position: fixed;
+        bottom: 30px;
+        right: 0px;
+        height: 60px;
+    }  
 </style>
 
 <body class="bgsize">
@@ -77,53 +83,53 @@
         <div class="cuadrado-2">
             <p>Folio de cita: <b>MED-{{ $medicineReserves[0]->id }}</b></p>
         </div>
-        <table class="info">
+        <table style="margin-top: 6%;">
             <tr>
-                <td colspan="12">NOMBRE:</td>
-                <td colspan="24">
+                <td>NOMBRE:</td>
+                <td>
                     {{ strtoupper($medicineReserves[0]->medicineReserveMedicine->medicineUser->name . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apParental')->first() . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apMaternal')->first()) }}
                 </td>
             </tr>
             <tr>
-                <td colspan="12">CURP:</td>
-                <td colspan="24">{{ $medicineReserves[0]->medicineReserveMedicine->medicineUser->userParticipant->pluck('curp')->first() }}
+                <td>CURP:</td>
+                <td>{{ $medicineReserves[0]->medicineReserveMedicine->medicineUser->userParticipant->pluck('curp')->first() }}
                 </td>
             </tr>
             <tr>
-                <td colspan="12">MODO DE TRANSPORTE:</td>
-                <td colspan="24">AÉREO</td>
+                <td>MODO DE TRANSPORTE:</td>
+                <td>AÉREO</td>
             </tr>
             <tr>
-                <td colspan="12">TIPO DE EXAMEN:</td>
-                <td colspan="24">
+                <td>TIPO DE EXAMEN:</td>
+                <td>
                     {{ strtoupper($medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->name) }}</td>
             </tr>
             <tr>
-                <td colspan="12">TIPO DE CLASE:</td>
-                <td colspan="24">
+                <td>TIPO DE CLASE:</td>
+                <td>
                     {{ $medicineReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name }}
                 </td>
             </tr>
             <tr>
-                <td colspan="12">TRAMITE:</td>
-                <td colspan="24">EXAMEN PSICOFISICO INTEGRAL</td>
+                <td>TRAMITE:</td>
+                <td>EXAMEN PSICOFISICO INTEGRAL</td>
             </tr>
             {{-- <tr>
                 <td colspan="12">NO. DE CITA:</td>
             </tr> --}}
             <tr>
-                <td colspan="12">UNIDAD MÉDICA:</td>
-                <td colspan="24"> <b>{{ strtoupper($medicineReserves[0]->user->name) }}</b></p>
+                <td>UNIDAD MÉDICA:</td>
+                <td> <b>{{ strtoupper($medicineReserves[0]->user->name) }}</b></p>
                 </td>
             </tr>
             <tr>
-                <td colspan="12">DIRECCIÓN SEDE:</td>
-                <td colspan="24"> {{ strtoupper($medicineReserves[0]->user->userHeadquarter[0]->direction) }}</p>
+                <td>DIRECCIÓN SEDE:</td>
+                <td> {{ strtoupper($medicineReserves[0]->user->userHeadquarter[0]->direction) }}</p>
                 </td>
             </tr>
             <tr>
-                <td colspan="12">FECHA Y HORA:</td>
-                <td colspan="24">{{ $medicineReserves[0]->dateReserve }}</td>
+                <td>FECHA Y HORA:</td>
+                <td>{{ $medicineReserves[0]->dateReserve }}</td>
             </tr>
         </table>
         <div style="background-color: #e6e6e6;height: 25px; ">
@@ -143,6 +149,7 @@
                 <li>Comprobante de pago.</li>
                 <li>Comprobante de cita.</li>
                 <li>Clave Única de Registro de Población (CURP).</li>
+                <li>Deberá presentar en forma impresa los formatos de declaración de salud, consentimiento informado (mismos que debe llenar y firmar) así como el vale de servicios.</li>
                 <li>Una de las siguientes identificaciones con fotografía:</li>
                 <p style="padding-left:2%;">A. Cédula de identidad ciudadana (INE) vigente.</p>
                 <p style="padding-left:2%;margin-top:-2%;">B. Cédula profesional.</p>
@@ -151,10 +158,12 @@
                 <li>En caso de ser renovación deberá presentar el examen médico anterior</li>
             </ol>
         </div>
-        <div class="codigoqr">
-            <img src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ $keyEncrypt }}"
-                width="120" height="120" />
-        </div>
+        <footer>
+            <div class="codigoqr">
+                <img src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ $keyEncrypt }}"
+                    width="120" height="120" />
+            </div>
+        </footer>
         {{-- PAGINA 2 --}}
         <div style='page-break-before:always;'></div>
         <div class="mt-4 mx-4 text-justify">
@@ -196,13 +205,14 @@
                     <p style="padding-left:3%">D) Prueba de detección de VIH (Anticuerpos).</p>
                     <p style="padding-left:3%">E) Prueba de detección de sustancias psicoactivas en orina, de 5
                         reactivos (Cocaína, Cannabinoides (Marihuana), Opiaceos, Anfetaminas y Benzodiazepinas).</p>
-                    <p style="padding-left:3%">F) En el caso del examen médico inicial, presentar radiografía de tórax
-                        posteroanterior, y para el examen médico de renovación como a continuación se indica:</p>
+                    <p style="padding-left:3%">F) En el caso del <u>examen médico inicial</u>, presentar radiografía de tórax
+                        posteroanterior, y para el <u>examen médico de renovación</u> como a continuación se indica:</p>
                     <p style="padding-left:5%;margin-top:-2%">1. Clase I – cada 3 años.</p>
                     <p style="padding-left:5%;margin-top:-2%">2. Clase II – cada 3 años.</p>
                     <p style="padding-left:5%;margin-top:-2%">3. Clase III – cada 3 años.</p>
                     <p style="padding-left:5%;margin-top:-2%">4. O antes a indicación de su médico examinador.</p>
                 </li>
+                <p style="margin-top:-2%">****En caso de hacer cita en la UM Aeropuerto no será necesario presentar RX de Tórax</p>
                 <li>Los estudios previamente descritos deberán tener fecha de emisión no mayor a un mes.
                 </li>
                 {{-- <li>Imprimir el formato de Consentimiento Informado y firmarlo.

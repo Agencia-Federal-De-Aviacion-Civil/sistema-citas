@@ -28,11 +28,11 @@
                             Verifica tus datos de la <span class="text-sky-700 ">Cita</span>
                         </h1>
                         {{-- <button wire:click="test()">GENERAR</button> --}}
-                        <div class="flex justify-center mx-auto mt-2">
+                        {{-- <div class="flex justify-center mx-auto mt-2">
                             <span class="inline-block w-40 h-1 bg-sky-600 rounded-full"></span>
                             <span class="inline-block w-3 h-1 mx-1 bg-sky-600 rounded-full"></span>
                             <span class="inline-block w-1 h-1 bg-sky-600 rounded-full"></span>
-                        </div>
+                        </div> --}}
                         <br>
                         <x-errors
                             title="Se han encontrado {errors} campo(s) vacio(s), por favor completalos para continuar..." />
@@ -151,7 +151,7 @@
                             </div>
                         </div>
                         <div class="flex flex-wrap sm:mx-auto sm:mb-4 -mx-2">
-                            <div class="grid xl:grid-cols-2 xl:gap-52">
+                            <div>
                                 <div class="sm:w-full w-full">
                                     <div class="rounded flex p-0 h-full items-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -185,7 +185,7 @@
                             </div>
                         </div>
                         <div class="py-8 flex flex-wrap sm:mx-auto sm:-mb-8 -mx-2">
-                            <div class="grid xl:grid-cols-2 xl:gap-24">
+                            <div>
                                 <div class="sm:w-full w-full">
                                     <div class="rounded flex p-0 h-full items-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -198,7 +198,7 @@
                                         </svg>
 
                                         <p class="text-lg title-font font-normal">Sede:
-                                        <p class="text-xl font-semibold">
+                                        <p class="text-lg font-semibold">
                                             {{ $medicineReserves[0]->user->name }}
                                         </p>
                                         </p>
@@ -209,7 +209,7 @@
                             </div>
                         </div>
                         <div class="p-y-6 px-6 flex flex-wrap sm:mx-auto sm:-mb-2 -mx-2">
-                            <div class="grid xl:grid-cols-2 xl:gap-24">
+                            <div>
                                 <div class="sm:w-full w-full">
                                     <div class="rounded flex p-0 h-full items-center">
                                         <p class="text-lg title-font font-normal">
@@ -324,7 +324,7 @@
                             </div>
                         </div>
                         <div class="flex flex-wrap sm:mx-auto sm:mb-4 -mx-2">
-                            <div class="grid xl:grid-cols-2 xl:gap-52">
+                            <div>
                                 <div class="sm:w-full w-full">
                                     <div class="rounded flex p-0 h-full items-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -359,7 +359,7 @@
                             </div>
                         </div>
                         <div class="py-8 flex flex-wrap sm:mx-auto sm:-mb-8 -mx-2">
-                            <div class="grid xl:grid-cols-2 xl:gap-24">
+                            <div>
                                 <div class="sm:w-full w-full">
                                     <div class="rounded flex p-0 h-full items-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -372,7 +372,7 @@
                                         </svg>
 
                                         <p class="text-lg title-font font-normal">Sede:
-                                        <p class="text-xl font-semibold">
+                                        <p class="text-lg font-semibold">
                                             {{ $medicineReserves[0]->user->name }}
                                         </p>
                                         </p>
@@ -383,7 +383,7 @@
                             </div>
                         </div>
                         <div class="p-y-6 px-6 flex flex-wrap sm:mx-auto sm:-mb-2 -mx-2">
-                            <div class="grid xl:grid-cols-2 xl:gap-24">
+                            <div>
                                 <div class="sm:w-full w-full">
                                     <div class="rounded flex p-0 h-full items-center">
                                         <p class="text-lg title-font font-normal">

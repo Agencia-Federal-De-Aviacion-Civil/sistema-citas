@@ -93,7 +93,7 @@
                                                         <x-input wire:model.lazy="pay_date" id="fecha-pago"
                                                             label="FECHA DE PAGO" placeholder="INGRESE..." readonly />
                                                     </div>
-                                                    <div class="mt-1 relative w-full group col-span-2">
+                                                    <div class="mt-1 relative w-full group xl:col-span-2">
                                                         <label for="small"
                                                             class="block text-sm font-medium text-gray-900 dark:text-white">ADJUNTA
                                                             EL COMPROBANTE DE PAGO</label>
