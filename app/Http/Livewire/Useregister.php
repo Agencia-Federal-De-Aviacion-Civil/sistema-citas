@@ -189,8 +189,6 @@ final class Useregister extends PowerGridComponent
                 ->searchable(),
                 //->makeInputText(),
 
-
-
             Column::make('CREATED AT', 'created_at_formatted', 'created_at')
                 ->sortable()
                 ->searchable(),
@@ -219,21 +217,21 @@ final class Useregister extends PowerGridComponent
      * @return array<int, Button>
      */
 
-    /*
+    
     public function actions(): array
     {
        return [
-           Button::make('edit', 'Edit')
+           /*Button::make('edit', 'Edit')
                ->class('bg-indigo-500 cursor-pointer text-white px-3 py-2.5 m-1 rounded text-sm')
-               ->route('user.edit', ['user' => 'id']),
+               ->route('user.edit', ['user' => 'id']),*/
 
            Button::make('destroy', 'Delete')
                ->class('bg-red-500 cursor-pointer text-white px-3 py-2 m-1 rounded text-sm')
-               ->route('user.destroy', ['user' => 'id'])
+               ->route('afac.historyRegister', ['user' => 'id'])
                ->method('delete')
         ];
     }
-    */
+    
 
     /*
     |--------------------------------------------------------------------------
