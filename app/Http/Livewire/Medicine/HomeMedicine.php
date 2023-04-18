@@ -142,7 +142,8 @@ class HomeMedicine extends Component
     {
         return redirect()->route('afac.home');
     }
-    public function downloadpdf(){
+    public function downloadpdf()
+    {
         return response()->download(public_path('documents/Formatos_Cita_medica.pdf'));
     }
     public function save()
@@ -151,7 +152,9 @@ class HomeMedicine extends Component
         $citas = MedicineReserve::where('to_user_headquarters', $this->to_user_headquarters)
             ->where('dateReserve', $this->dateReserve)
             ->where('medicine_schedule_id', $this->medicine_schedule_id)
+            ->where('status', 0)
             ->count();
+        // dd($citas);
         switch ($this->to_user_headquarters) {
             case 2: // Cancun
             case 3: // Tijuana
@@ -282,7 +285,7 @@ class HomeMedicine extends Component
         $this->confirmModal = false;
         $this->dialog()->confirm([
             'title'       => '¡ATENCIÓN!',
-            'description' => '¿ESTAS SEGURO DE ELIMINAR ESTA CITA?',
+            'description' => '¿ESTAS SEGURO DE CANCELAR ESTA CITA?',
             'icon'        => 'info',
             'accept'      => [
                 'label'  => 'SI',
@@ -294,18 +297,22 @@ class HomeMedicine extends Component
             ],
         ]);
     }
-    public function delete($idDelete)
+    public function delete($idUpdate)
     {
-        MedicineReserve::findOrFail($idDelete);
-        $this->id_medicineReserve = $idDelete;
+        MedicineReserve::find($idUpdate);
+        $this->id_medicineReserve = $idUpdate;
         $this->deleteRelationShip();
     }
     public function confirmDelete()
     {
-        MedicineReserve::find($this->id_medicineReserve)->delete();
+        $updateReserve = MedicineReserve::find($this->id_medicineReserve);
+        $updateReserve->update([
+            'status' => 2
+        ]);
         $this->notification([
-            'title'       => 'Cita eliminada éxitosamente',
-            'icon'        => 'error'
+            'title'       => 'CITA CANCELADA ÉXITOSAMENTE',
+            'icon'        => 'error',
+            'timeout' => '3100'
         ]);
     }
     public function generatePdf()

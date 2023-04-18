@@ -340,18 +340,18 @@
                                                     </div>
                                                     <div class="text-base relative z-auto w-full mb-2 group">
                                                         <label for="small"
-                                                                class="block text-base font-medium text-gray-900 dark:text-white">SELECCIONE HORA</label>
-                                                            <select id="small"
-                                                                placeholder="seleccione..."
-                                                                wire:model.lazy="medicine_schedule_id"
-                                                                class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                                <option value="">Seleccione...</option>
-                                                                @foreach ($scheduleMedicines as $scheduleMedicine)
-                                                                    <option value="{{ $scheduleMedicine->id }}">
-                                                                        {{ $scheduleMedicine->time_start }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
+                                                            class="block text-base font-medium text-gray-900 dark:text-white">SELECCIONE
+                                                            HORA</label>
+                                                        <select id="small" placeholder="seleccione..."
+                                                            wire:model.lazy="medicine_schedule_id"
+                                                            class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                            <option value="">Seleccione...</option>
+                                                            @foreach ($scheduleMedicines as $scheduleMedicine)
+                                                                <option value="{{ $scheduleMedicine->id }}">
+                                                                    {{ $scheduleMedicine->time_start }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
                                                     </div>
                                                 </div>
                                             </div>
@@ -452,7 +452,7 @@
                 disable: [
                     function(date) {
                         // Devuelve 'true' si la fecha es un sábado o domingo
-                        return date.getDay() === 6 || date.getDay() === 0;
+                        return date.getDay() === 6 || date.getDay() === 0 || date <= new Date();
                     },
                 ],
                 locale: {
