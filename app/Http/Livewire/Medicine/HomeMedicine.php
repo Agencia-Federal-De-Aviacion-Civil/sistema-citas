@@ -307,7 +307,7 @@ class HomeMedicine extends Component
     {
         $updateReserve = MedicineReserve::find($this->id_medicineReserve);
         $updateReserve->update([
-            'status' => 2
+            'status' => 3
         ]);
         $this->notification([
             'title'       => 'CITA CANCELADA ÉXITOSAMENTE',

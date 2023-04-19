@@ -35,5 +35,5 @@ Route::group(['middleware' => ['role:super_admin|medicine_admin']], function () 
     Route::get('/register', Peoplehistoryrecords::class)->name('afac.historyRegister');
     Route::get('/validate', ValidateQr::class)->name('validate');
 });
-Route::get('appointments', [IndexController::class, 'index'])->name('afac.appointment');
+Route::get('/appointments', [IndexController::class, 'index'])->name('afac.appointment');
 // Route::get('/downloads', [AppointmentHistory::class, 'test'])->name('downloads');
