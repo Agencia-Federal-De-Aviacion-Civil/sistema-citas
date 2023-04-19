@@ -28,7 +28,25 @@
                         </div>
                     </div>
 
+                    @if ($this->status!=0)
+                    
+                    <div class="grid xl:grid-cols-2 xl:gap-6">
+                        
+                        <div class="mt-1 relative w-full group">
+                            <x-datetime-picker label="FECHA" placeholder="Seleccione..."
+                            without-time="false" parse-format="YYYY-MM-DD" display-format="DD-MM-YYYY"
+                            wire:model="dateReserve" disabled/>
+                        </div>
+                        <div class="mt-1 relative w-full group">
+                                <x-input wire:model="medicine_schedule_id" label="HORA" disabled />
+                        </div>    
 
+                    </div>
+                    
+                    <div class="float-left mt-6">
+                        <x-button wire:click="$emit('closeModal')" label="SALIR" silver />
+                    </div>
+                    @else
                     <div x-data="{selectedOption:''}">
                         <div class="grid xl:grid-cols-1 xl:gap-0">
                             {{-- <p class="w-1/2">Select option:</p> --}}
@@ -85,8 +103,8 @@
                         <div x-show="selectedOption=='1'" >
                             <x-checkbox label="¿EL USUARIO ASISTIÓ A SU CITA?" id="checkbox" wire:model="attended" />
                         </div>
+                        </div>
                     </div>
-                </div>
                     
                     <div class="float-right mt-6">
                         <x-button wire:click="reschedules()" label="ACEPTAR" blue right-icon="save-as" />
@@ -94,7 +112,7 @@
                     <div class="float-left mt-6">
                         <x-button wire:click="$emit('closeModal')" label="SALIR" silver />
                     </div>
-                    
+                    @endif                    
                 </div>
             </div>
 

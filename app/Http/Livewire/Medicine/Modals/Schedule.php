@@ -51,7 +51,7 @@ class Schedule extends ModalComponent
         $this->to_user_headquarters = $medicineReserves[0]->user->name;
         $this->dateReserve = $medicineReserves[0]->dateReserve;
 
-        // dd($medicineReserves[0]);
+        $this->status = $medicineReserves[0]->status;
     }
 
     public function reschedules()
@@ -63,7 +63,7 @@ class Schedule extends ModalComponent
                 'status' => $this->attended,
             ]);
             $this->emit('attendeReserve');
-                        
+
         } elseif ($this->selectedOption == 2) {
             $observation = new MedicineObservation();
             $observation->medicine_reserve_id = $this->scheduleId;
