@@ -54,11 +54,19 @@ class Schedule extends ModalComponent
 
     public function reschedules()
     {
-        $observation = MedicineObservation::create(
-            [
-                'medicine_reserve_id' => $this->scheduleId,
-                'observation' => $this->comment
-            ]
-        );
+
+        if($this->selectedOption==1){
+
+        }elseif($this->selectedOption==2){
+
+        }
+
+        $observation = new MedicineObservation();
+        $observation->medicine_reserve_id = $this->scheduleId;
+        $observation->observation = $this->comment;
+        $observation->save();
+        $cita = MedicineReserve::find($this->scheduleId);
+        $cita->status = 2;
+        $cita->update();
     }
 }
