@@ -35,16 +35,8 @@
                     </div>
                 </div>
                 <div class="w-full mt-5 sm:flex sm:items-center sm:-mx-2">
-                    <button
-                        class="w-full px-4 py-2 text-sm text-center font-medium tracking-wide text-gray-700 transition-colors duration-300 transform border border-gray-200 rounded-md sm:w-1/2 sm:mx-2 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800 hover:bg-gray-100 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-40">
-                        <a target="_blank"
-                            href="https://www.gob.mx/segob/es/documentos/e5cinco-pago-de-derechos-productos-y-aprovechamientos"
-                            class="w-full px-3 text-sm text-center font-medium tracking-wide text-gray-700 transition-colors duration-300 transform rounded-md dark:text-gray-200 dark:border-gray-700 sm:mt-0 sm:w-1/1">
-                            Genera la hoja de pago
-                        </a>
-                    </button>
                     <button @click="isOpen = false"
-                        class="w-full px-4 py-2 mt-4 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-sky-600 rounded-md sm:mt-0 sm:w-1/2 sm:mx-2 hover:bg-sky-700 focus:outline-none focus:ring focus:ring-sky-300 focus:ring-opacity-40">
+                        class="w-full px-4 py-2 mt-4 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-sky-600 rounded-md sm:mt-0 sm:w-full sm:mx-2 hover:bg-sky-700 focus:outline-none focus:ring focus:ring-sky-300 focus:ring-opacity-40">
                         Continuar
                     </button>
                 </div>

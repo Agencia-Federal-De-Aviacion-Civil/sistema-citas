@@ -324,11 +324,6 @@
                                             <div class="flex-grow pl-4">
                                                 <div class="grid xl:grid-cols-3 xl:gap-6">
                                                     <div class="text-base relative z-auto w-full mb-2 group">
-                                                        <x-input x-ref="reservedate" wire:model.lazy="dateReserve"
-                                                            id="fecha-appointment" label="SELECCIONE FECHA"
-                                                            placeholder="INGRESE..." readonly />
-                                                    </div>
-                                                    <div class="text-base relative z-auto w-full mb-2 group">
                                                         <x-select label="ELIJA LA SEDE" placeholder="Selecciona"
                                                             x-ref="selec_sede" wire:model.lazy="to_user_headquarters">
                                                             @foreach ($sedes as $sede)
@@ -337,6 +332,11 @@
                                                                     value="{{ $sede->headquarterUser->id }}" />
                                                             @endforeach
                                                         </x-select>
+                                                    </div>
+                                                    <div class="text-base relative z-auto w-full mb-2 group">
+                                                        <x-input x-ref="reservedate" wire:model.lazy="dateReserve"
+                                                            id="fecha-appointment" label="SELECCIONE FECHA"
+                                                            placeholder="INGRESE..." readonly />
                                                     </div>
                                                     <div class="text-base relative z-auto w-full mb-2 group">
                                                         <label for="small"
