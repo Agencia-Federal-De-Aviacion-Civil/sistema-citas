@@ -33,8 +33,9 @@ class Headquarters extends Component
     public function render()
     {
         $qSystems = System::all();
+        $theme='pruebas';
         $headquarters = Headquarter::with('headquarterUser')->get();
-        return view('livewire.appointment.headquarters.headquarters', compact('headquarters', 'qSystems'))
+        return view('livewire.appointment.headquarters.headquarters', compact('headquarters', 'qSystems','theme'))
             ->layout('layouts.app');
     }
     public function updated($propertyName)

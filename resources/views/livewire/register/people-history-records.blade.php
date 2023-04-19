@@ -17,7 +17,7 @@
     <div class="py-12">
         <div class="container mx-auto px-4 py-4 bg-white shadow-xl sm:rounded-lg">
             <div class="mt-6 max-w-8xl mx-auto sm:px-6 lg:px-8 text-sm">
-                <div class="w-full">
+                <div class="w-full uppercase">
                     <livewire:useregister/>
                 </div>
             </div>
