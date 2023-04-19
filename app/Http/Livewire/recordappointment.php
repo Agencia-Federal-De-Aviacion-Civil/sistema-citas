@@ -20,7 +20,8 @@ final class recordappointment extends PowerGridComponent
         return array_merge(
             parent::getListeners(),
             [
-                'cancelReserve' => '$refresh'
+                'cancelReserve' => '$refresh',
+                'attendeReserve' => '$refresh'
             ]
         );
     }
