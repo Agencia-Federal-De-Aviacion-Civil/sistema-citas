@@ -57,9 +57,13 @@ class Schedule extends ModalComponent
     public function reschedules()
     {
         if ($this->selectedOption == 1) {
-            $cita = MedicineReserve::find($this->scheduleId);
-            $cita->status = $this->attended;
-            $cita->update();
+           
+            $attendeReserve = MedicineReserve::find($this->scheduleId);
+            $attendeReserve->update([
+                'status' => $this->attended,
+            ]);
+            $this->emit('attendeReserve');
+                        
         } elseif ($this->selectedOption == 2) {
             $observation = new MedicineObservation();
             $observation->medicine_reserve_id = $this->scheduleId;
@@ -72,5 +76,6 @@ class Schedule extends ModalComponent
             $this->emit('cancelReserve');
         } elseif ($this->selectedOption == 4) {
         }
+        $this->closeModal();
     }
 }
