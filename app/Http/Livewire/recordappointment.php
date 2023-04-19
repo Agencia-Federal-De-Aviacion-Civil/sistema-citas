@@ -3,8 +3,10 @@
 namespace App\Http\Livewire;
 
 use App\Models\Medicine\MedicineReserve;
+use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 use PowerComponents\LivewirePowerGrid\Rules\{Rule, RuleActions};
 use PowerComponents\LivewirePowerGrid\Traits\ActionButton;
 use PowerComponents\LivewirePowerGrid\{Button, Column, Exportable, Footer, Header, PowerGrid, PowerGridComponent, PowerGridEloquent};
@@ -29,8 +31,8 @@ final class recordappointment extends PowerGridComponent
                 ->striped()
                 ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
             Header::make()
-            ->showSearchInput()
-            ->showToggleColumns(),
+                ->showSearchInput()
+                ->showToggleColumns(),
             Footer::make()
                 ->showPerPage(25)
                 ->showRecordCount(),
@@ -46,16 +48,23 @@ final class recordappointment extends PowerGridComponent
     */
 
     /**
-    * PowerGrid datasource.
-    *
-    * @return Builder<\App\Models\Medicine\MedicineReserve>
-    */
+     * PowerGrid datasource.
+     *
+     * @return Builder<\App\Models\Medicine\MedicineReserve>
+     */
     public function datasource(): Builder
     {
-        return MedicineReserve::query()->with([
-            'medicineReserveMedicine', 'medicineReserveFromUser', 'user','userParticipantUser'
-        ]);
-        
+        if (Auth::user()->can('see.navigation.controller.systems')) {
+            return MedicineReserve::query()->with([
+                'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
+            ]);
+        } else {
+            return MedicineReserve::query()->with([
+                'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
+            ])->whereHas('medicineReserveMedicine', function ($q1) {
+                $q1->where('user_id', Auth::user()->id);
+            });
+        }
     }
 
     /*
@@ -74,13 +83,13 @@ final class recordappointment extends PowerGridComponent
     public function relationSearch(): array
     {
         return [
-             'medicineReserveFromUser' => [
-                 'name',
-             ],
-             /*'medicineReserveFromUser?' => [
+            'medicineReserveFromUser' => [
+                'name',
+            ],
+            /*'medicineReserveFromUser?' => [
                  'apParental',
              ],*/
-            
+
         ];
     }
 
@@ -99,41 +108,40 @@ final class recordappointment extends PowerGridComponent
     {
         return PowerGrid::eloquent()
             ->addColumn('id')
-            ->addColumn('name',function (MedicineReserve $regiser) {
-                return $regiser->medicineReserveFromUser->name.' '.$regiser->userParticipantUser?->apParental.' '.$regiser->userParticipantUser?->apMaternal;
+            ->addColumn('name', function (MedicineReserve $regiser) {
+                return $regiser->medicineReserveFromUser->name . ' ' . $regiser->userParticipantUser?->apParental . ' ' . $regiser->userParticipantUser?->apMaternal;
                 //return $regiser->medicineReserveFromUser->name;
             })
-            ->addColumn('folio',function (MedicineReserve $type) {
-                return 'MED-'.$type->medicineReserveMedicine->id;
+            ->addColumn('folio', function (MedicineReserve $type) {
+                return 'MED-' . $type->medicineReserveMedicine->id;
             })
-            ->addColumn('type',function (MedicineReserve $type) {
+            ->addColumn('type', function (MedicineReserve $type) {
                 return $type->medicineReserveMedicine->medicineTypeExam->name;
             })
-            ->addColumn('class',function (MedicineReserve $class) {
+            ->addColumn('class', function (MedicineReserve $class) {
                 if ($class->medicineReserveMedicine->medicineTypeExam->id == 1) {
                     return $class->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name;
                 } else if ($class->medicineReserveMedicine->type_exam_id == 2) {
                     return $class->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name;
                 }
             })
-            ->addColumn('typelicens',function (MedicineReserve $class) {
+            ->addColumn('typelicens', function (MedicineReserve $class) {
                 if ($class->medicineReserveMedicine->medicineTypeExam->id == 1) {
                     return $class->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass->name;
                 } else if ($class->medicineReserveMedicine->type_exam_id == 2) {
                     return $class->medicineReserveMedicine->medicineRenovation[0]->renovationClasificationClass->name;
                 }
-                
             })
-            ->addColumn('headquarters',function (MedicineReserve $headquarters) {
+            ->addColumn('headquarters', function (MedicineReserve $headquarters) {
                 return $headquarters->user->name;
             })
-            ->addColumn('curp',function (MedicineReserve $regiser) {
+            ->addColumn('curp', function (MedicineReserve $regiser) {
                 return $regiser->userParticipantUser?->curp;
             })
             ->addColumn('created_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->dateReserve)->format('d/m/Y H:i:s'))
             ->addColumn('created_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
-            //->addColumn('updated_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'));
-            
+        //->addColumn('updated_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'));
+
     }
 
     /*
@@ -145,7 +153,7 @@ final class recordappointment extends PowerGridComponent
     |
     */
 
-     /**
+    /**
      * PowerGrid Columns.
      *
      * @return array<int, Column>
@@ -154,60 +162,59 @@ final class recordappointment extends PowerGridComponent
     {
         return [
             Column::make('ID', 'id'),
-                //->makeInputRange(),
-            
+            //->makeInputRange(),
+
             Column::make('FOLIO', 'folio')
                 ->searchable(),
-                //->sortable(),
-                //->makeInputDatePicker(),
+            //->sortable(),
+            //->makeInputDatePicker(),
 
             Column::make('NOMBRE', 'name')
                 ->searchable(),
-                //->sortable(),
-                //->makeInputDatePicker(),
-            
+            //->sortable(),
+            //->makeInputDatePicker(),
+
             Column::make('TIPO', 'type')
                 ->searchable()
                 ->sortable(),
-                //->makeInputDatePicker(),
+            //->makeInputDatePicker(),
 
             Column::make('CLASE', 'class')
                 ->searchable()
                 ->sortable(),
-                //->makeInputDatePicker(),
-            
+            //->makeInputDatePicker(),
+
             Column::make('TIPO DE LICENCIA', 'typelicens')
                 ->searchable()
                 ->sortable(),
-                //->makeInputDatePicker(),
-            
+            //->makeInputDatePicker(),
+
             Column::make('SEDE', 'headquarters')
                 ->searchable()
                 ->sortable(),
-                //->makeInputDatePicker(),
-            
+            //->makeInputDatePicker(),
+
             Column::make('FECHA Y HORA DE LA CITA', 'dateReserve')
                 ->searchable()
                 ->sortable(),
-                //->makeInputDatePicker(),
-            
+            //->makeInputDatePicker(),
+
             Column::make('CURP', 'curp')
                 ->searchable()
                 ->sortable(),
-                //->makeInputDatePicker(),
+            //->makeInputDatePicker(),
 
             Column::make('CREADA EL', 'created_at_formatted', 'created_at')
                 ->searchable()
                 ->sortable(),
-                //->makeInputDatePicker(),
+            //->makeInputDatePicker(),
 
             //Column::make('UPDATED AT', 'updated_at_formatted', 'updated_at')
             //    ->searchable()
             //    ->sortable(),
-                //->makeInputDatePicker(),
+            //->makeInputDatePicker(),
 
-        ]
-;
+        ];
     }
 
     /*
@@ -218,7 +225,7 @@ final class recordappointment extends PowerGridComponent
     |
     */
 
-     /**
+    /**
      * PowerGrid MedicineReserve Action Buttons.
      *
      * @return array<int, Button>
@@ -248,7 +255,7 @@ final class recordappointment extends PowerGridComponent
     |
     */
 
-     /**
+    /**
      * PowerGrid MedicineReserve Action Rules.
      *
      * @return array<int, RuleActions>
