@@ -52,7 +52,7 @@ final class recordappointment extends PowerGridComponent
      */
     public function datasource(): Builder
     {
-        return MedicineReserve::query()->with([
+        return $MedicineReserve = MedicineReserve::query()->with([
             'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
         ]);
     }
@@ -225,7 +225,7 @@ final class recordappointment extends PowerGridComponent
     {
         return [
             Button::add('schedule-button-component')
-                ->bladeComponent('schedule-component', ['scheduleId' => 'id']),
+                ->bladeComponent('schedule-component', ['scheduleId' => 'id','status' => 'status']),
         ];
     }
 

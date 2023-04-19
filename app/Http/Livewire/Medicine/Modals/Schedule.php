@@ -2,50 +2,63 @@
 
 namespace App\Http\Livewire\Medicine\Modals;
 
+use App\Models\Catalogue\Headquarter;
+use App\Models\Medicine\MedicineObservation;
 use App\Models\Medicine\MedicineReserve;
+use App\Models\Medicine\MedicineSchedule;
+use App\Models\Observation;
+use Illuminate\Support\Facades\Date;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use LivewireUI\Modal\Modal;
 use LivewireUI\Modal\ModalComponent;
+use WireUi\Traits\Actions;
 
 class Schedule extends ModalComponent
 {
-    public $medicineReserves,$name,$type,$class,$typLicense,$sede,$dateReserve,$date,$time,$scheduleId;
+    use Actions;
+    use WithFileUploads;
+    public $scheduleId, $status, $medicineReserves, $name, $type, $class, $typLicense, $sede, $dateReserve, $date, $time, $scheduleMedicines, $sedes,
+        $to_user_headquarters, $medicine_schedule_id,$selectedOption,$comment;
     public function mount($scheduleId)
     {
-        // $this->medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'user'])
-        // ->where('id',$scheduleId)
-        // ->get();
-        $medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'user'])
-        ->where('id',$scheduleId)->get();        
-        $this->name = $medicineReserves[0]->medicineReserveMedicine->medicineUser->name.' '.$medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant[0]->apParental.' '.$medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant[0]->apMaternal; 
-        $this->type = $medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->name;
-
-        if ($medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->id == 1) {
-            $this->class = $medicineReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name;
-            $this->typLicense = $medicineReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass->name;
-        } else if($medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->id == 2){
-            $this->class = $medicineReserves[0]->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name;
-            $this->typLicense = $medicineReserves[0]->medicineReserveMedicine->medicineRenovation[0]->renovationClasificationClass->name;
-        }
-        $this->sede = $medicineReserves[0]->user->name;
-        $this->dateReserve = $medicineReserves[0]->dateReserve;
-
-        $fechaHora = $this->dateReserve;
-        // dump($fechaHora);   
-
-        $separar = (explode(" ",$fechaHora));
-        $this->date = $separar[0];
-        // dump($this->date);
-        $this->time = $separar[1];  
-        // $this->to_user_headquarters = $medicineReserves[0]->to_user_headquarters;
-        // $this->idReserve = $id;
+        $this->scheduleId = $scheduleId;
+        $this->valores($this->scheduleId);
+        $this->sedes = Headquarter::where('system_id', 1)->get();
+        $this->scheduleMedicines = collect();
+        Date::setLocale('ES');
+        $this->date = Date::now()->parse();
     }
     public function render()
     {
         return view('livewire.medicine.modals.schedule');
     }
-    public function reschedules(){
-        //  dd($this->time);
+    public function valores($cheduleId)
+    {
+        $this->scheduleId = $cheduleId;
+        $medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'user'])
+            ->where('id', $this->scheduleId)->get();
+        $this->name = $medicineReserves[0]->medicineReserveMedicine->medicineUser->name . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant[0]->apParental . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant[0]->apMaternal;
+        $this->type = $medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->name;
+
+        if ($medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->id == 1) {
+            $this->class = $medicineReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name;
+            $this->typLicense = $medicineReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass->name;
+        } else if ($medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->id == 2) {
+            $this->class = $medicineReserves[0]->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name;
+            $this->typLicense = $medicineReserves[0]->medicineReserveMedicine->medicineRenovation[0]->renovationClasificationClass->name;
+        }
+        $this->to_user_headquarters = $medicineReserves[0]->user->name;
+        $this->dateReserve = $medicineReserves[0]->dateReserve;
     }
 
+    public function reschedules()
+    {
+        $observation = MedicineObservation::create(
+            [
+                'medicine_reserve_id' => $this->scheduleId,
+                'observation' => $this->comment
+            ]
+        );
+    }
 }

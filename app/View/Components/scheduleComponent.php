@@ -11,11 +11,12 @@ class scheduleComponent extends Component
      *
      * @return void
      */
-    public $scheduleId;
+    public $scheduleId,$status;
     public $modal;
-    public function __construct($scheduleId)
+    public function __construct($scheduleId,$status)
     {
-        $this->scheduleId = $scheduleId;   
+        $this->scheduleId = $scheduleId;
+        $this->status = $status;   
     }
 
     /**

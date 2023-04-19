@@ -2,6 +2,7 @@
 
 namespace App\Models\Medicine;
 
+use App\Models\Observation;
 use App\Models\User;
 use App\Models\UserParticipant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -31,7 +32,10 @@ class MedicineReserve extends Model
     {
         return $this->belongsTo(UserParticipant::class, 'from_user_appointment','user_id');
     }
-    
+    public function reserveObserv()
+    {
+        return $this->hasMany(MedicineObservation::class);
+    }    
 
 
 }
