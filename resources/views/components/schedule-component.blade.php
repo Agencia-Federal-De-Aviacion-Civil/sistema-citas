@@ -9,9 +9,13 @@
             <x-badge flat info label="PENDIENTE" />
         @endhasrole
     @elseif($status == 1)
-        <x-button
-            wire:click="$emit('openModal', 'medicine.modals.schedule', {{ json_encode(['scheduleId' => $scheduleId]) }})"
-            label=" ASISTIÓ " xs green />
+        @hasrole('super_admin|medicine_admin')
+            <x-button
+                wire:click="$emit('openModal', 'medicine.modals.schedule', {{ json_encode(['scheduleId' => $scheduleId]) }})"
+                label=" ASISTIÓ " xs green />
+        @else
+            <x-badge flat green label="ASISTIÓ" />
+        @endhasrole
     @elseif($status == 2)
         @hasrole('super_admin|medicine_admin')
             <x-button
@@ -26,7 +30,7 @@
                 wire:click="$emit('openModal', 'medicine.modals.schedule', {{ json_encode(['scheduleId' => $scheduleId]) }})"
                 label="USUARIO CANCELÓ" xs warning />
         @else
-        <x-badge flat negative label="CANCELADA" />
+            <x-badge flat negative label="CANCELADA" />
         @endhasrole
     @endif
 </div>
