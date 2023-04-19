@@ -1,13 +1,4 @@
-        {{-- <div x-transition:enter="transition duration-300 ease-out"
-            x-transition:enter-start="translate-y-4 opacity-0 sm:translate-y-0 sm:scale-95"
-            x-transition:enter-end="translate-y-0 opacity-100 sm:scale-100"
-            x-transition:leave="transition duration-150 ease-in"
-            x-transition:leave-start="translate-y-0 opacity-100 sm:scale-100"
-            x-transition:leave-end="translate-y-4 opacity-0 sm:translate-y-0 sm:scale-95"
-            class="fixed inset-0 z-[60] overflow-y-auto bg-black bg-opacity-70" aria-labelledby="modal-title" role="dialog"
-            aria-modal="true"> --}}
-        {{-- <div class="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
-                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span> --}}
+
         <div
             class="relative inline-block px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl dark:bg-gray-0 sm:my-0 sm:align-middle sm:max-w-2xl sm:w-full sm:p-6">
             <div>
@@ -44,12 +35,14 @@
                             <div class="mt-6 relative w-full group">
                                 <select name="my_option" label="SELECIONE OPCIÓN" x-model="selectedOption" wire:model="selectedOption" class="">
                                         <option value="">SELECIONE OPCION</option>
-                                        <option value="REAGENDAR">REAGENDAR CITA</option>
-                                        <option value="CANCELAR">CANCELAR CITA</option>
+                                        <option value="1">ASISTIO CITA</option>
+                                        <option value="2">CANCELAR CITA</option>
+                                        <option value="4">REAGENDAR CITA</option>
+
                                 </select>
                             </div>
                         
-                        <div x-show="selectedOption=='REAGENDAR'">
+                        <div x-show="selectedOption=='4'">
                             <div class="grid xl:grid-cols-1 xl:gap-6">
                                 <div class="mt-4 relative w-full group">
                                     <x-select label="ELIJA LA SEDE" placeholder="Selecciona" x-ref="selec_sede"
@@ -85,10 +78,12 @@
                                 </div>
                             </div>
                         </div>
-                        <div x-show="selectedOption=='CANCELAR'">
-                           
-                            <x-textarea wire:model="comment" label="MOTIVO" placeholder="¿motivo de cancelación?" />
-                            
+                        <div x-show="selectedOption=='2'">                           
+                            <x-textarea wire:model="comment" label="MOTIVO" placeholder="¿motivo de cancelación?" />                            
+                        </div>
+                        
+                        <div x-show="selectedOption=='1'" >
+                            <x-checkbox label="¿EL USUARIO ASISTIÓ A SU CITA?" id="checkbox" wire:model="attended" />
                         </div>
                     </div>
                 </div>
@@ -102,5 +97,4 @@
                     
                 </div>
             </div>
-            {{-- </div> --}}
-            {{-- </div> --}}
+
