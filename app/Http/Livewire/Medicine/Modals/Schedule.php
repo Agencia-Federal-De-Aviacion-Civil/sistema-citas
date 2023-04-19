@@ -13,6 +13,7 @@ use Livewire\WithFileUploads;
 use LivewireUI\Modal\Modal;
 use LivewireUI\Modal\ModalComponent;
 use WireUi\Traits\Actions;
+use Twilio\Rest\Client;
 
 class Schedule extends ModalComponent
 {
@@ -57,18 +58,30 @@ class Schedule extends ModalComponent
     public function reschedules()
     {
         if ($this->selectedOption == 1) {
-           
+
             $attendeReserve = MedicineReserve::find($this->scheduleId);
             $attendeReserve->update([
                 'status' => $this->attended,
             ]);
             $this->emit('attendeReserve');
-                        
         } elseif ($this->selectedOption == 2) {
             $observation = new MedicineObservation();
             $observation->medicine_reserve_id = $this->scheduleId;
             $observation->observation = $this->comment;
             $observation->save();
+            $to = '+525513351820';
+            $messageBody = $this->comment;
+            $accountSid = env('TWILIO_ACCOUNT_SID');
+            $authToken = env('TWILIO_AUTH_TOKEN');
+            $twilio = new Client($accountSid, $authToken);
+            $message = $twilio->messages
+                ->create(
+                    "whatsapp:+5215513351820", // to
+                    array(
+                        "from" => "whatsapp:+14155238886",
+                        "body" => $messageBody
+                    )
+                );
             $cancelReserve = MedicineReserve::find($this->scheduleId);
             $cancelReserve->update([
                 'status' => $this->selectedOption,
