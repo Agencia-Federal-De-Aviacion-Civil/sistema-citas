@@ -14,14 +14,16 @@ use PowerComponents\LivewirePowerGrid\{Button, Column, Exportable, Footer, Heade
 final class recordappointment extends PowerGridComponent
 {
     use ActionButton;
-   
-    /*
-    |--------------------------------------------------------------------------
-    |  Features Setup
-    |--------------------------------------------------------------------------
-    | Setup Table's general features
-    |
-    */
+
+    protected function getListeners(): array
+    {
+        return array_merge(
+            parent::getListeners(),
+            [
+                'cancelReserve' => '$refresh'
+            ]
+        );
+    }
     public function setUp(): array
     {
         //$this->showCheckBox();
@@ -235,7 +237,7 @@ final class recordappointment extends PowerGridComponent
     {
         return [
             Button::add('schedule-button-component')
-                ->bladeComponent('schedule-component', ['scheduleId' => 'id','status' => 'status']),
+                ->bladeComponent('schedule-component', ['scheduleId' => 'id', 'status' => 'status']),
         ];
     }
 

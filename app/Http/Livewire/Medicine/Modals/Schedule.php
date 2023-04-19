@@ -19,7 +19,7 @@ class Schedule extends ModalComponent
     use Actions;
     use WithFileUploads;
     public $scheduleId, $status, $medicineReserves, $name, $type, $class, $typLicense, $sede, $dateReserve, $date, $time, $scheduleMedicines, $sedes,
-        $to_user_headquarters, $medicine_schedule_id,$selectedOption,$comment;
+        $to_user_headquarters, $medicine_schedule_id, $selectedOption, $comment;
     public function mount($scheduleId)
     {
         $this->scheduleId = $scheduleId;
@@ -54,19 +54,19 @@ class Schedule extends ModalComponent
 
     public function reschedules()
     {
+        // if($this->selectedOption==1){
 
-        if($this->selectedOption==1){
+        // }elseif($this->selectedOption==2){
 
-        }elseif($this->selectedOption==2){
-
-        }
-
-        $observation = new MedicineObservation();
-        $observation->medicine_reserve_id = $this->scheduleId;
-        $observation->observation = $this->comment;
-        $observation->save();
-        $cita = MedicineReserve::find($this->scheduleId);
-        $cita->status = 2;
-        $cita->update();
+        // }
+        // $observation = new MedicineObservation();
+        // $observation->medicine_reserve_id = $this->scheduleId;
+        // $observation->observation = $this->comment;
+        // $observation->save();
+        $cancelReserve = MedicineReserve::find($this->scheduleId);
+        $cancelReserve->update([
+            'status' => 2,
+        ]);
+        $this->emit('cancelReserve');
     }
 }
