@@ -159,7 +159,7 @@ final class recordheadquarters extends PowerGridComponent
        return [
            Button::make('edit', 'Editar')
                ->class('bg-indigo-500 cursor-pointer text-white px-3 py-2.5 m-1 rounded text-sm')
-               ->bladeComponent('headquarts-component', ['scheduleId' => 'id', 'status' => 'status']),
+               ->bladeComponent('headquartsComponent', ['scheduleId' => 'id', 'status' => 'status']),
                //->openModal('modalEdit', ['dish' => 'id']),
 
            Button::make('destroy', 'Delete')
