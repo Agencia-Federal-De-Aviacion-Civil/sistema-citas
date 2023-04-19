@@ -1,21 +1,22 @@
 <div
-    class="relative inline-block px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl dark:bg-gray-0 sm:my-0 sm:align-middle sm:max-w-2xl sm:w-full sm:p-1">
+    class="relative inline-block px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl dark:bg-gray-0 sm:my-0 sm:align-middle sm:max-w-2xl sm:w-full sm:p-1"
+    >
     <div>
-        <div class="p-3 text-center">
+        <div class="p-0 text-center">
             {{-- <h1>REAGENDAR CITA</h1> --}}
         </div>
         <div class="mt-4 text-center">
             <h3 class="text-xl font-semibold leading-6 text-gray-800 capitalize dark:text-white" id="modal-title">
-                @if($this->status==0)
-                CITA
-                @elseif ($this->status==1)
-                CITA ASISTIDA
-                @elseif ($this->status==2)
-                CITA CANCELADA
-                @elseif ($this->status==3)
-                CANCELO CITA
-                @elseif ($this->status==4)
-                CITA REAGENDADA
+                @if ($this->status == 0)
+                    CITA
+                @elseif ($this->status == 1)
+                    CITA ASISTIDA
+                @elseif ($this->status == 2)
+                    CITA CANCELADA
+                @elseif ($this->status == 3)
+                    CANCELO CITA
+                @elseif ($this->status == 4)
+                    CITA REAGENDADA
                 @endif
 
             </h3>
@@ -37,9 +38,14 @@
                     <x-input wire:model="typLicense" label="TIPO DE LICENCIA" disabled />
                 </div>
             </div>
-                        
+
             @if ($this->status != 0)
 
+                <div class="grid xl:grid-cols-1 xl:gap-6">
+                    <div class="mt-4 relative w-full group">
+                        <x-input wire:model="sede" label="SEDE" disabled />
+                    </div>
+                </div>
                 <div class="grid xl:grid-cols-2 xl:gap-6">
 
                     <div class="mt-1 relative w-full group">
@@ -50,15 +56,14 @@
                         <x-input wire:model="hoursReserve" label="HORA" disabled />
                     </div>
                 </div>
-                @if($this->status==2)                
-                <div class="grid xl:grid-cols-1 xl:gap-6">
-                    <x-textarea wire:model="comment" label="MOTIVO" disabled />
-                </div>
+                @if ($this->status == 2)
+                    <div class="grid xl:grid-cols-1 xl:gap-6">
+                        <x-textarea wire:model="comment" label="MOTIVO" disabled />
+                    </div>
                 @endif
                 <div class="float-left mt-6">
                     <x-button wire:click="$emit('closeModal')" label="SALIR" silver />
                 </div>
-
             @else
                 <div x-data="{ selectedOption: '' }">
                     <div class="grid xl:grid-cols-1 xl:gap-0">
@@ -74,21 +79,22 @@
                             </select>
                         </div>
                         <div x-show="selectedOption!='4'">
-                        <div class="grid xl:grid-cols-1 xl:gap-6">
-                            <div class="mt-4 relative w-full group">
-                                <x-input wire:model="sede" label="SEDE" disabled />
+                            <div class="grid xl:grid-cols-1 xl:gap-6">
+                                <div class="mt-4 relative w-full group">
+                                    <x-input wire:model="sede" label="SEDE" disabled />
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="grid xl:grid-cols-2 xl:gap-6">
-                            <div class="mt-1 relative w-full group">
-                                <x-datetime-picker label="FECHA" placeholder="Seleccione..." without-time="false"
-                                    parse-format="YYYY-MM-DD" display-format="DD-MM-YYYY" wire:model="dateReserve" disabled />
+                            <div class="grid xl:grid-cols-2 xl:gap-6">
+                                <div class="mt-1 relative w-full group">
+                                    <x-datetime-picker label="FECHA" placeholder="Seleccione..." without-time="false"
+                                        parse-format="YYYY-MM-DD" display-format="DD-MM-YYYY" wire:model="dateReserve"
+                                        disabled />
+                                </div>
+                                <div class="mt-1 relative w-full group">
+                                    <x-input wire:model="hoursReserve" label="HORA" disabled />
+                                </div>
                             </div>
-                            <div class="mt-1 relative w-full group">
-                                <x-input wire:model="hoursReserve" label="HORA" disabled />
-                            </div>
-                        </div>
 
                         </div>
 
@@ -104,8 +110,6 @@
                                     </x-select>
                                 </div>
                             </div>
-
-
                             <div class="grid xl:grid-cols-2 xl:gap-6">
                                 <div class="mt-4 relative w-full group">
                                     <x-datetime-picker label="SELECCIONE FECHA" placeholder="Seleccione..."
@@ -128,11 +132,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div x-show="selectedOption=='2'">                                        
+                        <div x-show="selectedOption=='2'">
                             <x-textarea wire:model="comment" label="MOTIVO" placeholder="¿motivo de cancelación?" />
                         </div>
                         <div x-show="selectedOption=='1'">
-                                        
+
                         </div>
                     </div>
                 </div>
