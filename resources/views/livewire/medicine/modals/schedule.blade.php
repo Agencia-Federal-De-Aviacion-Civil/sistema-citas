@@ -1,5 +1,5 @@
 <div
-    class="relative inline-block px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl dark:bg-gray-0 sm:my-0 sm:align-middle sm:max-w-2xl sm:w-full sm:p-6">
+    class="relative inline-block px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl dark:bg-gray-0 sm:my-0 sm:align-middle sm:max-w-2xl sm:w-full sm:p-1">
     <div>
         <div class="p-3 text-center">
             {{-- <h1>REAGENDAR CITA</h1> --}}
@@ -37,6 +37,7 @@
                     <x-input wire:model="typLicense" label="TIPO DE LICENCIA" disabled />
                 </div>
             </div>
+                        
             @if ($this->status != 0)
 
                 <div class="grid xl:grid-cols-2 xl:gap-6">
@@ -71,6 +72,24 @@
                                 <option value="4">REAGENDAR CITA</option>
 
                             </select>
+                        </div>
+                        <div x-show="selectedOption!='4'">
+                        <div class="grid xl:grid-cols-1 xl:gap-6">
+                            <div class="mt-4 relative w-full group">
+                                <x-input wire:model="sede" label="SEDE" disabled />
+                            </div>
+                        </div>
+
+                        <div class="grid xl:grid-cols-2 xl:gap-6">
+                            <div class="mt-1 relative w-full group">
+                                <x-datetime-picker label="FECHA" placeholder="Seleccione..." without-time="false"
+                                    parse-format="YYYY-MM-DD" display-format="DD-MM-YYYY" wire:model="dateReserve" disabled />
+                            </div>
+                            <div class="mt-1 relative w-full group">
+                                <x-input wire:model="hoursReserve" label="HORA" disabled />
+                            </div>
+                        </div>
+
                         </div>
 
                         <div x-show="selectedOption=='4'">
@@ -109,12 +128,12 @@
                                 </div>
                             </div>
                         </div>
-                        <div x-show="selectedOption=='2'">
+                        <div x-show="selectedOption=='2'">                                        
                             <x-textarea wire:model="comment" label="MOTIVO" placeholder="¿motivo de cancelación?" />
                         </div>
-                        {{-- <div x-show="selectedOption=='1'">
-                            <x-checkbox label="¿EL USUARIO ASISTIÓ A SU CITA?" id="checkbox" wire:model="attended" />
-                        </div> --}}
+                        <div x-show="selectedOption=='1'">
+                                        
+                        </div>
                     </div>
                 </div>
 

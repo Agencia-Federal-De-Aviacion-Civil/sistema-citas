@@ -110,7 +110,7 @@ final class recordappointment extends PowerGridComponent
     public function addColumns(): PowerGridEloquent
     {
         return PowerGrid::eloquent()
-            ->addColumn('id')
+            // ->addColumn('id')
             ->addColumn('name', function (MedicineReserve $regiser) {
                 return $regiser->medicineReserveFromUser->name . ' ' . $regiser->userParticipantUser?->apParental . ' ' . $regiser->userParticipantUser?->apMaternal;
                 //return $regiser->medicineReserveFromUser->name;
@@ -141,8 +141,8 @@ final class recordappointment extends PowerGridComponent
             ->addColumn('curp', function (MedicineReserve $regiser) {
                 return $regiser->userParticipantUser?->curp;
             })
-            ->addColumn('dateReserve', fn (MedicineReserve $model) => Carbon::parse($model->dateReserve)->format('d/m/Y H:i:s'))
-            ->addColumn('created_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
+            ->addColumn('dateReserve', fn (MedicineReserve $model) => Carbon::parse($model->dateReserve)->format('d/m/Y'))
+            ->addColumn('hoours', fn (MedicineReserve $model) => Carbon::parse($model->reserveSchedule->time_start)->format('H:i:s'));
         //->addColumn('updated_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'));
 
     }
@@ -164,7 +164,7 @@ final class recordappointment extends PowerGridComponent
     public function columns(): array
     {
         return [
-            Column::make('ID', 'id'),
+            // Column::make('ID', 'id'),
             //->makeInputRange(),
 
             Column::make('FOLIO', 'folio')
@@ -197,19 +197,25 @@ final class recordappointment extends PowerGridComponent
                 ->sortable(),
             //->makeInputDatePicker(),
 
-            Column::make('FECHA Y HORA DE LA CITA', 'dateReserve')
+            Column::make('FECHA', 'dateReserve')
                 ->searchable()
                 ->sortable(),
+
+                Column::make('HORA', 'hoours')
+                ->searchable()
+                ->sortable(),
+                
+
             //->makeInputDatePicker(),
 
-            Column::make('CURP', 'curp')
-                ->searchable()
-                ->sortable(),
+            // Column::make('CURP', 'curp')
+            //     ->searchable()
+            //     ->sortable(),
             //->makeInputDatePicker(),
 
-            Column::make('CREADA EL', 'created_at_formatted', 'created_at')
-                ->searchable()
-                ->sortable(),
+            // Column::make('CREADA EL', 'created_at_formatted', 'created_at')
+            //     ->searchable()
+            //     ->sortable(),
             //->makeInputDatePicker(),
 
             //Column::make('UPDATED AT', 'updated_at_formatted', 'updated_at')

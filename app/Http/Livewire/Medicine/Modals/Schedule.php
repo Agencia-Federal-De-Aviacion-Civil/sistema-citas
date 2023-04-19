@@ -60,6 +60,7 @@ class Schedule extends ModalComponent
         }else{
             $this->comment = $medicineReserves[0]->reserveObserv[0]->observation;
         }
+        $this->sede = $medicineReserves[0]->user->name;
     }
 
     public function reschedules()
