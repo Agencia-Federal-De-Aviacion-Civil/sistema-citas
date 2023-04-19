@@ -33,4 +33,9 @@
             <x-badge flat negative label="CANCELADA" />
         @endhasrole
     @endif
+    @if ($status == 0)
+        @hasrole('super_admin|medicine_admin|user')
+            <x-button xs positive href="{{ route('afac.downloadFile', $scheduleId) }}" label="DESCARGAR" />
+        @endhasrole
+    @endif
 </div>

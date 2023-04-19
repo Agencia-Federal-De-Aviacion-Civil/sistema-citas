@@ -36,4 +36,6 @@ Route::group(['middleware' => ['role:super_admin|medicine_admin']], function () 
     Route::get('/validate', ValidateQr::class)->name('validate');
 });
 Route::get('/appointments', [IndexController::class, 'index'])->name('afac.appointment');
+Route::get('/downloadFile/{scheduleId}', [IndexController::class, 'download'])->name('afac.downloadFile');
+
 // Route::get('/downloads', [AppointmentHistory::class, 'test'])->name('downloads');

@@ -57,13 +57,12 @@ class Schedule extends ModalComponent
     public function reschedules()
     {
         if ($this->selectedOption == 1) {
-           
+
             $attendeReserve = MedicineReserve::find($this->scheduleId);
             $attendeReserve->update([
                 'status' => $this->attended,
             ]);
             $this->emit('attendeReserve');
-                        
         } elseif ($this->selectedOption == 2) {
             $observation = new MedicineObservation();
             $observation->medicine_reserve_id = $this->scheduleId;
