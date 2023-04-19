@@ -68,16 +68,6 @@
                 <div x-data="{ selectedOption: '' }">
                     <div class="grid xl:grid-cols-1 xl:gap-0">
                         {{-- <p class="w-1/2">Select option:</p> --}}
-                        <div class="mt-6 relative w-full group">
-                            <select name="my_option" label="SELECIONE OPCIÓN" x-model="selectedOption"
-                                wire:model="selectedOption" class="">
-                                <option value="">SELECIONE OPCION</option>
-                                <option value="1">ASISTIO CITA</option>
-                                <option value="2">CANCELAR CITA</option>
-                                <option value="4">REAGENDAR CITA</option>
-
-                            </select>
-                        </div>
                         <div x-show="selectedOption!='4'">
                             <div class="grid xl:grid-cols-1 xl:gap-6">
                                 <div class="mt-4 relative w-full group">
@@ -139,6 +129,18 @@
 
                         </div>
                     </div>
+
+                    <div class="mt-6 relative w-full group">
+                        <select name="my_option" label="SELECIONE OPCIÓN" x-model="selectedOption"
+                            wire:model="selectedOption" class="">
+                            <option value="">SELECIONE OPCION</option>
+                            <option value="1">ASISTIO CITA</option>
+                            <option value="2">CANCELAR CITA</option>
+                            <option value="4">REAGENDAR CITA</option>
+
+                        </select>
+                    </div>
+                                        
                 </div>
 
                 <div class="float-right mt-6">
