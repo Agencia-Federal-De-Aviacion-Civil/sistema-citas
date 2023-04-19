@@ -19,7 +19,7 @@ class Schedule extends ModalComponent
     use Actions;
     use WithFileUploads;
     public $scheduleId, $status, $medicineReserves, $name, $type, $class, $typLicense, $sede, $dateReserve, $date, $time, $scheduleMedicines, $sedes,
-        $to_user_headquarters, $medicine_schedule_id, $selectedOption, $comment;
+        $to_user_headquarters, $medicine_schedule_id, $selectedOption, $comment, $attended;
     public function mount($scheduleId)
     {
         $this->scheduleId = $scheduleId;
@@ -50,23 +50,27 @@ class Schedule extends ModalComponent
         }
         $this->to_user_headquarters = $medicineReserves[0]->user->name;
         $this->dateReserve = $medicineReserves[0]->dateReserve;
+
+        // dd($medicineReserves[0]);
     }
 
     public function reschedules()
     {
-        // if($this->selectedOption==1){
-
-        // }elseif($this->selectedOption==2){
-
-        // }
-        // $observation = new MedicineObservation();
-        // $observation->medicine_reserve_id = $this->scheduleId;
-        // $observation->observation = $this->comment;
-        // $observation->save();
-        $cancelReserve = MedicineReserve::find($this->scheduleId);
-        $cancelReserve->update([
-            'status' => 2,
-        ]);
-        $this->emit('cancelReserve');
+        if ($this->selectedOption == 1) {
+            $cita = MedicineReserve::find($this->scheduleId);
+            $cita->status = $this->attended;
+            $cita->update();
+        } elseif ($this->selectedOption == 2) {
+            $observation = new MedicineObservation();
+            $observation->medicine_reserve_id = $this->scheduleId;
+            $observation->observation = $this->comment;
+            $observation->save();
+            $cancelReserve = MedicineReserve::find($this->scheduleId);
+            $cancelReserve->update([
+                'status' => $this->selectedOption,
+            ]);
+            $this->emit('cancelReserve');
+        } elseif ($this->selectedOption == 4) {
+        }
     }
 }
