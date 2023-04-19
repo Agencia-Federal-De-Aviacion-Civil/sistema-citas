@@ -13,4 +13,8 @@ class MedicineSchedule extends Model
     public function medicineScheduleUser(){
         return $this->belongsTo(User::class,'user_id');
     }
+    public function scheduleReserve(){
+        return $this->hasMany(MedicineReserve::class);
+    }    
+    
 }

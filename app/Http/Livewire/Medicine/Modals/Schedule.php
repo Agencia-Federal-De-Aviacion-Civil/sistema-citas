@@ -19,7 +19,7 @@ class Schedule extends ModalComponent
     use Actions;
     use WithFileUploads;
     public $scheduleId, $status, $medicineReserves, $name, $type, $class, $typLicense, $sede, $dateReserve, $date, $time, $scheduleMedicines, $sedes,
-        $to_user_headquarters, $medicine_schedule_id, $selectedOption, $comment, $attended;
+        $to_user_headquarters, $medicine_schedule_id, $selectedOption, $comment,$hoursReserve,$observation;
     public function mount($scheduleId)
     {
         $this->scheduleId = $scheduleId;
@@ -31,6 +31,7 @@ class Schedule extends ModalComponent
     }
     public function render()
     {
+        
         return view('livewire.medicine.modals.schedule');
     }
     public function valores($cheduleId)
@@ -52,6 +53,13 @@ class Schedule extends ModalComponent
         $this->dateReserve = $medicineReserves[0]->dateReserve;
 
         $this->status = $medicineReserves[0]->status;
+
+        $this->hoursReserve = $medicineReserves[0]->reserveSchedule->time_start;
+        if(empty($medicineReserves[0]->reserveObserv[0]->observation)){
+            $this->comment;
+        }else{
+            $this->comment = $medicineReserves[0]->reserveObserv[0]->observation;
+        }
     }
 
     public function reschedules()
@@ -60,7 +68,7 @@ class Schedule extends ModalComponent
            
             $attendeReserve = MedicineReserve::find($this->scheduleId);
             $attendeReserve->update([
-                'status' => $this->attended,
+                'status' => $this->selectedOption,
             ]);
             $this->emit('attendeReserve');
 
