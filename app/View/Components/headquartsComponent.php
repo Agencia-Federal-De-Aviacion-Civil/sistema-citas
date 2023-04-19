@@ -28,6 +28,6 @@ class headquartsComponent extends Component
 
     public function render()
     {
-        return view('components.schedule-component');
+        return view('components.headquarts-component');
     }
 }
