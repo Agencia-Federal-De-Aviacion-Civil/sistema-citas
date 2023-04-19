@@ -3,8 +3,10 @@
 namespace App\Http\Livewire;
 
 use App\Models\Medicine\MedicineReserve;
+use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 use PowerComponents\LivewirePowerGrid\Rules\{Rule, RuleActions};
 use PowerComponents\LivewirePowerGrid\Traits\ActionButton;
 use PowerComponents\LivewirePowerGrid\{Button, Column, Exportable, Footer, Header, PowerGrid, PowerGridComponent, PowerGridEloquent};
@@ -52,9 +54,17 @@ final class recordappointment extends PowerGridComponent
      */
     public function datasource(): Builder
     {
-        return $MedicineReserve = MedicineReserve::query()->with([
-            'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
-        ]);
+        if (Auth::user()->can('see.navigation.controller.systems')) {
+            return MedicineReserve::query()->with([
+                'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
+            ]);
+        } else {
+            return MedicineReserve::query()->with([
+                'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
+            ])->whereHas('medicineReserveMedicine', function ($q1) {
+                $q1->where('user_id', Auth::user()->id);
+            });
+        }
     }
 
     /*

@@ -74,7 +74,7 @@ class Index extends Component
         $user = User::updateOrCreate(
             ['id' => $this->id_register],
             [
-                'name' => $this->name,
+                'name' => strtoupper($this->name),
                 'email' => $this->email,
                 'password' => Hash::make($this->password),
             ]

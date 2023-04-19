@@ -10,6 +10,16 @@ class Headquarter extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saving(function ($model) {
+            foreach ($model->getAttributes() as $key => $value) {
+                $model->{$key} = strtoupper($value);
+            }
+        });
+    }
     public function headquarterUser()
     {
         return $this->belongsTo(User::class, 'user_id');
