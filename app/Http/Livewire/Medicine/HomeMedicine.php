@@ -111,28 +111,28 @@ class HomeMedicine extends Component
     {
         // Obtener los horarios disponibles para la fecha especificada
         $this->scheduleMedicines = MedicineSchedule::where('user_id', $value)
-            ->whereNotIn('id', function ($query) {
-                // Subconsulta para obtener los horarios reservados
-                $query->select('medicine_schedule_id')
-                    ->from('medicine_reserves')
-                    ->where('dateReserve', $this->dateReserve)
-                    ->groupBy('medicine_schedule_id')
-                    ->havingRaw('COUNT(*) >= max_schedules');
-            })
+            // ->whereNotIn('id', function ($query) {
+            //     // Subconsulta para obtener los horarios reservados
+            //     $query->select('medicine_schedule_id')
+            //         ->from('medicine_reserves')
+            //         ->where('dateReserve', $this->dateReserve)
+            //         ->groupBy('medicine_schedule_id')
+            //         ->havingRaw('COUNT(*) >= max_schedules');
+            // })
             ->get();
     }
-    public function updatedDateReserve($value)
-    {
-        $this->scheduleMedicines = MedicineSchedule::where('user_id', $this->to_user_headquarters)
-            ->whereNotIn('id', function ($query) use ($value) {
-                $query->select('medicine_schedule_id')
-                    ->from('medicine_reserves')
-                    ->where('to_user_headquarters', $this->to_user_headquarters)
-                    ->where('dateReserve', $value);
-            })
-            ->orderBy('time_start')
-            ->get();
-    }
+    // public function updatedDateReserve($value)
+    // {
+    //     $this->scheduleMedicines = MedicineSchedule::where('user_id', $this->to_user_headquarters)
+    //         ->whereNotIn('id', function ($query) use ($value) {
+    //             $query->select('medicine_schedule_id')
+    //                 ->from('medicine_reserves')
+    //                 ->where('to_user_headquarters', $this->to_user_headquarters)
+    //                 ->where('dateReserve', $value);
+    //         })
+    //         ->orderBy('time_start')
+    //         ->get();
+    // }
     public function openModalPdf()
     {
         $this->confirmModal = false;
@@ -151,7 +151,7 @@ class HomeMedicine extends Component
         $this->validate();
         $citas = MedicineReserve::where('to_user_headquarters', $this->to_user_headquarters)
             ->where('dateReserve', $this->dateReserve)
-            ->where('medicine_schedule_id', $this->medicine_schedule_id)
+            // ->where('medicine_schedule_id', $this->medicine_schedule_id)
             ->where('status', 0)
             ->count();
         // dd($citas);
@@ -160,7 +160,7 @@ class HomeMedicine extends Component
             case 3: // Tijuana
             case 4: // Toluca
             case 5: // Monterrey
-                $maxCitas = 50;
+                $maxCitas = 3;
                 break;
             case 7: // Guadalajara
                 $maxCitas = 20;
@@ -172,7 +172,7 @@ class HomeMedicine extends Component
                 $maxCitas = 0;
                 break;
         }
-        $schedule = MedicineSchedule::find($this->medicine_schedule_id);
+        // $schedule = MedicineSchedule::find($this->medicine_schedule_id);
         $userMedicines = MedicineReserve::with(['medicineReserveMedicine'])
             ->whereHas('medicineReserveMedicine', function ($q1) {
                 $q1->where('user_id', Auth::user()->id);
@@ -208,8 +208,9 @@ class HomeMedicine extends Component
                 }
             }
         }
-        $maxCitasHorario = $schedule->max_schedules;
-        if ($citas >= $maxCitas || $citas >= $maxCitasHorario) {
+        // $maxCitasHorario = $schedule->max_schedules;
+        //  if ($citas >= $maxCitas || $citas >= $maxCitasHorario) ALFORITMO QUE SEPARA CITAS POR HORAS
+        if ($citas >= $maxCitas) {
             $this->notification([
                 'title'       => 'ERROR DE CITA!',
                 'description' => 'No hay citas disponibles para ese dia',
