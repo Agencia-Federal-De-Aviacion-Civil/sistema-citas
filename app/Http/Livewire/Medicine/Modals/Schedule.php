@@ -57,7 +57,7 @@ class Schedule extends ModalComponent
             $this->typLicense = $medicineReserves[0]->medicineReserveMedicine->medicineRenovation[0]->renovationClasificationClass->name;
         }
         $this->to_user_headquarters = $medicineReserves[0]->user->name;
-        // $this->dateReserve = $medicineReserves[0]->dateReserve;
+        $this->dateReserve = $medicineReserves[0]->dateReserve;
 
         $this->status = $medicineReserves[0]->status;
 
@@ -103,6 +103,10 @@ class Schedule extends ModalComponent
             ]);
             $this->emit('cancelReserve');
         } elseif ($this->selectedOption == 4) {
+            $observation = new MedicineObservation();
+            $observation->medicine_reserve_id = $this->scheduleId;
+            $observation->observation = $this->comment;
+            $observation->save();
             $citas = MedicineReserve::where('to_user_headquarters', $this->to_user_headquarters)
                 ->where('dateReserve', $this->dateReserve)
                 ->where(function ($query) {

@@ -7,7 +7,18 @@
             </div>
             <div class="mt-4 text-center">
                 <h3 class="text-xl font-semibold leading-6 text-gray-800 capitalize dark:text-white" id="modal-title">
-                    CITAS
+                    @if ($this->status == 0)
+                    CITA
+                @elseif ($this->status == 1)
+                    CITA ASISTIDA
+                @elseif ($this->status == 2)
+                    CITA CANCELADA
+                @elseif ($this->status == 3)
+                    CANCELO CITA
+                @elseif ($this->status == 4)
+                    CITA REAGENDADA
+                @endif
+
                 </h3>
                 <div class="grid xl:grid-cols-1 xl:gap-6">
                     <div class="mt-1 relative w-full group">
@@ -27,19 +38,57 @@
                         <x-input wire:model="typLicense" label="TIPO DE LICENCIA" disabled />
                     </div>
                 </div>
+
+                @if ($this->status != 0)
+                <div class="grid xl:grid-cols-1 xl:gap-6">
+                    <div class="mt-4 relative w-full group">
+                        <x-input wire:model="sede" label="SEDE" disabled />
+                    </div>
+                </div>
+                <div class="grid xl:grid-cols-2 xl:gap-6">
+
+                    <div class="mt-1 relative w-full group">
+                        <x-datetime-picker label="FECHA" placeholder="Seleccione..." without-time="false"
+                            parse-format="YYYY-MM-DD" display-format="DD-MM-YYYY" wire:model="dateReserve" disabled />
+                    </div>
+                    <div class="mt-1 relative w-full group">
+                        <x-input wire:model="hoursReserve" label="HORA" disabled />
+                    </div>
+                </div>
+                @if ($this->status == 2 || $this->status == 4)
+                    <div class="grid xl:grid-cols-1 xl:gap-6">
+                        <x-textarea wire:model="comment" label="MOTIVO" disabled />
+                    </div>
+                @endif
+                <div class="float-left mt-6">
+                    <x-button wire:click="$emit('closeModal')" label="SALIR" silver />
+                </div>
+
+                @else
+
+                                
                 <div x-data="{ selectedOption: '' }">
                     <div class="grid xl:grid-cols-1 xl:gap-0">
                         {{-- <p class="w-1/2">Select option:</p> --}}
-                        <div class="mt-6 relative w-full group">
-                            <select name="my_option" label="SELECIONE OPCIÓN" x-model="selectedOption"
-                                wire:model="selectedOption" class="">
-                                <option value="">SELECIONE OPCION</option>
-                                <option value="1">ASISTIO CITA</option>
-                                <option value="2">CANCELAR CITA</option>
-                                <option value="4">REAGENDAR CITA</option>
-
-                            </select>
+                        <div x-show="selectedOption!='4'">
+                            <div class="grid xl:grid-cols-1 xl:gap-6">
+                                <div class="mt-4 relative w-full group">
+                                    <x-input wire:model="sede" label="SEDE" disabled />
+                                </div>
+                            </div>
+        
+                            <div class="grid xl:grid-cols-2 xl:gap-6">
+                                <div class="mt-1 relative w-full group">
+                                    <x-datetime-picker label="FECHA" placeholder="Seleccione..." without-time="false"
+                                        parse-format="YYYY-MM-DD" display-format="DD-MM-YYYY" wire:model="dateReserve"
+                                        disabled />
+                                </div>
+                                <div class="mt-1 relative w-full group">
+                                    <x-input wire:model="hoursReserve" label="HORA" disabled />
+                                </div>
+                            </div>
                         </div>
+
                         <div x-show="selectedOption=='4'">
                             <div class="grid xl:grid-cols-1 xl:gap-6">
                                 <div class="mt-4 relative w-full group">
@@ -71,14 +120,25 @@
                                     </select>
                                 </div>
                             </div>
+                            <x-textarea wire:model="comment" label="MOTIVO" placeholder="¿motivo de reagendar?" />
                         </div>
                         <div x-show="selectedOption=='2'">
                             <x-textarea wire:model="comment" label="MOTIVO" placeholder="¿motivo de cancelación?" />
                         </div>
 
                         <div x-show="selectedOption=='1'">
-                            <x-checkbox label="¿EL USUARIO ASISTIÓ A SU CITA?" id="checkbox" wire:model="attended" />
+                            {{-- <x-checkbox label="¿EL USUARIO ASISTIÓ A SU CITA?" id="checkbox" wire:model="attended" /> --}}
                         </div>
+                    </div>
+                    <div class="mt-6 relative w-full group">
+                        <select name="my_option" label="SELECIONE OPCIÓN" x-model="selectedOption"
+                            wire:model="selectedOption" class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-300 dark:border-gray-300 dark:placeholder-gray-300 dark:text-white">
+                            <option value="">SELECIONE OPCION</option>
+                            <option value="1">ASISTIÓ A SU CITA</option>
+                            <option value="2">CANCELAR CITA</option>
+                            <option value="4">REAGENDAR CITA</option>
+
+                        </select>
                     </div>
                 </div>
                 <div class="float-right mt-6">
@@ -87,6 +147,7 @@
                 <div class="float-left mt-6">
                     <x-button wire:click="$emit('closeModal')" label="SALIR" silver />
                 </div>
+                @endif
             </div>
         </div>
     </div>
