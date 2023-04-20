@@ -21,7 +21,7 @@ class IndexController extends Controller
     {
         $medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'user'])
             ->where('medicine_id', $scheduleId)->get();
-        $curpKey = $medicineReserves[0]->medicineReserveMedicine->medicineUser->userParticipant->pluck('id')->first();
+        $curpKey = $medicineReserves[0]->medicineReserveMedicine->medicineUser->userParticipant->pluck('curp')->first();
         $keyEncrypt =  Crypt::encryptString($curpKey);
         if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 1) {
             $pdf = PDF::loadView('livewire.medicine.documents.medicine-initial', compact('medicineReserves', 'keyEncrypt'));

@@ -326,8 +326,10 @@ class HomeMedicine extends Component
         $savedMedicineId = session('saved_medicine_id');
         $medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'user'])
             ->where('medicine_id', $savedMedicineId)->get();
-        $curpKey = $medicineReserves[0]->medicineReserveMedicine->medicineUser->userParticipant->pluck('id')->first();
-        $keyEncrypt =  Crypt::encryptString($curpKey);
+        $medicineId = $medicineReserves[0]->medicine_id;
+        $dateAppointment = $medicineReserves[0]->dateReserve;
+        $curp = $medicineReserves[0]->medicineReserveMedicine->medicineUser->userParticipant->pluck('curp')->first();
+        $keyEncrypt =  Crypt::encryptString($medicineId . '*' . $dateAppointment . '*' . $curp);
         if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 1) {
             $pdf = PDF::loadView('livewire.medicine.documents.medicine-initial', compact('medicineReserves', 'keyEncrypt'));
             return $pdf->download($medicineReserves[0]->dateReserve . '-' . 'cita.pdf');

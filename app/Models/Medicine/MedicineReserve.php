@@ -30,12 +30,14 @@ class MedicineReserve extends Model
     }
     public function userParticipantUser()
     {
-        return $this->belongsTo(UserParticipant::class, 'from_user_appointment','user_id');
+        return $this->belongsTo(UserParticipant::class, 'from_user_appointment', 'user_id');
     }
     public function reserveObserv()
     {
         return $this->hasMany(MedicineObservation::class);
-    }    
-
-
+    }
+    public function medicineSchedule()
+    {
+        return $this->belongsTo(MedicineSchedule::class, 'medicine_schedule_id');
+    }
 }
