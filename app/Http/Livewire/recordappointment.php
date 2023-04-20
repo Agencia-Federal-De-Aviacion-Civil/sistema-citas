@@ -21,7 +21,8 @@ final class recordappointment extends PowerGridComponent
             parent::getListeners(),
             [
                 'cancelReserve' => '$refresh',
-                'attendeReserve' => '$refresh'
+                'attendeReserve' => '$refresh',
+                'reserveAppointment' => '$refresh',
             ]
         );
     }

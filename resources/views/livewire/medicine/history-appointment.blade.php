@@ -73,27 +73,27 @@
             </div>
         </div>
     </div>
-</div>
-<script>
-    let cardData = function() {
-        return {
-            countUp: function(target, startVal, endVal, decimals, duration) {
-                const countUp = new CountUp(target, startVal || 0, endVal, decimals || 0, duration || 2);
-                countUp.start();
-            },
-            sessions: [{
-                "label": "Validado",
-                "size": 60,
-                "color": "blue-800"
-            }, {
-                "label": "Reagendado",
-                "size": 40,
-                "color": "blue-500"
-            }, {
-                "label": "Cancelado",
-                "size": 40,
-                "color": "red-500"
-            }, ]
+    <script>
+        let cardData = function() {
+            return {
+                countUp: function(target, startVal, endVal, decimals, duration) {
+                    const countUp = new CountUp(target, startVal || 0, endVal, decimals || 0, duration || 2);
+                    countUp.start();
+                },
+                sessions: [{
+                    "label": "Validado",
+                    "size": 60,
+                    "color": "blue-800"
+                }, {
+                    "label": "Reagendado",
+                    "size": 40,
+                    "color": "blue-500"
+                }, {
+                    "label": "Cancelado",
+                    "size": 40,
+                    "color": "red-500"
+                }, ]
+            }
         }
-    }
-</script>
+    </script>
+</div>

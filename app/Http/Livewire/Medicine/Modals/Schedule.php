@@ -33,6 +33,13 @@ class Schedule extends ModalComponent
     {
         return view('livewire.medicine.modals.schedule');
     }
+    /**
+     * Supported: 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl', '7xl'
+     */
+    public static function modalMaxWidth(): string
+    {
+        return 'xl';
+    }
     public function valores($cheduleId)
     {
         $this->scheduleId = $cheduleId;
@@ -49,11 +56,24 @@ class Schedule extends ModalComponent
             $this->typLicense = $medicineReserves[0]->medicineReserveMedicine->medicineRenovation[0]->renovationClasificationClass->name;
         }
         $this->to_user_headquarters = $medicineReserves[0]->user->name;
-        $this->dateReserve = $medicineReserves[0]->dateReserve;
+        // $this->dateReserve = $medicineReserves[0]->dateReserve;
 
         // dd($medicineReserves[0]);
     }
-
+    public function updatedToUserHeadquarters($value)
+    {
+        // Obtener los horarios disponibles para la fecha especificada
+        $this->scheduleMedicines = MedicineSchedule::where('user_id', $value)
+            // ->whereNotIn('id', function ($query) {
+            //     // Subconsulta para obtener los horarios reservados
+            //     $query->select('medicine_schedule_id')
+            //         ->from('medicine_reserves')
+            //         ->where('dateReserve', $this->dateReserve)
+            //         ->groupBy('medicine_schedule_id')
+            //         ->havingRaw('COUNT(*) >= max_schedules');
+            // })
+            ->get();
+    }
     public function reschedules()
     {
         if ($this->selectedOption == 1) {
@@ -74,6 +94,45 @@ class Schedule extends ModalComponent
             ]);
             $this->emit('cancelReserve');
         } elseif ($this->selectedOption == 4) {
+            $citas = MedicineReserve::where('to_user_headquarters', $this->to_user_headquarters)
+                ->where('dateReserve', $this->dateReserve)
+                ->where(function ($query) {
+                    $query->where('status', 0)
+                        ->orWhere('status', 4);
+                })
+                ->count();
+            // dd($citas);
+            switch ($this->to_user_headquarters) {
+                case 2: // Cancun
+                case 3: // Tijuana
+                case 4: // Toluca
+                case 5: // Monterrey
+                    $maxCitas = 3;
+                    break;
+                case 7: // Guadalajara
+                    $maxCitas = 20;
+                    break;
+                case 9: // Ciudad de Mexico
+                    $maxCitas = 50;
+                    break;
+                default:
+                    $maxCitas = 0;
+                    break;
+            }
+            if ($citas >= $maxCitas) {
+                $this->notification([
+                    'title'       => 'ERROR DE CITA!',
+                    'description' => 'No hay citas disponibles para ese dia',
+                    'icon'        => 'error'
+                ]);
+            } else {
+                $cita = MedicineReserve::find($this->scheduleId);
+                $cita->to_user_headquarters = $this->to_user_headquarters;
+                $cita->dateReserve = $this->dateReserve;
+                $cita->status = $this->selectedOption;
+                $cita->save();
+                $this->emit('reserveAppointment');
+            }
         }
         $this->closeModal();
     }

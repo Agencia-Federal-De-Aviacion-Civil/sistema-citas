@@ -150,16 +150,20 @@ class HomeMedicine extends Component
     {
         $this->validate();
         $citas = MedicineReserve::where('to_user_headquarters', $this->to_user_headquarters)
-            ->where('dateReserve', $this->dateReserve)
             // ->where('medicine_schedule_id', $this->medicine_schedule_id)
-            ->where('status', 0)
+            ->where('dateReserve', $this->dateReserve)
+            ->where(function ($query) {
+                $query->where('status', 0)
+                    ->orWhere('status', 1)
+                    ->orWhere('status', 4);
+            })
             ->count();
         // dd($citas);
         switch ($this->to_user_headquarters) {
-            case 2: // Cancun
-            case 3: // Tijuana
-            case 4: // Toluca
-            case 5: // Monterrey
+            case 3: // Cancun
+            case 4: // Tijuana
+            case 5: // Toluca
+            case 6: // Monterrey
                 $maxCitas = 3;
                 break;
             case 7: // Guadalajara
@@ -186,6 +190,7 @@ class HomeMedicine extends Component
                     });
             })
             ->where('status', 0)
+            ->orWhere('status', 4)
             ->get();
         foreach ($userMedicines as $userMedicine) {
             if ($userMedicine->id) {

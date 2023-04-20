@@ -32,6 +32,10 @@
         @else
             <x-badge flat negative label="CANCELADA" />
         @endhasrole
+    @elseif($status == 4)
+        <x-button
+            wire:click="$emit('openModal', 'medicine.modals.schedule', {{ json_encode(['scheduleId' => $scheduleId]) }})"
+            label="REAGENDADA" xs warning />
     @endif
     @if ($status == 0)
         @hasrole('super_admin|medicine_admin|user')
