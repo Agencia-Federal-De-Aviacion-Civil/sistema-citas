@@ -2,7 +2,7 @@
     <div
         class="relative inline-block px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl dark:bg-gray-0 sm:my-0 sm:align-middle sm:max-w-2xl sm:w-full sm:p-6">
         <div>
-            <div class="p-3 text-center">
+            <div class="p-0 text-center">
                 {{-- <h1>REAGENDAR CITA</h1> --}}
             </div>
             <div class="mt-4 text-center">
