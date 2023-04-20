@@ -69,7 +69,6 @@ final class recordappointment extends PowerGridComponent
             });
         }
     }
-
     /*
     |--------------------------------------------------------------------------
     |  Relationship Search
@@ -178,32 +177,32 @@ final class recordappointment extends PowerGridComponent
             //->makeInputDatePicker(),
 
             Column::make('TIPO', 'type')
-                ->searchable()
-                ->sortable(),
+                ->searchable(),
+                // ->sortable(),
             //->makeInputDatePicker(),
 
             Column::make('CLASE', 'class')
-                ->searchable()
-                ->sortable(),
+                ->searchable(),
+                // ->sortable(),
             //->makeInputDatePicker(),
 
             Column::make('TIPO DE LICENCIA', 'typelicens')
-                ->searchable()
-                ->sortable(),
+                ->searchable(),
+                // ->sortable(),
             //->makeInputDatePicker(),
 
             Column::make('SEDE', 'headquarters')
-                ->searchable()
-                ->sortable(),
+                ->searchable(),
+                // ->sortable(),
             //->makeInputDatePicker(),
 
             Column::make('FECHA', 'dateReserve')
-                ->searchable()
-                ->sortable(),
+                ->searchable(),
+                // ->sortable(),
 
                 Column::make('HORA', 'hoours')
-                ->searchable()
-                ->sortable(),
+                ->searchable(),
+                // ->sortable(),
                 
 
             //->makeInputDatePicker(),

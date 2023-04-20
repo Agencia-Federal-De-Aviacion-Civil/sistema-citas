@@ -5,7 +5,7 @@
         <div class="p-0 text-center">
             {{-- <h1>REAGENDAR CITA</h1> --}}
         </div>
-        <div class="mt-4 text-center">
+        <div class="p-10 mt-4 text-center">
             <h3 class="text-xl font-semibold leading-6 text-gray-800 capitalize dark:text-white" id="modal-title">
                 @if ($this->status == 0)
                     CITA
@@ -132,9 +132,9 @@
 
                     <div class="mt-6 relative w-full group">
                         <select name="my_option" label="SELECIONE OPCIÓN" x-model="selectedOption"
-                            wire:model="selectedOption" class="">
+                            wire:model="selectedOption" class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-300 dark:border-gray-300 dark:placeholder-gray-300 dark:text-white" >
                             <option value="">SELECIONE OPCION</option>
-                            <option value="1">ASISTIO CITA</option>
+                            <option value="1">ASISTIÓ A SU CITA</option>
                             <option value="2">CANCELAR CITA</option>
                             <option value="4">REAGENDAR CITA</option>
 
@@ -145,6 +145,7 @@
 
                 <div class="float-right mt-6">
                     <x-button wire:click="reschedules()" label="ACEPTAR" blue right-icon="save-as" />
+
                 </div>
                 <div class="float-left mt-6">
                     <x-button wire:click="$emit('closeModal')" label="SALIR" silver />
