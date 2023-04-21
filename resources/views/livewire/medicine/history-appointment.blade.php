@@ -48,7 +48,7 @@
                                     <span class="align-middle" x-text="item.label">&nbsp;</span>
                                 </div>
                                 <div class="font-medium text-lg text-gray-500">
-                                    <span :x-ref="`device${index}`">0</span>%
+                                    <span :x-ref="`device${index}`">100</span>%
                                 </div>
                             </div>
                         </template>
@@ -161,16 +161,8 @@
             },
             sessions: [{
                 "label": "Validado",
-                "size": 60,
+                "size": 100,
                 "color": "blue-800"
-            }, {
-                "label": "Reagendado",
-                "size": 40,
-                "color": "blue-500"
-            },{
-                "label": "Cancelado",
-                "size": 40,
-                "color": "red-500"
             },]
         }
     }
