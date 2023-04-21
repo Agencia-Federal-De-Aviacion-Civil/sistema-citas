@@ -3,7 +3,9 @@
 namespace App\Http\Livewire;
 
 use App\Models\Medicine\MedicineReserve;
-use DeepCopy\Filter\Filter;
+use App\Models\UserParticipant;
+// use DeepCopy\Filter\Filter;
+use PowerComponents\LivewirePowerGrid\Traits\Filter;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -59,6 +61,7 @@ final class recordappointment extends PowerGridComponent
      */
     public function datasource(): Builder
     {
+        
         if (Auth::user()->can('see.navigation.controller.systems')) {
             return MedicineReserve::query()->with([
                 'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
@@ -121,6 +124,7 @@ final class recordappointment extends PowerGridComponent
                 return $regiser->medicineReserveFromUser->name;
                 //return $regiser->medicineReserveFromUser->name;
             })
+            
             ->addColumn('folio', function (MedicineReserve $type) {
                 return 'MED-' . $type->medicineReserveMedicine->id;
             })
@@ -144,7 +148,7 @@ final class recordappointment extends PowerGridComponent
             ->addColumn('headquarters', function (MedicineReserve $headquarters) {
                 return $headquarters->user->name;
             })
-            ->addColumn('curp', function (MedicineReserve $regiser) {
+            ->addColumn('curp', function ($regiser) {
                 return $regiser->userParticipantUser->curp;
             })
             ->addColumn('dateReserve', fn (MedicineReserve $model) => Carbon::parse($model->dateReserve)->format('d/m/Y'))
@@ -152,6 +156,7 @@ final class recordappointment extends PowerGridComponent
         //->addColumn('updated_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'));
 
     }
+
     // public function filters(): array
     // {
     //     return [
@@ -185,8 +190,8 @@ final class recordappointment extends PowerGridComponent
             // ->makeInputText(),
 
             Column::make('NOMBRE', 'name')
-                ->searchable()
-                ->makeInputText(),
+                ->searchable(),
+                // ->makeInputText(),
 
             // ->sortable(),
             //->makeInputDatePicker(),
@@ -223,8 +228,9 @@ final class recordappointment extends PowerGridComponent
 
             Column::make('CURP', 'curp')
                 ->searchable()
-                ->sortable()
-            ->makeInputText(),
+                ->sortable(),
+                // ->makeInputSelect(UserParticipant::select('curp')->distinct()->get(), 'curp', 'curp', ['live-search' => false])
+            // ->makeInputText(),
 
             // Column::make('CREADA EL', 'created_at_formatted', 'created_at')
             //     ->searchable()
@@ -241,13 +247,22 @@ final class recordappointment extends PowerGridComponent
     public function filters(): array
     {
         return [
-        //    Filter::inputText('curp', 'curp')
-        //       ->operators(['contains', 'is', 'is_not']),
-
-
-        
+            Filter::InputText('curp','curp')
+            ->operators(['contains', 'is', 'is_not']),
         ];
-    } 
+    }
+
+    // public function filters(): array
+    // {
+
+        // ->dataSource(UserParticipant::select('curp')->distinct()->get())
+        // ->optionValue('curp')
+        // ->optionLabel('curp'),           
+    //     return [
+    //        Filter::inputText('curp', 'curp'),
+    //         //   ->operators(['contains', 'is', 'is_not']),        
+    //     ];
+    // } 
     /*
     |--------------------------------------------------------------------------
     | Actions Method
