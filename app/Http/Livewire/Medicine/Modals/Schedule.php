@@ -19,7 +19,7 @@ class Schedule extends ModalComponent
     use Actions;
     use WithFileUploads;
     public $scheduleId, $status, $medicineReserves, $name, $type, $class, $typLicense, $sede, $dateReserve, $date, $time, $scheduleMedicines, $sedes,
-        $to_user_headquarters, $medicine_schedule_id, $selectedOption, $comment, $attended;
+        $to_user_headquarters, $medicine_schedule_id, $selectedOption, $comment,$hoursReserve,$observation;
     public function mount($scheduleId)
     {
         $this->scheduleId = $scheduleId;
@@ -31,6 +31,7 @@ class Schedule extends ModalComponent
     }
     public function render()
     {
+        
         return view('livewire.medicine.modals.schedule');
     }
     /**
@@ -56,9 +57,17 @@ class Schedule extends ModalComponent
             $this->typLicense = $medicineReserves[0]->medicineReserveMedicine->medicineRenovation[0]->renovationClasificationClass->name;
         }
         $this->to_user_headquarters = $medicineReserves[0]->user->name;
-        // $this->dateReserve = $medicineReserves[0]->dateReserve;
+        $this->dateReserve = $medicineReserves[0]->dateReserve;
 
-        // dd($medicineReserves[0]);
+        $this->status = $medicineReserves[0]->status;
+
+        $this->hoursReserve = $medicineReserves[0]->reserveSchedule->time_start;
+        if(empty($medicineReserves[0]->reserveObserv[0]->observation)){
+            $this->comment;
+        }else{
+            $this->comment = $medicineReserves[0]->reserveObserv[0]->observation;
+        }
+        $this->sede = $medicineReserves[0]->user->name;
     }
     public function updatedToUserHeadquarters($value)
     {
@@ -80,7 +89,7 @@ class Schedule extends ModalComponent
 
             $attendeReserve = MedicineReserve::find($this->scheduleId);
             $attendeReserve->update([
-                'status' => $this->attended,
+                'status' => $this->selectedOption,
             ]);
             $this->emit('attendeReserve');
         } elseif ($this->selectedOption == 2) {
@@ -94,6 +103,10 @@ class Schedule extends ModalComponent
             ]);
             $this->emit('cancelReserve');
         } elseif ($this->selectedOption == 4) {
+            $observation = new MedicineObservation();
+            $observation->medicine_reserve_id = $this->scheduleId;
+            $observation->observation = $this->comment;
+            $observation->save();
             $citas = MedicineReserve::where('to_user_headquarters', $this->to_user_headquarters)
                 ->where('dateReserve', $this->dateReserve)
                 ->where(function ($query) {

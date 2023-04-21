@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Medicine\MedicineReserve;
+use DeepCopy\Filter\Filter;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -28,8 +29,8 @@ final class recordappointment extends PowerGridComponent
     }
     public function setUp(): array
     {
-        //$this->showCheckBox();
-
+        // $this->showCheckBox();
+        // $this->persist(['columns', 'filters']);
         return [
             Exportable::make('export')
                 ->striped()
@@ -90,9 +91,13 @@ final class recordappointment extends PowerGridComponent
             'medicineReserveFromUser' => [
                 'name',
             ],
-            /*'medicineReserveFromUser?' => [
-                 'apParental',
-             ],*/
+            'medicineReserveMedicine.medicineTypeExam' => [
+                'name',
+            ],
+            'userParticipantUser' => [
+                'apParental',
+                'apMaternal',
+            ],
 
         ];
     }
@@ -111,9 +116,9 @@ final class recordappointment extends PowerGridComponent
     public function addColumns(): PowerGridEloquent
     {
         return PowerGrid::eloquent()
-            ->addColumn('id')
+            // ->addColumn('id')
             ->addColumn('name', function (MedicineReserve $regiser) {
-                return $regiser->medicineReserveFromUser->name . ' ' . $regiser->userParticipantUser?->apParental . ' ' . $regiser->userParticipantUser?->apMaternal;
+                return $regiser->medicineReserveFromUser->name;
                 //return $regiser->medicineReserveFromUser->name;
             })
             ->addColumn('folio', function (MedicineReserve $type) {
@@ -140,14 +145,20 @@ final class recordappointment extends PowerGridComponent
                 return $headquarters->user->name;
             })
             ->addColumn('curp', function (MedicineReserve $regiser) {
-                return $regiser->userParticipantUser?->curp;
+                return $regiser->userParticipantUser->curp;
             })
-            ->addColumn('dateReserve', fn (MedicineReserve $model) => Carbon::parse($model->dateReserve)->format('d/m/Y H:i:s'))
-            ->addColumn('created_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
+            ->addColumn('dateReserve', fn (MedicineReserve $model) => Carbon::parse($model->dateReserve)->format('d/m/Y'))
+            ->addColumn('hoours', fn (MedicineReserve $model) => Carbon::parse($model->reserveSchedule->time_start)->format('H:i:s'));
         //->addColumn('updated_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'));
 
     }
-
+    // public function filters(): array
+    // {
+    //     return [
+    //        Filter::inputText('name', 'name')
+    //           ->operators(['contains', 'is', 'is_not']),
+    //     ];
+    // }
     /*
     |--------------------------------------------------------------------------
     |  Include Columns
@@ -165,52 +176,59 @@ final class recordappointment extends PowerGridComponent
     public function columns(): array
     {
         return [
-            Column::make('ID', 'id'),
+            // Column::make('ID', 'id'),
             //->makeInputRange(),
 
             Column::make('FOLIO', 'folio')
                 ->searchable(),
-            //->sortable(),
-            //->makeInputDatePicker(),
+            // ->sortable()
+            // ->makeInputText(),
 
             Column::make('NOMBRE', 'name')
-                ->searchable(),
-            //->sortable(),
+                ->searchable()
+                ->makeInputText(),
+
+            // ->sortable(),
             //->makeInputDatePicker(),
 
             Column::make('TIPO', 'type')
-                ->searchable()
-                ->sortable(),
+                ->searchable(),
+            // ->makeInputText(),
+            // ->sortable(),
             //->makeInputDatePicker(),
 
             Column::make('CLASE', 'class')
-                ->searchable()
-                ->sortable(),
+                ->searchable(),
+            // ->sortable(),
             //->makeInputDatePicker(),
 
             Column::make('TIPO DE LICENCIA', 'typelicens')
-                ->searchable()
-                ->sortable(),
+                ->searchable(),
+            // ->sortable(),
             //->makeInputDatePicker(),
 
             Column::make('SEDE', 'headquarters')
-                ->searchable()
-                ->sortable(),
+                ->searchable(),
+            // ->sortable(),
             //->makeInputDatePicker(),
 
-            Column::make('FECHA Y HORA DE LA CITA', 'dateReserve')
-                ->searchable()
-                ->sortable(),
+            Column::make('FECHA', 'dateReserve')
+                ->searchable(),
+            // ->sortable(),
+
+            Column::make('HORA', 'hoours')
+                ->searchable(),
+            // ->sortable(),
             //->makeInputDatePicker(),
 
             Column::make('CURP', 'curp')
                 ->searchable()
-                ->sortable(),
-            //->makeInputDatePicker(),
+                ->sortable()
+            ->makeInputText(),
 
-            Column::make('CREADA EL', 'created_at_formatted', 'created_at')
-                ->searchable()
-                ->sortable(),
+            // Column::make('CREADA EL', 'created_at_formatted', 'created_at')
+            //     ->searchable()
+            //     ->sortable(),
             //->makeInputDatePicker(),
 
             //Column::make('UPDATED AT', 'updated_at_formatted', 'updated_at')
@@ -220,7 +238,16 @@ final class recordappointment extends PowerGridComponent
 
         ];
     }
+    public function filters(): array
+    {
+        return [
+        //    Filter::inputText('curp', 'curp')
+        //       ->operators(['contains', 'is', 'is_not']),
 
+
+        
+        ];
+    } 
     /*
     |--------------------------------------------------------------------------
     | Actions Method

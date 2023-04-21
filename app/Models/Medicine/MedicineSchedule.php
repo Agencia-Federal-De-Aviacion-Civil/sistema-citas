@@ -18,4 +18,8 @@ class MedicineSchedule extends Model
     {
         return $this->hasMany(MedicineReserve::class);
     }
+    public function scheduleReserve(){
+        return $this->hasMany(MedicineReserve::class);
+    }    
+    
 }
