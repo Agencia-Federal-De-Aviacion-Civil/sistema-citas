@@ -46,7 +46,7 @@ class HomeMedicine extends Component
     {
         return [
             'name_document' => 'required',
-            'reference_number' => 'required',
+            'reference_number' => 'required|unique:medicines',
             'pay_date' => 'required',
             'type_exam_id' => 'required',
             'medicine_question_id' => 'required_if:type_exam_id,1',
@@ -260,6 +260,7 @@ class HomeMedicine extends Component
         return [
             'type_exam_id.required' => 'Campo obligatorio',
             'type_class_id.required' => 'Campo obligatorio',
+            'reference_number.unique' => 'Referencia de pago ya existe.',
             'clasification_class_id.required' => 'Campo obligatorio',
             'paymentConcept.required' => 'Ingrese clave de pago.',
             'paymentConcept.unique' => 'Concepto de pago ya registrado, intenta con otro.',
