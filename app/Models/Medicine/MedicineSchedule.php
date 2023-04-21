@@ -10,8 +10,13 @@ class MedicineSchedule extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
-    public function medicineScheduleUser(){
-        return $this->belongsTo(User::class,'user_id');
+    public function medicineScheduleUser()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+    public function scheduleMedicine()
+    {
+        return $this->hasMany(MedicineReserve::class);
     }
     public function scheduleReserve(){
         return $this->hasMany(MedicineReserve::class);
