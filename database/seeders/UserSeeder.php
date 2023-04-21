@@ -15,13 +15,13 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        User::create(
+        /*User::create(
             [
                 'name' => 'admin',
                 'email' => 'admin@afac.gob.mx',
                 'password' => bcrypt('12345678')
             ]
-        )->assignRole('super_admin');
+        )->assignRole('super_admin');*/
         User::create(
             [
                 'name' => 'Veronica Hernández Orozco',
