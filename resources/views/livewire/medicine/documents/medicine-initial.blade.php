@@ -173,7 +173,7 @@
             <ol>
                 <li value="1">Acudir con ropa cómoda, evitando sea de una sola pieza.
                 </li>
-                <li>Presentarse en ayuno, no tomar alimentos las 8 horas previas a su hora de cita.
+                <li>Tomar un desayuno ligero, en caso de acudir en ayuno llevar su refrigerio.
                 </li>
                 <li>No suspender medicación prescrita.</u>
                 </li>
@@ -214,7 +214,7 @@
                     <p style="padding-left:5%;margin-top:-2%">3. Clase III – cada 3 años.</p>
                     <p style="padding-left:5%;margin-top:-2%">4. O antes a indicación de su médico examinador.</p>
                 </li>
-                <p style="margin-top:-2%">****En caso de hacer cita en la UM Aeropuerto Ciudad de México no será necesario presentar RX de Tórax</p>
+                <p style="margin-top:-2%">****En caso de hacer cita en la Unidad Médica Aeropuerto Ciudad de México no será necesario presentar RX de Tórax</p>
                 <li>Los estudios previamente descritos deberán tener fecha de emisión no mayor a un mes.
                 </li>
                 {{-- <li>Imprimir el formato de Consentimiento Informado y firmarlo.

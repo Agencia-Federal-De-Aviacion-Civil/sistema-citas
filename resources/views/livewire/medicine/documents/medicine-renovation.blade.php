@@ -154,8 +154,8 @@
                 <p style="padding-left:2%;">A. Cédula de identidad ciudadana (INE) vigente.</p>
                 <p style="padding-left:2%;margin-top:-2%;">B. Cédula profesional (siempre y cuando cuenten con fotografía).</p>
                 <p style="padding-left:2%;margin-top:-2%;">C. Cartilla Militar (personal masculino).</p>
-                <p style="padding-left:2%;margin-top:-2%;">D. Licencia de manejo.</p>
-                <p style="padding-left:2%;margin-top:-2%;">E. Pasaporte.</p>
+                {{-- <p style="padding-left:2%;margin-top:-2%;">D. Licencia de manejo.</p> --}}
+                <p style="padding-left:2%;margin-top:-2%;">D. Pasaporte.</p>
             </ol>
         </div>
         <footer>
@@ -175,7 +175,7 @@
             <ol class="">
                 <li value="1">Acudir con ropa cómoda, evitando sea de una sola pieza.
                 </li>
-                <li>Presentarse en ayuno, no tomar alimentos las 8 horas previas a su hora de cita.</u>
+                <li>Tomar un desayuno ligero, en caso de acudir en ayuno llevar su refrigerio.</u>
                 </li>
                 <li>No suspender medicación prescrita.
                 </li>
@@ -206,9 +206,9 @@
                     <p style="padding-left:3%">B) Química sanguínea de 6 elementos (Glucosa, Nitrógeno Ureico en Sangre,
                         Creatinina, Ácido úrico, Colesterol total y Triglicéridos).</p>
                     <p style="padding-left:3%">C) Examen General de Orina.</p>
-                    <p style="padding-left:3%">E) Prueba de detección de sustancias psicoactivas en orina, de 5
+                    <p style="padding-left:3%">D) Prueba de detección de sustancias psicoactivas en orina, de 5
                         reactivos (Cocaína, Cannabinoides (Marihuana), Barbitúricos, Anfetaminas y Benzodiazepinas).</p>
-                    <p style="padding-left:3%">F) Radiografía de Tórax Posteroanterior, la cual se deberá presentar
+                    <p style="padding-left:3%">E) Radiografía de Tórax Posteroanterior, la cual se deberá presentar
                         con la siguiente periodicidad de acuerdo a la clase:</p>
                     <p style="padding-left:5%;margin-top:-2%">1. Clase I – cada 3 años.</p>
                     <p style="padding-left:5%;margin-top:-2%">2. Clase II – cada 3 años.</p>
