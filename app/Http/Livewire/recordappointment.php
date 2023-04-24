@@ -155,7 +155,7 @@ final class recordappointment extends PowerGridComponent
             //->addColumn('updated_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'));
             
     }
-    }
+    
     // public function filters(): array
     // {
     //     return [
