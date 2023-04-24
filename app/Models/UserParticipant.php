@@ -11,6 +11,16 @@ class UserParticipant extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saving(function ($model) {
+            foreach ($model->getAttributes() as $key => $value) {
+                $model->{$key} = strtoupper($value);
+            }
+        });
+    }
     public function participantState()
     {
         return $this->belongsTo(State::class, 'state_id');

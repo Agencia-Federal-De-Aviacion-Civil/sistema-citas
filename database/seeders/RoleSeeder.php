@@ -25,9 +25,7 @@ class RoleSeeder extends Seeder
         Permission::create(['name' => 'see.appointment.medicine', 'description' => 'The medicine admin could see history appoinment'])->syncRoles([$role2]);
         Permission::create(['name' => 'see.navigation.medicine', 'description' => 'The medicine admin could see navigation options'])->syncRoles([$role2]);
         Permission::create(['name' => 'generate.appointment', 'description' => 'The user will could appointment generate'])->syncRoles([$role4]);
-        // Permission::create(['name' => 'navigation.see.notifications', 'description' => 'This permission is to see the notifications'])->syncRoles([$role3]);
-        // Permission::create(['name' => 'see.appointments', 'description' => 'The Admins and Headquarters will could appoinments'])->syncRoles([$role1, $role3]);
-        // Permission::create(['name' => 'admin.see.headquarters', 'description' => 'See headquarters appointments'])->syncRoles([$role1]);
-        // Permission::create(['name' => 'afac.home.catalogue', 'description' => 'See menu options catalogue'])->syncRoles([$role1]);
+        // PESTAÑAS
+        Permission::create(['name' => 'see.navigation.schedule.table', 'description' => 'This permission gates see the table of appointment'])->syncRoles([$role1, $role2, $role4]);
     }
 }

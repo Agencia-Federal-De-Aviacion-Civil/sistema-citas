@@ -29,14 +29,21 @@ class Qr extends Component
         $this->validate();
         try {
             $decrypted = Crypt::decryptString($this->textRead);
-            $this->medicineReserves = MedicineReserve::with(['medicineReserveMedicine.medicineUser.userParticipant', 'medicineReserveFromUser', 'user'])
-                ->whereHas('medicineReserveMedicine.medicineUser.userParticipant', function ($q) use ($decrypted) {
-                    $q->where('curp', $decrypted);
-                })->first();
-            // dd($this->medicineReserves);  
+            $separated = explode('*', $decrypted);
+            $medicine_id = $separated[0];
+            $date_reserve = $separated[1];
+            $curp = $separated[2];
+            $medicineReserves = MedicineReserve::with(['medicineReserveMedicine.medicineUser.userParticipant', 'medicineReserveFromUser', 'user'])
+                ->whereHas('medicineReserveMedicine.medicineUser.userParticipant', function ($q) use ($curp) {
+                    $q->where('curp', $curp);
+                })->where('medicine_id', $medicine_id)
+                ->where('dateReserve', $date_reserve)->get();
             $this->dialog([
                 'title'       => '¡CITA MÉDICA VERIFICADA!',
-                // 'description' => 'NOMBRE: ' . $medicineReserves . '',
+                'description' => 'NOMBRE: ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->name . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apParental')->first() . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apMaternal')->first() . 
+                '<br> CURP: ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->userParticipant->pluck('curp')->first() . '<br> TIPO: ' .$medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->name 
+                . '<br> TIPO DE CLASE: ' . $medicineReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name
+                    . '<br> UNIDAD MEDICA: ' . $medicineReserves[0]->user->name . '<br> FECHA: ' . $medicineReserves[0]->dateReserve . '<br> HORA: '.$medicineReserves[0]->medicineSchedule->time_start,
                 'icon'        => 'success'
             ]);
         } catch (DecryptException $e) {
