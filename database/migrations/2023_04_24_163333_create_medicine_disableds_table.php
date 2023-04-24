@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('medicine_disableds', function (Blueprint $table) {
             $table->id();
-            $table->date('range_appointment');
+            $table->string('range_appointment');
             $table->timestamps();
         });
     }

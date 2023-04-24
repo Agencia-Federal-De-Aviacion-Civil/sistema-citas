@@ -33,11 +33,13 @@ class Headquarters extends Component
     public function save()
     {
         $this->validate();
-        $disabled = MedicineDisabled::create([
-            'range_appointment' => implode(",", $this->range_appointment),
-        ]);
+        foreach ($this->range_appointment as $range) {
+            $disabled = MedicineDisabled::create([
+                'range_appointment' => $range,
+            ]);
+        }
         $this->notification([
-            'title'       => 'SEDE AGREGADA ÉXITOSAMENTE',
+            'title'       => 'CITAS DESHABILITADAS',
             'icon'        => 'success',
             'timeout' => '3100'
         ]);

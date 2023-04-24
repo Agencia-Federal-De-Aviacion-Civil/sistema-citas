@@ -45,6 +45,10 @@
                             <div x-show="activeTab === 'schedule'">
                                 <x-input wire:model.lazy="range_appointment" id="disabled-appointment"
                                     label="INHABILITAR CITAS" placeholder="INGRESE..." readonly />
+                                <div class="mt-8 text-right">
+                                    <x-button wire:click.prevent="save" icon="clipboard-list" secondary
+                                        label="GUARDAR" />
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -55,7 +59,7 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             flatpickr("#disabled-appointment", {
-                mode: "range",
+                mode: "multiple",
                 dateFormat: "Y-m-d",
                 disableMobile: "true",
                 minDate: "today",

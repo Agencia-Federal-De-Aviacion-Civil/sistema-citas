@@ -8,6 +8,7 @@ use App\Models\Catalogue\TypeClass;
 use App\Models\Catalogue\TypeExam;
 use App\Models\Document;
 use App\Models\Medicine\Medicine;
+use App\Models\Medicine\MedicineDisabled;
 use App\Models\Medicine\MedicineInitial;
 use App\Models\Medicine\MedicineQuestion;
 use App\Models\Medicine\MedicineRenovation;
@@ -33,7 +34,7 @@ class HomeMedicine extends Component
     public $confirmModal = false, $modal = false;
     public $medicineQueries, $medicineReserves, $medicineInitials, $medicineRenovations, $id_medicineReserve, $savedMedicineId, $scheduleMedicines, $medicine_schedule_id;
     // MEDICINE INITIAL TABLE
-    public $question, $date;
+    public $question, $date, $dateNow;
     public function mount()
     {
         $this->typeExams = TypeExam::all();
@@ -45,6 +46,7 @@ class HomeMedicine extends Component
         $this->scheduleMedicines = collect();
         Date::setLocale('ES');
         $this->date = Date::now()->parse();
+        $this->dateNow = Date::now()->format('Y-m-d');
     }
     public function rules()
     {
@@ -62,6 +64,9 @@ class HomeMedicine extends Component
     }
     public function render()
     {
+        // $disabledDays = MedicineDisabled::all();
+        // dd($disabledDays[0]->range_appointment);
+        // $disabledAll = ($this->dateNow >= $this->fechaInicio && $this->dateNow <= $this->fechaFin);
         return view('livewire.medicine.home-medicine')
             ->layout('layouts.app');
     }
