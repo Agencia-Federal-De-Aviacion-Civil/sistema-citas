@@ -165,7 +165,7 @@ class HomeMedicine extends Component
             ->count();
         // dd($citas);
         switch ($this->to_user_headquarters) {
-            case 3: // Cancun
+            case 2: // Cancun
             case 4: // Tijuana
             case 5: // Toluca
             case 6: // Monterrey
