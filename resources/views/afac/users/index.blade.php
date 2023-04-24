@@ -1,3 +1,3 @@
 <x-app-layout>
-    @livewire('medicine.users')
+    @livewire('users.index')
  </x-app-layout>

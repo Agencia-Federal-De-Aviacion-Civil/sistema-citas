@@ -11,9 +11,11 @@ class privilegesComponent extends Component
      *
      * @return void
      */
-    public function __construct()
+    public $privilegesId;
+    
+    public function __construct($privilegesId)
     {
-        //
+        $this->privilegesId = $privilegesId;
     }
 
     /**

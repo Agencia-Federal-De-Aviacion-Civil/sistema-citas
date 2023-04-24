@@ -23,6 +23,7 @@ final class UserManager extends PowerGridComponent
     public function setUp(): array
     {
         $this->showCheckBox();     
+
         // $this->includeViewOnBottom('privileges-component');
         return [
             Exportable::make('export')
@@ -179,7 +180,7 @@ final class UserManager extends PowerGridComponent
         // privileges
         return [
             Button::add('privileges-button-component')
-                ->bladeComponent('privileges-component', ['privilegesId' => 'id', 'status' => 'status']),
+                ->bladeComponent('privileges-component', ['privilegesId' => 'id']),
         ];
     }
     /*
