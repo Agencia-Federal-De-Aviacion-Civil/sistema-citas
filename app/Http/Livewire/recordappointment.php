@@ -147,10 +147,14 @@ final class recordappointment extends PowerGridComponent
             ->addColumn('curp', function (MedicineReserve $regiser) {
                 return $regiser->userParticipantUser->curp;
             })
-            ->addColumn('dateReserve', fn (MedicineReserve $model) => Carbon::parse($model->dateReserve)->format('d/m/Y'))
-            ->addColumn('hoours', fn (MedicineReserve $model) => Carbon::parse($model->reserveSchedule->time_start)->format('H:i:s'));
-        //->addColumn('updated_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'));
-
+            ->addColumn('reference_number', function (MedicineReserve $regiser) {
+                return $regiser->medicineReserveMedicine->reference_number;
+            })
+            ->addColumn('created_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->dateReserve)->format('d/m/Y H:i:s'))
+            ->addColumn('created_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
+            //->addColumn('updated_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'));
+            
+    }
     }
     // public function filters(): array
     // {
@@ -223,9 +227,12 @@ final class recordappointment extends PowerGridComponent
 
             Column::make('CURP', 'curp')
                 ->searchable()
-                ->sortable()
-            ->makeInputText(),
-
+                ->sortable(),
+                //->makeInputDatePicker(),
+            
+            Column::make('PAGO', 'reference_number')
+                ->searchable()
+                ->sortable(),
             // Column::make('CREADA EL', 'created_at_formatted', 'created_at')
             //     ->searchable()
             //     ->sortable(),
