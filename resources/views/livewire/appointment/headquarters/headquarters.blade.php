@@ -1,11 +1,5 @@
 <div>
     <x-notifications position="top-bottom" />
-    @if ($modal)
-        @include('livewire.appointment.headquarters.modals.modal-new')
-    @endif
-    @if ($modalEdit)
-        @include('livewire.appointment.headquarters.modals.modal-edit')
-    @endif
     <div class="relative py-6 lg:py-4">
         <img class="z-0 w-full h-full absolute inset-0 object-cover" src="{{ asset('images/banner_testing.jpg') }}"
             alt="bg" />
@@ -16,11 +10,6 @@
                     DE SEDES</h4>
                 <ul class="flex flex-col md:flex-row items-start md:items-center text-gray-300 text-sm mt-3">
                     <li class="flex items-center mt-4 md:mt-0">
-                        {{-- <div class="mr-1">
-                            <img src="https://tuk-cdn.s3.amazonaws.com/can-uploader/background_with_sub_text-svg3.svg"
-                                alt="date">
-                        </div> --}}
-                        {{-- <span tabindex="0" class="focus:outline-none">Started on 29 Jan 2020</span> --}}
                     </li>
                 </ul>
             </div>
@@ -49,17 +38,44 @@
                                 </a>
                             </li>
                         </ul>
-                        <div x-show="activeTab === 'headquarter'">
-                            <div class="mt-8">
+                        <div class="mt-8">
+                            <div x-show="activeTab === 'headquarter'">
                                 <livewire:headquarter-table />
                             </div>
-                        </div>
-                        <div x-show="activeTab === 'schedule'">
-                            OTRO
+                            <div x-show="activeTab === 'schedule'">
+                                <x-input wire:model.lazy="range_appointment" id="disabled-appointment"
+                                    label="INHABILITAR CITAS" placeholder="INGRESE..." readonly />
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            flatpickr("#disabled-appointment", {
+                mode: "range",
+                dateFormat: "Y-m-d",
+                disableMobile: "true",
+                minDate: "today",
+                locale: {
+                    weekdays: {
+                        shorthand: ['Dom', 'Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab'],
+                        longhand: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes',
+                            'Sábado'
+                        ],
+                    },
+                    months: {
+                        shorthand: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct',
+                            'Nov', 'Dic'
+                        ],
+                        longhand: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto',
+                            'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+                        ],
+                    },
+                },
+            });
+        });
+    </script>
 </div>
