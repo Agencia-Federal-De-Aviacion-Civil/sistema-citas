@@ -151,6 +151,9 @@ final class recordappointment extends PowerGridComponent
             ->addColumn('curp', function ($regiser) {
                 return $regiser->userParticipantUser->curp;
             })
+            ->addColumn('reference_number', function (MedicineReserve $regiser) {
+                return $regiser->medicineReserveMedicine->reference_number;
+            })
             ->addColumn('dateReserve', fn (MedicineReserve $model) => Carbon::parse($model->dateReserve)->format('d/m/Y'))
             ->addColumn('hoours', fn (MedicineReserve $model) => Carbon::parse($model->reserveSchedule->time_start)->format('H:i:s'));
         //->addColumn('updated_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'));
@@ -229,6 +232,10 @@ final class recordappointment extends PowerGridComponent
             Column::make('CURP', 'curp')
                 ->searchable()
                 ->sortable(),
+
+                Column::make('PAGO', 'reference_number')
+                ->searchable()
+                ->sortable(),                
                 // ->makeInputSelect(UserParticipant::select('curp')->distinct()->get(), 'curp', 'curp', ['live-search' => false])
             // ->makeInputText(),
 

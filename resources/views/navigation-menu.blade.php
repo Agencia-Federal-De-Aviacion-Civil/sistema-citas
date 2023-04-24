@@ -60,6 +60,12 @@
                     <x-jet-nav-link href="{{ route('afac.appointment') }}" :active="request()->routeIs('afac.appointment')">
                         {{ __('Citas agendadas') }}
                     </x-jet-nav-link>
+
+                    <x-jet-nav-link href="{{ route('afac.users') }}" :active="request()->routeIs('afac.users')">
+                        {{ __('Usuarios') }}
+                    </x-jet-nav-link>
+
+
                 @endcan
                     @can('see.navigation.medicine')
                         <x-jet-nav-link href="{{ route('afac.appointment') }}" :active="request()->routeIs('afac.appointment')">
