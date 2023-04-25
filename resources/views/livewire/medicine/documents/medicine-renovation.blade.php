@@ -127,8 +127,12 @@
                 </td>
             </tr>
             <tr>
-                <td>FECHA Y HORA:</td>
+                <td>FECHA</td>
                 <td>{{ $medicineReserves[0]->dateReserve }}</td>
+            </tr>
+            <tr>
+                <td>HORA</td>
+                <td>{{ $medicineReserves[0]->reserveSchedule->time_start }}</td>
             </tr>
         </table>
         <div style="background-color: #e6e6e6;height: 25px; ">

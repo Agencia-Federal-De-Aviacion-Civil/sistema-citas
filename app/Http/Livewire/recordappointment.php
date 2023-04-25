@@ -116,16 +116,19 @@ final class recordappointment extends PowerGridComponent
     public function addColumns(): PowerGridEloquent
     {
         return PowerGrid::eloquent()
-            // ->addColumn('id')
+            ->addColumn('id')
             ->addColumn('name', function (MedicineReserve $regiser) {
-                return $regiser->medicineReserveFromUser->name.' '.$regiser->userParticipantUser->apParental.' '.$regiser->userParticipantUser->apMaternal;               
+                return $regiser->medicineReserveFromUser->name . ' ' . $regiser->userParticipantUser->apParental . ' ' . $regiser->userParticipantUser->apMaternal;
                 //return $regiser->medicineReserveFromUser->name;
             })
-            ->addColumn('folio', function (MedicineReserve $type) {
-                return 'MED-' . $type->medicineReserveMedicine->id;
-            })
+            // ->addColumn('folio', function (MedicineReserve $type) {
+            //     return 'MED-' . $type->medicineReserveMedicine->id;
+            // })
             ->addColumn('type', function (MedicineReserve $type) {
                 return $type->medicineReserveMedicine->medicineTypeExam->name;
+            })
+            ->addColumn('hours', function (MedicineReserve $type) {
+                return $type->reserveSchedule->time_start;
             })
             ->addColumn('class', function (MedicineReserve $class) {
                 if ($class->medicineReserveMedicine->medicineTypeExam->id == 1) {
@@ -152,10 +155,10 @@ final class recordappointment extends PowerGridComponent
             })
             ->addColumn('created_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->dateReserve)->format('d/m/Y H:i:s'))
             ->addColumn('created_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
-            //->addColumn('updated_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'));
-            
+        //->addColumn('updated_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'));
+
     }
-    
+
     // public function filters(): array
     // {
     //     return [
@@ -180,11 +183,11 @@ final class recordappointment extends PowerGridComponent
     public function columns(): array
     {
         return [
-            // Column::make('ID', 'id'),
-            //->makeInputRange(),
+            Column::make('ID', 'id')
+                ->makeInputRange(),
 
-            Column::make('FOLIO', 'folio')
-                ->searchable(),
+            // Column::make('FOLIO', 'folio')
+            //     ->searchable(),
             // ->sortable()
             // ->makeInputText(),
 
@@ -220,7 +223,7 @@ final class recordappointment extends PowerGridComponent
                 ->searchable(),
             // ->sortable(),
 
-            Column::make('HORA', 'hoours')
+            Column::make('HORA', 'hours')
                 ->searchable(),
             // ->sortable(),
             //->makeInputDatePicker(),
@@ -228,8 +231,8 @@ final class recordappointment extends PowerGridComponent
             Column::make('CURP', 'curp')
                 ->searchable()
                 ->sortable(),
-                //->makeInputDatePicker(),
-            
+            //->makeInputDatePicker(),
+
             Column::make('PAGO', 'reference_number')
                 ->searchable()
                 ->sortable(),
@@ -248,13 +251,13 @@ final class recordappointment extends PowerGridComponent
     public function filters(): array
     {
         return [
-        //    Filter::inputText('curp', 'curp')
-        //       ->operators(['contains', 'is', 'is_not']),
+            //    Filter::inputText('curp', 'curp')
+            //       ->operators(['contains', 'is', 'is_not']),
 
 
-        
+
         ];
-    } 
+    }
     /*
     |--------------------------------------------------------------------------
     | Actions Method
