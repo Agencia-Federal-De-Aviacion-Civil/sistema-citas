@@ -23,13 +23,15 @@ final class UserManager extends PowerGridComponent
     public function setUp(): array
     {
         $this->showCheckBox();     
-
         // $this->includeViewOnBottom('privileges-component');
         return [
             Exportable::make('export')
                 ->striped()
                 ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
-            Header::make()->showSearchInput(),
+            Header::make()
+            ->showSearchInput()
+            ->includeViewOnTop('components.privileges-component'),
+            
             Footer::make()
                 ->showPerPage()
                 ->showRecordCount(),

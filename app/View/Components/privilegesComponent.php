@@ -25,6 +25,7 @@ class privilegesComponent extends Component
      */
     public function render()
     {
+        
         return view('components.privileges-component');
     }
 }

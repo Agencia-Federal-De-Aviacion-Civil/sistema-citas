@@ -15,7 +15,8 @@ class ModalNew extends ModalComponent
     public $modal,$id_save,$name,$email,$password,$passwordConfirmation,$privileges,$privilegesId;
 
     public function mount($privilegesId){
-        $this->privilegesId = $privilegesId;        
+        $this->privilegesId = $privilegesId;
+        $this->valores($privilegesId);        
     }
 
     public function render()
@@ -28,7 +29,16 @@ class ModalNew extends ModalComponent
         $this->reset(['name', 'email', 'password']);
     }
     public function valores($privilegesId){
-        $this->name = $privilegesId;
+
+        $this->privilegesId = $privilegesId;
+
+        if($this->privilegesId!=0){
+            $userPrivileges = User::with('roles')->where('id',$this->privilegesId)->get();
+            $this->id_save = $userPrivileges[0] ->id;
+            $this->name = $userPrivileges[0]->name;
+            $this->email = $userPrivileges[0]->email;
+            $this->privileges = $userPrivileges[0]->roles[0]->name;
+        }
     }
     public function save()
     {

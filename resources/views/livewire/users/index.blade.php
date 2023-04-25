@@ -23,11 +23,11 @@
         {{-- AQUI METE EL CHINGADO BOTON AMIGO --}}
         {{-- <x-button wire:click.prevent="addPrivileges()" right-icon="user-add" blue
         label="AÑADIR USUARIO" />     --}}
-    
+{{-- 
         <x-button
-        onclick="Livewire.emit('openModal', 'users.modals.modal-new')"
+onclick="Livewire.emit('openModal', 'users.modals.modal-new', {{ json_encode(['privilegesId' => 0]) }})"
         right-icon="user-add" blue
-        label="AÑADIR USUARIO" />
+        label="AÑADIR USUARIO" /> --}}
         
 
          {{-- <button onclick="Livewire.emit('openModal', 'users.modals.modal-new')">Open Modal</button> --}}
