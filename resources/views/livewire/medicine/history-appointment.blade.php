@@ -1,3 +1,4 @@
+<script src="https://cdn.jsdelivr.net/npm/countup@1.8.2/dist/countUp.min.js"></script>
 <div>
     <x-notifications position="top-center" />
     <x-dialog z-index="z-50" blur="md" align="center" />
@@ -53,7 +54,7 @@
                                     <span class="align-middle" x-text="item.label">&nbsp;</span>
                                 </div>
                                 <div class="font-medium text-lg text-gray-500">
-                                    <span :x-ref="`device${index}`">100</span>%
+                                    <span :x-ref="`device${index}`">0</span>%
                                 </div>
                             </div>
                         </template>
@@ -94,5 +95,6 @@
                     "color": "red-500"
                 }, ]
             }
-            </script>
+        }
+    </script>
 </div>
