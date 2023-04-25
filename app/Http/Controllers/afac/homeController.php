@@ -20,6 +20,7 @@ class homeController extends Controller
         ->selectRaw("count(id) as registradas")
         ->first();
         $registradas = $appointment->registradas;
-        return view('afac.dashboard.index',compact('date','registradas'));
+        $medicine = $registradas*100/$registradas;
+        return view('afac.dashboard.index',compact('date','registradas','medicine'));
     }
 }
