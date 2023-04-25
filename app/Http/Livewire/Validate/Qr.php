@@ -38,6 +38,7 @@ class Qr extends Component
                     $q->where('curp', $curp);
                 })->where('medicine_id', $medicine_id)
                 ->where('dateReserve', $date_reserve)->get();
+            dd($medicineReserves);
             $this->dialog([
                 'title'       => '¡CITA MÉDICA VERIFICADA!',
                 'description' => 'NOMBRE: ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->name . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apParental')->first() . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apMaternal')->first() . 

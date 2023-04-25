@@ -118,7 +118,8 @@ final class recordappointment extends PowerGridComponent
         return PowerGrid::eloquent()
             ->addColumn('id')
             ->addColumn('name', function (MedicineReserve $regiser) {
-                return $regiser->medicineReserveFromUser->name . ' ' . $regiser->userParticipantUser->apParental . ' ' . $regiser->userParticipantUser->apMaternal;
+                return $regiser->medicineReserveFromUser->name . ' ' . ($regiser->userParticipantUser ? $regiser->userParticipantUser->apParental : '') . ' ' . ($regiser->userParticipantUser ? $regiser->userParticipantUser->apMaternal : '');
+
                 //return $regiser->medicineReserveFromUser->name;
             })
             // ->addColumn('folio', function (MedicineReserve $type) {
@@ -148,7 +149,7 @@ final class recordappointment extends PowerGridComponent
                 return $headquarters->user->name;
             })
             ->addColumn('curp', function (MedicineReserve $regiser) {
-                return $regiser->userParticipantUser->curp;
+                return ($regiser->userParticipantUser ? $regiser->userParticipantUser->curp : '');
             })
             ->addColumn('reference_number', function (MedicineReserve $regiser) {
                 return $regiser->medicineReserveMedicine->reference_number;
