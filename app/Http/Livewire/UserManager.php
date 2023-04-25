@@ -53,7 +53,7 @@ final class UserManager extends PowerGridComponent
     */
     public function datasource(): Builder
     {
-        return User::query()->with(['roles']);
+        return User::query()->with(['roles'])->where('status',0);
         // $user=User::with(['roles'])->findOrFail(1);
     }
 
@@ -100,8 +100,18 @@ final class UserManager extends PowerGridComponent
             // ->addColumn('created_at_formatted', fn (User $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'))
             // ->addColumn('updated_at_formatted', fn (User $model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'))
 
-            ->addColumn('privileges', function ($privileges){
-                return $privileges->roles[0]->name;
+            ->addColumn('privileges', function (User $privileges){
+                if($privileges->roles[0]->name=='super_admin'){
+                    return 'SUPER ADMINISTRADOR';
+                }elseif($privileges->roles[0]->name=='medicine_admin'){
+                    return 'MEDICINA ADMINISTRADOR';
+                }elseif($privileges->roles[0]->name=='linguistic_admin'){
+                    return 'LINGÜÍSTICA ADMINISTRADOR';
+                }elseif($privileges->roles[0]->name=='user'){
+                    return 'USUARIO';
+                }elseif($privileges->roles[0]->name=='headquarters'){
+                    return 'SEDE';
+                }
             })
 
 
@@ -141,7 +151,7 @@ final class UserManager extends PowerGridComponent
                 ->sortable()
                 ->searchable(),
 
-            Column::make('PRIVILEGIOS', 'privileges')
+            Column::make('ROL', 'privileges')
                 ->sortable()
                 ->searchable(),
 

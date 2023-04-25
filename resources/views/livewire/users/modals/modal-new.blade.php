@@ -26,7 +26,7 @@
                         </div>
                     </div>
                     <div class="mt-4 relative w-full group">
-                        <x-select wire:model.defer="privileges" label="PRIVILEGIO" placeholder="Seleccione...">
+                        <x-select wire:model.defer="privileges" label="ROL" placeholder="Seleccione...">
                             
                             <x-select.option label="SUPER ADMINISTRADOR" value="super_admin" />
                             <x-select.option label="MEDICINA ADMINISTRADOR" value="medicine_admin" />

@@ -73,14 +73,6 @@ class Schedule extends ModalComponent
     {
         // Obtener los horarios disponibles para la fecha especificada
         $this->scheduleMedicines = MedicineSchedule::where('user_id', $value)
-            // ->whereNotIn('id', function ($query) {
-            //     // Subconsulta para obtener los horarios reservados
-            //     $query->select('medicine_schedule_id')
-            //         ->from('medicine_reserves')
-            //         ->where('dateReserve', $this->dateReserve)
-            //         ->groupBy('medicine_schedule_id')
-            //         ->havingRaw('COUNT(*) >= max_schedules');
-            // })
             ->get();
     }
     public function reschedules()

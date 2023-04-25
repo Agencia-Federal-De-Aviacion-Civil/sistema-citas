@@ -13,6 +13,5 @@ class Index extends ModalComponent
     public function render()
     {
         return view('livewire.users.index');
-    }
-
+    }    
 }

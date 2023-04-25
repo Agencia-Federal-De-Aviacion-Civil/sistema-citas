@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->integer('status')->after('notification');
+            $table->integer('status')->default('0')->after('notification');
         });
     }   
 
