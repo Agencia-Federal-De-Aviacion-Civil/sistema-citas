@@ -116,6 +116,7 @@ class HomeMedicine extends Component
     {
         // Obtener los horarios disponibles para la fecha especificada
         $this->scheduleMedicines = MedicineSchedule::where('user_id', $value)
+            ->where('max_schedules', 0)
             // ->whereNotIn('id', function ($query) {
             //     // Subconsulta para obtener los horarios reservados
             //     $query->select('medicine_schedule_id')
