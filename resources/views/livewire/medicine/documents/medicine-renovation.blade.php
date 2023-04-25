@@ -127,8 +127,12 @@
                 </td>
             </tr>
             <tr>
-                <td>FECHA Y HORA:</td>
+                <td>FECHA</td>
                 <td>{{ $medicineReserves[0]->dateReserve }}</td>
+            </tr>
+            <tr>
+                <td>HORA</td>
+                <td>{{ $medicineReserves[0]->reserveSchedule->time_start }}</td>
             </tr>
         </table>
         <div style="background-color: #e6e6e6;height: 25px; ">
@@ -144,17 +148,18 @@
         </div>
         <div style="padding-top:2%;font-size:18px">
             <ol class="">
-                <li value="1">Comprobante de domicilio con vigencia no mayor a 3 meses.</li>
+                <li value="1">Acta de Nacimiento (Con formato vigente a la fecha de su examen).</li>
+                <li>Comprobante de domicilio con vigencia no mayor a 3 meses.</li>
                 <li>Comprobante de pago.</li>
                 <li>Comprobante de cita.</li>
                 <li>Clave Única de Registro de Población (CURP).</li>
-                <li>Deberá presentar en forma impresa los formatos de declaración de salud, consentimiento informado (mismos que debe llenar y firmar) así como el vale de servicios.</li>
+                {{-- <li>Deberá presentar en forma impresa los formatos de declaración de salud, consentimiento informado (mismos que debe llenar y firmar) así como el vale de servicios.</li> --}}
                 <li>Una de las siguientes identificaciones con fotografía:</li>
                 <p style="padding-left:2%;">A. Cédula de identidad ciudadana (INE) vigente.</p>
-                <p style="padding-left:2%;margin-top:-2%;">B. Cédula profesional.</p>
+                <p style="padding-left:2%;margin-top:-2%;">B. Cédula profesional (siempre y cuando cuenten con fotografía).</p>
                 <p style="padding-left:2%;margin-top:-2%;">C. Cartilla Militar (personal masculino).</p>
-                <p style="padding-left:2%;margin-top:-2%;">D. Licencia de manejo.</p>
-                <p style="padding-left:2%;margin-top:-2%;">E. Pasaporte.</p>
+                {{-- <p style="padding-left:2%;margin-top:-2%;">D. Licencia de manejo.</p> --}}
+                <p style="padding-left:2%;margin-top:-2%;">D. Pasaporte.</p>
             </ol>
         </div>
         <footer>
@@ -174,14 +179,17 @@
             <ol class="">
                 <li value="1">Acudir con ropa cómoda, evitando sea de una sola pieza.
                 </li>
-                <li>Presentarse en ayuno, no tomar alimentos las 8 horas previas a su hora de cita.</u>
+                <li>Tomar un desayuno ligero, en caso de acudir en ayuno llevar su refrigerio.</u>
                 </li>
                 <li>No suspender medicación prescrita.
                 </li>
                 <li>En caso de haber tenido algún procedimiento dental, esperar mínimo 72 horas posteriores al mismo
                     para agendar su cita.
                 </li>
-                <li>En caso de haber sido diagnosticado con alguna(s) enfermedad(es) crónica(s) (enfermedades cardiacas, respiratorias, hipertiroidismo, etc.), presentar un resumen clínico expedido por su médico tratante de especialidad acorde a la patología y estudios <b>adicionales (Ver ANEXO)</b> con vigencia no mayor a 2 meses para acreditar el estado actual de salud. 
+                <li>En caso de haber sido diagnosticado con alguna(s) enfermedad(es) crónica(s) (enfermedades 
+                    cardiacas, respiratorias, hipertiroidismo, etc.), presentar un resumen clínico expedido por 
+                    su médico tratante de especialidad acorde a la patología y estudios <b>adicionales (Ver ANEXO)</b> 
+                    con vigencia no mayor a 2 meses para acreditar el estado actual de salud. 
                 </li>
                 <li>En caso de presentar disminución en la agudeza visual, deberá presentarse con lentes de armazón
                     o de contacto con graduación actualizada. Si alterna el uso de ambos, deberá presentarlos. Para el
@@ -202,16 +210,16 @@
                     <p style="padding-left:3%">B) Química sanguínea de 6 elementos (Glucosa, Nitrógeno Ureico en Sangre,
                         Creatinina, Ácido úrico, Colesterol total y Triglicéridos).</p>
                     <p style="padding-left:3%">C) Examen General de Orina.</p>
-                    <p style="padding-left:3%">E) Prueba de detección de sustancias psicoactivas en orina, de 5
+                    <p style="padding-left:3%">D) Prueba de detección de sustancias psicoactivas en orina, de 5
                         reactivos (Cocaína, Cannabinoides (Marihuana), Barbitúricos, Anfetaminas y Benzodiazepinas).</p>
-                    <p style="padding-left:3%">F) Radiografía de Tórax Posteroanterior, la cual se deberá presentar
+                    <p style="padding-left:3%">E) Radiografía de Tórax Posteroanterior, la cual se deberá presentar
                         con la siguiente periodicidad de acuerdo a la clase:</p>
                     <p style="padding-left:5%;margin-top:-2%">1. Clase I – cada 3 años.</p>
                     <p style="padding-left:5%;margin-top:-2%">2. Clase II – cada 3 años.</p>
                     <p style="padding-left:5%;margin-top:-2%">3. Clase III – cada 3 años.</p>
                     <p style="padding-left:5%;margin-top:-2%">4. O antes a indicación de su médico examinador.</p>
                 </li>
-                <p style="margin-top:-2%">****En caso de hacer cita en la UM Aeropuerto no será necesario presentar RX de Tórax</p>
+                <p style="margin-top:-2%">****En caso de hacer cita en la UM Aeropuerto Ciudad de México no será necesario presentar RX de Tórax</p>
                 <li>Los estudios previamente descritos deberán tener fecha de emisión no mayor a un mes.
                 </li>
                 {{-- <li>Imprimir el formato de Declaración de salud.

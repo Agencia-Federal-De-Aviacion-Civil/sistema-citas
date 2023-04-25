@@ -119,9 +119,9 @@ final class recordappointment extends PowerGridComponent
     public function addColumns(): PowerGridEloquent
     {
         return PowerGrid::eloquent()
-            // ->addColumn('id')
+            ->addColumn('id')
             ->addColumn('name', function (MedicineReserve $regiser) {
-                return $regiser->medicineReserveFromUser->name;
+                return $regiser->medicineReserveFromUser->name . ' ' . $regiser->userParticipantUser->apParental . ' ' . $regiser->userParticipantUser->apMaternal;
                 //return $regiser->medicineReserveFromUser->name;
             })
             
@@ -130,6 +130,9 @@ final class recordappointment extends PowerGridComponent
             })
             ->addColumn('type', function (MedicineReserve $type) {
                 return $type->medicineReserveMedicine->medicineTypeExam->name;
+            })
+            ->addColumn('hours', function (MedicineReserve $type) {
+                return $type->reserveSchedule->time_start;
             })
             ->addColumn('class', function (MedicineReserve $class) {
                 if ($class->medicineReserveMedicine->medicineTypeExam->id == 1) {
@@ -184,11 +187,11 @@ final class recordappointment extends PowerGridComponent
     public function columns(): array
     {
         return [
-            // Column::make('ID', 'id'),
-            //->makeInputRange(),
+            Column::make('ID', 'id')
+                ->makeInputRange(),
 
-            Column::make('FOLIO', 'folio')
-                ->searchable(),
+            // Column::make('FOLIO', 'folio')
+            //     ->searchable(),
             // ->sortable()
             // ->makeInputText(),
 
@@ -224,7 +227,7 @@ final class recordappointment extends PowerGridComponent
                 ->searchable(),
             // ->sortable(),
 
-            Column::make('HORA', 'hoours')
+            Column::make('HORA', 'hours')
                 ->searchable(),
             // ->sortable(),
             //->makeInputDatePicker(),
@@ -232,13 +235,11 @@ final class recordappointment extends PowerGridComponent
             Column::make('CURP', 'curp')
                 ->searchable()
                 ->sortable(),
+            //->makeInputDatePicker(),
 
-                Column::make('PAGO', 'reference_number')
+            Column::make('PAGO', 'reference_number')
                 ->searchable()
-                ->sortable(),                
-                // ->makeInputSelect(UserParticipant::select('curp')->distinct()->get(), 'curp', 'curp', ['live-search' => false])
-            // ->makeInputText(),
-
+                ->sortable(),
             // Column::make('CREADA EL', 'created_at_formatted', 'created_at')
             //     ->searchable()
             //     ->sortable(),

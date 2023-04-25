@@ -128,8 +128,12 @@
                 </td>
             </tr>
             <tr>
-                <td>FECHA Y HORA:</td>
+                <td>FECHA</td>
                 <td>{{ $medicineReserves[0]->dateReserve }}</td>
+            </tr>
+            <tr>
+                <td>HORA</td>
+                <td>{{ $medicineReserves[0]->reserveSchedule->time_start }}</td>
             </tr>
         </table>
         <div style="background-color: #e6e6e6;height: 25px; ">
@@ -145,14 +149,16 @@
         </div>
         <div style="padding-top:1%;font-size:18px">
             <ol class="">
-                <li value="1">Comprobante de domicilio con vigencia no mayor a 3 meses.</li>
+                <li value="1">Acta de nacimiento (Con formato vigente a la fecha de su examen).</li>
+                <li>Comprobante de domicilio con vigencia no mayor a 3 meses.</li>
                 <li>Comprobante de pago.</li>
                 <li>Comprobante de cita.</li>
                 <li>Clave Única de Registro de Población (CURP).</li>
-                <li>Deberá presentar en forma impresa los formatos de declaración de salud, consentimiento informado (mismos que debe llenar y firmar) así como el vale de servicios.</li>
+                <li>Deberá presentar en forma impresa los formatos de declaración de salud, consentimiento informado 
+                    (mismos que debe llenar y firmar) así como el vale de servicios.</li>
                 <li>Una de las siguientes identificaciones con fotografía:</li>
                 <p style="padding-left:2%;">A. Cédula de identidad ciudadana (INE) vigente.</p>
-                <p style="padding-left:2%;margin-top:-2%;">B. Cédula profesional.</p>
+                <p style="padding-left:2%;margin-top:-2%;">B. Cédula profesional (siempre y cuando cuente con fotografía).</p>
                 <p style="padding-left:2%;margin-top:-2%;">C. Cartilla Militar (personal masculino).</p>
                 <p style="padding-left:2%;margin-top:-2%;">D. Pasaporte.</p>
                 <li>En caso de ser renovación deberá presentar el examen médico anterior</li>
@@ -171,7 +177,7 @@
             <ol>
                 <li value="1">Acudir con ropa cómoda, evitando sea de una sola pieza.
                 </li>
-                <li>Presentarse en ayuno, no tomar alimentos las 8 horas previas a su hora de cita.
+                <li>Tomar un desayuno ligero, en caso de acudir en ayuno llevar su refrigerio.
                 </li>
                 <li>No suspender medicación prescrita.</u>
                 </li>
@@ -197,7 +203,7 @@
                     nombre
                     de la institución, dirección, nombre completo del laboratorista, su cédula profesional y número
                     telefónico, a fin de que la Autoridad de Aviación Civil cuente con los elementos para acreditar su
-                    validez.
+                    validez:
                     <p style="padding-left:3%">A) Biometría hemática.</p>
                     <p style="padding-left:3%">B) Química sanguínea de 6 elementos (Glucosa, Nitrógeno Ureico en Sangre,
                         Creatinina, Ácido úrico, Colesterol total y Triglicéridos).</p>
@@ -212,7 +218,7 @@
                     <p style="padding-left:5%;margin-top:-2%">3. Clase III – cada 3 años.</p>
                     <p style="padding-left:5%;margin-top:-2%">4. O antes a indicación de su médico examinador.</p>
                 </li>
-                <p style="margin-top:-2%">****En caso de hacer cita en la UM Aeropuerto no será necesario presentar RX de Tórax</p>
+                <p style="margin-top:-2%">****En caso de hacer cita en la Unidad Médica Aeropuerto Ciudad de México no será necesario presentar RX de Tórax</p>
                 <li>Los estudios previamente descritos deberán tener fecha de emisión no mayor a un mes.
                 </li>
                 {{-- <li>Imprimir el formato de Consentimiento Informado y firmarlo.

@@ -56,7 +56,7 @@
 
                         </div>
                     </div>
-                    <div x-data="{
+                    <div x-cloak x-data="{
                         tipoExamen: @entangle('type_exam_id'),
                         question: @entangle('medicine_question_id'),
                         clasification: @entangle('type_class_id'),

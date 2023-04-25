@@ -87,7 +87,7 @@ class HomeLinguistics extends Component
     {
         return [
             'reference_number.required' => 'Campo obligatorio',
-            'reference_number.unique' => 'Referencia de pago ya existe.',
+            'reference_number.unique' => 'Referencia de pago ya existe',
             'pay_date.required' => 'Campo obligatorio',
             'name_document.required' => 'Campo obligatorio',
             'type_exam_id.required' => 'Campo obligatorio',

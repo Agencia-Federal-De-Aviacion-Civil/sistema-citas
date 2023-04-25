@@ -97,9 +97,8 @@ class Headquarters extends Component
         $this->reset([]);
         $this->closeModal();
         $this->notification([
-            'title'       => 'SEDE AGREGADA ÉXITOSAMENTE',
-            'icon'        => 'success',
-            'timeout' => '3100'
+            'title'       => 'Sede agrada con éxito',
+            'icon'        => 'success'
         ]);
     }
     public function edit()
@@ -120,8 +119,7 @@ class Headquarters extends Component
         $this->modalEdit = false;
         $this->notification([
             'title'       => 'Sede actualizada correctamente',
-            'icon'        => 'success',
-            'timeout' => '3100'
+            'icon'        => 'success'
         ]);
     }
 }

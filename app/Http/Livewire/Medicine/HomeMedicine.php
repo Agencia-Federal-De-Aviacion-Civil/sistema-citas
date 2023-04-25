@@ -8,6 +8,7 @@ use App\Models\Catalogue\TypeClass;
 use App\Models\Catalogue\TypeExam;
 use App\Models\Document;
 use App\Models\Medicine\Medicine;
+use App\Models\Medicine\MedicineDisabled;
 use App\Models\Medicine\MedicineInitial;
 use App\Models\Medicine\MedicineQuestion;
 use App\Models\Medicine\MedicineRenovation;
@@ -33,7 +34,7 @@ class HomeMedicine extends Component
     public $confirmModal = false, $modal = false;
     public $medicineQueries, $medicineReserves, $medicineInitials, $medicineRenovations, $id_medicineReserve, $savedMedicineId, $scheduleMedicines, $medicine_schedule_id;
     // MEDICINE INITIAL TABLE
-    public $question, $date;
+    public $question, $date, $dateNow;
     public function mount()
     {
         $this->typeExams = TypeExam::all();
@@ -45,6 +46,7 @@ class HomeMedicine extends Component
         $this->scheduleMedicines = collect();
         Date::setLocale('ES');
         $this->date = Date::now()->parse();
+        $this->dateNow = Date::now()->format('Y-m-d');
     }
     public function rules()
     {
@@ -63,6 +65,9 @@ class HomeMedicine extends Component
     }
     public function render()
     {
+        // $disabledDays = MedicineDisabled::all();
+        // dd($disabledDays[0]->range_appointment);
+        // $disabledAll = ($this->dateNow >= $this->fechaInicio && $this->dateNow <= $this->fechaFin);
         return view('livewire.medicine.home-medicine')
             ->layout('layouts.app');
     }
@@ -161,17 +166,17 @@ class HomeMedicine extends Component
             ->count();
         // dd($citas);
         switch ($this->to_user_headquarters) {
-            case 3: // Cancun
-            case 4: // Tijuana
-            case 5: // Toluca
-            case 6: // Monterrey
-                $maxCitas = 3;
-                break;
-            case 7: // Guadalajara
-                $maxCitas = 20;
-                break;
-            case 9: // Ciudad de Mexico
+            case 7: // CIUDAD DE MEXICO
                 $maxCitas = 50;
+                break;
+            case 2: // CANCUN
+            case 3: // TIJUANA
+            case 4: // TOLUCA
+            case 5: // MONTERREY
+                $maxCitas = 10;
+                break;
+            case 6: // GUADALAJARA
+                $maxCitas = 20;
                 break;
             default:
                 $maxCitas = 0;
@@ -344,6 +349,7 @@ class HomeMedicine extends Component
         return [
             'type_exam_id.required' => 'Campo obligatorio',
             'type_class_id.required' => 'Campo obligatorio',
+            'reference_number.unique' => 'Referencia de pago ya existe.',
             'clasification_class_id.required' => 'Campo obligatorio',
             'paymentConcept.required' => 'Ingrese clave de pago.',
             'paymentConcept.unique' => 'Concepto de pago ya registrado, intenta con otro.',

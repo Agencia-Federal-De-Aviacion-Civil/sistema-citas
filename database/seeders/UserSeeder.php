@@ -15,19 +15,12 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        User::create(
+    User::create(
             [
                 'name' => 'admin',
                 'email' => 'admin@afac.gob.mx',
                 'password' => bcrypt('12345678')
             ]
         )->assignRole('super_admin');
-        // User::create(
-        //      [
-        //          'name' => 'Cancun Quintana Roo',
-        //          'email' => 'cancun@gmail.com',
-        //          'password' => bcrypt('12345678')
-        //      ]
-        // )->assignRole('headquarters');
     }
 }
