@@ -59,7 +59,7 @@ final class recordappointment extends PowerGridComponent
      */
     public function datasource(): Builder
     {
-        if (Auth::user()->can('see.navigation.controller.systems') || Auth::user()->can('see.navigation.medicine')) {
+        if (Auth::user()->can('see.navigation.controller.systems')) {
             return MedicineReserve::query()->with([
                 'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
             ]);
@@ -97,8 +97,6 @@ final class recordappointment extends PowerGridComponent
             'userParticipantUser' => [
                 'apParental',
                 'apMaternal',
-                'curp',
-                'time_start',
             ],
 
         ];
@@ -120,8 +118,7 @@ final class recordappointment extends PowerGridComponent
         return PowerGrid::eloquent()
             ->addColumn('id')
             ->addColumn('name', function (MedicineReserve $regiser) {
-                return $regiser->medicineReserveFromUser->name . ' ' . ($regiser->userParticipantUser ? $regiser->userParticipantUser->apParental : '') . ' ' . ($regiser->userParticipantUser ? $regiser->userParticipantUser->apMaternal : '');
-
+                return $regiser->medicineReserveFromUser->name . ' ' . $regiser->userParticipantUser->apParental . ' ' . $regiser->userParticipantUser->apMaternal;
                 //return $regiser->medicineReserveFromUser->name;
             })
             // ->addColumn('folio', function (MedicineReserve $type) {
@@ -151,7 +148,7 @@ final class recordappointment extends PowerGridComponent
                 return $headquarters->user->name;
             })
             ->addColumn('curp', function (MedicineReserve $regiser) {
-                return ($regiser->userParticipantUser ? $regiser->userParticipantUser->curp : '');
+                return $regiser->userParticipantUser->curp;
             })
             ->addColumn('reference_number', function (MedicineReserve $regiser) {
                 return $regiser->medicineReserveMedicine->reference_number;
@@ -187,7 +184,7 @@ final class recordappointment extends PowerGridComponent
     {
         return [
             Column::make('ID', 'id')
-                ->searchable(),
+                ->makeInputRange(),
 
             // Column::make('FOLIO', 'folio')
             //     ->searchable(),
@@ -196,7 +193,7 @@ final class recordappointment extends PowerGridComponent
 
             Column::make('NOMBRE', 'name')
                 ->searchable()
-                ->makeInputText(dataField: 'name'),
+                ->makeInputText(),
 
             // ->sortable(),
             //->makeInputDatePicker(),
