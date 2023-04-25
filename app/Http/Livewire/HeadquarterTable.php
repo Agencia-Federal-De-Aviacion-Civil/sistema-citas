@@ -12,14 +12,15 @@ use PowerComponents\LivewirePowerGrid\{Button, Column, Exportable, Footer, Heade
 final class HeadquarterTable extends PowerGridComponent
 {
     use ActionButton;
-
-    /*
-    |--------------------------------------------------------------------------
-    |  Features Setup
-    |--------------------------------------------------------------------------
-    | Setup Table's general features
-    |
-    */
+    protected function getListeners(): array
+    {
+        return array_merge(
+            parent::getListeners(),
+            [
+                'saveHeadquarter' => '$refresh',
+            ]
+        );
+    }
     public function setUp(): array
     {
         // $this->showCheckBox();

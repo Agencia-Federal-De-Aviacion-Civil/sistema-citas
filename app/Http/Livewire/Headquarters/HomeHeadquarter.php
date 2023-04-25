@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Appointment\Headquarters;
+namespace App\Http\Livewire\Headquarters;
 
 use App\Models\Catalogue\Headquarter;
 use App\Models\System;
@@ -10,7 +10,7 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use WireUi\Traits\Actions;
 
-class Headquarters extends Component
+class HomeHeadquarter extends Component
 {
     use Actions;
     use WithFileUploads;
@@ -34,7 +34,7 @@ class Headquarters extends Component
     {
         $qSystems = System::all();
         $headquarters = Headquarter::with('headquarterUser')->get();
-        return view('livewire.appointment.headquarters.headquarters', compact('headquarters', 'qSystems'))
+        return view('livewire.headquarters.home-headquarter', compact('headquarters', 'qSystems'))
             ->layout('layouts.app');
     }
     public function updated($propertyName)
