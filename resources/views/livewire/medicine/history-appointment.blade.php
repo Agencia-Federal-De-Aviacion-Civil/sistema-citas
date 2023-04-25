@@ -113,11 +113,11 @@
                     "color": "blue-800"
                 }, {
                     "label": "Reagendado",
-                    "size": 40,
+                    "size": @json($porreagendado),
                     "color": "blue-500"
                 }, {
                     "label": "Cancelado",
-                    "size": 40,
+                    "size": @json($porcanceladas),
                     "color": "red-500"
                 }, ]
             }
