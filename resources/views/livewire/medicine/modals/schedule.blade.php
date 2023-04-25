@@ -10,7 +10,7 @@
                     @if ($this->status == 0)
                     CITA
                 @elseif ($this->status == 1)
-                    CITA ASISTIDA
+                    CITA VALIDA
                 @elseif ($this->status == 2)
                     CITA CANCELADA
                 @elseif ($this->status == 3)
