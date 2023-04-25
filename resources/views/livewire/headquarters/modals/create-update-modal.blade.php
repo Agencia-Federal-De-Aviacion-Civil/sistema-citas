@@ -1,7 +1,5 @@
 <div>
     <div class="container mx-auto px-4 py-4 bg-white shadow-xl sm:rounded-lg">
-        {{ $userId }}
-        <x-errors></x-errors>
         <div class="mt-12 max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="grid xl:grid-cols-2 xl:gap-6">
                 <div class="mt-1 relative w-full group">

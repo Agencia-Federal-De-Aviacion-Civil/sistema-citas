@@ -17,7 +17,7 @@
         <div class="container mx-auto px-4 py-4 bg-white shadow-xl sm:rounded-lg">
             <div class="mt-12 max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="mb-6">
-                    <x-button wire:click="$emit('openModal', 'headquarters.modals.new-modal')" icon="pencil" primary label="AÑADIR" />
+                    <x-button wire:click="$emit('openModal', 'headquarters.modals.create-update-modal')" icon="pencil" primary label="AÑADIR" />
                 </div>
                 <livewire:headquarter-table>
             </div>

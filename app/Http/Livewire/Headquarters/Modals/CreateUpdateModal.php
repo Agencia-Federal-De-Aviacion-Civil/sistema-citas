@@ -11,7 +11,7 @@ use Livewire\Component;
 use LivewireUI\Modal\ModalComponent;
 use WireUi\Traits\Actions;
 
-class NewModal extends ModalComponent
+class CreateUpdateModal extends ModalComponent
 {
     use Actions;
     public $id_user, $id_edit, $userId, $id_headquarter, $name, $direction, $passwordConfirmation, $password, $email, $system_id, $url;
@@ -47,7 +47,7 @@ class NewModal extends ModalComponent
     {
         $qSystems = System::all();
         $headquarters = Headquarter::with('headquarterUser')->get();
-        return view('livewire.headquarters.modals.new-modal', compact('qSystems', 'headquarters'));
+        return view('livewire.headquarters.modals.create-update-modal', compact('qSystems', 'headquarters'));
     }
     public function updated($propertyName)
     {
@@ -84,7 +84,7 @@ class NewModal extends ModalComponent
         $this->clean();
         $this->closeModal();
         $this->notification([
-            'title'       => 'Sede agrada con éxito',
+            'title'       => 'REGISTRO GUARDADO EXITOSAMENTE',
             'icon'        => 'success',
             'timeout' => '3100'
         ]);
