@@ -29,15 +29,14 @@ class ModalDelete extends ModalComponent
     public static function modalMaxWidth(): string
     {
         return 'lg';
-    }    
+    }
     public function delete()
     {
-        $deleteUser = User::where('id',$this->privilegesId);
+        $deleteUser = User::where('id', $this->privilegesId);
         $deleteUser->update([
             'status' => 1,
         ]);
         $this->emit('deleteUser');
         $this->closeModal();
     }
-    
 }

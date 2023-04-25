@@ -17,46 +17,14 @@
                     </div>
                 </div>
             </div>
-    
-            <div class="py-12">
+                <div class="py-12">
                 <div class="container mx-auto px-4 py-4 bg-white shadow-xl sm:rounded-lg">
-{{-- 
-<x-button
-onclick="Livewire.emit('openModal', 'users.modals.modal-new', {{ json_encode(['privilegesId' => 0]) }})"
-right-icon="user-add" blue
-label="AÑADIR USUARIO" /> --}}        
                     <div class="mt-8 max-w-8xl mx-auto sm:px-6 lg:px-8">
                         <div class="ml-4 py-0 mr-4 uppercase text-sm">
-                            {{-- <livewire:recordappointment /> --}}
                             <livewire:user-manager/>
                         </div>
                     </div>
-
                 </div>
             </div>
-            <script>
-                let cardData = function() {
-                    return {
-                        countUp: function(target, startVal, endVal, decimals, duration) {
-                            const countUp = new CountUp(target, startVal || 0, endVal, decimals || 0, duration || 2);
-                            countUp.start();
-                        },
-                        sessions: [{
-                            "label": "Validado",
-                            "size": 60,
-                            "color": "blue-800"
-                        }, {
-                            "label": "Reagendado",
-                            "size": 40,
-                            "color": "blue-500"
-                        }, {
-                            "label": "Cancelado",
-                            "size": 40,
-                            "color": "red-500"
-                        }, ]
-                    }
-                }
-            </script>
-        </div>
-        
+        </div>        
     </div>
