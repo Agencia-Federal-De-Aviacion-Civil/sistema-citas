@@ -7,11 +7,12 @@ use App\Models\Medicine\MedicineReserve;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use PDF;
+
 class IndexController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['role:super_admin|user']);
+        $this->middleware(['role:super_admin|user|medicine_admin']);
     }
     public function index()
     {
@@ -21,10 +22,10 @@ class IndexController extends Controller
     {
         $medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'user'])
             ->where('medicine_id', $scheduleId)->get();
-            $medicineId = $medicineReserves[0]->medicine_id;
-            $dateAppointment = $medicineReserves[0]->dateReserve;
-            $curp = $medicineReserves[0]->medicineReserveMedicine->medicineUser->userParticipant->pluck('curp')->first();
-            $keyEncrypt =  Crypt::encryptString($medicineId . '*' . $dateAppointment . '*' . $curp);
+        $medicineId = $medicineReserves[0]->medicine_id;
+        $dateAppointment = $medicineReserves[0]->dateReserve;
+        $curp = $medicineReserves[0]->medicineReserveMedicine->medicineUser->userParticipant->pluck('curp')->first();
+        $keyEncrypt =  Crypt::encryptString($medicineId . '*' . $dateAppointment . '*' . $curp);
         if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 1) {
             $pdf = PDF::loadView('livewire.medicine.documents.medicine-initial', compact('medicineReserves', 'keyEncrypt'));
             return $pdf->download($medicineReserves[0]->dateReserve . '-' . 'cita.pdf');

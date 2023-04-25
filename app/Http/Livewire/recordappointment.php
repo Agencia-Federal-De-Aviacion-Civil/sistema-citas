@@ -59,7 +59,7 @@ final class recordappointment extends PowerGridComponent
      */
     public function datasource(): Builder
     {
-        if (Auth::user()->can('see.navigation.controller.systems')) {
+        if (Auth::user()->can('see.navigation.controller.systems') || Auth::user()->can('see.navigation.medicine')) {
             return MedicineReserve::query()->with([
                 'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
             ]);
