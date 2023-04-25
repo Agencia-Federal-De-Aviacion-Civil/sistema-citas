@@ -16,11 +16,39 @@
     <div class="py-12">
         <div class="container mx-auto px-4 py-4 bg-white shadow-xl sm:rounded-lg">
             <div class="mt-12 max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="mb-6">
-                    <x-button wire:click="$emit('openModal', 'headquarters.modals.create-update-modal')" icon="pencil" primary label="AÑADIR" />
+                <div x-data="{ activeTab: 'home' }">
+                    <ul class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 ">
+                        <li class="mr-2">
+                            <a href="#" class="inline-block p-4 text-gray-800 bg-white rounded-t-lg active"
+                                x-on:click.prevent="activeTab = 'home'" :class="{ 'active': activeTab === 'home' }">
+                                SEDES
+                            </a>
+                        </li>
+                        <li class="mr-2">
+                            <a href="#" class="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50"
+                                x-on:click.prevent="activeTab = 'calendar'"
+                                :class="{ 'active': activeTab === 'calendar' }">
+                                HORARIOS
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="mt-6">
+                        <div x-show="activeTab === 'home'">
+                            <div class="mb-6">
+                                <x-button wire:click="$emit('openModal', 'headquarters.modals.create-update-modal')"
+                                    icon="pencil" primary label="AÑADIR" />
+                            </div>
+                            <livewire:headquarter-table>
+                        </div>
+                        <div x-show="activeTab === 'calendar'">
+                            OTRO
+                        </div>
+                    </div>
                 </div>
-                <livewire:headquarter-table>
             </div>
         </div>
     </div>
+    <script>
+        
+    </script>
 </div>
