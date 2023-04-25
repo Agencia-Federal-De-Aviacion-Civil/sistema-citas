@@ -28,7 +28,7 @@ class Qr extends Component
     {
         $this->validate();
         try {
-            $decrypted = Crypt::decryptString($this->textRead);
+            dd($decrypted = Crypt::decryptString($this->textRead));
             $separated = explode('*', $decrypted);
             $medicine_id = $separated[0];
             $date_reserve = $separated[1];
