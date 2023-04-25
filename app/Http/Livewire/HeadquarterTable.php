@@ -90,6 +90,9 @@ final class HeadquarterTable extends PowerGridComponent
             ->addColumn('name', function (Headquarter $user) {
                 return $user->headquarterUser->name;
             })
+            ->addColumn('idUser', function (Headquarter $user) {
+                return $user->headquarterUser->id;
+            })
             ->addColumn('email', function (Headquarter $user) {
                 return $user->headquarterUser->email;
             })
@@ -140,21 +143,13 @@ final class HeadquarterTable extends PowerGridComponent
      * @return array<int, Button>
      */
 
-    /*
     public function actions(): array
     {
-       return [
-           Button::make('edit', 'Edit')
-               ->class('bg-indigo-500 cursor-pointer text-white px-3 py-2.5 m-1 rounded text-sm')
-               ->route('headquarter.edit', ['headquarter' => 'id']),
-
-           Button::make('destroy', 'Delete')
-               ->class('bg-red-500 cursor-pointer text-white px-3 py-2 m-1 rounded text-sm')
-               ->route('headquarter.destroy', ['headquarter' => 'id'])
-               ->method('delete')
+        return [
+            Button::add('edit-headquarter')
+                ->bladeComponent('edit-headquarter', ['userId' => 'idUser']),
         ];
     }
-    */
 
     /*
     |--------------------------------------------------------------------------

@@ -6,6 +6,7 @@ use App\Models\Catalogue\Headquarter;
 use App\Models\System;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 use Livewire\Component;
 use LivewireUI\Modal\ModalComponent;
 use WireUi\Traits\Actions;
@@ -13,17 +14,34 @@ use WireUi\Traits\Actions;
 class NewModal extends ModalComponent
 {
     use Actions;
-    public $id_save, $name, $direction, $passwordConfirmation, $password, $email, $system_id, $url;
+    public $id_user, $id_edit, $userId, $id_headquarter, $name, $direction, $passwordConfirmation, $password, $email, $system_id, $url;
+    public $sedes;
     public function rules()
     {
-        return [
+        $rules = [
             'system_id' => 'required',
             'name' => 'required',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:6|same:passwordConfirmation',
+            'email' => ['required', 'email', Rule::unique('users')->ignore($this->id_user)],
             'direction' => 'required',
             'url' => 'required|url'
         ];
+        $rules['password'] = $this->id_user ? '' : 'required|min:6|same:passwordConfirmation';
+        return $rules;
+    }
+    public function mount($userId = null)
+    {
+        if (isset($userId)) {
+            $this->userId = $userId;
+            $this->sedes = Headquarter::with('headquarterUser')->where('user_id', $userId)->get();
+            $this->name = $this->sedes[0]->headquarterUser->name;
+            $this->direction = $this->sedes[0]->direction;
+            $this->email = $this->sedes[0]->headquarterUser->email;
+            $this->url = $this->sedes[0]->url;
+            $this->id_user = $userId;
+            $this->id_headquarter = $this->sedes[0]->id;
+        } else {
+            $this->userId = null; // o cualquier otro valor predeterminado que desees
+        }
     }
     public function render()
     {
@@ -42,16 +60,19 @@ class NewModal extends ModalComponent
     public function save()
     {
         $this->validate();
+        $userData = [
+            'name' => $this->name,
+            'email' => $this->email,
+        ];
+        if (!$this->id_user) {
+            $userData['password'] = Hash::make($this->password);
+        }
         $saveHeadrquearter = User::updateOrCreate(
-            ['id' => $this->id_save],
-            [
-                'name' => $this->name,
-                'email' => $this->email,
-                'password' => Hash::make($this->password),
-            ]
+            ['id' => $this->id_user],
+            $userData
         )->assignRole('headquarters');
         $saveHeadrquearter = Headquarter::updateOrCreate(
-            ['id' => $this->id_save],
+            ['id' => $this->id_headquarter],
             [
                 'user_id' => $saveHeadrquearter->id,
                 'system_id' => $this->system_id,
@@ -65,7 +86,7 @@ class NewModal extends ModalComponent
         $this->notification([
             'title'       => 'Sede agrada con éxito',
             'icon'        => 'success',
-            'timeout'=>'3100'
+            'timeout' => '3100'
         ]);
     }
     public function messages()
@@ -75,7 +96,7 @@ class NewModal extends ModalComponent
             'name.required' => 'Campo obligatorio',
             'email.required' => 'Campo obligatorio',
             'email.email' => 'Correo no valido',
-            'email.unique' => 'Correo ya existe',
+            'email.unique' => 'Correo electrónico ya existe',
             'password.required' => 'Campo obligatorio',
             'password.min' => 'Mínimo 6 carácteres',
             'password.same' => 'La contraseña no coíncide',
