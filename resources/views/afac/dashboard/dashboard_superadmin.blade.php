@@ -41,7 +41,7 @@
                             </template>
                     </div>
                 </div>
-                <div class="flex -mx-4">
+                {{-- <div class="flex -mx-4">
                     <template x-for="(item,index) in cardData.sessions">
                             <div class="w-1/3 px-4" :class="{'border-l border-gray-700':index!==0}">
                                 <div class="text-sm">
@@ -53,6 +53,36 @@
                                 </div>
                             </div>
                         </template>
+                </div> --}}
+                <div class="-mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                    <div class="flex items-start p-2">
+                      <div class="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50">
+                        {{-- <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+                        </svg> --}}
+                        <span href="#blue" class="block w-3 h-3 bg-blue-800 rounded-full"></span>
+                      </div>
+                
+                      <div class="ml-4">
+                        <h3 class="font-semibold">Medicina preventiva: {{$registradas}}</h3>
+                        <p class="mt-2 text-sm text-gray-500">{{$medicine}}%</p>
+                      </div>
+                    </div>
+                
+                    <div class="flex items-start p-2">
+                      <div class="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50">
+                        {{-- <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg> --}}
+                        <span href="#blue" class="block w-3 h-3 bg-blue-500 rounded-full"></span>
+                      </div>
+                
+                      <div class="ml-4">
+                        <h2 class="font-semibold">Lingüistica</h2>
+                        <p class="mt-2 text-sm text-gray-500">0</p>
+                      </div>
+                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -68,11 +98,11 @@
                 },
                 sessions: [{
                     "label": "Medicina preventiva",
-                    "size": 60,
+                    "size": @json($medicine),
                     "color": "blue-800"
                 }, {
                     "label": "Lingüistica",
-                    "size": 40,
+                    "size": 0,
                     "color": "blue-500"
                 }]
             }
