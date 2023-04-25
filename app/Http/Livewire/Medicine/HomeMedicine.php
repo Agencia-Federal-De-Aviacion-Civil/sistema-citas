@@ -165,17 +165,17 @@ class HomeMedicine extends Component
             ->count();
         // dd($citas);
         switch ($this->to_user_headquarters) {
-            case 2: // Cancun
-            case 4: // Tijuana
-            case 5: // Toluca
-            case 6: // Monterrey
-                $maxCitas = 3;
-                break;
-            case 7: // Guadalajara
-                $maxCitas = 20;
-                break;
-            case 9: // Ciudad de Mexico
+            case 7: // CIUDAD DE MEXICO
                 $maxCitas = 50;
+                break;
+            case 2: // CANCUN
+            case 3: // TIJUANA
+            case 4: // TOLUCA
+            case 5: // MONTERREY
+                $maxCitas = 10;
+                break;
+            case 6: // GUADALAJARA
+                $maxCitas = 20;
                 break;
             default:
                 $maxCitas = 0;
