@@ -30,8 +30,8 @@ class Qr extends Component
         try {
             $decrypted = Crypt::decryptString($this->textRead);
             $separated = explode('*', $decrypted);
-            dd($medicine_id = $separated[0]);
-            $date_reserve = $separated[1];
+            $medicine_id = $separated[0];
+            dd($date_reserve = $separated[1]);
             $curp = $separated[2];
             $medicineReserves = MedicineReserve::with(['medicineReserveMedicine.medicineUser.userParticipant', 'medicineReserveFromUser', 'user'])
                 ->whereHas('medicineReserveMedicine.medicineUser.userParticipant', function ($q) use ($curp) {
