@@ -97,6 +97,8 @@ final class recordappointment extends PowerGridComponent
             'userParticipantUser' => [
                 'apParental',
                 'apMaternal',
+                'curp',
+                'time_start',
             ],
 
         ];
@@ -185,7 +187,7 @@ final class recordappointment extends PowerGridComponent
     {
         return [
             Column::make('ID', 'id')
-                ->makeInputRange(),
+                ->searchable(),
 
             // Column::make('FOLIO', 'folio')
             //     ->searchable(),
@@ -194,7 +196,7 @@ final class recordappointment extends PowerGridComponent
 
             Column::make('NOMBRE', 'name')
                 ->searchable()
-                ->makeInputText(),
+                ->makeInputText(dataField: 'name'),
 
             // ->sortable(),
             //->makeInputDatePicker(),
