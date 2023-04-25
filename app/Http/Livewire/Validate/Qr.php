@@ -30,7 +30,7 @@ class Qr extends Component
         try {
             $decrypted = Crypt::decryptString($this->textRead);
             $separated = explode('*', $decrypted);
-            $medicine_id = $separated[0];
+            dd($medicine_id = $separated[0]);
             $date_reserve = $separated[1];
             $curp = $separated[2];
             $medicineReserves = MedicineReserve::with(['medicineReserveMedicine.medicineUser.userParticipant', 'medicineReserveFromUser', 'user'])
