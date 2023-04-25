@@ -3,7 +3,7 @@
             class="relative inline-block px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl dark:bg-gray-0 sm:my-0 sm:align-middle sm:max-w-2xl sm:w-full sm:p-6">
             <div>
                 <div class="p-0 text-center">
-                    AGREGAR USUARIO
+                    {{$this->title}}
                 </div>
                 <div class="mt-4 text-center">
                     <h3 class="text-xl font-semibold leading-6 text-gray-800 capitalize dark:text-white" id="modal-title">
@@ -27,10 +27,12 @@
                     </div>
                     <div class="mt-4 relative w-full group">
                         <x-select wire:model.defer="privileges" label="PRIVILEGIO" placeholder="Seleccione...">
+                            
+                            <x-select.option label="SUPER ADMINISTRADOR" value="super_admin" />
                             <x-select.option label="MEDICINA ADMINISTRADOR" value="medicine_admin" />
                             <x-select.option label="LINGÜÍSTICA ADMINISTRADOR" value="linguistic_admin" />
                             <x-select.option label="USUARIO" value="user" />
-                            <x-select.option label="SEDE" value="headquarters" />
+                            {{-- <x-select.option label="SEDE" value="headquarters" /> --}}
                         </x-select>
                     </div>
 

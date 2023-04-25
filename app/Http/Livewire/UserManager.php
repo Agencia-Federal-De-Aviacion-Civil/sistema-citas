@@ -42,7 +42,7 @@ final class UserManager extends PowerGridComponent
     |--------------------------------------------------------------------------
     |  Datasource
     |--------------------------------------------------------------------------
-    | Provides data to your Table using a Model or Collection
+    | Provides data to your Table using a qModel or Collection
     |
     */
 

@@ -20,18 +20,11 @@
     
             <div class="py-12">
                 <div class="container mx-auto px-4 py-4 bg-white shadow-xl sm:rounded-lg">
-        {{-- AQUI METE EL CHINGADO BOTON AMIGO --}}
-        {{-- <x-button wire:click.prevent="addPrivileges()" right-icon="user-add" blue
-        label="AÑADIR USUARIO" />     --}}
 {{-- 
-        <x-button
+<x-button
 onclick="Livewire.emit('openModal', 'users.modals.modal-new', {{ json_encode(['privilegesId' => 0]) }})"
-        right-icon="user-add" blue
-        label="AÑADIR USUARIO" /> --}}
-        
-
-         {{-- <button onclick="Livewire.emit('openModal', 'users.modals.modal-new')">Open Modal</button> --}}
-
+right-icon="user-add" blue
+label="AÑADIR USUARIO" /> --}}        
                     <div class="mt-12 max-w-8xl mx-auto sm:px-6 lg:px-8">
                         <div class="ml-4 py-6 mr-4 uppercase text-sm">
                             {{-- <livewire:recordappointment /> --}}

@@ -12,7 +12,7 @@ class ModalNew extends ModalComponent
 {
     use Actions;
     use WithFileUploads;
-    public $modal,$id_save,$name,$email,$password,$passwordConfirmation,$privileges,$privilegesId;
+    public $modal,$id_save,$name,$email,$password,$passwordConfirmation,$privileges,$privilegesId,$title;
 
     public function mount($privilegesId){
         $this->privilegesId = $privilegesId;
@@ -38,6 +38,9 @@ class ModalNew extends ModalComponent
             $this->name = $userPrivileges[0]->name;
             $this->email = $userPrivileges[0]->email;
             $this->privileges = $userPrivileges[0]->roles[0]->name;
+            $this->title = 'EDITAR USUARIO';
+        }else{
+            $this->title = 'AGREGAR USUARIO';
         }
     }
     public function save()
