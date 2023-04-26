@@ -43,7 +43,7 @@
                         </div>
                         <div x-show="activeTab === 'schedules'">
                             <x-input wire:model.lazy="disabled_days" id="fecha-appointment"
-                                label="DESHABILITAR DIAS FERIADOS" placeholder="INGRESE..." readonly />
+                                label="DESHABILITAR CITAS" placeholder="INGRESE..." readonly />
                             <div class="mt-8">
                                 <x-button wire:click.prevent="save" icon="home" label="GUARDAR" />
                             </div>

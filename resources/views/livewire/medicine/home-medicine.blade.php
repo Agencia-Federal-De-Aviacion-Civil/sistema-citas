@@ -454,7 +454,8 @@
                 minDate: "today",
                 disable: @json($disabledDaysyes),
                 onDayCreate: function(dObj, dStr, fp, dayElem) {
-                    if (dayElem.dateObj.getDay() === 0 || dayElem.dateObj.getDay() === 6) {
+                    if (dayElem.dateObj.getDay() === 0 || dayElem.dateObj.getDay() === 6 || dayElem
+                        .dateObj <= new Date()) {
                         dayElem.className += " flatpickr-disabled nextMonthDayflatpickr-disabled";
                     }
                 },
