@@ -55,10 +55,33 @@
                         <x-input wire:model="hoursReserve" label="HORA" disabled />
                     </div>
                 </div>
-                @if ($this->status == 2 || $this->status == 4)
+                @if ($this->status == 2)
                     <div class="grid xl:grid-cols-1 xl:gap-6">
                         <x-textarea wire:model="comment" label="MOTIVO" disabled />
                     </div>
+                @elseif($this->status == 4)  
+                  
+                @if($this->selectedOption==2)
+                <div class="grid xl:grid-cols-1 xl:gap-6">
+                    <x-textarea wire:model="comment_cancelate" label="MOTIVO"/>
+                </div>
+                @else
+                <div class="grid xl:grid-cols-1 xl:gap-6">
+                    <x-textarea wire:model="comment" label="MOTIVO" disabled />
+                </div>
+                @endif
+
+                <div class="mt-6 relative w-full group">
+                    <select name="my_option" label="SELECIONE OPCIÓN" x-model="selectedOption"
+                        wire:model="selectedOption" class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-300 dark:border-gray-300 dark:placeholder-gray-300 dark:text-white">
+                        <option value="">SELECCIONE OPCIÓN</option>
+                        <option value="1">ASISTIÓ A SU CITA</option>
+                        <option value="2">CANCELAR CITA</option>
+                    </select>
+                </div>
+                <div class="float-right mt-6">
+                    <x-button wire:click="reschedules()" label="ACEPTAR" blue right-icon="save-as" />
+                </div>                   
                 @endif
                 <div class="float-left mt-6">
                     <x-button wire:click="$emit('closeModal')" label="SALIR" silver />
@@ -94,8 +117,11 @@
                                 <div class="mt-4 relative w-full group">
                                     <x-select label="ELIJA LA SEDE" placeholder="Selecciona"
                                         wire:model.lazy="to_user_headquarters">
+                                        <x-select.option label="Seleccione opción"
+                                            value="" />
                                         @foreach ($sedes as $sede)
-                                            <x-select.option label="{{ $sede->headquarterUser->name }}"
+                                            
+                                        <x-select.option label="{{ $sede->headquarterUser->name }}"
                                                 value="{{ $sede->headquarterUser->id }}" />
                                         @endforeach
                                     </x-select>
@@ -116,20 +142,26 @@
                                             <option value="{{ $scheduleMedicine->id }}">
                                                 {{ $scheduleMedicine->time_start }}
                                             </option>
-                                        @endforeach
+                                        @endforeach    
                                     </select>
+                                    @error('medicine_schedule_id')
+                                    <span class="mt-2 text-sm text-negative-600">Seleccione opción</span>
+                                @enderror
+    
                                 </div>
                             </div>
                             <x-textarea wire:model="comment" label="MOTIVO" placeholder="¿motivo de reagendar?" />
                         </div>
                         <div x-show="selectedOption=='2'">
-                            <x-textarea wire:model="comment" label="MOTIVO" placeholder="¿motivo de cancelación?" />
+                            <x-textarea wire:model="comment_cancelate" label="MOTIVO" placeholder="¿motivo de cancelación?" />
                         </div>
 
                         <div x-show="selectedOption=='1'">
                             {{-- <x-checkbox label="¿EL USUARIO ASISTIÓ A SU CITA?" id="checkbox" wire:model="attended" /> --}}
                         </div>
                     </div>
+                    
+
                     <div class="mt-6 relative w-full group">
                         <select name="my_option" label="SELECIONE OPCIÓN" x-model="selectedOption"
                             wire:model="selectedOption" class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-300 dark:border-gray-300 dark:placeholder-gray-300 dark:text-white">
@@ -149,6 +181,8 @@
                 <div class="float-left mt-6">
                     <x-button wire:click="$emit('closeModal')" label="SALIR" silver />
                 </div>
+
+
                 @endif
             </div>
         </div>
