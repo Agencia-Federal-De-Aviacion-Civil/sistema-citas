@@ -9,6 +9,7 @@ use App\Models\Catalogue\TypeExam;
 use App\Models\Document;
 use App\Models\Medicine\Medicine;
 use App\Models\Medicine\MedicineDisabled;
+use App\Models\Medicine\MedicineDisabledDays;
 use App\Models\Medicine\MedicineInitial;
 use App\Models\Medicine\MedicineQuestion;
 use App\Models\Medicine\MedicineRenovation;
@@ -35,6 +36,7 @@ class HomeMedicine extends Component
     public $medicineQueries, $medicineReserves, $medicineInitials, $medicineRenovations, $id_medicineReserve, $savedMedicineId, $scheduleMedicines, $medicine_schedule_id;
     // MEDICINE INITIAL TABLE
     public $question, $date, $dateNow;
+    protected $listeners = ['saveDisabledDays' => '$refresh'];
     public function mount()
     {
         $this->typeExams = TypeExam::all();
@@ -64,10 +66,16 @@ class HomeMedicine extends Component
     }
     public function render()
     {
-        // $disabledDays = MedicineDisabled::all();
-        // dd($disabledDays[0]->range_appointment);
-        // $disabledAll = ($this->dateNow >= $this->fechaInicio && $this->dateNow <= $this->fechaFin);
-        return view('livewire.medicine.home-medicine')
+        $disabledDays = MedicineDisabledDays::pluck('disabled_days')->toArray();
+        // $disabledDaysString = '"' . implode('","', $disabledDays) . '"';
+        $disabledDaysString = '';
+        foreach ($disabledDays as $day) {
+            $disabledDaysString .= "'{$day}',";
+        }
+        // Quitar la última coma
+        $disabledDaysString = rtrim($disabledDaysString, ',');
+        $isDisabled = in_array($this->dateNow, $disabledDays);
+        return view('livewire.medicine.home-medicine', compact('isDisabled', 'disabledDaysString'))
             ->layout('layouts.app');
     }
     public function updated($propertyName)
