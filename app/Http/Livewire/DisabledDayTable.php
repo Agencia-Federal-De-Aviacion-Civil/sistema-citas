@@ -2,22 +2,23 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Catalogue\Headquarter;
+use App\Models\Medicine\MedicineDisabledDays;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use PowerComponents\LivewirePowerGrid\Rules\{Rule, RuleActions};
 use PowerComponents\LivewirePowerGrid\Traits\ActionButton;
 use PowerComponents\LivewirePowerGrid\{Button, Column, Exportable, Footer, Header, PowerGrid, PowerGridComponent, PowerGridEloquent};
 
-final class HeadquarterTable extends PowerGridComponent
+final class DisabledDayTable extends PowerGridComponent
 {
     use ActionButton;
+
     protected function getListeners(): array
     {
         return array_merge(
             parent::getListeners(),
             [
-                'saveHeadquarter' => '$refresh',
+                'disabledRecord' => '$refresh',
             ]
         );
     }
@@ -26,9 +27,9 @@ final class HeadquarterTable extends PowerGridComponent
         // $this->showCheckBox();
 
         return [
-            Exportable::make('export')
-                ->striped()
-                ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
+            // Exportable::make('export')
+            //     ->striped()
+            //     ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
             Header::make()->showSearchInput(),
             Footer::make()
                 ->showPerPage()
@@ -47,11 +48,11 @@ final class HeadquarterTable extends PowerGridComponent
     /**
      * PowerGrid datasource.
      *
-     * @return Builder<\App\Models\Catalogue\Headquarter>
+     * @return Builder<\App\Models\Medicine\MedicineDisabledDays>
      */
     public function datasource(): Builder
     {
-        return Headquarter::query()->with(['headquarterUser']);
+        return MedicineDisabledDays::query();
     }
 
     /*
@@ -87,19 +88,7 @@ final class HeadquarterTable extends PowerGridComponent
     {
         return PowerGrid::eloquent()
             ->addColumn('id')
-            ->addColumn('name', function (Headquarter $user) {
-                return $user->headquarterUser->name;
-            })
-            ->addColumn('idUser', function (Headquarter $user) {
-                return $user->headquarterUser->id;
-            })
-            ->addColumn('email', function (Headquarter $user) {
-                return $user->headquarterUser->email;
-            })
-            ->addColumn('direction')
-            ->addColumn('url', function (Headquarter $url) {
-                return '<a href=' . e($url->url) . '>' . e($url->url) . '</a>';
-            });
+            ->addColumn('disabled_days', fn (MedicineDisabledDays $model) => Carbon::parse($model->disabled_days)->format('d/m/Y'));
     }
 
     /*
@@ -119,13 +108,20 @@ final class HeadquarterTable extends PowerGridComponent
     public function columns(): array
     {
         return [
-            Column::make('ID', 'id'),
-            Column::make('SEDE', 'name')
+            Column::make('ID', 'id')
+                ->sortable(),
+                // ->makeInputRange(),
+
+            Column::make('FECHAS DESHABILITADAS', 'disabled_days')
                 ->searchable()
                 ->sortable(),
-            Column::make('CORREO', 'email'),
-            Column::make('DIRECCIÓN', 'direction'),
-            Column::make('URL', 'url')
+            // ->makeInputDatePicker(),
+
+            // Column::make('UPDATED AT', 'updated_at_formatted', 'updated_at')
+            //     ->searchable()
+            //     ->sortable(),
+            // ->makeInputDatePicker(),
+
         ];
     }
 
@@ -138,18 +134,26 @@ final class HeadquarterTable extends PowerGridComponent
     */
 
     /**
-     * PowerGrid Headquarter Action Buttons.
+     * PowerGrid MedicineDisabledDays Action Buttons.
      *
      * @return array<int, Button>
      */
 
+    /*
     public function actions(): array
     {
-        return [
-            Button::add('edit-headquarter')
-                ->bladeComponent('edit-headquarter', ['userId' => 'idUser']),
+       return [
+           Button::make('edit', 'Edit')
+               ->class('bg-indigo-500 cursor-pointer text-white px-3 py-2.5 m-1 rounded text-sm')
+               ->route('medicine-disabled-days.edit', ['medicine-disabled-days' => 'id']),
+
+           Button::make('destroy', 'Delete')
+               ->class('bg-red-500 cursor-pointer text-white px-3 py-2 m-1 rounded text-sm')
+               ->route('medicine-disabled-days.destroy', ['medicine-disabled-days' => 'id'])
+               ->method('delete')
         ];
     }
+    */
 
     /*
     |--------------------------------------------------------------------------
@@ -160,7 +164,7 @@ final class HeadquarterTable extends PowerGridComponent
     */
 
     /**
-     * PowerGrid Headquarter Action Rules.
+     * PowerGrid MedicineDisabledDays Action Rules.
      *
      * @return array<int, RuleActions>
      */
@@ -172,7 +176,7 @@ final class HeadquarterTable extends PowerGridComponent
 
            //Hide button edit for ID 1
             Rule::button('edit')
-                ->when(fn($headquarter) => $headquarter->id === 1)
+                ->when(fn($medicine-disabled-days) => $medicine-disabled-days->id === 1)
                 ->hide(),
         ];
     }
