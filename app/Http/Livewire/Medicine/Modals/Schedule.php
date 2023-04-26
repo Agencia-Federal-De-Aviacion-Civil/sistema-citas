@@ -20,6 +20,15 @@ class Schedule extends ModalComponent
     use WithFileUploads;
     public $scheduleId, $status, $medicineReserves, $name, $type, $class, $typLicense, $sede, $dateReserve, $date, $time, $scheduleMedicines, $sedes,
         $to_user_headquarters, $medicine_schedule_id, $selectedOption, $comment,$hoursReserve,$observation;
+    
+        public function rules()
+        {
+            return [
+                'comment' => 'required',
+                'selectedOption' => 'required',
+            ];
+        }        
+    
     public function mount($scheduleId)
     {
         $this->scheduleId = $scheduleId;
@@ -43,6 +52,7 @@ class Schedule extends ModalComponent
     }
     public function valores($cheduleId)
     {
+
         $this->scheduleId = $cheduleId;
         $medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'user'])
             ->where('id', $this->scheduleId)->get();
@@ -75,8 +85,13 @@ class Schedule extends ModalComponent
         $this->scheduleMedicines = MedicineSchedule::where('user_id', $value)
             ->get();
     }
+    public function updated($propertyName)
+    {
+        $this->validateOnly($propertyName);
+    }
     public function reschedules()
     {
+
         if ($this->selectedOption == 1) {
 
             $attendeReserve = MedicineReserve::find($this->scheduleId);
@@ -85,6 +100,7 @@ class Schedule extends ModalComponent
             ]);
             $this->emit('attendeReserve');
         } elseif ($this->selectedOption == 2) {
+            $this->validate();
             $observation = new MedicineObservation();
             $observation->medicine_reserve_id = $this->scheduleId;
             $observation->observation = $this->comment;
@@ -95,6 +111,7 @@ class Schedule extends ModalComponent
             ]);
             $this->emit('cancelReserve');
         } elseif ($this->selectedOption == 4) {
+            $this->validate();
             $observation = new MedicineObservation();
             $observation->medicine_reserve_id = $this->scheduleId;
             $observation->observation = $this->comment;
@@ -138,7 +155,16 @@ class Schedule extends ModalComponent
                 $cita->save();
                 $this->emit('reserveAppointment');
             }
+        }else{
+            $this->validate();
         }
         $this->closeModal();
+    }
+    public function messages()
+    {
+        return [
+            'comment.required' => 'Campo obligatorio',
+            'selectedOption.required' => 'Seleccione opción',
+        ];
     }
 }

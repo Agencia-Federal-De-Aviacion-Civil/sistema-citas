@@ -137,9 +137,11 @@
                             <option value="1">ASISTIÓ A SU CITA</option>
                             <option value="2">CANCELAR CITA</option>
                             <option value="4">REAGENDAR CITA</option>
-
                         </select>
                     </div>
+                    @error('selectedOption')
+                        <span class="mt-2 text-sm text-negative-600">Selecione opción</span>
+                    @enderror
                 </div>
                 <div class="float-right mt-6">
                     <x-button wire:click="reschedules()" label="ACEPTAR" blue right-icon="save-as" />
