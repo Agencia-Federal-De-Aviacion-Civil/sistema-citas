@@ -38,5 +38,13 @@ class ModalDelete extends ModalComponent
         ]);
         $this->emit('deleteUser');
         $this->closeModal();
+
+        $this->notification([
+            'title'       => 'USUARIO ELIMINADO CON EXITO',
+            'icon'        => 'error',
+            'timeout' => '3100'
+        ]);
+
     }
+    
 }

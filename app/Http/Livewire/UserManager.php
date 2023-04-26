@@ -62,8 +62,13 @@ final class UserManager extends PowerGridComponent
      */
     public function datasource(): Builder
     {
-        return User::query()->with(['roles'])->where('status', 0);
-        // $user=User::with(['roles'])->findOrFail(1);
+        return User::query()->with(['roles','UserParticipant'])
+        ->where('status', 0)
+        ->where('id','<>',1)
+        ->whereHas('roles', function ($q1) {
+            $q1->where('id','<>',5);
+        });
+
     }
 
     /*
@@ -79,9 +84,19 @@ final class UserManager extends PowerGridComponent
      *
      * @return array<string, array<int, string>>
      */
+    // public function relationSearch(): array
+    // {
+    //     return [];
+    // }
     public function relationSearch(): array
     {
-        return [];
+        return [
+            'UserParticipant' => [
+                'apParental',
+                'apMaternal',
+            ],
+
+        ];
     }
 
     /*
@@ -99,16 +114,10 @@ final class UserManager extends PowerGridComponent
     {
         return PowerGrid::eloquent()
             ->addColumn('id')
-            ->addColumn('name')
-            /** Example of custom column using a closure **/
-            // ->addColumn('name_lower', function (User $model) {
-            //     return strtolower(e($model->name));
-            // })
-
+            ->addColumn('name', function (User $names){
+                    return $names->name.' '.$names->UserParticipant[0]->apParental.' '.$names->UserParticipant[0]->apMaternal;
+            })
             ->addColumn('email')
-            // ->addColumn('created_at_formatted', fn (User $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'))
-            // ->addColumn('updated_at_formatted', fn (User $model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'))
-
             ->addColumn('privileges', function (User $privileges) {
                 if ($privileges->roles[0]->name == 'super_admin') {
                     return 'SUPER ADMINISTRADOR';
@@ -118,17 +127,8 @@ final class UserManager extends PowerGridComponent
                     return 'LINGÜÍSTICA ADMINISTRADOR';
                 } elseif ($privileges->roles[0]->name == 'user') {
                     return 'USUARIO';
-                } elseif ($privileges->roles[0]->name == 'headquarters') {
-                    return 'SEDE';
-                }
-            })
-
-
-            // ->addColumn('curp', function ($regiser) {
-            //     return $regiser->userParticipantUser->curp;
-            // })            
-
-        ;
+                } 
+            });
     }
 
     /*
@@ -163,20 +163,6 @@ final class UserManager extends PowerGridComponent
             Column::make('ROL', 'privileges')
                 ->sortable()
                 ->searchable(),
-
-
-            // ->makeInputText(),
-
-            // Column::make('CREATED AT', 'created_at_formatted', 'created_at')
-            //     ->searchable()
-            //     ->sortable()
-            //     ->makeInputDatePicker(),
-
-            // Column::make('UPDATED AT', 'updated_at_formatted', 'updated_at')
-            //     ->searchable()
-            //     ->sortable()
-            //     ->makeInputDatePicker(),
-
         ];
     }
 

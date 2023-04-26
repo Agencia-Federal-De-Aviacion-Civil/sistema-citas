@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Users\Modals;
 
 use App\Models\User;
 use App\Models\UserParticipant;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Livewire\WithFileUploads;
