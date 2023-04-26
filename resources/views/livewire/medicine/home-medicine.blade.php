@@ -14,7 +14,8 @@
         <div
             class="z-10 relative container px-6 mx-auto flex flex-col md:flex-row items-start md:items-center justify-between">
             <div>
-                <h4 tabindex="0" class="focus:outline-none text-2xl font-bold leading-tight text-white">Generación de
+                <h4 tabindex="0" class="focus:outline-none text-2xl font-bold leading-tight text-white">Generación
+                    de
                     citas medicina de Aviación</h4>
                 <ul class="flex flex-col md:flex-row items-start md:items-center text-gray-300 text-sm mt-3">
                     <li class="flex items-center mt-4 md:mt-0">
@@ -103,7 +104,8 @@
                                                             @change="fileName = $refs.file.files[0].name"
                                                             class="block w-full border border-gray-200 shadow-sm rounded-md text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 file:bg-transparent file:border-0 file:bg-gray-100 file:mr-4 file:py-2.5 file:px-4 dark:file:bg-gray-700 dark:file:text-gray-400">
                                                         <div class="float-left">
-                                                            <div wire:loading wire:target="name_document">Subiendo...
+                                                            <div wire:loading wire:target="name_document">
+                                                                Subiendo...
                                                                 <div style="color: #27559b9a" class="la-ball-fall">
                                                                     <div></div>
                                                                     <div></div>
@@ -440,6 +442,7 @@
                 },
             });
             // CITAS MEDICAS
+
             flatpickr("#fecha-appointment", {
                 // enableTime: true,
                 // time_24hr: true,
@@ -449,12 +452,13 @@
                 disableMobile: "true",
                 // minuteIncrement: 10,
                 minDate: "today",
-                disable: [
-                    function(date) {
-                        // Devuelve 'true' si la fecha es un sábado o domingo
-                        return date.getDay() === 6 || date.getDay() === 0 || date <= new Date();
-                    },
-                ],
+                disable: @json($disabledDaysyes),
+                onDayCreate: function(dObj, dStr, fp, dayElem) {
+                    if (dayElem.dateObj.getDay() === 0 || dayElem.dateObj.getDay() === 6 || dayElem
+                        .dateObj <= new Date()) {
+                        dayElem.className += " flatpickr-disabled nextMonthDayflatpickr-disabled";
+                    }
+                },
                 locale: {
                     weekdays: {
                         shorthand: ['Dom', 'Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab'],

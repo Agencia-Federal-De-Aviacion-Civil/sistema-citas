@@ -2,12 +2,8 @@
 
 use App\Http\Controllers\afac\homeController;
 use App\Http\Controllers\afac\schedule\IndexController;
-use App\Http\Controllers\afac\schedule\userMedicine;
-use App\Http\Livewire\Appointment\Generate;
-use App\Http\Livewire\Appointment\Headquarters\Headquarters;
-use App\Http\Livewire\Home\Dashboard;
+use App\Http\Livewire\Headquarters\HomeHeadquarter;
 use App\Http\Livewire\Linguistics\HomeLinguistics;
-use App\Http\Livewire\Medicine\HistoryAppointment;
 use App\Http\Livewire\Register\Peoplehistoryrecords;
 use App\Http\Livewire\Medicine\HomeMedicine;
 use Illuminate\Support\Facades\Route;
@@ -32,7 +28,7 @@ Route::group(['middleware' => ['role:super_admin|user']], function () {
 });
 // TODO
 Route::group(['middleware' => ['role:super_admin|medicine_admin']], function () {
-    Route::get('headquarters', Headquarters::class)->name('afac.headquarterMedicine');
+    Route::get('headquarters', HomeHeadquarter::class)->name('afac.headquarterMedicine');
     Route::get('/register', Peoplehistoryrecords::class)->name('afac.historyRegister');
     Route::get('/validate', ValidateQr::class)->name('validate');
 });
