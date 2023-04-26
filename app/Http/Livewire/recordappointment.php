@@ -61,7 +61,7 @@ final class recordappointment extends PowerGridComponent
      */
     public function datasource(): Builder
     {
-        if (Auth::user()->can('see.navigation.controller.systems') || Auth::user()->can('see.navigation.medicine')) {
+        if (Auth::user()->can('see.navigation.controller.systems')) {
             return MedicineReserve::query()->with([
                 'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
             ]);
@@ -120,8 +120,7 @@ final class recordappointment extends PowerGridComponent
         return PowerGrid::eloquent()
             ->addColumn('id')
             ->addColumn('name', function (MedicineReserve $regiser) {
-                return $regiser->medicineReserveFromUser->name . ' ' . ($regiser->userParticipantUser ? $regiser->userParticipantUser->apParental : '') . ' ' . ($regiser->userParticipantUser ? $regiser->userParticipantUser->apMaternal : '');
-
+                return $regiser->medicineReserveFromUser->name . ' ' . $regiser->userParticipantUser->apParental . ' ' . $regiser->userParticipantUser->apMaternal;
                 //return $regiser->medicineReserveFromUser->name;
             })
             
@@ -152,13 +151,43 @@ final class recordappointment extends PowerGridComponent
                 return $headquarters->user->name;
             })
             ->addColumn('curp', function (MedicineReserve $regiser) {
-                return ($regiser->userParticipantUser ? $regiser->userParticipantUser->curp : '');
+                return $regiser->userParticipantUser->curp;
             })
             ->addColumn('reference_number', function (MedicineReserve $regiser) {
                 return $regiser->medicineReserveMedicine->reference_number;
             })
-            ->addColumn('dateReserve', fn (MedicineReserve $model) => Carbon::parse($model->dateReserve)->format('d/m/Y'))
-            ->addColumn('hoours', fn (MedicineReserve $model) => Carbon::parse($model->reserveSchedule->time_start)->format('H:i:s'));
+            ->addColumn('genre', function (MedicineReserve $regiser) {
+                return $regiser->userParticipantUser->genre;
+            })
+            ->addColumn('birth', function (MedicineReserve $regiser) {
+                return $regiser->userParticipantUser->birth;
+            })
+            ->addColumn('state_id', function (MedicineReserve $regiser) {
+                return $regiser->userParticipantUser->state_id;
+            })
+            ->addColumn('state_id', function (MedicineReserve $regiser) {
+                return $regiser->userParticipantUser->municipal_id;
+            })
+            ->addColumn('age', function (MedicineReserve $regiser) {
+                return $regiser->userParticipantUser->age;
+            })
+            ->addColumn('domicile',function (MedicineReserve $regiser) {
+                return $regiser->userParticipantUser->street.' No.'.$regiser->userParticipantUser->nInterior.' No.ext.'.$regiser->userParticipantUser->nExterior.' '.$regiser->userParticipantUser->suburb.' ,'.$regiser->userParticipantUser->postalCode.' ,'.$regiser->userParticipantUser->delegation.' ,'.$regiser->userParticipantUser->federalEntity;
+            })
+            ->addColumn('mobilePhone',function (MedicineReserve $regiser) {
+                return $regiser->userParticipantUser->mobilePhone;
+            })
+            ->addColumn('officePhone',function (MedicineReserve $regiser) {
+                return $regiser->userParticipantUser->officePhone;
+            })
+            ->addColumn('extension',function (MedicineReserve $regiser) {
+                return $regiser->userParticipantUser->extension;
+            })
+
+
+            //state_id 
+            ->addColumn('created_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->dateReserve)->format('d/m/Y H:i:s'))
+            ->addColumn('created_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
         //->addColumn('updated_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'));
 
     }
@@ -188,7 +217,7 @@ final class recordappointment extends PowerGridComponent
     {
         return [
             Column::make('ID', 'id')
-                ->makeInputRange(),
+            ->searchable(),
 
             // Column::make('FOLIO', 'folio')
             //     ->searchable(),
@@ -197,7 +226,7 @@ final class recordappointment extends PowerGridComponent
 
             Column::make('NOMBRE', 'name')
                 ->searchable(),
-                // ->makeInputText(),
+                //->makeInputText(),
 
             // ->sortable(),
             //->makeInputDatePicker(),
@@ -240,7 +269,41 @@ final class recordappointment extends PowerGridComponent
             Column::make('PAGO', 'reference_number')
                 ->searchable()
                 ->sortable(),
-            // Column::make('CREADA EL', 'created_at_formatted', 'created_at')
+            
+            Column::make('GENERO', 'genre')
+                ->searchable()
+                ->sortable(),
+            
+            Column::make('FECHA DE NACIMIENTO', 'birth')
+                ->searchable()
+                ->sortable(),
+            
+            Column::make('ESTADO DE NACIMIENTO', 'state_id')
+                ->searchable()
+                ->sortable(),
+            
+            Column::make('EDAD', 'age')
+                ->searchable()
+                ->sortable(),
+            
+            Column::make('DIRECCIÓN', 'domicile')
+                ->sortable()
+                ->searchable(),
+
+            Column::make('CELULAR', 'mobilePhone')
+                ->sortable()
+                ->searchable(),
+            
+            Column::make('OFICINA', 'officePhone')
+                ->sortable()
+                ->searchable(),
+            
+            Column::make('EXTENSIÓN', 'extension')
+                ->sortable()
+                ->searchable(),
+                //->makeInputText(),
+
+            //  Column::make('CREADA EL', 'created_at_formatted', 'created_at')
             //     ->searchable()
             //     ->sortable(),
             //->makeInputDatePicker(),
@@ -249,6 +312,7 @@ final class recordappointment extends PowerGridComponent
             //    ->searchable()
             //    ->sortable(),
             //->makeInputDatePicker(),
+            
 
         ];
     }
