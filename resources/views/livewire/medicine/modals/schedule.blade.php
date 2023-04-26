@@ -133,14 +133,14 @@
                     <div class="mt-6 relative w-full group">
                         <select name="my_option" label="SELECIONE OPCIÓN" x-model="selectedOption"
                             wire:model="selectedOption" class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-300 dark:border-gray-300 dark:placeholder-gray-300 dark:text-white">
-                            <option value="">SELECIONE OPCION</option>
+                            <option value="">SELECCIONE OPCIÓN</option>
                             <option value="1">ASISTIÓ A SU CITA</option>
                             <option value="2">CANCELAR CITA</option>
                             <option value="4">REAGENDAR CITA</option>
                         </select>
                     </div>
                     @error('selectedOption')
-                        <span class="mt-2 text-sm text-negative-600">Selecione opción</span>
+                        <span class="mt-2 text-sm text-negative-600">Seleccione opción</span>
                     @enderror
                 </div>
                 <div class="float-right mt-6">
