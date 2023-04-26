@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Linguistics;
 
 use App\Models\Catalogue\Headquarter;
+use App\Models\Catalogue\Schedule;
 use App\Models\Catalogue\TypeExam;
 use App\Models\Document;
 use App\Models\Linguistic\Linguistic;
@@ -16,8 +17,8 @@ class HomeLinguistics extends Component
 {
     use WithFileUploads;
     public $confirmModal = false;
-    public $name_document, $reference_number, $pay_date, $type_exam_id, $type_license, $license_number, $red_number, $headquarters_id, $dateReserve;
-    public $exams, $headquartersQueries, $date;
+    public $name_document, $reference_number, $pay_date, $type_exam_id, $type_license, $license_number, $red_number, $to_user_headquarters, $dateReserve;
+    public $exams, $headquartersQueries, $date, $schedules;
     public function rules()
     {
         return [
@@ -28,17 +29,17 @@ class HomeLinguistics extends Component
             'type_license' => 'required',
             'license_number' => 'required',
             'red_number' => 'required',
-            'headquarters_id' => 'required',
+            'to_user_headquarters' => 'required',
             'dateReserve' => 'required'
         ];
     }
     public function mount()
     {
         $this->exams = TypeExam::all();
-        $this->headquartersQueries = Headquarter::with('headquarterUser')
-            ->where('system_id', 2)->get();
+        $this->headquartersQueries = Headquarter::where('system_id', 2)->get();
         Date::setLocale('ES');
         $this->date = Date::now()->parse();
+        $this->schedules = collect();
     }
     public function updated($propertyName)
     {
@@ -53,10 +54,24 @@ class HomeLinguistics extends Component
     {
         $this->confirmModal = true;
     }
+    public function updatedToUserHeadquarters($value)
+    {
+        // Obtener los horarios disponibles para la fecha especificada
+        $this->schedules = Schedule::where('user_id', $value)
+            ->where('system_id', 2)
+            // ->whereNotIn('id', function ($query) {
+            //     // Subconsulta para obtener los horarios reservados
+            //     $query->select('medicine_schedule_id')
+            //         ->from('medicine_reserves')
+            //         ->where('dateReserve', $this->dateReserve)
+            //         ->groupBy('medicine_schedule_id')
+            //         ->havingRaw('COUNT(*) >= max_schedules');
+            // })
+            ->get();
+    }
     public function save()
     {
         $this->validate();
-        // Verificar si la hora ya está ocupada
         $existingReserve = Reserve::where('dateReserve', $this->dateReserve)->first();
         if ($existingReserve) {
             $this->addError('dateReserve', 'La hora seleccionada ya está ocupada. Por favor seleccione otra.');
@@ -64,7 +79,7 @@ class HomeLinguistics extends Component
         }
         $extension = $this->name_document->extension();
         $saveDocument = Document::create([
-            'name_document' => $this->document->storeAs('uploads/citas-app', 'prueba' .  '.' . $extension, 'do'),
+            'name_document' => $this->name_document->storeAs('uploads/citas-app', 'linguistica' .  '.' . $extension, 'do'),
         ]);
         $saveLinguistic = Linguistic::create([
             'user_id' => Auth::user()->id,
@@ -79,7 +94,7 @@ class HomeLinguistics extends Component
 
         Reserve::create([
             'linguistic_id' => $saveLinguistic->id,
-            'headquarters_id' => $this->headquarters_id,
+            'to_user_headquarters' => $this->to_user_headquarters,
             'dateReserve' => $this->dateReserve,
         ]);
     }
@@ -94,7 +109,7 @@ class HomeLinguistics extends Component
             'type_license.required' => 'Campo obligatorio',
             'license_number.required' => 'Campo obligatorio',
             'red_number.required' => 'Campo obligatorio',
-            'headquarters_id.required' => 'Campo obligatorio',
+            'to_user_headquarters.required' => 'Campo obligatorio',
             'dateReserve.required' => 'Campo obligatorio',
         ];
     }
