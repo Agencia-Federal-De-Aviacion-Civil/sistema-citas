@@ -11,7 +11,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class HistoryAppointment extends Component
 {
-    public $registradas,$validado,$reagendado,$canceladas,$porconfir,$pendientes,$porpendientes,$porreagendado,$porcanceladas;
+    public $registradas,$validado,$reagendado,$canceladas,$porconfir,$pendientes,$porpendientes,$porreagendado,$porcanceladas,$porcanceladas1;
     protected $listeners = ['createRequest' => 'mount'];    
     public function mount()
     {
@@ -29,10 +29,11 @@ class HistoryAppointment extends Component
         $this->validado = $appointment->validado;
         $this->reagendado = $appointment->reagendado;
         $this->canceladas = $appointment->canceladosede+$appointment->canceladousuario;
-        $this->porconfir = $appointment->validado*100/$appointment->registradas;
-        $this->porpendientes = $appointment->pendientes*100/$appointment->registradas;
-        $this->porreagendado= $appointment->reagendado*100/$appointment->registradas;
-        $this->porcanceladas= $this->canceladas*100/$appointment->registradas;
+        $this->porconfir = ($appointment ? $appointment->validado*100/$appointment->registradas:'0');
+        $this->porpendientes = ($appointment ? $appointment->pendientes*100/$appointment->registradas:'0');
+        $this->porreagendado= ($appointment ? $appointment->reagendado*100/$appointment->registradas:'0');
+        $this->porcanceladas1= $this->canceladas*100/$appointment->registradas;
+        $this->porcanceladas= ($this->porcanceladas1 ? $this->canceladas*100/$appointment->registradas:'0');
     }
     public function render()
     {
