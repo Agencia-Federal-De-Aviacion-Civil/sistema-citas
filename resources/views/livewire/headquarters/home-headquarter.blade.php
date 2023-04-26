@@ -41,7 +41,7 @@
                             <livewire:headquarter-table>
                         </div>
                         <div x-show="activeTab === 'calendar'">
-                            OTRO
+                            AQUI VAN LOS HORARIOS
                         </div>
                     </div>
                 </div>
