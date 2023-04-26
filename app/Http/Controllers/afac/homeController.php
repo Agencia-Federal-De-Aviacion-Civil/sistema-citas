@@ -11,16 +11,17 @@ use Illuminate\Support\Facades\DB;
 
 class homeController extends Controller
 {
-    public function index(){
-        
-        
+    public function index()
+    {
+
+
         Date::setLocale('ES');
         $date = Date::now()->parse();
         $appointment = MedicineReserve::query()
-        ->selectRaw("count(id) as registradas")
-        ->first();
+            ->selectRaw("count(id) as registradas")
+            ->first();
         $registradas = $appointment->registradas;
-        $medicine = $registradas*100/$registradas;
-        return view('afac.dashboard.index',compact('date','registradas','medicine'));
+        $medicine = ($registradas ? $registradas * 100 / $registradas : '0');
+        return view('afac.dashboard.index', compact('date', 'registradas', 'medicine'));
     }
 }
