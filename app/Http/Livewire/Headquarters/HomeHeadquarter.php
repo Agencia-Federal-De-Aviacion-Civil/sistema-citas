@@ -34,5 +34,12 @@ class HomeHeadquarter extends Component
                 'disabled_days' => $arrayDays,
             ]);
         }
+        $this->notification([
+            'title'       => 'DIAS DESHABILITADOS EXITOSAMENTE',
+            'icon'        => 'success',
+            'timeout' => '3100'
+        ]);
+        $this->emit('disabledRecord');
+        $this->reset(['disabled_days']);
     }
 }

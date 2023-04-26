@@ -47,6 +47,9 @@
                             <div class="mt-8">
                                 <x-button wire:click.prevent="save" icon="home" label="GUARDAR" />
                             </div>
+                            <div class="mt-3">
+                                <livewire:disabled-day-table />
+                            </div>
                         </div>
                     </div>
                 </div>
