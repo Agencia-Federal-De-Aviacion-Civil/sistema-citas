@@ -420,7 +420,6 @@
             </div>
         </div>
         <script>
-            console.log(@json($disabledDaysString));
             function showTooltip(flag) {
                 switch (flag) {
                     case 1:
@@ -458,7 +457,7 @@
                     },
                 });
                 // CITAS MEDICAS
-                var disabledDays = @json($disabledDaysString);
+                
                 flatpickr("#fecha-appointment", {
                     // enableTime: true,
                     // time_24hr: true,
@@ -468,7 +467,7 @@
                     disableMobile: "true",
                     // minuteIncrement: 10,
                     minDate: "today",
-                    disable: [@json($disabledDaysString)],
+                    disable: @json($disabledDaysyes),
                     onDayCreate: function(dObj, dStr, fp, dayElem) {
                         if (dayElem.dateObj.getDay() === 0 || dayElem.dateObj.getDay() === 6) {
                             dayElem.className += " flatpickr-disabled nextMonthDayflatpickr-disabled";

@@ -67,15 +67,9 @@ class HomeMedicine extends Component
     public function render()
     {
         $disabledDays = MedicineDisabledDays::pluck('disabled_days')->toArray();
-        // $disabledDaysString = '"' . implode('","', $disabledDays) . '"';
-        $disabledDaysString = '';
-        foreach ($disabledDays as $day) {
-            $disabledDaysString .= "'{$day}',";
-        }
-        // Quitar la última coma
-        $disabledDaysString = rtrim($disabledDaysString, ',');
+        $disabledDaysyes = MedicineDisabledDays::pluck('disabled_days');
         $isDisabled = in_array($this->dateNow, $disabledDays);
-        return view('livewire.medicine.home-medicine', compact('isDisabled', 'disabledDaysString'))
+        return view('livewire.medicine.home-medicine', compact('isDisabled','disabledDaysyes'))
             ->layout('layouts.app');
     }
     public function updated($propertyName)
