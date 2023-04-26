@@ -62,14 +62,14 @@
                     </x-jet-nav-link>
                 @endcan
                     @can('see.navigation.medicine')
-                        <x-jet-nav-link href="{{ route('afac.appointment') }}" :active="request()->routeIs('afac.appointment')">
+                        {{-- <x-jet-nav-link href="{{ route('afac.appointment') }}" :active="request()->routeIs('afac.appointment')">
                             {{ __('INICIO') }}
-                        </x-jet-nav-link>
+                        </x-jet-nav-link> --}}
                         <x-jet-nav-link href="{{ route('afac.headquarterMedicine') }}" :active="request()->routeIs('afac.headquarterMedicine')">
-                            {{ __('SEDES') }}
+                            {{ __('Sedes') }}
                         </x-jet-nav-link>
                         <x-jet-nav-link href="{{ route('validate') }}" :active="request()->routeIs('validate')">
-                            {{ __('VALIDACIÓN DE CITAS') }}
+                            {{ __('Validación de citas') }}
                         </x-jet-nav-link>
                     @endcan
                 </div>

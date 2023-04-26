@@ -32,7 +32,7 @@ class HistoryAppointment extends Component
         $this->porconfir = $appointment->validado*100/$appointment->registradas;
         $this->porpendientes = $appointment->pendientes*100/$appointment->registradas;
         $this->porreagendado= $appointment->reagendado*100/$appointment->registradas;
-        $this->porcanceladas= $appointment->canceladas*100/$appointment->registradas;
+        $this->porcanceladas= $this->canceladas*100/$appointment->registradas;
     }
     public function render()
     {
