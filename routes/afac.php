@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\afac\homeController;
 use App\Http\Controllers\afac\schedule\IndexController;
+use App\Http\Controllers\afac\schedule\userMedicine;
 use App\Http\Livewire\Headquarters\HomeHeadquarter;
 use App\Http\Livewire\Linguistics\HomeLinguistics;
 use App\Http\Livewire\Register\Peoplehistoryrecords;
