@@ -55,7 +55,7 @@ class HomeMedicine extends Component
         return [
             'name_document' => 'required',
             // 'reference_number' => 'required',
-            'reference_number' =>'required|unique:medicines',
+            'reference_number' => 'required|unique:medicines',
             'pay_date' => 'required',
             'type_exam_id' => 'required',
             'medicine_question_id' => 'required_if:type_exam_id,1',
@@ -339,12 +339,13 @@ class HomeMedicine extends Component
         $dateAppointment = $medicineReserves[0]->dateReserve;
         $curp = $medicineReserves[0]->medicineReserveMedicine->medicineUser->userParticipant->pluck('curp')->first();
         $keyEncrypt =  Crypt::encryptString($medicineId . '*' . $dateAppointment . '*' . $curp);
+        $fileName = $medicineReserves[0]->dateReserve . '-' . $curp . '-' . 'MED-' . $medicineId . '.pdf';
         if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 1) {
             $pdf = PDF::loadView('livewire.medicine.documents.medicine-initial', compact('medicineReserves', 'keyEncrypt'));
-            return $pdf->download($medicineReserves[0]->dateReserve . '-' . 'cita.pdf');
+            return $pdf->download($fileName);
         } else if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 2) {
             $pdf = PDF::loadView('livewire.medicine.documents.medicine-renovation', compact('medicineReserves', 'keyEncrypt'));
-            return $pdf->download($medicineReserves[0]->dateReserve . '-' . 'cita.pdf');
+            return $pdf->download($fileName);
         }
     }
     public function messages()
