@@ -18,7 +18,7 @@ class Schedule extends ModalComponent
 {
     use Actions;
     use WithFileUploads;
-    public $scheduleId, $status, $medicineReserves, $name, $type, $class, $typLicense, $sede, $dateReserve, $date, $time, $scheduleMedicines, $sedes,
+    public $comment1,$comment2,$scheduleId, $status, $medicineReserves, $name, $type, $class, $typLicense, $sede, $dateReserve, $date, $time, $scheduleMedicines, $sedes,
         $to_user_headquarters, $medicine_schedule_id, $selectedOption, $comment,$comment_cancelate,$hoursReserve,$observation;
     
         public function rules()
@@ -79,7 +79,19 @@ class Schedule extends ModalComponent
         if(empty($medicineReserves[0]->reserveObserv[0]->observation)){
             $this->comment;
         }else{
-            $this->comment = $medicineReserves[0]->reserveObserv[0]->observation;
+
+            if(!empty($medicineReserves[0]->reserveObserv[0]->observation)){
+                $this->comment1 = $medicineReserves[0]->reserveObserv[0]->observation;
+            }else{
+                $this->comment1;
+            }
+            if(!empty($medicineReserves[0]->reserveObserv[1]->observation)){
+                $this->comment2 = $medicineReserves[0]->reserveObserv[1]->observation;
+            }else{
+                $this->comment2;
+            }
+            $this->comment = $this->comment1.' / '.$this->comment2;
+            
         }
 
         $this->sede = $medicineReserves[0]->user->name;
