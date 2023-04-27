@@ -79,21 +79,32 @@ class Schedule extends ModalComponent
         if(empty($medicineReserves[0]->reserveObserv[0]->observation)){
             $this->comment;
         }else{
-
             if(!empty($medicineReserves[0]->reserveObserv[0]->observation)){
-                $this->comment1 = $medicineReserves[0]->reserveObserv[0]->observation;
+
+                if($medicineReserves[0]->reserveObserv[0]->status==2){
+                    $comn = 'CANCELADO';
+                }else{
+                    $comn = 'REAGENDADO';
+                }    
+                
+                $this->comment1 = $comn.': '.$medicineReserves[0]->reserveObserv[0]->observation;
             }else{
                 $this->comment1;
             }
             if(!empty($medicineReserves[0]->reserveObserv[1]->observation)){
-                $this->comment2 = $medicineReserves[0]->reserveObserv[1]->observation;
+
+                if($medicineReserves[0]->reserveObserv[1]->status==2){
+                    $comn = 'CANCELADO';
+                }else{
+                    $comn = 'REAGENDADO';
+                }    
+
+                $this->comment2 = $comn.': '.$medicineReserves[0]->reserveObserv[1]->observation;
             }else{
                 $this->comment2;
             }
-            $this->comment = $this->comment1.' / '.$this->comment2;
-            
+            $this->comment = $this->comment1.' / '.$this->comment2;            
         }
-
         $this->sede = $medicineReserves[0]->user->name;
     }
     public function updatedToUserHeadquarters($value)
