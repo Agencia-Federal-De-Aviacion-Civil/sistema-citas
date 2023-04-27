@@ -18,8 +18,20 @@ class Schedule extends ModalComponent
 {
     use Actions;
     use WithFileUploads;
-    public $scheduleId, $status, $medicineReserves, $name, $type, $class, $typLicense, $sede, $dateReserve, $date, $time, $scheduleMedicines, $sedes,
-        $to_user_headquarters, $medicine_schedule_id, $selectedOption, $comment,$hoursReserve,$observation;
+    public $comment1,$comment2,$scheduleId, $status, $medicineReserves, $name, $type, $class, $typLicense, $sede, $dateReserve, $date, $time, $scheduleMedicines, $sedes,
+        $to_user_headquarters, $medicine_schedule_id, $selectedOption, $comment,$comment_cancelate,$hoursReserve,$observation;
+    
+        public function rules()
+        {
+            return [
+                'comment' => '',
+                'comment_cancelate' => '',
+                'selectedOption' => 'required',
+                'to_user_headquarters' => '',
+                'medicine_schedule_id' => ''
+            ];
+        }        
+    
     public function mount($scheduleId)
     {
         $this->scheduleId = $scheduleId;
@@ -43,6 +55,7 @@ class Schedule extends ModalComponent
     }
     public function valores($cheduleId)
     {
+
         $this->scheduleId = $cheduleId;
         $medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'user'])
             ->where('id', $this->scheduleId)->get();
@@ -62,29 +75,41 @@ class Schedule extends ModalComponent
         $this->status = $medicineReserves[0]->status;
 
         $this->hoursReserve = $medicineReserves[0]->reserveSchedule->time_start;
+        
         if(empty($medicineReserves[0]->reserveObserv[0]->observation)){
             $this->comment;
         }else{
-            $this->comment = $medicineReserves[0]->reserveObserv[0]->observation;
+
+            if(!empty($medicineReserves[0]->reserveObserv[0]->observation)){
+                $this->comment1 = $medicineReserves[0]->reserveObserv[0]->observation;
+            }else{
+                $this->comment1;
+            }
+            if(!empty($medicineReserves[0]->reserveObserv[1]->observation)){
+                $this->comment2 = $medicineReserves[0]->reserveObserv[1]->observation;
+            }else{
+                $this->comment2;
+            }
+            $this->comment = $this->comment1.' / '.$this->comment2;
+            
         }
+
         $this->sede = $medicineReserves[0]->user->name;
     }
     public function updatedToUserHeadquarters($value)
     {
         // Obtener los horarios disponibles para la fecha especificada
         $this->scheduleMedicines = MedicineSchedule::where('user_id', $value)
-            // ->whereNotIn('id', function ($query) {
-            //     // Subconsulta para obtener los horarios reservados
-            //     $query->select('medicine_schedule_id')
-            //         ->from('medicine_reserves')
-            //         ->where('dateReserve', $this->dateReserve)
-            //         ->groupBy('medicine_schedule_id')
-            //         ->havingRaw('COUNT(*) >= max_schedules');
-            // })
             ->get();
+    }
+    public function updated($propertyName)
+    {
+        $this->validateOnly($propertyName);
     }
     public function reschedules()
     {
+
+        //ASISTIÓ
         if ($this->selectedOption == 1) {
 
             $attendeReserve = MedicineReserve::find($this->scheduleId);
@@ -92,20 +117,34 @@ class Schedule extends ModalComponent
                 'status' => $this->selectedOption,
             ]);
             $this->emit('attendeReserve');
+        //CANCELO EL ADMIN
         } elseif ($this->selectedOption == 2) {
+
+            $this->validate([
+                'comment_cancelate' => 'required',
+            ]);            
             $observation = new MedicineObservation();
             $observation->medicine_reserve_id = $this->scheduleId;
-            $observation->observation = $this->comment;
+            $observation->observation = $this->comment_cancelate;
+            $observation->status = 2;
             $observation->save();
             $cancelReserve = MedicineReserve::find($this->scheduleId);
             $cancelReserve->update([
                 'status' => $this->selectedOption,
             ]);
             $this->emit('cancelReserve');
+        //REAGENDO
         } elseif ($this->selectedOption == 4) {
+            $this->validate([
+                'comment' => 'required',
+                'to_user_headquarters' => 'required',
+                'medicine_schedule_id' => 'required'
+    
+            ]);
             $observation = new MedicineObservation();
             $observation->medicine_reserve_id = $this->scheduleId;
             $observation->observation = $this->comment;
+            $observation->status = 4;
             $observation->save();
             $citas = MedicineReserve::where('to_user_headquarters', $this->to_user_headquarters)
                 ->where('dateReserve', $this->dateReserve)
@@ -146,7 +185,19 @@ class Schedule extends ModalComponent
                 $cita->save();
                 $this->emit('reserveAppointment');
             }
+        }else{
+            $this->validate();
         }
         $this->closeModal();
+    }
+    public function messages()
+    {
+        return [
+            'comment_cancelate.required' => 'Campo obligatorio',
+            'comment.required' => 'Campo obligatorio',
+            'selectedOption.required' => 'Seleccione opción',
+            'to_user_headquarters.required' => 'Seleccione opción',
+            'medicine_schedule_id.required' => 'Seleccione opción'
+        ];
     }
 }

@@ -54,7 +54,8 @@ class HomeMedicine extends Component
     {
         return [
             'name_document' => 'required',
-            'reference_number' => 'required|unique:medicines',
+            // 'reference_number' => 'required',
+            'reference_number' =>'required|unique:medicines',
             'pay_date' => 'required',
             'type_exam_id' => 'required',
             'medicine_question_id' => 'required_if:type_exam_id,1',

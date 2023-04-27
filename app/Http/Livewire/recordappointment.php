@@ -3,7 +3,9 @@
 namespace App\Http\Livewire;
 
 use App\Models\Medicine\MedicineReserve;
-use DeepCopy\Filter\Filter;
+use App\Models\UserParticipant;
+// use DeepCopy\Filter\Filter;
+use PowerComponents\LivewirePowerGrid\Traits\Filter;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -121,9 +123,10 @@ final class recordappointment extends PowerGridComponent
                 return $regiser->medicineReserveFromUser->name . ' ' . $regiser->userParticipantUser->apParental . ' ' . $regiser->userParticipantUser->apMaternal;
                 //return $regiser->medicineReserveFromUser->name;
             })
-            // ->addColumn('folio', function (MedicineReserve $type) {
-            //     return 'MED-' . $type->medicineReserveMedicine->id;
-            // })
+            
+            ->addColumn('folio', function (MedicineReserve $type) {
+                return 'MED-' . $type->medicineReserveMedicine->id;
+            })
             ->addColumn('type', function (MedicineReserve $type) {
                 return $type->medicineReserveMedicine->medicineTypeExam->name;
             })
@@ -316,13 +319,22 @@ final class recordappointment extends PowerGridComponent
     public function filters(): array
     {
         return [
-            //    Filter::inputText('curp', 'curp')
-            //       ->operators(['contains', 'is', 'is_not']),
-
-
-
+            Filter::InputText('curp','curp')
+            ->operators(['contains', 'is', 'is_not']),
         ];
     }
+
+    // public function filters(): array
+    // {
+
+        // ->dataSource(UserParticipant::select('curp')->distinct()->get())
+        // ->optionValue('curp')
+        // ->optionLabel('curp'),           
+    //     return [
+    //        Filter::inputText('curp', 'curp'),
+    //         //   ->operators(['contains', 'is', 'is_not']),        
+    //     ];
+    // } 
     /*
     |--------------------------------------------------------------------------
     | Actions Method

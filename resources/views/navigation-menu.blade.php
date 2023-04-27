@@ -52,14 +52,22 @@
                                 </li>
                             </ul>
                         </div>
+                        
                         <x-jet-nav-link href="{{ route('afac.historyRegister') }}" :active="request()->routeIs('afac.historyRegister')">
                             {{ __('Personas registradas') }}
                         </x-jet-nav-link>
+
+                        <x-jet-nav-link href="{{ route('afac.users') }}" :active="request()->routeIs('afac.users')">
+                            {{ __('Usuarios') }}
+                        </x-jet-nav-link>
+            
+
                     @endcan
                     @can('see.navigation.schedule.table')
                     <x-jet-nav-link href="{{ route('afac.appointment') }}" :active="request()->routeIs('afac.appointment')">
                         {{ __('Citas agendadas') }}
                     </x-jet-nav-link>
+
                 @endcan
                     @can('see.navigation.medicine')
                         {{-- <x-jet-nav-link href="{{ route('afac.appointment') }}" :active="request()->routeIs('afac.appointment')">
@@ -167,6 +175,7 @@
             </x-jet-nav-link>
         @endcan
         @can('see.navigation.controller.systems')
+        
             <div x-cloak x-data="{ open: false }" class="py-3 z-50">
                 <button x-on:click="open = true"
                     class="flex items-center bg-white focus:bg-gray-50 text-gray-700 focus:text-gray-900 rounded py-2 px-4"
@@ -201,12 +210,16 @@
                         <a href="{{ route('validate') }}" class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
                             Validación de QR
                         </a>
-                    </li>
+                    </li>                    
                 </ul>
-            </div>
+            </div>                        
             <x-jet-nav-link href="{{ route('afac.historyRegister') }}">
                 {{ __('Personas Registradas') }}
             </x-jet-nav-link>
+            <x-jet-nav-link href="{{ route('afac.users') }}" :active="request()->routeIs('afac.users')">
+                {{ __('Usuarios') }}
+            </x-jet-nav-link>
+
         @endcan
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">
