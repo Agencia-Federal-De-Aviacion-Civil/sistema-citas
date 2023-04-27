@@ -280,7 +280,7 @@ final class recordappointment extends PowerGridComponent
 
             Column::make('SEDE', 'headquarters')
                 ->searchable()
-                ->makeInputText('name'),
+                ->makeInputText(),
             // ->sortable(),
             //->makeInputDatePicker(),
 
