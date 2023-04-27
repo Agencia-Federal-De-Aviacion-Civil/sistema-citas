@@ -115,7 +115,10 @@ final class recordappointment extends PowerGridComponent
                 'apParental',
                 'apMaternal',
             ],
-
+            'user' => [
+                'name',
+            ],
+       
         ];
     }
 
