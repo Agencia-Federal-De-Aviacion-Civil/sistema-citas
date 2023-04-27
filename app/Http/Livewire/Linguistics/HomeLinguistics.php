@@ -7,6 +7,7 @@ use App\Models\Catalogue\Schedule;
 use App\Models\Catalogue\TypeExam;
 use App\Models\Document;
 use App\Models\Linguistic\Linguistic;
+use App\Models\Linguistic\LinguisticReserve;
 use App\Models\Linguistic\Reserve;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
@@ -17,8 +18,8 @@ class HomeLinguistics extends Component
 {
     use WithFileUploads;
     public $confirmModal = false;
-    public $name_document, $reference_number, $pay_date, $type_exam_id, $type_license, $license_number, $red_number, $to_user_headquarters, $dateReserve;
-    public $exams, $headquartersQueries, $date, $schedules;
+    public $name_document, $reference_number, $pay_date, $type_exam_id, $type_license, $license_number, $red_number, $to_user_headquarters, $date_reserve;
+    public $exams, $headquartersQueries, $date, $schedules, $schedule_id;
     public function rules()
     {
         return [
@@ -30,7 +31,8 @@ class HomeLinguistics extends Component
             'license_number' => 'required',
             'red_number' => 'required',
             'to_user_headquarters' => 'required',
-            'dateReserve' => 'required'
+            'date_reserve' => 'required',
+            'schedule_id' => 'required'
         ];
     }
     public function mount()
@@ -54,32 +56,25 @@ class HomeLinguistics extends Component
     {
         $this->confirmModal = true;
     }
-    public function updatedToUserHeadquarters($value)
+
+    public function updatedDateReserve($value)
     {
-        // Obtener los horarios disponibles para la fecha especificada
-        $this->schedules = Schedule::where('user_id', $value)
-            ->where('system_id', 2)
-            // ->whereNotIn('id', function ($query) {
-            //     // Subconsulta para obtener los horarios reservados
-            //     $query->select('medicine_schedule_id')
-            //         ->from('medicine_reserves')
-            //         ->where('dateReserve', $this->dateReserve)
-            //         ->groupBy('medicine_schedule_id')
-            //         ->havingRaw('COUNT(*) >= max_schedules');
-            // })
+        $this->schedules = Schedule::where('user_id', $this->to_user_headquarters)
+            ->whereNotIn('id', function ($query) use ($value) {
+                $query->select('schedule_id')
+                    ->from('linguistic_reserves')
+                    ->where('to_user_headquarters', $this->to_user_headquarters)
+                    ->where('date_reserve', $value);
+            })
+            ->orderBy('time_start')
             ->get();
     }
     public function save()
     {
         $this->validate();
-        $existingReserve = Reserve::where('dateReserve', $this->dateReserve)->first();
-        if ($existingReserve) {
-            $this->addError('dateReserve', 'La hora seleccionada ya está ocupada. Por favor seleccione otra.');
-            return;
-        }
         $extension = $this->name_document->extension();
         $saveDocument = Document::create([
-            'name_document' => $this->name_document->storeAs('uploads/citas-app', 'linguistica' .  '.' . $extension, 'do'),
+            'name_document' => $this->name_document->storeAs('uploads/tester', 'linguistica' .  '.' . $extension, 'do'),
         ]);
         $saveLinguistic = Linguistic::create([
             'user_id' => Auth::user()->id,
@@ -91,11 +86,12 @@ class HomeLinguistics extends Component
             'license_number' => $this->license_number,
             'red_number' => $this->red_number
         ]);
-
-        Reserve::create([
-            'linguistic_id' => $saveLinguistic->id,
+        LinguisticReserve::create([
+            'from_user_appointment' => Auth::user()->id,
             'to_user_headquarters' => $this->to_user_headquarters,
-            'dateReserve' => $this->dateReserve,
+            'linguistic_id' => $saveLinguistic->id,
+            'date_reserve' => $this->date_reserve,
+            'schedule_id' => $this->schedule_id
         ]);
     }
     public function messages()
@@ -110,7 +106,7 @@ class HomeLinguistics extends Component
             'license_number.required' => 'Campo obligatorio',
             'red_number.required' => 'Campo obligatorio',
             'to_user_headquarters.required' => 'Campo obligatorio',
-            'dateReserve.required' => 'Campo obligatorio',
+            'date_reserve.required' => 'Campo obligatorio',
         ];
     }
 }

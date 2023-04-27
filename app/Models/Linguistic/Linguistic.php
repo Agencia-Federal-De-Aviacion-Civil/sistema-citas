@@ -9,4 +9,8 @@ class Linguistic extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+    public function linguisticReserve()
+    {
+        return $this->hasMany(LinguisticReserve::class);
+    }
 }

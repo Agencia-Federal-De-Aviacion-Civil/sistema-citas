@@ -8,6 +8,7 @@ namespace App\Models;
 // use App\Models\catalogue\headquarter;
 
 use App\Models\Catalogue\Headquarter;
+use App\Models\Catalogue\Schedule;
 use App\Models\Medicine\Medicine;
 use App\Models\Medicine\MedicineReserve;
 use App\Models\Medicine\MedicineSchedule;
@@ -110,5 +111,9 @@ class User extends Authenticatable
     public function userMedicineSchedule()
     {
         return $this->hasMany(MedicineSchedule::class);
+    }
+    public function userSchedule()
+    {
+        return $this->hasMany(Schedule::class);
     }
 }
