@@ -104,6 +104,9 @@ final class recordappointment extends PowerGridComponent
             'user' => [
                 'name',
             ],
+            'medicineReserveMedicine' => [
+                'dateReserve'
+            ]
 
         ];
     }
