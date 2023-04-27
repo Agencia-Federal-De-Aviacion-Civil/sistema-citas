@@ -81,9 +81,25 @@ final class recordappointment extends PowerGridComponent
             
             
         } else {
-            return MedicineReserve::query()->with([
+            /*return MedicineReserve::query()->with([
                 'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
             ])->whereHas('medicineReserveMedicine', function ($q1) {
+                $q1->where('user_id', Auth::user()->id);
+            });*/
+            return MedicineReserve::query()
+            ->join('users', function ($user) {
+                $user->on('medicine_reserves.from_user_appointment', '=', 'users.id');
+            })
+            ->join('user_participants', function ($userparticipants) {
+                $userparticipants->on('medicine_reserves.from_user_appointment', '=', 'user_participants.user_id');
+            })
+            ->leftJoin('medicines', 'medicine_reserves.medicine_id', '=', 'medicines.id')
+            ->leftJoin('type_exams', 'type_exams.id', '=', 'medicines.type_exam_id')
+            ->with([
+                'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
+            ])
+            ->select('medicine_reserves.*', 'users.name as name','user_participants.curp as curp','user_participants.genre as genre','user_participants.birth as birth','user_participants.apParental as apParental','user_participants.apMaternal as apMaternal','medicines.reference_number as reference_number','type_exams.name as type')
+            ->whereHas('medicineReserveMedicine', function ($q1) {
                 $q1->where('user_id', Auth::user()->id);
             });
         }
@@ -114,6 +130,7 @@ final class recordappointment extends PowerGridComponent
             'userParticipantUser' => [
                 'apParental',
                 'apMaternal',
+                'curp',
             ],
             'user' => [
                 'name',
@@ -246,7 +263,7 @@ final class recordappointment extends PowerGridComponent
 
             Column::make('NOMBRE', 'name')
                 ->searchable()
-                ->makeInputText(),
+                ->makeInputText('users.name'),
 
             Column::make('APELLIDO PATERNO', 'apParental')
                 ->searchable()
@@ -262,7 +279,7 @@ final class recordappointment extends PowerGridComponent
 
             Column::make('TIPO', 'type')
                 ->searchable()
-                ->makeInputText()
+                //->makeInputText()
                 ->sortable(),
             // ->makeInputText(),
             // ->sortable(),
@@ -279,20 +296,20 @@ final class recordappointment extends PowerGridComponent
             //->makeInputDatePicker(),
 
             Column::make('SEDE', 'headquarters')
-                ->searchable()
-                ->makeInputText(),
+                ->searchable(),
+               // ->makeInputText(),
             // ->sortable(),
             //->makeInputDatePicker(),
 
             Column::make('FECHA', 'dateReserve')
                 ->searchable()
-                ->makeInputText()
+                ->makeInputText('medicine_reserves.dateReserve')
                 ->sortable(),
             // ->sortable(),
 
             Column::make('HORA', 'hours')
                 ->searchable()
-                ->makeInputText()
+                //->makeInputText()
                 ->sortable(),
             // ->sortable(),
             //->makeInputDatePicker(),
