@@ -48,7 +48,7 @@
                                             <div class="grid xl:grid-cols-4 xl:gap-6">
                                                 <div class="mt-1 relative z-0 w-full group">
                                                     <div class="relative z-0 w-full mb-6 group">
-                                                        <x-input x-ref="refnumber" wire:model.lazy="reference_number" label="REFERENCIA DE PAGO" placeholder="INGRESE..." />
+                                                        <x-input x-ref="refnumber" wire:model.lazy="reference_number" label="INGRESA LA LLAVE DE PAGO" placeholder="INGRESE..." />
                                                     </div>
                                                 </div>
                                                 <div class="mt-1 relative z-auto w-full group">
