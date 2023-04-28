@@ -198,8 +198,10 @@ class HomeMedicine extends Component
                         $q2->where('type_class_id', $this->type_class_id);
                     });
             })
-            ->where('status', 0)
-            // ->orWhere('status', 4)
+            ->where(function ($queryStop) {
+                $queryStop->where('status', 0)
+                    ->orWhere('status', 4);
+            })
             ->get();
         // dd($userMedicines);
         foreach ($userMedicines as $userMedicine) {
