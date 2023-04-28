@@ -137,7 +137,7 @@
             </tr>
             <tr>
                 <td>FECHA</td>
-                <td>{{ $medicineReserves[0]->dateReserve }}</td>
+                <td>{{ mb_strtoupper($dateConvertedFormatted) }}</td>
             </tr>
             <tr>
                 <td>HORA</td>

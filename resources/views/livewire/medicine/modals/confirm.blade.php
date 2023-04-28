@@ -163,7 +163,7 @@
 
                                         <p class="text-lg title-font font-normal">Fecha y Hora:
                                         <p class="text-xl font-semibold">
-                                            {{ strtoupper($dateConvertedFormatted) }} A LAS
+                                            {{ mb_strtoupper($dateConvertedFormatted) }} A LAS
                                             {{ $medicineReserves[0]->reserveSchedule->time_start }}
                                         </p>
                                         </p>
@@ -337,7 +337,8 @@
 
                                         <p class="text-lg title-font font-normal">Fecha y Hora:
                                         <p class="text-xl font-semibold">
-                                            {{ $medicineReserves[0]->dateReserve }}
+                                            {{ mb_strtoupper($dateConvertedFormatted) }} A LAS
+                                            {{ $medicineReserves[0]->reserveSchedule->time_start }}
                                         </p>
                                         </p>
                                     </div>
