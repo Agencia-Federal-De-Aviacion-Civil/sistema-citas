@@ -199,7 +199,7 @@ class HomeMedicine extends Component
                     });
             })
             ->where('status', 0)
-            ->orWhere('status', 4)
+            // ->orWhere('status', 4)
             ->get();
         dd($userMedicines);
         foreach ($userMedicines as $userMedicine) {
