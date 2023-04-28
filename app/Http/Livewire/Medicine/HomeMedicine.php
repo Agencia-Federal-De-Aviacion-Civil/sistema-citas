@@ -201,6 +201,7 @@ class HomeMedicine extends Component
             ->where('status', 0)
             ->orWhere('status', 4)
             ->get();
+        dd($userMedicines);
         foreach ($userMedicines as $userMedicine) {
             if ($userMedicine->id) {
                 if ($userMedicine->medicineReserveMedicine->medicineInitial->count() > 0 && $userMedicine->medicineReserveMedicine->medicineInitial[0]->type_class_id == $this->type_class_id) {
