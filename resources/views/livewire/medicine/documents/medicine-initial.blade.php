@@ -154,13 +154,13 @@
             <h3 class="titulo2">REQUISITOS</h3>
         </div>
         <div style="padding-top:2%">
-            <label style="text-align: justify;font-size:18px" for="">Estimado usuario, con el fin de facilitar el procedimiento de registro y apoyarle en el 
+            <label style="text-align: justify;font-size:17px" for="">Estimado usuario, con el fin de facilitar el procedimiento de registro y apoyarle en el 
                 proceso de su <b> EVALUACIÓN MÉDICA</b>, le mostramos los siguientes
                 <b>requisitos indispensables</b> con los que deberá acudir a su cita <u>original y
                     copia</u>, de lo contrario no 
                     podrá realizar su examen y éste se perderá:</label>
         </div>
-        <div style="padding-top:1%;font-size:18px">
+        <div style="padding-top:1%;font-size:17px">
             <ol style="text-align: justify">
                 <li value="1">Acta de nacimiento (Con formato vigente a la fecha de su examen).</li>
                 <li>Comprobante de domicilio con vigencia no mayor a 3 meses.</li>
