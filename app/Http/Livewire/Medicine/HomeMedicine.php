@@ -292,7 +292,7 @@ class HomeMedicine extends Component
             'initialMedicine', 'medicineInitialQuestion', 'medicineInitialTypeClass',
             'medicineInitialClasificationClass'
         ])->where('medicine_id', $this->saveMedicine->id)->get();
-        $this->medicineRenovations = MedicineRenovation::with(['renovationMedicine', 'renovationTypeClass', 'renovationClasificationClass'])
+        $this->medicineRenovations = MedicineRenovation::with(['renovationMedicine', 'renovationTypeClass', 'renovationClasificationClass','renovationClasificationClass'])
             ->where('medicine_id', $this->saveMedicine->id)->get();
         $this->confirmModal = true;
     }

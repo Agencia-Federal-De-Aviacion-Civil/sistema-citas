@@ -116,6 +116,12 @@
                 </td>
             </tr>
             <tr>
+                <td>TIPO DE LICENCIA:</td>
+                <td>
+                    {{ $medicineReserves[0]->medicineReserveMedicine->medicineRenovation[0]->renovationClasificationClass->name }}
+                </td>
+            </tr>
+            <tr>
                 <td>TRAMITE:</td>
                 <td>EXAMEN PSICOFISICO INTEGRAL</td>
             </tr>
@@ -167,16 +173,25 @@
                 <p style="padding-left:2%;margin-top:-2%;">B. Cédula profesional (siempre y cuando cuente con fotografía).</p>
                 <p style="padding-left:2%;margin-top:-2%;">C. Cartilla Militar (personal masculino).</p>
                 <p style="padding-left:2%;margin-top:-2%;">D. Pasaporte.</p>
+                <p style="padding-left:2%;margin-top:-2%;">E. Credencial con fotografía de la Institución Educativa, donde esté realizando 
+                    estudios, exclusivamente para menores de edad, que no cuenten con ninguna 
+                    de las identificaciones anteriores, y en caso de no contar con esta última, se 
+                    podrá utilizar la CURP como identificación oficial.</p>
                 <li>Acudir con ropa cómoda, evitando sea de una sola pieza.</li>
                 <li>Tomar un desayuno ligero, en caso de acudir en ayuno llevar su refrigerio.</li>
                 <li>No suspender medicación prescrita.</li>
                 <li>En caso de haber tenido algún procedimiento dental, esperar mínimo 72 horas posteriores al mismo para agendar su cita.</li>
-                <li>En caso de haber sido diagnosticado con alguna(s) enfermedad(es) crónica(s) (enfermedades cardiacas, respiratorias, hipertiroidismo, etc.), presentar un resumen clínico expedido por su médico tratante de especialidad acorde a la patología
-                    y estudios <b> adicionales (Ver Anexo)</b> con vigencia no mayor a 2 meses para acreditar el estado actual de salud.
+                <li>En caso de haber sido diagnosticado con alguna(s) enfermedad(es) crónica(s) 
+                    (enfermedades cardiacas, respiratorias, hipertiroidismo, etc.), presentar un resumen 
+                    clínico expedido por su médico tratante de especialidad acorde a la patología y 
+                    estudios <b> adicionales (Ver Anexo)</b> con vigencia no mayor a 2 meses para acreditar 
+                    el estado actual de salud.
                 </li>
                 <li>
-                    En caso de presentar disminución en la agudeza visual, deberá presentarse con lentes de armazón o de contacto con graduación actualizada. Si alterna el uso de ambos, deberá presentarlos. Para el personal de pilotos en caso de usar lentes de contacto deberá
-                    acudir con sus lentes de armazón de repuesto.
+                    En caso de presentar disminución en la agudeza visual, deberá presentarse con 
+lentes de armazón o de contacto con graduación actualizada. Si alterna el uso de 
+ambos, deberá presentarlos. Para el personal de pilotos en caso de usar lentes de 
+contacto deberá acudir con sus lentes de armazón de repuesto.
                 </li>
                 <li>En caso de encontrarse embarazada, presentar constancia o expediente de control del mismo actualizada y hacerle saber al servicio de rayos X al acudir a su examen.
                 </li>
@@ -262,7 +277,7 @@
                 </tr>
                 <tr>
                     <td>Hipertensión arterial sistémica</td>
-                    <td>Presentar curva de tensión arterial de 10 días previos a su valoración médica (cada 12 horas a la misma hora)</td>
+                    <td>Presentar curva de tensión arterial de 10 días previos a su valoración médica,<b>ver guía*</b>.</td>
                 </tr>
                 <tr>
                     <td>Hiper o hipotiroidismo</td>
