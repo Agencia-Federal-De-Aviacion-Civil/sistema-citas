@@ -15,7 +15,11 @@
             </div>
         </div>
     </div>
-    @hasrole('super_admin|medicine_admin')
+    
+    <div class="py-12">
+        
+        <div class="container mx-auto px-4 py-4 bg-white shadow-xl sm:rounded-lg">
+@hasrole('super_admin|medicine_admin')
     <div class="bg-gray-100 text-gray-500 rounded shadow-xl py-5 px-5 w-full sm:w-full md:w-full lg:w-full" x-data="{ cardOpen: false, cardData: cardData() }" x-init="$watch('cardOpen', value => value ? (cardData.countUp($refs.total, 0,  {{ $this->registradas }}, null, 0.8), cardData.sessions.forEach((el, i) => cardData.countUp($refs[`device${i}`], 0, cardData.sessions[i].size, null, 1.6))) : null);
             setTimeout(() => { cardOpen = true }, 100)">
         <div class="flex w-full">
@@ -42,7 +46,7 @@
                 <div class="-mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                     <div class="flex items-start p-2">
                         <div class="flex h-12 w-12 items-center justify-center rounded-full border border-gray-100 bg-gray-50">
-                            <span href="#blue" class="block w-3 h-3 bg-gray-600 rounded-full"></span>
+                            <span href="#blue" class="block w-3 h-3 bg-gray-500 rounded-full"></span>
                         </div>
 
                         <div class="ml-4">
@@ -86,9 +90,6 @@
         </div>
     </div>
     @else @endhasrole
-    <div class="py-12">
-        <div class="container mx-auto px-4 py-4 bg-white shadow-xl sm:rounded-lg">
-
             <div class="mt-12 max-w-8xl mx-auto sm:px-6 lg:px-8">
                 <div class="ml-4 py-6 mr-4 uppercase text-sm">
                     <livewire:recordappointment />

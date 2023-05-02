@@ -451,13 +451,16 @@
                 // maxTime: "10:59",
                 disableMobile: "true",
                 // minuteIncrement: 10,
-                // minDate: "today",
-                minDate: new Date(new Date().getFullYear(), 0, 1),
+                 minDate: "today",
+                //minDate: new Date(new Date().getFullYear(), 0, 1),
                 maxDate: new Date(new Date().getFullYear(), 11, 31),
                 disable: @json($disabledDaysyes),
                 onDayCreate: function(dObj, dStr, fp, dayElem) {
-                    if (dayElem.dateObj.getDay() === 0 || dayElem.dateObj.getDay() === 6 || dayElem
+                   /* if (dayElem.dateObj.getDay() === 0 || dayElem.dateObj.getDay() === 6 || dayElem
                         .dateObj <= new Date()) {
+                        dayElem.className += " flatpickr-disabled nextMonthDayflatpickr-disabled";
+                    }*/
+                    if (dayElem.dateObj.getDay() === 0 || dayElem.dateObj.getDay() === 6 ) {
                         dayElem.className += " flatpickr-disabled nextMonthDayflatpickr-disabled";
                     }
                 },
