@@ -29,11 +29,21 @@ class HistoryAppointment extends Component
         $this->validado = $appointment->validado;
         $this->reagendado = $appointment->reagendado;
         $this->canceladas = $appointment->canceladosede+$appointment->canceladousuario;
-        $this->porconfir = round(($appointment ? $appointment->validado*100/$appointment->registradas:'0'),0);
-        $this->porpendientes = round(($appointment ? $appointment->pendientes*100/$appointment->registradas:'0'),0);
-        $this->porreagendado= round(($appointment ? $appointment->reagendado*100/$appointment->registradas:'0'),0);
-        $this->porcanceladas1= round($this->canceladas*100/$appointment->registradas,0);
-        $this->porcanceladas= round(($this->porcanceladas1 ? $this->canceladas*100/$appointment->registradas:'0'),0);
+        $this->porconfir = $appointment && $appointment->registradas > 0
+            ? round(($appointment->validado * 100 / $appointment->registradas), 0)
+            : 0;
+            $this->porpendientes = $appointment && $appointment->registradas > 0
+            ? round(($appointment->pendientes * 100 / $appointment->registradas), 0)
+            : 0;
+            $this->porreagendado = $appointment && $appointment->registradas > 0
+            ? round(($appointment->reagendado * 100 / $appointment->registradas), 0)
+            : 0;
+            $this->porcanceladas1 = $appointment && $appointment->registradas > 0
+            ? round(($appointment->canceladas * 100 / $appointment->registradas), 0)
+            : 0;
+            $this->porcanceladas = $appointment && $appointment->registradas > 0
+            ? round(($appointment->canceladas * 100 / $appointment->registradas), 0)
+            : 0;
     }
     public function render()
     {
