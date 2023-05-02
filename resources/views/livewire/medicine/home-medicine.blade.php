@@ -171,7 +171,7 @@
                                             <div class="flex-grow pl-4">
                                                 <label for="small"
                                                     class="block mb-2 text-base font-medium text-gray-900 dark:text-white">¿SIGUES
-                                                    ESTUDIANDO?</label>
+                                                    ESTUDIANDO O VAS A ESTUDIAR?</label>
                                                 <select id="small" x-ref="question"
                                                     wire:model.lazy="medicine_question_id"
                                                     wire:change="resetClasificationClass()"
