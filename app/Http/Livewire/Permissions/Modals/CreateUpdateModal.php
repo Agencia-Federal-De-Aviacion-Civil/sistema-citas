@@ -6,7 +6,7 @@ use Livewire\Component;
 use LivewireUI\Modal\ModalComponent;
 use Spatie\Permission\Models\Permission;
 
-class Create extends ModalComponent
+class CreateUpdateModal extends ModalComponent
 {
     public $permissionId, $id_permission, $name, $description, $permissionQuery;
     public function rules()
@@ -30,7 +30,7 @@ class Create extends ModalComponent
     }
     public function render()
     {
-        return view('livewire.permissions.modals.create');
+        return view('livewire.permissions.modals.create-update-modal');
     }
     public function save()
     {
