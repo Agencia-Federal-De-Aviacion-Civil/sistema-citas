@@ -99,11 +99,11 @@ class Schedule extends ModalComponent
                     $comn = 'REAGENDADO';
                 }    
 
-                $this->comment2 = $comn.': '.$medicineReserves[0]->reserveObserv[1]->observation;
+                $this->comment2 = ' / '.$comn.': '.$medicineReserves[0]->reserveObserv[1]->observation;
             }else{
                 $this->comment2;
             }
-            $this->comment = $this->comment1.' / '.$this->comment2;            
+            $this->comment = $this->comment1.''.$this->comment2;            
         }
         $this->sede = $medicineReserves[0]->user->name;
     }
