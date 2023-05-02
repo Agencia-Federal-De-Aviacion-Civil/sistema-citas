@@ -26,6 +26,7 @@ final class PermissionTable extends PowerGridComponent
             parent::getListeners(),
             [
                 'createPermissions' => '$refresh',
+                'deletePermissions' => '$refresh'
             ]
         );
     }
@@ -105,8 +106,8 @@ final class PermissionTable extends PowerGridComponent
     public function actions(): array
     {
         return [
-            Button::add('edit-permission')
-                ->bladeComponent('edit-permission', ['permissionId' => 'id']),
+            Button::add('action-permission')
+                ->bladeComponent('action-permission', ['permissionId' => 'id']),
         ];
     }
 }

@@ -4,7 +4,7 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class EditPermission extends Component
+class ActionPermission extends Component
 {
     /**
      * Create a new component instance.
@@ -16,7 +16,6 @@ class EditPermission extends Component
     {
         $this->permissionId = $permissionId;
     }
-
     /**
      * Get the view / contents that represent the component.
      *
@@ -24,6 +23,6 @@ class EditPermission extends Component
      */
     public function render()
     {
-        return view('components.edit-permission');
+        return view('components.action-permission');
     }
 }
