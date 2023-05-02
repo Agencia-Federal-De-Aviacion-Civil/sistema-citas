@@ -260,6 +260,37 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        {{-- paso revaloración --}}
+                                        <div x-show="tipoExamen ==='3'" class="flex relative pb-6">
+                                            <div class="h-full w-10 absolute inset-0 flex items-center justify-center">
+                                                <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
+                                            </div>
+                                            <div
+                                                class="flex-shrink-0 w-10 h-10 rounded-full bg-sky-700 inline-flex items-center justify-center text-white relative z-10">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                    class="w-5 h-5">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" />
+                                                </svg>
+                                            </div>
+                                            <div class="flex-grow pl-4">
+                                                <label for="small"
+                                                    class="block mb-2 text-base font-medium text-gray-900 dark:text-white">¿QUE TIPO DE REVALORACIÓN VAS A REALIZAR?</label>
+                                                <select id="small" x-ref="question"
+                                                    wire:model.lazy="medicine_question_id"
+                                                    wire:change="resetClasificationClass()"
+                                                    class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                    <option value="0" selected>Seleccione...</option>
+                                                        <option value="INICIAL">
+                                                        <option value="RENOVACIÓN">
+                                                </select>
+                                                @error('')
+                                                    <span
+                                                        class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                        </div>
                                         <div x-show="tipoExamen === '2'" class="flex relative pb-6">
                                             <div class="h-full w-10 absolute inset-0 flex items-center justify-center">
                                                 <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
