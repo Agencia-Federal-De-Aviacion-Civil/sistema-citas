@@ -31,7 +31,9 @@ class RoleController extends Controller
         ]);
         $role = Role::create(['name' => $request->name]);
         $role->permissions()->sync($request->permissions);
-        return redirect()->route('afac.roles.edit', $role)->with('info', 'Añadido correctamente');
+        session()->flash('flash.banner', 'REGISTRO ÉXITOSO');
+        session()->flash('flash.bannerStyle', 'success');
+        return redirect()->route('afac.roles.index', $role);
     }
     public function edit(Role $role)
     {
