@@ -65,6 +65,12 @@ final class recordappointment extends PowerGridComponent
             return MedicineReserve::query()->with([
                 'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
             ]);
+        } elseif (Auth::user()->can('see.navigation.controller.sedes')) {
+            return MedicineReserve::query()->with([
+                'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
+            ])->whereHas('medicineReserveMedicine', function ($q1) {
+                $q1->where('to_user_headquarters', Auth::user()->id);
+            });
         } else {
             return MedicineReserve::query()->with([
                 'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
@@ -73,7 +79,6 @@ final class recordappointment extends PowerGridComponent
             });
         }
     }
-
     /*
     |--------------------------------------------------------------------------
     |  Relationship Search

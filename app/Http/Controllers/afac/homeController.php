@@ -14,7 +14,6 @@ class homeController extends Controller
     public function index()
     {
 
-
         Date::setLocale('ES');
         $date = Date::now()->parse();
         $appointment = MedicineReserve::query()
