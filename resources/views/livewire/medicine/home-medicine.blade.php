@@ -171,7 +171,7 @@
                                             <div class="flex-grow pl-4">
                                                 <label for="small"
                                                     class="block mb-2 text-base font-medium text-gray-900 dark:text-white">¿SIGUES
-                                                    ESTUDIANDO?</label>
+                                                    ESTUDIANDO O VAS A ESTUDIAR?</label>
                                                 <select id="small" x-ref="question"
                                                     wire:model.lazy="medicine_question_id"
                                                     wire:change="resetClasificationClass()"
@@ -451,13 +451,16 @@
                 // maxTime: "10:59",
                 disableMobile: "true",
                 // minuteIncrement: 10,
-                // minDate: "today",
-                minDate: new Date(new Date().getFullYear(), 0, 1),
+                 minDate: "today",
+                //minDate: new Date(new Date().getFullYear(), 0, 1),
                 maxDate: new Date(new Date().getFullYear(), 11, 31),
                 disable: @json($disabledDaysyes),
                 onDayCreate: function(dObj, dStr, fp, dayElem) {
-                    if (dayElem.dateObj.getDay() === 0 || dayElem.dateObj.getDay() === 6 || dayElem
+                   /* if (dayElem.dateObj.getDay() === 0 || dayElem.dateObj.getDay() === 6 || dayElem
                         .dateObj <= new Date()) {
+                        dayElem.className += " flatpickr-disabled nextMonthDayflatpickr-disabled";
+                    }*/
+                    if (dayElem.dateObj.getDay() === 0 || dayElem.dateObj.getDay() === 6 ) {
                         dayElem.className += " flatpickr-disabled nextMonthDayflatpickr-disabled";
                     }
                 },
