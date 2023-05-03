@@ -6,7 +6,7 @@
         @include('afac.dashboard.dashboard_superadmin')
     @endcan
     {{-- GENERAL USER --}}
-    @can('generate.appointment')
+    @can('user.generate.appointment')
         <div>
             <div class="relative py-6 lg:py-4">
                 <img class="z-0 w-full h-full absolute inset-0 object-cover"
