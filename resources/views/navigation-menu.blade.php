@@ -14,7 +14,7 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    @can('user.generate.appointment')
+                    @can('user.see.navigation')
                         <x-jet-nav-link href="{{ route('afac.home') }}" :active="request()->routeIs('afac.home')">
                             {{ __('Inicio') }}
                         </x-jet-nav-link>

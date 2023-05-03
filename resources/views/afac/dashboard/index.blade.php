@@ -2,11 +2,11 @@
     @can('medicine_admin.see.dashboard')
         @livewire('medicine.history-appointment')
     @endcan
-    @can('super_admin.see.navigation.all')
+    @can('super_admin.see.dashboard')
         @include('afac.dashboard.dashboard_superadmin')
     @endcan
     {{-- GENERAL USER --}}
-    @can('user.generate.appointment')
+    @can('user.see.navigation')
         <div>
             <div class="relative py-6 lg:py-4">
                 <img class="z-0 w-full h-full absolute inset-0 object-cover"
