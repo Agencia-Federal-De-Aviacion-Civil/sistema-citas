@@ -75,7 +75,7 @@ final class recordappointment extends PowerGridComponent
             ->leftJoin('medicines', 'medicine_reserves.medicine_id', '=', 'medicines.id')
             ->leftJoin('type_exams', 'type_exams.id', '=', 'medicines.type_exam_id')
             ->with([
-                'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
+                'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser','medicineReserveMedicine.medicineTypeExam'
             ])
             ->select('medicine_reserves.*', 'users.name as name','user_participants.curp as curp','user_participants.genre as genre','user_participants.birth as birth','user_participants.apParental as apParental','user_participants.apMaternal as apMaternal','medicines.reference_number as reference_number','type_exams.name as type');
 
