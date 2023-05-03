@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Headquarters\Modals;
 use App\Models\Catalogue\Headquarter;
 use App\Models\System;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
@@ -19,12 +20,14 @@ class CreateUpdateModal extends ModalComponent
     public function rules()
     {
         $rules = [
-            'system_id' => 'required',
             'name' => 'required',
             'email' => ['required', 'email', Rule::unique('users')->ignore($this->id_user)],
             'direction' => 'required',
             'url' => 'required|url'
         ];
+        if (Auth::user()->hasRole('super_admin')) {
+            $rules['system_id'] = 'required';
+        }
         $rules['password'] = $this->id_user ? '' : 'required|min:6|same:passwordConfirmation';
         return $rules;
     }
@@ -71,15 +74,27 @@ class CreateUpdateModal extends ModalComponent
             ['id' => $this->id_user],
             $userData
         )->assignRole('headquarters');
-        $saveHeadrquearter = Headquarter::updateOrCreate(
-            ['id' => $this->id_headquarter],
-            [
-                'user_id' => $saveHeadrquearter->id,
-                'system_id' => $this->system_id,
-                'direction' => $this->direction,
-                'url' => $this->url
-            ]
-        );
+        if (Auth::user()->hasRole('super_admin')) {
+            $saveHeadrquearter = Headquarter::updateOrCreate(
+                ['id' => $this->id_headquarter],
+                [
+                    'user_id' => $saveHeadrquearter->id,
+                    'system_id' => $this->system_id,
+                    'direction' => $this->direction,
+                    'url' => $this->url
+                ]
+            );
+        } else {
+            $saveHeadrquearter = Headquarter::updateOrCreate(
+                ['id' => $this->id_headquarter],
+                [
+                    'user_id' => $saveHeadrquearter->id,
+                    'system_id' => 1,
+                    'direction' => $this->direction,
+                    'url' => $this->url
+                ]
+            );
+        }
         $this->emit('saveHeadquarter');
         $this->clean();
         $this->closeModal();

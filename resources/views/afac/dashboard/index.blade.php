@@ -1,8 +1,8 @@
 <x-app-layout>
-    @can('see.appointment.medicine')
+    @can('medicine_admin.see.dashboard')
         @livewire('medicine.history-appointment')
     @endcan
-    @can('see.navigation.controller.systems')
+    @can('super_admin.see.navigation.all')
         @include('afac.dashboard.dashboard_superadmin')
     @endcan
     {{-- GENERAL USER --}}
