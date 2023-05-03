@@ -235,7 +235,7 @@
                                                                 LICENCIA</label>
                                                             <select wire:model.lazy="clasification_class_id"
                                                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                                <option selected>Seleccione...
+                                                                <option value="0" selected>Seleccione...
                                                                 </option>
                                                                 @foreach ($clasificationClass as $clasification)
                                                                     <option value="{{ $clasification->id }}">
@@ -354,6 +354,9 @@
                                                                 </option>
                                                             @endforeach
                                                         </select>
+                                                        @error('medicine_schedule_id')
+                                                        <span class="mt-2 text-sm text-negative-600">Seleccione hora</span>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                             </div>
