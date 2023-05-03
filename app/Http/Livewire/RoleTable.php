@@ -98,15 +98,8 @@ final class RoleTable extends PowerGridComponent
     public function actions(): array
     {
         return [
-            Button::make('edit', 'EDITAR')
-                ->class('px-3 py-2 text-xs font-medium text-center text-white bg-cyan-700 rounded-lg hover:bg-cyan-800 focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800')
-                ->route('afac.roles.edit', ['id'])
-                ->target('_self'),
-            Button::make('destroy', 'ELIMINAR')
-                ->class('px-3 py-2 text-xs font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800')
-                ->route('afac.roles.destroy', ['id'])
-                ->method('delete')
-                ->target('_self'),
+            Button::add('action-roles')
+                ->bladeComponent('action-roles', ['rolesId' => 'id']),
         ];
     }
 }
