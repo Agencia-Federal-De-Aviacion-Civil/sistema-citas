@@ -19,6 +19,7 @@ final class DisabledDayTable extends PowerGridComponent
             parent::getListeners(),
             [
                 'disabledRecord' => '$refresh',
+                'deleteDay' => '$refresh'
             ]
         );
     }
@@ -110,7 +111,7 @@ final class DisabledDayTable extends PowerGridComponent
         return [
             Column::make('ID', 'id')
                 ->sortable(),
-                // ->makeInputRange(),
+            // ->makeInputRange(),
 
             Column::make('FECHAS DESHABILITADAS', 'disabled_days')
                 ->searchable()
@@ -139,21 +140,13 @@ final class DisabledDayTable extends PowerGridComponent
      * @return array<int, Button>
      */
 
-    /*
     public function actions(): array
     {
-       return [
-           Button::make('edit', 'Edit')
-               ->class('bg-indigo-500 cursor-pointer text-white px-3 py-2.5 m-1 rounded text-sm')
-               ->route('medicine-disabled-days.edit', ['medicine-disabled-days' => 'id']),
-
-           Button::make('destroy', 'Delete')
-               ->class('bg-red-500 cursor-pointer text-white px-3 py-2 m-1 rounded text-sm')
-               ->route('medicine-disabled-days.destroy', ['medicine-disabled-days' => 'id'])
-               ->method('delete')
+        return [
+            Button::add('delete-schedule')
+                ->bladeComponent('delete-schedule', ['deleteId' => 'id']),
         ];
     }
-    */
 
     /*
     |--------------------------------------------------------------------------

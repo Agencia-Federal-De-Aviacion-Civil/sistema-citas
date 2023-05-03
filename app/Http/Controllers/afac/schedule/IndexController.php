@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Medicine\MedicineReserve;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
+use Jenssegers\Date\Date;
 use PDF;
 
 class IndexController extends Controller
@@ -20,18 +21,21 @@ class IndexController extends Controller
     }
     public function download($scheduleId)
     {
+        Date::setLocale('es');
         $medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'user'])
             ->where('medicine_id', $scheduleId)->get();
         $medicineId = $medicineReserves[0]->medicine_id;
         $dateAppointment = $medicineReserves[0]->dateReserve;
+        $dateConvertedFormatted = Date::parse($dateAppointment)->format('l j F Y');
         $curp = $medicineReserves[0]->medicineReserveMedicine->medicineUser->userParticipant->pluck('curp')->first();
         $keyEncrypt =  Crypt::encryptString($medicineId . '*' . $dateAppointment . '*' . $curp);
+        $fileName = $medicineReserves[0]->dateReserve . '-' . $curp . '-' . 'MED-' . $medicineId . '.pdf';
         if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 1) {
-            $pdf = PDF::loadView('livewire.medicine.documents.medicine-initial', compact('medicineReserves', 'keyEncrypt'));
-            return $pdf->download($medicineReserves[0]->dateReserve . '-' . 'cita.pdf');
+            $pdf = PDF::loadView('livewire.medicine.documents.medicine-initial', compact('medicineReserves', 'keyEncrypt','dateConvertedFormatted'));
+            return $pdf->download($fileName);
         } else if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 2) {
-            $pdf = PDF::loadView('livewire.medicine.documents.medicine-renovation', compact('medicineReserves', 'keyEncrypt'));
-            return $pdf->download($medicineReserves[0]->dateReserve . '-' . 'cita.pdf');
+            $pdf = PDF::loadView('livewire.medicine.documents.medicine-renovation', compact('medicineReserves', 'keyEncrypt','dateConvertedFormatted'));
+            return $pdf->download($fileName);
         }
     }
 }

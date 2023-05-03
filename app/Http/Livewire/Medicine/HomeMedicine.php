@@ -8,18 +8,15 @@ use App\Models\Catalogue\TypeClass;
 use App\Models\Catalogue\TypeExam;
 use App\Models\Document;
 use App\Models\Medicine\Medicine;
-use App\Models\Medicine\MedicineDisabled;
 use App\Models\Medicine\MedicineDisabledDays;
 use App\Models\Medicine\MedicineInitial;
 use App\Models\Medicine\MedicineQuestion;
 use App\Models\Medicine\MedicineRenovation;
 use App\Models\Medicine\MedicineReserve;
 use App\Models\Medicine\MedicineSchedule;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
-use Illuminate\Support\Facades\Date;
-use Illuminate\Support\Facades\DB;
+use Jenssegers\Date\Date;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use WireUi\Traits\Actions;
@@ -30,7 +27,7 @@ class HomeMedicine extends Component
     use Actions;
     use WithFileUploads;
     public $medicine_question_id, $type_class_id, $clasificationClass, $clasification_class_id;
-    public $name_document, $reference_number, $pay_date, $type_exam_id, $typeRenovationExams;
+    public $name_document, $reference_number, $pay_date, $type_exam_id, $typeRenovationExams, $dateConvertedFormatted;
     public $questionClassess, $typeExams, $sedes, $userQuestions, $to_user_headquarters, $dateReserve, $saveMedicine;
     public $confirmModal = false, $modal = false;
     public $medicineQueries, $medicineReserves, $medicineInitials, $medicineRenovations, $id_medicineReserve, $savedMedicineId, $scheduleMedicines, $medicine_schedule_id;
@@ -39,6 +36,8 @@ class HomeMedicine extends Component
     protected $listeners = ['saveDisabledDays' => '$refresh'];
     public function mount()
     {
+        Date::setLocale('es');
+        $this->dateNow = Date::now()->format('l j F Y');
         $this->typeExams = TypeExam::all();
         $this->sedes = Headquarter::where('system_id', 1)->get();
         $this->userQuestions = MedicineQuestion::all();
@@ -46,16 +45,14 @@ class HomeMedicine extends Component
         $this->clasificationClass = collect();
         $this->typeRenovationExams = collect();
         $this->scheduleMedicines = collect();
-        Date::setLocale('ES');
-        $this->date = Date::now()->parse();
-        $this->dateNow = Date::now()->format('Y-m-d');
+        // $this->dateNow = Date::now()->format('Y-m-d');
     }
     public function rules()
     {
         return [
             'name_document' => 'required',
             // 'reference_number' => 'required',
-            'reference_number' =>'required|unique:medicines',
+            'reference_number' => 'required|unique:medicines',
             'pay_date' => 'required',
             'type_exam_id' => 'required',
             'medicine_question_id' => 'required_if:type_exam_id,1',
@@ -198,9 +195,12 @@ class HomeMedicine extends Component
                         $q2->where('type_class_id', $this->type_class_id);
                     });
             })
-            ->where('status', 0)
-            ->orWhere('status', 4)
+            ->where(function ($queryStop) {
+                $queryStop->where('status', 0)
+                    ->orWhere('status', 4);
+            })
             ->get();
+        // dd($userMedicines);
         foreach ($userMedicines as $userMedicine) {
             if ($userMedicine->id) {
                 if ($userMedicine->medicineReserveMedicine->medicineInitial->count() > 0 && $userMedicine->medicineReserveMedicine->medicineInitial[0]->type_class_id == $this->type_class_id) {
@@ -285,13 +285,15 @@ class HomeMedicine extends Component
     }
     public function openConfirm()
     {
-        $this->medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'user'])
+        $this->medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'reserveSchedule'])
             ->where('medicine_id', $this->saveMedicine->id)->get();
+        $dateConverted = $this->medicineReserves[0]->dateReserve;
+        $this->dateConvertedFormatted = Date::parse($dateConverted)->format('l j F Y');
         $this->medicineInitials = MedicineInitial::with([
             'initialMedicine', 'medicineInitialQuestion', 'medicineInitialTypeClass',
             'medicineInitialClasificationClass'
         ])->where('medicine_id', $this->saveMedicine->id)->get();
-        $this->medicineRenovations = MedicineRenovation::with(['renovationMedicine', 'renovationTypeClass', 'renovationClasificationClass'])
+        $this->medicineRenovations = MedicineRenovation::with(['renovationMedicine', 'renovationTypeClass', 'renovationClasificationClass','renovationClasificationClass'])
             ->where('medicine_id', $this->saveMedicine->id)->get();
         $this->confirmModal = true;
     }
@@ -337,14 +339,16 @@ class HomeMedicine extends Component
             ->where('medicine_id', $savedMedicineId)->get();
         $medicineId = $medicineReserves[0]->medicine_id;
         $dateAppointment = $medicineReserves[0]->dateReserve;
+        $dateConvertedFormatted = Date::parse($dateAppointment)->format('l j F Y');
         $curp = $medicineReserves[0]->medicineReserveMedicine->medicineUser->userParticipant->pluck('curp')->first();
         $keyEncrypt =  Crypt::encryptString($medicineId . '*' . $dateAppointment . '*' . $curp);
+        $fileName = $medicineReserves[0]->dateReserve . '-' . $curp . '-' . 'MED-' . $medicineId . '.pdf';
         if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 1) {
-            $pdf = PDF::loadView('livewire.medicine.documents.medicine-initial', compact('medicineReserves', 'keyEncrypt'));
-            return $pdf->download($medicineReserves[0]->dateReserve . '-' . 'cita.pdf');
+            $pdf = PDF::loadView('livewire.medicine.documents.medicine-initial', compact('medicineReserves', 'keyEncrypt','dateConvertedFormatted'));
+            return $pdf->download($fileName);
         } else if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 2) {
-            $pdf = PDF::loadView('livewire.medicine.documents.medicine-renovation', compact('medicineReserves', 'keyEncrypt'));
-            return $pdf->download($medicineReserves[0]->dateReserve . '-' . 'cita.pdf');
+            $pdf = PDF::loadView('livewire.medicine.documents.medicine-renovation', compact('medicineReserves', 'keyEncrypt','dateConvertedFormatted'));
+            return $pdf->download($fileName);
         }
     }
     public function messages()
