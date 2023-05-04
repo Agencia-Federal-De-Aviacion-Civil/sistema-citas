@@ -186,7 +186,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        {{-- paso revaloración --}}
+                                        {{-- paso revaloración1 --}}
                                         <div x-show="tipoExamen === '3'"   class="flex relative pb-6">
                                             <div class="h-full w-10 absolute inset-0 flex items-center justify-center">
                                                 <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
