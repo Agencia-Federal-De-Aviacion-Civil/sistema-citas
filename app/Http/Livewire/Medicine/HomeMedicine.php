@@ -196,10 +196,18 @@ class HomeMedicine extends Component
             case 3: // TIJUANA
             case 4: // TOLUCA
             case 5: // MONTERREY
+            case 528: //MAZATLAN SINALOA
+            case 529: //CHIAPAS
+            case 530: //VERACRUZ
+            case 531: //HERMOSILLO SONORA
+            case 532: //QUERETARO
                 $maxCitas = 10;
                 break;
             case 6: // GUADALAJARA
                 $maxCitas = 20;
+                break;
+            case 533: // YUCATAN
+                $maxCitas = 5;
                 break;
             default:
                 $maxCitas = 0;
