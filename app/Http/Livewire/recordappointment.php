@@ -192,7 +192,7 @@ final class recordappointment extends PowerGridComponent
             })
 
 
-            //state_id 
+            //state_id
             ->addColumn('created_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->dateReserve)->format('d/m/Y H:i:s'))
             ->addColumn('created_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
         //->addColumn('updated_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'));
@@ -336,12 +336,12 @@ final class recordappointment extends PowerGridComponent
 
     // ->dataSource(UserParticipant::select('curp')->distinct()->get())
     // ->optionValue('curp')
-    // ->optionLabel('curp'),           
+    // ->optionLabel('curp'),
     //     return [
     //        Filter::inputText('curp', 'curp'),
-    //         //   ->operators(['contains', 'is', 'is_not']),        
+    //         //   ->operators(['contains', 'is', 'is_not']),
     //     ];
-    // } 
+    // }
     /*
     |--------------------------------------------------------------------------
     | Actions Method

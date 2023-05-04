@@ -9,6 +9,15 @@
                 <h4 tabindex="0" class="focus:outline-none text-2xl font-bold leading-tight text-white">ADMINISTRACIÓN
                     DE SEDES</h4>
                 <ul class="flex flex-col md:flex-row items-start md:items-center text-gray-300 text-sm mt-3">
+                    <li class="flex items-center mt-4 md:mt-0">
+                        <div class="mr-1">
+                            <img src="https://tuk-cdn.s3.amazonaws.com/can-uploader/background_with_sub_text-svg3.svg"
+                                alt="date">
+                        </div>
+                        <span tabindex="0" class="focus:outline-none">
+                            {{ $dateNow }}
+                        </span>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -42,24 +51,8 @@
                             <livewire:headquarter-table>
                         </div>
                         <div x-show="activeTab === 'schedules'">
-                            <div class="flex-grow pl-4">
-                                <div class="grid xl:grid-cols-2 xl:gap-6">
-                                    <div class="mt-1 relative w-full group">
-                                        <x-select label="SELECCIONE..." placeholder="SELECCIONE UNA SEDE..."
-                                            wire:model.lazy="user_headquarters_id">
-                                            @foreach ($headquarters as $headquarter)
-                                                <x-select.option label="{{ $headquarter->headquarterUser->name }}"
-                                                    value="{{ $headquarter->headquarterUser->id }}" />
-                                            @endforeach
-                                            <x-select.option label="TODOS" value="0" />
-                                        </x-select>
-                                    </div>
-                                    <div class="mt-1 relative z-0 w-full group">
-                                        <x-input wire:model.lazy="disabled_days" id="fecha-appointment"
-                                            label="DESHABILITAR CITAS" placeholder="INGRESE..." readonly />
-                                    </div>
-                                </div>
-                            </div>
+                            <x-input wire:model.lazy="disabled_days" id="fecha-appointment" label="DESHABILITAR CITAS"
+                                placeholder="INGRESE..." readonly />
                             <div class="mt-8">
                                 <x-button wire:click.prevent="save" icon="home" label="GUARDAR" />
                             </div>

@@ -30,7 +30,7 @@ Route::group(['middleware' => ['role:super_admin|user']], function () {
 // TODO
 Route::group(['middleware' => ['role:super_admin|medicine_admin']], function () {
     Route::get('headquarters', HomeHeadquarter::class)->name('afac.headquarterMedicine');
-    Route::get('/register', Peoplehistoryrecords::class)->name('afac.historyRegister');
+    // Route::get('/register', Peoplehistoryrecords::class)->name('afac.historyRegister');
     Route::get('/validate', ValidateQr::class)->name('validate');
 });
 Route::get('/appointments', [IndexController::class, 'index'])->name('afac.appointment');

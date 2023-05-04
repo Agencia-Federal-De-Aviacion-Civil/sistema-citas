@@ -15,7 +15,9 @@ class ModalNew extends ModalComponent
 {
     use Actions;
     use WithFileUploads;
-    public $modal, $id_save,$id_update, $name, $email, $apParental, $apMaternal,$state_id,$municipal_id, $password, $passwordConfirmation, $privileges, $privilegesId, $title;
+    public $modal, $id_save, $id_update, $name, $email, $apParental, $apMaternal, $state_id, $municipal_id, $password, $passwordConfirmation, $privileges, $privilegesId, $title,
+        $genre, $birth, $age, $street, $nInterior, $nExterior, $suburb, $postalCode, $federalEntity, $delegation, $mobilePhone, $officePhone, $extension, $curp;
+
     public function rules()
     {
         $rules =  [
@@ -43,7 +45,7 @@ class ModalNew extends ModalComponent
 
     public function clean()
     {
-        $this->reset(['name', 'email', 'password','apParental','apMaternal']);
+        $this->reset(['name', 'email', 'password', 'apParental', 'apMaternal']);
     }
     public function valores($privilegesId)
     {
@@ -51,7 +53,7 @@ class ModalNew extends ModalComponent
         $this->privilegesId = $privilegesId;
 
         if ($this->privilegesId != 0) {
-            $userPrivileges = User::with('roles','UserParticipant')->where('id', $this->privilegesId)->get();
+            $userPrivileges = User::with('roles', 'UserParticipant')->where('id', $this->privilegesId)->get();
             $this->id_save = $userPrivileges[0]->id;
             $this->name = $userPrivileges[0]->name;
             $this->apParental = $userPrivileges[0]->UserParticipant[0]->apParental;
@@ -62,11 +64,38 @@ class ModalNew extends ModalComponent
             $this->privileges = $userPrivileges[0]->roles[0]->name;
             $this->title = 'EDITAR USUARIO';
             $this->id_update = $userPrivileges[0]->UserParticipant[0]->id;
+            $this->genre = $userPrivileges[0]->UserParticipant[0]->genre;
+            $this->birth = $userPrivileges[0]->UserParticipant[0]->birth;
+            $this->age = $userPrivileges[0]->UserParticipant[0]->age;
+            $this->street = $userPrivileges[0]->UserParticipant[0]->street;
+            $this->nInterior = $userPrivileges[0]->UserParticipant[0]->nInterior;
+            $this->nExterior = $userPrivileges[0]->UserParticipant[0]->nExterior;
+            $this->suburb = $userPrivileges[0]->UserParticipant[0]->suburb;
+            $this->postalCode = $userPrivileges[0]->UserParticipant[0]->postalCode;
+            $this->federalEntity = $userPrivileges[0]->UserParticipant[0]->federalEntity;
+            $this->delegation = $userPrivileges[0]->UserParticipant[0]->delegation;
+            $this->mobilePhone = $userPrivileges[0]->UserParticipant[0]->mobilePhone;
+            $this->officePhone = $userPrivileges[0]->UserParticipant[0]->officePhone;
+            $this->extension = $userPrivileges[0]->UserParticipant[0]->extension;
+            $this->curp = $userPrivileges[0]->UserParticipant[0]->curp;
         } else {
             $this->title = 'AGREGAR USUARIO';
+            $this->genre = 0;
+            $this->birth = 0;
             $this->state_id = 1;
             $this->municipal_id = 1;
-
+            $this->age = 0;
+            $this->street = 0;
+            $this->nInterior = 0;
+            $this->nExterior = 0;
+            $this->suburb = 0;
+            $this->postalCode = 0;
+            $this->federalEntity = 0;
+            $this->delegation = 0;
+            $this->mobilePhone = 0;
+            $this->officePhone = 0;
+            $this->extension = 0;
+            $this->curp = 0;
         }
     }
     public function updated($propertyName)
@@ -82,38 +111,38 @@ class ModalNew extends ModalComponent
         ];
         if (!$this->privilegesId) {
             $userData['password'] = Hash::make($this->password);
-        }        
+        }
         $privilegesUser = User::updateOrCreate(
             ['id' => $this->id_save],
             $userData,
         )->assignRole($this->privileges);
-           
+
         $user_participants = UserParticipant::updateOrCreate(
             ['id' => $this->id_update],
             [
                 'user_id' => $privilegesUser->id,
                 'apParental' => $this->apParental,
                 'apMaternal' => $this->apMaternal,
-                'genre' => 0,
-                'birth' => 0,
+                'genre' => $this->genre,
+                'birth' => $this->birth,
                 'state_id' => $this->state_id,
                 'municipal_id' => $this->municipal_id,
-                'age' => 0,
-                'street' => 0,
-                'nInterior' => 0,
-                'nExterior' => 0,
-                'suburb' => 0,
-                'postalCode' => 0,
-                'federalEntity' => 0,
-                'delegation' => 0,
-                'mobilePhone' => 0,
-                'officePhone' => 0,
-                'extension' => 0,
-                'curp' => 0,   
+                'age' => $this->birth,
+                'street' => $this->street,
+                'nInterior' => $this->nInterior,
+                'nExterior' => $this->nExterior,
+                'suburb' => $this->suburb,
+                'postalCode' => $this->postalCode,
+                'federalEntity' => $this->federalEntity,
+                'delegation' => $this->delegation,
+                'mobilePhone' => $this->mobilePhone,
+                'officePhone' => $this->officePhone,
+                'extension' => $this->extension,
+                'curp' => $this->curp,
 
             ]
         );
-        
+
         $this->emit('privilegesUser');
         $this->reset([]);
         $this->notification([

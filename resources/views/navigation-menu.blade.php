@@ -52,15 +52,15 @@
                                 </li>
                             </ul>
                         </div>
-                        
-                        <x-jet-nav-link href="{{ route('afac.historyRegister') }}" :active="request()->routeIs('afac.historyRegister')">
+
+                        {{-- <x-jet-nav-link href="{{ route('afac.historyRegister') }}" :active="request()->routeIs('afac.historyRegister')">
+                            {{ __('Personas registradas') }}
+                        </x-jet-nav-link> --}}
+
+                        <x-jet-nav-link href="{{ route('afac.users') }}" :active="request()->routeIs('afac.users')">
                             {{ __('Personas registradas') }}
                         </x-jet-nav-link>
 
-                        <x-jet-nav-link href="{{ route('afac.users') }}" :active="request()->routeIs('afac.users')">
-                            {{ __('Usuarios') }}
-                        </x-jet-nav-link>
-            
 
                     @endcan
                     @can('see.navigation.schedule.table')
@@ -175,7 +175,7 @@
             </x-jet-nav-link>
         @endcan
         @can('see.navigation.controller.systems')
-        
+
             <div x-cloak x-data="{ open: false }" class="py-3 z-50">
                 <button x-on:click="open = true"
                     class="flex items-center bg-white focus:bg-gray-50 text-gray-700 focus:text-gray-900 rounded py-2 px-4"
@@ -210,14 +210,14 @@
                         <a href="{{ route('validate') }}" class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
                             Validación de QR
                         </a>
-                    </li>                    
+                    </li>
                 </ul>
-            </div>                        
-            <x-jet-nav-link href="{{ route('afac.historyRegister') }}">
+            </div>
+            {{-- <x-jet-nav-link href="{{ route('afac.historyRegister') }}">
                 {{ __('Personas Registradas') }}
-            </x-jet-nav-link>
+            </x-jet-nav-link> --}}
             <x-jet-nav-link href="{{ route('afac.users') }}" :active="request()->routeIs('afac.users')">
-                {{ __('Usuarios') }}
+                {{ __('Personas Registradas') }}
             </x-jet-nav-link>
 
         @endcan
