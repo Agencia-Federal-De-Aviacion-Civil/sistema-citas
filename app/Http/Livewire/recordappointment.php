@@ -123,7 +123,7 @@ final class recordappointment extends PowerGridComponent
                 return $regiser->medicineReserveFromUser->name . ' ' . $regiser->userParticipantUser->apParental . ' ' . $regiser->userParticipantUser->apMaternal;
                 //return $regiser->medicineReserveFromUser->name;
             })
-            
+
             ->addColumn('folio', function (MedicineReserve $type) {
                 return 'MED-' . $type->medicineReserveMedicine->id;
             })
@@ -185,7 +185,7 @@ final class recordappointment extends PowerGridComponent
             })
 
 
-            //state_id 
+            //state_id
             ->addColumn('created_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->dateReserve)->format('d/m/Y H:i:s'))
             ->addColumn('created_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
         //->addColumn('updated_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'));
@@ -269,23 +269,23 @@ final class recordappointment extends PowerGridComponent
             Column::make('PAGO', 'reference_number')
                 ->searchable()
                 ->sortable(),
-            
+
             Column::make('GENERO', 'genre')
                 ->searchable()
                 ->sortable(),
-            
+
             Column::make('FECHA DE NACIMIENTO', 'birth')
                 ->searchable()
                 ->sortable(),
-            
+
             Column::make('ESTADO DE NACIMIENTO', 'state_id')
                 ->searchable()
                 ->sortable(),
-            
+
             Column::make('EDAD', 'age')
                 ->searchable()
                 ->sortable(),
-            
+
             Column::make('DIRECCIÓN', 'domicile')
                 ->sortable()
                 ->searchable(),
@@ -293,11 +293,11 @@ final class recordappointment extends PowerGridComponent
             Column::make('CELULAR', 'mobilePhone')
                 ->sortable()
                 ->searchable(),
-            
+
             Column::make('OFICINA', 'officePhone')
                 ->sortable()
                 ->searchable(),
-            
+
             Column::make('EXTENSIÓN', 'extension')
                 ->sortable()
                 ->searchable(),
@@ -312,7 +312,7 @@ final class recordappointment extends PowerGridComponent
             //    ->searchable()
             //    ->sortable(),
             //->makeInputDatePicker(),
-            
+
 
         ];
     }
@@ -329,12 +329,12 @@ final class recordappointment extends PowerGridComponent
 
         // ->dataSource(UserParticipant::select('curp')->distinct()->get())
         // ->optionValue('curp')
-        // ->optionLabel('curp'),           
+        // ->optionLabel('curp'),
     //     return [
     //        Filter::inputText('curp', 'curp'),
-    //         //   ->operators(['contains', 'is', 'is_not']),        
+    //         //   ->operators(['contains', 'is', 'is_not']),
     //     ];
-    // } 
+    // }
     /*
     |--------------------------------------------------------------------------
     | Actions Method

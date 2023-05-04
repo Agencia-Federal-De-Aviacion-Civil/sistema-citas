@@ -1,5 +1,5 @@
    <div>
-        <div>    
+        <div>
             <x-notifications position="top-center" />
             <x-dialog z-index="z-50" blur="md" align="center" />
             <div class="relative py-6 lg:py-4">
@@ -26,5 +26,5 @@
                     </div>
                 </div>
             </div>
-        </div>        
+        </div>
     </div>

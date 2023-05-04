@@ -14,7 +14,7 @@ class userMedicine extends Controller
     {
         // $roles = Role::all();
 
-        $permises = Permission::all();        
+        $permises = Permission::all();
 
         // role_has_permissions
         // $user=User::with(['roles'])->findOrFail(1);

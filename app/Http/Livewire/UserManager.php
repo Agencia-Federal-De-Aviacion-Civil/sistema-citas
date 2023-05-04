@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\User;
+use App\Models\UserParticipant;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use PowerComponents\LivewirePowerGrid\Rules\{Rule, RuleActions};
@@ -62,13 +63,12 @@ final class UserManager extends PowerGridComponent
      */
     public function datasource(): Builder
     {
-        return User::query()->with(['roles','UserParticipant'])
-        ->where('status', 0)
-        ->where('id','<>',1)
-        ->whereHas('roles', function ($q1) {
-            $q1->where('id','<>',5);
-        });
-
+        return $usersFull = User::query()->with(['roles', 'UserParticipant'])
+            ->where('status', 0);
+            // ->where('id', '<>', 1)
+            // ->whereHas('roles', function ($q1) {
+            //     $q1->where('id', '<>', 5);
+            // });
     }
 
     /*
@@ -90,12 +90,12 @@ final class UserManager extends PowerGridComponent
     // }
     public function relationSearch(): array
     {
-        return [
-            'UserParticipant' => [
-                'apParental',
-                'apMaternal',
-            ],
 
+        return [
+            // 'name',
+            'UserParticipant' => [
+                'apParental'
+            ]
         ];
     }
 
@@ -114,10 +114,39 @@ final class UserManager extends PowerGridComponent
     {
         return PowerGrid::eloquent()
             ->addColumn('id')
-            ->addColumn('name', function (User $names){
-                    return $names->name.' '.$names->UserParticipant[0]->apParental.' '.$names->UserParticipant[0]->apMaternal;
+            ->addColumn('name', function (User $names) {
+                return $names->name;
+            })
+            ->addColumn('apParental', function (User $apParental) {
+                return $apParental->UserParticipant[0]->apParental;
+            })
+            ->addColumn('apMaternal', function (User $apMaternal) {
+                return $apMaternal->UserParticipant[0]->apMaternal;
+            })
+            ->addColumn('curp', function (User $curp) {
+                return $curp->UserParticipant[0]->curp;
             })
             ->addColumn('email')
+            ->addColumn('genre', function (User $genre) {
+                return $genre->UserParticipant[0]->genre;
+            })
+            ->addColumn('birth', fn (User $birth) => Carbon::parse($birth->UserParticipant[0]->birth)->format('d/m/Y'))
+            ->addColumn('age', function (User $age) {
+                return $age->UserParticipant[0]->age;
+            })
+            ->addColumn('domicile', function (User $domicile) {
+                return $domicile->UserParticipant[0]->street . ' No.' . $domicile->UserParticipant[0]->nInterior . ' No.ext.' . $domicile->UserParticipant[0]->nExterior . ' ' . $domicile->UserParticipant[0]->suburb . ' ,' . $domicile->UserParticipant[0]->postalCode . ' ,' . $domicile->UserParticipant[0]->delegation . ' ,' . $domicile->UserParticipant[0]->federalEntity;
+            })
+            ->addColumn('mobilePhone', function (User $mobilePhone) {
+                return $mobilePhone->UserParticipant[0]->mobilePhone;
+            })
+            ->addColumn('officePhone', function (User $officePhone) {
+                return $officePhone->UserParticipant[0]->officePhone;
+            })
+            ->addColumn('extension', function (User $extension) {
+                return $extension->UserParticipant[0]->extension;
+            })
+            // ->
             ->addColumn('privileges', function (User $privileges) {
                 if ($privileges->roles[0]->name == 'super_admin') {
                     return 'SUPER ADMINISTRADOR';
@@ -127,7 +156,7 @@ final class UserManager extends PowerGridComponent
                     return 'LINGÜÍSTICA ADMINISTRADOR';
                 } elseif ($privileges->roles[0]->name == 'user') {
                     return 'USUARIO';
-                } 
+                }
             });
     }
 
@@ -154,11 +183,55 @@ final class UserManager extends PowerGridComponent
             Column::make('NOMBRE', 'name')
                 ->sortable()
                 ->searchable(),
+
+            Column::make('APELLIDO PATERNO', 'apParental')
+                ->sortable()
+                ->searchable(),
+
+            Column::make('APELLIDO MATERNO', 'apMaternal')
+                ->sortable()
+                ->searchable(),
+
             // ->makeInputText(),
+            Column::make('CURP', 'curp')
+                ->sortable()
+                ->searchable(),
 
             Column::make('CORREO', 'email')
                 ->sortable()
                 ->searchable(),
+
+            Column::make('Genero', 'genre')
+                ->sortable()
+                ->searchable(),
+            //->makeInputText(),
+
+            Column::make('Fecha de nacimiento', 'birth')
+                ->sortable()
+                ->searchable(),
+
+            Column::make('Edad', 'age')
+                ->sortable()
+                ->searchable(),
+
+            Column::make('Dirección', 'domicile')
+                ->sortable()
+                ->searchable(),
+
+            Column::make('Celular', 'mobilePhone')
+                ->sortable()
+                ->searchable(),
+            //->makeInputText(),
+
+            Column::make('Oficina', 'officePhone')
+                ->sortable()
+                ->searchable(),
+            //->makeInputText(),
+
+            Column::make('Extensión', 'extension')
+                ->sortable()
+                ->searchable(),
+            //->makeInputText(),
 
             Column::make('ROL', 'privileges')
                 ->sortable()
