@@ -188,7 +188,7 @@
         </div>
     </div>
     <script>
-        // CITAS MEDICAS
+        // CITAS MEDICAS JAJA
         flatpickr("#fecha-appointment", {
             // enableTime: true,
             // time_24hr: true,
