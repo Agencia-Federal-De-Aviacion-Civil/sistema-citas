@@ -10,7 +10,7 @@ use WireUi\Traits\Actions;
 class HomeHeadquarter extends Component
 {
     use Actions;
-    public $disabled_days, $user_headquarters_id,$id_disabledDays;
+    public $disabled_days, $user_headquarters_id, $id_disabledDays;
     public function rules()
     {
         return [
@@ -33,7 +33,7 @@ class HomeHeadquarter extends Component
         $this->validate();
         // $disabledDaysArray = explode(', ', $this->disabled_days);
         // foreach ($disabledDaysArray as $arrayDays) {
-        if ($this->user_headquarters_id === 'all') {
+        if ($this->user_headquarters_id == 0) {
             $headquarters = Headquarter::with('headquarterUser')->get();
             foreach ($headquarters as $headquarter) {
                 MedicineDisabledDays::updateOrCreate(
