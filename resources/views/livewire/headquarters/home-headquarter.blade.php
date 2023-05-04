@@ -44,7 +44,7 @@
                         <div x-show="activeTab === 'schedules'">
                             <div class="flex-grow pl-4">
                                 <div class="grid xl:grid-cols-2 xl:gap-6">
-                                    <div class="mt-1 relative z-0 w-full group">
+                                    <div class="mt-1 relative w-full group">
                                         <x-select label="SELECCIONE..." placeholder="SELECCIONE UNA SEDE..."
                                             wire:model.lazy="user_headquarters_id">
                                             @foreach ($headquarters as $headquarter)
