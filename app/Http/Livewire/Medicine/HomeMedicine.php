@@ -121,6 +121,7 @@ class HomeMedicine extends Component
     }
     public function updatedToUserHeadquarters($value)
     {
+        $this->dateReserve = '';
         // Obtener los horarios disponibles para la fecha especificada
         $this->scheduleMedicines = MedicineSchedule::where('user_id', $value)
             ->where('max_schedules', 0)
