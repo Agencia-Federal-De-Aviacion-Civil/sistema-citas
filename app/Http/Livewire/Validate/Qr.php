@@ -5,19 +5,25 @@ namespace App\Http\Livewire\Validate;
 use App\Models\Medicine\MedicineReserve;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Crypt;
+use Jenssegers\Date\Date;
 use Livewire\Component;
 use WireUi\Traits\Actions;
 
 class Qr extends Component
 {
     use Actions;
-    public $textRead, $licenses, $medicineReserves;
+    public $textRead, $licenses, $medicineReserves,$dateNow;
     protected $rules = [
         'textRead' => 'required'
     ];
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
+    }
+    public function mount()
+    {
+        Date::setLocale('es');
+        $this->dateNow = Date::now()->format('l j F Y');
     }
     public function render()
     {

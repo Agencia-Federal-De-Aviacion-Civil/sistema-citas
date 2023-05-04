@@ -3,18 +3,23 @@
 namespace App\Http\Livewire\Headquarters;
 
 use App\Models\Medicine\MedicineDisabledDays;
+use Jenssegers\Date\Date;
 use Livewire\Component;
 use WireUi\Traits\Actions;
 
 class HomeHeadquarter extends Component
 {
     use Actions;
-    public $disabled_days;
+    public $disabled_days,$dateNow;
     public function rules()
     {
         return [
             'disabled_days' => 'required',
         ];
+    }
+    public function mount(){
+        Date::setLocale('es');
+        $this->dateNow = Date::now()->format('l j F Y');
     }
     public function render()
     {

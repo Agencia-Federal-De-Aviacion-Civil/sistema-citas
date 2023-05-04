@@ -9,6 +9,15 @@
                 <h4 tabindex="0" class="focus:outline-none text-2xl font-bold leading-tight text-white">ADMINISTRACIÓN
                     DE SEDES</h4>
                 <ul class="flex flex-col md:flex-row items-start md:items-center text-gray-300 text-sm mt-3">
+                    <li class="flex items-center mt-4 md:mt-0">
+                        <div class="mr-1">
+                            <img src="https://tuk-cdn.s3.amazonaws.com/can-uploader/background_with_sub_text-svg3.svg"
+                                alt="date">
+                        </div>
+                        <span tabindex="0" class="focus:outline-none">
+                            {{ $dateNow }}
+                        </span>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -42,8 +51,8 @@
                             <livewire:headquarter-table>
                         </div>
                         <div x-show="activeTab === 'schedules'">
-                            <x-input wire:model.lazy="disabled_days" id="fecha-appointment"
-                                label="DESHABILITAR CITAS" placeholder="INGRESE..." readonly />
+                            <x-input wire:model.lazy="disabled_days" id="fecha-appointment" label="DESHABILITAR CITAS"
+                                placeholder="INGRESE..." readonly />
                             <div class="mt-8">
                                 <x-button wire:click.prevent="save" icon="home" label="GUARDAR" />
                             </div>
