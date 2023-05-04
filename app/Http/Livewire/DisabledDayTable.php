@@ -53,7 +53,7 @@ final class DisabledDayTable extends PowerGridComponent
      */
     public function datasource(): Builder
     {
-        return MedicineDisabledDays::query();
+        return MedicineDisabledDays::query()->with('disabledDaysUser');
     }
 
     /*
@@ -89,7 +89,10 @@ final class DisabledDayTable extends PowerGridComponent
     {
         return PowerGrid::eloquent()
             ->addColumn('id')
-            ->addColumn('disabled_days', fn (MedicineDisabledDays $model) => Carbon::parse($model->disabled_days)->format('d/m/Y'));
+            ->addColumn('headquarter_name', function (MedicineDisabledDays $user) {
+                return $user->disabledDaysUser->name;
+            })
+            ->addColumn('disabled_days');
     }
 
     /*
@@ -110,6 +113,8 @@ final class DisabledDayTable extends PowerGridComponent
     {
         return [
             Column::make('ID', 'id')
+                ->sortable(),
+            Column::make('SEDE', 'headquarter_name')
                 ->sortable(),
             // ->makeInputRange(),
 
