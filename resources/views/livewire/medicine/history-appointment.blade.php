@@ -10,14 +10,21 @@
                 </h4>
                 <ul class="flex flex-col md:flex-row items-start md:items-center text-gray-300 text-sm mt-3">
                     <li class="flex items-center mt-4 md:mt-0">
+                        <div class="mr-1">
+                            <img src="https://tuk-cdn.s3.amazonaws.com/can-uploader/background_with_sub_text-svg3.svg"
+                                alt="date">
+                        </div>
+                        <span tabindex="0" class="focus:outline-none">
+                            {{ $dateNow }}
+                        </span>
                     </li>
                 </ul>
             </div>
         </div>
     </div>
-    
+
     <div class="py-12">
-        
+
         <div class="container mx-auto px-4 py-4 bg-white shadow-xl sm:rounded-lg">
 @hasrole('super_admin|medicine_admin')
     <div class="bg-gray-100 text-gray-500 rounded shadow-xl py-5 px-5 w-full sm:w-full md:w-full lg:w-full" x-data="{ cardOpen: false, cardData: cardData() }" x-init="$watch('cardOpen', value => value ? (cardData.countUp($refs.total, 0,  {{ $this->registradas }}, null, 0.8), cardData.sessions.forEach((el, i) => cardData.countUp($refs[`device${i}`], 0, cardData.sessions[i].size, null, 1.6))) : null);
