@@ -92,10 +92,10 @@ final class UserManager extends PowerGridComponent
     {
 
         return [
-            'name',
             'UserParticipant' => [
-                'apParental'
-            ]
+                'apParental','apMaternal','genre','curp','age'
+            ],
+            
         ];
     }
 
