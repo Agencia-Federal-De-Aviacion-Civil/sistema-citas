@@ -14,7 +14,7 @@
                             <img src="https://tuk-cdn.s3.amazonaws.com/can-uploader/background_with_sub_text-svg3.svg"
                                 alt="date">
                         </div>
-                        <span tabindex="0" class="focus:outline-none">Started on 29 Jan 2020</span>
+                        <span tabindex="0" class="focus:outline-none">{{ $dateNow }}</span>
                     </li>
                 </ul>
             </div>
@@ -41,7 +41,7 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 013.75 9.375v-4.5zM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 01-1.125-1.125v-4.5zM13.5 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0113.5 9.375v-4.5z" />
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 6.75h.75v.75h-.75v-.75zM6.75 16.5h.75v.75h-.75v-.75zM16.5 6.75h.75v.75h-.75v-.75zM13.5 13.5h.75v.75h-.75v-.75zM13.5 19.5h.75v.75h-.75v-.75zM19.5 13.5h.75v.75h-.75v-.75zM19.5 19.5h.75v.75h-.75v-.75zM16.5 16.5h.75v.75h-.75v-.75z" />
                                           </svg>
-            
+
                                     </div>
                                     <div class="flex-grow pl-4">
                                         <h2 class="title-font mb-1 text-sm font-medium tracking-wider text-gray-900">PASO 1</h2>
@@ -80,7 +80,7 @@
                                     </div>
                                   </div>
                                 </div>
-                                
+
                                 <div class="mx-auto w-full">
                                     <div>
                                         <h1 class="font-laonoto mt-4 text-center text-xl font-bold">PEGA LA CADENA ESCANEADA
