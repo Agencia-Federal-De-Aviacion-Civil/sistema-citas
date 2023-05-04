@@ -28,12 +28,14 @@ class HomeMedicine extends Component
     use WithFileUploads;
     public $medicine_question_id, $type_class_id, $clasificationClass, $clasification_class_id;
     public $name_document, $reference_number, $pay_date, $type_exam_id, $typeRenovationExams, $dateConvertedFormatted;
-    public $questionClassess, $typeExams, $sedes, $userQuestions, $to_user_headquarters, $dateReserve, $saveMedicine;
+    public $questionClassess, $typeExams, $sedes, $userQuestions, $to_user_headquarters, $dateReserve, $saveMedicine, $disabledDaysFilter;
     public $confirmModal = false, $modal = false;
     public $medicineQueries, $medicineReserves, $medicineInitials, $medicineRenovations, $id_medicineReserve, $savedMedicineId, $scheduleMedicines, $medicine_schedule_id;
     // MEDICINE INITIAL TABLE
     public $question, $date, $dateNow;
-    protected $listeners = ['saveDisabledDays' => '$refresh'];
+    protected $listeners = [
+        'saveDisabledDays' => '$refresh',
+    ];
     public function mount()
     {
         Date::setLocale('es');
@@ -45,6 +47,8 @@ class HomeMedicine extends Component
         $this->clasificationClass = collect();
         $this->typeRenovationExams = collect();
         $this->scheduleMedicines = collect();
+        $this->disabledDaysFilter = collect();
+
         // $this->dateNow = Date::now()->format('Y-m-d');
     }
     public function rules()
@@ -64,10 +68,13 @@ class HomeMedicine extends Component
     }
     public function render()
     {
+        // dump($this->to_user_headquarters);
         // $disabledDays = MedicineDisabledDays::pluck('disabled_days')->toArray();
-        $disabledDaysyes = MedicineDisabledDays::pluck('disabled_days');
+        // TODO ESTE CODIGO FUNCIONA
+        // dd($disabledDaysyes = MedicineDisabledDays::pluck('disabled_days'));
         // $isDisabled = in_array($this->dateNow, $disabledDays);
-        return view('livewire.medicine.home-medicine', compact('disabledDaysyes'))
+        // TODO NUEVO ALGORITMO
+        return view('livewire.medicine.home-medicine')
             ->layout('layouts.app');
     }
     public function updated($propertyName)
@@ -126,6 +133,21 @@ class HomeMedicine extends Component
             //         ->havingRaw('COUNT(*) >= max_schedules');
             // })
             ->get();
+    }
+    public function searchDisabledDays()
+    {
+        $value = $this->to_user_headquarters;
+        $disabledDays = MedicineDisabledDays::where('user_headquarters_id', $value)->pluck('disabled_days');
+        $disabledDaysArray = [];
+
+        foreach ($disabledDays as $days) {
+            $daysArray = array_map('trim', explode(',', $days));
+            $disabledDaysArray = array_merge($disabledDaysArray, $daysArray);
+        }
+        $this->disabledDaysFilter = $disabledDaysArray;
+        $this->dispatchBrowserEvent('headquartersUpdated', [
+            'disabledDaysFilter' => $disabledDaysArray
+        ]);
     }
     // public function updatedDateReserve($value)
     // {
@@ -293,7 +315,7 @@ class HomeMedicine extends Component
             'initialMedicine', 'medicineInitialQuestion', 'medicineInitialTypeClass',
             'medicineInitialClasificationClass'
         ])->where('medicine_id', $this->saveMedicine->id)->get();
-        $this->medicineRenovations = MedicineRenovation::with(['renovationMedicine', 'renovationTypeClass', 'renovationClasificationClass','renovationClasificationClass'])
+        $this->medicineRenovations = MedicineRenovation::with(['renovationMedicine', 'renovationTypeClass', 'renovationClasificationClass', 'renovationClasificationClass'])
             ->where('medicine_id', $this->saveMedicine->id)->get();
         $this->confirmModal = true;
     }
@@ -344,10 +366,10 @@ class HomeMedicine extends Component
         $keyEncrypt =  Crypt::encryptString($medicineId . '*' . $dateAppointment . '*' . $curp);
         $fileName = $medicineReserves[0]->dateReserve . '-' . $curp . '-' . 'MED-' . $medicineId . '.pdf';
         if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 1) {
-            $pdf = PDF::loadView('livewire.medicine.documents.medicine-initial', compact('medicineReserves', 'keyEncrypt','dateConvertedFormatted'));
+            $pdf = PDF::loadView('livewire.medicine.documents.medicine-initial', compact('medicineReserves', 'keyEncrypt', 'dateConvertedFormatted'));
             return $pdf->download($fileName);
         } else if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 2) {
-            $pdf = PDF::loadView('livewire.medicine.documents.medicine-renovation', compact('medicineReserves', 'keyEncrypt','dateConvertedFormatted'));
+            $pdf = PDF::loadView('livewire.medicine.documents.medicine-renovation', compact('medicineReserves', 'keyEncrypt', 'dateConvertedFormatted'));
             return $pdf->download($fileName);
         }
     }
