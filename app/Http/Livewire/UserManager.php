@@ -63,12 +63,12 @@ final class UserManager extends PowerGridComponent
      */
     public function datasource(): Builder
     {
-        return $usersFull = User::query()->with(['roles', 'UserParticipant'])
-            ->where('status', 0);
-            // ->where('id', '<>', 1)
-            // ->whereHas('roles', function ($q1) {
-            //     $q1->where('id', '<>', 5);
-            // });
+        return User::query()->with(['roles', 'UserParticipant'])
+            ->where('status', 0)
+            ->where('id', '<>', 1)
+            ->whereHas('roles', function ($q1) {
+                $q1->where('id', '<>', 5);
+            });
     }
 
     /*
@@ -92,7 +92,7 @@ final class UserManager extends PowerGridComponent
     {
 
         return [
-            // 'name',
+            'name',
             'UserParticipant' => [
                 'apParental'
             ]
