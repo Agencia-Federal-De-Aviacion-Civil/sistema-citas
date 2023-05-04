@@ -18,20 +18,20 @@ class Schedule extends ModalComponent
 {
     use Actions;
     use WithFileUploads;
-    public $comment1,$comment2,$scheduleId, $status, $medicineReserves, $name, $type, $class, $typLicense, $sede, $dateReserve, $date, $time, $scheduleMedicines, $sedes,
-        $to_user_headquarters, $medicine_schedule_id, $selectedOption, $comment,$comment_cancelate,$hoursReserve,$observation;
-    
-        public function rules()
-        {
-            return [
-                'comment' => '',
-                'comment_cancelate' => '',
-                'selectedOption' => 'required',
-                'to_user_headquarters' => '',
-                'medicine_schedule_id' => ''
-            ];
-        }        
-    
+    public $comment1, $comment2, $scheduleId, $status, $medicineReserves, $name, $type, $class, $typLicense, $sede, $dateReserve, $date, $time, $scheduleMedicines, $sedes,
+        $to_user_headquarters, $medicine_schedule_id, $selectedOption, $comment, $comment_cancelate, $hoursReserve, $observation;
+
+    public function rules()
+    {
+        return [
+            'comment' => '',
+            'comment_cancelate' => '',
+            'selectedOption' => 'required',
+            'to_user_headquarters' => '',
+            'medicine_schedule_id' => ''
+        ];
+    }
+
     public function mount($scheduleId)
     {
         $this->scheduleId = $scheduleId;
@@ -43,7 +43,7 @@ class Schedule extends ModalComponent
     }
     public function render()
     {
-        
+
         return view('livewire.medicine.modals.schedule');
     }
     /**
@@ -75,23 +75,22 @@ class Schedule extends ModalComponent
         $this->status = $medicineReserves[0]->status;
 
         $this->hoursReserve = $medicineReserves[0]->reserveSchedule->time_start;
-        
-        if(empty($medicineReserves[0]->reserveObserv[0]->observation)){
-            $this->comment;
-        }else{
 
-            if(!empty($medicineReserves[0]->reserveObserv[0]->observation)){
+        if (empty($medicineReserves[0]->reserveObserv[0]->observation)) {
+            $this->comment;
+        } else {
+
+            if (!empty($medicineReserves[0]->reserveObserv[0]->observation)) {
                 $this->comment1 = $medicineReserves[0]->reserveObserv[0]->observation;
-            }else{
+            } else {
                 $this->comment1;
             }
-            if(!empty($medicineReserves[0]->reserveObserv[1]->observation)){
+            if (!empty($medicineReserves[0]->reserveObserv[1]->observation)) {
                 $this->comment2 = $medicineReserves[0]->reserveObserv[1]->observation;
-            }else{
+            } else {
                 $this->comment2;
             }
-            $this->comment = $this->comment1.' / '.$this->comment2;
-            
+            $this->comment = $this->comment1 . ' / ' . $this->comment2;
         }
 
         $this->sede = $medicineReserves[0]->user->name;
@@ -117,12 +116,12 @@ class Schedule extends ModalComponent
                 'status' => $this->selectedOption,
             ]);
             $this->emit('attendeReserve');
-        //CANCELO EL ADMIN
+            //CANCELO EL ADMIN
         } elseif ($this->selectedOption == 2) {
 
             $this->validate([
                 'comment_cancelate' => 'required',
-            ]);            
+            ]);
             $observation = new MedicineObservation();
             $observation->medicine_reserve_id = $this->scheduleId;
             $observation->observation = $this->comment_cancelate;
@@ -133,13 +132,13 @@ class Schedule extends ModalComponent
                 'status' => $this->selectedOption,
             ]);
             $this->emit('cancelReserve');
-        //REAGENDO
+            //REAGENDO
         } elseif ($this->selectedOption == 4) {
             $this->validate([
                 'comment' => 'required',
                 'to_user_headquarters' => 'required',
                 'medicine_schedule_id' => 'required'
-    
+
             ]);
             $observation = new MedicineObservation();
             $observation->medicine_reserve_id = $this->scheduleId;
@@ -150,22 +149,22 @@ class Schedule extends ModalComponent
                 ->where('dateReserve', $this->dateReserve)
                 ->where(function ($query) {
                     $query->where('status', 0)
+                        ->orWhere('status', 1)
                         ->orWhere('status', 4);
                 })
                 ->count();
-            // dd($citas);
             switch ($this->to_user_headquarters) {
-                case 2: // Cancun
-                case 3: // Tijuana
-                case 4: // Toluca
-                case 5: // Monterrey
-                    $maxCitas = 3;
-                    break;
-                case 7: // Guadalajara
-                    $maxCitas = 20;
-                    break;
-                case 9: // Ciudad de Mexico
+                case 7: // CIUDAD DE MEXICO
                     $maxCitas = 50;
+                    break;
+                case 2: // CANCUN
+                case 3: // TIJUANA
+                case 4: // TOLUCA
+                case 5: // MONTERREY
+                    $maxCitas = 10;
+                    break;
+                case 6: // GUADALAJARA
+                    $maxCitas = 20;
                     break;
                 default:
                     $maxCitas = 0;
@@ -185,7 +184,7 @@ class Schedule extends ModalComponent
                 $cita->save();
                 $this->emit('reserveAppointment');
             }
-        }else{
+        } else {
             $this->validate();
         }
         $this->closeModal();
