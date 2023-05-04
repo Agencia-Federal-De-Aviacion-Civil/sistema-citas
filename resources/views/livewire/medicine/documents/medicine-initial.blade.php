@@ -115,6 +115,12 @@
                 </td>
             </tr>
             <tr>
+                <td>TIPO DE LICENCIA:</td>
+                <td>
+                    {{ $medicineReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass->name }}
+                </td>
+            </tr>
+            <tr>
                 <td>TRAMITE:</td>
                 <td>EXAMEN PSICOFISICO INTEGRAL</td>
             </tr>
@@ -133,7 +139,7 @@
             </tr>
             <tr>
                 <td>FECHA</td>
-                <td>{{ $medicineReserves[0]->dateReserve }}</td>
+                <td>{{ mb_strtoupper($dateConvertedFormatted) }}</td>
             </tr>
             <tr>
                 <td>HORA</td>
@@ -148,27 +154,34 @@
             <h3 class="titulo2">REQUISITOS</h3>
         </div>
         <div style="padding-top:2%">
-            <label style="text-align: justify;font-size:18px" for="">Estimado usuario, con el fin de facilitar
-                el procedimiento de registro y apoyarle en el proceso de su <b> EVALUACIÓN MÉDICA</b>, le mostramos los
-                siguientes
+            <label style="text-align: justify;font-size:17px" for="">Estimado usuario, con el fin de facilitar el procedimiento de registro y apoyarle en el 
+                proceso de su <b> EVALUACIÓN MÉDICA</b>, le mostramos los siguientes
                 <b>requisitos indispensables</b> con los que deberá acudir a su cita <u>original y
-                    copia</u> de lo contrario no podrá realizar su examen y éste se perderá:</label>
+                    copia</u>, de lo contrario no 
+                    podrá realizar su examen y éste se perderá:</label>
         </div>
-        <div style="padding-top:1%;font-size:18px">
+        <div style="padding-top:1%;font-size:17px">
             <ol style="text-align: justify">
                 <li value="1">Acta de nacimiento (Con formato vigente a la fecha de su examen).</li>
                 <li>Comprobante de domicilio con vigencia no mayor a 3 meses.</li>
                 <li>Comprobante de pago.</li>
                 <li>Comprobante de cita.</li>
                 <li>Clave Única de Registro de Población (CURP).</li>
-                <li>Deberá presentar en forma impresa los formatos de declaración de salud,
-                    consentimiento informado (mismos que debe llenar y firmar) así como el vale de
+                <li>Deberá presentar en forma impresa los formatos de declaración de salud, 
+                    consentimiento informado (mismos que debe llenar y firmar) así como el vale de 
                     servicios que se incluyen al final de este documento.</li>
                 <li>Una de las siguientes identificaciones con fotografía:</li>
                 <p style="padding-left:2%;">A. Cédula de identidad ciudadana (INE) vigente.</p>
                 <p style="padding-left:2%;margin-top:-2%;">B. Cédula profesional (siempre y cuando cuente con fotografía).</p>
                 <p style="padding-left:2%;margin-top:-2%;">C. Cartilla Militar (personal masculino).</p>
                 <p style="padding-left:2%;margin-top:-2%;">D. Pasaporte.</p>
+                <p style="padding-left:2%;margin-top:-2%;">E. Credencial con fotografía de la Institución Educativa, donde esté realizando 
+                    estudios, exclusivamente para menores de edad, que no cuenten con ninguna 
+                    de las identificaciones anteriores, y en caso de no contar con esta última, se 
+                    podrá utilizar la CURP como identificación oficial.</p>
+                <li>En caso de ser menor de edad, para poder realizar la evaluación médica, deberá 
+                    presentarse con uno de los padres o tutor, mismo que deberá presentar alguna de 
+                    las identificaciones citadas en el numeral 7.</li>
                 <li>Acudir con ropa cómoda, evitando sea de una sola pieza.</li>
                 <li>Tomar un desayuno ligero, en caso de acudir en ayuno llevar su refrigerio.</li>
                 <li>No suspender medicación prescrita.</li>
@@ -281,7 +294,7 @@ contacto deberá acudir con sus lentes de armazón de repuesto.
                 <tr>
                     <td>Hipertensión arterial sistémica</td>
                     <td>Presentar curva de tensión arterial de 10 días previos a su 
-                        valoración médica (cada 12 horas a la misma hora)</td>
+                        valoración médica, <b>ver guía*</b>.</td>
                 </tr>
                 <tr>
                     <td>Hiper o hipotiroidismo</td>

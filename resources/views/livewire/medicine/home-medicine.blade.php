@@ -24,7 +24,7 @@
                                 alt="date">
                         </div>
                         <span tabindex="0" class="focus:outline-none">
-                            {{ $date->format('d') }} {{ Str::ucfirst($date->format('F')) }} {{ $date->format('Y') }}
+                            {{ $dateNow }}
                         </span>
                     </li>
                 </ul>
@@ -87,7 +87,7 @@
                                                 <div class="grid xl:grid-cols-4 xl:gap-6">
                                                     <div class="mt-1 relative z-0 w-full group">
                                                         <x-input x-ref="payment" wire:model.lazy="reference_number"
-                                                            label="INGRESA LA REFERENCIA DE PAGO"
+                                                            label="INGRESA LA LLAVE DE PAGO"
                                                             placeholder="INGRESE..." />
                                                     </div>
                                                     <div class="mt-1 relative z-auto w-full group">
@@ -171,7 +171,7 @@
                                             <div class="flex-grow pl-4">
                                                 <label for="small"
                                                     class="block mb-2 text-base font-medium text-gray-900 dark:text-white">¿SIGUES
-                                                    ESTUDIANDO?</label>
+                                                    ESTUDIANDO O VAS A ESTUDIAR?</label>
                                                 <select id="small" x-ref="question"
                                                     wire:model.lazy="medicine_question_id"
                                                     wire:change="resetClasificationClass()"
@@ -451,11 +451,16 @@
                 // maxTime: "10:59",
                 disableMobile: "true",
                 // minuteIncrement: 10,
-                minDate: "today",
+                 minDate: "today",
+                //minDate: new Date(new Date().getFullYear(), 0, 1),
+                maxDate: new Date(new Date().getFullYear(), 11, 31),
                 disable: @json($disabledDaysyes),
                 onDayCreate: function(dObj, dStr, fp, dayElem) {
-                    if (dayElem.dateObj.getDay() === 0 || dayElem.dateObj.getDay() === 6 || dayElem
+                   /* if (dayElem.dateObj.getDay() === 0 || dayElem.dateObj.getDay() === 6 || dayElem
                         .dateObj <= new Date()) {
+                        dayElem.className += " flatpickr-disabled nextMonthDayflatpickr-disabled";
+                    }*/
+                    if (dayElem.dateObj.getDay() === 0 || dayElem.dateObj.getDay() === 6 ) {
                         dayElem.className += " flatpickr-disabled nextMonthDayflatpickr-disabled";
                     }
                 },

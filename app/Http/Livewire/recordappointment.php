@@ -31,7 +31,7 @@ final class recordappointment extends PowerGridComponent
     }
     public function setUp(): array
     {
-        // $this->showCheckBox();
+        $this->showCheckBox();
         // $this->persist(['columns', 'filters']);
         return [
             Exportable::make('export')
@@ -99,7 +99,14 @@ final class recordappointment extends PowerGridComponent
             'userParticipantUser' => [
                 'apParental',
                 'apMaternal',
+                'curp',
             ],
+            'user' => [
+                'name',
+            ],
+            'medicineReserveMedicine' => [
+                'dateReserve'
+            ]
 
         ];
     }
@@ -171,16 +178,16 @@ final class recordappointment extends PowerGridComponent
             ->addColumn('age', function (MedicineReserve $regiser) {
                 return $regiser->userParticipantUser->age;
             })
-            ->addColumn('domicile',function (MedicineReserve $regiser) {
-                return $regiser->userParticipantUser->street.' No.'.$regiser->userParticipantUser->nInterior.' No.ext.'.$regiser->userParticipantUser->nExterior.' '.$regiser->userParticipantUser->suburb.' ,'.$regiser->userParticipantUser->postalCode.' ,'.$regiser->userParticipantUser->delegation.' ,'.$regiser->userParticipantUser->federalEntity;
+            ->addColumn('domicile', function (MedicineReserve $regiser) {
+                return $regiser->userParticipantUser->street . ' No.' . $regiser->userParticipantUser->nInterior . ' No.ext.' . $regiser->userParticipantUser->nExterior . ' ' . $regiser->userParticipantUser->suburb . ' ,' . $regiser->userParticipantUser->postalCode . ' ,' . $regiser->userParticipantUser->delegation . ' ,' . $regiser->userParticipantUser->federalEntity;
             })
-            ->addColumn('mobilePhone',function (MedicineReserve $regiser) {
+            ->addColumn('mobilePhone', function (MedicineReserve $regiser) {
                 return $regiser->userParticipantUser->mobilePhone;
             })
-            ->addColumn('officePhone',function (MedicineReserve $regiser) {
+            ->addColumn('officePhone', function (MedicineReserve $regiser) {
                 return $regiser->userParticipantUser->officePhone;
             })
-            ->addColumn('extension',function (MedicineReserve $regiser) {
+            ->addColumn('extension', function (MedicineReserve $regiser) {
                 return $regiser->userParticipantUser->extension;
             })
 
@@ -217,7 +224,7 @@ final class recordappointment extends PowerGridComponent
     {
         return [
             Column::make('ID', 'id')
-            ->searchable(),
+                ->searchable(),
 
             // Column::make('FOLIO', 'folio')
             //     ->searchable(),
@@ -226,7 +233,7 @@ final class recordappointment extends PowerGridComponent
 
             Column::make('NOMBRE', 'name')
                 ->searchable(),
-                //->makeInputText(),
+            //->makeInputText(),
 
             // ->sortable(),
             //->makeInputDatePicker(),
@@ -301,7 +308,7 @@ final class recordappointment extends PowerGridComponent
             Column::make('EXTENSIÓN', 'extension')
                 ->sortable()
                 ->searchable(),
-                //->makeInputText(),
+            //->makeInputText(),
 
             //  Column::make('CREADA EL', 'created_at_formatted', 'created_at')
             //     ->searchable()
@@ -319,17 +326,17 @@ final class recordappointment extends PowerGridComponent
     public function filters(): array
     {
         return [
-            Filter::InputText('curp','curp')
-            ->operators(['contains', 'is', 'is_not']),
+            Filter::InputText('curp', 'curp')
+                ->operators(['contains', 'is', 'is_not']),
         ];
     }
 
     // public function filters(): array
     // {
 
-        // ->dataSource(UserParticipant::select('curp')->distinct()->get())
-        // ->optionValue('curp')
-        // ->optionLabel('curp'),
+    // ->dataSource(UserParticipant::select('curp')->distinct()->get())
+    // ->optionValue('curp')
+    // ->optionLabel('curp'),
     //     return [
     //        Filter::inputText('curp', 'curp'),
     //         //   ->operators(['contains', 'is', 'is_not']),
