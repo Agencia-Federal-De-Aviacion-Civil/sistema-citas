@@ -188,7 +188,7 @@
                                                 @enderror
                                             </div>
                                         </div>
-                                        {{-- paso3 --}}
+                                        {{-- paso33 --}}
                                         <div x-show="tipoExamen === '1' && question === '1' || tipoExamen === '1' && question === '2'"
                                             class="flex relative pb-6">
                                             <div class="h-full w-10 absolute inset-0 flex items-center justify-center">

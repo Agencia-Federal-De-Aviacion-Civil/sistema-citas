@@ -201,7 +201,7 @@
             disable: [
                 function(date) {
                     // Devuelve 'true' si la fecha es un sábado o domingo
-                    return date.getDay() === 6 || date.getDay() === 0 || date <= new Date();
+                    return date.getDay() === 6 || date.getDay() === 0;
                 },
             ],
             locale: {
