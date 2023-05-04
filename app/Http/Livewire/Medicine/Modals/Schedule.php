@@ -153,7 +153,7 @@ class Schedule extends ModalComponent
                         ->orWhere('status', 4);
                 })
                 ->count();
-            // dd($citas);
+            dd($citas);
             switch ($this->to_user_headquarters) {
                 case 2: // Cancun
                 case 3: // Tijuana
