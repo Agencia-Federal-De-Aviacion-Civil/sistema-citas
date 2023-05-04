@@ -26,7 +26,7 @@ class HomeMedicine extends Component
 {
     use Actions;
     use WithFileUploads;
-    public $medicine_question_id, $type_class_id, $clasificationClass, $clasification_class_id;
+    public $medicine_question_id, $type_class_id, $clasificationClass, $clasification_class_id = 0;
     public $name_document, $reference_number, $pay_date, $type_exam_id, $typeRenovationExams, $dateConvertedFormatted;
     public $questionClassess, $typeExams, $sedes, $userQuestions, $to_user_headquarters, $dateReserve, $saveMedicine;
     public $confirmModal = false, $modal = false;
@@ -57,9 +57,10 @@ class HomeMedicine extends Component
             'type_exam_id' => 'required',
             'medicine_question_id' => 'required_if:type_exam_id,1',
             'type_class_id' => 'required',
-            'clasification_class_id' => 'required',
+            'clasification_class_id' => '',
             'to_user_headquarters' => 'required',
-            'dateReserve' => 'required'
+            'dateReserve' => 'required',
+            'medicine_schedule_id' => 'required'
         ];
     }
     public function render()
@@ -231,6 +232,11 @@ class HomeMedicine extends Component
                 'icon'        => 'error'
             ]);
         } else {
+
+            $this->validate([
+                'clasification_class_id' => 'required',
+            ]);
+
             $extension = $this->name_document->extension();
             $saveDocument = Document::create([
                 'name_document' => $this->name_document->storeAs('uploads/citas-app/medicine', $this->reference_number . '-' . $this->pay_date .  '.' . $extension, 'do'),
@@ -364,6 +370,7 @@ class HomeMedicine extends Component
             'document.required' => 'Documento obligatorio.',
             'document.mimetypes' => 'Solo documentos .PDF.',
             'document.max' => 'No permitido, tamaño maximo 500 KB',
+            'medicine_schedule_id.required' => 'Campo obligatorio',
         ];
     }
 }
