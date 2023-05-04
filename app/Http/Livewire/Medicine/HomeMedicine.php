@@ -186,6 +186,7 @@ class HomeMedicine extends Component
         $userMedicines = MedicineReserve::with(['medicineReserveMedicine'])
             ->whereHas('medicineReserveMedicine', function ($q1) {
                 $q1->where('user_id', Auth::user()->id);
+                $q1->where('type_exam_id', $this->type_exam_id);
             })
             ->where(function ($q) {
                 $q->whereHas('medicineReserveMedicine.medicineInitial', function ($q2) {
@@ -293,7 +294,7 @@ class HomeMedicine extends Component
             'initialMedicine', 'medicineInitialQuestion', 'medicineInitialTypeClass',
             'medicineInitialClasificationClass'
         ])->where('medicine_id', $this->saveMedicine->id)->get();
-        $this->medicineRenovations = MedicineRenovation::with(['renovationMedicine', 'renovationTypeClass', 'renovationClasificationClass','renovationClasificationClass'])
+        $this->medicineRenovations = MedicineRenovation::with(['renovationMedicine', 'renovationTypeClass', 'renovationClasificationClass', 'renovationClasificationClass'])
             ->where('medicine_id', $this->saveMedicine->id)->get();
         $this->confirmModal = true;
     }
@@ -344,10 +345,10 @@ class HomeMedicine extends Component
         $keyEncrypt =  Crypt::encryptString($medicineId . '*' . $dateAppointment . '*' . $curp);
         $fileName = $medicineReserves[0]->dateReserve . '-' . $curp . '-' . 'MED-' . $medicineId . '.pdf';
         if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 1) {
-            $pdf = PDF::loadView('livewire.medicine.documents.medicine-initial', compact('medicineReserves', 'keyEncrypt','dateConvertedFormatted'));
+            $pdf = PDF::loadView('livewire.medicine.documents.medicine-initial', compact('medicineReserves', 'keyEncrypt', 'dateConvertedFormatted'));
             return $pdf->download($fileName);
         } else if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 2) {
-            $pdf = PDF::loadView('livewire.medicine.documents.medicine-renovation', compact('medicineReserves', 'keyEncrypt','dateConvertedFormatted'));
+            $pdf = PDF::loadView('livewire.medicine.documents.medicine-renovation', compact('medicineReserves', 'keyEncrypt', 'dateConvertedFormatted'));
             return $pdf->download($fileName);
         }
     }

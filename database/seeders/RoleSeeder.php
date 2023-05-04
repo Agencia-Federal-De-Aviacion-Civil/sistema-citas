@@ -26,7 +26,7 @@ class RoleSeeder extends Seeder
         Permission::create(['name' => 'medicine_admin.see.tabs.navigation', 'description' => 'El administrador de medicina puede navegar por sus pestañas correspondientes'])->syncRoles([$role2]);
         Permission::create(['name' => 'medicine_admin.see.dashboard', 'description' => 'El administrador de medicina puede ver su dashboard'])->syncRoles([$role2]);
         Permission::create(['name' => 'super_admin.medicine_admin.see.schedule.table', 'description' => 'Este permiso permite filtrar la tabla de citas y tiene que aplicarse a super_admin y medicine_admin'])->syncRoles([$role1, $role2]);
-        Permission::create(['name' => 'see.schedule.tabs', 'description' => 'Este permiso es global y permite ver la pestaña de citas agendadas'])->syncRoles([$role1, $role2]);
+        Permission::create(['name' => 'see.schedule.tabs', 'description' => 'Este permiso es global y permite ver la pestaña de citas agendadas'])->syncRoles([$role1, $role2,$role4]);
         Permission::create(['name' => 'user.see.navigation', 'description' => 'Este permiso permite ver la pestaña para agendar una cita'])->syncRoles([$role4]);
         Permission::create(['name' => 'user.see.schedule.table', 'description' => 'Este permiso permite a los usuarios ver sus citas agendadas'])->syncRoles([$role4]);
 
