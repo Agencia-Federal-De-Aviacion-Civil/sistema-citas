@@ -48,8 +48,10 @@
                                         <x-select label="SELECCIONE..." placeholder="SELECCIONE UNA SEDE..."
                                             wire:model.lazy="user_headquarters_id">
                                             @foreach ($headquarters as $headquarter)
-                                                <x-select.option label="{{$headquarter->headquarterUser->name}}" value="{{$headquarter->headquarterUser->id}}" />
+                                                <x-select.option label="{{ $headquarter->headquarterUser->name }}"
+                                                    value="{{ $headquarter->headquarterUser->id }}" />
                                             @endforeach
+                                            <x-select.option label="TODOS" value="all" />
                                         </x-select>
                                     </div>
                                     <div class="mt-1 relative z-0 w-full group">

@@ -10,7 +10,7 @@ use WireUi\Traits\Actions;
 class HomeHeadquarter extends Component
 {
     use Actions;
-    public $disabled_days, $user_headquarters_id;
+    public $disabled_days, $user_headquarters_id,$id_disabledDays;
     public function rules()
     {
         return [
@@ -33,11 +33,26 @@ class HomeHeadquarter extends Component
         $this->validate();
         // $disabledDaysArray = explode(', ', $this->disabled_days);
         // foreach ($disabledDaysArray as $arrayDays) {
-        MedicineDisabledDays::create([
-            'user_headquarters_id' => $this->user_headquarters_id,
-            'disabled_days' => $this->disabled_days,
-        ]);
-        // }
+        if ($this->user_headquarters_id === 'all') {
+            $headquarters = Headquarter::with('headquarterUser')->get();
+            foreach ($headquarters as $headquarter) {
+                MedicineDisabledDays::updateOrCreate(
+                    ['id' => $this->id_disabledDays],
+                    [
+                        'user_headquarters_id' => $headquarter->headquarterUser->id,
+                        'disabled_days' => $this->disabled_days,
+                    ]
+                );
+            }
+        } else {
+            MedicineDisabledDays::updateOrCreate(
+                ['id' => $this->id_disabledDays],
+                [
+                    'user_headquarters_id' => $this->user_headquarters_id,
+                    'disabled_days' => $this->disabled_days,
+                ]
+            );
+        }
         $this->notification([
             'title'       => 'DIAS DESHABILITADOS EXITOSAMENTE',
             'icon'        => 'success',
