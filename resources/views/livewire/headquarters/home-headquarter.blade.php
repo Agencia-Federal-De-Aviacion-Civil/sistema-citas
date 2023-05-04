@@ -60,7 +60,7 @@
                                                 <x-select.option label="{{ $headquarter->headquarterUser->name }}"
                                                     value="{{ $headquarter->headquarterUser->id }}" />
                                             @endforeach
-                                            <x-select.option label="TODOS" value="all" />
+                                            <x-select.option label="TODOS" value="0" />
                                         </x-select>
                                     </div>
                                     <div class="mt-1 relative z-0 w-full group">
