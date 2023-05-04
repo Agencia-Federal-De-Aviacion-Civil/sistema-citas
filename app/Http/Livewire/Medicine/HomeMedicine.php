@@ -33,7 +33,9 @@ class HomeMedicine extends Component
     public $medicineQueries, $medicineReserves, $medicineInitials, $medicineRenovations, $id_medicineReserve, $savedMedicineId, $scheduleMedicines, $medicine_schedule_id;
     // MEDICINE INITIAL TABLE
     public $question, $date, $dateNow;
-    protected $listeners = ['saveDisabledDays' => '$refresh'];
+    protected $listeners = [
+        'saveDisabledDays' => '$refresh',
+    ];
     public function mount()
     {
         Date::setLocale('es');
@@ -72,13 +74,6 @@ class HomeMedicine extends Component
         // dd($disabledDaysyes = MedicineDisabledDays::pluck('disabled_days'));
         // $isDisabled = in_array($this->dateNow, $disabledDays);
         // TODO NUEVO ALGORITMO
-        // $disabledDays = MedicineDisabledDays::where('user_headquarters_id', $this->to_user_headquarters)->pluck('disabled_days');
-        // $disabledDaysArray = [];
-
-        // foreach ($disabledDays as $days) {
-        //     $daysArray = array_map('trim', explode(',', $days));
-        //     $disabledDaysArray = array_merge($disabledDaysArray, $daysArray);
-        // }
         return view('livewire.medicine.home-medicine')
             ->layout('layouts.app');
     }
@@ -138,34 +133,21 @@ class HomeMedicine extends Component
             //         ->havingRaw('COUNT(*) >= max_schedules');
             // })
             ->get();
-        // Obtener los días deshabilitados para la sede seleccionada
-        // $disabledDays = MedicineDisabledDays::where('user_headquarters_id', 2)
-        //     ->pluck('disabled_days');
-        // $disabledDaysArray = [];
-
-        // foreach ($disabledDays as $days) {
-        //     $daysArray = array_map('trim', explode(',', $days));
-        //     $disabledDaysArray = array_merge($disabledDaysArray, $daysArray);
-        // }
-        // $this->disabledDaysFilter = $disabledDaysArray;
-        // $this->emit('updateDisabledDaysFilter');
-
     }
-    public function getDisabledDays()
+    public function searchDisabledDays()
     {
         $value = $this->to_user_headquarters;
-        // Obtener los días deshabilitados para la sede seleccionada
-        $disabledDays = MedicineDisabledDays::where('user_headquarters_id', $value)
-            ->pluck('disabled_days');
+        $disabledDays = MedicineDisabledDays::where('user_headquarters_id', $value)->pluck('disabled_days');
         $disabledDaysArray = [];
 
         foreach ($disabledDays as $days) {
             $daysArray = array_map('trim', explode(',', $days));
             $disabledDaysArray = array_merge($disabledDaysArray, $daysArray);
         }
-
-        // Asignar los días deshabilitados a una propiedad en el componente
         $this->disabledDaysFilter = $disabledDaysArray;
+        $this->dispatchBrowserEvent('headquartersUpdated', [
+            'disabledDaysFilter' => $disabledDaysArray
+        ]);
     }
     // public function updatedDateReserve($value)
     // {
