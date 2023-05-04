@@ -11,17 +11,56 @@ use Illuminate\Support\Facades\DB;
 
 class homeController extends Controller
 {
+    public $headquarters;
     public function index()
     {
-
-
         Date::setLocale('ES');
         $date = Date::now()->parse();
+        $date1 = Date::now()->format('Y-m-d');
         $appointment = MedicineReserve::query()
-            ->selectRaw("count(id) as registradas")
-            ->first();
+        ->selectRaw("count(id) as registradas")
+        ->selectRaw("count(case when status = '0' then 1 end) as pendientes")
+        ->selectRaw("count(case when status = '1' then 1 end) as validado")
+        ->selectRaw("count(case when status = '2' then 1 end) as canceladosede")
+        ->selectRaw("count(case when status = '3' then 1 end) as canceladousuario")
+        ->selectRaw("count(case when status = '4' then 1 end) as reagendado")
+        ->selectRaw("count(case when dateReserve = '$date1' then 1 end) as appointmentnow")
+        ->selectRaw("count(id) as registradasfull")
+        ->first();
+        //ADMIN MEDICINE
         $registradas = $appointment->registradas;
-        $medicine = ($registradas ? $registradas * 100 / $registradas : '0');
-        return view('afac.dashboard.index', compact('date', 'registradas', 'medicine'));
+        $pendientes = $appointment->pendientes;
+        $validado = $appointment->validado;
+        $reagendado = $appointment->reagendado;
+        $canceladas = $appointment->canceladosede+$appointment->canceladousuario;
+        $porconfir = $appointment && $appointment->registradas > 0
+            ? round(($appointment->validado * 100 / $appointment->registradas), 0)
+            : 0;
+            $porpendientes = $appointment && $appointment->registradas > 0
+            ? round(($appointment->pendientes * 100 / $appointment->registradas), 0)
+            : 0;
+            $porreagendado = $appointment && $appointment->registradas > 0
+            ? round(($appointment->reagendado * 100 / $appointment->registradas), 0)
+            : 0;
+            $porcanceladas1 = $appointment && $appointment->registradas > 0
+            ? round(($appointment->canceladas * 100 / $appointment->registradas), 0)
+            : 0;
+            $porcanceladas = $appointment && $appointment->registradas > 0
+            ? round(($appointment->canceladas * 100 / $appointment->registradas), 0)
+            : 0;
+            $nowapoimnet = $appointment->appointmentnow;
+        //SUPER ADMIN
+        $registradasall = $appointment->registradasfull;
+        $medicine = ($registradasall ? $registradasall * 100 / $registradasall : '0');
+        
+        $headquarters = MedicineReserve::with([
+            'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
+        ])->get();
+
+        //  dd($headquarters);
+
+        return view('afac.dashboard.index', compact('date', 'registradasall', 'medicine','registradas','pendientes','validado','reagendado','canceladas','porconfir','porpendientes','porreagendado','porcanceladas1','porcanceladas','nowapoimnet','date1','headquarters'));
     }
+
+
 }

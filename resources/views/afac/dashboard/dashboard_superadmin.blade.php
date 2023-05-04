@@ -20,7 +20,7 @@
 <div>
     <div class="py-12">
         <div class="container mx-auto px-4 py-4 bg-white shadow-xl sm:rounded-lg">
-    <div class="bg-gray-100 text-gray-500 rounded shadow-xl py-5 px-5 w-full sm:w-full md:w-full lg:w-full" x-data="{cardOpen:false,cardData:cardData()}" x-init="$watch('cardOpen', value => value?(cardData.countUp($refs.total,0,{{$registradas}},null,0.8),cardData.sessions.forEach((el,i) => cardData.countUp($refs[`device${i}`],0,cardData.sessions[i].size,null,1.6))):null);setTimeout(()=>{cardOpen=true},100)">
+    <div class="bg-gray-100 text-gray-500 rounded shadow-xl py-5 px-5 w-full sm:w-full md:w-full lg:w-full" x-data="{cardOpen:false,cardData:cardData()}" x-init="$watch('cardOpen', value => value?(cardData.countUp($refs.total,0,{{$registradasall}},null,0.8),cardData.sessions.forEach((el,i) => cardData.countUp($refs[`device${i}`],0,cardData.sessions[i].size,null,1.6))):null);setTimeout(()=>{cardOpen=true},100)">
         <div class="flex w-full">
             <h3 class="text-lg font-semibold leading-tight flex-1">TOTAL DE CITAS</h3>
             <div class="relative h-5 leading-none">
@@ -64,7 +64,7 @@
                       </div>
                 
                       <div class="ml-4">
-                        <h3 class="font-semibold">Medicina preventiva: {{$registradas}}</h3>
+                        <h3 class="font-semibold">Medicina preventiva: {{$registradasall}}</h3>
                         <p class="mt-2 text-sm text-gray-500">{{$medicine}}%</p>
                       </div>
                     </div>
