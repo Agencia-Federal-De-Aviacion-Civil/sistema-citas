@@ -9,6 +9,7 @@ namespace App\Models;
 
 use App\Models\Catalogue\Headquarter;
 use App\Models\Medicine\Medicine;
+use App\Models\Medicine\MedicineDisabledDays;
 use App\Models\Medicine\MedicineReserve;
 use App\Models\Medicine\MedicineSchedule;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -110,5 +111,9 @@ class User extends Authenticatable
     public function userMedicineSchedule()
     {
         return $this->hasMany(MedicineSchedule::class);
+    }
+    public function userDisabledDays()
+    {
+        return $this->hasMany(MedicineDisabledDays::class, 'user_headquarters_id');
     }
 }

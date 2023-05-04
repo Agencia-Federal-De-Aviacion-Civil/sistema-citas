@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('medicine_disabled_days', function (Blueprint $table) {
             $table->id();
-            $table->date('disabled_days');
+            $table->string('disabled_days');
             $table->timestamps();
         });
     }
