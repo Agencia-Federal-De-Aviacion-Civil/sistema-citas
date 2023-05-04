@@ -110,6 +110,7 @@ final class UserManager extends PowerGridComponent
 |    the database using the `e()` Laravel Helper function.
 |
 */
+// PRUEBA
     public function addColumns(): PowerGridEloquent
     {
         return PowerGrid::eloquent()
@@ -127,7 +128,7 @@ final class UserManager extends PowerGridComponent
                     return 'LINGÜÍSTICA ADMINISTRADOR';
                 } elseif ($privileges->roles[0]->name == 'user') {
                     return 'USUARIO';
-                } 
+                }
             });
     }
 
