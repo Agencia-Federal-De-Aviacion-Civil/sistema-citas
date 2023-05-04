@@ -349,12 +349,12 @@
                                                             @endforeach
                                                         </x-select> --}}
                                                     </div>
-                                                    <div class="text-base relative z-auto w-full mb-2 group">
+                                                    <div class="text-base relative z-auto w-full mt-2 group">
                                                         <x-input x-ref="reservedate" wire:model.lazy="dateReserve"
                                                             id="fecha-appointment" label="SELECCIONE FECHA"
                                                             placeholder="INGRESE..." readonly />
                                                     </div>
-                                                    <div class="text-base relative z-auto w-full mb-2 group">
+                                                    <div class="text-base relative z-auto w-full mt-2 group">
                                                         <label for="small"
                                                             class="block text-base font-medium text-gray-900 dark:text-white">SELECCIONE
                                                             HORA</label>
