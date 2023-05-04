@@ -87,8 +87,7 @@
                                                 <div class="grid xl:grid-cols-4 xl:gap-6">
                                                     <div class="mt-1 relative z-0 w-full group">
                                                         <x-input x-ref="payment" wire:model.lazy="reference_number"
-                                                            label="INGRESA LA LLAVE DE PAGO"
-                                                            placeholder="INGRESE..." />
+                                                            label="INGRESA LA LLAVE DE PAGO" placeholder="INGRESE..." />
                                                     </div>
                                                     <div class="mt-1 relative z-auto w-full group">
                                                         <x-input wire:model.lazy="pay_date" id="fecha-pago"
@@ -327,7 +326,7 @@
                                                 <div class="grid xl:grid-cols-3 xl:gap-6">
                                                     <div class="text-base relative z-auto w-full mb-2 group">
                                                         <x-select label="ELIJA LA SEDE" placeholder="Selecciona"
-                                                            x-ref="selec_sede" wire:model.lazy="to_user_headquarters">
+                                                            x-ref="selec_sede" wire:model.lazy="to_user_headquarters" wire:change="getDisabledDays()">
                                                             @foreach ($sedes as $sede)
                                                                 <x-select.option
                                                                     label="{{ $sede->headquarterUser->name }}"
@@ -442,45 +441,51 @@
                 },
             });
             // CITAS MEDICAS
-
-            flatpickr("#fecha-appointment", {
-                // enableTime: true,
-                // time_24hr: true,
-                dateFormat: "Y-m-d",
-                // minTime: "07:00",
-                // maxTime: "10:59",
-                disableMobile: "true",
-                // minuteIncrement: 10,
-                 minDate: "today",
-                //minDate: new Date(new Date().getFullYear(), 0, 1),
-                maxDate: new Date(new Date().getFullYear(), 11, 31),
-                disable: @json($disabledDaysyes),
-                onDayCreate: function(dObj, dStr, fp, dayElem) {
-                   /* if (dayElem.dateObj.getDay() === 0 || dayElem.dateObj.getDay() === 6 || dayElem
-                        .dateObj <= new Date()) {
-                        dayElem.className += " flatpickr-disabled nextMonthDayflatpickr-disabled";
-                    }*/
-                    if (dayElem.dateObj.getDay() === 0 || dayElem.dateObj.getDay() === 6 ) {
-                        dayElem.className += " flatpickr-disabled nextMonthDayflatpickr-disabled";
-                    }
-                },
-                locale: {
-                    weekdays: {
-                        shorthand: ['Dom', 'Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab'],
-                        longhand: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes',
-                            'Sábado'
-                        ],
+            // Livewire.on('updateDisabledDaysFilter', function() {
+            //     const disabledDaysFilter = @json($disabledDaysFilter);
+                flatpickr("#fecha-appointment", {
+                    // enableTime: true,
+                    // time_24hr: true,
+                    dateFormat: "Y-m-d",
+                    // minTime: "07:00",
+                    // maxTime: "10:59",
+                    disableMobile: "true",
+                    // minuteIncrement: 10,
+                    minDate: "today",
+                    //minDate: new Date(new Date().getFullYear(), 0, 1),
+                    maxDate: new Date(new Date().getFullYear(), 11, 31),
+                    disable: @json($disabledDaysFilter),
+                    onDayCreate: function(dObj, dStr, fp, dayElem) {
+                        /* if (dayElem.dateObj.getDay() === 0 || dayElem.dateObj.getDay() === 6 || dayElem
+                             .dateObj <= new Date()) {
+                             dayElem.className += " flatpickr-disabled nextMonthDayflatpickr-disabled";
+                         }*/
+                        if (dayElem.dateObj.getDay() === 0 || dayElem.dateObj.getDay() === 6) {
+                            dayElem.className +=
+                                " flatpickr-disabled nextMonthDayflatpickr-disabled";
+                        }
                     },
-                    months: {
-                        shorthand: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct',
-                            'Nov', 'Dic'
-                        ],
-                        longhand: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto',
-                            'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
-                        ],
+                    locale: {
+                        weekdays: {
+                            shorthand: ['Dom', 'Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab'],
+                            longhand: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves',
+                                'Viernes',
+                                'Sábado'
+                            ],
+                        },
+                        months: {
+                            shorthand: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago',
+                                'Sep', 'Oct',
+                                'Nov', 'Dic'
+                            ],
+                            longhand: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+                                'Julio', 'Agosto',
+                                'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+                            ],
+                        },
                     },
-                },
+                });
             });
-        });
+        // });
     </script>
 </div>
