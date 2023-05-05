@@ -111,7 +111,7 @@
                                 <thead>
                                     <tr>
                                         <th class="px-4 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-100 align-middle border border-solid border-gray-200 dark:border-gray-500 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Nombre</th>
-                                        <th class="px-4 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-100 align-middle border border-solid border-gray-200 dark:border-gray-500 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">citas</th>
+                                        <th class="px-4 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-100 align-middle border border-solid border-gray-200 dark:border-gray-500 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">total de citas</th>
                                         <th class="px-4 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-100 align-middle border border-solid border-gray-200 dark:border-gray-500 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left min-w-140-px"></th>
                                     </tr>
                                 </thead>
@@ -119,14 +119,14 @@
                                 <tbody>
                                     @foreach ($headquarters as $headquarter)
                                     <tr class="text-gray-700 dark:text-gray-100">
-                                        <th class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">{{$headquarter->user->name}}</th>
-                                        <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">5,480</td>
+                                        <th class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">{{$headquarter->headquarterUser->name}}</th>
+                                        <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">{{$headquarter->medicicenereservaBank->count()}}</td>
                                         <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                                             <div class="flex items-center">
-                                                <span class="mr-2">70%</span>
+                                                <span class="mr-2">{{$headquarter->medicicenereservaBank->count()*100/$registradas}}%</span>
                                                 <div class="relative w-full">
                                                     <div class="overflow-hidden h-2 text-xs flex rounded bg-blue-200">
-                                                        <div style="width: 70%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-600"></div>
+                                                        <div style="width:{{$headquarter->medicicenereservaBank->count()*100/$registradas}}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-600"></div>
                                                     </div>
                                                 </div>
                                             </div>

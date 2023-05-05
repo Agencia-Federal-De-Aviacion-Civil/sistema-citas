@@ -3,6 +3,7 @@
 namespace App\Models\Catalogue;
 
 use App\Models\User;
+use App\Models\Medicine\MedicineReserve;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -23,5 +24,10 @@ class Headquarter extends Model
     public function headquarterUser()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function medicicenereservaBank()
+    {
+        return $this->hasMany(MedicineReserve::class,'to_user_headquarters','user_id');
     }
 }

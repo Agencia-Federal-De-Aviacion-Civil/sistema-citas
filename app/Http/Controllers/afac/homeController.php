@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
 use App\Models\Medicine\MedicineReserve;
+use App\Models\Catalogue\Headquarter;
 use Illuminate\Support\Facades\DB;
 
 class homeController extends Controller
@@ -46,18 +47,27 @@ class homeController extends Controller
             ? round(($appointment->canceladas * 100 / $appointment->registradas), 0)
             : 0;
             $porcanceladas = $appointment && $appointment->registradas > 0
-            ? round(($appointment->canceladas * 100 / $appointment->registradas), 0)
+            ? round(($canceladas * 100 / $registradas), 0)
             : 0;
+            //dd($canceladas* 100 / $registradas);
             $nowapoimnet = $appointment->appointmentnow;
         //SUPER ADMIN
         $registradasall = $appointment->registradasfull;
         $medicine = ($registradasall ? $registradasall * 100 / $registradasall : '0');
         
-        $headquarters = MedicineReserve::with([
-            'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
-        ])->get();
 
-        //  dd($headquarters);
+
+       /* $headquarters = MedicineReserve::with([
+            'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
+        ])->get();*/
+
+
+       $headquarters = Headquarter::with([
+            'headquarterUser','medicicenereservaBank'
+        ])->get();
+        //  dd($headquarter->medicicenereservaBank->count());
+
+
 
         return view('afac.dashboard.index', compact('date', 'registradasall', 'medicine','registradas','pendientes','validado','reagendado','canceladas','porconfir','porpendientes','porreagendado','porcanceladas1','porcanceladas','nowapoimnet','date1','headquarters'));
     }
