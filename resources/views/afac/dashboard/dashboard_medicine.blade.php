@@ -148,7 +148,7 @@
                                 <h3 class="font-semibold text-base text-gray-900 dark:text-gray-50">Citas Recientes</h3>
                             </div>
                             <div class="relative w-full max-w-full flex-grow flex-1 text-right">
-                                <button class="bg-blue-500 dark:bg-gray-100 text-white active:bg-blue-600 dark:text-gray-800 dark:active:text-gray-700 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button">See all</button>
+                                <a href="{{ route('afac.appointment') }}" class="bg-blue-500 dark:bg-gray-100 text-white active:bg-blue-600 dark:text-gray-800 dark:active:text-gray-700 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button">VER TODAS</a>
                             </div>
                         </div>
                         <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1">
