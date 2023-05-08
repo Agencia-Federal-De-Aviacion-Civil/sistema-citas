@@ -25,7 +25,7 @@ class homeController extends Controller
         ->selectRaw("count(case when status = '2' then 1 end) as canceladosede")
         ->selectRaw("count(case when status = '3' then 1 end) as canceladousuario")
         ->selectRaw("count(case when status = '4' then 1 end) as reagendado")
-        ->selectRaw("count(case when dateReserve = '$date1' then 1 end) as appointmentnow")
+        // ->selectRaw("count(case when dateReserve = '$date1' then 1 end) as appointmentnow")
         ->selectRaw("count(id) as registradasfull")
         ->first();
         //ADMIN MEDICINE
@@ -50,7 +50,7 @@ class homeController extends Controller
             ? round(($canceladas * 100 / $registradas), 0)
             : 0;
             //dd($canceladas* 100 / $registradas);
-            $nowapoimnet = $appointment->appointmentnow;
+            // $nowapoimnet = $appointment->appointmentnow;
         //SUPER ADMIN
         $registradasall = $appointment->registradasfull;
         $medicine = ($registradasall ? $registradasall * 100 / $registradasall : '0');
@@ -69,7 +69,7 @@ class homeController extends Controller
 
 
 
-        return view('afac.dashboard.index', compact('date', 'registradasall', 'medicine','registradas','pendientes','validado','reagendado','canceladas','porconfir','porpendientes','porreagendado','porcanceladas1','porcanceladas','nowapoimnet','date1','headquarters'));
+        return view('afac.dashboard.index', compact('date', 'registradasall', 'medicine','registradas','pendientes','validado','reagendado','canceladas','porconfir','porpendientes','porreagendado','porcanceladas1','porcanceladas','date1','headquarters'));
     }
 
 
