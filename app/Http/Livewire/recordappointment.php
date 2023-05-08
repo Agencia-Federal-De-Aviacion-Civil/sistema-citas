@@ -155,7 +155,7 @@ final class recordappointment extends PowerGridComponent
                 }
             })
             ->addColumn('headquarters', function (MedicineReserve $headquarters) {
-                return $headquarters->user->name;
+                return ($headquarters->user ? $headquarters->user->name : '');
             })
             ->addColumn('curp', function (MedicineReserve $regiser) {
                 return ($regiser->userParticipantUser ? $regiser->userParticipantUser->curp : '');
