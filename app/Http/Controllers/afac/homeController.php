@@ -26,7 +26,7 @@ class homeController extends Controller
             ->selectRaw("count(case when status = '3' then 1 end) as canceladousuario")
             ->selectRaw("count(case when status = '4' then 1 end) as reagendado")
             // ->selectRaw("count(case when dateReserve = ? then 1 end) as appointmentnow", [$date1])
-            ->selectRaw("count(id) as registradasfull")
+            // ->selectRaw("count(id) as registradasfull")
             // ->where('dateReserve', $date1)
             ->first();
         //ADMIN MEDICINE
@@ -62,9 +62,8 @@ class homeController extends Controller
             'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
         ])->get();*/
         $headquarters = Headquarter::with([
-            'headquarterUser', 'medicicenereservaBank'
+            'headquarterUser'
         ])->get();
-        //  dd($headquarter->medicicenereservaBank->count());
         return view('afac.dashboard.index', compact('date', 'registradasall', 'medicine', 'registradas', 'pendientes', 'validado', 'reagendado', 'canceladas', 'porconfir', 'porpendientes', 'porreagendado', 'porcanceladas1', 'porcanceladas', 'date1', 'headquarters'));
     }
 }

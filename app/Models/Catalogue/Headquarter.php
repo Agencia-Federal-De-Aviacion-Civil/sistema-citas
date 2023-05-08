@@ -25,9 +25,4 @@ class Headquarter extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
-
-    public function medicicenereservaBank()
-    {
-        return $this->hasMany(MedicineReserve::class,'to_user_headquarters','user_id');
-    }
 }

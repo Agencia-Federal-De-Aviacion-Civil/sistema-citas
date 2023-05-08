@@ -233,13 +233,13 @@
                                     @foreach ($headquarters as $headquarter)
                                     <tr class="text-gray-700 dark:text-gray-100">
                                         <th class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">{{$headquarter->headquarterUser->name}}</th>
-                                        <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">{{$headquarter->medicicenereservaBank->count()}}</td>
+                                        <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">{{$headquarter->headquarterUser->userMedicineReserveTo->count()}}</td>
                                         <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                                             <div class="flex items-center">
-                                                <span class="mr-2">{{$headquarter->medicicenereservaBank->count()*100/$registradas}}%</span>
+                                                <span class="mr-2">{{$headquarter->headquarterUser->userMedicineReserveTo->count()*100/$registradas}}%</span>
                                                 <div class="relative w-full">
                                                     <div class="overflow-hidden h-2 text-xs flex rounded bg-blue-200">
-                                                        <div style="width:{{$headquarter->medicicenereservaBank->count()*100/$registradas}}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-600"></div>
+                                                        <div style="width:{{$headquarter->headquarterUser->userMedicineReserveTo->count()*100/$registradas}}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-600"></div>
                                                     </div>
                                                 </div>
                                             </div>
