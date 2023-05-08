@@ -64,6 +64,7 @@
                         typelicens: @entangle('clasification_class_id'),
                         reservedate: @entangle('dateReserve'),
                         fileName: '',
+                        typerevalora: '',
                     }">
                         {{-- estep --}}
                         <section class="text-gray-600 body-font">
@@ -153,8 +154,77 @@
                                                 @enderror
                                             </div>
                                         </div>
+                                        {{-- ADJUNTAR DOCUMENTOS PARA REVALORACIÓN --}}
+                                        <div x-show="tipoExamen ==='3'" class="flex relative pb-6">
+                                            <div class="h-full w-10 absolute inset-0 flex items-center justify-center">
+                                                <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
+                                            </div>
+                                            <div
+                                                class="flex-shrink-0 w-10 h-10 rounded-full bg-sky-700 inline-flex items-center justify-center text-white relative z-10">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                    class="w-6 h-6">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m6.75 12l-3-3m0 0l-3 3m3-3v6m-1.5-15H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                                                </svg>
+                                            </div>
+                                            <div class="flex-grow pl-4">
+                                                <label for="small"
+                                                    class="block mb-2 text-base font-medium text-gray-900 dark:text-white">ADJUNTAR
+                                                    LA AUTORIZACIÓN POR PARTE DE LA AGENCIA FEDERAL DE AVIACIÓN
+                                                    CIVIL</label>
+                                                <label for="file-input" class="sr-only">Adjunta el
+                                                    comprobante</label>
+                                                <input type="file" wire:model="" x-ref="file2"
+                                                    @change="fileName2 = 'valornombre'"
+                                                    class="block w-full border border-gray-200 shadow-sm rounded-md text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 file:bg-transparent file:border-0 file:bg-gray-100 file:mr-4 file:py-2.5 file:px-4 dark:file:bg-gray-700 dark:file:text-gray-400">
+                                                <div class="float-left">
+                                                    <div wire:loading wire:target="name_document">
+                                                        Subiendo...
+                                                        <div style="color: #27559b9a" class="la-ball-fall">
+                                                            <div></div>
+                                                            <div></div>
+                                                            <div></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {{-- paso revaloración --}}
+                                        <div x-show="tipoExamen === '3'" class="flex relative pb-6">
+                                            <div class="h-full w-10 absolute inset-0 flex items-center justify-center">
+                                                <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
+                                            </div>
+                                            <div
+                                                class="flex-shrink-0 w-10 h-10 rounded-full bg-sky-700 inline-flex items-center justify-center text-white relative z-10">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                    class="w-6 h-6">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m5.231 13.481L15 17.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v16.5c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9zm3.75 11.625a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+                                                </svg>
+
+                                            </div>
+                                            <div class="flex-grow pl-4">
+                                                <label for="typerva"
+                                                    class="block mb-2 text-base font-medium text-gray-900 dark:text-white">¿QUE
+                                                    TIPO DE REVALORACIÓN VAS A REALIZAR?</label>
+                                                <select id="typerva" x-model="typerevalora"
+                                                    wire:model.lazy="" wire:change=""
+                                                    class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                    <option value="0" selected>Seleccione...</option>
+                                                    <option value="1" selected>INICIAL</option>
+                                                    <option value="2" selected>RENOVACIÓN</option>
+                                                </select>
+                                                @error('')
+                                                    <span
+                                                        class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                        </div>
                                         {{-- paso2 --}}
-                                        <div x-show="tipoExamen ==='1'" class="flex relative pb-6">
+                                        <div x-show="tipoExamen ==='1'||typerevalora==='1'"
+                                            class="flex relative pb-6">
                                             <div class="h-full w-10 absolute inset-0 flex items-center justify-center">
                                                 <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
                                             </div>
@@ -187,8 +257,8 @@
                                                 @enderror
                                             </div>
                                         </div>
-                                        {{-- paso33 --}}
-                                        <div x-show="tipoExamen === '1' && question === '1' || tipoExamen === '1' && question === '2'"
+                                        {{-- paso3 --}}
+                                        <div x-show="tipoExamen === '1' && question === '1' || tipoExamen === '1' && question === '2' || typerevalora==='1'  && question > '0'"
                                             class="flex relative pb-6">
                                             <div class="h-full w-10 absolute inset-0 flex items-center justify-center">
                                                 <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
@@ -213,7 +283,7 @@
                                                                 placeholder="seleccione..."
                                                                 wire:model.lazy="type_class_id"
                                                                 class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                                <option value="0">Seleccione...</option>
+                                                                <option value="">Seleccione...</option>
                                                                 @foreach ($questionClassess as $questionClass)
                                                                     <option value="{{ $questionClass->id }}">
                                                                         {{ $questionClass->name }}
@@ -234,7 +304,7 @@
                                                                 LICENCIA</label>
                                                             <select wire:model.lazy="clasification_class_id"
                                                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                                <option selected>Seleccione...
+                                                                <option value="" disabled selected>Seleccione...
                                                                 </option>
                                                                 @foreach ($clasificationClass as $clasification)
                                                                     <option value="{{ $clasification->id }}">
@@ -259,7 +329,8 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div x-show="tipoExamen === '2'" class="flex relative pb-6">
+                                        <div x-show="tipoExamen === '2' || typerevalora==='2'"
+                                            class="flex relative pb-6">
                                             <div class="h-full w-10 absolute inset-0 flex items-center justify-center">
                                                 <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
                                             </div>
@@ -299,7 +370,8 @@
                                                     <div>
                                                         <div class="mt-4 relative z-auto w-full group">
                                                             <x-select label="TIPO DE LICENCIA"
-                                                                placeholder="Seleccione uno o más..." :options="$clasificationClass"
+                                                                :options="$clasificationClass"
+                                                                placeholder="Seleccione uno o más..."
                                                                 option-label="name" option-value="id"
                                                                 wire:model.defer="clasification_class_id"
                                                                 multiselect />

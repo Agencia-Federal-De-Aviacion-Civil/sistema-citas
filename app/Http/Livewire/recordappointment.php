@@ -61,16 +61,20 @@ final class recordappointment extends PowerGridComponent
      */
     public function datasource(): Builder
     {
-        if (Auth::user()->can('see.navigation.controller.systems')) {
+        if (Auth::user()->can('super_admin.medicine_admin.see.schedule.table')) {
             return MedicineReserve::query()->with([
                 'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
             ]);
-        } else {
+        } else if (Auth::user()->can('user.see.schedule.table')) {
             return MedicineReserve::query()->with([
                 'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
             ])->whereHas('medicineReserveMedicine', function ($q1) {
                 $q1->where('user_id', Auth::user()->id);
             });
+        } else if (Auth::user()->can('headquarters.see.schedule.table')) {
+            return MedicineReserve::query()->with([
+                'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
+            ])->where('to_user_headquarters', Auth::user()->id);
         }
     }
 

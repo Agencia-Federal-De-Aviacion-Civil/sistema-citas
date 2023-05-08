@@ -217,6 +217,7 @@ class HomeMedicine extends Component
         $userMedicines = MedicineReserve::with(['medicineReserveMedicine'])
             ->whereHas('medicineReserveMedicine', function ($q1) {
                 $q1->where('user_id', Auth::user()->id);
+                $q1->where('type_exam_id', $this->type_exam_id);
             })
             ->where(function ($q) {
                 $q->whereHas('medicineReserveMedicine.medicineInitial', function ($q2) {
