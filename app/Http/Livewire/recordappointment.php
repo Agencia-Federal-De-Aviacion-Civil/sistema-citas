@@ -31,8 +31,8 @@ final class recordappointment extends PowerGridComponent
     }
     public function setUp(): array
     {
-        $this->showCheckBox();
-        // $this->persist(['columns', 'filters']);
+        //$this->showCheckBox();
+        $this->showCheckBox('my_custom_table_id');
         return [
             Exportable::make('export')
                 ->striped()
@@ -41,7 +41,7 @@ final class recordappointment extends PowerGridComponent
                 ->showSearchInput()
                 ->showToggleColumns(),
             Footer::make()
-                ->showPerPage(25)
+                ->showPerPage(10)
                 ->showRecordCount(),
         ];
     }
@@ -179,16 +179,16 @@ final class recordappointment extends PowerGridComponent
                 return ($regiser->userParticipantUser ? $regiser->userParticipantUser->age : '');
             })
             ->addColumn('domicile', function (MedicineReserve $regiser) {
-                return ($regiser->userParticipantUser ? $regiser->userParticipantUser->street : '') . ' No.' . $regiser->userParticipantUser->nInterior . ' No.ext.' . $regiser->userParticipantUser->nExterior . ' ' . $regiser->userParticipantUser->suburb . ' ,' . $regiser->userParticipantUser->postalCode . ' ,' . $regiser->userParticipantUser->delegation . ' ,' . $regiser->userParticipantUser->federalEntity;
+                return ($regiser->userParticipantUser ? $regiser->userParticipantUser->street : '') . ' No.' . ($regiser->userParticipantUser ? $regiser->userParticipantUser->nInterior : '') . ' No.ext.' . ($regiser->userParticipantUser ? $regiser->userParticipantUser->nExterior : '') . ' ' . ($regiser->userParticipantUser ? $regiser->userParticipantUser->suburb : '') . ' ,' . ($regiser->userParticipantUser ? $regiser->userParticipantUser->postalCode : '') . ' ,' . ($regiser->userParticipantUser ? $regiser->userParticipantUser->delegation : '') . ' ,' . ($regiser->userParticipantUser ? $regiser->userParticipantUser->federalEntity : '');
             })
             ->addColumn('mobilePhone', function (MedicineReserve $regiser) {
-                return $regiser->userParticipantUser->mobilePhone;
+                return ($regiser->userParticipantUser ? $regiser->userParticipantUser->mobilePhone : '');
             })
             ->addColumn('officePhone', function (MedicineReserve $regiser) {
-                return $regiser->userParticipantUser->officePhone;
+                return ($regiser->userParticipantUser ? $regiser->userParticipantUser->officePhone : '');
             })
             ->addColumn('extension', function (MedicineReserve $regiser) {
-                return $regiser->userParticipantUser->extension;
+                return ($regiser->userParticipantUser ? $regiser->userParticipantUser->extension : '');
             })
 
 
