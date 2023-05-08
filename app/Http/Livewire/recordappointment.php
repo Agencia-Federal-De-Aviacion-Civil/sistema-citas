@@ -142,16 +142,16 @@ final class recordappointment extends PowerGridComponent
             })
             ->addColumn('class', function (MedicineReserve $class) {
                 if ($class->medicineReserveMedicine->medicineTypeExam->id == 1) {
-                    return $class->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name;
+                    return ($class->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass ? $class->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name : '');
                 } else if ($class->medicineReserveMedicine->type_exam_id == 2) {
-                    return $class->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name;
+                    return ($class->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass ? $class->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name : '');
                 }
             })
             ->addColumn('typelicens', function (MedicineReserve $class) {
                 if ($class->medicineReserveMedicine->medicineTypeExam->id == 1) {
-                    return $class->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass->name;
+                    return ($class->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass ? $class->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass->name : '');
                 } else if ($class->medicineReserveMedicine->type_exam_id == 2) {
-                    return $class->medicineReserveMedicine->medicineRenovation[0]->renovationClasificationClass->name;
+                    return ($class->medicineReserveMedicine->medicineRenovation[0]->renovationClasificationClass ? $class->medicineReserveMedicine->medicineRenovation[0]->renovationClasificationClass->name : '');
                 }
             })
             ->addColumn('headquarters', function (MedicineReserve $headquarters) {
