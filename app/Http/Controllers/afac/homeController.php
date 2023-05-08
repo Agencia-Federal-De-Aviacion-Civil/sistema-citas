@@ -40,10 +40,9 @@ class homeController extends Controller
             $porpendientes = $appointment && $appointment->registradas > 0
             ? round(($appointment->pendientes * 100 / $appointment->registradas), 0)
             : 0;
-           /* $porreagendado = $appointment && $appointment->registradas > 0
+            $porreagendado = $appointment && $appointment->registradas > 0
             ? round(($appointment->reagendado * 100 / $appointment->registradas), 0)
-            : 0;*/
-            $porreagendado = 4;
+            : 0;
             $porcanceladas1 = $appointment && $appointment->registradas > 0
             ? round(($appointment->canceladas * 100 / $appointment->registradas), 0)
             : 0;

@@ -133,7 +133,7 @@
     </div>
 
         <div class="bg-gray-100 text-gray-500 rounded shadow-xl py-5 px-5 w-full sm:w-full md:w-full lg:w-full"
-            x-data="{ cardOpen: false, cardData: cardData2() }" x-init="$watch('cardOpen', value => value ? (cardData.countUp($refs.total, 0,  {{ $registradas }}, null, 0.8), cardData.sessions.forEach((el, i) => cardData.countUp($refs[`device${i}`], 0, cardData.sessions[i].size, null, 1.6))) : null);
+            x-data="{ cardOpen: false, cardData: cardData() }" x-init="$watch('cardOpen', value => value ? (cardData.countUp($refs.total, 0,  {{ $registradas }}, null, 0.8), cardData.sessions.forEach((el, i) => cardData.countUp($refs[`device${i}`], 0, cardData.sessions[i].size, null, 1.6))) : null);
     setTimeout(() => { cardOpen = true }, 100)">
             <div class="flex w-full">
                 <h3 class="text-lg font-semibold leading-tight flex-1">TOTAL DE CITAS MEDICINA DE AVIACIÓN</h3>
@@ -286,23 +286,6 @@
 </div>
     <script>
         let cardData = function() {
-            return {
-                countUp: function(target, startVal, endVal, decimals, duration) {
-                    const countUp = new CountUp(target, startVal || 0, endVal, decimals || 0, duration || 2);
-                    countUp.start();
-                },
-                sessions: [{
-                    "label": "Medicina preventiva",
-                    "size": @json($medicine),
-                    "color": "blue-800"
-                }, {
-                    "label": "Lingüistica",
-                    "size": 0,
-                    "color": "blue-500"
-                }]
-            }
-        }
-        let cardData2 = function() {
         return {
             countUp: function(target, startVal, endVal, decimals, duration) {
                 const countUp = new CountUp(target, startVal || 0, endVal, decimals || 0, duration || 2);
