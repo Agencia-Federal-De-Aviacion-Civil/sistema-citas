@@ -21,7 +21,7 @@
     <div class="py-12">
         <div class="container mx-auto px-4 py-4 bg-white shadow-xl sm:rounded-lg">
             <div class="bg-gray-100 text-gray-500 rounded shadow-xl py-5 px-4 w-full sm:w-full md:w-full lg:w-full">
-                <h2 class="mb-4 text-2xl font-bold">TOTAL DE CITAS {{ $registradasall }}</h2>
+                <h2 class="mb-4 text-2xl font-bold">TOTAL DE CITAS {{ $registradas }}</h2>
                 <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4">
                     <!-- 1 card -->
                     <div class="relative bg-white py-6 px-6 rounded-3xl w-64 my-4 shadow-xl">
@@ -43,13 +43,13 @@
                                 <div class="my-2">
                                     <p class="font-semibold text-base mb-2">Total de citas</p>
                                     <div class="flex space-x-2">
-                                        <p>{{ $registradasall }}</p>
+                                        <p>{{ $registradas }}</p>
                                     </div>
                                 </div>
                                 <div class="my-2">
                                     <p class="font-semibold text-base mb-2">Progress</p>
                                     <div class="text-base text-gray-400 font-semibold">
-                                        <p>{{ $medicine }}%</p>
+                                        <p>{{ $registradas }}%</p>
                                     </div>
                                 </div>
                             </div>
@@ -209,7 +209,7 @@
 
                                 <div class="ml-4">
                                     <h2 class="font-semibold">Canceladas: {{ $canceladas }}</h2>
-                                    <p class="mt-2 text-sm text-gray-500">{{ $porcanceladas }}%</p>
+                                    <p class="mt-2 text-sm text-gray-500">{{ $porcanceladas }}%</p>    
                                 </div>
                             </div>
                         </div>
@@ -303,7 +303,7 @@
                                         </svg>
                                     </div>
                                     <div class="ml-4">
-                                        <h2 class="font-semibold">{{ $nowapoimnet }} Citas</h2>
+                                        <h2 class="font-semibold">{{ $now }} Citas</h2>
                                         <p class="mt-2 text-sm text-gray-500">hoy {{ $date }}</p>
                                     </div>
                                 </div>
@@ -336,7 +336,7 @@
                     "color": "blue-500"
                 }, {
                     "label": "Cancelado",
-                    "size": @json($porcanceladas),
+                    "size": @json($porcanceladas)
                     "color": "red-500"
                 }, ]
             }
