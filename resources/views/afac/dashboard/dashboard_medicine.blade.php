@@ -76,10 +76,10 @@
                                 class="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50">
                                 <span href="#blue" class="block w-3 h-3 bg-blue-500 rounded-full"></span>
                             </div>
-                            <div class="ml-4">
+                            {{-- <div class="ml-4">
                                 <h2 class="font-semibold">Reagendadas: {{ $reagendado }}</h2>
                                 <p class="mt-2 text-sm text-gray-500">{{ $porreagendado }}%</p>
-                            </div>
+                            </div> --}}
                         </div>
                         <div class="flex items-start p-2">
                             <div
@@ -186,11 +186,11 @@
                 "label": "Validado",
                 "size": @json($porconfir),
                 "color": "blue-800"
-            }, {
+            }, /*{
                 "label": "Reagendado",
                 "size": @json($porreagendado),
                 "color": "blue-500"
-            }, {
+            },*/ {
                 "label": "Cancelado",
                 "size": @json($porcanceladas),
                 "color": "red-500"
