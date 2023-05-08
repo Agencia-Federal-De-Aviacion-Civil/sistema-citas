@@ -25,7 +25,7 @@ class homeController extends Controller
             ->selectRaw("count(case when status = '2' then 1 end) as canceladosede")
             ->selectRaw("count(case when status = '3' then 1 end) as canceladousuario")
             ->selectRaw("count(case when status = '4' then 1 end) as reagendado")
-            // ->selectRaw("count(case when dateReserve = ? then 1 end) as appointmentnow", [$date1])
+            ->selectRaw("count(case when dateReserve = ? then 1 end) as appointmentnow", [$date1])
             ->selectRaw("count(id) as registradasfull")
             // ->where('dateReserve', $date1)
             ->first();
@@ -51,7 +51,7 @@ class homeController extends Controller
             ? round(($canceladas * 100 / $registradas), 0)
             : 0;
         //dd($canceladas* 100 / $registradas);
-        // $nowapoimnet = $appointment->appointmentnow;
+        $nowapoimnet = $appointment->appointmentnow;
         //SUPER ADMIN
         $registradasall = $appointment->registradasfull;
         $medicine = ($registradasall ? $registradasall * 100 / $registradasall : '0');
