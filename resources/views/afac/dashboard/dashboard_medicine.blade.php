@@ -186,11 +186,11 @@
                 "label": "Validado",
                 "size": @json($porconfir),
                 "color": "blue-800"
-            }, /*{
+            }, {
                 "label": "Reagendado",
                 "size": @json($porreagendado),
                 "color": "blue-500"
-            },*/ {
+            }, {
                 "label": "Cancelado",
                 "size": @json($porcanceladas),
                 "color": "red-500"
