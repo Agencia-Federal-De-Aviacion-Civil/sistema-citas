@@ -64,6 +64,6 @@ class homeController extends Controller
         $headquarters = Headquarter::with([
             'headquarterUser'
         ])->get();
-        return view('afac.dashboard.index', compact('date', 'registradasall', 'medicine', 'registradas', 'pendientes', 'validado', 'reagendado', 'canceladas', 'porconfir', 'porpendientes', 'porreagendado', 'porcanceladas1', 'porcanceladas', 'date1', 'headquarters'));
+        return view('afac.dashboard.index', compact('date', 'registradasall', 'medicine', 'registradas', 'pendientes', 'validado', 'reagendado', 'canceladas', 'porconfir', 'porpendientes', 'porreagendado', 'porcanceladas1', 'porcanceladas', 'date1', 'headquarters','nowapoimnet'));
     }
 }
