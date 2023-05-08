@@ -32,7 +32,7 @@ final class recordappointment extends PowerGridComponent
     public function setUp(): array
     {
         $this->showCheckBox();
-        // $this->persist(['columns', 'filters']);
+        $this->showCheckBox('my_custom_table_id');
         return [
             Exportable::make('export')
                 ->striped()
@@ -41,7 +41,7 @@ final class recordappointment extends PowerGridComponent
                 ->showSearchInput()
                 ->showToggleColumns(),
             Footer::make()
-                ->showPerPage(25)
+                ->showPerPage(10)
                 ->showRecordCount(),
         ];
     }
@@ -135,60 +135,60 @@ final class recordappointment extends PowerGridComponent
                 return 'MED-' . $type->medicineReserveMedicine->id;
             })
             ->addColumn('type', function (MedicineReserve $type) {
-                return $type->medicineReserveMedicine->medicineTypeExam->name;
+                return ($type->medicineReserveMedicine->medicineTypeExam ? $type->medicineReserveMedicine->medicineTypeExam->name : '');
             })
             ->addColumn('hours', function (MedicineReserve $type) {
-                return $type->reserveSchedule->time_start;
+                return ($type->reserveSchedule ? $type->reserveSchedule->time_start : '');
             })
             ->addColumn('class', function (MedicineReserve $class) {
                 if ($class->medicineReserveMedicine->medicineTypeExam->id == 1) {
-                    return $class->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name;
+                    return ($class->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass ? $class->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name : '');
                 } else if ($class->medicineReserveMedicine->type_exam_id == 2) {
-                    return $class->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name;
+                    return ($class->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass ? $class->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name : '');
                 }
             })
             ->addColumn('typelicens', function (MedicineReserve $class) {
                 if ($class->medicineReserveMedicine->medicineTypeExam->id == 1) {
-                    return $class->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass->name;
+                    return ($class->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass ? $class->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass->name : '');
                 } else if ($class->medicineReserveMedicine->type_exam_id == 2) {
-                    return $class->medicineReserveMedicine->medicineRenovation[0]->renovationClasificationClass->name;
+                    return ($class->medicineReserveMedicine->medicineRenovation[0]->renovationClasificationClass ? $class->medicineReserveMedicine->medicineRenovation[0]->renovationClasificationClass->name : '');
                 }
             })
             ->addColumn('headquarters', function (MedicineReserve $headquarters) {
-                return $headquarters->user->name;
+                return ($headquarters->user ? $headquarters->user->name : '');
             })
             ->addColumn('curp', function (MedicineReserve $regiser) {
-                return $regiser->userParticipantUser->curp;
+                return ($regiser->userParticipantUser ? $regiser->userParticipantUser->curp : '');
             })
             ->addColumn('reference_number', function (MedicineReserve $regiser) {
                 return $regiser->medicineReserveMedicine->reference_number;
             })
             ->addColumn('genre', function (MedicineReserve $regiser) {
-                return $regiser->userParticipantUser->genre;
+                return ($regiser->userParticipantUser ? $regiser->userParticipantUser->genre : '');
             })
             ->addColumn('birth', function (MedicineReserve $regiser) {
-                return $regiser->userParticipantUser->birth;
+                return ($regiser->userParticipantUser ? $regiser->userParticipantUser->birth : '');
             })
             ->addColumn('state_id', function (MedicineReserve $regiser) {
-                return $regiser->userParticipantUser->state_id;
+                return ($regiser->userParticipantUser ? $regiser->userParticipantUser->state_id : '');
             })
             ->addColumn('state_id', function (MedicineReserve $regiser) {
-                return $regiser->userParticipantUser->municipal_id;
+                return ($regiser->userParticipantUser ? $regiser->userParticipantUser->municipal_id : '');
             })
             ->addColumn('age', function (MedicineReserve $regiser) {
-                return $regiser->userParticipantUser->age;
+                return ($regiser->userParticipantUser ? $regiser->userParticipantUser->age : '');
             })
             ->addColumn('domicile', function (MedicineReserve $regiser) {
-                return $regiser->userParticipantUser->street . ' No.' . $regiser->userParticipantUser->nInterior . ' No.ext.' . $regiser->userParticipantUser->nExterior . ' ' . $regiser->userParticipantUser->suburb . ' ,' . $regiser->userParticipantUser->postalCode . ' ,' . $regiser->userParticipantUser->delegation . ' ,' . $regiser->userParticipantUser->federalEntity;
+                return ($regiser->userParticipantUser ? $regiser->userParticipantUser->street : '') . ' No.' . ($regiser->userParticipantUser ? $regiser->userParticipantUser->nInterior : '') . ' No.ext.' . ($regiser->userParticipantUser ? $regiser->userParticipantUser->nExterior : '') . ' ' . ($regiser->userParticipantUser ? $regiser->userParticipantUser->suburb : '') . ' ,' . ($regiser->userParticipantUser ? $regiser->userParticipantUser->postalCode : '') . ' ,' . ($regiser->userParticipantUser ? $regiser->userParticipantUser->delegation : '') . ' ,' . ($regiser->userParticipantUser ? $regiser->userParticipantUser->federalEntity : '');
             })
             ->addColumn('mobilePhone', function (MedicineReserve $regiser) {
-                return $regiser->userParticipantUser->mobilePhone;
+                return ($regiser->userParticipantUser ? $regiser->userParticipantUser->mobilePhone : '');
             })
             ->addColumn('officePhone', function (MedicineReserve $regiser) {
-                return $regiser->userParticipantUser->officePhone;
+                return ($regiser->userParticipantUser ? $regiser->userParticipantUser->officePhone : '');
             })
             ->addColumn('extension', function (MedicineReserve $regiser) {
-                return $regiser->userParticipantUser->extension;
+                return ($regiser->userParticipantUser ? $regiser->userParticipantUser->extension : '');
             })
 
 

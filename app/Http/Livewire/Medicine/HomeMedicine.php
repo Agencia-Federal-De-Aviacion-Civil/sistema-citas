@@ -63,7 +63,8 @@ class HomeMedicine extends Component
             'type_class_id' => 'required',
             'clasification_class_id' => 'required',
             'to_user_headquarters' => 'required',
-            'dateReserve' => 'required'
+            'dateReserve' => 'required',
+            'medicine_schedule_id' => 'required'
         ];
     }
     public function render()
@@ -387,6 +388,7 @@ class HomeMedicine extends Component
         return [
             'type_exam_id.required' => 'Campo obligatorio',
             'type_class_id.required' => 'Campo obligatorio',
+            'medicine_schedule_id.required' => 'Campo obligatorio',
             'reference_number.unique' => 'Referencia de pago ya existe.',
             'clasification_class_id.required' => 'Campo obligatorio',
             'paymentConcept.required' => 'Ingrese clave de pago.',
