@@ -127,7 +127,7 @@ final class recordappointment extends PowerGridComponent
         return PowerGrid::eloquent()
             ->addColumn('id')
             ->addColumn('name', function (MedicineReserve $regiser) {
-                return $regiser->medicineReserveFromUser->name . ' ' . $regiser->userParticipantUser->apParental . ' ' . $regiser->userParticipantUser->apMaternal;
+                return ($regiser->medicineReserveFromUser ? $regiser->medicineReserveFromUser->name : '') . ' ' . ($regiser->userParticipantUser ? $regiser->userParticipantUser->apParental : '') . ' ' . ($regiser->userParticipantUser ? $regiser->userParticipantUser->apMaternal : '');
                 //return $regiser->medicineReserveFromUser->name;
             })
 
