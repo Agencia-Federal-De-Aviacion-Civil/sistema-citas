@@ -5,7 +5,7 @@
     <div
         class="z-10 relative container px-6 mx-auto flex flex-col md:flex-row items-start md:items-center justify-between">
         <div>
-            <h4 tabindex="0" class="focus:outline-none text-2xl font-bold leading-tight text-white">DASHBOARD</h4>
+            <h4 tabindex="0" class="focus:outline-none text-2xl font-bold leading-tight text-white">Dashboard</h4>
             <ul class="flex flex-col md:flex-row items-start md:items-center text-gray-300 text-sm mt-3">
                 <li class="flex items-center mt-4 md:mt-0">
                     <div class="mr-1">
@@ -17,126 +17,13 @@
         </div>
     </div>
 </div>
-<div>
-    <div class="py-12">
-        <div class="container mx-auto px-4 py-4 bg-white shadow-xl sm:rounded-lg">
-    <div class="bg-gray-100 text-gray-500 rounded shadow-xl py-5 px-4 w-full sm:w-full md:w-full lg:w-full">
-        <h2 class="mb-4 text-2xl font-bold">TOTAL DE CITAS {{$registradasall}}</h2>
-        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4">
-        <!-- 1 card -->
-        <div class="relative bg-white py-6 px-6 rounded-3xl w-64 my-4 shadow-xl">
-            <div class=" text-white flex items-center absolute rounded-full py-4 px-4 shadow-xl bg-blue-500 left-4 -top-6">
-                <!-- svg  -->
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
-                </svg>
-            </div>
-            <div class="mt-8">
-                <p class="text-xl font-semibold my-2">Citas Medicina</p>
-                
-                <div class="border-t-2"></div>
-
-                <div class="flex justify-between">
-                    <div class="my-2">
-                        <p class="font-semibold text-base mb-2">Total de citas</p>
-                        <div class="flex space-x-2">
-                            <p>{{$registradasall}}</p>
-                        </div>
-                    </div>
-                     <div class="my-2">
-                        <p class="font-semibold text-base mb-2">Progress</p>
-                        <div class="text-base text-gray-400 font-semibold">
-                            <p>{{$medicine}}%</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 2 card -->
-        <div class="relative bg-white py-6 px-6 rounded-3xl w-64 my-4 shadow-xl">
-            <div class=" text-white flex items-center absolute rounded-full py-4 px-4 shadow-xl bg-sky-600 left-4 -top-6">
-                <!-- svg  -->
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
-                </svg>
-            </div>
-            <div class="mt-8">
-                <p class="text-xl font-semibold my-2">Citas Lingüistica</p>
-                <div class="border-t-2 "></div>
-
-                <div class="flex justify-between">
-                    <div class="my-2">
-                        <p class="font-semibold text-base mb-2">Total de citas</p>
-                        
-                           <p>0</p>
-                        
-                    </div>
-                     <div class="my-2">
-                        <p class="font-semibold text-base mb-2">Progress</p>
-                        <div class="text-base text-gray-400 font-semibold">
-                            <p>0%</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        
-    </div>
-        {{-- <div class="flex w-full">
-            <h3 class="text-lg font-semibold leading-tight flex-1">TOTAL DE CITAS</h3>
-            <div class="relative h-5 leading-none">
-                <button class="text-xl text-gray-500 hover:text-gray-300 h-6 focus:outline-none" @click.prevent="cardOpen=!cardOpen">
-                        <i class="mdi" :class="'mdi-chevron-'+(cardOpen?'up':'down')"></i>
-                    </button>
-            </div>
-        </div>
-        <div class="relative overflow-hidden transition-all duration-500" x-ref="card" x-bind:style="`max-height:${cardOpen?$refs.card.scrollHeight:0}px; opacity:${cardOpen?1:0}`">
-            <div>
-                <div class="pb-4 lg:pb-6">
-                    <h4 class="text-2xl lg:text-3xl text-black font-semibold leading-tight inline-block" x-ref="total">0</h4>
-                </div>
-                <div class="pb-4 lg:pb-6">
-                    <div class="overflow-hidden rounded-full h-3 bg-gray-800 flex transition-all duration-500" :class="cardOpen?'w-full':'w-0'">
-                        <template x-for="(item,index) in cardData.sessions">
-                                <div class="h-full" :class="`bg-${item.color}`" :style="`width:${item.size}%`"></div>
-                            </template>
-                    </div>
-                </div>
-                <div class="-mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                    <div class="flex items-start p-2">
-                      <div class="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50">
-                        <span href="#blue" class="block w-3 h-3 bg-blue-800 rounded-full"></span>
-                      </div>
-                
-                      <div class="ml-4">
-                        <h3 class="font-semibold">Medicina preventiva: {{$registradasall}}</h3>
-                        <p class="mt-2 text-sm text-gray-500">{{$medicine}}%</p>
-                      </div>
-                    </div>
-                
-                    <div class="flex items-start p-2">
-                      <div class="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50">
-                        <span href="#blue" class="block w-3 h-3 bg-blue-500 rounded-full"></span>
-                      </div>
-                
-                      <div class="ml-4">
-                        <h2 class="font-semibold">Lingüistica</h2>
-                        <p class="mt-2 text-sm text-gray-500">0</p>
-                      </div>
-                    </div>
-                    
-                </div>
-            </div>
-        </div> --}}
-    </div>
-
+<div class="py-12">
+    <div class="container mx-auto px-4 py-4 bg-white shadow-xl sm:rounded-lg">
         <div class="bg-gray-100 text-gray-500 rounded shadow-xl py-5 px-5 w-full sm:w-full md:w-full lg:w-full"
-            x-data="{ cardOpen: false, cardData: cardData2() }" x-init="$watch('cardOpen', value => value ? (cardData.countUp($refs.total, 0,  {{ $registradas }}, null, 0.8), cardData.sessions.forEach((el, i) => cardData.countUp($refs[`device${i}`], 0, cardData.sessions[i].size, null, 1.6))) : null);
+            x-data="{ cardOpen: false, cardData: cardData() }" x-init="$watch('cardOpen', value => value ? (cardData.countUp($refs.total, 0,  {{ $registradas }}, null, 0.8), cardData.sessions.forEach((el, i) => cardData.countUp($refs[`device${i}`], 0, cardData.sessions[i].size, null, 1.6))) : null);
     setTimeout(() => { cardOpen = true }, 100)">
             <div class="flex w-full">
-                <h3 class="text-lg font-semibold leading-tight flex-1">TOTAL DE CITAS MEDICINA DE AVIACIÓN</h3>
+                <h3 class="text-lg font-semibold leading-tight flex-1">TOTAL DE CITAS</h3>
                 <div class="relative h-5 leading-none">
                     <button class="text-xl text-gray-500 hover:text-gray-300 h-6 focus:outline-none"
                         @click.prevent="cardOpen=!cardOpen">
@@ -282,27 +169,10 @@
                 <!-- ./Recent Activities -->
             </div>
         </div>
-</div>
+    </div>
 </div>
     <script>
-        let cardData = function() {
-            return {
-                countUp: function(target, startVal, endVal, decimals, duration) {
-                    const countUp = new CountUp(target, startVal || 0, endVal, decimals || 0, duration || 2);
-                    countUp.start();
-                },
-                sessions: [{
-                    "label": "Medicina preventiva",
-                    "size": @json($medicine),
-                    "color": "blue-800"
-                }, {
-                    "label": "Lingüistica",
-                    "size": 0,
-                    "color": "blue-500"
-                }]
-            }
-        }
-        let cardData2 = function() {
+    let cardData = function() {
         return {
             countUp: function(target, startVal, endVal, decimals, duration) {
                 const countUp = new CountUp(target, startVal || 0, endVal, decimals || 0, duration || 2);
@@ -327,5 +197,4 @@
             }, ]
         }
     }
-    </script>    
-</div>
+    </script>

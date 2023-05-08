@@ -1,6 +1,7 @@
 <x-app-layout>
     @can('see.appointment.medicine')
-        @livewire('medicine.history-appointment')
+        {{-- @livewire('medicine.history-appointment') --}}
+        @include('afac.dashboard.dashboard_medicine')
     @endcan
     @can('see.navigation.controller.systems')
         @include('afac.dashboard.dashboard_superadmin')
