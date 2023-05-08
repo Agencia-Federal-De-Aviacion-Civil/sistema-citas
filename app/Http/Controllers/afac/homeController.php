@@ -18,9 +18,9 @@ class homeController extends Controller
         $date = Date::now()->parse();
         $date1 = Date::now()->format('Y-m-d');
         $appointment = MedicineReserve::query()
-            ->select('status', DB::raw('count(*) as count'), DB::raw('dateReserve'))
-            ->where('dateReserve', $date1)
-            ->groupBy('status', 'dateReserve')
+            ->select('status', DB::raw('count(*) as count'), 'dateReserve')
+            // ->where('dateReserve', $date1)
+            ->groupBy('status','dateReserve')
             ->get();
         $appointmentNow = $appointment->where('dateReserve', $date1);
         $now = $appointmentNow->sum('count');
