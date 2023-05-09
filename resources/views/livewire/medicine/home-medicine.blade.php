@@ -320,10 +320,10 @@
                                                     </div>
                                                     <div x-show="question === '2'">
                                                         <div class="mt-4 relative z-auto w-full group">
-                                                            <x-select label="TIPO DE LICENCIA"
+                                                            <x-select label="TIPO DE LICENCIA" x-model.lazy="typelicens"
                                                                 placeholder="Seleccione uno o más..." :options="$clasificationClass"
                                                                 option-label="name" option-value="id"
-                                                                wire:model.defer="clasification_class_id"
+                                                                wire:model.lazy="clasification_class_id"
                                                                 multiselect />
                                                         </div>
                                                     </div>
@@ -370,11 +370,11 @@
                                                     </div>
                                                     <div>
                                                         <div class="mt-4 relative z-auto w-full group">
-                                                            <x-select label="TIPO DE LICENCIA"
+                                                            <x-select label="TIPO DE LICENCIA" x-model.lazy="typelicens"
                                                                 :options="$clasificationClass"
                                                                 placeholder="Seleccione uno o más..."
                                                                 option-label="name" option-value="id"
-                                                                wire:model.defer="clasification_class_id"
+                                                                wire:model.lazy="clasification_class_id"
                                                                 multiselect />
                                                         </div>
                                                     </div>
@@ -382,7 +382,7 @@
                                             </div>
                                         </div>
                                         {{-- paso5 --}}
-                                        <div x-show="clasification > '0'" class="flex relative pb-6">
+                                        <div x-show="typelicens > '0'" class="flex relative pb-6">
                                             <div class="h-full w-10 absolute inset-0 flex items-center justify-center">
                                                 <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
                                             </div>
