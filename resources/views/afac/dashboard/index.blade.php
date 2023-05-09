@@ -3,7 +3,7 @@
         AQUI TIENE QUE IR EL DASHBOARD PARA LAS SEDES
     @endcan
     @can('medicine_admin.see.dashboard')
-        @livewire('afac.dashboard.dashboard_medicine')
+        @include('afac.dashboard.dashboard_medicine')
     @endcan
     @can('super_admin.see.dashboard')
         @include('afac.dashboard.dashboard_superadmin')
