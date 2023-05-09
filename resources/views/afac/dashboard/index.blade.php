@@ -1,4 +1,7 @@
 <x-app-layout>
+    @can('headquarters.see.dashboard')
+        AQUI TIENE QUE IR EL DASHBOARD PARA LAS SEDES
+    @endcan
     @can('medicine_admin.see.dashboard')
         @livewire('medicine.history-appointment')
     @endcan
