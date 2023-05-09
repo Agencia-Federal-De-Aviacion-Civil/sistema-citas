@@ -31,7 +31,7 @@ class homeController extends Controller
         $porpendientes = round($appointment->where('status', '0')->sum('count') * 100 / $registradas, 0);
         $canceladas = $appointment->whereIn('status', ['2', '3'])->sum('count');
         $reagendado = round($appointment->where('status', '4')->sum('count'));
-        $porreagendado = $appointment->where('status', '4')->sum('count') * 100 / $registradas;
+        $porreagendado = round($appointment->where('status', '4')->sum('count') * 100 / $registradas);
         $porcanceladas = round($appointment->whereIn('status', ['2', '3'])->sum('count') * 100 / $registradas,0);
         $medicine =  round($registradas ? $registradas * 100 / $registradas : '0');
         // $appointment = MedicineReserve::query()
