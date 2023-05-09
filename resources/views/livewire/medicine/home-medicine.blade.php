@@ -100,7 +100,7 @@
                                                             EL COMPROBANTE DE PAGO</label>
                                                         <label for="file-input" class="sr-only">Adjunta el
                                                             comprobante</label>
-                                                        <input type="file" wire:model="name_document" x-ref="file"
+                                                        <input type="file" wire:model="name_document" x-ref="file" accept=".pdf"
                                                             @change="fileName = $refs.file.files[0].name"
                                                             class="block w-full border border-gray-200 shadow-sm rounded-md text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 file:bg-transparent file:border-0 file:bg-gray-100 file:mr-4 file:py-2.5 file:px-4 dark:file:bg-gray-700 dark:file:text-gray-400">
                                                         <div class="float-left">
