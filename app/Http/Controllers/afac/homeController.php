@@ -30,9 +30,10 @@ class homeController extends Controller
         $pendientes = $appointment->where('status', '0')->sum('count');
         $porpendientes = round($appointment->where('status', '0')->sum('count') * 100 / $registradas, 0);
         $canceladas = $appointment->whereIn('status', ['2', '3'])->sum('count');
-        $reagendado = $appointment->where('status', '4')->sum('count');
+        $reagendado = round($appointment->where('status', '4')->sum('count'));
         $porreagendado = $appointment->where('status', '4')->sum('count') * 100 / $registradas;
         $porcanceladas = round($appointment->whereIn('status', ['2', '3'])->sum('count') * 100 / $registradas,0);
+        $medicine =  round($registradas ? $registradas * 100 / $registradas : '0');
         // $appointment = MedicineReserve::query()
         //     ->selectRaw("count(id) as registradas")
         //     ->selectRaw("count(case when status = '0' then 1 end) as pendientes")
@@ -79,6 +80,6 @@ class homeController extends Controller
         $headquarters = Headquarter::with([
             'headquarterUser'
         ])->get();
-        return view('afac.dashboard.index', compact('headquarters', 'registradas', 'pendientes', 'validado', 'canceladas', 'reagendado', 'porconfir', 'porpendientes', 'porreagendado', 'porcanceladas', 'now', 'date'));
+        return view('afac.dashboard.index', compact('headquarters', 'registradas', 'pendientes', 'validado', 'canceladas', 'reagendado', 'porconfir', 'porpendientes', 'porreagendado', 'porcanceladas', 'now', 'date','medicine'));
     }
 }

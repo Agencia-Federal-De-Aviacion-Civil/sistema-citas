@@ -49,7 +49,7 @@
                                 <div class="my-2">
                                     <p class="font-semibold text-base mb-2">Progress</p>
                                     <div class="text-base text-gray-400 font-semibold">
-                                        <p>{{ $registradas }}%</p>
+                                        <p>{{ $medicine }}%</p>
                                     </div>
                                 </div>
                             </div>
@@ -139,8 +139,8 @@
             </div>
 
             <div class="bg-gray-100 text-gray-500 rounded shadow-xl py-5 px-5 w-full sm:w-full md:w-full lg:w-full"
-                x-data="{ cardOpen: false, cardData: cardData() }" x-init="$watch('cardOpen', value => value ? (cardData.countUp($refs.total, 0, {{ $registradas }}, null, 0.8), cardData.sessions.forEach((el, i) => cardData.countUp($refs[`device${i}`], 0, cardData.sessions[i].size, null, 1.6))) : null);
-                setTimeout(() => { cardOpen = true }, 100)">
+            x-data="{ cardOpen: false, cardData: cardData() }" x-init="$watch('cardOpen', value => value ? (cardData.countUp($refs.total, 0,  {{ $registradas }}, null, 0.8), cardData.sessions.forEach((el, i) => cardData.countUp($refs[`device${i}`], 0, cardData.sessions[i].size, null, 1.6))) : null);
+    setTimeout(() => { cardOpen = true }, 100)">
                 <div class="flex w-full">
                     <h3 class="text-lg font-semibold leading-tight flex-1">TOTAL DE CITAS MEDICINA DE AVIACIÓN</h3>
                     <div class="relative h-5 leading-none">
@@ -275,8 +275,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- ./Social Traffic -->
-
                     <!-- Recent Activities -->
                     <div
                         class="relative flex flex-col min-w-0 break-words bg-gray-50 dark:bg-gray-800 w-full shadow-lg rounded">
@@ -336,7 +334,7 @@
                     "color": "blue-500"
                 }, {
                     "label": "Cancelado",
-                    "size": @json($porcanceladas)
+                    "size": @json($porcanceladas),
                     "color": "red-500"
                 }, ]
             }
