@@ -1,5 +1,5 @@
 <div>
     <x-button
-    wire:click="$emit('openModal', 'headquarters.modals.delete-schedule-modal',{{ json_encode(['deleteId' => $deleteId]) }})"
-    xs icon="pencil" info label="HABILITAR DIA" />
+    wire:click="$emit('openModal', 'headquarters.modals.create-update-schedule-modal',{{ json_encode(['deleteId' => $deleteId]) }})"
+    xs icon="calendar" info label="EDITAR DIAS" />
 </div>
