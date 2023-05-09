@@ -43,7 +43,8 @@
                         <div class="overflow-hidden rounded-full h-3 bg-gray-800 flex transition-all duration-500"
                             :class="cardOpen ? 'w-full' : 'w-0'">
                             <template x-for="(item,index) in cardData.sessions">
-                                <div class="h-full" :class="`bg-${item.color}`" :style="`width:${item.size}%`"></div>
+                                <div class="h-full" :class="`bg-${item.color}`" :style="`width:${item.size}%`">
+                                </div>
                             </template>
                         </div>
                     </div>
@@ -76,10 +77,10 @@
                                 class="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50">
                                 <span href="#blue" class="block w-3 h-3 bg-blue-500 rounded-full"></span>
                             </div>
-                            {{-- <div class="ml-4">
+                            <div class="ml-4">
                                 <h2 class="font-semibold">Reagendadas: {{ $reagendado }}</h2>
                                 <p class="mt-2 text-sm text-gray-500">{{ $porreagendado }}%</p>
-                            </div> --}}
+                            </div>
                         </div>
                         <div class="flex items-start p-2">
                             <div
@@ -89,13 +90,13 @@
 
                             <div class="ml-4">
                                 <h2 class="font-semibold">Canceladas: {{ $canceladas }}</h2>
-                                <p class="mt-2 text-sm text-gray-500">{{ $porcanceladas }}%</p>
+                                <p class="mt-2 text-sm text-gray-500">{{ $porcanceladas }}%</p>    
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            
+
             <div class="grid grid-cols-1 lg:grid-cols-2 p-2 gap-4">
 
                 <!-- Social Traffic -->
@@ -110,29 +111,45 @@
                             <table class="items-center w-full bg-transparent border-collapse">
                                 <thead>
                                     <tr>
-                                        <th class="px-4 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-100 align-middle border border-solid border-gray-200 dark:border-gray-500 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Nombre</th>
-                                        <th class="px-4 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-100 align-middle border border-solid border-gray-200 dark:border-gray-500 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">total de citas</th>
-                                        <th class="px-4 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-100 align-middle border border-solid border-gray-200 dark:border-gray-500 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left min-w-140-px"></th>
+                                        <th
+                                            class="px-4 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-100 align-middle border border-solid border-gray-200 dark:border-gray-500 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                            Nombre</th>
+                                        <th
+                                            class="px-4 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-100 align-middle border border-solid border-gray-200 dark:border-gray-500 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                            total de citas</th>
+                                        <th
+                                            class="px-4 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-100 align-middle border border-solid border-gray-200 dark:border-gray-500 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left min-w-140-px">
+                                        </th>
                                     </tr>
                                 </thead>
                                 {{-- {{$headquarters}} --}}
                                 <tbody>
                                     @foreach ($headquarters as $headquarter)
                                     <tr class="text-gray-700 dark:text-gray-100">
-                                        <th class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">{{$headquarter->headquarterUser->name}}</th>
-                                        <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">{{$headquarter->medicicenereservaBank->count()}}</td>
-                                        <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                                        <th
+                                            class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                            {{ $headquarter->headquarterUser->name }}</th>
+                                        <td
+                                            class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                                            {{ $headquarter->headquarterUser->userMedicineReserveTo->count() }}
+                                        </td>
+                                        <td
+                                            class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                                             <div class="flex items-center">
-                                                <span class="mr-2">{{$headquarter->medicicenereservaBank->count()*100/$registradas}}%</span>
+                                                <span
+                                                    class="mr-2">{{ round(($headquarter->headquarterUser->userMedicineReserveTo->count() * 100) / $registradas, 1) }}%</span>
                                                 <div class="relative w-full">
-                                                    <div class="overflow-hidden h-2 text-xs flex rounded bg-blue-200">
-                                                        <div style="width:{{$headquarter->medicicenereservaBank->count()*100/$registradas}}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-600"></div>
+                                                    <div
+                                                        class="overflow-hidden h-2 text-xs flex rounded bg-blue-200">
+                                                        <div style="width:{{ ($headquarter->headquarterUser->userMedicineReserveTo->count() * 100) / $registradas }}%"
+                                                            class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-600">
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </td>
                                     </tr>
-                                    @endforeach
+                                @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -159,7 +176,7 @@
                                   </svg>                      
                               </div>
                               <div class="ml-4">
-                                {{-- <h2 class="font-semibold">{{$nowapoimnet}} Citas</h2> --}}
+                                <h2 class="font-semibold">{{ $now }} Citas</h2>
                                 <p class="mt-2 text-sm text-gray-500">hoy {{$date}}</p>
                               </div>
                             </div>
