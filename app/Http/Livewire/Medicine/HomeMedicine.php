@@ -190,7 +190,7 @@ class HomeMedicine extends Component
         // dd($citas);
         switch ($this->to_user_headquarters) {
             case 7: // CIUDAD DE MEXICO
-                $maxCitas = 50;
+                $maxCitas = 20;
                 break;
             case 2: // CANCUN
             case 3: // TIJUANA
