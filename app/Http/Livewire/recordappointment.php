@@ -32,7 +32,7 @@ final class recordappointment extends PowerGridComponent
     public function setUp(): array
     {
         //$this->showCheckBox();
-        $this->showCheckBox('my_custom_table_id');
+        $this->showCheckBox();
         return [
             Exportable::make('export')
                 ->striped()
