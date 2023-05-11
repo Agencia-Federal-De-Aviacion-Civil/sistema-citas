@@ -23,7 +23,8 @@ class homeController extends Controller
             ->groupBy('status','dateReserve')
             ->get();
         $appointmentNow = $appointment->where('dateReserve', $date1);
-        $now = $appointmentNow->sum('count');
+        //$now = $appointmentNow->sum('count');
+        $now = $appointmentNow->whereIn('status',['0','1','4'])->sum('count');
         $registradas = $appointment->sum('count');
         $porconfir = round($appointment->where('status', '1')->sum('count') * 100 / $registradas, 0);
         $validado = $appointment->where('status', '1')->sum('count');
