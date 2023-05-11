@@ -22,5 +22,8 @@ class MedicineRevaluation extends Model
     {
         return $this->hasMany(MedicineRevaluationInitial::class, 'medicine_revaluation_id');
     }
-    
+    public function revaluationMedicineRenovation()
+    {
+        return $this->hasMany(MedicineRevaluationRenovation::class, 'medicine_revaluation_id');
+    }
 }
