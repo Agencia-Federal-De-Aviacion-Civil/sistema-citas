@@ -71,7 +71,11 @@ final class DisabledDayTable extends PowerGridComponent
      */
     public function relationSearch(): array
     {
-        return [];
+        return [
+            'disabledDaysUser' => [
+                'name',
+            ]
+        ];
     }
 
     /*
@@ -114,15 +118,16 @@ final class DisabledDayTable extends PowerGridComponent
         return [
             Column::make('ID', 'id')
                 ->sortable(),
-            Column::make('SEDE', 'headquarter_name'),
-                // ->sortable(),
+            Column::make('SEDE', 'headquarter_name')
+                ->searchable(),
+            // ->sortable(),
             // ->makeInputRange(),
 
             Column::make('FECHAS DESHABILITADAS', 'disabled_days')
                 ->searchable()
                 ->sortable(),
-            // ->makeInputDatePicker(),
-
+                // ->makeInputDatePicker(),
+                // ->makeInputRange(),
             // Column::make('UPDATED AT', 'updated_at_formatted', 'updated_at')
             //     ->searchable()
             //     ->sortable(),

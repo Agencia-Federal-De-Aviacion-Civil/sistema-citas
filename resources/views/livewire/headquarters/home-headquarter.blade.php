@@ -42,7 +42,7 @@
                             <livewire:headquarter-table>
                         </div>
                         <div x-show="activeTab === 'schedules'">
-                            <div class="flex-grow pl-4">
+                            {{-- <div class="flex-grow pl-4"> --}}
                                 <div class="mb-6">
                                     <x-button wire:click="$emit('openModal', 'headquarters.modals.create-update-schedule-modal')"
                                         icon="calendar" primary label="DESHABILITAR FECHAS" />
@@ -63,11 +63,11 @@
                                             label="DESHABILITAR CITAS" placeholder="INGRESE..." readonly />
                                     </div>
                                 </div> --}}
-                            </div>
+                            {{-- </div> --}}
                             {{-- <div class="mt-8">
                                 <x-button wire:click.prevent="save" icon="home" label="GUARDAR" />
                             </div> --}}
-                            <div class="mt-3">
+                            <div class="mt-2">
                                 <livewire:disabled-day-table />
                             </div>
                         </div>
