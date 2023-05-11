@@ -11,7 +11,7 @@ use WireUi\Traits\Actions;
 class CreateUpdateScheduleModal extends ModalComponent
 {
     use Actions;
-    public $deleteId, $days, $disabled_days, $id_disabledDays, $user_headquarters_id, $nameHeadquarter;
+    public $actionId, $days, $disabled_days, $id_disabledDays, $user_headquarters_id, $nameHeadquarter;
     public function rules()
     {
         $rules = [
@@ -20,16 +20,16 @@ class CreateUpdateScheduleModal extends ModalComponent
         $rules['user_headquarters_id'] = $this->id_disabledDays ? '' : 'required|unique:medicine_disabled_days';
         return $rules;
     }
-    public function mount($deleteId = null)
+    public function mount($actionId = null)
     {
-        if (isset($deleteId)) {
-            $this->deleteId = $deleteId;
-            $this->days = MedicineDisabledDays::with('disabledDaysUser')->where('id', $deleteId)->get();
+        if (isset($actionId)) {
+            $this->actionId = $actionId;
+            $this->days = MedicineDisabledDays::with('disabledDaysUser')->where('id', $actionId)->get();
             $this->nameHeadquarter = $this->days[0]->disabledDaysUser;
             $this->disabled_days = $this->days[0]->disabled_days;
             $this->id_disabledDays = $this->days[0]->id;
         } else {
-            $this->deleteId = null;
+            $this->actionId = null;
         }
     }
     public function render()
@@ -43,6 +43,14 @@ class CreateUpdateScheduleModal extends ModalComponent
     public static function modalMaxWidth(): string
     {
         return 'xl';
+    }
+    public static function closeModalOnEscape(): bool
+    {
+        return false;
+    }
+    public static function closeModalOnClickAway(): bool
+    {
+        return false;
     }
     public function actionSave()
     {
