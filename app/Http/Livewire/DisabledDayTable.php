@@ -114,8 +114,8 @@ final class DisabledDayTable extends PowerGridComponent
         return [
             Column::make('ID', 'id')
                 ->sortable(),
-            Column::make('SEDE', 'headquarter_name')
-                ->sortable(),
+            Column::make('SEDE', 'headquarter_name'),
+                // ->sortable(),
             // ->makeInputRange(),
 
             Column::make('FECHAS DESHABILITADAS', 'disabled_days')

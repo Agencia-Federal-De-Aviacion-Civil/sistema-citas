@@ -47,28 +47,30 @@ class CreateUpdateScheduleModal extends ModalComponent
     public function actionSave()
     {
         $this->validate();
-        if ($this->user_headquarters_id == 0) {
-            $headquarters = Headquarter::with('headquarterUser')->get();
-            foreach ($headquarters as $headquarter) {
-                MedicineDisabledDays::updateOrCreate(
-                    ['id' => $this->id_disabledDays],
-                    [
-                        'user_headquarters_id' => $headquarter->headquarterUser->id,
-                        'disabled_days' => $this->disabled_days,
-                    ]
-                );
-            }
-        } else {
-            MedicineDisabledDays::updateOrCreate(
-                ['id' => $this->id_disabledDays],
-                [
-                    'user_headquarters_id' => $this->user_headquarters_id,
-                    'disabled_days' => $this->disabled_days,
-                ]
-            );
+        $userData = [
+            'disabled_days' => $this->disabled_days,
+        ];
+        if (!$this->id_disabledDays) {
+            $userData['user_headquarters_id'] = $this->user_headquarters_id;
         }
+        // if ($this->user_headquarters_id == 0) {
+        //     $all_headquarters = Headquarter::with('headquarterUser')->get();
+        //     foreach ($all_headquarters as $headquarter) {
+        //         $userData['user_headquarters_id'] = $headquarter->headquarterUser->id;
+        //         MedicineDisabledDays::updateOrCreate(
+        //             ['id' => $this->id_disabledDays],
+        //             $userData
+        //         );
+        //     }
+        // } 
+        // else {
+        MedicineDisabledDays::updateOrCreate(
+            ['id' => $this->id_disabledDays],
+            $userData
+        );
+        // }
         $this->notification([
-            'title'       => 'DIA HABILITADO CORRECTAMENTE',
+            'title'       => 'CAMBIOS RELIZADOS EXITOSAMENTE',
             'icon'        => 'success',
             'timeout' => '3100'
         ]);
