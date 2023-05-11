@@ -18,8 +18,8 @@ final class DisabledDayTable extends PowerGridComponent
         return array_merge(
             parent::getListeners(),
             [
-                'disabledRecord' => '$refresh',
-                'deleteDay' => '$refresh'
+                'createOrUpdateSchedule' => '$refresh',
+                'deleteSchedule' => '$refresh'
             ]
         );
     }

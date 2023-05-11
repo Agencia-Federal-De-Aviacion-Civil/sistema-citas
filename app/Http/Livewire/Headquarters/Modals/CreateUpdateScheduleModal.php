@@ -83,7 +83,7 @@ class CreateUpdateScheduleModal extends ModalComponent
             'timeout' => '3100'
         ]);
         $this->closeModal();
-        $this->emit('deleteDay');
+        $this->emit('createOrUpdateSchedule');
     }
     public function messages()
     {
