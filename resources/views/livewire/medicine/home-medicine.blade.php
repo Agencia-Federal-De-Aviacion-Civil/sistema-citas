@@ -8,7 +8,6 @@
         @include('livewire.medicine.modals.readyPdf')
     @endif
     @livewire('medicine.modals.modal-index')
-    <x-errors></x-errors>
     <div class="relative py-6 lg:py-4">
         <img class="z-0 w-full h-full absolute inset-0 object-cover" src="{{ asset('images/banner_testing.jpg') }}"
             alt="bg" />
@@ -222,7 +221,7 @@
                                                     <option value="1" selected>INICIAL</option>
                                                     <option value="2" selected>RENOVACIÓN</option>
                                                 </select>
-                                                @error('')
+                                                @error('type_exam_revaloration_id')
                                                     <span
                                                         class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
                                                 @enderror
@@ -455,7 +454,7 @@
                                             </div>
                                         </div>
                                         {{-- paso6 --}}
-                                        <div x-show="" class="flex relative">
+                                        <div x-show="reserschedule > 0 && reservedate != 0" class="flex relative">
                                             {{-- <div class="flex relative">  $date --}}
                                             <div
                                                 class="flex-shrink-0 w-10 h-10 rounded-full bg-green-500 inline-flex items-center justify-center text-white relative z-10">

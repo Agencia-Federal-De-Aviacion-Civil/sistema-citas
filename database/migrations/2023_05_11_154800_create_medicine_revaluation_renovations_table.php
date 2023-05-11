@@ -13,12 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('medicine_revaluation_initials', function (Blueprint $table) {
+        Schema::create('medicine_revaluation_renovations', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('medicine_revaluation_id')->nullable();
             $table->foreign('medicine_revaluation_id')->references('id')->on('medicine_revaluations')->onDelete('cascade');
-            $table->unsignedBigInteger('medicine_question_id')->nullable();
-            $table->foreign('medicine_question_id')->references('id')->on('medicine_questions')->onDelete('cascade');
             $table->unsignedBigInteger('type_class_id')->nullable();
             $table->foreign('type_class_id')->references('id')->on('type_classes')->onDelete('cascade');
             $table->unsignedBigInteger('clasification_class_id')->nullable();
@@ -34,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('medicine_revaluation_initials');
+        Schema::dropIfExists('medicine_revaluation_renovations');
     }
 };

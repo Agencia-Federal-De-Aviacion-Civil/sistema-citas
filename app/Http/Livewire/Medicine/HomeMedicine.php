@@ -15,6 +15,7 @@ use App\Models\Medicine\MedicineRenovation;
 use App\Models\Medicine\MedicineReserve;
 use App\Models\Medicine\MedicineRevaluation;
 use App\Models\Medicine\MedicineRevaluationInitial;
+use App\Models\Medicine\MedicineRevaluationRenovation;
 use App\Models\Medicine\MedicineSchedule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -35,7 +36,7 @@ class HomeMedicine extends Component
     public $medicineQueries, $medicineReserves, $medicineInitials, $medicineRenovations, $id_medicineReserve, $savedMedicineId, $scheduleMedicines, $medicine_schedule_id;
     // MEDICINE INITIAL TABLE
     public $question, $date, $dateNow;
-    public $document_authorization,$type_exam_revaloration_id;
+    public $document_authorization, $type_exam_revaloration_id;
     protected $listeners = [
         'saveDisabledDays' => '$refresh',
     ];
@@ -58,13 +59,13 @@ class HomeMedicine extends Component
     {
         return [
             'document_pay' => 'required|mimetypes:application/pdf|max:5000',
-            'document_authorization' => 'required_if:type_exam_id,3',
-            // 'reference_number' => 'required',
             'reference_number' => 'required|unique:medicines',
             'pay_date' => 'required',
             'type_exam_id' => 'required',
             'medicine_question_id' => 'required_if:type_exam_id,1',
             'type_class_id' => 'required',
+            'document_authorization' => 'required_if:type_exam_id,3',
+            'type_exam_revaloration_id' => 'required_if:type_exam_id,3',
             'clasification_class_id' => 'required',
             'to_user_headquarters' => 'required',
             'dateReserve' => 'required',
@@ -107,10 +108,11 @@ class HomeMedicine extends Component
     }
     public function updatedTypeExamId($type_exam_id)
     {
-        if ($type_exam_id==='3'){
-            $type_exam_id='2';
+        $this->typeRenovationExams = TypeClass::where('type_exam_id', $type_exam_id)->get();
+        if ($type_exam_id === '3') {
+            $type_exam_id = '2';
             $this->typeRenovationExams = TypeClass::where('type_exam_id', $type_exam_id)->get();
-        }else{
+        } else {
             $this->typeRenovationExams = TypeClass::where('type_exam_id', $type_exam_id)->get();
         }
     }
@@ -321,28 +323,34 @@ class HomeMedicine extends Component
                     'document_revaloration_id' => $saveDocumentRevaloration->id
                 ]);
                 if ($this->type_exam_revaloration_id == 1) {
-                $clasification_class_ids = $this->clasification_class_id;
-                if (is_array($clasification_class_ids)) {
-                    foreach ($clasification_class_ids as $clasifications) {
+                    $clasification_class_ids = $this->clasification_class_id;
+                    if (is_array($clasification_class_ids)) {
+                        foreach ($clasification_class_ids as $clasifications) {
+                            MedicineRevaluationInitial::create([
+                                'medicine_revaluations_id' => $medicineReId->id,
+                                'medicine_question_id' => $this->medicine_question_id,
+                                'type_class_id' => $this->type_class_id,
+                                'clasification_class_id' => $clasifications
+                            ]);
+                        }
+                    } else {
                         MedicineRevaluationInitial::create([
-                            'medicine_revaluations_id' => $medicineReId->id,
+                            'medicine_revaluation_id' => $medicineReId->id,
                             'medicine_question_id' => $this->medicine_question_id,
+                            'type_class_id' => $this->type_class_id,
+                            'clasification_class_id' => $clasification_class_ids
+                        ]);
+                    }
+                } else if ($this->type_exam_revaloration_id == 2) {
+                    foreach ($this->clasification_class_id as $clasifications) {
+                        MedicineRevaluationRenovation::create([
+                            'medicine_revaluation_id' => $medicineReId->id,
                             'type_class_id' => $this->type_class_id,
                             'clasification_class_id' => $clasifications
                         ]);
                     }
-                } else {
-                    MedicineRevaluationInitial::create([
-                        'medicine_revaluations_id' => $medicineReId->id,
-                        'medicine_question_id' => $this->medicine_question_id,
-                        'type_class_id' => $this->type_class_id,
-                        'clasification_class_id' => $clasification_class_ids
-                    ]);
                 }
-            }else{
-                dd('AQUI ENTRA LA VALIDACIÓN PARA RENOVACIÓN');
             }
-        }
             $cita = new MedicineReserve();
             $cita->from_user_appointment = Auth::user()->id;
             $cita->medicine_id = $this->saveMedicine->id;
