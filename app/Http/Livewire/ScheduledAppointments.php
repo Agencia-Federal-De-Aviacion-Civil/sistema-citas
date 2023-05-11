@@ -39,18 +39,22 @@ class ScheduledAppointments extends DataTableComponent
                 Column::make("Tipo", "medicineReserveMedicine.medicineTypeExam.name")
                 ->sortable(),
 
-                    Column::make("Clase", "medicineReserveMedicine.medicineInitial.medicineInitialTypeClass.name")
-                    ->sortable(),
+                // if(medicineReserveMedicine.medicineTypeExam.id==1){
 
-                    Column::make("TIPO DE LICENCIA", "medicineReserveMedicine.medicineInitial.medicineInitialClasificationClass.name")
-                    ->sortable(),
+                //CONSULTA DE INICIAL
+                Column::make("Clase", "medicineReserveMedicine.medicineInitial.medicineInitialTypeClass.name")
+                ->sortable(),
+                Column::make("TIPO DE LICENCIA", "medicineReserveMedicine.medicineInitial.medicineInitialClasificationClass.name")
+                ->sortable(),
 
+                // }elseif(medicineReserveMedicine.medicineTypeExam.id==2){
 
-                // Column::make("Clase", "medicineReserveMedicine.medicineInitial.medicineInitialTypeClass.name")
-                // ->sortable(),
-
-                // Column::make("TIPO DE LICENCIA", "medicineReserveMedicine.medicineInitial.medicineInitialClasificationClass.name")
-                // ->sortable(),
+                //CONSULTA DE RENOVACIÓN
+                /*Column::make("Clase", "medicineReserveMedicine.medicineRenovation.renovationTypeClass.name")
+                ->sortable(),
+                Column::make("TIPO DE LICENCIA", "medicineReserveMedicine.medicineRenovation.renovationClasificationClass.name")
+                ->sortable(),*/
+                // }
 
                 Column::make("SEDE", "medicineReserveFromUser.userHeadquarter.headquarterUser.name")
                 ->sortable(),
@@ -81,35 +85,9 @@ class ScheduledAppointments extends DataTableComponent
 
     public function builder(): Builder
     {
-
-        return MedicineReserve::query()
-        ->with('medicineReserveFromUser');
+        return MedicineReserve::query();
+        // ->with('medicineReserveFromUser');
         // ->OrWhere('users.name','MANOLO');
     //  ->select('medicineReserveFromUser.id as names');
     }
-    //     ->join('users', function ($user) {
-    //         $user->on('medicine_reserves.from_user_appointment', '=', 'users.id');
-    //     });
-
-        // if (Auth::user()->can('see.navigation.controller.systems')) {
-        // return MedicineReserve::query()
-        // ->leftjoin('users','medicine_reserves.from_user_appointment', '=' ,'users.id')
-        // ->select();
-// ->select('users.name as name');
-// ->with([
-// 'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser','medicineReserveMedicine.medicineInitial'
-// ]);
-
-
-        // }
-        // 'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
-        // else {
-        //     return MedicineReserve::query()->with([
-        //         'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
-        //     ])->whereHas('medicineReserveMedicine', function ($q1) {
-        //         $q1->where('user_id', Auth::user()->id);
-        //     });
-        // }
-    // }
-
 }
