@@ -63,6 +63,7 @@
                         clasification: @entangle('type_class_id'),
                         typelicens: @entangle('clasification_class_id'),
                         reservedate: @entangle('dateReserve'),
+                        reserschedule: @entangle('medicine_schedule_id'),
                         fileName: '',
                         typerevalora: '',
                     }">
@@ -303,7 +304,7 @@
                                                                 class="block mb-2 text-base font-medium text-gray-900 dark:text-white">TIPO
                                                                 DE
                                                                 LICENCIA</label>
-                                                            <select wire:model.lazy="clasification_class_id"
+                                                            <select wire:model.lazy="clasification_class_id" x-ref="typelicens"
                                                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                                                 <option value="" disabled selected>Seleccione...
                                                                 </option>
@@ -320,10 +321,10 @@
                                                     </div>
                                                     <div x-show="question === '2'">
                                                         <div class="mt-4 relative z-auto w-full group">
-                                                            <x-select label="TIPO DE LICENCIA"
+                                                            <x-select label="TIPO DE LICENCIA" x-model.lazy="typelicens"
                                                                 placeholder="Seleccione uno o más..." :options="$clasificationClass"
                                                                 option-label="name" option-value="id"
-                                                                wire:model.defer="clasification_class_id"
+                                                                wire:model.lazy="clasification_class_id"
                                                                 multiselect />
                                                         </div>
                                                     </div>
@@ -370,11 +371,11 @@
                                                     </div>
                                                     <div>
                                                         <div class="mt-4 relative z-auto w-full group">
-                                                            <x-select label="TIPO DE LICENCIA"
+                                                            <x-select label="TIPO DE LICENCIA"  x-model.lazy="typelicens"
                                                                 :options="$clasificationClass"
                                                                 placeholder="Seleccione uno o más..."
                                                                 option-label="name" option-value="id"
-                                                                wire:model.defer="clasification_class_id"
+                                                                wire:model.lazy="clasification_class_id"
                                                                 multiselect />
                                                         </div>
                                                     </div>
@@ -382,7 +383,7 @@
                                             </div>
                                         </div>
                                         {{-- paso5 --}}
-                                        <div x-show="clasification > '0'" class="flex relative pb-6">
+                                        <div x-show="typelicens > '0'" class="flex relative pb-6">
                                             <div class="h-full w-10 absolute inset-0 flex items-center justify-center">
                                                 <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
                                             </div>
@@ -450,7 +451,7 @@
                                             </div>
                                         </div>
                                         {{-- paso6 --}}
-                                        <div x-show="reservedate > '0'" class="flex relative">
+                                        <div x-show="reserschedule > 0 && reservedate != 0" class="flex relative">
                                             {{-- <div class="flex relative">  $date --}}
                                             <div
                                                 class="flex-shrink-0 w-10 h-10 rounded-full bg-green-500 inline-flex items-center justify-center text-white relative z-10">
