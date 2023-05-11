@@ -42,8 +42,12 @@
                             <livewire:headquarter-table>
                         </div>
                         <div x-show="activeTab === 'schedules'">
-                            <div class="flex-grow pl-4">
-                                <div class="grid xl:grid-cols-2 xl:gap-6">
+                            {{-- <div class="flex-grow pl-4"> --}}
+                                <div class="mb-6">
+                                    <x-button wire:click="$emit('openModal', 'headquarters.modals.create-update-schedule-modal')"
+                                        icon="calendar" primary label="DESHABILITAR FECHAS" />
+                                </div>
+                                {{-- <div class="grid xl:grid-cols-2 xl:gap-6">
                                     <div class="mt-1 relative w-full group">
                                         <x-select label="SELECCIONE..." placeholder="SELECCIONE UNA SEDE..."
                                             wire:model.lazy="user_headquarters_id">
@@ -58,12 +62,12 @@
                                         <x-input wire:model.lazy="disabled_days" id="fecha-appointment"
                                             label="DESHABILITAR CITAS" placeholder="INGRESE..." readonly />
                                     </div>
-                                </div>
-                            </div>
-                            <div class="mt-8">
+                                </div> --}}
+                            {{-- </div> --}}
+                            {{-- <div class="mt-8">
                                 <x-button wire:click.prevent="save" icon="home" label="GUARDAR" />
-                            </div>
-                            <div class="mt-3">
+                            </div> --}}
+                            <div class="mt-2">
                                 <livewire:disabled-day-table />
                             </div>
                         </div>
