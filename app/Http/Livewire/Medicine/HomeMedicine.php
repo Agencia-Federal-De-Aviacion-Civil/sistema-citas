@@ -13,6 +13,8 @@ use App\Models\Medicine\MedicineInitial;
 use App\Models\Medicine\MedicineQuestion;
 use App\Models\Medicine\MedicineRenovation;
 use App\Models\Medicine\MedicineReserve;
+use App\Models\Medicine\MedicineRevaluation;
+use App\Models\Medicine\MedicineRevaluationInitial;
 use App\Models\Medicine\MedicineSchedule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -27,12 +29,13 @@ class HomeMedicine extends Component
     use Actions;
     use WithFileUploads;
     public $medicine_question_id, $type_class_id, $clasificationClass, $clasification_class_id;
-    public $name_document, $reference_number, $pay_date, $type_exam_id, $typeRenovationExams, $dateConvertedFormatted;
+    public $document_pay, $reference_number, $pay_date, $type_exam_id, $typeRenovationExams, $dateConvertedFormatted;
     public $questionClassess, $typeExams, $sedes, $userQuestions, $to_user_headquarters, $dateReserve, $saveMedicine, $disabledDaysFilter;
     public $confirmModal = false, $modal = false;
     public $medicineQueries, $medicineReserves, $medicineInitials, $medicineRenovations, $id_medicineReserve, $savedMedicineId, $scheduleMedicines, $medicine_schedule_id;
     // MEDICINE INITIAL TABLE
     public $question, $date, $dateNow;
+    public $document_authorization,$type_exam_revaloration_id;
     protected $listeners = [
         'saveDisabledDays' => '$refresh',
     ];
@@ -54,7 +57,8 @@ class HomeMedicine extends Component
     public function rules()
     {
         return [
-            'name_document' => 'required|mimetypes:application/pdf|max:5000',
+            'document_pay' => 'required|mimetypes:application/pdf|max:5000',
+            'document_authorization' => 'required_if:type_exam_id,3',
             // 'reference_number' => 'required',
             'reference_number' => 'required|unique:medicines',
             'pay_date' => 'required',
@@ -86,7 +90,8 @@ class HomeMedicine extends Component
     public function clean()
     {
         $this->reset([
-            'name_document',
+            'document_authorization',
+            'document_pay',
             'reference_number',
             'pay_date',
             'type_exam_id',
@@ -263,9 +268,9 @@ class HomeMedicine extends Component
                 'icon'        => 'error'
             ]);
         } else {
-            $extension = $this->name_document->extension();
+            $extension = $this->document_pay->extension();
             $saveDocument = Document::create([
-                'name_document' => $this->name_document->storeAs('uploads/citas-app/medicine', $this->reference_number . '-' . $this->pay_date .  '.' . $extension, 'do'),
+                'name_document' => $this->document_pay->storeAs('uploads/citas-app/medicine', $this->reference_number . '-' . $this->pay_date .  '.' . $extension, 'do'),
             ]);
             $this->saveMedicine = Medicine::create([
                 'user_id' => Auth::user()->id,
@@ -301,7 +306,38 @@ class HomeMedicine extends Component
                         'clasification_class_id' => $clasifications
                     ]);
                 }
+            } else if ($this->type_exam_id == 3) {
+                $extension = $this->document_authorization->extension();
+                $saveDocumentRevaloration = Document::create([
+                    'name_document' => $this->document_authorization->storeAs('uploads/citas-app/medicine/revaloration', $this->reference_number . '-' . $this->pay_date .  '.' . $extension, 'do'),
+                ]);
+                $medicineReId = MedicineRevaluation::create([
+                    'medicine_id' => $this->saveMedicine->id,
+                    'document_revaloration_id' => $saveDocumentRevaloration->id
+                ]);
+                if ($this->type_exam_revaloration_id == 1) {
+                $clasification_class_ids = $this->clasification_class_id;
+                if (is_array($clasification_class_ids)) {
+                    foreach ($clasification_class_ids as $clasifications) {
+                        MedicineRevaluationInitial::create([
+                            'medicine_revaluations_id' => $medicineReId->id,
+                            'medicine_question_id' => $this->medicine_question_id,
+                            'type_class_id' => $this->type_class_id,
+                            'clasification_class_id' => $clasifications
+                        ]);
+                    }
+                } else {
+                    MedicineRevaluationInitial::create([
+                        'medicine_revaluations_id' => $medicineReId->id,
+                        'medicine_question_id' => $this->medicine_question_id,
+                        'type_class_id' => $this->type_class_id,
+                        'clasification_class_id' => $clasification_class_ids
+                    ]);
+                }
+            }else{
+                dd('AQUI ENTRA LA VALIDACIÓN PARA RENOVACIÓN');
             }
+        }
             $cita = new MedicineReserve();
             $cita->from_user_appointment = Auth::user()->id;
             $cita->medicine_id = $this->saveMedicine->id;
@@ -312,7 +348,7 @@ class HomeMedicine extends Component
             session(['saved_medicine_id' => $this->saveMedicine->id]);
             $this->generatePdf();
             $this->clean();
-            $this->openConfirm();
+            // $this->openConfirm();
         }
     }
     public function openConfirm()
@@ -394,9 +430,12 @@ class HomeMedicine extends Component
             'paymentConcept.required' => 'Ingrese clave de pago.',
             'paymentConcept.unique' => 'Concepto de pago ya registrado, intenta con otro.',
             'paymentDate.required' => 'Campo obligatorio.',
-            'name_document.required' => 'Documento obligatorio.',
-            'name_document.mimetypes' => 'Solo documentos .PDF.',
-            'name_document.max' => 'No permitido, tamaño maximo 500 KB',
+            'document_pay.required' => 'Documento obligatorio.',
+            'document_pay.mimetypes' => 'Solo documentos .PDF.',
+            'document_pay.max' => 'No permitido, tamaño maximo 500 KB',
+            'document_authorization.required' => 'Documento obligatorio.',
+            'document_authorization.mimetypes' => 'Solo documentos .PDF.',
+            'document_authorization.max' => 'No permitido, tamaño maximo 500 KB',
         ];
     }
 }

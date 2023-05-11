@@ -8,6 +8,7 @@
         @include('livewire.medicine.modals.readyPdf')
     @endif
     @livewire('medicine.modals.modal-index')
+    <x-errors></x-errors>
     <div class="relative py-6 lg:py-4">
         <img class="z-0 w-full h-full absolute inset-0 object-cover" src="{{ asset('images/banner_testing.jpg') }}"
             alt="bg" />
@@ -101,11 +102,11 @@
                                                             EL COMPROBANTE DE PAGO</label>
                                                         <label for="file-input" class="sr-only">Adjunta el
                                                             comprobante</label>
-                                                        <input type="file" wire:model="name_document" x-ref="file" accept=".pdf"
-                                                            @change="fileName = $refs.file.files[0].name"
+                                                        <input type="file" wire:model="document_pay" x-ref="file"
+                                                            accept=".pdf" @change="fileName = $refs.file.files[0].name"
                                                             class="block w-full border border-gray-200 shadow-sm rounded-md text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 file:bg-transparent file:border-0 file:bg-gray-100 file:mr-4 file:py-2.5 file:px-4 dark:file:bg-gray-700 dark:file:text-gray-400">
                                                         <div class="float-left">
-                                                            <div wire:loading wire:target="name_document">
+                                                            <div wire:loading wire:target="document_pay">
                                                                 Subiendo...
                                                                 <div style="color: #27559b9a" class="la-ball-fall">
                                                                     <div></div>
@@ -114,7 +115,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        @error('name_document')
+                                                        @error('document_pay')
                                                             <span
                                                                 class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
                                                         @enderror
@@ -176,11 +177,11 @@
                                                     CIVIL</label>
                                                 <label for="file-input" class="sr-only">Adjunta el
                                                     comprobante</label>
-                                                <input type="file" wire:model="" x-ref="file2"
-                                                    @change="fileName2 = 'valornombre'"
+                                                <input type="file" wire:model="document_authorization"
+                                                    x-ref="file2" @change="fileName2 = 'valornombre'"
                                                     class="block w-full border border-gray-200 shadow-sm rounded-md text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 file:bg-transparent file:border-0 file:bg-gray-100 file:mr-4 file:py-2.5 file:px-4 dark:file:bg-gray-700 dark:file:text-gray-400">
                                                 <div class="float-left">
-                                                    <div wire:loading wire:target="name_document">
+                                                    <div wire:loading wire:target="document_authorization">
                                                         Subiendo...
                                                         <div style="color: #27559b9a" class="la-ball-fall">
                                                             <div></div>
@@ -189,7 +190,10 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                               
+                                                @error('document_authorization')
+                                                    <span
+                                                        class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
+                                                @enderror
                                             </div>
                                         </div>
                                         {{-- paso revaloración --}}
@@ -212,7 +216,7 @@
                                                     class="block mb-2 text-base font-medium text-gray-900 dark:text-white">¿QUE
                                                     TIPO DE REVALORACIÓN VAS A REALIZAR?</label>
                                                 <select id="typerva" x-model="typerevalora"
-                                                    wire:model.lazy="" wire:change=""
+                                                    wire:model.lazy="type_exam_revaloration_id" wire:change=""
                                                     class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                                     <option value="0" selected>Seleccione...</option>
                                                     <option value="1" selected>INICIAL</option>
@@ -304,7 +308,8 @@
                                                                 class="block mb-2 text-base font-medium text-gray-900 dark:text-white">TIPO
                                                                 DE
                                                                 LICENCIA</label>
-                                                            <select wire:model.lazy="clasification_class_id" x-ref="typelicens"
+                                                            <select wire:model.lazy="clasification_class_id"
+                                                                x-ref="typelicens"
                                                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                                                 <option value="" disabled selected>Seleccione...
                                                                 </option>
@@ -321,11 +326,11 @@
                                                     </div>
                                                     <div x-show="question === '2'">
                                                         <div class="mt-4 relative z-auto w-full group">
-                                                            <x-select label="TIPO DE LICENCIA" x-model.lazy="typelicens"
+                                                            <x-select label="TIPO DE LICENCIA"
+                                                                x-model.lazy="typelicens"
                                                                 placeholder="Seleccione uno o más..." :options="$clasificationClass"
                                                                 option-label="name" option-value="id"
-                                                                wire:model.lazy="clasification_class_id"
-                                                                multiselect />
+                                                                wire:model.lazy="clasification_class_id" multiselect />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -371,12 +376,11 @@
                                                     </div>
                                                     <div>
                                                         <div class="mt-4 relative z-auto w-full group">
-                                                            <x-select label="TIPO DE LICENCIA"  x-model.lazy="typelicens"
-                                                                :options="$clasificationClass"
+                                                            <x-select label="TIPO DE LICENCIA"
+                                                                x-model.lazy="typelicens" :options="$clasificationClass"
                                                                 placeholder="Seleccione uno o más..."
                                                                 option-label="name" option-value="id"
-                                                                wire:model.lazy="clasification_class_id"
-                                                                multiselect />
+                                                                wire:model.lazy="clasification_class_id" multiselect />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -451,7 +455,7 @@
                                             </div>
                                         </div>
                                         {{-- paso6 --}}
-                                        <div x-show="reserschedule > 0 && reservedate != 0" class="flex relative">
+                                        <div x-show="" class="flex relative">
                                             {{-- <div class="flex relative">  $date --}}
                                             <div
                                                 class="flex-shrink-0 w-10 h-10 rounded-full bg-green-500 inline-flex items-center justify-center text-white relative z-10">
