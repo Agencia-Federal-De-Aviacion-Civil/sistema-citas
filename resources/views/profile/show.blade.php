@@ -1,9 +1,22 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Profile') }}
-        </h2>
-    </x-slot>
+    <div class="relative py-6 lg:py-4">
+        <img class="z-0 w-full h-full absolute inset-0 object-cover" src="{{ asset('images/banner_ventanillas.jpg') }}"
+            alt="banners" />
+        <div
+            class="z-10 relative container px-6 mx-auto flex flex-col md:flex-row items-start md:items-center justify-between">
+            <div>
+                <h4 tabindex="0" class="focus:outline-none text-2xl font-bold leading-tight text-white">Actualización de Contraseña</h4>
+                <ul class="flex flex-col md:flex-row items-start md:items-center text-gray-300 text-sm mt-3">
+                    <li class="flex items-center mt-4 md:mt-0">
+                        <div class="mr-1">
+                            {{-- <img src="https://tuk-cdn.s3.amazonaws.com/can-uploader/background_with_sub_text-svg3.svg" alt="date"> --}}
+                        </div>
+                        {{-- <span tabindex="0" class="focus:outline-none">Started on 29 Jan 2020</span> --}}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 
     <div>
         <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
@@ -30,7 +43,7 @@
             @endif
 
             <div class="mt-10 sm:mt-0">
-                @livewire('profile.logout-other-browser-sessions-form')
+                {{-- @livewire('profile.logout-other-browser-sessions-form') --}}
             </div>
 
             @if (Laravel\Jetstream\Jetstream::hasAccountDeletionFeatures())

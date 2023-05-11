@@ -24,6 +24,7 @@
                 <div class="mt-4 relative w-full group">
                     <x-input wire:model.lazy="email" label="CORREO" placeholder="ESCRIBE..." />
                 </div>
+                @hasrole('super_admin')
                 <div class="mt-4 relative w-full group">
                     <x-select wire:model.lazy="system_id" label="SISTEMA" placeholder="Seleccione...">
                         @foreach ($qSystems as $qSystem)
@@ -31,7 +32,10 @@
                         @endforeach
                     </x-select>
                 </div>
+                @else
+                @endhasrole
             </div>
+            <x-errors></x-errors>
             <div class="grid xl:grid-cols-1 xl:gap-6">
                 <div class="mt-4 relative w-full group">
                     <x-textarea wire:model.lazy="url" label="URL" placeholder="INGRESA URL DE GOOGLE MAPS..." />
