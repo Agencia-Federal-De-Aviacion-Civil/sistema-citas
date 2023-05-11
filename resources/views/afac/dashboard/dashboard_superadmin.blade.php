@@ -276,11 +276,11 @@
                                                     {{ $headquarter->headquarterUser->name }}</th>
                                                 <td
                                                     class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                                    {{ $headquarter->headquarterUser->userMedicineReserveTo->where('dateReserve', $date1)->count() }}
+                                                    {{ $headquarter->headquarterUser->userMedicineReserveTo->where('dateReserve', $date1)->whereIn('status',['0','1','4'])->count() }}
                                                 </td>
                                                 <td
                                                 class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                                {{ $headquarter->headquarterUser->userMedicineReserveTo->where('dateReserve', $tomorrow)->count() }}
+                                                {{ $headquarter->headquarterUser->userMedicineReserveTo->where('dateReserve', $tomorrow)->whereIn('status',['0','1','4'])->count() }}
                                             </td>
                                                 <td
                                                 class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
