@@ -1,5 +1,5 @@
 import "./bootstrap";
-
+require("flatpickr/dist/themes/material_blue.css");
 import Alpine from "alpinejs";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
