@@ -34,7 +34,7 @@ class MedicineReserve extends Model
     }
     public function reserveSchedule()
     {
-        return $this->belongsTo(MedicineSchedule::class, 'medicine_schedule_id');        
+        return $this->belongsTo(MedicineSchedule::class, 'medicine_schedule_id');
     }
     public function reserveObserv()
     {

@@ -140,6 +140,7 @@ final class recordappointment extends PowerGridComponent
             ->addColumn('hours', function (MedicineReserve $type) {
                 return ($type->reserveSchedule ? $type->reserveSchedule->time_start : '');
             })
+
             ->addColumn('class', function (MedicineReserve $class) {
                 if ($class->medicineReserveMedicine->medicineTypeExam->id == 1) {
                     return ($class->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass ? $class->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name : '');
@@ -147,6 +148,8 @@ final class recordappointment extends PowerGridComponent
                     return ($class->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass ? $class->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name : '');
                 }
             })
+
+
             ->addColumn('typelicens', function (MedicineReserve $class) {
                 if ($class->medicineReserveMedicine->medicineTypeExam->id == 1) {
                     return ($class->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass ? $class->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass->name : '');

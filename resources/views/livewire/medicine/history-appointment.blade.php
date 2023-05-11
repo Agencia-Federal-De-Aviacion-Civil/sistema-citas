@@ -97,11 +97,16 @@
         </div>
     </div>
     @else @endhasrole
+
+
+
             <div class="mt-12 max-w-8xl mx-auto sm:px-6 lg:px-8">
                 <div class="ml-4 py-6 mr-4 uppercase text-sm">
-                    <livewire:recordappointment />
+                    {{-- <livewire:recordappointment /> --}}
+                    @livewire('scheduled-appointments')
                 </div>
             </div>
+
         </div>
     </div>
     <script>
