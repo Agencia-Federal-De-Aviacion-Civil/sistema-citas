@@ -32,7 +32,7 @@ class Index extends Component
             'mobilePhone' => 'required|max:10',
             'officePhone' => 'max:10',
             'extension' => '',
-            'curp' => 'required|unique:user_participants',
+            'curp' => 'required|unique:user_participants|max:18|min:18',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6|same:passwordConfirmation'
         ];
@@ -124,6 +124,8 @@ class Index extends Component
             'extension.required' => 'Campo obligatorio',
             'curp.required' => 'Campo obligatorio',
             'curp.unique' => 'El curp ingresado ya se ha registrado',
+            'curp.max' => 'Máximo 18 caracteres',
+            'curp.min' => 'Mínimo 18 caracteres',
             'email.required' => 'Campo obligatorio',
             'email.email' => 'No valido',
             'email.unique' => 'El correo electrónico registrado ya existe',
