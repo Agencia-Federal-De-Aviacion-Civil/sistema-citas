@@ -231,12 +231,34 @@ class HomeMedicine extends Component
                 $q1->where('user_id', Auth::user()->id);
                 $q1->where('type_exam_id', $this->type_exam_id);
             })
+            // ->where(function ($q) {
+            //     $q->whereHas('medicineReserveMedicine.medicineInitial', function ($q2) {
+            //         $q2->where('type_class_id', $this->type_class_id);
+            //     })
+            //         ->orWhereHas('medicineReserveMedicine.medicineRenovation', function ($q2) {
+            //             $q2->where('type_class_id', $this->type_class_id);
+            //         })
+            //         ->orWhereHas('medicineReserveMedicine.medicineRevaluation.revaluationMedicineInitial', function ($q2) {
+            //             $q2->where('type_class_id', $this->type_class_id);
+            //         });
+            // })
             ->where(function ($q) {
-                $q->whereHas('medicineReserveMedicine.medicineInitial', function ($q2) {
-                    $q2->where('type_class_id', $this->type_class_id);
-                })
-                    ->orWhereHas('medicineReserveMedicine.medicineRenovation', function ($q2) {
-                        $q2->where('type_class_id', $this->type_class_id);
+                $q->where(function ($q2) {
+                        $q2->whereHas('medicineReserveMedicine.medicineInitial', function ($q3) {
+                            $q3->where('type_class_id', $this->type_class_id);
+                        });
+                    })
+                    ->orWhere(function ($q2) {
+                        $q2->whereHas('medicineReserveMedicine.medicineRenovation', function ($q3) {
+                            $q3->where('type_class_id', $this->type_class_id);
+                        });
+                    })
+                    ->orWhere(function ($q2) {
+                        $q2->whereHas('medicineReserveMedicine.medicineRevaluation', function ($q3) {
+                            $q3->whereHas('revaluationMedicineInitial', function ($q4) {
+                                $q4->where('type_class_id', $this->type_class_id);
+                            });
+                        });
                     });
             })
             ->where(function ($queryStop) {
@@ -244,7 +266,7 @@ class HomeMedicine extends Component
                     ->orWhere('status', 4);
             })
             ->get();
-        // dd($userMedicines);
+        // dd($userMedicines[0]->medicineReserveMedicine->medicineInitial);
         foreach ($userMedicines as $userMedicine) {
             if ($userMedicine->id) {
                 if ($userMedicine->medicineReserveMedicine->medicineInitial->count() > 0 && $userMedicine->medicineReserveMedicine->medicineInitial[0]->type_class_id == $this->type_class_id) {
@@ -259,6 +281,14 @@ class HomeMedicine extends Component
                     $this->notification([
                         'title'       => 'ERROR DE CITA!',
                         'description' => 'YA TIENES UNA CITA AGENDADA PARA EXAMEN DE RENOVACIÓN' . ' ' . $userMedicine->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name,
+                        'icon'        => 'error',
+                        'timeout' => '2500'
+                    ]);
+                    return;
+                } else if ($userMedicine->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial->count() > 0 && $userMedicine->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->type_class_id == $this->type_class_id) {
+                    $this->notification([
+                        'title'       => 'ERROR DE CITA!',
+                        'description' => 'YA TIENES UNA CITA AGENDADA PARA EXAMEN DE REVALORACÍÓN'.' '.$userMedicine->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->revaluationInitialTypeClass->name,
                         'icon'        => 'error',
                         'timeout' => '2500'
                     ]);
