@@ -87,95 +87,101 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 p-2 gap-4">
+        <div class="grid grid-cols-1 lg:grid-cols-1 p-2 gap-4">
 
             <!-- Social Traffic -->
-            <div class="relative flex flex-col min-w-0 mb-4 lg:mb-0 break-words bg-gray-50 dark:bg-gray-800 w-full shadow-lg rounded">
+            <div
+                class="relative flex flex-col min-w-0 mb-4 lg:mb-0 break-words bg-gray-50 dark:bg-gray-800 w-full shadow-lg rounded">
                 <div class="rounded-t mb-0 px-0 border-0">
                     <div class="flex flex-wrap items-center px-4 py-2">
                         <div class="relative w-full max-w-full flex-grow flex-1">
                             {{-- <h3 class="font-semibold text-base text-gray-900 dark:text-gray-50">Sedes</h3> --}}
-                            <div class="flex items-start rounded-xl p-4">
-                                <div
-                                    class="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
-                                    </svg>
+                            {{-- <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1"> --}}
+                                <div class="flex items-start rounded-xl p-4">
+                                    <div
+                                        class="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
+                                        </svg>
+                                    </div>
+                                    <div class="ml-4">
+                                        <h2 class="font-semibold">{{ $now }} Citas</h2>
+                                        <p class="mt-2 text-sm text-gray-500">hoy {{ $date2 }}</p>
+                                    </div>
                                 </div>
-                                <div class="ml-4">
-                                    <h2 class="font-semibold">{{ $now }} Citas</h2>
-                                    <p class="mt-2 text-sm text-gray-500">hoy {{ $date2 }}</p>
-                                </div>
-                            </div>
+                            {{-- </div> --}}
                         </div>
                     </div>
                     <div class="block w-full overflow-x-auto">
                         <table class="items-center w-full bg-transparent border-collapse">
                             <thead>
                                 <tr>
-                                    <th class="px-4 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-100 align-middle border border-solid border-gray-200 dark:border-gray-500 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                                Sede</th>
-                                            <th
-                                                class="px-4 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-100 align-middle border border-solid border-gray-200 dark:border-gray-500 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                                Citas para hoy
-                                            </th>
-                                            <th
-                                              class="px-4 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-100 align-middle border border-solid border-gray-200 dark:border-gray-500 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                               Citas para mañana
-                                            </th>
-                                            <th
-                                                class="px-4 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-100 align-middle border border-solid border-gray-200 dark:border-gray-500 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                                total de citas
-                                            </th>
-                                    <th class="px-4 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-100 align-middle border border-solid border-gray-200 dark:border-gray-500 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left min-w-140-px">
+                                    <th
+                                        class="px-4 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-100 align-middle border border-solid border-gray-200 dark:border-gray-500 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                        Sede</th>
+                                    <th
+                                        class="px-4 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-100 align-middle border border-solid border-gray-200 dark:border-gray-500 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                        Citas para hoy
+                                    </th>
+                                    <th
+                                      class="px-4 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-100 align-middle border border-solid border-gray-200 dark:border-gray-500 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                       Citas para mañana
+                                    </th>
+                                    <th
+                                        class="px-4 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-100 align-middle border border-solid border-gray-200 dark:border-gray-500 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                        total de citas
+                                    </th>
+                                    <th
+                                        class="px-4 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-100 align-middle border border-solid border-gray-200 dark:border-gray-500 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left min-w-140-px">
                                     </th>
                                 </tr>
                             </thead>
                             {{-- {{$headquarters}} --}}
                             <tbody>
                                 @foreach ($headquarters as $headquarter)
-                                            <tr class="text-gray-700 dark:text-gray-100">
-                                                <th
-                                                    class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                                    {{ $headquarter->headquarterUser->name }}</th>
-                                                <td
-                                                    class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                                    {{ $headquarter->headquarterUser->userMedicineReserveTo->where('dateReserve', $date1)->whereIn('status',['0','1','4'])->count() }}
-                                                </td>
-                                                <td
-                                                class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                                {{ $headquarter->headquarterUser->userMedicineReserveTo->where('dateReserve', $tomorrow)->whereIn('status',['0','1','4'])->count() }}
-                                            </td>
-                                                <td
-                                                class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                                {{ $headquarter->headquarterUser->userMedicineReserveTo->count() }}
-                                                </td>
-                                                <td
-                                                    class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                                    <div class="flex items-center">
-                                                        <span
-                                                            class="mr-2">{{ round(($headquarter->headquarterUser->userMedicineReserveTo->count() * 100) / $registradas, 1) }}%</span>
-                                                        <div class="relative w-full">
-                                                            <div
-                                                                class="overflow-hidden h-2 text-xs flex rounded bg-blue-200">
-                                                                <div style="width:{{ ($headquarter->headquarterUser->userMedicineReserveTo->count() * 100) / $registradas }}%"
-                                                                    class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-600">
-                                                                </div>
-                                                            </div>
+                                    <tr class="text-gray-700 dark:text-gray-100">
+                                        <th
+                                            class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                            {{ $headquarter->headquarterUser->name }}</th>
+                                        <td
+                                            class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                                            {{ $headquarter->headquarterUser->userMedicineReserveTo->where('dateReserve', $date1)->whereIn('status',['0','1','4'])->count() }}
+                                        </td>
+                                        <td
+                                        class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                                        {{ $headquarter->headquarterUser->userMedicineReserveTo->where('dateReserve', $tomorrow)->whereIn('status',['0','1','4'])->count() }}
+                                    </td>
+                                        <td
+                                        class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                                        {{ $headquarter->headquarterUser->userMedicineReserveTo->count() }}
+                                        </td>
+                                        <td
+                                            class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                                            <div class="flex items-center">
+                                                <span
+                                                    class="mr-2">{{ round(($headquarter->headquarterUser->userMedicineReserveTo->count() * 100) / $registradas, 1) }}%</span>
+                                                <div class="relative w-full">
+                                                    <div
+                                                        class="overflow-hidden h-2 text-xs flex rounded bg-blue-200">
+                                                        <div style="width:{{ ($headquarter->headquarterUser->userMedicineReserveTo->count() * 100) / $registradas }}%"
+                                                            class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-600">
                                                         </div>
                                                     </div>
-                                                </td>
-                                            </tr>
-                                        @endforeach
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
             <!-- Recent Activities -->
-            {{-- <div class="relative flex flex-col min-w-0 break-words bg-gray-50 dark:bg-gray-800 w-full shadow-lg rounded">
+            {{-- <div
+                class="relative flex flex-col min-w-0 break-words bg-gray-50 dark:bg-gray-800 w-full shadow-lg rounded">
                 <div class="rounded-t mb-0 px-0 border-0">
                     <div class="flex flex-wrap items-center px-4 py-2">
                         <div class="relative w-full max-w-full flex-grow flex-1">
@@ -183,14 +189,17 @@
                             </h3>
                         </div>
                         <div class="relative w-full max-w-full flex-grow flex-1 text-right">
-                            <a href="{{ route('afac.appointment') }}" class="bg-blue-500 dark:bg-gray-100 text-white active:bg-blue-600 dark:text-gray-800 dark:active:text-gray-700 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                            <a href="{{ route('afac.appointment') }}"
+                                class="bg-blue-500 dark:bg-gray-100 text-white active:bg-blue-600 dark:text-gray-800 dark:active:text-gray-700 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                                 type="button">VER TODAS</a>
                         </div>
                     </div>
                     <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1">
                         <div class="flex items-start rounded-xl bg-white p-4 shadow-lg">
-                            <div class="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                            <div
+                                class="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
                                 </svg>
