@@ -4,17 +4,17 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class DeleteSchedule extends Component
+class ActionDisabledDaysComponent extends Component
 {
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public $deleteId;
-    public function __construct($deleteId)
+    public $actionId;
+    public function __construct($actionId)
     {
-        $this->deleteId = $deleteId;
+        $this->actionId = $actionId;
     }
 
     /**
@@ -24,6 +24,6 @@ class DeleteSchedule extends Component
      */
     public function render()
     {
-        return view('components.delete-schedule');
+        return view('components.action-disabled-days-component');
     }
 }

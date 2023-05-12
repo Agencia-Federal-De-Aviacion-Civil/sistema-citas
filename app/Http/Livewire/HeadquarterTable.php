@@ -69,7 +69,11 @@ final class HeadquarterTable extends PowerGridComponent
      */
     public function relationSearch(): array
     {
-        return [];
+        return [
+            'headquarterUser' => [
+                'name'
+            ]
+        ];
     }
 
     /*

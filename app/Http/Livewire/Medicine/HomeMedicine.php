@@ -54,7 +54,7 @@ class HomeMedicine extends Component
     public function rules()
     {
         return [
-            'name_document' => 'required',
+            'name_document' => 'required|mimetypes:application/pdf|max:5000',
             // 'reference_number' => 'required',
             'reference_number' => 'required|unique:medicines',
             'pay_date' => 'required',
@@ -190,7 +190,7 @@ class HomeMedicine extends Component
         // dd($citas);
         switch ($this->to_user_headquarters) {
             case 7: // CIUDAD DE MEXICO
-                $maxCitas = 50;
+                $maxCitas = 20;
                 break;
             case 2: // CANCUN
             case 3: // TIJUANA
@@ -217,6 +217,7 @@ class HomeMedicine extends Component
         $userMedicines = MedicineReserve::with(['medicineReserveMedicine'])
             ->whereHas('medicineReserveMedicine', function ($q1) {
                 $q1->where('user_id', Auth::user()->id);
+                $q1->where('type_exam_id', $this->type_exam_id);
             })
             ->where(function ($q) {
                 $q->whereHas('medicineReserveMedicine.medicineInitial', function ($q2) {
@@ -393,9 +394,9 @@ class HomeMedicine extends Component
             'paymentConcept.required' => 'Ingrese clave de pago.',
             'paymentConcept.unique' => 'Concepto de pago ya registrado, intenta con otro.',
             'paymentDate.required' => 'Campo obligatorio.',
-            'document.required' => 'Documento obligatorio.',
-            'document.mimetypes' => 'Solo documentos .PDF.',
-            'document.max' => 'No permitido, tamaño maximo 500 KB',
+            'name_document.required' => 'Documento obligatorio.',
+            'name_document.mimetypes' => 'Solo documentos .PDF.',
+            'name_document.max' => 'No permitido, tamaño maximo 500 KB',
         ];
     }
 }

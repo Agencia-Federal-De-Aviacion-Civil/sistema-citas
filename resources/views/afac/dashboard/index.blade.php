@@ -1,12 +1,15 @@
 <x-app-layout>
-    @can('see.appointment.medicine')
-        @livewire('medicine.history-appointment')
+    @can('headquarters.see.dashboard')
+        AQUI TIENE QUE IR EL DASHBOARD PARA LAS SEDES
     @endcan
-    @can('see.navigation.controller.systems')
+    @can('medicine_admin.see.dashboard')
+        @include('afac.dashboard.dashboard_medicine')
+    @endcan
+    @can('super_admin.see.dashboard')
         @include('afac.dashboard.dashboard_superadmin')
     @endcan
     {{-- GENERAL USER --}}
-    @can('generate.appointment')
+    @can('user.see.navigation')
         <div>
             <div class="relative py-6 lg:py-4">
                 <img class="z-0 w-full h-full absolute inset-0 object-cover"

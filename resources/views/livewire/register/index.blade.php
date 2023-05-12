@@ -104,7 +104,7 @@
                                     <div class="relative mb-6 w-full group">
                                         {{-- <x-inputs.maskable class="uppercase" wire:model.defer="curp"
                                             mask="AAAA######AAAAAA##" label="CURP" placeholder="INGRESE..." /> --}}
-                                            <x-input class="uppercase" wire:model.defer="curp"
+                                            <x-input class="uppercase" wire:model.lazy="curp"
                                             label="CURP" placeholder="INGRESE..." />
                                         {{-- <input type="text" name="floating_curp" id="floating_curp"
                                             wire:model.lazy="curp"

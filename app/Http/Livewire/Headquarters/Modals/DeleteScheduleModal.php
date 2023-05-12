@@ -10,31 +10,36 @@ use WireUi\Traits\Actions;
 class DeleteScheduleModal extends ModalComponent
 {
     use Actions;
-    public $deleteId;
-    public function mount($deleteId)
+    public $actionId;
+    public function mount($actionId)
     {
-        $this->deleteId = $deleteId;
+        $this->actionId = $actionId;
+    }
+    public static function modalMaxWidth(): string
+    {
+        return 'xl';
+    }
+    public static function closeModalOnEscape(): bool
+    {
+        return false;
+    }
+    public static function closeModalOnClickAway(): bool
+    {
+        return false;
     }
     public function render()
     {
         return view('livewire.headquarters.modals.delete-schedule-modal');
     }
-    /**
-     * Supported: 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl', '7xl'
-     */
-    public static function modalMaxWidth(): string
-    {
-        return 'md';
-    }
     public function delete()
     {
-        MedicineDisabledDays::find($this->deleteId)->delete();
+        MedicineDisabledDays::find($this->actionId)->delete();
+        $this->closeModal();
+        $this->emit('deleteSchedule');
         $this->notification([
-            'title'       => 'DIA HABILITADO CORRECTAMENTE',
+            'title'       => 'ELIMINADO ÉXITOSAMENTE',
             'icon'        => 'success',
             'timeout' => '3100'
         ]);
-        $this->closeModal();
-        $this->emit('deleteDay');
     }
 }
