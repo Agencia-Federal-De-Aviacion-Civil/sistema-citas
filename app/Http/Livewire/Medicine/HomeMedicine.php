@@ -259,6 +259,13 @@ class HomeMedicine extends Component
                                 $q4->where('type_class_id', $this->type_class_id);
                             });
                         });
+                    })
+                    ->orWhere(function ($q2) {
+                        $q2->whereHas('medicineReserveMedicine.medicineRevaluation', function ($q3) {
+                            $q3->whereHas('revaluationMedicineRenovation', function ($q4) {
+                                $q4->where('type_class_id', $this->type_class_id);
+                            });
+                        });
                     });
             })
             ->where(function ($queryStop) {
@@ -288,12 +295,20 @@ class HomeMedicine extends Component
                 } else if ($userMedicine->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial->count() > 0 && $userMedicine->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->type_class_id == $this->type_class_id) {
                     $this->notification([
                         'title'       => 'ERROR DE CITA!',
-                        'description' => 'YA TIENES UNA CITA AGENDADA PARA EXAMEN DE REVALORACÍÓN'.' '.$userMedicine->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->revaluationInitialTypeClass->name,
+                        'description' => 'YA TIENES UNA CITA AGENDADA PARA EXAMEN DE REVALORACÍÓN INICIAL'.' '.$userMedicine->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->revaluationInitialTypeClass->name,
                         'icon'        => 'error',
                         'timeout' => '2500'
                     ]);
                     return;
+                }else if($userMedicine->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation->count() > 0 && $userMedicine->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->type_class_id == $this->type_class_id){
+                    $this->notification([
+                        'title'       => 'ERROR DE CITA!',
+                        'description' => 'YA TIENES UNA CITA AGENDADA PARA EXAMEN DE REVALORACÍÓN RENOVACIÓN'.' '.$userMedicine->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->revaluationRenovationTypeClass->name,
+                        'icon'        => 'error',
+                        'timeout' => '2500'
+                    ]);
                 }
+                return;
             }
         }
         // $maxCitasHorario = $schedule->max_schedules;
@@ -357,7 +372,7 @@ class HomeMedicine extends Component
                     if (is_array($clasification_class_ids)) {
                         foreach ($clasification_class_ids as $clasifications) {
                             MedicineRevaluationInitial::create([
-                                'medicine_revaluations_id' => $medicineReId->id,
+                                'medicine_revaluation_id' => $medicineReId->id,
                                 'medicine_question_id' => $this->medicine_question_id,
                                 'type_class_id' => $this->type_class_id,
                                 'clasification_class_id' => $clasifications

@@ -310,7 +310,7 @@
                                                             <select wire:model.lazy="clasification_class_id"
                                                                 x-ref="typelicens"
                                                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                                <option value="" disabled selected>Seleccione...
+                                                                <option value="">Seleccione...
                                                                 </option>
                                                                 @foreach ($clasificationClass as $clasification)
                                                                     <option value="{{ $clasification->id }}">
