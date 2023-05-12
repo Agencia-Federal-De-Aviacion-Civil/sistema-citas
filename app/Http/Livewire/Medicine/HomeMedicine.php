@@ -266,8 +266,7 @@ class HomeMedicine extends Component
         } else {
             $extension = $this->name_document->extension();
             $saveDocument = Document::create([
-                'name_document' => '123456',
-                //$this->name_document->storeAs('uploads/citas-app/medicine', $this->reference_number . '-' . $this->pay_date .  '.' . $extension, 'do'),
+                'name_document' => $this->name_document->storeAs('uploads/citas-app/medicine', $this->reference_number . '-' . $this->pay_date .  '.' . $extension, 'do'),
             ]);
             $this->saveMedicine = Medicine::create([
                 'user_id' => Auth::user()->id,

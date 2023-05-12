@@ -47,14 +47,14 @@ class ScheduledAppointments extends DataTableComponent
                 Column::make("TIPO DE LICENCIA", "medicineReserveMedicine.medicineInitial.medicineInitialClasificationClass.name")
                 ->sortable(),
 
-                // }elseif(medicineReserveMedicine.medicineTypeExam.id==2){
+                // // }elseif(medicineReserveMedicine.medicineTypeExam.id==2){
 
-                //CONSULTA DE RENOVACIÓN
-                /*Column::make("Clase", "medicineReserveMedicine.medicineRenovation.renovationTypeClass.name")
-                ->sortable(),
-                Column::make("TIPO DE LICENCIA", "medicineReserveMedicine.medicineRenovation.renovationClasificationClass.name")
-                ->sortable(),*/
-                // }
+                // //CONSULTA DE RENOVACIÓN
+                // /*Column::make("Clase", "medicineReserveMedicine.medicineRenovation.renovationTypeClass.name")
+                // ->sortable(),
+                // Column::make("TIPO DE LICENCIA", "medicineReserveMedicine.medicineRenovation.renovationClasificationClass.name")
+                // ->sortable(),*/
+                // // }
 
                 Column::make("SEDE", "medicineReserveFromUser.userHeadquarter.headquarterUser.name")
                 ->sortable(),
