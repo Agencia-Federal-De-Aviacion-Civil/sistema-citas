@@ -19,6 +19,8 @@ return new class extends Migration
             $table->foreign('medicine_id')->references('id')->on('medicines')->onDelete('cascade');
             $table->unsignedBigInteger('document_revaloration_id')->nullable();
             $table->foreign('document_revaloration_id')->references('id')->on('documents')->onDelete('cascade');
+            $table->unsignedBigInteger('type_exam_id')->nullable();
+            $table->foreign('type_exam_id')->references('id')->on('type_exams')->onDelete('cascade');
             $table->timestamps();
         });
     }

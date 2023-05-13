@@ -2,6 +2,7 @@
 
 namespace App\Models\Medicine;
 
+use App\Models\Catalogue\TypeExam;
 use App\Models\Document;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -26,4 +27,9 @@ class MedicineRevaluation extends Model
     {
         return $this->hasMany(MedicineRevaluationRenovation::class, 'medicine_revaluation_id');
     }
+    public function RevaluationTypeExam()
+    {
+        return $this->belongsTo(TypeExam::class, 'type_exam_id');
+    }
+
 }

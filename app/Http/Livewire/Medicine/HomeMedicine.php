@@ -100,6 +100,9 @@ class HomeMedicine extends Component
             'type_class_id',
             'clasification_class_id',
             'medicine_question_id',
+            'to_user_headquarters',
+            'dateReserve',
+            'medicine_schedule_id'
         ]);
     }
     public function updatedMedicineQuestionId($medicine_question_id)
@@ -244,10 +247,10 @@ class HomeMedicine extends Component
             // })
             ->where(function ($q) {
                 $q->where(function ($q2) {
-                        $q2->whereHas('medicineReserveMedicine.medicineInitial', function ($q3) {
-                            $q3->where('type_class_id', $this->type_class_id);
-                        });
-                    })
+                    $q2->whereHas('medicineReserveMedicine.medicineInitial', function ($q3) {
+                        $q3->where('type_class_id', $this->type_class_id);
+                    });
+                })
                     ->orWhere(function ($q2) {
                         $q2->whereHas('medicineReserveMedicine.medicineRenovation', function ($q3) {
                             $q3->where('type_class_id', $this->type_class_id);
@@ -295,15 +298,15 @@ class HomeMedicine extends Component
                 } else if ($userMedicine->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial->count() > 0 && $userMedicine->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->type_class_id == $this->type_class_id) {
                     $this->notification([
                         'title'       => 'ERROR DE CITA!',
-                        'description' => 'YA TIENES UNA CITA AGENDADA PARA EXAMEN DE REVALORACÍÓN INICIAL'.' '.$userMedicine->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->revaluationInitialTypeClass->name,
+                        'description' => 'YA TIENES UNA CITA AGENDADA PARA EXAMEN DE REVALORACÍÓN INICIAL' . ' ' . $userMedicine->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->revaluationInitialTypeClass->name,
                         'icon'        => 'error',
                         'timeout' => '2500'
                     ]);
                     return;
-                }else if($userMedicine->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation->count() > 0 && $userMedicine->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->type_class_id == $this->type_class_id){
+                } else if ($userMedicine->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation->count() > 0 && $userMedicine->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->type_class_id == $this->type_class_id) {
                     $this->notification([
                         'title'       => 'ERROR DE CITA!',
-                        'description' => 'YA TIENES UNA CITA AGENDADA PARA EXAMEN DE REVALORACÍÓN RENOVACIÓN'.' '.$userMedicine->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->revaluationRenovationTypeClass->name,
+                        'description' => 'YA TIENES UNA CITA AGENDADA PARA EXAMEN DE REVALORACÍÓN RENOVACIÓN' . ' ' . $userMedicine->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->revaluationRenovationTypeClass->name,
                         'icon'        => 'error',
                         'timeout' => '2500'
                     ]);
@@ -365,7 +368,8 @@ class HomeMedicine extends Component
                 ]);
                 $medicineReId = MedicineRevaluation::create([
                     'medicine_id' => $this->saveMedicine->id,
-                    'document_revaloration_id' => $saveDocumentRevaloration->id
+                    'document_revaloration_id' => $saveDocumentRevaloration->id,
+                    'type_exam_id'=>$this->type_exam_revaloration_id
                 ]);
                 if ($this->type_exam_revaloration_id == 1) {
                     $clasification_class_ids = $this->clasification_class_id;
@@ -406,7 +410,7 @@ class HomeMedicine extends Component
             session(['saved_medicine_id' => $this->saveMedicine->id]);
             $this->generatePdf();
             $this->clean();
-            // $this->openConfirm();
+            $this->openConfirm();
         }
     }
     public function openConfirm()
@@ -415,12 +419,6 @@ class HomeMedicine extends Component
             ->where('medicine_id', $this->saveMedicine->id)->get();
         $dateConverted = $this->medicineReserves[0]->dateReserve;
         $this->dateConvertedFormatted = Date::parse($dateConverted)->format('l j F Y');
-        $this->medicineInitials = MedicineInitial::with([
-            'initialMedicine', 'medicineInitialQuestion', 'medicineInitialTypeClass',
-            'medicineInitialClasificationClass'
-        ])->where('medicine_id', $this->saveMedicine->id)->get();
-        $this->medicineRenovations = MedicineRenovation::with(['renovationMedicine', 'renovationTypeClass', 'renovationClasificationClass', 'renovationClasificationClass'])
-            ->where('medicine_id', $this->saveMedicine->id)->get();
         $this->confirmModal = true;
     }
     public function deleteRelationShip()
