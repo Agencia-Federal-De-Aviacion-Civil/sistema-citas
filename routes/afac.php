@@ -5,6 +5,7 @@ use App\Http\Controllers\afac\schedule\IndexController;
 use App\Http\Controllers\afac\schedule\userMedicine;
 use App\Http\Controllers\RoleController;
 use App\Http\Livewire\Headquarters\HomeHeadquarter;
+use App\Http\Livewire\Helpsheet\HomeHelpsheet;
 use App\Http\Livewire\Linguistics\HomeLinguistics;
 use App\Http\Livewire\Register\Peoplehistoryrecords;
 use App\Http\Livewire\Medicine\HomeMedicine;
@@ -35,6 +36,7 @@ Route::group(['middleware' => ['role:super_admin|medicine_admin']], function () 
     Route::get('/validate', ValidateQr::class)->name('validate');
 });
 Route::get('/appointments', [IndexController::class, 'index'])->name('afac.appointment');
+Route::get('helpsheet', HomeHelpsheet::class)->name('afac.helpsheet');
 Route::get('/users', [userMedicine::class, 'index'])->name('afac.users');
 Route::get('/downloadFile/{scheduleId}', [IndexController::class, 'download'])->name('afac.downloadFile');
 
