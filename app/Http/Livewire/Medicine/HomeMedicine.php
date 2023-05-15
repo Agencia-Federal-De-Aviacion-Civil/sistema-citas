@@ -122,6 +122,7 @@ class HomeMedicine extends Component
     }
     public function updatedToUserHeadquarters($value)
     {
+
         // Obtener los horarios disponibles para la fecha especificada
         $this->scheduleMedicines = MedicineSchedule::where('user_id', $value)
             ->where('max_schedules', 0)
@@ -134,6 +135,10 @@ class HomeMedicine extends Component
             //         ->havingRaw('COUNT(*) >= max_schedules');
             // })
             ->get();
+        $this->searchDisabledDays();
+
+        // Restablecer la fecha seleccionada a un valor vacío
+        $this->dateReserve = '';
     }
     public function searchDisabledDays()
     {
