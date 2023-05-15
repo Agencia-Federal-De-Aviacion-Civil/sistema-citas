@@ -39,7 +39,7 @@ Route::get('/appointments', [IndexController::class, 'index'])->name('afac.appoi
 Route::get('helpsheet', HomeHelpsheet::class)->name('afac.helpsheet');
 Route::get('/users', [userMedicine::class, 'index'])->name('afac.users');
 Route::get('/downloadFile/{scheduleId}', [IndexController::class, 'download'])->name('afac.downloadFile');
-
+Route::get('/downloadE5', [HomeHelpsheet::class, 'download'])->name('afac.downloadE5');
 Route::resource('/roles', RoleController::class)->names('afac.roles');
 
 // Route::get('/downloads', [AppointmentHistory::class, 'test'])->name('downloads');
