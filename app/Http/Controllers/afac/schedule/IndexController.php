@@ -23,7 +23,7 @@ class IndexController extends Controller
     {
         Date::setLocale('es');
         $medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'user'])
-            ->where('medicine_id', $scheduleId)->get();
+            ->where('id', $scheduleId)->get();
         $medicineId = $medicineReserves[0]->medicine_id;
         $dateAppointment = $medicineReserves[0]->dateReserve;
         $dateConvertedFormatted = Date::parse($dateAppointment)->format('l j F Y');
