@@ -190,6 +190,14 @@ final class recordappointment extends PowerGridComponent
             ->addColumn('reference_number', function (MedicineReserve $regiser) {
                 return $regiser->medicineReserveMedicine->reference_number;
             })
+            //VER DOCUMENTO
+          /*  ->addColumn('document', function (MedicineReserve $document) {
+                return ($document->medicineReserveMedicine->medicineDocument ? $document->medicineReserveMedicine->medicineDocument->name_document : '');
+            })*/
+
+            ->addColumn('document', function (MedicineReserve $document) {
+                return '<a target="_blank" href=' . e($document->medicineReserveMedicine->medicineDocument ? 'https://afac-disk.sfo3.digitaloceanspaces.com/' .$document->medicineReserveMedicine->medicineDocument->name_document : '') . '>' . 'VER PAGO' . '</a>';
+            })
             ->addColumn('genre', function (MedicineReserve $regiser) {
                 return ($regiser->userParticipantUser ? $regiser->userParticipantUser->genre : '');
             })
@@ -406,7 +414,11 @@ final class recordappointment extends PowerGridComponent
                     ->sortable(),
                 //->makeInputDatePicker(),
     
-                Column::make('PAGO', 'reference_number')
+                Column::make('PAGO', 'reference_number') 
+                    ->searchable()
+                    ->sortable(),
+
+                Column::make('VER PAGO', 'document')//16052023
                     ->searchable()
                     ->sortable(),
     
