@@ -195,7 +195,7 @@ class HomeMedicine extends Component
         // dd($citas);
         switch ($this->to_user_headquarters) {
             case 7: // CIUDAD DE MEXICO
-                $maxCitas = 20;
+                $maxCitas = 50;
                 break;
             case 2: // CANCUN
             case 3: // TIJUANA
@@ -340,7 +340,7 @@ class HomeMedicine extends Component
         $this->dialog()->confirm([
             'title'       => '¡ATENCIÓN!',
             'description' => '¿ESTAS SEGURO DE CANCELAR ESTA CITA?',
-            'icon'        => 'info',
+            'icon'        => 'info',	
             'accept'      => [
                 'label'  => 'SI',
                 'method' => 'confirmDelete',
