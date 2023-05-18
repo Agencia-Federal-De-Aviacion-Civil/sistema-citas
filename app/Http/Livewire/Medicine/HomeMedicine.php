@@ -102,7 +102,12 @@ class HomeMedicine extends Component
     }
     public function updatedTypeExamId($type_exam_id)
     {
-        $this->typeRenovationExams = TypeClass::where('type_exam_id', $type_exam_id)->get();
+        if ($type_exam_id==='3'){
+            $type_exam_id='2';
+            $this->typeRenovationExams = TypeClass::where('type_exam_id', $type_exam_id)->get();
+        }else{
+            $this->typeRenovationExams = TypeClass::where('type_exam_id', $type_exam_id)->get();
+        }
     }
     public function updatedTypeClassId($type_class_id)
     {
@@ -122,7 +127,6 @@ class HomeMedicine extends Component
     }
     public function updatedToUserHeadquarters($value)
     {
-
         // Obtener los horarios disponibles para la fecha especificada
         $this->scheduleMedicines = MedicineSchedule::where('user_id', $value)
             ->where('max_schedules', 0)
@@ -135,10 +139,6 @@ class HomeMedicine extends Component
             //         ->havingRaw('COUNT(*) >= max_schedules');
             // })
             ->get();
-        $this->searchDisabledDays();
-
-        // Restablecer la fecha seleccionada a un valor vacío
-        $this->dateReserve = '';
     }
     public function searchDisabledDays()
     {
@@ -195,7 +195,7 @@ class HomeMedicine extends Component
         // dd($citas);
         switch ($this->to_user_headquarters) {
             case 7: // CIUDAD DE MEXICO
-                $maxCitas = 50;
+                $maxCitas = 20;
                 break;
             case 2: // CANCUN
             case 3: // TIJUANA
