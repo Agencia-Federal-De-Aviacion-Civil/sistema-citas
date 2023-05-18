@@ -102,12 +102,7 @@ class HomeMedicine extends Component
     }
     public function updatedTypeExamId($type_exam_id)
     {
-        if ($type_exam_id==='3'){
-            $type_exam_id='2';
-            $this->typeRenovationExams = TypeClass::where('type_exam_id', $type_exam_id)->get();
-        }else{
-            $this->typeRenovationExams = TypeClass::where('type_exam_id', $type_exam_id)->get();
-        }
+        $this->typeRenovationExams = TypeClass::where('type_exam_id', $type_exam_id)->get();
     }
     public function updatedTypeClassId($type_class_id)
     {
@@ -127,6 +122,7 @@ class HomeMedicine extends Component
     }
     public function updatedToUserHeadquarters($value)
     {
+
         // Obtener los horarios disponibles para la fecha especificada
         $this->scheduleMedicines = MedicineSchedule::where('user_id', $value)
             ->where('max_schedules', 0)
@@ -139,6 +135,10 @@ class HomeMedicine extends Component
             //         ->havingRaw('COUNT(*) >= max_schedules');
             // })
             ->get();
+        $this->searchDisabledDays();
+
+        // Restablecer la fecha seleccionada a un valor vacío
+        $this->dateReserve = '';
     }
     public function searchDisabledDays()
     {
@@ -340,7 +340,7 @@ class HomeMedicine extends Component
         $this->dialog()->confirm([
             'title'       => '¡ATENCIÓN!',
             'description' => '¿ESTAS SEGURO DE CANCELAR ESTA CITA?',
-            'icon'        => 'info',
+            'icon'        => 'info',	
             'accept'      => [
                 'label'  => 'SI',
                 'method' => 'confirmDelete',
