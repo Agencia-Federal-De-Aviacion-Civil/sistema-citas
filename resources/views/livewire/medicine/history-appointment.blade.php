@@ -15,9 +15,9 @@
             </div>
         </div>
     </div>
-    
+
     <div class="py-12">
-        
+
         <div class="container mx-auto px-4 py-4 bg-white shadow-xl sm:rounded-lg">
 @hasrole('super_admin|medicine_admin')
     {{-- <div class="bg-gray-100 text-gray-500 rounded shadow-xl py-5 px-5 w-full sm:w-full md:w-full lg:w-full" x-data="{ cardOpen: false, cardData: cardData() }" x-init="$watch('cardOpen', value => value ? (cardData.countUp($refs.total, 0,  {{ $this->registradas }}, null, 0.8), cardData.sessions.forEach((el, i) => cardData.countUp($refs[`device${i}`], 0, cardData.sessions[i].size, null, 1.6))) : null);
@@ -90,11 +90,14 @@
         </div>
     </div> --}}
     @else @endhasrole
+
             <div class="mt-12 max-w-8xl mx-auto sm:px-6 lg:px-8">
                 <div class="ml-4 py-6 mr-4 uppercase text-sm">
-                    <livewire:recordappointment />
+                    {{-- <livewire:recordappointment /> --}}
+                    @livewire('scheduled-appointments')
                 </div>
             </div>
+
         </div>
     </div>
     <script>
