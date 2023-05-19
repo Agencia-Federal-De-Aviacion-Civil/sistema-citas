@@ -222,16 +222,16 @@ class HomeMedicine extends Component
         $userMedicines = MedicineReserve::with(['medicineReserveMedicine'])
             ->whereHas('medicineReserveMedicine', function ($q1) {
                 $q1->where('user_id', Auth::user()->id);
-                $q1->where('type_exam_id', $this->type_exam_id);
+               // $q1->where('type_exam_id', $this->type_exam_id);
             })
-            ->where(function ($q) {
+            /*->where(function ($q) {
                 $q->whereHas('medicineReserveMedicine.medicineInitial', function ($q2) {
                     $q2->where('type_class_id', $this->type_class_id);
                 })
                     ->orWhereHas('medicineReserveMedicine.medicineRenovation', function ($q2) {
                         $q2->where('type_class_id', $this->type_class_id);
                     });
-            })
+            })*/
             ->where(function ($queryStop) {
                 $queryStop->where('status', 0)
                     ->orWhere('status', 4);
@@ -240,15 +240,16 @@ class HomeMedicine extends Component
         // dd($userMedicines);
         foreach ($userMedicines as $userMedicine) {
             if ($userMedicine->id) {
-                if ($userMedicine->medicineReserveMedicine->medicineInitial->count() > 0 && $userMedicine->medicineReserveMedicine->medicineInitial[0]->type_class_id == $this->type_class_id) {
+                if ($userMedicine->medicineReserveMedicine->count() > 0) {
                     $this->notification([
                         'title'       => 'ERROR DE CITA!',
-                        'description' => 'YA TIENES UNA CITA AGENDADA PARA EXAMEN INICIAL' . ' ' . $userMedicine->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name,
+                        'description' => 'YA TIENES UNA CITA AGENDADA',
                         'icon'        => 'error',
                         'timeout' => '3100'
                     ]);
                     return;
-                } else if ($userMedicine->medicineReserveMedicine->medicineRenovation->count() > 0 && $userMedicine->medicineReserveMedicine->medicineRenovation[0]->type_class_id == $this->type_class_id) {
+                } 
+                /*else if ($userMedicine->medicineReserveMedicine->medicineRenovation->count() > 0 && $userMedicine->medicineReserveMedicine->medicineRenovation[0]->type_class_id == $this->type_class_id) {
                     $this->notification([
                         'title'       => 'ERROR DE CITA!',
                         'description' => 'YA TIENES UNA CITA AGENDADA PARA EXAMEN DE RENOVACIÓN' . ' ' . $userMedicine->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name,
@@ -256,7 +257,7 @@ class HomeMedicine extends Component
                         'timeout' => '2500'
                     ]);
                     return;
-                }
+                }*/
             }
         }
         // $maxCitasHorario = $schedule->max_schedules;
