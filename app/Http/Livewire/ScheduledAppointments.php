@@ -26,6 +26,18 @@ class ScheduledAppointments extends DataTableComponent
 
     public function columns(): array
     {
+        $type = "medicineReserveMedicine.medicineTypeExam.name";
+
+        if("medicineReserveMedicine.medicineTypeExam.id"=='1'){
+            $nameClass = 'es';
+        //     $nameClass = "medicineReserveMedicine.medicineInitial.medicineInitialTypeClass.name";
+        //     // $typeLicense = medicineReserveMedicine->medicineInitial->medicineInitialClasificationClass->name;
+        }else if("medicineReserveMedicine.medicineTypeExam.id"=='2'){
+            $nameClass = 'no';
+        //     $nameClass = "medicineReserveMedicine.medicineRenovation.renovationTypeClass.name";
+        //     // $typeLicense = medicineReserveMedicine->medicineRenovation->renovationClasificationClass->name;
+        }
+
         return [
 
             Column::make("Id", "id")
@@ -41,16 +53,19 @@ class ScheduledAppointments extends DataTableComponent
                 Column::make("Apellido Materno", "userParticipantUser.apMaternal")
                 ->sortable(),
 
-                Column::make("Tipo", "medicineReserveMedicine.medicineTypeExam.name")
+                Column::make("Tipo", $type)
+                ->sortable(),
+
+                Column::make("Clase", $nameClass)
                 ->sortable(),
 
                 // if(medicineReserveMedicine.medicineTypeExam.id==1){
 
                 //CONSULTA DE INICIAL
-                Column::make("Clase", "medicineReserveMedicine.medicineInitial.medicineInitialTypeClass.name")
-                ->sortable(),
-                Column::make("TIPO DE LICENCIA", "medicineReserveMedicine.medicineInitial.medicineInitialClasificationClass.name")
-                ->sortable(),
+                // Column::make("Clase", $clas)
+                // ->sortable(),
+                // Column::make("TIPO DE LICENCIA", "medicineReserveMedicine.medicineInitial.medicineInitialClasificationClass.name")
+                // ->sortable(),
 
                 // // }elseif(medicineReserveMedicine.medicineTypeExam.id==2){
 
@@ -102,7 +117,7 @@ class ScheduledAppointments extends DataTableComponent
     ])->whereIn('id',$this->getSelected())->get();
 
     return Excel::download(new ScheduledExport($medreser), 'scheduled.xlsx');
-    $this->clearSelected();
+    // $this->clearSelected();
 
     }else{
 

@@ -340,7 +340,7 @@ class HomeMedicine extends Component
         $this->dialog()->confirm([
             'title'       => '¡ATENCIÓN!',
             'description' => '¿ESTAS SEGURO DE CANCELAR ESTA CITA?',
-            'icon'        => 'info',	
+            'icon'        => 'info',
             'accept'      => [
                 'label'  => 'SI',
                 'method' => 'confirmDelete',

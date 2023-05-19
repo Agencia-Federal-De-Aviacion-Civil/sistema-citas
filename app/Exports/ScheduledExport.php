@@ -2,21 +2,24 @@
 
 namespace App\Exports;
 
-use App\Models\Medicine\MedicineReserve as MedicineMedicineReserve;
-use App\Models\MedicineReserve;
+use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\FromQuery;
-use Maatwebsite\Excel\Concerns\WithCustomStartCell;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use Maatwebsite\Excel\DefaultValueBinder;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
+use Maatwebsite\Excel\Concerns\WithStyles;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class ScheduledExport extends DefaultValueBinder implements FromQuery,WithMapping,WithHeadings
+class ScheduledExport extends DefaultValueBinder implements FromCollection,WithHeadings,WithMapping,ShouldAutoSize,WithColumnFormatting,WithStyles
 {
-    // /**
-    // * @return \Illuminate\Support\Collection
-    // */
+    /**
+    * @return \Illuminate\Support\Collection
+    */
     use Exportable;
     public $medreser;
     private $rowNumber = 1;
@@ -26,33 +29,63 @@ class ScheduledExport extends DefaultValueBinder implements FromQuery,WithMappin
         $this->medreser = $medreser;
     }
 
-    // public function collection()
-    // {
-    //     return $this->medreser;
-    // }
-
-    public function query()
-    {
-
-        //  dd($this->medreser);
-        // return $this->medreser;
-
-        return MedicineMedicineReserve::all();
-
-        // return AirportComplementaryMoral::with([
-        //     'complementaryMoral.promoterUser', 'complementaryMoralAirport',
-        // ])
-        //     ->whereHas('complementaryMoral.promoterUser', function ($q1) {
-        //         $q1->where('user_id', Auth()->user()->id);
-        //     });
-
+    public function collection(){
+        return $this->medreser;
     }
-    public function map($row): array
+    public function map($medreser): array
     {
+
+        if($medreser->medicineReserveMedicine->medicineTypeExam->id==1){
+            $nameClass = $medreser->medicineReserveMedicine->medicineInitial->medicineInitialTypeClass->name;
+            $typeLicense = $medreser->medicineReserveMedicine->medicineInitial->medicineInitialClasificationClass->name;
+        }else if($medreser->medicineReserveMedicine->medicineTypeExam->id==2){
+            $nameClass = $medreser->medicineReserveMedicine->medicineRenovation->renovationTypeClass->name;
+            $typeLicense = $medreser->medicineReserveMedicine->medicineRenovation->renovationClasificationClass->name;
+        }
+        if($medreser->status==1){
+            $status = 'ASISTIO';
+        }else if($medreser->status==2){
+            $status = 'CANCELADO';
+        }else if($medreser->status==3){
+            $status = 'CANCELO USUARIO';
+        }else if($medreser->status==4){
+            $status = 'REAGENDO';
+        }else{
+            $status = 'PENDIENTE';
+        }
+
+
         return [
             'rowNumber' => $this->rowNumber++,
-            // $row->userParticipantUser[0]->name,
+            $medreser->medicineReserveFromUser->name,
+            $medreser->userParticipantUser->apParental,
+            $medreser->userParticipantUser->apMaternal,
+            $medreser->medicineReserveMedicine->medicineTypeExam->name,
+            $nameClass,
+            $typeLicense,
+            $medreser->user->name,
+            Carbon::parse($medreser->dateReserve)->format('d/m/Y'),
+            $medreser->reserveSchedule->time_start,
+            $medreser->userParticipantUser->curp,
+            $medreser->medicineReserveMedicine->reference_number,
+            $medreser->userParticipantUser->genre,
+            Carbon::parse($medreser->userParticipantUser->birth)->format('d/m/Y'),
+            $medreser->userParticipantUser->participantState->name,
+            $medreser->userParticipantUser->age,
+            $medreser->userParticipantUser->mobilePhone,
+            $medreser->userParticipantUser->officePhone,
+            $medreser->userParticipantUser->extension,
+            $status,
 
+        ];
+    }
+    public function columnFormats(): array
+    {
+        return [
+            'K' => NumberFormat::FORMAT_TEXT,
+            'L' => NumberFormat::FORMAT_TEXT,
+            'I' => 'dd/mm/yyyy',
+            'N' => 'dd/mm/yyyy',
         ];
     }
 
@@ -60,8 +93,34 @@ class ScheduledExport extends DefaultValueBinder implements FromQuery,WithMappin
     {
      return [
          '#Item',
-        //  'nombre',
+         'NOMBRE',
+         'APELLIDO PATERNO',
+         'APELLIDO MATERNO',
+         'TIPO',
+         'CLASE',
+         'TIPO DE LICENCIA',
+         'SEDE',
+         'FECHA',
+         'HORA',
+         'CURP',
+         'LLAVE PAGO',
+         'GENERO',
+         'FECHA NACIMIENTO',
+         'ESTADO NACIMINETO',
+         'EDAD',
+         'CELULAR',
+         'OFICINA',
+         'EXTENSIÓN',
+         'ESTADO'
      ];
     }
-
+    public function styles(Worksheet $sheet)
+    {
+        $sheet->setTitle('Citas');
+        $sheet->getStyle('A1:T1')->applyFromArray([
+        'font' => [
+            'bold' => true,
+         ]
+        ]);
+    }
 }
