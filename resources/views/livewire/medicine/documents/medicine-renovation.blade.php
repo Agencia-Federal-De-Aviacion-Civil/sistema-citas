@@ -143,6 +143,10 @@
                 <td>HORA</td>
                 <td>{{ $medicineReserves[0]->reserveSchedule->time_start }}</td>
             </tr>
+            <tr>
+                <td>LLAVE DE PAGO</td>
+                <td>{{ $medicineReserves[0]->medicineReserveMedicine->reference_number }}</td>
+            </tr>
         </table>
         <div class="codigoqr">
             <img src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ $keyEncrypt }}"
@@ -155,7 +159,7 @@
             <label style="text-align: justify;font-size:17px" for="">Estimado usuario, con el fin de facilitar
                 el procedimiento de registro y apoyarle en el proceso de su <b> EVALUACIÓN MÉDICA</b>, le mostramos los
                 siguientes
-                <b>requisitos indispensables</b> con los que deberá acudir a su cita<u>original y
+                <b>requisitos indispensables</b> con los que deberá acudir a su cita <u>original y
                     copia</u> de lo contrario no podrá realizar su examen y éste se perderá:</label>
         </div>
         <div style="padding-top:1%;font-size:17px">

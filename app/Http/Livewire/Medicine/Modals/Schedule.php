@@ -182,7 +182,7 @@ class Schedule extends ModalComponent
             }
             if ($citas >= $maxCitas) {
                 $this->notification([
-                    'title'       => 'ERROR DE CITA!',
+                    'title'       => 'CITA NO GENERADA!',
                     'description' => 'No hay citas disponibles para ese dia',
                     'icon'        => 'error'
                 ]);

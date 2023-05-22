@@ -195,7 +195,7 @@ class HomeMedicine extends Component
         // dd($citas);
         switch ($this->to_user_headquarters) {
             case 7: // CIUDAD DE MEXICO
-                $maxCitas = 20;
+                $maxCitas = 50;
                 break;
             case 2: // CANCUN
             case 3: // TIJUANA
@@ -242,7 +242,7 @@ class HomeMedicine extends Component
             if ($userMedicine->id) {
                 if ($userMedicine->medicineReserveMedicine->medicineInitial->count() > 0 && $userMedicine->medicineReserveMedicine->medicineInitial[0]->type_class_id == $this->type_class_id) {
                     $this->notification([
-                        'title'       => 'ERROR DE CITA!',
+                        'title'       => 'CITA NO GENERADA!',
                         'description' => 'YA TIENES UNA CITA AGENDADA PARA EXAMEN INICIAL' . ' ' . $userMedicine->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name,
                         'icon'        => 'error',
                         'timeout' => '3100'
@@ -250,7 +250,7 @@ class HomeMedicine extends Component
                     return;
                 } else if ($userMedicine->medicineReserveMedicine->medicineRenovation->count() > 0 && $userMedicine->medicineReserveMedicine->medicineRenovation[0]->type_class_id == $this->type_class_id) {
                     $this->notification([
-                        'title'       => 'ERROR DE CITA!',
+                        'title'       => 'CITA NO GENERADA!',
                         'description' => 'YA TIENES UNA CITA AGENDADA PARA EXAMEN DE RENOVACIÓN' . ' ' . $userMedicine->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name,
                         'icon'        => 'error',
                         'timeout' => '2500'
@@ -263,7 +263,7 @@ class HomeMedicine extends Component
         //  if ($citas >= $maxCitas || $citas >= $maxCitasHorario) ALFORITMO QUE SEPARA CITAS POR HORAS
         if ($citas >= $maxCitas) {
             $this->notification([
-                'title'       => 'ERROR DE CITA!',
+                'title'       => 'CITA NO GENERADA!',
                 'description' => 'No hay citas disponibles para ese dia',
                 'icon'        => 'error'
             ]);
@@ -340,7 +340,7 @@ class HomeMedicine extends Component
         $this->dialog()->confirm([
             'title'       => '¡ATENCIÓN!',
             'description' => '¿ESTAS SEGURO DE CANCELAR ESTA CITA?',
-            'icon'        => 'info',
+            'icon'        => 'info',	
             'accept'      => [
                 'label'  => 'SI',
                 'method' => 'confirmDelete',

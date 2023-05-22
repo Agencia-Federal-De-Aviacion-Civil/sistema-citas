@@ -403,8 +403,12 @@ final class recordappointment extends PowerGridComponent
                     ->searchable()
                     ->sortable(),
                 //->makeInputDatePicker(),
+    
+                Column::make('PAGO', 'reference_number') 
+                    ->searchable()
+                    ->sortable(),
 
-                Column::make('PAGO', 'reference_number')
+                Column::make('VER PAGO', 'document')//16052023
                     ->searchable()
                     ->sortable(),
 
