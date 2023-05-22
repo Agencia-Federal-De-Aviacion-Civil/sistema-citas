@@ -13,7 +13,7 @@ class IndexController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['role:super_admin|user|medicine_admin|headquarters']);
+        $this->middleware(['role:super_admin|user|medicine_admin|headquarters|super_admin_medicine']);
     }
     public function index()
     {
