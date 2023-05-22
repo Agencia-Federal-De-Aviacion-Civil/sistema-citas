@@ -75,7 +75,7 @@ class ScheduledExport extends DefaultValueBinder implements FromCollection, With
             ($medreser->medicineReserveMedicine ? $medreser->medicineReserveMedicine->reference_number : ''),
             ($medreser->userParticipantUser ? $medreser->userParticipantUser->genre : ''),
             Carbon::parse($medreser->userParticipantUser->birth)->format('d/m/Y'),
-            ($medreser->userParticipantUser->participantState ? $medreser->userParticipantUser->participantState->name : ''),
+            // ($medreser->userParticipantUser->participantState ? $medreser->userParticipantUser->participantState->name : ''),
             ($medreser->userParticipantUser ? $medreser->userParticipantUser->age : ''),
             ($medreser->userParticipantUser ? $medreser->userParticipantUser->mobilePhone : ''),
             ($medreser->userParticipantUser ? $medreser->userParticipantUser->officePhone : ''),
