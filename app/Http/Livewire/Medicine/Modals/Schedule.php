@@ -205,6 +205,10 @@ class Schedule extends ModalComponent
         $activeReserve->update([
             'reference_number' => 'ACTIVE' . '-' . $this->medicineId,
         ]);
+        $updateStatus = MedicineReserve::find($this->scheduleId);
+        $updateStatus->update([
+            'status' => '5',
+        ]);
         $this->notification([
             'title'       => 'LLAVE DE PAGO LIBERADA!',
             'description' => 'La llave de pago se liberó.',
