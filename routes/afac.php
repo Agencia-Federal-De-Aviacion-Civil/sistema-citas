@@ -8,8 +8,11 @@ use App\Http\Livewire\Headquarters\HomeHeadquarter;
 use App\Http\Livewire\Linguistics\HomeLinguistics;
 use App\Http\Livewire\Register\Peoplehistoryrecords;
 use App\Http\Livewire\Medicine\HomeMedicine;
+use App\Http\Livewire\Medicine\ScheduleAppointment;
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Validate\Qr as ValidateQr;
+
+use function Deployer\get;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +39,9 @@ Route::group(['middleware' => ['role:super_admin|medicine_admin']], function () 
     Route::get('/validate', ValidateQr::class)->name('validate');
 });
 Route::get('/appointments', [IndexController::class, 'index'])->name('afac.appointment');
+
+Route::get('/schedule', ScheduleAppointment::class)->name('afac.schedule');
+
 Route::get('/users', [userMedicine::class, 'index'])->name('afac.users');
 Route::get('/downloadFile/{scheduleId}', [IndexController::class, 'download'])->name('afac.downloadFile');
 
