@@ -203,7 +203,7 @@ class Schedule extends ModalComponent
         } else {
             $this->validate();
         }
-        //Historial de eliminar dias bloqueados
+        //Historial de validar cita
         history_movements::create([
             'user_id' => Auth::user()->id,
             'action' => $accion,
@@ -229,6 +229,14 @@ class Schedule extends ModalComponent
         ]);
         $this->closeModal();
         $this->emit('reserveAppointment');
+
+        //Historial de liberar llave de pago
+        history_movements::create([
+            'user_id' => Auth::user()->id,
+            'action' => "LIBERA LLAVE DE PAGO",
+            'process' => $this->name. ' FOLIO CITA:'.$this->id_appoint
+        ]);
+        $this->closeModal();
     }
     public function messages()
     {
