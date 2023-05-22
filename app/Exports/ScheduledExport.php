@@ -64,12 +64,12 @@ class ScheduledExport extends DefaultValueBinder implements FromCollection, With
 
         return [
             'rowNumber' => $this->rowNumber++,
-            ($medreser->medicineReserveFromUser ? $medreser->medicineReserveFromUser->name : 'SIN INFORMACIÓN'),
-            ($medreser->userParticipantUser ? $medreser->userParticipantUser->apParental : 'SIN INFORMACIÓN'),
-            ($medreser->userParticipantUser ? $medreser->userParticipantUser->apMaternal : 'SIN INFORMACIÓN'),
-            ($medreser->medicineReserveMedicine->medicineTypeExam ? $medreser->medicineReserveMedicine->medicineTypeExam->name : 'SIN INFORMACIÓN'),
-            $nameClass,
-            $typeLicense,
+            ($medreser->medicineReserveFromUser ?? null) ? $medreser->medicineReserveFromUser->name : 'SIN INFORMACIÓN',
+            ($medreser->userParticipantUser ?? null) ? $medreser->userParticipantUser->apParental : 'SIN INFORMACIÓN',
+            ($medreser->userParticipantUser ?? null) ? $medreser->userParticipantUser->apMaternal : 'SIN INFORMACIÓN',
+            ($medreser->medicineReserveMedicine->medicineTypeExam ?? null) ? $medreser->medicineReserveMedicine->medicineTypeExam->name : 'SIN INFORMACIÓN',
+            ($nameClass ?? null) ? $nameClass : 'SIN INFORMACIÓN',
+            ($typeLicense ?? null) ? $typeLicense : 'SIN INFORMACIÓN',
             ($medreser->user->name ? $medreser->user->name : 'SIN INFORMACIÓN'),
             Carbon::parse($medreser->dateReserve)->format('d/m/Y'),
             ($medreser->reserveSchedule ? $medreser->reserveSchedule->time_start : 'SIN INFORMACIÓN'),
