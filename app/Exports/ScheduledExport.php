@@ -37,15 +37,11 @@ class ScheduledExport extends DefaultValueBinder implements FromCollection, With
     {
 
         if ($medreser->medicineReserveMedicine->medicineTypeExam->id == 1) {
-            $nameClass = 'clase1';
-            //$medreser->medicineReserveMedicine->medicineInitialExc->medicineInitialTypeClass->name;
-            $typeLicense = 'licencia1';
-            //$medreser->medicineReserveMedicine->medicineInitialExc->medicineInitialClasificationClass->name;
+            $nameClass = $medreser->medicineReserveMedicine->medicineInitialExc->medicineInitialTypeClass->name;
+            $typeLicense = $medreser->medicineReserveMedicine->medicineInitialExc->medicineInitialClasificationClass->name;
         } else if ($medreser->medicineReserveMedicine->medicineTypeExam->id == 2) {
-            $nameClass = 'clase2';
-            // $medreser->medicineReserveMedicine->medicineRenovationExc->renovationTypeClass->name;
-            $typeLicense = 'licencia2';
-            // $medreser->medicineReserveMedicine->medicineRenovationExc->renovationClasificationClass->name;
+            $nameClass = $medreser->medicineReserveMedicine->medicineRenovationExc->renovationTypeClass->name;
+            $typeLicense = $medreser->medicineReserveMedicine->medicineRenovationExc->renovationClasificationClass->name;
         }
         if ($medreser->status == 1) {
             $status = 'ASISTIO';
@@ -75,7 +71,7 @@ class ScheduledExport extends DefaultValueBinder implements FromCollection, With
             ($medreser->medicineReserveMedicine ? $medreser->medicineReserveMedicine->reference_number : ''),
             ($medreser->userParticipantUser ? $medreser->userParticipantUser->genre : ''),
             Carbon::parse($medreser->userParticipantUser->birth)->format('d/m/Y'),
-            // ($medreser->userParticipantUser->participantState ? $medreser->userParticipantUser->participantState->name : ''),
+            ($medreser->userParticipantUser->participantState ? $medreser->userParticipantUser->participantState->name : ''),
             ($medreser->userParticipantUser ? $medreser->userParticipantUser->age : ''),
             ($medreser->userParticipantUser ? $medreser->userParticipantUser->mobilePhone : ''),
             ($medreser->userParticipantUser ? $medreser->userParticipantUser->officePhone : ''),
