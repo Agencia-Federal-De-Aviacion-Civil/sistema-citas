@@ -14,7 +14,7 @@
                     @elseif ($this->status == 2)
                         CITA CANCELADA
                     @elseif ($this->status == 3)
-                        CANCELO CITA
+                        CANCELÓ CITA
                     @elseif ($this->status == 4)
                         CITA REAGENDADA
                     @endif
@@ -38,7 +38,6 @@
                         <x-input wire:model="typLicense" label="TIPO DE LICENCIA" disabled />
                     </div>
                 </div>
-
                 @if ($this->status != 0)
                     <div class="grid xl:grid-cols-1 xl:gap-6">
                         <div class="mt-4 relative w-full group">
@@ -86,8 +85,14 @@
                         @endhasrole
                     @endif
                     <div class="float-left mt-6">
-                        <x-button wire:click="$emit('closeModal')" label="SALIR" silver />
+                        <x-button sm icone="exit" wire:click="$emit('closeModal')" label="SALIR" silver />
                     </div>
+                    @if ($this->status == 3)
+                        <div class="float-right mt-6">
+                            <x-button wire:click.prevent="saveActive" spinner="saveActive" loading-delay="short" sm
+                                icon="key" positive label="LIBERAR LLAVE DE PAGO" />
+                        </div>
+                    @endif
                 @else
                     <div x-data="{ selectedOption: '' }">
                         <div class="grid xl:grid-cols-1 xl:gap-0">

@@ -30,7 +30,7 @@ class HomeMedicine extends Component
     public $name_document, $reference_number, $pay_date, $type_exam_id, $typeRenovationExams, $dateConvertedFormatted;
     public $questionClassess, $typeExams, $sedes, $userQuestions, $to_user_headquarters, $dateReserve, $saveMedicine, $disabledDaysFilter;
     public $confirmModal = false, $modal = false;
-    public $medicineQueries, $medicineReserves, $medicineInitials, $medicineRenovations, $id_medicineReserve, $savedMedicineId, $scheduleMedicines, $medicine_schedule_id;
+    public $medicineQueries, $medicineReserves, $medicineInitials, $medicineRenovations, $id_medicineReserve, $idMedicine, $savedMedicineId, $scheduleMedicines, $medicine_schedule_id;
     // MEDICINE INITIAL TABLE
     public $question, $date, $dateNow;
     protected $listeners = [
@@ -242,7 +242,7 @@ class HomeMedicine extends Component
             if ($userMedicine->id) {
                 if ($userMedicine->medicineReserveMedicine->medicineInitial->count() > 0 && $userMedicine->medicineReserveMedicine->medicineInitial[0]->type_class_id == $this->type_class_id) {
                     $this->notification([
-                        'title'       => 'ERROR DE CITA!',
+                        'title'       => 'CITA NO GENERADA!',
                         'description' => 'YA TIENES UNA CITA AGENDADA PARA EXAMEN INICIAL' . ' ' . $userMedicine->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name,
                         'icon'        => 'error',
                         'timeout' => '3100'
@@ -250,7 +250,7 @@ class HomeMedicine extends Component
                     return;
                 } else if ($userMedicine->medicineReserveMedicine->medicineRenovation->count() > 0 && $userMedicine->medicineReserveMedicine->medicineRenovation[0]->type_class_id == $this->type_class_id) {
                     $this->notification([
-                        'title'       => 'ERROR DE CITA!',
+                        'title'       => 'CITA NO GENERADA!',
                         'description' => 'YA TIENES UNA CITA AGENDADA PARA EXAMEN DE RENOVACIÓN' . ' ' . $userMedicine->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name,
                         'icon'        => 'error',
                         'timeout' => '2500'
@@ -263,7 +263,7 @@ class HomeMedicine extends Component
         //  if ($citas >= $maxCitas || $citas >= $maxCitasHorario) ALFORITMO QUE SEPARA CITAS POR HORAS
         if ($citas >= $maxCitas) {
             $this->notification([
-                'title'       => 'ERROR DE CITA!',
+                'title'       => 'CITA NO GENERADA!',
                 'description' => 'No hay citas disponibles para ese dia',
                 'icon'        => 'error'
             ]);
@@ -354,7 +354,10 @@ class HomeMedicine extends Component
     public function delete($idUpdate)
     {
         MedicineReserve::find($idUpdate);
+        $savedMedicineId = session('saved_medicine_id');
+        Medicine::find($savedMedicineId);
         $this->id_medicineReserve = $idUpdate;
+        $this->idMedicine = $savedMedicineId;
         $this->deleteRelationShip();
     }
     public function confirmDelete()
@@ -362,6 +365,10 @@ class HomeMedicine extends Component
         $updateReserve = MedicineReserve::find($this->id_medicineReserve);
         $updateReserve->update([
             'status' => 3
+        ]);
+        $updateReservePay = Medicine::find($this->idMedicine);
+        $updateReservePay->update([
+            'reference_number' => "CANCELADO" . '-' . $this->idMedicine
         ]);
         $this->notification([
             'title'       => 'CITA CANCELADA ÉXITOSAMENTE',

@@ -1,6 +1,6 @@
 <script src="https://cdn.jsdelivr.net/npm/countup@1.8.2/dist/countUp.min.js"></script>
 <div>
-    <x-notifications position="top-center" />
+    <x-notifications position="top-bottom" />
     <x-dialog z-index="z-50" blur="md" align="center" />
     <div class="relative py-6 lg:py-4">
         <img class="z-0 w-full h-full absolute inset-0 object-cover" src="{{ asset('images/banner_testing.jpg') }}" alt="bg" />
