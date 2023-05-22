@@ -191,6 +191,9 @@ final class recordappointment extends PowerGridComponent
                 ->addColumn('medicine_id', function (MedicineReserve $regiser) {
                     return $regiser->medicineReserveMedicine->id;
                 })
+                ->addColumn('document', function (MedicineReserve $document) {
+                    return '<a target="_blank" href=' . e($document->medicineReserveMedicine->medicineDocument ? 'https://afac-disk.sfo3.digitaloceanspaces.com/' .$document->medicineReserveMedicine->medicineDocument->name_document : '') . '>' . 'VER PAGO' . '</a>';
+                })
                 ->addColumn('genre', function (MedicineReserve $regiser) {
                     return ($regiser->userParticipantUser ? $regiser->userParticipantUser->genre : '');
                 })
