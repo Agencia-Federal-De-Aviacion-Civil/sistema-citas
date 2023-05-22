@@ -4,9 +4,12 @@ namespace App\Http\Livewire\Headquarters\Modals;
 
 use App\Models\Catalogue\Headquarter;
 use App\Models\Medicine\MedicineDisabledDays;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Medicine\history_movements;
 use Livewire\Component;
 use LivewireUI\Modal\ModalComponent;
 use WireUi\Traits\Actions;
+
 
 class CreateUpdateScheduleModal extends ModalComponent
 {
@@ -76,6 +79,12 @@ class CreateUpdateScheduleModal extends ModalComponent
             ['id' => $this->id_disabledDays],
             $userData
         );
+        //Historial de guardar y editar dias deshabilitados
+        history_movements::create([
+            'user_id' => Auth::user()->id,
+            'action' => "BLOQUEO DE DIAS",
+            'process' => $this->disabled_days.' '.'SEDE: '. $this->nameHeadquarter->name
+        ]);
         // }
         $this->notification([
             'title'       => 'CAMBIOS RELIZADOS EXITOSAMENTE',
