@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Medicine\Modals;
 
 use App\Models\Catalogue\Headquarter;
+use App\Models\Medicine\Medicine;
 use App\Models\Medicine\MedicineObservation;
 use App\Models\Medicine\MedicineReserve;
 use App\Models\Medicine\MedicineSchedule;
@@ -21,7 +22,7 @@ class Schedule extends ModalComponent
     use Actions;
     use WithFileUploads;
     public $comment1, $comment2, $scheduleId, $status, $medicineReserves, $name, $type, $class, $typLicense, $sede, $dateReserve, $date, $time, $scheduleMedicines, $sedes,
-        $to_user_headquarters, $medicine_schedule_id, $selectedOption, $comment, $comment_cancelate, $hoursReserve, $observation,$accion,$id_appoint;
+        $to_user_headquarters, $medicine_schedule_id, $selectedOption, $comment, $comment_cancelate, $hoursReserve, $observation,$medicineId,$accion;
 
     public function rules()
     {
@@ -34,9 +35,10 @@ class Schedule extends ModalComponent
         ];
     }
 
-    public function mount($scheduleId)
+    public function mount($scheduleId, $medicineId)
     {
         $this->scheduleId = $scheduleId;
+        $this->medicineId = $medicineId;
         $this->valores($this->scheduleId);
         $this->sedes = Headquarter::where('system_id', 1)->get();
         $this->scheduleMedicines = collect();
@@ -208,6 +210,25 @@ class Schedule extends ModalComponent
             'process' => $this->name. ' FOLIO CITA:'.$this->id_appoint
         ]);
         $this->closeModal();
+    }
+    public function saveActive()
+    {
+        $activeReserve = Medicine::find($this->medicineId);
+        $activeReserve->update([
+            'reference_number' => 'ACTIVE' . '-' . $this->medicineId,
+        ]);
+        $updateStatus = MedicineReserve::find($this->scheduleId);
+        $updateStatus->update([
+            'status' => '5',
+        ]);
+        $this->notification([
+            'title'       => 'LLAVE DE PAGO LIBERADA!',
+            'description' => 'La llave de pago se liberó.',
+            'icon'        => 'info',
+            'timeout' => '3100'
+        ]);
+        $this->closeModal();
+        $this->emit('reserveAppointment');
     }
     public function messages()
     {
