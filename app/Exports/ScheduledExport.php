@@ -37,11 +37,15 @@ class ScheduledExport extends DefaultValueBinder implements FromCollection, With
     {
 
         if ($medreser->medicineReserveMedicine->medicineTypeExam->id == 1) {
-            $nameClass = $medreser->medicineReserveMedicine->medicineInitialExc->medicineInitialTypeClass->name;
-            $typeLicense = $medreser->medicineReserveMedicine->medicineInitialExc->medicineInitialClasificationClass->name;
+            $nameClass = 'clase1';
+            //$medreser->medicineReserveMedicine->medicineInitialExc->medicineInitialTypeClass->name;
+            $typeLicense = 'licencia1';
+            //$medreser->medicineReserveMedicine->medicineInitialExc->medicineInitialClasificationClass->name;
         } else if ($medreser->medicineReserveMedicine->medicineTypeExam->id == 2) {
-            $nameClass = $medreser->medicineReserveMedicine->medicineRenovationExc->renovationTypeClass->name;
-            $typeLicense = $medreser->medicineReserveMedicine->medicineRenovationExc->renovationClasificationClass->name;
+            $nameClass = 'clase2';
+            // $medreser->medicineReserveMedicine->medicineRenovationExc->renovationTypeClass->name;
+            $typeLicense = 'licencia2';
+            // $medreser->medicineReserveMedicine->medicineRenovationExc->renovationClasificationClass->name;
         }
         if ($medreser->status == 1) {
             $status = 'ASISTIO';
