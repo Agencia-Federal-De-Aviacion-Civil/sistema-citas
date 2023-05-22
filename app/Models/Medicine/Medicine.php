@@ -26,7 +26,7 @@ class Medicine extends Model
     }
     public function medicineInitial()
     {
-        return $this->hasOne(MedicineInitial::class);
+        return $this->hasMany(MedicineInitial::class);
     }
     public function medicineReserve()
     {
@@ -34,6 +34,8 @@ class Medicine extends Model
     }
     public function medicineRenovation()
     {
-        return $this->hasOne(MedicineRenovation::class);
+        return $this->hasMany(MedicineRenovation::class);
     }
+
+
 }
