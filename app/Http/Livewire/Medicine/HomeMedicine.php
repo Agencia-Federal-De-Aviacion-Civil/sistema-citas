@@ -30,7 +30,7 @@ class HomeMedicine extends Component
     public $name_document, $reference_number, $pay_date, $type_exam_id, $typeRenovationExams, $dateConvertedFormatted;
     public $questionClassess, $typeExams, $sedes, $userQuestions, $to_user_headquarters, $dateReserve, $saveMedicine, $disabledDaysFilter;
     public $confirmModal = false, $modal = false;
-    public $medicineQueries, $medicineReserves, $medicineInitials, $medicineRenovations, $id_medicineReserve, $savedMedicineId, $scheduleMedicines, $medicine_schedule_id;
+    public $medicineQueries, $medicineReserves, $medicineInitials, $medicineRenovations, $id_medicineReserve, $idMedicine, $savedMedicineId, $scheduleMedicines, $medicine_schedule_id;
     // MEDICINE INITIAL TABLE
     public $question, $date, $dateNow;
     protected $listeners = [
@@ -354,7 +354,9 @@ class HomeMedicine extends Component
     public function delete($idUpdate)
     {
         MedicineReserve::find($idUpdate);
+        Medicine::find($idUpdate);
         $this->id_medicineReserve = $idUpdate;
+        $this->idMedicine = $idUpdate;
         $this->deleteRelationShip();
     }
     public function confirmDelete()
@@ -362,6 +364,10 @@ class HomeMedicine extends Component
         $updateReserve = MedicineReserve::find($this->id_medicineReserve);
         $updateReserve->update([
             'status' => 3
+        ]);
+        $updateReservePay = Medicine::find($this->idMedicine);
+        $updateReservePay->update([
+            'reference_number' => "CANCELADO" . '-' . $this->idMedicine
         ]);
         $this->notification([
             'title'       => 'CITA CANCELADA ÉXITOSAMENTE',
