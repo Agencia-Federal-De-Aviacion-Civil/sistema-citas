@@ -11,6 +11,7 @@ use PDF;
 
 class IndexController extends Controller
 {
+    // log
     public function __construct()
     {
         $this->middleware(['role:super_admin|user|medicine_admin|headquarters|super_admin_medicine']);
