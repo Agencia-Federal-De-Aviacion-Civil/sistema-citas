@@ -39,6 +39,10 @@
         @hasrole('super_admin|medicine_admin|user')
             <x-button xs positive href="{{ route('afac.downloadFile', $scheduleId) }}" label="DESCARGAR" />
         @endhasrole
+    @elseif($status == 5)
+        <x-button
+            wire:click="$emit('openModal', 'medicine.modals.schedule', {{ json_encode(['scheduleId' => $scheduleId, 'medicineId' => $medicineId]) }})"
+            label="LLAVE LIBERADA" icon="key" xs cyan />
     @endif
     @if ($status == 0)
         @hasrole('super_admin|medicine_admin|user')
