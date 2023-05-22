@@ -30,7 +30,7 @@ Route::group(['middleware' => ['role:super_admin|user|medicine_admin']], functio
     Route::get('/download', [HomeMedicine::class, 'generatePdf'])->name('download');
 });
 // TODO
-Route::group(['middleware' => ['role:super_admin|medicine_admin']], function () {
+Route::group(['middleware' => ['role:super_admin|medicine_admin|super_admin_medicine']], function () {
     Route::get('headquarters', HomeHeadquarter::class)->name('afac.headquarterMedicine');
     Route::get('/register', Peoplehistoryrecords::class)->name('afac.historyRegister');
     //Route::get('/medicine', HomeMedicine::class)->name('afac.medicine');

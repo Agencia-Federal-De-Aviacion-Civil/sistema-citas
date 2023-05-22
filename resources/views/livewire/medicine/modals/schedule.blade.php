@@ -87,12 +87,14 @@
                     <div class="float-left mt-6">
                         <x-button sm icone="exit" wire:click="$emit('closeModal')" label="SALIR" silver />
                     </div>
-                    @if ($this->status == 3)
-                        <div class="float-right mt-6">
-                            <x-button wire:click.prevent="saveActive" spinner="saveActive" loading-delay="short" sm
-                                icon="key" positive label="LIBERAR LLAVE DE PAGO" />
-                        </div>
-                    @endif
+                    @hasrole('super_admin|super_admin_medicine')
+                        @if ($this->status == 3)
+                            <div class="float-right mt-6">
+                                <x-button wire:click.prevent="saveActive" spinner="saveActive" loading-delay="short" sm
+                                    icon="key" positive label="LIBERAR LLAVE DE PAGO" />
+                            </div>
+                        @endif
+                    @endhasrole
                 @else
                     <div x-data="{ selectedOption: '' }">
                         <div class="grid xl:grid-cols-1 xl:gap-0">
