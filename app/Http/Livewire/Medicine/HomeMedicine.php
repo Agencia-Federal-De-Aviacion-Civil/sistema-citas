@@ -354,9 +354,10 @@ class HomeMedicine extends Component
     public function delete($idUpdate)
     {
         MedicineReserve::find($idUpdate);
-        Medicine::find($idUpdate);
+        $savedMedicineId = session('saved_medicine_id');
+        Medicine::find($savedMedicineId);
         $this->id_medicineReserve = $idUpdate;
-        $this->idMedicine = $idUpdate;
+        $this->idMedicine = $savedMedicineId;
         $this->deleteRelationShip();
     }
     public function confirmDelete()
