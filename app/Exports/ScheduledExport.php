@@ -37,16 +37,18 @@ class ScheduledExport extends DefaultValueBinder implements FromCollection, With
     {
 
         if ($medreser->medicineReserveMedicine->medicineTypeExam->id == 1) {
-            $nameClass = 'clase1';
-            //$medreser->medicineReserveMedicine->medicineInitialExc->medicineInitialTypeClass->name;
-            $typeLicense = 'licencia1';
-            //$medreser->medicineReserveMedicine->medicineInitialExc->medicineInitialClasificationClass->name;
+            $nameClass = $medreser->medicineReserveMedicine->medicineInitialExc->medicineInitialTypeClass->name;
+            $typeLicense = $medreser->medicineReserveMedicine->medicineInitialExc->medicineInitialClasificationClass->name;
         } else if ($medreser->medicineReserveMedicine->medicineTypeExam->id == 2) {
-            $nameClass = 'clase2';
-            // $medreser->medicineReserveMedicine->medicineRenovationExc->renovationTypeClass->name;
-            $typeLicense = 'licencia2';
-            // $medreser->medicineReserveMedicine->medicineRenovationExc->renovationClasificationClass->name;
+            $nameClass = $medreser->medicineReserveMedicine->medicineRenovationExc->renovationTypeClass->name;
+            $typeLicense = $medreser->medicineReserveMedicine->medicineRenovationExc->renovationClasificationClass->name;
         }
+        // if ($medreser->medicineReserveMedicine->medicineTypeExam->id == 1) {
+        //     $typeLicense = '2';
+        // } else if ($medreser->medicineReserveMedicine->medicineTypeExam->id == 2) {
+        //     $typeLicense = '2';
+        // }
+        // $typeLicense = '2';
         if ($medreser->status == 1) {
             $status = 'ASISTIO';
         } else if ($medreser->status == 2) {
@@ -62,24 +64,24 @@ class ScheduledExport extends DefaultValueBinder implements FromCollection, With
 
         return [
             'rowNumber' => $this->rowNumber++,
-            ($medreser->medicineReserveFromUser ? $medreser->medicineReserveFromUser->name : ''),
-            ($medreser->userParticipantUser ? $medreser->userParticipantUser->apParental : ''),
-            ($medreser->userParticipantUser ? $medreser->userParticipantUser->apMaternal : ''),
-            ($medreser->medicineReserveMedicine->medicineTypeExam ? $medreser->medicineReserveMedicine->medicineTypeExam->name : ''),
-            $nameClass,
-            ($typeLicense ? $typeLicense : ''),
-            ($medreser->user->name ? $medreser->user->name : ''),
+            ($medreser->medicineReserveFromUser ?? null) ? $medreser->medicineReserveFromUser->name : 'SIN INFORMACIÓN',
+            ($medreser->userParticipantUser ?? null) ? $medreser->userParticipantUser->apParental : 'SIN INFORMACIÓN',
+            ($medreser->userParticipantUser ?? null) ? $medreser->userParticipantUser->apMaternal : 'SIN INFORMACIÓN',
+            ($medreser->medicineReserveMedicine->medicineTypeExam ?? null) ? $medreser->medicineReserveMedicine->medicineTypeExam->name : 'SIN INFORMACIÓN',
+            ($nameClass ?? null) ? $nameClass : 'SIN INFORMACIÓN',
+            ($typeLicense ?? null) ? $typeLicense : 'SIN INFORMACIÓN',
+            ($medreser->user->name ? $medreser->user->name : 'SIN INFORMACIÓN'),
             Carbon::parse($medreser->dateReserve)->format('d/m/Y'),
-            ($medreser->reserveSchedule ? $medreser->reserveSchedule->time_start : ''),
-            ($medreser->userParticipantUser ? $medreser->userParticipantUser->curp : ''),
-            ($medreser->medicineReserveMedicine ? $medreser->medicineReserveMedicine->reference_number : ''),
-            ($medreser->userParticipantUser ? $medreser->userParticipantUser->genre : ''),
-            Carbon::parse($medreser->userParticipantUser->birth)->format('d/m/Y'),
-            ($medreser->userParticipantUser->participantState ? $medreser->userParticipantUser->participantState->name : ''),
-            ($medreser->userParticipantUser ? $medreser->userParticipantUser->age : ''),
-            ($medreser->userParticipantUser ? $medreser->userParticipantUser->mobilePhone : ''),
-            ($medreser->userParticipantUser ? $medreser->userParticipantUser->officePhone : ''),
-            ($medreser->userParticipantUser ? $medreser->userParticipantUser->extension : ''),
+            ($medreser->reserveSchedule ? $medreser->reserveSchedule->time_start : 'SIN INFORMACIÓN'),
+            ($medreser->userParticipantUser ? $medreser->userParticipantUser->curp : 'SIN INFORMACIÓN'),
+            ($medreser->medicineReserveMedicine ?? null) ? $medreser->medicineReserveMedicine->reference_number : 'SIN INFORMACIÓN',
+            ($medreser->userParticipantUser ? $medreser->userParticipantUser->genre : 'SIN INFORMACIÓN'),
+            Carbon::parse($medreser->userParticipantUser ? $medreser->userParticipantUser->birth : '')->format('d/m/Y'),
+            ($medreser->userParticipantUser->participantState ?? null) ? $medreser->userParticipantUser->participantState->name : 'SIN INFORMACIÓN',
+            ($medreser->userParticipantUser ? $medreser->userParticipantUser->age : 'SIN INFORMACIÓN'),
+            ($medreser->userParticipantUser ? $medreser->userParticipantUser->mobilePhone : 'SIN INFORMACIÓN'),
+            ($medreser->userParticipantUser ? $medreser->userParticipantUser->officePhone : 'SIN INFORMACIÓN'),
+            ($medreser->userParticipantUser ? $medreser->userParticipantUser->extension : 'SIN INFORMACIÓN'),
             $status,
 
         ];
