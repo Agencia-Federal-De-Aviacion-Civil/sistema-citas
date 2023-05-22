@@ -15,11 +15,11 @@ use PhpOffice\PhpSpreadsheet\Shared\Date;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class ScheduledExport extends DefaultValueBinder implements FromCollection,WithHeadings,WithMapping,ShouldAutoSize,WithColumnFormatting,WithStyles
+class ScheduledExport extends DefaultValueBinder implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize, WithColumnFormatting, WithStyles
 {
     /**
-    * @return \Illuminate\Support\Collection
-    */
+     * @return \Illuminate\Support\Collection
+     */
     use Exportable;
     public $medreser;
     private $rowNumber = 1;
@@ -29,28 +29,29 @@ class ScheduledExport extends DefaultValueBinder implements FromCollection,WithH
         $this->medreser = $medreser;
     }
 
-    public function collection(){
+    public function collection()
+    {
         return $this->medreser;
     }
     public function map($medreser): array
     {
 
-        if($medreser->medicineReserveMedicine->medicineTypeExam->id==1){
+        if ($medreser->medicineReserveMedicine->medicineTypeExam->id == 1) {
             $nameClass = $medreser->medicineReserveMedicine->medicineInitial->medicineInitialTypeClass->name;
             $typeLicense = $medreser->medicineReserveMedicine->medicineInitial->medicineInitialClasificationClass->name;
-        }else if($medreser->medicineReserveMedicine->medicineTypeExam->id==2){
+        } else if ($medreser->medicineReserveMedicine->medicineTypeExam->id == 2) {
             $nameClass = $medreser->medicineReserveMedicine->medicineRenovation->renovationTypeClass->name;
             $typeLicense = $medreser->medicineReserveMedicine->medicineRenovation->renovationClasificationClass->name;
         }
-        if($medreser->status==1){
+        if ($medreser->status == 1) {
             $status = 'ASISTIO';
-        }else if($medreser->status==2){
+        } else if ($medreser->status == 2) {
             $status = 'CANCELADO';
-        }else if($medreser->status==3){
+        } else if ($medreser->status == 3) {
             $status = 'CANCELO USUARIO';
-        }else if($medreser->status==4){
+        } else if ($medreser->status == 4) {
             $status = 'REAGENDO';
-        }else{
+        } else {
             $status = 'PENDIENTE';
         }
 
@@ -91,36 +92,43 @@ class ScheduledExport extends DefaultValueBinder implements FromCollection,WithH
 
     public function headings(): array
     {
-     return [
-         '#Item',
-         'NOMBRE',
-         'APELLIDO PATERNO',
-         'APELLIDO MATERNO',
-         'TIPO',
-         'CLASE',
-         'TIPO DE LICENCIA',
-         'SEDE',
-         'FECHA',
-         'HORA',
-         'CURP',
-         'LLAVE PAGO',
-         'GENERO',
-         'FECHA NACIMIENTO',
-         'ESTADO NACIMINETO',
-         'EDAD',
-         'CELULAR',
-         'OFICINA',
-         'EXTENSIÓN',
-         'ESTADO'
-     ];
+        return [
+            '#Item',
+            'NOMBRE',
+            'APELLIDO PATERNO',
+            'APELLIDO MATERNO',
+            'TIPO',
+            'CLASE',
+            'TIPO DE LICENCIA',
+            'SEDE',
+            'FECHA',
+            'HORA',
+            'CURP',
+            'LLAVE PAGO',
+            'GENERO',
+            'FECHA NACIMIENTO',
+            'ESTADO NACIMINETO',
+            'EDAD',
+            'CELULAR',
+            'OFICINA',
+            'EXTENSIÓN',
+            'ESTADO'
+        ];
     }
     public function styles(Worksheet $sheet)
     {
         $sheet->setTitle('Citas');
         $sheet->getStyle('A1:T1')->applyFromArray([
-        'font' => [
-            'bold' => true,
-         ]
+            'font' => [
+                'bold' => true,
+                // 'name' => 'Arial'
+            ],
+            'fill' => [
+                'fillType' => 'solid',
+                'startColor' => [
+                    'argb' => 'DCDCDC'
+                ]
+            ]
         ]);
     }
 }

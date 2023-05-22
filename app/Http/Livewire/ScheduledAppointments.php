@@ -26,18 +26,17 @@ class ScheduledAppointments extends DataTableComponent
 
     public function columns(): array
     {
-        $type = "medicineReserveMedicine.medicineTypeExam.name";
 
-        if("medicineReserveMedicine.medicineTypeExam.id"=='1'){
-            $nameClass = 'es';
-        //     $nameClass = "medicineReserveMedicine.medicineInitial.medicineInitialTypeClass.name";
-        //     // $typeLicense = medicineReserveMedicine->medicineInitial->medicineInitialClasificationClass->name;
-        }else if("medicineReserveMedicine.medicineTypeExam.id"=='2'){
-            $nameClass = 'no';
-        //     $nameClass = "medicineReserveMedicine.medicineRenovation.renovationTypeClass.name";
-        //     // $typeLicense = medicineReserveMedicine->medicineRenovation->renovationClasificationClass->name;
-        }
 
+        // if("medicineReserveMedicine.medicineTypeExam.id"=='1'){
+        //     $nameClass = 'es';
+        // //     $nameClass = "medicineReserveMedicine.medicineInitial.medicineInitialTypeClass.name";
+        // //     // $typeLicense = medicineReserveMedicine->medicineInitial->medicineInitialClasificationClass->name;
+        // }else if("medicineReserveMedicine.medicineTypeExam.id"=='2'){
+        //     $nameClass = 'no';
+        // //     $nameClass = "medicineReserveMedicine.medicineRenovation.renovationTypeClass.name";
+        // //     // $typeLicense = medicineReserveMedicine->medicineRenovation->renovationClasificationClass->name;
+        // }
         return [
 
             Column::make("Id", "id")
@@ -47,17 +46,21 @@ class ScheduledAppointments extends DataTableComponent
                 ->sortable()
                 ->searchable(fn($query, $searchTerm)=> $query->orWhere('name','like','%'.$searchTerm.'%')),
 
+                Column::make("SEDE", "user.userHeadquarter.name")
+                ->sortable(),
+
+
                 Column::make("Apellido Paterno", "userParticipantUser.apParental")
                 ->sortable(),
 
                 Column::make("Apellido Materno", "userParticipantUser.apMaternal")
                 ->sortable(),
 
-                Column::make("Tipo", $type)
+                Column::make("Tipo", "medicineReserveMedicine.medicineTypeExam.name")
                 ->sortable(),
 
-                Column::make("Clase", $nameClass)
-                ->sortable(),
+                // Column::make("Clase", $nameClass)
+                // ->sortable(),
 
                 // if(medicineReserveMedicine.medicineTypeExam.id==1){
 
@@ -76,8 +79,6 @@ class ScheduledAppointments extends DataTableComponent
                 // ->sortable(),*/
                 // // }
 
-                Column::make("SEDE", "medicineReserveFromUser.userHeadquarter.headquarterUser.name")
-                ->sortable(),
 
                 Column::make("FECHA", "dateReserve")
                 ->sortable(),
@@ -91,8 +92,8 @@ class ScheduledAppointments extends DataTableComponent
                 Column::make("LLAVE DE PAGO", "medicineReserveMedicine.reference_number")
                 ->sortable(),
 
-                Column::make("Clase", "medicineReserveMedicine.medicineRenovation.renovationTypeClass.name")
-                ->sortable(),
+                // Column::make("Clase", "medicineReserveMedicine.medicineRenovation.renovationTypeClass.name")
+                // ->sortable(),
 
                 Column::make("Fecha de creación", "created_at")
                 ->sortable(),
