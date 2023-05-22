@@ -58,11 +58,13 @@ class CreateUpdateScheduleModal extends ModalComponent
     public function actionSave()
     {
         $this->validate();
+        $accions="ACTUALIZA BLOQUEO DE DIAS";
         $userData = [
             'disabled_days' => $this->disabled_days,
         ];
         if (!$this->id_disabledDays) {
             $userData['user_headquarters_id'] = $this->user_headquarters_id;
+            $accions="GENERA BLOQUEO DE DIAS";
         }
         // if ($this->user_headquarters_id == 0) {
         //     $all_headquarters = Headquarter::with('headquarterUser')->get();
@@ -70,7 +72,7 @@ class CreateUpdateScheduleModal extends ModalComponent
         //         $userData['user_headquarters_id'] = $headquarter->headquarterUser->id;
         //         MedicineDisabledDays::updateOrCreate(
         //             ['id' => $this->id_disabledDays],
-        //             $userData
+        //             $userData $this->nameHeadquarter->name
         //         );
         //     }
         // } 
@@ -82,8 +84,8 @@ class CreateUpdateScheduleModal extends ModalComponent
         //Historial de guardar y editar dias deshabilitados
         history_movements::create([
             'user_id' => Auth::user()->id,
-            'action' => "BLOQUEO DE DIAS",
-            'process' => $this->disabled_days.' '.'SEDE: '. $this->nameHeadquarter->name
+            'action' => $accions,
+            'process' => $this->disabled_days.' '.'SEDE: '.$this->id_disabledDays
         ]);
         // }
         $this->notification([

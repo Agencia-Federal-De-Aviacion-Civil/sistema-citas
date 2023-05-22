@@ -63,6 +63,7 @@ class CreateUpdateModal extends ModalComponent
     }
     public function save()
     {
+        $accion="ACTUALIZA SEDE";
         $this->validate();
         $userData = [
             'name' => $this->name,
@@ -70,6 +71,7 @@ class CreateUpdateModal extends ModalComponent
         ];
         if (!$this->id_user) {
             $userData['password'] = Hash::make($this->password);
+            $accion="CREA NUEVA SEDE";
         }
         $saveHeadrquearter = User::updateOrCreate(
             ['id' => $this->id_user],
@@ -100,7 +102,7 @@ class CreateUpdateModal extends ModalComponent
         //Historial de guardar y editar Sedes
         history_movements::create([
             'user_id' => Auth::user()->id,
-            'action' => "CREA UNA NUEVA SEDE",
+            'action' => $accion,
             'process' => $this->name.' '.' DIRECCIÓN:'.$this->direction.' URL:'.$this->url
         ]);
 
