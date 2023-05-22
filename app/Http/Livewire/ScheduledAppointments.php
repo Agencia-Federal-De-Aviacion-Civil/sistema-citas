@@ -111,18 +111,19 @@ class ScheduledAppointments extends DataTableComponent
 
     public function exportSelected(){
 
-    if($this->getSelected()){
-
-    $medreser = MedicineReserve::with([
-        'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
-    ])->whereIn('id',$this->getSelected())->get();
-
-    return Excel::download(new ScheduledExport($medreser), 'scheduled.xlsx');
-    // $this->clearSelected();
-
-    }else{
-
-    }
-        // $this->emit('error, No hay registros selecionados');
+        if ($this->getSelected()) {
+            $results = collect();
+            MedicineReserve::with([
+                'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
+            ])->whereIn('id', $this->getSelected())->chunk(1000, function ($medreserChunk) use ($results) {
+                $results->push($medreserChunk);
+            });
+    
+            return Excel::download(new ScheduledExport($results->flatten()), 'scheduled.xlsx');
+            // $this->clearSelected();
+        } else {
+            // Lógica para manejar el caso en el que no se hayan seleccionado registros
+        }
+    
     }
 }
