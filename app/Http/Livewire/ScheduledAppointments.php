@@ -44,10 +44,11 @@ class ScheduledAppointments extends DataTableComponent
 
                 Column::make("Nombre", "medicineReserveFromUser.name")
                 ->sortable()
-                ->searchable(fn($query, $searchTerm)=> $query->orWhere('name','like','%'.$searchTerm.'%')),
+                ->searchable(),
+                // ->searchable(fn($query, $searchTerm)=> $query->orWhere('name','like','%'.$searchTerm.'%')),
 
-                Column::make("SEDE", "user.userHeadquarter.name")
-                ->sortable(),
+                // Column::make("SEDE", "user.userHeadquarter.name")
+                // ->sortable(),
 
 
                 Column::make("Apellido Paterno", "userParticipantUser.apParental")
@@ -118,12 +119,12 @@ class ScheduledAppointments extends DataTableComponent
             ])->whereIn('id', $this->getSelected())->chunk(1000, function ($medreserChunk) use ($results) {
                 $results->push($medreserChunk);
             });
-    
+
             return Excel::download(new ScheduledExport($results->flatten()), 'scheduled.xlsx');
             // $this->clearSelected();
         } else {
             // Lógica para manejar el caso en el que no se hayan seleccionado registros
         }
-    
+
     }
 }
