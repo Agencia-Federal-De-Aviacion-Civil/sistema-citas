@@ -8,6 +8,8 @@ use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Medicine\MedicineReserve;
 use Illuminate\Database\Eloquent\Builder;
 use Maatwebsite\Excel\Facades\Excel;
+use Rappasoft\LaravelLivewireTables\Views\Filters\DateFilter;
+use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class ScheduledAppointments extends DataTableComponent
 {
@@ -18,7 +20,7 @@ class ScheduledAppointments extends DataTableComponent
         $this->setPrimaryKey('id');
 
         $this->setBulkActions([
-            'exportSelected' =>'EXPORTAR'
+            'exportSelected' =>'EXPORTAR',
         ]);
 
     }
@@ -42,23 +44,27 @@ class ScheduledAppointments extends DataTableComponent
             Column::make("Id", "id")
                 ->sortable(),
 
-                Column::make("Nombre", "medicineReserveFromUser.name")
-                ->sortable()
-                ->searchable(),
-                // ->searchable(fn($query, $searchTerm)=> $query->orWhere('name','like','%'.$searchTerm.'%')),
-
-                // Column::make("SEDE", "user.userHeadquarter.name")
+                // Column::make("Sede", "user.name")
                 // ->sortable(),
+
+                Column::make("Nombre", "medicineReserveMedicine.medicineUser.name")
+                ->sortable(),
+                // ->searchable(fn($query, $searchTerm)=> $query->orWhere('users.name','like','%'.$searchTerm.'%')),
 
 
                 Column::make("Apellido Paterno", "userParticipantUser.apParental")
-                ->sortable(),
+                ->sortable()
+                ->searchable(fn($query, $searchTerm)=> $query->orWhere('apParental','like','%'.$searchTerm.'%')),
+
 
                 Column::make("Apellido Materno", "userParticipantUser.apMaternal")
-                ->sortable(),
+                ->sortable()
+                ->searchable(fn($query, $searchTerm)=> $query->orWhere('apMaternal','like','%'.$searchTerm.'%')),
+
 
                 Column::make("Tipo", "medicineReserveMedicine.medicineTypeExam.name")
-                ->sortable(),
+                ->sortable()
+                ->searchable(fn($query, $searchTerm)=> $query->orWhere('type_exams.name','like','%'.$searchTerm.'%')),
 
                 // Column::make("Clase", $nameClass)
                 // ->sortable(),
@@ -81,8 +87,10 @@ class ScheduledAppointments extends DataTableComponent
                 // // }
 
 
+
                 Column::make("FECHA", "dateReserve")
-                ->sortable(),
+                ->sortable()
+                ->searchable(),
 
                 Column::make("HORA", "medicineSchedule.time_start")
                 ->sortable(),
@@ -96,15 +104,17 @@ class ScheduledAppointments extends DataTableComponent
                 // Column::make("Clase", "medicineReserveMedicine.medicineRenovation.renovationTypeClass.name")
                 // ->sortable(),
 
-                Column::make("Fecha de creación", "created_at")
-                ->sortable(),
+                // Column::make("Fecha de creación", "created_at")
+                // ->sortable(),
             // Column::make("Updated at", "updated_at")
             //     ->sortable(),
         ];
     }
     public function builder(): Builder
     {
-        return MedicineReserve::query();
+        return MedicineReserve::query()->with([
+            'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
+        ]);
         // ->with('medicineReserveFromUser');
         // ->OrWhere('users.name','MANOLO');
     //  ->select('medicineReserveFromUser.id as names');
@@ -125,6 +135,26 @@ class ScheduledAppointments extends DataTableComponent
         } else {
             // Lógica para manejar el caso en el que no se hayan seleccionado registros
         }
+    }
+    public function filters(): array
+    {
+        return[
+                SelectFilter::make('Tipo')
+                ->options([
+                    '' => 'Todos',
+                    '1' => 'Inicial',
+                    '2' => 'Renovacion'
+                ])
+                ->filter(function($query,$value){
+                    if($value != ''){
+                    $query->where('type_exam_id', $value);
+                    }
+                }),
 
+                DateFilter::make('Fecha cita')
+                ->filter(function($query,$value){
+                    $query->whereDate('dateReserve', $value);
+                }),
+            ];
     }
 }
