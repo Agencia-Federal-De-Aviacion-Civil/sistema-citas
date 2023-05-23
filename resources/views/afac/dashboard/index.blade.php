@@ -1,6 +1,6 @@
 <x-app-layout>
     @can('headquarters.see.dashboard')
-        AQUI TIENE QUE IR EL DASHBOARD PARA LAS SEDES
+        @include('afac.dashboard.dashboard_headquarters')
     @endcan
     @can('medicine_admin.see.dashboard')
         @include('afac.dashboard.dashboard_medicine')
