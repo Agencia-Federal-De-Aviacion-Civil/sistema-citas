@@ -116,16 +116,24 @@ class ScheduledAppointments extends DataTableComponent
             $query = MedicineReserve::with([
                 'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
             ])->whereIn('id', $this->getSelected());
-
+    
             $results = $query->get();
-
+    
             $filePath = 'uploads/citas-app/medicine/exports/scheduled.xlsx';
-            Excel::store(new ScheduledExport($results), $filePath, 'do');
-            $fileContents = Storage::disk('do')->get($filePath);
-            Storage::disk('do')->delete($filePath);
-            return response()->streamDownload(function () use ($fileContents) {
-                echo $fileContents;
-            }, 'schedules.xlsx');
+    
+            // Generar la URL de descarga
+            $downloadUrl = Storage::disk('do')->url($filePath);
+    
+            // Eliminar el archivo después de la descarga
+            $deleteFile = function () use ($filePath) {
+                Storage::disk('do')->delete($filePath);
+            };
+    
+            // Encolar el trabajo de exportación
+            Excel::queue(new ScheduledExport($results), $filePath, 'do')
+                ->chain([$deleteFile]);
+    
+            return redirect()->to($downloadUrl);
         } else {
             // Lógica para manejar el caso en el que no se hayan seleccionado registros
         }
