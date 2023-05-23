@@ -50,10 +50,10 @@ class homeController extends Controller
         $validado = $appointment->where('status', '1')->sum('count');
         $pendientes = $appointment->where('status', '0')->sum('count');
         $porpendientes = round($appointment->where('status', '0')->sum('count') * 100 / $registradas, 0);
-        $canceladas = $appointment->whereIn('status', ['2', '3'])->sum('count');
+        $canceladas = $appointment->whereIn('status', ['2', '3','5'])->sum('count');
         $reagendado = round($appointment->where('status', '4')->sum('count'));
         $porreagendado = round($appointment->where('status', '4')->sum('count') * 100 / $registradas);
-        $porcanceladas = round($appointment->whereIn('status', ['2', '3'])->sum('count') * 100 / $registradas,0);
+        $porcanceladas = round($appointment->whereIn('status', ['2', '3','5'])->sum('count') * 100 / $registradas,0);
         $medicine =  round($registradas ? $registradas * 100 / $registradas : '0');
         return view('afac.dashboard.index', compact('headquarters', 'registradas', 'pendientes', 'validado', 'canceladas', 'reagendado', 'porconfir', 'porpendientes', 'porreagendado', 'porcanceladas', 'now', 'date','date2','medicine','date1','tomorrow'));
     }
