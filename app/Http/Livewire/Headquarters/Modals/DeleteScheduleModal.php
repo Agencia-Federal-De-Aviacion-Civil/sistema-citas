@@ -4,7 +4,7 @@ namespace App\Http\Livewire\Headquarters\Modals;
 
 use App\Models\Medicine\MedicineDisabledDays;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Medicine\history_movements;
+use App\Models\Medicine\medicine_history_movements;
 use Livewire\Component;
 use LivewireUI\Modal\ModalComponent;
 use WireUi\Traits\Actions;
@@ -47,7 +47,7 @@ class DeleteScheduleModal extends ModalComponent
         ]);
         
         //Historial de eliminar dias bloqueados
-        history_movements::create([
+        medicine_history_movements::create([
             'user_id' => Auth::user()->id,
             'action' => "ELIMINA TODOS LOS DIAS BLOQUEADOS",
             'process' => 'SEDE: '. $this->nameHeadquarter->name

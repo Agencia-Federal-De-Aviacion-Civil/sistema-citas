@@ -7,7 +7,7 @@ use App\Models\Medicine\Medicine;
 use App\Models\Medicine\MedicineObservation;
 use App\Models\Medicine\MedicineReserve;
 use App\Models\Medicine\MedicineSchedule;
-use App\Models\Medicine\history_movements;
+use App\Models\Medicine\medicine_history_movements;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Observation;
 use Illuminate\Support\Facades\Date;
@@ -204,7 +204,7 @@ class Schedule extends ModalComponent
             $this->validate();
         }
         //Historial de validar cita
-        history_movements::create([
+        medicine_history_movements::create([
             'user_id' => Auth::user()->id,
             'action' => $accion,
             'process' => $this->name. ' FOLIO CITA:'.$this->id_appoint
@@ -231,7 +231,7 @@ class Schedule extends ModalComponent
         $this->emit('reserveAppointment');
 
         //Historial de liberar llave de pago
-        history_movements::create([
+        medicine_history_movements::create([
             'user_id' => Auth::user()->id,
             'action' => "LIBERA LLAVE DE PAGO",
             'process' => $this->name. ' FOLIO CITA:'.$this->id_appoint

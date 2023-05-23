@@ -5,7 +5,7 @@ namespace App\Http\Livewire\Headquarters\Modals;
 use App\Models\Catalogue\Headquarter;
 use App\Models\Medicine\MedicineDisabledDays;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Medicine\history_movements;
+use App\Models\Medicine\medicine_history_movements;
 use Livewire\Component;
 use LivewireUI\Modal\ModalComponent;
 use WireUi\Traits\Actions;
@@ -82,7 +82,7 @@ class CreateUpdateScheduleModal extends ModalComponent
             $userData
         );
         //Historial de guardar y editar dias deshabilitados
-        history_movements::create([
+        medicine_history_movements::create([
             'user_id' => Auth::user()->id,
             'action' => $accions,
             'process' => $this->disabled_days.' '.'SEDE: '.$this->id_disabledDays

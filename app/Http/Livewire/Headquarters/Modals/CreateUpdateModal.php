@@ -5,7 +5,7 @@ namespace App\Http\Livewire\Headquarters\Modals;
 use App\Models\Catalogue\Headquarter;
 use App\Models\System;
 use App\Models\User;
-use App\Models\Medicine\history_movements;
+use App\Models\Medicine\medicine_history_movements;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
@@ -100,7 +100,7 @@ class CreateUpdateModal extends ModalComponent
         }
 
         //Historial de guardar y editar Sedes
-        history_movements::create([
+        medicine_history_movements::create([
             'user_id' => Auth::user()->id,
             'action' => $accion,
             'process' => $this->name.' '.' DIRECCIÓN:'.$this->direction.' URL:'.$this->url
