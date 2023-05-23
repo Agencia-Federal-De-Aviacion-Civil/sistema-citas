@@ -7,6 +7,8 @@ use App\Models\Medicine\Medicine;
 use App\Models\Medicine\MedicineObservation;
 use App\Models\Medicine\MedicineReserve;
 use App\Models\Medicine\MedicineSchedule;
+use App\Models\Medicine\medicine_history_movements;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Observation;
 use Illuminate\Support\Facades\Date;
 use Livewire\Component;
@@ -20,7 +22,7 @@ class Schedule extends ModalComponent
     use Actions;
     use WithFileUploads;
     public $comment1, $comment2, $scheduleId, $status, $medicineReserves, $name, $type, $class, $typLicense, $sede, $dateReserve, $date, $time, $scheduleMedicines, $sedes,
-        $to_user_headquarters, $medicine_schedule_id, $selectedOption, $comment, $comment_cancelate, $hoursReserve, $observation, $medicineId;
+        $to_user_headquarters, $medicine_schedule_id, $selectedOption, $comment, $comment_cancelate, $hoursReserve, $observation,$medicineId,$accion;
 
     public function rules()
     {
@@ -63,6 +65,7 @@ class Schedule extends ModalComponent
             ->where('id', $this->scheduleId)->get();
         $this->name = $medicineReserves[0]->medicineReserveMedicine->medicineUser->name . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant[0]->apParental . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant[0]->apMaternal;
         $this->type = $medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->name;
+        $this->id_appoint = $medicineReserves[0]->id;
 
         if ($medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->id == 1) {
             $this->class = $medicineReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name;
@@ -118,6 +121,7 @@ class Schedule extends ModalComponent
                 'status' => $this->selectedOption,
             ]);
             $this->emit('attendeReserve');
+            $accion='VALIDO CITA';
             //CANCELO EL ADMIN
         } elseif ($this->selectedOption == 2) {
 
@@ -134,8 +138,10 @@ class Schedule extends ModalComponent
                 'status' => $this->selectedOption,
             ]);
             $this->emit('cancelReserve');
+            $accion='CANCELO CITA';
             //REAGENDO
         } elseif ($this->selectedOption == 4) {
+            $accion='REAGENDO CITA';
             $this->validate([
                 'comment' => 'required',
                 'to_user_headquarters' => 'required',
@@ -197,6 +203,12 @@ class Schedule extends ModalComponent
         } else {
             $this->validate();
         }
+        //Historial de validar cita
+        medicine_history_movements::create([
+            'user_id' => Auth::user()->id,
+            'action' => $accion,
+            'process' => $this->name. ' FOLIO CITA:'.$this->id_appoint
+        ]);
         $this->closeModal();
     }
     public function saveActive()
@@ -217,6 +229,14 @@ class Schedule extends ModalComponent
         ]);
         $this->closeModal();
         $this->emit('reserveAppointment');
+
+        //Historial de liberar llave de pago
+        medicine_history_movements::create([
+            'user_id' => Auth::user()->id,
+            'action' => "LIBERA LLAVE DE PAGO",
+            'process' => $this->name. ' FOLIO CITA:'.$this->id_appoint
+        ]);
+        $this->closeModal();
     }
     public function messages()
     {

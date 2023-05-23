@@ -4,9 +4,12 @@ namespace App\Http\Livewire\Headquarters\Modals;
 
 use App\Models\Catalogue\Headquarter;
 use App\Models\Medicine\MedicineDisabledDays;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Medicine\medicine_history_movements;
 use Livewire\Component;
 use LivewireUI\Modal\ModalComponent;
 use WireUi\Traits\Actions;
+
 
 class CreateUpdateScheduleModal extends ModalComponent
 {
@@ -55,11 +58,13 @@ class CreateUpdateScheduleModal extends ModalComponent
     public function actionSave()
     {
         $this->validate();
+        $accions="ACTUALIZA BLOQUEO DE DIAS";
         $userData = [
             'disabled_days' => $this->disabled_days,
         ];
         if (!$this->id_disabledDays) {
             $userData['user_headquarters_id'] = $this->user_headquarters_id;
+            $accions="GENERA BLOQUEO DE DIAS";
         }
         // if ($this->user_headquarters_id == 0) {
         //     $all_headquarters = Headquarter::with('headquarterUser')->get();
@@ -67,7 +72,7 @@ class CreateUpdateScheduleModal extends ModalComponent
         //         $userData['user_headquarters_id'] = $headquarter->headquarterUser->id;
         //         MedicineDisabledDays::updateOrCreate(
         //             ['id' => $this->id_disabledDays],
-        //             $userData
+        //             $userData $this->nameHeadquarter->name
         //         );
         //     }
         // } 
@@ -76,6 +81,12 @@ class CreateUpdateScheduleModal extends ModalComponent
             ['id' => $this->id_disabledDays],
             $userData
         );
+        //Historial de guardar y editar dias deshabilitados
+        medicine_history_movements::create([
+            'user_id' => Auth::user()->id,
+            'action' => $accions,
+            'process' => $this->disabled_days.' '.'SEDE: '.$this->id_disabledDays
+        ]);
         // }
         $this->notification([
             'title'       => 'CAMBIOS RELIZADOS EXITOSAMENTE',
