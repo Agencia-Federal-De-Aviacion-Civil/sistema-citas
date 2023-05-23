@@ -121,17 +121,10 @@ class ScheduledAppointments extends DataTableComponent
     
             $filePath = 'uploads/citas-app/medicine/exports/scheduled.xlsx';
     
+            Excel::queue(new ScheduledExport($results), $filePath, 'do');
+    
             // Generar la URL de descarga
             $downloadUrl = Storage::disk('do')->url($filePath);
-    
-            // Eliminar el archivo después de la descarga
-            $deleteFile = function () use ($filePath) {
-                Storage::disk('do')->delete($filePath);
-            };
-    
-            // Encolar el trabajo de exportación
-            Excel::queue(new ScheduledExport($results), $filePath, 'do')
-                ->chain([$deleteFile]);
     
             return redirect()->to($downloadUrl);
         } else {
