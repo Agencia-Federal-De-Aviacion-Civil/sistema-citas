@@ -82,6 +82,7 @@ class ScheduledAppointments extends DataTableComponent
 
 
                 Column::make("FECHA", "dateReserve")
+                ->searchable()
                 ->sortable(),
 
                 Column::make("HORA", "medicineSchedule.time_start")
