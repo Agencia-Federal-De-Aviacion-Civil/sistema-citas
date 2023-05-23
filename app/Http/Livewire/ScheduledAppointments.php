@@ -7,6 +7,7 @@ use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Medicine\MedicineReserve;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ScheduledAppointments extends DataTableComponent
@@ -18,9 +19,8 @@ class ScheduledAppointments extends DataTableComponent
         $this->setPrimaryKey('id');
 
         $this->setBulkActions([
-            'exportSelected' =>'EXPORTAR'
+            'exportSelected' => 'EXPORTAR'
         ]);
-
     }
 
 
@@ -42,62 +42,63 @@ class ScheduledAppointments extends DataTableComponent
             Column::make("Id", "id")
                 ->sortable(),
 
-                Column::make("Nombre", "medicineReserveFromUser.name")
+            Column::make("Nombre", "medicineReserveFromUser.name")
                 ->sortable()
                 ->searchable(),
-                // ->searchable(fn($query, $searchTerm)=> $query->orWhere('name','like','%'.$searchTerm.'%')),
+            // ->searchable(fn($query, $searchTerm)=> $query->orWhere('name','like','%'.$searchTerm.'%')),
 
-                // Column::make("SEDE", "user.userHeadquarter.name")
-                // ->sortable(),
+            // Column::make("SEDE", "user.userHeadquarter.name")
+            // ->sortable(),
 
 
-                Column::make("Apellido Paterno", "userParticipantUser.apParental")
+            Column::make("Apellido Paterno", "userParticipantUser.apParental")
                 ->sortable(),
 
-                Column::make("Apellido Materno", "userParticipantUser.apMaternal")
+            Column::make("Apellido Materno", "userParticipantUser.apMaternal")
                 ->sortable(),
 
-                Column::make("Tipo", "medicineReserveMedicine.medicineTypeExam.name")
+            Column::make("Tipo", "medicineReserveMedicine.medicineTypeExam.name")
                 ->sortable(),
 
-                // Column::make("Clase", $nameClass)
-                // ->sortable(),
+            // Column::make("Clase", $nameClass)
+            // ->sortable(),
 
-                // if(medicineReserveMedicine.medicineTypeExam.id==1){
+            // if(medicineReserveMedicine.medicineTypeExam.id==1){
 
-                //CONSULTA DE INICIAL
-                // Column::make("Clase", $clas)
-                // ->sortable(),
-                // Column::make("TIPO DE LICENCIA", "medicineReserveMedicine.medicineInitial.medicineInitialClasificationClass.name")
-                // ->sortable(),
+            //CONSULTA DE INICIAL
+            // Column::make("Clase", $clas)
+            // ->sortable(),
+            // Column::make("TIPO DE LICENCIA", "medicineReserveMedicine.medicineInitial.medicineInitialClasificationClass.name")
+            // ->sortable(),
 
-                // // }elseif(medicineReserveMedicine.medicineTypeExam.id==2){
+            // // }elseif(medicineReserveMedicine.medicineTypeExam.id==2){
 
-                // //CONSULTA DE RENOVACIÓN
-                // /*Column::make("Clase", "medicineReserveMedicine.medicineRenovation.renovationTypeClass.name")
-                // ->sortable(),
-                // Column::make("TIPO DE LICENCIA", "medicineReserveMedicine.medicineRenovation.renovationClasificationClass.name")
-                // ->sortable(),*/
-                // // }
+            // //CONSULTA DE RENOVACIÓN
+            // /*Column::make("Clase", "medicineReserveMedicine.medicineRenovation.renovationTypeClass.name")
+            // ->sortable(),
+            // Column::make("TIPO DE LICENCIA", "medicineReserveMedicine.medicineRenovation.renovationClasificationClass.name")
+            // ->sortable(),*/
+            // // }
 
 
                 Column::make("FECHA", "dateReserve")
                 ->searchable()
+            // Column::make("FECHA", "dateReserve")
                 ->sortable(),
 
-                Column::make("HORA", "medicineSchedule.time_start")
+            Column::make("HORA", "medicineSchedule.time_start")
                 ->sortable(),
 
-                Column::make("CURP", "userParticipantUser.curp")
+            Column::make("CURP", "userParticipantUser.curp")
                 ->sortable(),
 
-                Column::make("LLAVE DE PAGO", "medicineReserveMedicine.reference_number")
+            Column::make("LLAVE DE PAGO", "medicineReserveMedicine.reference_number")
                 ->sortable(),
 
-                // Column::make("Clase", "medicineReserveMedicine.medicineRenovation.renovationTypeClass.name")
-                // ->sortable(),
+            // Column::make("Clase", "medicineReserveMedicine.medicineRenovation.renovationTypeClass.name")
+            // ->sortable(),
 
-                Column::make("Fecha de creación", "created_at")
+            Column::make("Fecha de creación", "created_at")
                 ->sortable(),
             // Column::make("Updated at", "updated_at")
             //     ->sortable(),
@@ -108,24 +109,28 @@ class ScheduledAppointments extends DataTableComponent
         return MedicineReserve::query();
         // ->with('medicineReserveFromUser');
         // ->OrWhere('users.name','MANOLO');
-    //  ->select('medicineReserveFromUser.id as names');
+        //  ->select('medicineReserveFromUser.id as names');
     }
 
-    public function exportSelected(){
-
+    public function exportSelected()
+    {
         if ($this->getSelected()) {
-            $results = collect();
-            MedicineReserve::with([
+            $query = MedicineReserve::with([
                 'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
-            ])->whereIn('id', $this->getSelected())->chunk(1000, function ($medreserChunk) use ($results) {
-                $results->push($medreserChunk);
-            });
+            ])->whereIn('id', $this->getSelected());
 
-            return Excel::download(new ScheduledExport($results->flatten()), 'scheduled.xlsx');
-            // $this->clearSelected();
+            $results = $query->get();
+
+            $filePath = 'uploads/citas-app/medicine/exports/scheduled.xlsx';
+
+            Excel::queue(new ScheduledExport($results), $filePath, 'do');
+
+            // Generar la URL de descarga
+            $downloadUrl = Storage::disk('do')->url($filePath);
+
+            return redirect()->to($downloadUrl);
         } else {
             // Lógica para manejar el caso en el que no se hayan seleccionado registros
         }
-
     }
 }
