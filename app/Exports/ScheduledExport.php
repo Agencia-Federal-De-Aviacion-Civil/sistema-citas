@@ -37,11 +37,11 @@ class ScheduledExport extends DefaultValueBinder implements FromCollection, With
     {
 
         if ($medreser->medicineReserveMedicine->medicineTypeExam->id == 1) {
-            $nameClass = $medreser->medicineReserveMedicine->medicineInitialExc->medicineInitialTypeClass->name;
-            $typeLicense = $medreser->medicineReserveMedicine->medicineInitialExc->medicineInitialClasificationClass->name;
+            $nameClass = ($medreser->medicineReserveMedicine->medicineInitialExc->medicineInitialTypeClass ?? null) ? $medreser->medicineReserveMedicine->medicineInitialExc->medicineInitialTypeClass->name : 'SIN INFORMACIÓN';
+            $typeLicense = ($medreser->medicineReserveMedicine->medicineInitialExc->medicineInitialClasificationClass ?? null) ? $medreser->medicineReserveMedicine->medicineInitialExc->medicineInitialClasificationClass->name : 'SIN INFORMACIÓN';
         } else if ($medreser->medicineReserveMedicine->medicineTypeExam->id == 2) {
-            $nameClass = $medreser->medicineReserveMedicine->medicineRenovationExc->renovationTypeClass->name;
-            $typeLicense = $medreser->medicineReserveMedicine->medicineRenovationExc->renovationClasificationClass->name;
+            $nameClass = ($medreser->medicineReserveMedicine->medicineRenovationExc->renovationTypeClass ?? null) ? $medreser->medicineReserveMedicine->medicineRenovationExc->renovationTypeClass->name : 'SIN INFORMACIÓN';
+            $typeLicense = ($medreser->medicineReserveMedicine->medicineRenovationExc->renovationClasificationClass ?? null) ? $medreser->medicineReserveMedicine->medicineRenovationExc->renovationClasificationClass->name : 'SIN INFORMACIÓN';
         }
         // if ($medreser->medicineReserveMedicine->medicineTypeExam->id == 1) {
         //     $typeLicense = '2';
@@ -68,8 +68,8 @@ class ScheduledExport extends DefaultValueBinder implements FromCollection, With
             ($medreser->userParticipantUser ?? null) ? $medreser->userParticipantUser->apParental : 'SIN INFORMACIÓN',
             ($medreser->userParticipantUser ?? null) ? $medreser->userParticipantUser->apMaternal : 'SIN INFORMACIÓN',
             ($medreser->medicineReserveMedicine->medicineTypeExam ?? null) ? $medreser->medicineReserveMedicine->medicineTypeExam->name : 'SIN INFORMACIÓN',
-            ($nameClass ?? null) ? $nameClass : 'SIN INFORMACIÓN',
-            ($typeLicense ?? null) ? $typeLicense : 'SIN INFORMACIÓN',
+            $nameClass,
+            $typeLicense,
             ($medreser->user->name ?? null) ? $medreser->user->name : 'SIN INFORMACIÓN',
             Carbon::parse($medreser->dateReserve)->format('d/m/Y'),
             ($medreser->reserveSchedule ? $medreser->reserveSchedule->time_start : 'SIN INFORMACIÓN'),
