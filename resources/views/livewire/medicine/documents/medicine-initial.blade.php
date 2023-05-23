@@ -93,12 +93,12 @@
             <tr>
                 <td>NOMBRE:</td>
                 <td>
-                    {{ $medicineReserves[0]->medicineReserveMedicine->medicineUser ?? null ? $medicineReserves[0]->medicineReserveMedicine->medicineUser->name : 'SIN INFORMACION' . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apParental')->first() . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apMaternal')->first() }}
+                    {{ ($medicineReserves[0]->medicineReserveMedicine->medicineUser->name ?? 'SIN INFORMACIÓN') . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apParental')->first() . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apMaternal')->first() }}
                 </td>
             </tr>
             <tr>
                 <td>CURP:</td>
-                <td>{{ $medicineReserves[0]->medicineReserveMedicine->medicineUser->userParticipant->pluck('curp')->first() }}
+                <td>{{ ($medicineReserves[0]->medicineReserveMedicine->medicineUser->userParticipant->pluck('curp')->first() ?? 'SIN INFORMACIÓN') }}
                 </td>
             </tr>
             <tr>
@@ -108,19 +108,19 @@
             <tr>
                 <td>TIPO DE EXAMEN:</td>
                 <td>
-                    {{ ($medicineReserves[0]->medicineReserveMedicine->medicineTypeExam ?? null) ? $medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->name : 'SIN INFORMACIÓN' }}
+                    {{ ($medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->name ?? 'SIN INFORMACIÓN') }}
                 </td>
             </tr>
             <tr>
                 <td>TIPO DE CLASE:</td>
                 <td>
-                    {{ ($medicineReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass ?? null) ? $medicineReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name : 'SIN INFORMACIÓN' }}
+                    {{ ($medicineReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name ?? 'SIN INFORMACIÓN') }}
                 </td>
             </tr>
             <tr>
                 <td>TIPO DE LICENCIA:</td>
                 <td>
-                    {{ ($medicineReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass ?? null)? $medicineReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass->name:'SIN INFORMACIÓN' }}
+                    {{ ($medicineReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass->name ?? 'SIN INFORMACIÓN') }}
                 </td>
             </tr>
             <tr>
