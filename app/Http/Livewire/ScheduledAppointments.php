@@ -83,7 +83,8 @@ class ScheduledAppointments extends DataTableComponent
 
 
             Column::make("FECHA", "dateReserve")
-                ->sortable(),
+            ->sortable()
+            ->searchable(),
 
             Column::make("HORA", "medicineSchedule.time_start")
                 ->sortable(),
@@ -117,11 +118,11 @@ class ScheduledAppointments extends DataTableComponent
             $query = MedicineReserve::with([
                 'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
             ])->whereIn('id', $this->getSelected());
-    
+
             $results = $query->get();
-    
+
             $filePath = 'uploads/citas-app/medicine/exports/scheduled.xlsx';
-    
+
             Excel::queue(new ScheduledExport($results), $filePath, 'do');
     
             // Eliminar el archivo después de la exportación utilizando colas
