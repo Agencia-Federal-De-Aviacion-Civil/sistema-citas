@@ -17,12 +17,12 @@ use PhpOffice\PhpSpreadsheet\Shared\Date;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class ScheduledExport extends DefaultValueBinder implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize, WithColumnFormatting, WithStyles, ShouldQueue
+class ScheduledExport extends DefaultValueBinder implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize, WithColumnFormatting, WithStyles
 {
     /**
      * @return \Illuminate\Support\Collection
      */
-    use Exportable;
+    use Exportable, InteractsWithQueue;
     public $query;
     private $rowNumber = 1;
 

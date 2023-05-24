@@ -7,6 +7,7 @@ use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Medicine\MedicineReserve;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -123,10 +124,12 @@ class ScheduledAppointments extends DataTableComponent
     
             Excel::queue(new ScheduledExport($results), $filePath, 'do');
     
-            // Generar la URL de descarga
-            $downloadUrl = Storage::disk('do')->url($filePath);
+            // Eliminar el archivo después de la exportación utilizando colas
+            Queue::after(function () use ($filePath) {
+                Storage::disk('do')->delete($filePath);
+            });
     
-            return redirect()->to($downloadUrl);
+            return 'La exportación se ha agregado a la cola de trabajos.';
         } else {
             // Lógica para manejar el caso en el que no se hayan seleccionado registros
         }
