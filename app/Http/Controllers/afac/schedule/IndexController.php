@@ -11,9 +11,10 @@ use PDF;
 
 class IndexController extends Controller
 {
+    // log
     public function __construct()
     {
-        $this->middleware(['role:super_admin|user|medicine_admin']);
+        $this->middleware(['role:super_admin|user|medicine_admin|headquarters|super_admin_medicine']);
     }
     public function index()
     {
@@ -23,7 +24,7 @@ class IndexController extends Controller
     {
         Date::setLocale('es');
         $medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'user'])
-            ->where('medicine_id', $scheduleId)->get();
+            ->where('id', $scheduleId)->get();
         $medicineId = $medicineReserves[0]->medicine_id;
         $dateAppointment = $medicineReserves[0]->dateReserve;
         $dateConvertedFormatted = Date::parse($dateAppointment)->format('l j F Y');
@@ -31,10 +32,10 @@ class IndexController extends Controller
         $keyEncrypt =  Crypt::encryptString($medicineId . '*' . $dateAppointment . '*' . $curp);
         $fileName = $medicineReserves[0]->dateReserve . '-' . $curp . '-' . 'MED-' . $medicineId . '.pdf';
         if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 1) {
-            $pdf = PDF::loadView('livewire.medicine.documents.medicine-initial', compact('medicineReserves', 'keyEncrypt','dateConvertedFormatted'));
+            $pdf = PDF::loadView('livewire.medicine.documents.medicine-initial', compact('medicineReserves', 'keyEncrypt', 'dateConvertedFormatted'));
             return $pdf->download($fileName);
         } else if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 2) {
-            $pdf = PDF::loadView('livewire.medicine.documents.medicine-renovation', compact('medicineReserves', 'keyEncrypt','dateConvertedFormatted'));
+            $pdf = PDF::loadView('livewire.medicine.documents.medicine-renovation', compact('medicineReserves', 'keyEncrypt', 'dateConvertedFormatted'));
             return $pdf->download($fileName);
         }
     }

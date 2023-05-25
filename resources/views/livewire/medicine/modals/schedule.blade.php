@@ -14,7 +14,7 @@
                     @elseif ($this->status == 2)
                         CITA CANCELADA
                     @elseif ($this->status == 3)
-                        CANCELO CITA
+                        CANCELÓ CITA
                     @elseif ($this->status == 4)
                         CITA REAGENDADA
                     @endif
@@ -38,7 +38,6 @@
                         <x-input wire:model="typLicense" label="TIPO DE LICENCIA" disabled />
                     </div>
                 </div>
-
                 @if ($this->status != 0)
                     <div class="grid xl:grid-cols-1 xl:gap-6">
                         <div class="mt-4 relative w-full group">
@@ -86,8 +85,16 @@
                         @endhasrole
                     @endif
                     <div class="float-left mt-6">
-                        <x-button wire:click="$emit('closeModal')" label="SALIR" silver />
+                        <x-button sm icone="exit" wire:click="$emit('closeModal')" label="SALIR" silver />
                     </div>
+                    @hasrole('super_admin|super_admin_medicine')
+                        @if ($this->status == 3)
+                            <div class="float-right mt-6">
+                                <x-button wire:click.prevent="saveActive" spinner="saveActive" loading-delay="short" sm
+                                    icon="key" positive label="LIBERAR LLAVE DE PAGO" />
+                            </div>
+                        @endif
+                    @endhasrole
                 @else
                     <div x-data="{ selectedOption: '' }">
                         <div class="grid xl:grid-cols-1 xl:gap-0">
@@ -160,7 +167,7 @@
                             </div>
                         </div>
 
-
+                        @hasrole('super_admin|medicine_admin')
                         <div class="mt-6 relative w-full group">
                             <select name="my_option" label="SELECIONE OPCIÓN" x-model="selectedOption"
                                 wire:model="selectedOption"
@@ -170,7 +177,19 @@
                                 <option value="2">CANCELAR CITA</option>
                                 <option value="4">REAGENDAR CITA</option>
                             </select>
+                        </div>                     
+                        @endhasrole
+                        @hasrole('headquarters')
+                        <div class="mt-6 relative w-full group">
+                            <select name="my_option" label="SELECIONE OPCIÓN" x-model="selectedOption"
+                                wire:model="selectedOption"
+                                class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-300 dark:border-gray-300 dark:placeholder-gray-300 dark:text-white">
+                                <option value="">SELECCIONE OPCIÓN</option>
+                                <option value="1">ASISTIÓ A SU CITA</option>
+                                <option value="2">CANCELAR CITA</option>
+                            </select>
                         </div>
+                        @endhasrole
                         @error('selectedOption')
                             <span class="mt-2 text-sm text-negative-600">Seleccione opción</span>
                         @enderror
@@ -188,7 +207,7 @@
         </div>
     </div>
     <script>
-        // CITAS MEDICAS
+        // CITAS MEDICAS JAJA
         flatpickr("#fecha-appointment", {
             // enableTime: true,
             // time_24hr: true,
@@ -201,7 +220,7 @@
             disable: [
                 function(date) {
                     // Devuelve 'true' si la fecha es un sábado o domingo
-                    return date.getDay() === 6 || date.getDay() === 0 || date <= new Date();
+                    return date.getDay() === 6 || date.getDay() === 0;
                 },
             ],
             locale: {

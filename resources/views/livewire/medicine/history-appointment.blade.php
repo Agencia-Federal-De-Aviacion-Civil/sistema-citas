@@ -1,12 +1,12 @@
 <script src="https://cdn.jsdelivr.net/npm/countup@1.8.2/dist/countUp.min.js"></script>
 <div>
-    <x-notifications position="top-center" />
+    <x-notifications position="top-bottom" />
     <x-dialog z-index="z-50" blur="md" align="center" />
     <div class="relative py-6 lg:py-4">
         <img class="z-0 w-full h-full absolute inset-0 object-cover" src="{{ asset('images/banner_testing.jpg') }}" alt="bg" />
         <div class="z-10 relative container px-6 mx-auto flex flex-col md:flex-row items-start md:items-center justify-between">
             <div>
-                <h4 tabindex="0" class="focus:outline-none text-2xl font-bold leading-tight text-white">CITAS AGENDADAS
+                <h4 tabindex="0" class="focus:outline-none text-2xl font-bold leading-tight text-white">Citas Agendadas
                 </h4>
                 <ul class="flex flex-col md:flex-row items-start md:items-center text-gray-300 text-sm mt-3">
                     <li class="flex items-center mt-4 md:mt-0">
@@ -20,7 +20,7 @@
         
         <div class="container mx-auto px-4 py-4 bg-white shadow-xl sm:rounded-lg">
 @hasrole('super_admin|medicine_admin')
-    <div class="bg-gray-100 text-gray-500 rounded shadow-xl py-5 px-5 w-full sm:w-full md:w-full lg:w-full" x-data="{ cardOpen: false, cardData: cardData() }" x-init="$watch('cardOpen', value => value ? (cardData.countUp($refs.total, 0,  {{ $this->registradas }}, null, 0.8), cardData.sessions.forEach((el, i) => cardData.countUp($refs[`device${i}`], 0, cardData.sessions[i].size, null, 1.6))) : null);
+    {{-- <div class="bg-gray-100 text-gray-500 rounded shadow-xl py-5 px-5 w-full sm:w-full md:w-full lg:w-full" x-data="{ cardOpen: false, cardData: cardData() }" x-init="$watch('cardOpen', value => value ? (cardData.countUp($refs.total, 0,  {{ $this->registradas }}, null, 0.8), cardData.sessions.forEach((el, i) => cardData.countUp($refs[`device${i}`], 0, cardData.sessions[i].size, null, 1.6))) : null);
             setTimeout(() => { cardOpen = true }, 100)">
         <div class="flex w-full">
             <h3 class="text-lg font-semibold leading-tight flex-1">TOTAL DE CITAS</h3>
@@ -88,7 +88,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
     @else @endhasrole
             <div class="mt-12 max-w-8xl mx-auto sm:px-6 lg:px-8">
                 <div class="ml-4 py-6 mr-4 uppercase text-sm">

@@ -1,12 +1,15 @@
 <x-app-layout>
-    @can('see.appointment.medicine')
-        @livewire('medicine.history-appointment')
+    @can('headquarters.see.dashboard')
+        @include('afac.dashboard.dashboard_headquarters')
     @endcan
-    @can('see.navigation.controller.systems')
+    @can('medicine_admin.see.dashboard')
+        @include('afac.dashboard.dashboard_medicine')
+    @endcan
+    @can('super_admin.see.dashboard')
         @include('afac.dashboard.dashboard_superadmin')
     @endcan
     {{-- GENERAL USER --}}
-    @can('generate.appointment')
+    @can('user.see.navigation')
         <div>
             <div class="relative py-6 lg:py-4">
                 <img class="z-0 w-full h-full absolute inset-0 object-cover"
@@ -67,7 +70,7 @@
                                         </div>
                                     </div>
                                 </a>
-                                <a href="{{ route('afac.linguistics') }}">
+                                {{-- <a href="{{ route('afac.linguistics') }}">
                                     <div
                                         class="group bg-white h-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden transition duration-100 transform hover:scale-105 hover:cursor-pointer">
                                         <div class="overflow-hidden bg-cover cursor-pointer lg:h-48 md:h-36 w-full object-cover object-center group"
@@ -97,7 +100,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </a>
+                                </a> --}}
                             </div>
                         </div>
                     </section>

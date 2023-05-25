@@ -3,9 +3,12 @@
 namespace App\Http\Livewire\Medicine\Modals;
 
 use App\Models\Catalogue\Headquarter;
+use App\Models\Medicine\Medicine;
 use App\Models\Medicine\MedicineObservation;
 use App\Models\Medicine\MedicineReserve;
 use App\Models\Medicine\MedicineSchedule;
+use App\Models\Medicine\medicine_history_movements;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Observation;
 use Illuminate\Support\Facades\Date;
 use Livewire\Component;
@@ -18,23 +21,24 @@ class Schedule extends ModalComponent
 {
     use Actions;
     use WithFileUploads;
-    public $comment1,$comment2,$scheduleId, $status, $medicineReserves, $name, $type, $class, $typLicense, $sede, $dateReserve, $date, $time, $scheduleMedicines, $sedes,
-        $to_user_headquarters, $medicine_schedule_id, $selectedOption, $comment,$comment_cancelate,$hoursReserve,$observation;
-    
-        public function rules()
-        {
-            return [
-                'comment' => '',
-                'comment_cancelate' => '',
-                'selectedOption' => 'required',
-                'to_user_headquarters' => '',
-                'medicine_schedule_id' => ''
-            ];
-        }        
-    
-    public function mount($scheduleId)
+    public $comment1, $comment2, $scheduleId, $status, $medicineReserves, $name, $type, $class, $typLicense, $sede, $dateReserve, $date, $time, $scheduleMedicines, $sedes,
+        $to_user_headquarters, $medicine_schedule_id, $selectedOption, $comment, $comment_cancelate, $hoursReserve, $observation,$medicineId,$accion;
+
+    public function rules()
+    {
+        return [
+            'comment' => '',
+            'comment_cancelate' => '',
+            'selectedOption' => 'required',
+            'to_user_headquarters' => '',
+            'medicine_schedule_id' => ''
+        ];
+    }
+
+    public function mount($scheduleId, $medicineId)
     {
         $this->scheduleId = $scheduleId;
+        $this->medicineId = $medicineId;
         $this->valores($this->scheduleId);
         $this->sedes = Headquarter::where('system_id', 1)->get();
         $this->scheduleMedicines = collect();
@@ -43,7 +47,7 @@ class Schedule extends ModalComponent
     }
     public function render()
     {
-        
+
         return view('livewire.medicine.modals.schedule');
     }
     /**
@@ -61,6 +65,7 @@ class Schedule extends ModalComponent
             ->where('id', $this->scheduleId)->get();
         $this->name = $medicineReserves[0]->medicineReserveMedicine->medicineUser->name . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant[0]->apParental . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant[0]->apMaternal;
         $this->type = $medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->name;
+        $this->id_appoint = $medicineReserves[0]->id;
 
         if ($medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->id == 1) {
             $this->class = $medicineReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name;
@@ -75,23 +80,22 @@ class Schedule extends ModalComponent
         $this->status = $medicineReserves[0]->status;
 
         $this->hoursReserve = $medicineReserves[0]->reserveSchedule->time_start;
-        
-        if(empty($medicineReserves[0]->reserveObserv[0]->observation)){
-            $this->comment;
-        }else{
 
-            if(!empty($medicineReserves[0]->reserveObserv[0]->observation)){
+        if (empty($medicineReserves[0]->reserveObserv[0]->observation)) {
+            $this->comment;
+        } else {
+
+            if (!empty($medicineReserves[0]->reserveObserv[0]->observation)) {
                 $this->comment1 = $medicineReserves[0]->reserveObserv[0]->observation;
-            }else{
+            } else {
                 $this->comment1;
             }
-            if(!empty($medicineReserves[0]->reserveObserv[1]->observation)){
+            if (!empty($medicineReserves[0]->reserveObserv[1]->observation)) {
                 $this->comment2 = $medicineReserves[0]->reserveObserv[1]->observation;
-            }else{
+            } else {
                 $this->comment2;
             }
-            $this->comment = $this->comment1.' / '.$this->comment2;
-            
+            $this->comment = $this->comment1 . ' / ' . $this->comment2;
         }
 
         $this->sede = $medicineReserves[0]->user->name;
@@ -117,12 +121,13 @@ class Schedule extends ModalComponent
                 'status' => $this->selectedOption,
             ]);
             $this->emit('attendeReserve');
-        //CANCELO EL ADMIN
+            $accion='VALIDO CITA';
+            //CANCELO EL ADMIN
         } elseif ($this->selectedOption == 2) {
 
             $this->validate([
                 'comment_cancelate' => 'required',
-            ]);            
+            ]);
             $observation = new MedicineObservation();
             $observation->medicine_reserve_id = $this->scheduleId;
             $observation->observation = $this->comment_cancelate;
@@ -133,13 +138,15 @@ class Schedule extends ModalComponent
                 'status' => $this->selectedOption,
             ]);
             $this->emit('cancelReserve');
-        //REAGENDO
+            $accion='CANCELO CITA';
+            //REAGENDO
         } elseif ($this->selectedOption == 4) {
+            $accion='REAGENDO CITA';
             $this->validate([
                 'comment' => 'required',
                 'to_user_headquarters' => 'required',
                 'medicine_schedule_id' => 'required'
-    
+
             ]);
             $observation = new MedicineObservation();
             $observation->medicine_reserve_id = $this->scheduleId;
@@ -150,22 +157,30 @@ class Schedule extends ModalComponent
                 ->where('dateReserve', $this->dateReserve)
                 ->where(function ($query) {
                     $query->where('status', 0)
+                        ->orWhere('status', 1)
                         ->orWhere('status', 4);
                 })
                 ->count();
-            // dd($citas);
             switch ($this->to_user_headquarters) {
-                case 2: // Cancun
-                case 3: // Tijuana
-                case 4: // Toluca
-                case 5: // Monterrey
-                    $maxCitas = 3;
+                case 7: // CIUDAD DE MEXICO
+                    $maxCitas = 50;
                     break;
-                case 7: // Guadalajara
+                case 2: // CANCUN
+                case 3: // TIJUANA
+                case 4: // TOLUCA
+                case 5: // MONTERREY
+                case 528: //MAZATLAN SINALOA
+                case 529: //CHIAPAS
+                case 530: //VERACRUZ
+                case 531: //HERMOSILLO SONORA
+                case 532: //QUERETARO
+                    $maxCitas = 10;
+                    break;
+                case 6: // GUADALAJARA
                     $maxCitas = 20;
                     break;
-                case 9: // Ciudad de Mexico
-                    $maxCitas = 50;
+                case 533: // YUCATAN
+                    $maxCitas = 5;
                     break;
                 default:
                     $maxCitas = 0;
@@ -173,7 +188,7 @@ class Schedule extends ModalComponent
             }
             if ($citas >= $maxCitas) {
                 $this->notification([
-                    'title'       => 'ERROR DE CITA!',
+                    'title'       => 'CITA NO GENERADA!',
                     'description' => 'No hay citas disponibles para ese dia',
                     'icon'        => 'error'
                 ]);
@@ -185,9 +200,42 @@ class Schedule extends ModalComponent
                 $cita->save();
                 $this->emit('reserveAppointment');
             }
-        }else{
+        } else {
             $this->validate();
         }
+        //Historial de validar cita
+        medicine_history_movements::create([
+            'user_id' => Auth::user()->id,
+            'action' => $accion,
+            'process' => $this->name. ' FOLIO CITA:'.$this->id_appoint
+        ]);
+        $this->closeModal();
+    }
+    public function saveActive()
+    {
+        $activeReserve = Medicine::find($this->medicineId);
+        $activeReserve->update([
+            'reference_number' => 'ACTIVE' . '-' . $this->medicineId,
+        ]);
+        $updateStatus = MedicineReserve::find($this->scheduleId);
+        $updateStatus->update([
+            'status' => '5',
+        ]);
+        $this->notification([
+            'title'       => 'LLAVE DE PAGO LIBERADA!',
+            'description' => 'La llave de pago se liberó.',
+            'icon'        => 'info',
+            'timeout' => '3100'
+        ]);
+        $this->closeModal();
+        $this->emit('reserveAppointment');
+
+        //Historial de liberar llave de pago
+        medicine_history_movements::create([
+            'user_id' => Auth::user()->id,
+            'action' => "LIBERA LLAVE DE PAGO",
+            'process' => $this->name. ' FOLIO CITA:'.$this->id_appoint
+        ]);
         $this->closeModal();
     }
     public function messages()

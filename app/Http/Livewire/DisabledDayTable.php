@@ -18,8 +18,8 @@ final class DisabledDayTable extends PowerGridComponent
         return array_merge(
             parent::getListeners(),
             [
-                'disabledRecord' => '$refresh',
-                'deleteDay' => '$refresh'
+                'createOrUpdateSchedule' => '$refresh',
+                'deleteSchedule' => '$refresh'
             ]
         );
     }
@@ -53,7 +53,7 @@ final class DisabledDayTable extends PowerGridComponent
      */
     public function datasource(): Builder
     {
-        return MedicineDisabledDays::query();
+        return MedicineDisabledDays::query()->with('disabledDaysUser');
     }
 
     /*
@@ -71,7 +71,11 @@ final class DisabledDayTable extends PowerGridComponent
      */
     public function relationSearch(): array
     {
-        return [];
+        return [
+            'disabledDaysUser' => [
+                'name',
+            ]
+        ];
     }
 
     /*
@@ -89,7 +93,10 @@ final class DisabledDayTable extends PowerGridComponent
     {
         return PowerGrid::eloquent()
             ->addColumn('id')
-            ->addColumn('disabled_days', fn (MedicineDisabledDays $model) => Carbon::parse($model->disabled_days)->format('d/m/Y'));
+            ->addColumn('headquarter_name', function (MedicineDisabledDays $user) {
+                return $user->disabledDaysUser->name;
+            })
+            ->addColumn('disabled_days');
     }
 
     /*
@@ -111,13 +118,16 @@ final class DisabledDayTable extends PowerGridComponent
         return [
             Column::make('ID', 'id')
                 ->sortable(),
+            Column::make('SEDE', 'headquarter_name')
+                ->searchable(),
+            // ->sortable(),
             // ->makeInputRange(),
 
             Column::make('FECHAS DESHABILITADAS', 'disabled_days')
                 ->searchable()
                 ->sortable(),
             // ->makeInputDatePicker(),
-
+            // ->makeInputRange(),
             // Column::make('UPDATED AT', 'updated_at_formatted', 'updated_at')
             //     ->searchable()
             //     ->sortable(),
@@ -143,8 +153,8 @@ final class DisabledDayTable extends PowerGridComponent
     public function actions(): array
     {
         return [
-            Button::add('delete-schedule')
-                ->bladeComponent('delete-schedule', ['deleteId' => 'id']),
+            Button::add('action-disabled-days-component')
+                ->bladeComponent('action-disabled-days-component', ['actionId' => 'id']),
         ];
     }
 
