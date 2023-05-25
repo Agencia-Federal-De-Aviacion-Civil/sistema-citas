@@ -22,63 +22,24 @@ class ScheduledExport extends DefaultValueBinder implements FromCollection, With
     /**
      * @return \Illuminate\Support\Collection
      */
-    use Exportable, InteractsWithQueue;
-    public $query;
+    use Exportable;
+    public $results;
     private $rowNumber = 1;
 
-    public function __construct($query)
+    public function __construct($results)
     {
-        $this->query = $query;
+        $this->results = $results;
     }
 
     public function collection()
     {
-        return $this->query;
+        return $this->results->flatten();
     }
-    public function map($query): array
+    public function map($results): array
     {
-
-        if ($query->medicineReserveMedicine->medicineTypeExam->id == 1) {
-            $nameClass = ($query->medicineReserveMedicine->medicineInitialExc->medicineInitialTypeClass ?? null) ? $query->medicineReserveMedicine->medicineInitialExc->medicineInitialTypeClass->name : 'SIN INFORMACIÓN';
-            $typeLicense = ($query->medicineReserveMedicine->medicineInitialExc->medicineInitialClasificationClass ?? null) ? $query->medicineReserveMedicine->medicineInitialExc->medicineInitialClasificationClass->name : 'SIN INFORMACIÓN';
-        } else if ($query->medicineReserveMedicine->medicineTypeExam->id == 2) {
-            $nameClass = ($query->medicineReserveMedicine->medicineRenovationExc->renovationTypeClass ?? null) ? $query->medicineReserveMedicine->medicineRenovationExc->renovationTypeClass->name : 'SIN INFORMACIÓN';
-            $typeLicense = ($query->medicineReserveMedicine->medicineRenovationExc->renovationClasificationClass ?? null) ? $query->medicineReserveMedicine->medicineRenovationExc->renovationClasificationClass->name : 'SIN INFORMACIÓN';
-        }
-        if ($query->status == 1) {
-            $status = 'ASISTIO';
-        } else if ($query->status == 2) {
-            $status = 'CANCELADO';
-        } else if ($query->status == 3) {
-            $status = 'CANCELO USUARIO';
-        } else if ($query->status == 4) {
-            $status = 'REAGENDO';
-        } else {
-            $status = 'PENDIENTE';
-        }
-
-
         return [
             'rowNumber' => $this->rowNumber++,
-            ($query->medicineReserveFromUser ?? null) ? $query->medicineReserveFromUser->name : 'SIN INFORMACIÓN',
-            ($query->userParticipantUser ?? null) ? $query->userParticipantUser->apParental : 'SIN INFORMACIÓN',
-            ($query->userParticipantUser ?? null) ? $query->userParticipantUser->apMaternal : 'SIN INFORMACIÓN',
-            ($query->medicineReserveMedicine->medicineTypeExam ?? null) ? $query->medicineReserveMedicine->medicineTypeExam->name : 'SIN INFORMACIÓN',
-            $nameClass,
-            $typeLicense,
-            ($query->user->name ?? null) ? $query->user->name : 'SIN INFORMACIÓN',
-            Carbon::parse($query->dateReserve)->format('d/m/Y'),
-            ($query->reserveSchedule ? $query->reserveSchedule->time_start : 'SIN INFORMACIÓN'),
-            ($query->userParticipantUser ? $query->userParticipantUser->curp : 'SIN INFORMACIÓN'),
-            ($query->medicineReserveMedicine ?? null) ? $query->medicineReserveMedicine->reference_number : 'SIN INFORMACIÓN',
-            ($query->userParticipantUser ?? null) ? $query->userParticipantUser->genre : 'SIN INFORMACIÓN',
-            Carbon::parse($query->userParticipantUser ? $query->userParticipantUser->birth : '')->format('d/m/Y'),
-            ($query->userParticipantUser->participantState ?? null) ? $query->userParticipantUser->participantState->name : 'SIN INFORMACIÓN',
-            ($query->userParticipantUser ?? null) ? $query->userParticipantUser->age : 'SIN INFORMACIÓN',
-            ($query->userParticipantUser ?? null) ? $query->userParticipantUser->mobilePhone : 'SIN INFORMACIÓN',
-            ($query->userParticipantUser ?? null) ? $query->userParticipantUser->officePhone : 'SIN INFORMACIÓN',
-            ($query->userParticipantUser ?? null) ? $query->userParticipantUser->extension : 'SIN INFORMACIÓN',
-            $status,
+            $results->id,
 
         ];
     }
@@ -96,25 +57,7 @@ class ScheduledExport extends DefaultValueBinder implements FromCollection, With
     {
         return [
             '#Item',
-            'NOMBRE',
-            'APELLIDO PATERNO',
-            'APELLIDO MATERNO',
-            'TIPO',
-            'CLASE',
-            'TIPO DE LICENCIA',
-            'SEDE',
-            'FECHA',
-            'HORA',
-            'CURP',
-            'LLAVE PAGO',
-            'GENERO',
-            'FECHA NACIMIENTO',
-            'ESTADO NACIMINETO',
-            'EDAD',
-            'CELULAR',
-            'OFICINA',
-            'EXTENSIÓN',
-            'ESTADO'
+            'ID',
         ];
     }
     public function styles(Worksheet $sheet)
