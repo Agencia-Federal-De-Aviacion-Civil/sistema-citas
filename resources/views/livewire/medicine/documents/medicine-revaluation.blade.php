@@ -164,6 +164,10 @@
                 <td>HORA</td>
                 <td>{{ $medicineReserves[0]->reserveSchedule->time_start }}</td>
             </tr>
+            <tr>
+                <td>LLAVE DE PAGO</td>
+                <td>{{ $medicineReserves[0]->medicineReserveMedicine->reference_number }}</td>
+            </tr>
         </table>
         <div class="codigoqr">
             <img src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ $keyEncrypt }}"
