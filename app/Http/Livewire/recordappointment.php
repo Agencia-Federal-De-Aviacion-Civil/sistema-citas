@@ -170,6 +170,12 @@ final class recordappointment extends PowerGridComponent
                         return ($class->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass ? $class->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name : '');
                     } else if ($class->medicineReserveMedicine->type_exam_id == 2) {
                         return ($class->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass ? $class->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name : '');
+                    } else if ($class->medicineReserveMedicine->type_exam_id == 3) {
+                        if($class->medicineReserveMedicine->medicineRevaluation[0]->RevaluationTypeExam->id == 1){
+                            return ($class->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->revaluationInitialTypeClass->name);
+                        }else {
+                            return ($class->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->revaluationRenovationTypeClass->name);
+                        }                        
                     }
                 })
                 ->addColumn('typelicens', function (MedicineReserve $class) {
@@ -177,6 +183,12 @@ final class recordappointment extends PowerGridComponent
                         return ($class->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass ? $class->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass->name : '');
                     } else if ($class->medicineReserveMedicine->type_exam_id == 2) {
                         return ($class->medicineReserveMedicine->medicineRenovation[0]->renovationClasificationClass ? $class->medicineReserveMedicine->medicineRenovation[0]->renovationClasificationClass->name : '');
+                    } else if ($class->medicineReserveMedicine->type_exam_id == 3) {
+                        if($class->medicineReserveMedicine->medicineRevaluation[0]->RevaluationTypeExam->id == 1){
+                            return ($class->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->revaluationInitialClasificationClass->name);
+                        }else {
+                            return ($class->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->revaluationRenovationClasificationClass->name);
+                        }                        
                     }
                 })
                 ->addColumn('headquarters', function (MedicineReserve $headquarters) {
