@@ -116,14 +116,14 @@
             <tr>
                 <td>TIPO DE CLASE:</td>
                 <td>
-                    {{-- {{ $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial->type_class_id}} --}}
+                    {{-- {{ $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial->type_class_id }} --}}
                 </td>
             </tr>
             @else
             <tr>
                 <td>TIPO DE CLASE:</td>
                 <td>
-                    {{-- {{ $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation->type_class_id}} --}}
+                    {{-- {{ $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation->type_class_id }} --}}
                 </td>
             </tr>
             @endif
