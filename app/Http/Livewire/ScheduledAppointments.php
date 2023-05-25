@@ -14,7 +14,6 @@ use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 class ScheduledAppointments extends DataTableComponent
 {
     // protected $model = Medicine\MedicineReserve::class;
-
     public function configure(): void
     {
         $this->setPrimaryKey('id');
@@ -22,9 +21,7 @@ class ScheduledAppointments extends DataTableComponent
         $this->setBulkActions([
             'exportSelected' =>'EXPORTAR',
         ]);
-
     }
-
 
     public function columns(): array
     {
@@ -39,18 +36,16 @@ class ScheduledAppointments extends DataTableComponent
         // //     $nameClass = "medicineReserveMedicine.medicineRenovation.renovationTypeClass.name";
         // //     // $typeLicense = medicineReserveMedicine->medicineRenovation->renovationClasificationClass->name;
         // }
+
         return [
 
             Column::make("Id", "id")
                 ->sortable(),
 
-                // Column::make("Sede", "user.name")
-                // ->sortable(),
 
                 Column::make("Nombre", "medicineReserveMedicine.medicineUser.name")
                 ->sortable(),
                 // ->searchable(fn($query, $searchTerm)=> $query->orWhere('users.name','like','%'.$searchTerm.'%')),
-
 
                 Column::make("Apellido Paterno", "userParticipantUser.apParental")
                 ->sortable()
@@ -61,10 +56,14 @@ class ScheduledAppointments extends DataTableComponent
                 ->sortable()
                 ->searchable(fn($query, $searchTerm)=> $query->orWhere('apMaternal','like','%'.$searchTerm.'%')),
 
-
                 Column::make("Tipo", "medicineReserveMedicine.medicineTypeExam.name")
                 ->sortable()
                 ->searchable(fn($query, $searchTerm)=> $query->orWhere('type_exams.name','like','%'.$searchTerm.'%')),
+
+
+                Column::make("Sede", "user.name")
+                ->sortable(),
+
 
                 // Column::make("Clase", $nameClass)
                 // ->sortable(),
@@ -112,9 +111,10 @@ class ScheduledAppointments extends DataTableComponent
     }
     public function builder(): Builder
     {
-        return MedicineReserve::query()->with([
-            'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
-        ]);
+        return $valor = MedicineReserve::query()->selectRaw('users.name as names');
+        // ->with([
+        //     'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
+        // ])->select('user.name as name')->get();
         // ->with('medicineReserveFromUser');
         // ->OrWhere('users.name','MANOLO');
     //  ->select('medicineReserveFromUser.id as names');
