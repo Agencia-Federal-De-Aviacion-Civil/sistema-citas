@@ -135,7 +135,7 @@
             </tr>
             <tr>
                 <td>TRAMITE:</td>
-                <td>EXAMEN PSICOFISICO INTEGRAL</td>
+                <td>EVALUACIÓN MEDICA</td>
             </tr>
             <tr>
                 <td>UNIDAD MÉDICA:</td>
