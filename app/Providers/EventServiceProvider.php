@@ -2,10 +2,19 @@
 
 namespace App\Providers;
 
+use App\Models\Security\InformationUserActivity;
+use App\Models\Security\SessionActivity;
+use GuzzleHttp\Client;
+use Illuminate\Auth\Events\Authenticated;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
+use Jaybizzle\CrawlerDetect\CrawlerDetect;
+use Sinergi\BrowserDetector\Browser;
+use Sinergi\BrowserDetector\Device;
+use Sinergi\BrowserDetector\Os;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -27,7 +36,23 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Event::listen(Authenticated::class, function ($event) {
+            $request = request();
+            if (!$request->session()->has('user_information_logged')) {
+                $ip = $request->ip();
+                $browser = new Browser($request->header('User-Agent'));
+                $os = new Os($request->header('User-Agent'));
+                $browserName = $browser->getName();
+                $osName = $os->getName();
+                SessionActivity::create([
+                    'user_id' => Auth::user()->id,
+                    'ip' => $ip,
+                    'browser' => $browserName,
+                    'platform' => $osName,
+                ]);
+                $request->session()->put('user_information_logged', true);
+            }
+        });
     }
 
     /**

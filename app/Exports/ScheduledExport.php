@@ -22,62 +22,59 @@ class ScheduledExport extends DefaultValueBinder implements FromCollection, With
     /**
      * @return \Illuminate\Support\Collection
      */
-    use Exportable, InteractsWithQueue;
-    public $query;
+    use Exportable;
+    public $results;
     private $rowNumber = 1;
 
-    public function __construct($query)
+    public function __construct($results)
     {
-        $this->query = $query;
+        $this->results = $results;
     }
 
     public function collection()
     {
-        return $this->query;
+        return $this->results->flatten();
     }
-    public function map($query): array
+    public function map($results): array
     {
-
-        if ($query->medicineReserveMedicine->medicineTypeExam->id == 1) {
-            $nameClass = ($query->medicineReserveMedicine->medicineInitialExc->medicineInitialTypeClass ?? null) ? $query->medicineReserveMedicine->medicineInitialExc->medicineInitialTypeClass->name : 'SIN INFORMACIÓN';
-            $typeLicense = ($query->medicineReserveMedicine->medicineInitialExc->medicineInitialClasificationClass ?? null) ? $query->medicineReserveMedicine->medicineInitialExc->medicineInitialClasificationClass->name : 'SIN INFORMACIÓN';
-        } else if ($query->medicineReserveMedicine->medicineTypeExam->id == 2) {
-            $nameClass = ($query->medicineReserveMedicine->medicineRenovationExc->renovationTypeClass ?? null) ? $query->medicineReserveMedicine->medicineRenovationExc->renovationTypeClass->name : 'SIN INFORMACIÓN';
-            $typeLicense = ($query->medicineReserveMedicine->medicineRenovationExc->renovationClasificationClass ?? null) ? $query->medicineReserveMedicine->medicineRenovationExc->renovationClasificationClass->name : 'SIN INFORMACIÓN';
+        if ($results->medicineReserveMedicine->medicineTypeExam->id == 1) {
+            $nameClass = ($results->medicineReserveMedicine->medicineInitialExc->medicineInitialTypeClass ?? null) ? $results->medicineReserveMedicine->medicineInitialExc->medicineInitialTypeClass->name : 'SIN INFORMACIÓN';
+            $typeLicense = ($results->medicineReserveMedicine->medicineInitialExc->medicineInitialClasificationClass ?? null) ? $results->medicineReserveMedicine->medicineInitialExc->medicineInitialClasificationClass->name : 'SIN INFORMACIÓN';
+        } else if ($results->medicineReserveMedicine->medicineTypeExam->id == 2) {
+            $nameClass = ($results->medicineReserveMedicine->medicineRenovationExc->renovationTypeClass ?? null) ? $results->medicineReserveMedicine->medicineRenovationExc->renovationTypeClass->name : 'SIN INFORMACIÓN';
+            $typeLicense = ($results->medicineReserveMedicine->medicineRenovationExc->renovationClasificationClass ?? null) ? $results->medicineReserveMedicine->medicineRenovationExc->renovationClasificationClass->name : 'SIN INFORMACIÓN';
         }
-        if ($query->status == 1) {
+        if ($results->status == 1) {
             $status = 'ASISTIO';
-        } else if ($query->status == 2) {
+        } else if ($results->status == 2) {
             $status = 'CANCELADO';
-        } else if ($query->status == 3) {
+        } else if ($results->status == 3) {
             $status = 'CANCELO USUARIO';
-        } else if ($query->status == 4) {
+        } else if ($results->status == 4) {
             $status = 'REAGENDO';
         } else {
             $status = 'PENDIENTE';
         }
-
-
         return [
             'rowNumber' => $this->rowNumber++,
-            ($query->medicineReserveFromUser ?? null) ? $query->medicineReserveFromUser->name : 'SIN INFORMACIÓN',
-            ($query->userParticipantUser ?? null) ? $query->userParticipantUser->apParental : 'SIN INFORMACIÓN',
-            ($query->userParticipantUser ?? null) ? $query->userParticipantUser->apMaternal : 'SIN INFORMACIÓN',
-            ($query->medicineReserveMedicine->medicineTypeExam ?? null) ? $query->medicineReserveMedicine->medicineTypeExam->name : 'SIN INFORMACIÓN',
+            ($results->medicineReserveFromUser ?? null) ? $results->medicineReserveFromUser->name : 'SIN INFORMACIÓN',
+            ($results->userParticipantUser ?? null) ? $results->userParticipantUser->apParental : 'SIN INFORMACIÓN',
+            ($results->userParticipantUser ?? null) ? $results->userParticipantUser->apMaternal : 'SIN INFORMACIÓN',
+            ($results->medicineReserveMedicine->medicineTypeExam ?? null) ? $results->medicineReserveMedicine->medicineTypeExam->name : 'SIN INFORMACIÓN',
             $nameClass,
             $typeLicense,
-            ($query->user->name ?? null) ? $query->user->name : 'SIN INFORMACIÓN',
-            Carbon::parse($query->dateReserve)->format('d/m/Y'),
-            ($query->reserveSchedule ? $query->reserveSchedule->time_start : 'SIN INFORMACIÓN'),
-            ($query->userParticipantUser ? $query->userParticipantUser->curp : 'SIN INFORMACIÓN'),
-            ($query->medicineReserveMedicine ?? null) ? $query->medicineReserveMedicine->reference_number : 'SIN INFORMACIÓN',
-            ($query->userParticipantUser ?? null) ? $query->userParticipantUser->genre : 'SIN INFORMACIÓN',
-            Carbon::parse($query->userParticipantUser ? $query->userParticipantUser->birth : '')->format('d/m/Y'),
-            ($query->userParticipantUser->participantState ?? null) ? $query->userParticipantUser->participantState->name : 'SIN INFORMACIÓN',
-            ($query->userParticipantUser ?? null) ? $query->userParticipantUser->age : 'SIN INFORMACIÓN',
-            ($query->userParticipantUser ?? null) ? $query->userParticipantUser->mobilePhone : 'SIN INFORMACIÓN',
-            ($query->userParticipantUser ?? null) ? $query->userParticipantUser->officePhone : 'SIN INFORMACIÓN',
-            ($query->userParticipantUser ?? null) ? $query->userParticipantUser->extension : 'SIN INFORMACIÓN',
+            ($results->user->name ?? null) ? $results->user->name : 'SIN INFORMACIÓN',
+            Carbon::parse($results->dateReserve)->format('d/m/Y'),
+            ($results->reserveSchedule ?? null) ? $results->reserveSchedule->time_start : 'SIN INFORMACIÓN',
+            ($results->userParticipantUser ?? null) ? $results->userParticipantUser->curp : 'SIN INFORMACIÓN',
+            ($results->medicineReserveMedicine ?? null) ? $results->medicineReserveMedicine->reference_number : 'SIN INFORMACIÓN',
+            ($results->userParticipantUser ?? null) ? $results->userParticipantUser->genre : 'SIN INFORMACIÓN',
+            Carbon::parse($results->userParticipantUser->birth)->format('d/m/Y'),
+            ($results->userParticipantUser->participantState ?? null) ? $results->userParticipantUser->participantState->name : 'SIN INFORMACIÓN',
+            ($results->userParticipantUser ?? null) ? $results->userParticipantUser->age : 'SIN INFORMACIÓN',
+            ($results->userParticipantUser ?? null) ? $results->userParticipantUser->mobilePhone : 'SIN INFORMACIÓN',
+            ($results->userParticipantUser ?? null) ? $results->userParticipantUser->officePhone : 'SIN INFORMACIÓN',
+            ($results->userParticipantUser ?? null) ? $results->userParticipantUser->extension : 'SIN INFORMACIÓN',
             $status,
 
         ];
