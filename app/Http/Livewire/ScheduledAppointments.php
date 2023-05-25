@@ -44,24 +44,20 @@ class ScheduledAppointments extends DataTableComponent
 
             Column::make("Id", "id")
                 ->sortable(),
+            Column::make("Nombre", "medicineReserveFromUser.name")
+                ->sortable()
+                ->searchable(fn ($query, $searchTerm) => $query->orWhere('name', 'like', '%' . $searchTerm . '%')),
 
-            // Column::make("Nombre", "medicineReserveFromUser.name")
-            //     ->sortable()
-            //     ->searchable(),
-            // ->searchable(fn($query, $searchTerm)=> $query->orWhere('name','like','%'.$searchTerm.'%')),
+            Column::make("SEDE", "user.userHeadquarter.name")
+                ->sortable(),
+            Column::make("Apellido Paterno", "userParticipantUser.apParental")
+                ->sortable(),
 
-            // Column::make("SEDE", "user.userHeadquarter.name")
-            // ->sortable(),
+            Column::make("Apellido Materno", "userParticipantUser.apMaternal")
+                ->sortable(),
 
-
-            // Column::make("Apellido Paterno", "userParticipantUser.apParental")
-            //     ->sortable(),
-
-            // Column::make("Apellido Materno", "userParticipantUser.apMaternal")
-            //     ->sortable(),
-
-            // Column::make("Tipo", "medicineReserveMedicine.medicineTypeExam.name")
-            //     ->sortable(),
+            Column::make("Tipo", "medicineReserveMedicine.medicineTypeExam.name")
+                ->sortable(),
 
             // Column::make("Clase", $nameClass)
             // ->sortable(),
@@ -82,20 +78,18 @@ class ScheduledAppointments extends DataTableComponent
             // Column::make("TIPO DE LICENCIA", "medicineReserveMedicine.medicineRenovation.renovationClasificationClass.name")
             // ->sortable(),*/
             // // }
+            Column::make("FECHA", "dateReserve")
+                ->sortable()
+                ->searchable(),
 
+            Column::make("HORA", "medicineSchedule.time_start")
+                ->sortable(),
 
-            // Column::make("FECHA", "dateReserve")
-            // ->sortable()
-            // ->searchable(),
+            Column::make("CURP", "userParticipantUser.curp")
+                ->sortable(),
 
-            // Column::make("HORA", "medicineSchedule.time_start")
-            //     ->sortable(),
-
-            // Column::make("CURP", "userParticipantUser.curp")
-            //     ->sortable(),
-
-            // Column::make("LLAVE DE PAGO", "medicineReserveMedicine.reference_number")
-            //     ->sortable(),
+            Column::make("LLAVE DE PAGO", "medicineReserveMedicine.reference_number")
+                ->sortable(),
 
             // Column::make("Clase", "medicineReserveMedicine.medicineRenovation.renovationTypeClass.name")
             // ->sortable(),
@@ -108,7 +102,7 @@ class ScheduledAppointments extends DataTableComponent
     }
     public function builder(): Builder
     {
-        return User::query();
+        return MedicineReserve::query();
         // ->with('medicineReserveFromUser');
         // ->OrWhere('users.name','MANOLO');
         //  ->select('medicineReserveFromUser.id as names');
@@ -117,7 +111,9 @@ class ScheduledAppointments extends DataTableComponent
     public function exportSelected()
     {
         if ($this->getSelected()) {
-            $query = User::whereIn('id', $this->getSelected());
+            $query = MedicineReserve::with([
+                'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
+            ])->whereIn('id', $this->getSelected());
             $results = $query->get();
 
             $job = new ExportSelectedJob($results);

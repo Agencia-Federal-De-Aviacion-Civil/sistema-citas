@@ -37,9 +37,45 @@ class ScheduledExport extends DefaultValueBinder implements FromCollection, With
     }
     public function map($results): array
     {
+        if ($results->medicineReserveMedicine->medicineTypeExam->id == 1) {
+            $nameClass = ($results->medicineReserveMedicine->medicineInitialExc->medicineInitialTypeClass ?? null) ? $results->medicineReserveMedicine->medicineInitialExc->medicineInitialTypeClass->name : 'SIN INFORMACIÓN';
+            $typeLicense = ($results->medicineReserveMedicine->medicineInitialExc->medicineInitialClasificationClass ?? null) ? $results->medicineReserveMedicine->medicineInitialExc->medicineInitialClasificationClass->name : 'SIN INFORMACIÓN';
+        } else if ($results->medicineReserveMedicine->medicineTypeExam->id == 2) {
+            $nameClass = ($results->medicineReserveMedicine->medicineRenovationExc->renovationTypeClass ?? null) ? $results->medicineReserveMedicine->medicineRenovationExc->renovationTypeClass->name : 'SIN INFORMACIÓN';
+            $typeLicense = ($results->medicineReserveMedicine->medicineRenovationExc->renovationClasificationClass ?? null) ? $results->medicineReserveMedicine->medicineRenovationExc->renovationClasificationClass->name : 'SIN INFORMACIÓN';
+        }
+        if ($results->status == 1) {
+            $status = 'ASISTIO';
+        } else if ($results->status == 2) {
+            $status = 'CANCELADO';
+        } else if ($results->status == 3) {
+            $status = 'CANCELO USUARIO';
+        } else if ($results->status == 4) {
+            $status = 'REAGENDO';
+        } else {
+            $status = 'PENDIENTE';
+        }
         return [
             'rowNumber' => $this->rowNumber++,
-            $results->id,
+            ($results->medicineReserveFromUser ?? null) ? $results->medicineReserveFromUser->name : 'SIN INFORMACIÓN',
+            ($results->userParticipantUser ?? null) ? $results->userParticipantUser->apParental : 'SIN INFORMACIÓN',
+            ($results->userParticipantUser ?? null) ? $results->userParticipantUser->apMaternal : 'SIN INFORMACIÓN',
+            ($results->medicineReserveMedicine->medicineTypeExam ?? null) ? $results->medicineReserveMedicine->medicineTypeExam->name : 'SIN INFORMACIÓN',
+            $nameClass,
+            $typeLicense,
+            ($results->user->name ?? null) ? $results->user->name : 'SIN INFORMACIÓN',
+            Carbon::parse($results->dateReserve)->format('d/m/Y'),
+            ($results->reserveSchedule ?? null) ? $results->reserveSchedule->time_start : 'SIN INFORMACIÓN',
+            ($results->userParticipantUser ?? null) ? $results->userParticipantUser->curp : 'SIN INFORMACIÓN',
+            ($results->medicineReserveMedicine ?? null) ? $results->medicineReserveMedicine->reference_number : 'SIN INFORMACIÓN',
+            ($results->userParticipantUser ?? null) ? $results->userParticipantUser->genre : 'SIN INFORMACIÓN',
+            Carbon::parse($results->userParticipantUser->birth)->format('d/m/Y'),
+            ($results->userParticipantUser->participantState ?? null) ? $results->userParticipantUser->participantState->name : 'SIN INFORMACIÓN',
+            ($results->userParticipantUser ?? null) ? $results->userParticipantUser->age : 'SIN INFORMACIÓN',
+            ($results->userParticipantUser ?? null) ? $results->userParticipantUser->mobilePhone : 'SIN INFORMACIÓN',
+            ($results->userParticipantUser ?? null) ? $results->userParticipantUser->officePhone : 'SIN INFORMACIÓN',
+            ($results->userParticipantUser ?? null) ? $results->userParticipantUser->extension : 'SIN INFORMACIÓN',
+            $status,
 
         ];
     }
@@ -57,7 +93,25 @@ class ScheduledExport extends DefaultValueBinder implements FromCollection, With
     {
         return [
             '#Item',
-            'ID',
+            'NOMBRE',
+            'APELLIDO PATERNO',
+            'APELLIDO MATERNO',
+            'TIPO',
+            'CLASE',
+            'TIPO DE LICENCIA',
+            'SEDE',
+            'FECHA',
+            'HORA',
+            'CURP',
+            'LLAVE PAGO',
+            'GENERO',
+            'FECHA NACIMIENTO',
+            'ESTADO NACIMINETO',
+            'EDAD',
+            'CELULAR',
+            'OFICINA',
+            'EXTENSIÓN',
+            'ESTADO'
         ];
     }
     public function styles(Worksheet $sheet)
