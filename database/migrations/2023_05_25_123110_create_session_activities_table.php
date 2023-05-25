@@ -13,13 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('information_user_activities', function (Blueprint $table) {
+        Schema::create('session_activities', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->string('ip');
-            $table->string('browser');
-            $table->string('platform');
+            $table->string('ip')->nullable();
+            $table->string('browser')->nullable();
+            $table->string('platform')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('information_user_activities');
+        Schema::dropIfExists('session_activities');
     }
 };
