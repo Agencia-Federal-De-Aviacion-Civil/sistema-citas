@@ -167,7 +167,7 @@
                             </div>
                         </div>
 
-
+                        @hasrole('super_admin|medicine_admin')
                         <div class="mt-6 relative w-full group">
                             <select name="my_option" label="SELECIONE OPCIÓN" x-model="selectedOption"
                                 wire:model="selectedOption"
@@ -177,7 +177,19 @@
                                 <option value="2">CANCELAR CITA</option>
                                 <option value="4">REAGENDAR CITA</option>
                             </select>
+                        </div>                     
+                        @endhasrole
+                        @hasrole('headquarters')
+                        <div class="mt-6 relative w-full group">
+                            <select name="my_option" label="SELECIONE OPCIÓN" x-model="selectedOption"
+                                wire:model="selectedOption"
+                                class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-300 dark:border-gray-300 dark:placeholder-gray-300 dark:text-white">
+                                <option value="">SELECCIONE OPCIÓN</option>
+                                <option value="1">ASISTIÓ A SU CITA</option>
+                                <option value="2">CANCELAR CITA</option>
+                            </select>
                         </div>
+                        @endhasrole
                         @error('selectedOption')
                             <span class="mt-2 text-sm text-negative-600">Seleccione opción</span>
                         @enderror
