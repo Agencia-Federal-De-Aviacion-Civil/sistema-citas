@@ -15,7 +15,7 @@
         text-align: center;
         font-weight: bold;
         color: #000000;
-        margin-top: 2%;
+        margin-top: 5%;
     }
 
     .titulo2 {
@@ -104,8 +104,8 @@
             </tr>
             <tr>
                 <td>TIPO DE EXAMEN:</td>
-                <td>
-                    {{ $medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->name }}</td>
+                <td> <b> <u>{{ $medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->name }}</u> </b>
+                    </td>
             </tr>
             <tr>
                 <td>TIPO DE REVALORACIÓN:</td>
@@ -116,24 +116,31 @@
             <tr>
                 <td>TIPO DE CLASE:</td>
                 <td>
-                    {{-- {{ $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial->type_class_id }} --}}
+                    {{ $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->revaluationInitialTypeClass->name }}
+                </td>
+            </tr>
+            <tr>
+                <td>TIPO DE LICENCIA:</td>
+                <td>
+                    {{-- {{ $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->revaluationInitialClasificationClass->name }} --}}
+                    {{-- {{ $medicineReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialExc->name}} revaluationInitialClasificationClass--}}
                 </td>
             </tr>
             @else
             <tr>
                 <td>TIPO DE CLASE:</td>
                 <td>
-                    {{-- {{ $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation->type_class_id }} --}}
+                    {{ $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->revaluationRenovationTypeClass->name }}
+                </td>
+            </tr>
+            <tr>
+                <td>TIPO DE LICENCIA:</td>
+                <td>
+                    {{-- {{ $medicineReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass->name }} --}}
+                    {{-- {{ $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->revaluationInitialClasificationClass->name }} --}}
                 </td>
             </tr>
             @endif
-            
-            <tr>
-                <td>TIPO DE LICENCIA:</td>
-                {{-- <td>
-                    {{ $medicineReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass->name }}
-                </td> --}}
-            </tr>
             <tr>
                 <td>TRAMITE:</td>
                 <td>EXAMEN PSICOFISICO INTEGRAL</td>
@@ -164,7 +171,13 @@
             <img src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ $keyEncrypt }}"
                 width="120" height="120" />
         </div>
-        
+        <div style="background-color: #e6e6e6;height: 25px; ">
+            <h3 class="titulo2"></h3>
+        </div>
+        <div>
+            <p><b>NOTA:</b> REVISAR EL DOCUMENTO DE AUTORIZACIÓN EMITIDO POR LA AUTORIDAD PARA VERIFICAR LOS 
+                REQUISITOS QUE DEBE DE PRESENTAR EL DÍA DE SU CITA.</p>
+        </div>        
     </div>
 </body>
 </html>
