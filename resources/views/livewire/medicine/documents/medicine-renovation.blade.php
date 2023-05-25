@@ -118,7 +118,19 @@
             <tr>
                 <td>TIPO DE LICENCIA:</td>
                 <td>
-                    {{ $medicineReserves[0]->medicineReserveMedicine->medicineRenovation[0]->renovationClasificationClass->name }}
+                    @foreach ($medicineReserves[0]->medicineReserveMedicine->medicineRenovation as $renovationEach)
+                        {{-- MAS DE UNA LICENCIA --}}
+                        @if ($medicineReserves[0]->medicineReserveMedicine->medicineRenovation->count() > 1)
+                        <ul>
+                            <li>
+                                {{ $renovationEach->renovationClasificationClass->name }}
+                            </li>
+                        </ul>
+                        @else
+                        {{-- UNA SOLA LICENCIA --}}
+                            {{ $renovationEach->renovationClasificationClass->name }}
+                        @endif
+                    @endforeach
                 </td>
             </tr>
             <tr>

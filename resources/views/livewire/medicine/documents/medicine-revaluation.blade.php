@@ -122,8 +122,7 @@
             <tr>
                 <td>TIPO DE LICENCIA:</td>
                 <td>
-                    {{-- {{ $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->revaluationInitialClasificationClass->name }} --}}
-                    {{-- {{ $medicineReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialExc->name}} revaluationInitialClasificationClass--}}
+                    {{ $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->revaluationInitialClasificationClass->name }}
                 </td>
             </tr>
             @else
@@ -136,8 +135,7 @@
             <tr>
                 <td>TIPO DE LICENCIA:</td>
                 <td>
-                    {{-- {{ $medicineReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass->name }} --}}
-                    {{-- {{ $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->revaluationInitialClasificationClass->name }} --}}
+                    {{ $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->revaluationRenovationClasificationClass->name }}
                 </td>
             </tr>
             @endif

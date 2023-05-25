@@ -234,7 +234,7 @@
                             <div class="w-full h-1 rounded-full bg-sky-600 inline-flex"></div>
                         </div>
                         <br>
-                    @elseif($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 1)
+                    @elseif($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 2)
                         <div class="flex flex-wrap sm:mx-auto sm:mb-4 -mx-2">
                             <div class="sm:w-1/2 w-full">
                                 <div class="rounded flex p-0 h-full items-center">
@@ -507,6 +507,7 @@
                                     <p class="text-lg title-font font-normal">Tipo de licencia:
                                     <p class="text-lg font-semibold">
                                         @if ($medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->type_exam_id == 1)
+                                            {{-- REVALORACIÓN INICIAL --}}
                                             @if ($medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->medicine_question_id == 1)
                                                 {{ $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->revaluationInitialClasificationClass->name }}
                                             @else
@@ -516,7 +517,8 @@
                                                 {{-- TODO FALTA TERMINAR EL FOREACH DE INICIAL CUANDO EL USUARIO SELEECIONA QUE NO --}}
                                             @endif
                                         @else
-                                            {{-- TODO FALTA TERMINAR LA CONSULTA PARA REVALORACIÓN RENOVACIÓN --}}
+                                            {{-- REVALORACIÓN RENOVACIÓN --}}
+                                            {{ $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->revaluationRenovationClasificationClass->name }}
                                         @endif
                                     </p>
                                     </p>
