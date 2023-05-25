@@ -66,17 +66,19 @@
         text-align: right;
         margin-top: -7%;
     }
+
     footer {
         position: fixed;
         bottom: 30px;
         height: 0px;
         right: -0.2%;
-    }  
+    }
 </style>
 
 <body class="bgsize">
     <footer>
-        <center><img src="{{ public_path('images/fooderafac2023.png') }}" width="112%" height=80" alt=""></center>
+        <center><img src="{{ public_path('images/fooderafac2023.png') }}" width="112%" height=80" alt="">
+        </center>
     </footer>
     <div>
         {{-- <img src="{{ public_path('images/AFAC1.png') }}" width="130" height="100" alt=""> --}}
@@ -91,12 +93,12 @@
             <tr>
                 <td>NOMBRE:</td>
                 <td>
-                    {{ $medicineReserves[0]->medicineReserveMedicine->medicineUser->name . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apParental')->first() . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apMaternal')->first() }}
+                    {{ ($medicineReserves[0]->medicineReserveMedicine->medicineUser->name ?? 'SIN INFORMACIÓN') . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apParental')->first() . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apMaternal')->first() }}
                 </td>
             </tr>
             <tr>
                 <td>CURP:</td>
-                <td>{{ $medicineReserves[0]->medicineReserveMedicine->medicineUser->userParticipant->pluck('curp')->first() }}
+                <td>{{ ($medicineReserves[0]->medicineReserveMedicine->medicineUser->userParticipant->pluck('curp')->first() ?? 'SIN INFORMACIÓN') }}
                 </td>
             </tr>
             <tr>
@@ -106,18 +108,19 @@
             <tr>
                 <td>TIPO DE EXAMEN:</td>
                 <td>
-                    {{ $medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->name }}</td>
+                    {{ ($medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->name ?? 'SIN INFORMACIÓN') }}
+                </td>
             </tr>
             <tr>
                 <td>TIPO DE CLASE:</td>
                 <td>
-                    {{ $medicineReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name }}
+                    {{ ($medicineReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name ?? 'SIN INFORMACIÓN') }}
                 </td>
             </tr>
             <tr>
                 <td>TIPO DE LICENCIA:</td>
                 <td>
-                    {{ $medicineReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass->name }}
+                    {{ ($medicineReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass->name ?? 'SIN INFORMACIÓN') }}
                 </td>
             </tr>
             <tr>
@@ -145,6 +148,10 @@
                 <td>HORA</td>
                 <td>{{ $medicineReserves[0]->reserveSchedule->time_start }}</td>
             </tr>
+            <tr>
+                <td>LLAVE DE PAGO</td>
+                <td>{{ $medicineReserves[0]->medicineReserveMedicine->reference_number }}</td>
+            </tr>
         </table>
         <div class="codigoqr">
             <img src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ $keyEncrypt }}"
@@ -154,11 +161,12 @@
             <h3 class="titulo2">REQUISITOS</h3>
         </div>
         <div style="padding-top:2%">
-            <label style="text-align: justify;font-size:17px" for="">Estimado usuario, con el fin de facilitar el procedimiento de registro y apoyarle en el 
+            <label style="text-align: justify;font-size:17px" for="">Estimado usuario, con el fin de facilitar
+                el procedimiento de registro y apoyarle en el
                 proceso de su <b> EVALUACIÓN MÉDICA</b>, le mostramos los siguientes
                 <b>requisitos indispensables</b> con los que deberá acudir a su cita <u>original y
-                    copia</u>, de lo contrario no 
-                    podrá realizar su examen y éste se perderá:</label>
+                    copia</u>, de lo contrario no
+                podrá realizar su examen y éste se perderá:</label>
         </div>
         <div style="padding-top:1%;font-size:17px">
             <ol style="text-align: justify">
@@ -167,20 +175,22 @@
                 <li>Comprobante de pago.</li>
                 <li>Comprobante de cita.</li>
                 <li>Clave Única de Registro de Población (CURP).</li>
-                <li>Deberá presentar en forma impresa los formatos de declaración de salud, 
-                    consentimiento informado (mismos que debe llenar y firmar) así como el vale de 
+                <li>Deberá presentar en forma impresa los formatos de declaración de salud,
+                    consentimiento informado (mismos que debe llenar y firmar) así como el vale de
                     servicios que se incluyen al final de este documento.</li>
                 <li>Una de las siguientes identificaciones con fotografía:</li>
                 <p style="padding-left:2%;">A. Cédula de identidad ciudadana (INE) vigente.</p>
-                <p style="padding-left:2%;margin-top:-2%;">B. Cédula profesional (siempre y cuando cuente con fotografía).</p>
+                <p style="padding-left:2%;margin-top:-2%;">B. Cédula profesional (siempre y cuando cuente con
+                    fotografía).</p>
                 <p style="padding-left:2%;margin-top:-2%;">C. Cartilla Militar (personal masculino).</p>
                 <p style="padding-left:2%;margin-top:-2%;">D. Pasaporte.</p>
-                <p style="padding-left:2%;margin-top:-2%;">E. Credencial con fotografía de la Institución Educativa, donde esté realizando 
-                    estudios, exclusivamente para menores de edad, que no cuenten con ninguna 
-                    de las identificaciones anteriores, y en caso de no contar con esta última, se 
+                <p style="padding-left:2%;margin-top:-2%;">E. Credencial con fotografía de la Institución Educativa,
+                    donde esté realizando
+                    estudios, exclusivamente para menores de edad, que no cuenten con ninguna
+                    de las identificaciones anteriores, y en caso de no contar con esta última, se
                     podrá utilizar la CURP como identificación oficial.</p>
-                <li>En caso de ser menor de edad, para poder realizar la evaluación médica, deberá 
-                    presentarse con uno de los padres o tutor, mismo que deberá presentar alguna de 
+                <li>En caso de ser menor de edad, para poder realizar la evaluación médica, deberá
+                    presentarse con uno de los padres o tutor, mismo que deberá presentar alguna de
                     las identificaciones citadas en el numeral 7.</li>
                 <li>Acudir con ropa cómoda, evitando sea de una sola pieza.</li>
                 <li>Tomar un desayuno ligero, en caso de acudir en ayuno llevar su refrigerio.</li>
@@ -195,33 +205,34 @@
                 </li>
                 <li>
                     En caso de presentar disminución en la agudeza visual, deberá presentarse con
-lentes de armazón o de contacto con graduación actualizada. Si alterna el uso de
-ambos, deberá presentarlos. Para el personal de pilotos en caso de usar lentes de
-contacto deberá acudir con sus lentes de armazón de repuesto.
+                    lentes de armazón o de contacto con graduación actualizada. Si alterna el uso de
+                    ambos, deberá presentarlos. Para el personal de pilotos en caso de usar lentes de
+                    contacto deberá acudir con sus lentes de armazón de repuesto.
                 </li>
                 <li>En caso de encontrarse embarazada, presentar constancia o expediente de control
                     del mismo actualizada y hacerle saber al servicio de rayos X al acudir a su examen.
-                    </li>
+                </li>
                 <li>Acudir con los estudios de laboratorio que a continuación se enlistan, los cuales
                     deberán realizarse en una institución acreditada por la <b> Norma ISO15189-2012</b>,
                     debiendo contener nombre de la institución, dirección, nombre completo del
-                    laboratorista, cédula profesional y número telefónico, así como  <b>fecha de emisión no 
-                    mayor a un mes de la cita programada.</b></li>
-                    <p style="padding-left:3%">A) Biometría hemática.</p>
-                    <p style="padding-left:3%">B) Química sanguínea de 6 elementos (Glucosa, Nitrógeno Ureico en Sangre,
-                        Creatinina, Ácido úrico, Colesterol total y Triglicéridos).</p>
-                    <p style="padding-left:3%">C) Examen General de Orina.</p>
-                    <p style="padding-left:3%">D) Prueba de detección de VIH (Anticuerpos).</p>
-                    <p style="padding-left:3%">E) Prueba de detección de sustancias psicoactivas en orina, de 5
-                        reactivos (Cocaína, Cannabinoides, Opiaceos, Anfetaminas y Benzodiazepinas).</p>
-                    <p style="padding-left:3%">F) Hemoglobina glucosilada.</p>
-                    <p style="padding-left:3%">G) Radiografía de tórax postero-anterior o más conocida como la tele de tórax <b> (en
+                    laboratorista, cédula profesional y número telefónico, así como <b>fecha de emisión no
+                        mayor a un mes de la cita programada.</b></li>
+                <p style="padding-left:3%">A) Biometría hemática.</p>
+                <p style="padding-left:3%">B) Química sanguínea de 6 elementos (Glucosa, Nitrógeno Ureico en Sangre,
+                    Creatinina, Ácido úrico, Colesterol total y Triglicéridos).</p>
+                <p style="padding-left:3%">C) Examen General de Orina.</p>
+                <p style="padding-left:3%">D) Prueba de detección de VIH (Anticuerpos).</p>
+                <p style="padding-left:3%">E) Prueba de detección de sustancias psicoactivas en orina, de 5
+                    reactivos (Cocaína, Cannabinoides, Opiaceos, Anfetaminas y Benzodiazepinas).</p>
+                <p style="padding-left:3%">F) Hemoglobina glucosilada.</p>
+                <p style="padding-left:3%">G) Radiografía de tórax postero-anterior o más conocida como la tele de tórax
+                    <b> (en
                         caso de hacer cita en la Unidad Médica Aeropuerto, Ciudad de México, no será
                         necesario presentar RX de Tórax)</b>.
-                    </p>
+                </p>
             </ol>
         </div>
-        
+
         {{-- PAGINA 2 --}}
         {{-- <div style='page-break-before:always;'></div>
         <div class="mt-4 mx-4 text-justify">
@@ -288,12 +299,12 @@ contacto deberá acudir con sus lentes de armazón de repuesto.
                 </tr>
                 <tr>
                     <td>Diabetes tipo 2</td>
-                    <td>Hemoglobina glucosilada y los demás que solicite su 
+                    <td>Hemoglobina glucosilada y los demás que solicite su
                         médico examinador de acuerdo con su condición clínica.</td>
                 </tr>
                 <tr>
                     <td>Hipertensión arterial sistémica</td>
-                    <td>Presentar curva de tensión arterial de 10 días previos a su 
+                    <td>Presentar curva de tensión arterial de 10 días previos a su
                         valoración médica, <b>ver guía*</b>.</td>
                 </tr>
                 <tr>
@@ -302,25 +313,25 @@ contacto deberá acudir con sus lentes de armazón de repuesto.
                 </tr>
                 <tr>
                     <td>Antecedente de COVID 19</td>
-                    <td>Telerradiografía de tórax o algún otro estudio de imagen y 
-                        de la función pulmonar que determine su médico 
+                    <td>Telerradiografía de tórax o algún otro estudio de imagen y
+                        de la función pulmonar que determine su médico
                         examinador de acuerdo con su condición clínica.</td>
                 </tr>
                 <tr>
                     <td>Antecedente de Infarto Agudo al Miocardio</td>
-                    <td>Perfil lipídico (Colesterol total, triglicéridos, HDL, LDL), 
-                        electrocardiograma de esfuerzo y los estudios que se 
+                    <td>Perfil lipídico (Colesterol total, triglicéridos, HDL, LDL),
+                        electrocardiograma de esfuerzo y los estudios que se
                         determinen de acuerdo con su condición clínica.</td>
                 </tr>
                 <tr>
                     <td>HIV positivo</td>
-                    <td>Carga viral, recuento de linfocitos CD4, CD8 y las que 
-                        determine su médico examinador de acuerdo con su 
+                    <td>Carga viral, recuento de linfocitos CD4, CD8 y las que
+                        determine su médico examinador de acuerdo con su
                         condición clínica.
                     </td>
                 </tr>
             </table>
-            <p> <b> Nota: </b>Para todos los casos se deberá contar con la nota médica o valoración del 
+            <p> <b> Nota: </b>Para todos los casos se deberá contar con la nota médica o valoración del
                 especialista de cabecera que lleve control de su padecimiento</p>
         </div>
         {{-- <p>*Pasos para el registro de la toma de tensión arterial:</p>

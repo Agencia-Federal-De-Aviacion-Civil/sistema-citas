@@ -1,12 +1,12 @@
 <script src="https://cdn.jsdelivr.net/npm/countup@1.8.2/dist/countUp.min.js"></script>
 <div>
-    <x-notifications position="top-center" />
+    <x-notifications position="top-bottom" />
     <x-dialog z-index="z-50" blur="md" align="center" />
     <div class="relative py-6 lg:py-4">
         <img class="z-0 w-full h-full absolute inset-0 object-cover" src="{{ asset('images/banner_testing.jpg') }}" alt="bg" />
         <div class="z-10 relative container px-6 mx-auto flex flex-col md:flex-row items-start md:items-center justify-between">
             <div>
-                <h4 tabindex="0" class="focus:outline-none text-2xl font-bold leading-tight text-white">CITAS AGENDADAS
+                <h4 tabindex="0" class="focus:outline-none text-2xl font-bold leading-tight text-white">Citas Agendadas
                 </h4>
                 <ul class="flex flex-col md:flex-row items-start md:items-center text-gray-300 text-sm mt-3">
                     <li class="flex items-center mt-4 md:mt-0">

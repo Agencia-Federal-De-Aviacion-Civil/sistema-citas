@@ -11,9 +11,10 @@ use PDF;
 
 class IndexController extends Controller
 {
+    // log
     public function __construct()
     {
-        $this->middleware(['role:super_admin|user|medicine_admin|headquarters']);
+        $this->middleware(['role:super_admin|user|medicine_admin|headquarters|super_admin_medicine']);
     }
     public function index()
     {
@@ -23,7 +24,7 @@ class IndexController extends Controller
     {
         Date::setLocale('es');
         $medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'user'])
-            ->where('medicine_id', $scheduleId)->get();
+            ->where('id', $scheduleId)->get();
         $medicineId = $medicineReserves[0]->medicine_id;
         $dateAppointment = $medicineReserves[0]->dateReserve;
         $dateConvertedFormatted = Date::parse($dateAppointment)->format('l j F Y');
