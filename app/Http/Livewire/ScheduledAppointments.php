@@ -3,9 +3,11 @@
 namespace App\Http\Livewire;
 
 use App\Exports\ScheduledExport;
+use App\Jobs\ExportSelectedJob;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Medicine\MedicineReserve;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
@@ -42,16 +44,12 @@ class ScheduledAppointments extends DataTableComponent
 
             Column::make("Id", "id")
                 ->sortable(),
-
             Column::make("Nombre", "medicineReserveFromUser.name")
                 ->sortable()
-                ->searchable(),
-            // ->searchable(fn($query, $searchTerm)=> $query->orWhere('name','like','%'.$searchTerm.'%')),
+                ->searchable(fn ($query, $searchTerm) => $query->orWhere('name', 'like', '%' . $searchTerm . '%')),
 
-            // Column::make("SEDE", "user.userHeadquarter.name")
-            // ->sortable(),
-
-
+            Column::make("SEDE", "user.userHeadquarter.name")
+                ->sortable(),
             Column::make("Apellido Paterno", "userParticipantUser.apParental")
                 ->sortable(),
 
@@ -80,11 +78,9 @@ class ScheduledAppointments extends DataTableComponent
             // Column::make("TIPO DE LICENCIA", "medicineReserveMedicine.medicineRenovation.renovationClasificationClass.name")
             // ->sortable(),*/
             // // }
-
-
             Column::make("FECHA", "dateReserve")
-            ->sortable()
-            ->searchable(),
+                ->sortable()
+                ->searchable(),
 
             Column::make("HORA", "medicineSchedule.time_start")
                 ->sortable(),
@@ -118,19 +114,12 @@ class ScheduledAppointments extends DataTableComponent
             $query = MedicineReserve::with([
                 'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
             ])->whereIn('id', $this->getSelected());
-
             $results = $query->get();
 
-            $filePath = 'uploads/citas-app/medicine/exports/scheduled.xlsx';
+            $job = new ExportSelectedJob($results);
+            dispatch($job); // Agregar el trabajo a la cola
 
-            Excel::queue(new ScheduledExport($results), $filePath, 'do');
-    
-            // Eliminar el archivo después de la exportación utilizando colas
-            Queue::after(function () use ($filePath) {
-                Storage::disk('do')->delete($filePath);
-            });
-    
-            return 'La exportación se ha agregado a la cola de trabajos.';
+            return 'El proceso de exportación se ha iniciado en segundo plano.';
         } else {
             // Lógica para manejar el caso en el que no se hayan seleccionado registros
         }
