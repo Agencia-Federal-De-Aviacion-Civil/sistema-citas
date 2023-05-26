@@ -125,7 +125,7 @@
             </tr>
             <tr>
                 <td>TRAMITE:</td>
-                <td>EXAMEN PSICOFISICO INTEGRAL</td>
+                <td>EVALUACIÓN MEDICA</td>
             </tr>
             {{-- <tr>
                 <td colspan="12">NO. DE CITA:</td>
