@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Exports\ScheduledExport;
+use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -31,8 +32,15 @@ class ExportSelectedJob implements ShouldQueue
      *
      * @return void
      */
+    public $tries = 5;
+
+    public $backoff = 1;
+
+
     public function handle()
     {
+        throw new Exception("Error");
+
         // try {
         //     $fileName = 'scheduled.xlsx';
         //     // $path = storage_path('app/public/' . $fileName);
@@ -59,9 +67,13 @@ class ExportSelectedJob implements ShouldQueue
             }, 'schedules.xlsx');
         } catch (\Exception $e) {
             dd($e->getMessage());
-        }
-    
+        }    
     }
+    public function retryUntil()
+    {
+        return now()->addSeconds(10);
+    }    
+
     }
     
 
