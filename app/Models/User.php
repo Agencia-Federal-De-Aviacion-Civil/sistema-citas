@@ -20,6 +20,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use App\Notifications\MyResetPassword;
 
 class User extends Authenticatable
 {
@@ -115,5 +116,9 @@ class User extends Authenticatable
     public function userDisabledDays()
     {
         return $this->hasMany(MedicineDisabledDays::class, 'user_headquarters_id');
+    }
+    public function sendPasswordResetNotification($token)
+    {
+    $this->notify(new MyResetPassword($token));
     }
 }
