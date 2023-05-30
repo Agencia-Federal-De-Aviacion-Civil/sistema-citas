@@ -562,6 +562,7 @@
                             dayElem.className +=
                                 " flatpickr-disabled nextMonthDayflatpickr-disabled";
                         }
+                        
                     },
                     locale: {
                         weekdays: {

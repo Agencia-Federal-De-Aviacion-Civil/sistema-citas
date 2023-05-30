@@ -31,7 +31,7 @@ class HomeMedicine extends Component
     use WithFileUploads;
     public $medicine_question_id, $type_class_id, $clasificationClass, $clasification_class_id;
     public $document_pay, $reference_number, $pay_date, $type_exam_id, $typeRenovationExams, $dateConvertedFormatted;
-    public $questionClassess, $typeExams, $sedes, $userQuestions, $to_user_headquarters, $dateReserve, $saveMedicine, $disabledDaysFilter;
+    public $questionClassess, $typeExams, $sedes, $userQuestions, $to_user_headquarters, $dateReserve, $saveMedicine, $disabledDaysFilter,$maxDaysFilter;
     public $confirmModal = false, $modal = false;
     public $medicineQueries, $medicineReserves, $medicineInitials, $medicineRenovations, $id_medicineReserve, $idMedicine, $savedMedicineId, $scheduleMedicines, $medicine_schedule_id;
     // MEDICINE INITIAL TABLE
@@ -52,6 +52,7 @@ class HomeMedicine extends Component
         $this->typeRenovationExams = collect();
         $this->scheduleMedicines = collect();
         $this->disabledDaysFilter = collect();
+        $this->maxDaysFilter = collect();
 
         // $this->dateNow = Date::now()->format('Y-m-d');
     }
@@ -166,9 +167,58 @@ class HomeMedicine extends Component
             $disabledDaysArray = array_merge($disabledDaysArray, $daysArray);
         }
         $this->disabledDaysFilter = $disabledDaysArray;
+       // $this->dispatchBrowserEvent('headquartersUpdated', [
+       //     'disabledDaysFilter' => $disabledDaysArray
+       // ]);
+
+        //DAY MAX APPOINMENTE 29052023
+        $maxDaysappoinmente = MedicineReserve::selectRaw('COUNT(id) AS conteo, dateReserve')->where('to_user_headquarters', $value)->where(function ($query) {
+            $query->where('status', 0)
+                ->orWhere('status', 1)
+                ->orWhere('status', 4);
+        }) 
+        ->groupBy('dateReserve')
+        ->pluck('dateReserve');
+        //pruebas de maximo dias
+        switch ($this->to_user_headquarters) {
+            case 7: // CIUDAD DE MEXICO
+                $maxCitas = 50;
+                break;
+            case 2: // CANCUN
+            case 3: // TIJUANA
+            case 4: // TOLUCA
+            case 5: // MONTERREY
+            case 528: //MAZATLAN SINALOA
+            case 529: //CHIAPAS
+            case 530: //VERACRUZ
+            case 531: //HERMOSILLO SONORA
+            case 532: //QUERETARO
+                $maxCitas = 8;
+                break;
+            case 6: // GUADALAJARA
+                $maxCitas = 20;
+                break;
+            case 16: // YUCATAN
+                $maxCitas = 2;
+                break;
+            default:
+                $maxCitas = 0;
+                break;
+        }
+
+        //todo bien aqui
+        $maxDaysappoinmenteArray = [];
+        foreach ($maxDaysappoinmente as $maxdaysa) {
+            $maxdaysArray = array_map('trim', explode(',', $maxdaysa));
+            $maxDaysappoinmenteArray = array_merge($maxDaysappoinmenteArray, $maxdaysArray);
+        }
+        $this->maxDaysFilter = $maxDaysappoinmenteArray;
+
         $this->dispatchBrowserEvent('headquartersUpdated', [
-            'disabledDaysFilter' => $disabledDaysArray
+            'disabledDaysFilter' => $disabledDaysArray,
+            'maxDaysFilter' => $maxDaysappoinmenteArray
         ]);
+        //dd($this->maxDaysFilter);
     }
     // public function updatedDateReserve($value)
     // {
