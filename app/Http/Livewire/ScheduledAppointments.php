@@ -4,14 +4,20 @@ namespace App\Http\Livewire;
 
 use App\Exports\ScheduledExport;
 use App\Jobs\ExportSelectedJob;
+use App\Models\Medicine\Medicine;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Medicine\MedicineReserve;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
+use Rappasoft\LaravelLivewireTables\Views\Columns\LinkColumn;
+use Rappasoft\LaravelLivewireTables\Views\Filters\DateFilter;
+use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
+use Rappasoft\LaravelLivewireTables\Views\Filters\TextFilter;
 
 class ScheduledAppointments extends DataTableComponent
 {
@@ -29,27 +35,14 @@ class ScheduledAppointments extends DataTableComponent
 
     public function columns(): array
     {
-
-
-        // if("medicineReserveMedicine.medicineTypeExam.id"=='1'){
-        //     $nameClass = 'es';
-        // //     $nameClass = "medicineReserveMedicine.medicineInitial.medicineInitialTypeClass.name";
-        // //     // $typeLicense = medicineReserveMedicine->medicineInitial->medicineInitialClasificationClass->name;
-        // }else if("medicineReserveMedicine.medicineTypeExam.id"=='2'){
-        //     $nameClass = 'no';
-        // //     $nameClass = "medicineReserveMedicine.medicineRenovation.renovationTypeClass.name";
-        // //     // $typeLicense = medicineReserveMedicine->medicineRenovation->renovationClasificationClass->name;
-        // }
         return [
 
             Column::make("Id", "id")
                 ->sortable(),
             Column::make("Nombre", "medicineReserveFromUser.name")
                 ->sortable()
-                ->searchable(fn ($query, $searchTerm) => $query->orWhere('name', 'like', '%' . $searchTerm . '%')),
+                ->searchable(fn ($query, $searchTerm) => $query->orWhere('users.name', 'like', '%' . $searchTerm . '%')),
 
-            Column::make("SEDE", "user.userHeadquarter.name")
-                ->sortable(),
             Column::make("Apellido Paterno", "userParticipantUser.apParental")
                 ->sortable(),
 
@@ -59,45 +52,82 @@ class ScheduledAppointments extends DataTableComponent
             Column::make("Tipo", "medicineReserveMedicine.medicineTypeExam.name")
                 ->sortable(),
 
-            // Column::make("Clase", $nameClass)
-            // ->sortable(),
+            Column::make("CLASE", "class")
+                ->label(fn ($row) => view(
+                    'livewire.medicine.table-actions.type-classe',
+                    [
+                        $class = MedicineReserve::with([
+                            'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
+                        ])->where('id', $row->id)->get(),
+                        'class' => $class
+                    ]
+                    )),
 
-            // if(medicineReserveMedicine.medicineTypeExam.id==1){
+                Column::make("TIPO DE LICENCIA", "licencia")
+                ->label(fn ($row) => view(
+                    'livewire.medicine.table-actions.clasification-classes',
+                    [
+                        $licencia = MedicineReserve::with([
+                            'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
+                        ])->where('id', $row->id)->get(),
+                        'licencias' => $licencia
+                    ]
+                )),
 
-            //CONSULTA DE INICIAL
-            // Column::make("Clase", $clas)
-            // ->sortable(),
-            // Column::make("TIPO DE LICENCIA", "medicineReserveMedicine.medicineInitial.medicineInitialClasificationClass.name")
-            // ->sortable(),
 
-            // // }elseif(medicineReserveMedicine.medicineTypeExam.id==2){
 
-            // //CONSULTA DE RENOVACIÓN
-            // /*Column::make("Clase", "medicineReserveMedicine.medicineRenovation.renovationTypeClass.name")
-            // ->sortable(),
-            // Column::make("TIPO DE LICENCIA", "medicineReserveMedicine.medicineRenovation.renovationClasificationClass.name")
-            // ->sortable(),*/
-            // // }
+            Column::make("SEDE", "medicineSchedule.sede")
+                ->sortable(),
+
             Column::make("FECHA", "dateReserve")
                 ->sortable()
-                ->searchable(),
+                ->searchable()
+                ->format(fn ($value) => Carbon::parse($value)->format('d/m/Y')),
 
             Column::make("HORA", "medicineSchedule.time_start")
                 ->sortable(),
 
             Column::make("CURP", "userParticipantUser.curp")
-                ->sortable(),
+                ->sortable()
+                ->searchable(fn ($query, $searchTerm) => $query->orWhere('curp', 'like', '%' . $searchTerm . '%')),
+
 
             Column::make("LLAVE DE PAGO", "medicineReserveMedicine.reference_number")
                 ->sortable(),
 
-            // Column::make("Clase", "medicineReserveMedicine.medicineRenovation.renovationTypeClass.name")
-            // ->sortable(),
+            Column::make('FORMATO')
+                ->sortable()
+                ->label(fn ($row) => view(
+                    'livewire.medicine.table-actions.download-file',
+                    [
+                        $medicine = MedicineReserve::with(
+                            'medicineReserveMedicine'
+                        )->where('id', $row->id)->get(),
+                        'id' => $medicine[0]->medicineReserveMedicine->medicineDocument->name_document
+                    ]
+                )),
 
-            Column::make("Fecha de creación", "created_at")
+            Column::make("GENERO", "userParticipantUser.genre")
                 ->sortable(),
-            // Column::make("Updated at", "updated_at")
-            //     ->sortable(),
+
+            Column::make("NACIMIENTO", "userParticipantUser.birth")
+                ->sortable(),
+
+            Column::make("NACIÓ", "userParticipantUser.participantState.name")
+                ->sortable(),
+
+            Column::make("EDAD", "userParticipantUser.age")
+                ->sortable(),
+
+            Column::make("CELULAR", "userParticipantUser.mobilePhone")
+                ->sortable(),
+
+            Column::make("OFICINA", "userParticipantUser.officePhone")
+                ->sortable(),
+
+            Column::make("EXTENSIÓN", "userParticipantUser.extension")
+                ->sortable(),
+
         ];
     }
     public function builder(): Builder
@@ -106,6 +136,78 @@ class ScheduledAppointments extends DataTableComponent
         // ->with('medicineReserveFromUser');
         // ->OrWhere('users.name','MANOLO');
         //  ->select('medicineReserveFromUser.id as names');
+    }
+
+    public function filters(): array
+    {
+
+        return [
+            SelectFilter::make('TIPO')
+                ->options([
+                    '' => 'TODOS',
+                    '1' => 'INICIAL',
+                    '2' => 'RENOVACIÓN',
+                    '3' => 'REVALORACIÓN'
+                ])
+                ->filter(function ($query, $value) {
+                    $query->where('type_exam_id', $value);
+                }),
+
+            DateFilter::make('Desde')
+                //->config([
+                //  'min' => '2023-03-20',
+                //  'max' => '2023-03-29',
+                //])
+                ->filter(function ($query, $value) {
+                    $query->whereDate('dateReserve', '>=', $value);
+                }),
+
+            DateFilter::make('Hasta')
+                ->filter(function ($query, $value) {
+                    $query->whereDate('dateReserve', '<=', $value);
+                }),
+            // TextFilter::make('Sede')
+            // ->config([
+            //     'placeholder' => 'Buscar sede',
+            //     // 'maxlength' => '25',
+            // ])
+            // ->filter(function(Builder $builder, string $value) {
+            //     $builder->where('sede', 'like', '%'.$value.'%');
+            // }),
+
+
+            SelectFilter::make('SEDE')
+                ->options([
+                    '' => 'TODOS',
+                    'CANCUN QUINTANA ROO' => 'CANCUN QUINTANA ROO',
+                    'TIJUANA BC' => 'TIJUANA BC',
+                    'TOLUCA AEROPUERTO' => 'TOLUCA AEROPUERTO',
+                    'MONTERREY AEROPUERTO' => 'MONTERREY AEROPUERTO',
+                    'GUADALAJARA AEROPUERTO' => 'GUADALAJARA AEROPUERTO',
+                    'CIUDAD DE MÉXICO AEROPUERTO BJ' => 'CIUDAD DE MÉXICO AEROPUERTO BJ',
+                    'MAZATLAN SINALOA' => 'MAZATLAN SINALOA',
+                    'TUXTLA GTZ. CHIAPAS' => 'TUXTLA GTZ. CHIAPAS',
+                    'VERACRUZ VERACRUZ' => 'VERACRUZ VERACRUZ',
+                    'HERMOSILLO SONORA' => 'HERMOSILLO SONORA',
+                    'QUERETARO QRO' => 'QUERETARO QRO',
+                    'MERIDA YUC' => 'MERIDA YUC'
+                ])
+                ->filter(function ($query, $value) {
+                    $query->where('sede', $value);
+                }),
+
+            SelectFilter::make('GENERO')
+                ->options([
+                    '' => 'TODOS',
+                    'FEMENINO' => 'FEMENINO',
+                    'MASCULINO' => 'MASCULINO',
+                ])
+                ->filter(function ($query, $value) {
+                    $query->where('genre', $value);
+                }),
+
+
+        ];
     }
 
     public function exportSelected()
