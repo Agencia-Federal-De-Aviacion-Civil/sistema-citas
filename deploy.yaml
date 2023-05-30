@@ -8,7 +8,7 @@ config:
 hosts:
   prod:
     remote_user: root
-    hostname: citas.afac-avciv.com
+    hostname: citas-medicina.afac-avciv.com
     deploy_path: '/var/www/sistema-citas'
 
 tasks:
