@@ -23,6 +23,17 @@ class ScheduledAppointments extends DataTableComponent
 {
     // protected $model = Medicine\MedicineReserve::class;
 
+    protected function getListeners(): array
+    {
+        return array_merge(
+            parent::getListeners(),
+            [
+                'cancelReserve' => '$refresh',
+                'attendeReserve' => '$refresh',
+                'reserveAppointment' => '$refresh',
+            ]
+        );
+    }
     public function configure(): void
     {
         $this->setPrimaryKey('id');
@@ -73,8 +84,6 @@ class ScheduledAppointments extends DataTableComponent
                         'licencias' => $licencia
                     ]
                 )),
-
-
 
             Column::make("SEDE", "medicineSchedule.sede")
                 ->sortable(),
@@ -128,14 +137,24 @@ class ScheduledAppointments extends DataTableComponent
             Column::make("EXTENSIÓN", "userParticipantUser.extension")
                 ->sortable(),
 
+
+                Column::make("ACCIÓN")
+                ->label(fn ($row) => view(
+                    'components.schedule-component',[
+
+                        $action = MedicineReserve::where('id', $row->id)->get(),
+
+                        'status' => $action[0]->status,
+                        'scheduleId' => $action[0]->id,
+                        'medicineId' => $action[0]->medicine_id
+                    ])
+                ),
+
         ];
     }
     public function builder(): Builder
     {
-        return MedicineReserve::query();
-        // ->with('medicineReserveFromUser');
-        // ->OrWhere('users.name','MANOLO');
-        //  ->select('medicineReserveFromUser.id as names');
+        return $action = MedicineReserve::query();
     }
 
     public function filters(): array
