@@ -41,6 +41,10 @@ class ScheduledAppointments extends DataTableComponent
         $this->setBulkActions([
             'exportSelected' => 'EXPORTAR'
         ]);
+        $this->setPerPageAccepted([
+            10,20,50,100,-1
+        ]);
+        //  $this->setPerPage(20);
     }
 
 
@@ -100,11 +104,10 @@ class ScheduledAppointments extends DataTableComponent
                 ->sortable()
                 ->searchable(fn ($query, $searchTerm) => $query->orWhere('curp', 'like', '%' . $searchTerm . '%')),
 
-
             Column::make("LLAVE DE PAGO", "medicineReserveMedicine.reference_number")
                 ->sortable(),
 
-            Column::make('FORMATO')
+            Column::make('FORMATOS')
                 ->sortable()
                 ->label(fn ($row) => view(
                     'livewire.medicine.table-actions.download-file',
@@ -112,6 +115,8 @@ class ScheduledAppointments extends DataTableComponent
                         $medicine = MedicineReserve::with(
                             'medicineReserveMedicine'
                         )->where('id', $row->id)->get(),
+                        'medicine' => $medicine,
+                        'tipo' => $medicine[0]->medicineReserveMedicine->medicineTypeExam->id,
                         'id' => $medicine[0]->medicineReserveMedicine->medicineDocument->name_document
                     ]
                 )),
@@ -136,7 +141,6 @@ class ScheduledAppointments extends DataTableComponent
 
             Column::make("EXTENSIÓN", "userParticipantUser.extension")
                 ->sortable(),
-
 
                 Column::make("ACCIÓN")
                 ->label(fn ($row) => view(
