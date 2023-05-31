@@ -42,7 +42,7 @@ class ScheduledAppointments extends DataTableComponent
             'exportSelected' => 'EXPORTAR'
         ]);
         $this->setPerPageAccepted([
-            10,20,50,100,-1
+            10,20,50,100
         ]);
         //  $this->setPerPage(20);
     }
@@ -158,7 +158,8 @@ class ScheduledAppointments extends DataTableComponent
     }
     public function builder(): Builder
     {
-        return $action = MedicineReserve::query();
+        return $action = MedicineReserve::query()
+        ->where('users.name','!=','admin');
     }
 
     public function filters(): array
