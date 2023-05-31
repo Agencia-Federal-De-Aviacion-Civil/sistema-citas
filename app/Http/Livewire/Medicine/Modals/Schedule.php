@@ -22,7 +22,7 @@ class Schedule extends ModalComponent
     use Actions;
     use WithFileUploads;
     public $comment1, $comment2, $scheduleId, $status, $medicineReserves, $name, $type, $class, $typLicense, $sede, $dateReserve, $date, $time, $scheduleMedicines, $sedes,
-        $to_user_headquarters, $medicine_schedule_id, $selectedOption, $comment, $comment_cancelate, $hoursReserve, $observation,$medicineId,$accion;
+        $to_user_headquarters, $medicine_schedule_id, $selectedOption, $comment, $comment_cancelate, $hoursReserve, $observation,$medicineId,$accion,$id_appoint;
 
     public function rules()
     {
@@ -73,6 +73,13 @@ class Schedule extends ModalComponent
         } else if ($medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->id == 2) {
             $this->class = $medicineReserves[0]->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name;
             $this->typLicense = $medicineReserves[0]->medicineReserveMedicine->medicineRenovation[0]->renovationClasificationClass->name;
+        } else if($medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->id==3){
+            $this->class = $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->revaluationInitialTypeClass->name;
+            if($medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->RevaluationTypeExam->id == 1){
+            $this->typLicense = $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->revaluationInitialClasificationClass->name;
+            }else{
+            $this->typLicense = $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->revaluationRenovationClasificationClass->name;
+            }
         }
         $this->to_user_headquarters = $medicineReserves[0]->user->name;
         $this->dateReserve = $medicineReserves[0]->dateReserve;
