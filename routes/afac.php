@@ -9,6 +9,7 @@ use App\Http\Livewire\Linguistics\HomeLinguistics;
 use App\Http\Livewire\Register\Peoplehistoryrecords;
 use App\Http\Livewire\Medicine\HomeMedicine;
 use App\Http\Livewire\Medicine\ScheduleAppointment;
+use App\Http\Livewire\TesterUpload\Upload;
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Validate\Qr as ValidateQr;
 
@@ -35,6 +36,8 @@ Route::group(['middleware' => ['role:super_admin|medicine_admin|super_admin_medi
     Route::get('/register', Peoplehistoryrecords::class)->name('afac.historyRegister');
     //Route::get('/medicine', HomeMedicine::class)->name('afac.medicine');
     Route::get('/validate', ValidateQr::class)->name('validate');
+    Route::get('/upload', Upload::class)->name('upload');
+
 });
 Route::get('/appointments', [IndexController::class, 'index'])->name('afac.appointment');
 Route::get('/users', [userMedicine::class, 'index'])->name('afac.users');

@@ -23,38 +23,38 @@ class homeController extends Controller
 
         if (Auth::user()->can('headquarters.see.dashboard')) {
             $appointment = MedicineReserve::query()
-            ->select('status', DB::raw('count(*) as count'), 'dateReserve')
-            // ->where('dateReserve', $date1)
-            ->groupBy('status','dateReserve')->where('to_user_headquarters', Auth::user()->id)
-            ->get();
+                ->select('status', DB::raw('count(*) as count'), 'dateReserve')
+                // ->where('dateReserve', $date1)
+                ->groupBy('status', 'dateReserve')->where('to_user_headquarters', Auth::user()->id)
+                ->get();
 
             $headquarters = Headquarter::with([
                 'headquarterUser'
             ])->where('user_id', Auth::user()->id)->get();
-        }else{
+        } else {
             $appointment = MedicineReserve::query()
-            ->select('status', DB::raw('count(*) as count'), 'dateReserve')
-            // ->where('dateReserve', $date1)
-            ->groupBy('status','dateReserve')
-            ->get();
+                ->select('status', DB::raw('count(*) as count'), 'dateReserve')
+                // ->where('dateReserve', $date1)
+                ->groupBy('status', 'dateReserve')
+                ->get();
             $headquarters = Headquarter::with([
                 'headquarterUser'
             ])->get();
         }
-       
+
         $appointmentNow = $appointment->where('dateReserve', $date1);
         //$now = $appointmentNow->sum('count');
-        $now = $appointmentNow->whereIn('status',['0','1','4'])->sum('count');
+        $now = $appointmentNow->whereIn('status', ['0', '1', '4'])->sum('count');
         $registradas = $appointment->sum('count');
-        $porconfir = round($appointment->where('status', '1')->sum('count') * 100 / $registradas, 0);
+        $porconfir = $registradas != 0 ? round($appointment->where('status', '1')->sum('count') * 100 / $registradas, 0) : 0;
         $validado = $appointment->where('status', '1')->sum('count');
         $pendientes = $appointment->where('status', '0')->sum('count');
-        $porpendientes = round($appointment->where('status', '0')->sum('count') * 100 / $registradas, 0);
-        $canceladas = $appointment->whereIn('status', ['2', '3','5'])->sum('count');
+        $porpendientes = $registradas != 0 ? round($appointment->where('status', '0')->sum('count') * 100 / $registradas, 0) : 0;
+        $canceladas = $appointment->whereIn('status', ['2', '3', '5'])->sum('count');
         $reagendado = round($appointment->where('status', '4')->sum('count'));
-        $porreagendado = round($appointment->where('status', '4')->sum('count') * 100 / $registradas);
-        $porcanceladas = round($appointment->whereIn('status', ['2', '3','5'])->sum('count') * 100 / $registradas,0);
+        $porreagendado = $registradas != 0 ? round($appointment->where('status', '4')->sum('count') * 100 / $registradas) : 0;
+        $porcanceladas = $registradas != 0 ? round($appointment->whereIn('status', ['2', '3', '5'])->sum('count') * 100 / $registradas, 0) : 0;
         $medicine =  round($registradas ? $registradas * 100 / $registradas : '0');
-        return view('afac.dashboard.index', compact('headquarters', 'registradas', 'pendientes', 'validado', 'canceladas', 'reagendado', 'porconfir', 'porpendientes', 'porreagendado', 'porcanceladas', 'now', 'date','date2','medicine','date1','tomorrow'));
+        return view('afac.dashboard.index', compact('headquarters', 'registradas', 'pendientes', 'validado', 'canceladas', 'reagendado', 'porconfir', 'porpendientes', 'porreagendado', 'porcanceladas', 'now', 'date', 'date2', 'medicine', 'date1', 'tomorrow'));
     }
 }
