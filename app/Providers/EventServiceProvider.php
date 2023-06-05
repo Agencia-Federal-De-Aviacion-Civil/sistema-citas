@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Listeners\Medicine\ExportJobProcessedListener;
 use App\Models\Security\InformationUserActivity;
 use App\Models\Security\SessionActivity;
 use GuzzleHttp\Client;
@@ -9,6 +10,7 @@ use Illuminate\Auth\Events\Authenticated;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
@@ -53,6 +55,7 @@ class EventServiceProvider extends ServiceProvider
                 $request->session()->put('user_information_logged', true);
             }
         });
+        $this->app['events']->listen(JobProcessed::class, ExportJobProcessedListener::class);
     }
 
     /**
