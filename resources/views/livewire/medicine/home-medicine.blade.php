@@ -1,7 +1,4 @@
 <div>
-    <div wire:offline.class="bg-red-300">
-        NO TIENES INTERNET
-    </div>
     <x-notifications position="top-bottom" />
     <x-dialog z-index="z-50" blur="md" align="center" />
     @if ($confirmModal)
@@ -29,7 +26,7 @@
                         <span tabindex="0" class="focus:outline-none">
                             {{ $dateNow }}
                         </span>
-                        <p>Estado de la conexión: <span id="connection-status"></span></p>
+                        {{-- <p>Estado de la conexión: <span id="connection-status"></span></p> --}}
                     </li>
                 </ul>
             </div>
@@ -592,14 +589,14 @@
             });
         });
 
-        function checkConnectionStatus() {
-            if (!navigator.onLine) {
-                document.getElementById('connection-status').innerText = 'Conexión lenta o inactiva';
-            }
-        }
+        // function checkConnectionStatus() {
+        //     if (!navigator.onLine) {
+        //         document.getElementById('connection-status').innerText = 'Conexión lenta o inactiva';
+        //     }
+        // }
 
-        window.addEventListener('load', checkConnectionStatus);
-        window.addEventListener('online', checkConnectionStatus);
-        window.addEventListener('offline', checkConnectionStatus);
+        // window.addEventListener('load', checkConnectionStatus);
+        // window.addEventListener('online', checkConnectionStatus);
+        // window.addEventListener('offline', checkConnectionStatus);
     </script>
 </div>
