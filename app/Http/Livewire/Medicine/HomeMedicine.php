@@ -197,225 +197,233 @@ class HomeMedicine extends Component
     }
     public function save()
     {
-        $this->validate();
-        $citas = MedicineReserve::where('to_user_headquarters', $this->to_user_headquarters)
-            // ->where('medicine_schedule_id', $this->medicine_schedule_id)
-            ->where('dateReserve', $this->dateReserve)
-            ->where(function ($query) {
-                $query->where('status', 0)
-                    ->orWhere('status', 1)
-                    ->orWhere('status', 4);
-            })
-            ->count();
-        // dd($citas);
-        switch ($this->to_user_headquarters) {
-            case 7: // CIUDAD DE MEXICO
-                $maxCitas = 50;
-                break;
-            case 2: // CANCUN
-            case 3: // TIJUANA
-            case 4: // TOLUCA
-            case 5: // MONTERREY
-            case 528: //MAZATLAN SINALOA
-            case 529: //CHIAPAS
-            case 530: //VERACRUZ
-            case 531: //HERMOSILLO SONORA
-            case 532: //QUERETARO
-                $maxCitas = 10;
-                break;
-            case 6: // GUADALAJARA
-                $maxCitas = 20;
-                break;
-            case 533: // YUCATAN
-                $maxCitas = 5;
-                break;
-            default:
-                $maxCitas = 0;
-                break;
-        }
-        // $schedule = MedicineSchedule::find($this->medicine_schedule_id);
-        $userMedicines = MedicineReserve::with(['medicineReserveMedicine'])
-            ->whereHas('medicineReserveMedicine', function ($q1) {
-                $q1->where('user_id', Auth::user()->id);
-                $q1->where('type_exam_id', $this->type_exam_id);
-            })
-            // ->where(function ($q) {
-            //     $q->whereHas('medicineReserveMedicine.medicineInitial', function ($q2) {
-            //         $q2->where('type_class_id', $this->type_class_id);
-            //     })
-            //         ->orWhereHas('medicineReserveMedicine.medicineRenovation', function ($q2) {
-            //             $q2->where('type_class_id', $this->type_class_id);
-            //         })
-            //         ->orWhereHas('medicineReserveMedicine.medicineRevaluation.revaluationMedicineInitial', function ($q2) {
-            //             $q2->where('type_class_id', $this->type_class_id);
-            //         });
-            // })
-            ->where(function ($q) {
-                $q->where(function ($q2) {
-                    $q2->whereHas('medicineReserveMedicine.medicineInitial', function ($q3) {
-                        $q3->where('type_class_id', $this->type_class_id);
-                    });
+        try {
+            $this->validate();
+            $citas = MedicineReserve::where('to_user_headquarters', $this->to_user_headquarters)
+                // ->where('medicine_schedule_id', $this->medicine_schedule_id)
+                ->where('dateReserve', $this->dateReserve)
+                ->where(function ($query) {
+                    $query->where('status', 0)
+                        ->orWhere('status', 1)
+                        ->orWhere('status', 4);
                 })
-                    ->orWhere(function ($q2) {
-                        $q2->whereHas('medicineReserveMedicine.medicineRenovation', function ($q3) {
+                ->count();
+            // dd($citas);
+            switch ($this->to_user_headquarters) {
+                case 7: // CIUDAD DE MEXICO
+                    $maxCitas = 50;
+                    break;
+                case 2: // CANCUN
+                case 3: // TIJUANA
+                case 4: // TOLUCA
+                case 5: // MONTERREY
+                case 528: //MAZATLAN SINALOA
+                case 529: //CHIAPAS
+                case 530: //VERACRUZ
+                case 531: //HERMOSILLO SONORA
+                case 532: //QUERETARO
+                    $maxCitas = 10;
+                    break;
+                case 6: // GUADALAJARA
+                    $maxCitas = 20;
+                    break;
+                case 533: // YUCATAN
+                    $maxCitas = 5;
+                    break;
+                default:
+                    $maxCitas = 0;
+                    break;
+            }
+            // $schedule = MedicineSchedule::find($this->medicine_schedule_id);
+            $userMedicines = MedicineReserve::with(['medicineReserveMedicine'])
+                ->whereHas('medicineReserveMedicine', function ($q1) {
+                    $q1->where('user_id', Auth::user()->id);
+                    $q1->where('type_exam_id', $this->type_exam_id);
+                })
+                // ->where(function ($q) {
+                //     $q->whereHas('medicineReserveMedicine.medicineInitial', function ($q2) {
+                //         $q2->where('type_class_id', $this->type_class_id);
+                //     })
+                //         ->orWhereHas('medicineReserveMedicine.medicineRenovation', function ($q2) {
+                //             $q2->where('type_class_id', $this->type_class_id);
+                //         })
+                //         ->orWhereHas('medicineReserveMedicine.medicineRevaluation.revaluationMedicineInitial', function ($q2) {
+                //             $q2->where('type_class_id', $this->type_class_id);
+                //         });
+                // })
+                ->where(function ($q) {
+                    $q->where(function ($q2) {
+                        $q2->whereHas('medicineReserveMedicine.medicineInitial', function ($q3) {
                             $q3->where('type_class_id', $this->type_class_id);
                         });
                     })
-                    ->orWhere(function ($q2) {
-                        $q2->whereHas('medicineReserveMedicine.medicineRevaluation', function ($q3) {
-                            $q3->whereHas('revaluationMedicineInitial', function ($q4) {
-                                $q4->where('type_class_id', $this->type_class_id);
+                        ->orWhere(function ($q2) {
+                            $q2->whereHas('medicineReserveMedicine.medicineRenovation', function ($q3) {
+                                $q3->where('type_class_id', $this->type_class_id);
+                            });
+                        })
+                        ->orWhere(function ($q2) {
+                            $q2->whereHas('medicineReserveMedicine.medicineRevaluation', function ($q3) {
+                                $q3->whereHas('revaluationMedicineInitial', function ($q4) {
+                                    $q4->where('type_class_id', $this->type_class_id);
+                                });
+                            });
+                        })
+                        ->orWhere(function ($q2) {
+                            $q2->whereHas('medicineReserveMedicine.medicineRevaluation', function ($q3) {
+                                $q3->whereHas('revaluationMedicineRenovation', function ($q4) {
+                                    $q4->where('type_class_id', $this->type_class_id);
+                                });
                             });
                         });
-                    })
-                    ->orWhere(function ($q2) {
-                        $q2->whereHas('medicineReserveMedicine.medicineRevaluation', function ($q3) {
-                            $q3->whereHas('revaluationMedicineRenovation', function ($q4) {
-                                $q4->where('type_class_id', $this->type_class_id);
-                            });
-                        });
-                    });
-            })
-            ->where(function ($queryStop) {
-                $queryStop->where('status', 0)
-                    ->orWhere('status', 4);
-            })
-            ->get();
-        // dd($userMedicines[0]->medicineReserveMedicine->medicineInitial);
-        foreach ($userMedicines as $userMedicine) {
-            if ($userMedicine->id) {
-                if ($userMedicine->medicineReserveMedicine->medicineInitial->count() > 0 && $userMedicine->medicineReserveMedicine->medicineInitial[0]->type_class_id == $this->type_class_id) {
-                    $this->notification([
-                        'title'       => 'CITA NO GENERADA!',
-                        'description' => 'YA TIENES UNA CITA AGENDADA PARA EXAMEN INICIAL' . ' ' . $userMedicine->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name,
-                        'icon'        => 'error',
-                        'timeout' => '3100'
-                    ]);
-                    return;
-                } else if ($userMedicine->medicineReserveMedicine->medicineRenovation->count() > 0 && $userMedicine->medicineReserveMedicine->medicineRenovation[0]->type_class_id == $this->type_class_id) {
-                    $this->notification([
-                        'title'       => 'CITA NO GENERADA!',
-                        'description' => 'YA TIENES UNA CITA AGENDADA PARA EXAMEN DE RENOVACIÓN' . ' ' . $userMedicine->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name,
-                        'icon'        => 'error',
-                        'timeout' => '2500'
-                    ]);
-                    return;
-                } else if ($userMedicine->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial->count() > 0 && $userMedicine->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->type_class_id == $this->type_class_id) {
-                    $this->notification([
-                        'title'       => 'ERROR DE CITA!',
-                        'description' => 'YA TIENES UNA CITA AGENDADA PARA EXAMEN DE REVALORACÍÓN INICIAL' . ' ' . $userMedicine->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->revaluationInitialTypeClass->name,
-                        'icon'        => 'error',
-                        'timeout' => '2500'
-                    ]);
-                    return;
-                } else if ($userMedicine->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation->count() > 0 && $userMedicine->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->type_class_id == $this->type_class_id) {
-                    $this->notification([
-                        'title'       => 'ERROR DE CITA!',
-                        'description' => 'YA TIENES UNA CITA AGENDADA PARA EXAMEN DE REVALORACÍÓN RENOVACIÓN' . ' ' . $userMedicine->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->revaluationRenovationTypeClass->name,
-                        'icon'        => 'error',
-                        'timeout' => '2500'
-                    ]);
-                }
-                return;
-            }
-        }
-        // $maxCitasHorario = $schedule->max_schedules;
-        //  if ($citas >= $maxCitas || $citas >= $maxCitasHorario) ALFORITMO QUE SEPARA CITAS POR HORAS
-        if ($citas >= $maxCitas) {
-            $this->notification([
-                'title'       => 'CITA NO GENERADA!',
-                'description' => 'No hay citas disponibles para ese dia',
-                'icon'        => 'error'
-            ]);
-        } else {
-            $extension = $this->document_pay->extension();
-            $saveDocument = Document::create([
-                'name_document' => $this->document_pay->storeAs('uploads/citas-app/medicine', $this->reference_number . '-' . $this->pay_date .  '.' . $extension, 'do'),
-            ]);
-            $this->saveMedicine = Medicine::create([
-                'user_id' => Auth::user()->id,
-                'reference_number' => $this->reference_number,
-                'pay_date' => $this->pay_date,
-                'document_id' => $saveDocument->id,
-                'type_exam_id' => $this->type_exam_id
-            ]);
-            if ($this->type_exam_id == 1) {
-                $clasification_class_ids = $this->clasification_class_id;
-                if (is_array($clasification_class_ids)) {
-                    foreach ($clasification_class_ids as $clasifications) {
-                        MedicineInitial::create([
-                            'medicine_id' => $this->saveMedicine->id,
-                            'medicine_question_id' => $this->medicine_question_id,
-                            'type_class_id' => $this->type_class_id,
-                            'clasification_class_id' => $clasifications
+                })
+                ->where(function ($queryStop) {
+                    $queryStop->where('status', 0)
+                        ->orWhere('status', 4);
+                })
+                ->get();
+            // dd($userMedicines[0]->medicineReserveMedicine->medicineInitial);
+            foreach ($userMedicines as $userMedicine) {
+                if ($userMedicine->id) {
+                    if ($userMedicine->medicineReserveMedicine->medicineInitial->count() > 0 && $userMedicine->medicineReserveMedicine->medicineInitial[0]->type_class_id == $this->type_class_id) {
+                        $this->notification([
+                            'title'       => 'CITA NO GENERADA!',
+                            'description' => 'YA TIENES UNA CITA AGENDADA PARA EXAMEN INICIAL' . ' ' . $userMedicine->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name,
+                            'icon'        => 'error',
+                            'timeout' => '3100'
+                        ]);
+                        return;
+                    } else if ($userMedicine->medicineReserveMedicine->medicineRenovation->count() > 0 && $userMedicine->medicineReserveMedicine->medicineRenovation[0]->type_class_id == $this->type_class_id) {
+                        $this->notification([
+                            'title'       => 'CITA NO GENERADA!',
+                            'description' => 'YA TIENES UNA CITA AGENDADA PARA EXAMEN DE RENOVACIÓN' . ' ' . $userMedicine->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name,
+                            'icon'        => 'error',
+                            'timeout' => '2500'
+                        ]);
+                        return;
+                    } else if ($userMedicine->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial->count() > 0 && $userMedicine->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->type_class_id == $this->type_class_id) {
+                        $this->notification([
+                            'title'       => 'ERROR DE CITA!',
+                            'description' => 'YA TIENES UNA CITA AGENDADA PARA EXAMEN DE REVALORACÍÓN INICIAL' . ' ' . $userMedicine->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->revaluationInitialTypeClass->name,
+                            'icon'        => 'error',
+                            'timeout' => '2500'
+                        ]);
+                        return;
+                    } else if ($userMedicine->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation->count() > 0 && $userMedicine->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->type_class_id == $this->type_class_id) {
+                        $this->notification([
+                            'title'       => 'ERROR DE CITA!',
+                            'description' => 'YA TIENES UNA CITA AGENDADA PARA EXAMEN DE REVALORACÍÓN RENOVACIÓN' . ' ' . $userMedicine->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->revaluationRenovationTypeClass->name,
+                            'icon'        => 'error',
+                            'timeout' => '2500'
                         ]);
                     }
-                } else {
-                    MedicineInitial::create([
-                        'medicine_id' => $this->saveMedicine->id,
-                        'medicine_question_id' => $this->medicine_question_id,
-                        'type_class_id' => $this->type_class_id,
-                        'clasification_class_id' => $clasification_class_ids
-                    ]);
+                    return;
                 }
-            } else if ($this->type_exam_id == 2) {
-                foreach ($this->clasification_class_id as $clasifications) {
-                    MedicineRenovation::create([
-                        'medicine_id' => $this->saveMedicine->id,
-                        'type_class_id' => $this->type_class_id,
-                        'clasification_class_id' => $clasifications
-                    ]);
-                }
-            } else if ($this->type_exam_id == 3) {
-                $extension = $this->document_authorization->extension();
-                $saveDocumentRevaloration = Document::create([
-                    'name_document' => $this->document_authorization->storeAs('uploads/citas-app/medicine/revaloration', $this->reference_number . '-' . $this->pay_date .  '.' . $extension, 'do'),
+            }
+            // $maxCitasHorario = $schedule->max_schedules;
+            //  if ($citas >= $maxCitas || $citas >= $maxCitasHorario) ALFORITMO QUE SEPARA CITAS POR HORAS
+            if ($citas >= $maxCitas) {
+                $this->notification([
+                    'title'       => 'CITA NO GENERADA!',
+                    'description' => 'No hay citas disponibles para ese dia',
+                    'icon'        => 'error'
                 ]);
-                $medicineReId = MedicineRevaluation::create([
-                    'medicine_id' => $this->saveMedicine->id,
-                    'document_revaloration_id' => $saveDocumentRevaloration->id,
-                    'type_exam_id'=>$this->type_exam_revaloration_id
+            } else {
+                $extension = $this->document_pay->extension();
+                $saveDocument = Document::create([
+                    'name_document' => $this->document_pay->storeAs('uploads/citas-app/medicine', $this->reference_number . '-' . $this->pay_date .  '.' . $extension, 'do'),
                 ]);
-                if ($this->type_exam_revaloration_id == 1) {
+                $this->saveMedicine = Medicine::create([
+                    'user_id' => Auth::user()->id,
+                    'reference_number' => $this->reference_number,
+                    'pay_date' => $this->pay_date,
+                    'document_id' => $saveDocument->id,
+                    'type_exam_id' => $this->type_exam_id
+                ]);
+                if ($this->type_exam_id == 1) {
                     $clasification_class_ids = $this->clasification_class_id;
                     if (is_array($clasification_class_ids)) {
                         foreach ($clasification_class_ids as $clasifications) {
-                            MedicineRevaluationInitial::create([
-                                'medicine_revaluation_id' => $medicineReId->id,
+                            MedicineInitial::create([
+                                'medicine_id' => $this->saveMedicine->id,
                                 'medicine_question_id' => $this->medicine_question_id,
                                 'type_class_id' => $this->type_class_id,
                                 'clasification_class_id' => $clasifications
                             ]);
                         }
                     } else {
-                        MedicineRevaluationInitial::create([
-                            'medicine_revaluation_id' => $medicineReId->id,
+                        MedicineInitial::create([
+                            'medicine_id' => $this->saveMedicine->id,
                             'medicine_question_id' => $this->medicine_question_id,
                             'type_class_id' => $this->type_class_id,
                             'clasification_class_id' => $clasification_class_ids
                         ]);
                     }
-                } else if ($this->type_exam_revaloration_id == 2) {
+                } else if ($this->type_exam_id == 2) {
                     foreach ($this->clasification_class_id as $clasifications) {
-                        MedicineRevaluationRenovation::create([
-                            'medicine_revaluation_id' => $medicineReId->id,
+                        MedicineRenovation::create([
+                            'medicine_id' => $this->saveMedicine->id,
                             'type_class_id' => $this->type_class_id,
                             'clasification_class_id' => $clasifications
                         ]);
                     }
+                } else if ($this->type_exam_id == 3) {
+                    $extension = $this->document_authorization->extension();
+                    $saveDocumentRevaloration = Document::create([
+                        'name_document' => $this->document_authorization->storeAs('uploads/citas-app/medicine/revaloration', $this->reference_number . '-' . $this->pay_date .  '.' . $extension, 'do'),
+                    ]);
+                    $medicineReId = MedicineRevaluation::create([
+                        'medicine_id' => $this->saveMedicine->id,
+                        'document_revaloration_id' => $saveDocumentRevaloration->id,
+                        'type_exam_id' => $this->type_exam_revaloration_id
+                    ]);
+                    if ($this->type_exam_revaloration_id == 1) {
+                        $clasification_class_ids = $this->clasification_class_id;
+                        if (is_array($clasification_class_ids)) {
+                            foreach ($clasification_class_ids as $clasifications) {
+                                MedicineRevaluationInitial::create([
+                                    'medicine_revaluation_id' => $medicineReId->id,
+                                    'medicine_question_id' => $this->medicine_question_id,
+                                    'type_class_id' => $this->type_class_id,
+                                    'clasification_class_id' => $clasifications
+                                ]);
+                            }
+                        } else {
+                            MedicineRevaluationInitial::create([
+                                'medicine_revaluation_id' => $medicineReId->id,
+                                'medicine_question_id' => $this->medicine_question_id,
+                                'type_class_id' => $this->type_class_id,
+                                'clasification_class_id' => $clasification_class_ids
+                            ]);
+                        }
+                    } else if ($this->type_exam_revaloration_id == 2) {
+                        foreach ($this->clasification_class_id as $clasifications) {
+                            MedicineRevaluationRenovation::create([
+                                'medicine_revaluation_id' => $medicineReId->id,
+                                'type_class_id' => $this->type_class_id,
+                                'clasification_class_id' => $clasifications
+                            ]);
+                        }
+                    }
                 }
+                $cita = new MedicineReserve();
+                $cita->from_user_appointment = Auth::user()->id;
+                $cita->medicine_id = $this->saveMedicine->id;
+                $cita->to_user_headquarters = $this->to_user_headquarters;
+                $cita->dateReserve = $this->dateReserve;
+                $cita->medicine_schedule_id = $this->medicine_schedule_id;
+                $cita->save();
+                session(['saved_medicine_id' => $this->saveMedicine->id]);
+                $this->generatePdf();
+                $this->clean();
+                $this->openConfirm();
             }
-            $cita = new MedicineReserve();
-            $cita->from_user_appointment = Auth::user()->id;
-            $cita->medicine_id = $this->saveMedicine->id;
-            $cita->to_user_headquarters = $this->to_user_headquarters;
-            $cita->dateReserve = $this->dateReserve;
-            $cita->medicine_schedule_id = $this->medicine_schedule_id;
-            $cita->save();
-            session(['saved_medicine_id' => $this->saveMedicine->id]);
-            $this->generatePdf();
-            $this->clean();
-            $this->openConfirm();
+        } catch (\Exception $e) {
+            $this->dialog([
+                'title' => '¡ERROR!',
+                'description' => 'Ocurrió un error al guardar el registro, verifica que los datos esten completos e intenta nuevamente.',
+                'icon' => 'error'
+            ]);
         }
     }
     public function openConfirm()
@@ -432,7 +440,7 @@ class HomeMedicine extends Component
         $this->dialog()->confirm([
             'title'       => '¡ATENCIÓN!',
             'description' => '¿ESTAS SEGURO DE CANCELAR ESTA CITA?',
-            'icon'        => 'info',	
+            'icon'        => 'info',
             'accept'      => [
                 'label'  => 'SI',
                 'method' => 'confirmDelete',
@@ -485,7 +493,7 @@ class HomeMedicine extends Component
         } else if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 2) {
             $pdf = PDF::loadView('livewire.medicine.documents.medicine-renovation', compact('medicineReserves', 'keyEncrypt', 'dateConvertedFormatted'));
             return $pdf->download($fileName);
-        }else if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 3) {
+        } else if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 3) {
             $pdf = PDF::loadView('livewire.medicine.documents.medicine-revaluation', compact('medicineReserves', 'keyEncrypt', 'dateConvertedFormatted'));
             return $pdf->download($fileName);
         }

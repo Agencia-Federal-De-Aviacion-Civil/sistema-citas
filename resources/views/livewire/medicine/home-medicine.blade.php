@@ -1,4 +1,7 @@
 <div>
+    <div wire:offline.class="bg-red-300">
+        NO TIENES INTERNET
+    </div>
     <x-notifications position="top-bottom" />
     <x-dialog z-index="z-50" blur="md" align="center" />
     @if ($confirmModal)
@@ -26,6 +29,7 @@
                         <span tabindex="0" class="focus:outline-none">
                             {{ $dateNow }}
                         </span>
+                        <p>Estado de la conexión: <span id="connection-status"></span></p>
                     </li>
                 </ul>
             </div>
@@ -66,7 +70,7 @@
                         reserschedule: @entangle('medicine_schedule_id'),
                         fileName: '',
                         typerevalora: '',
-                        filereval:'',
+                        filereval: '',
                     }">
                         {{-- estep --}}
                         <section class="text-gray-600 body-font">
@@ -179,8 +183,9 @@
                                                     CIVIL</label>
                                                 <label for="file-input" class="sr-only">Adjunta el
                                                     comprobante</label>
-                                                <input type="file" wire:model="document_authorization" x-ref="file2"
-                                                    accept=".pdf" @change="filereval = $refs.file2.files[0].name"
+                                                <input type="file" wire:model="document_authorization"
+                                                    x-ref="file2" accept=".pdf"
+                                                    @change="filereval = $refs.file2.files[0].name"
                                                     class="block w-full border border-gray-200 shadow-sm rounded-md text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 file:bg-transparent file:border-0 file:bg-gray-100 file:mr-4 file:py-2.5 file:px-4 dark:file:bg-gray-700 dark:file:text-gray-400">
                                                 <div class="float-left">
                                                     <div wire:loading wire:target="document_authorization">
@@ -199,7 +204,8 @@
                                             </div>
                                         </div>
                                         {{-- paso revaloración --}}
-                                        <div x-show="tipoExamen === '3' && filereval != '' " class="flex relative pb-6">
+                                        <div x-show="tipoExamen === '3' && filereval != '' "
+                                            class="flex relative pb-6">
                                             <div class="h-full w-10 absolute inset-0 flex items-center justify-center">
                                                 <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
                                             </div>
@@ -585,5 +591,15 @@
                 });
             });
         });
+
+        function checkConnectionStatus() {
+            if (!navigator.onLine) {
+                document.getElementById('connection-status').innerText = 'Conexión lenta o inactiva';
+            }
+        }
+
+        window.addEventListener('load', checkConnectionStatus);
+        window.addEventListener('online', checkConnectionStatus);
+        window.addEventListener('offline', checkConnectionStatus);
     </script>
 </div>

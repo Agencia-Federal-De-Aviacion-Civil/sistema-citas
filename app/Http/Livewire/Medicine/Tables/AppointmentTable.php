@@ -77,8 +77,6 @@ class AppointmentTable extends DataTableComponent
             $results = $query->get();
             $job = new ExportSelectedJob($results);
             dispatch($job); // Agregar el trabajo a la cola
-
-            
         } else {
             // Lógica para manejar el caso en el que no se hayan seleccionado registros
         }
