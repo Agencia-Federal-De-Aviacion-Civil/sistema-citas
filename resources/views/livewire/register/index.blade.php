@@ -1,4 +1,5 @@
 <div>
+    <x-dialog z-index="z-50" blur="md" align="center" />
     <div class="relative">
         <section class="min-h-screen bg-cover " style="background-image: url('{{ asset('images/citas_internet.jpg') }}')">
             <div class="flex flex-col min-h-screen bg-black/50">
