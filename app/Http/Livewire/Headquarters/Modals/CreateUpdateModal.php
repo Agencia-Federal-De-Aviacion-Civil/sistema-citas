@@ -41,6 +41,7 @@ class CreateUpdateModal extends ModalComponent
             $this->direction = $this->sedes[0]->direction;
             $this->email = $this->sedes[0]->headquarterUser->email;
             $this->url = $this->sedes[0]->url;
+            $this->system_id = $this->sedes[0]->system_id;
             $this->id_user = $userId;
             $this->id_headquarter = $this->sedes[0]->id;
         } else {
