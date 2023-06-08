@@ -22,7 +22,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use App\Notifications\MyResetPassword;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens;
     use HasFactory;
@@ -38,24 +38,6 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
-        'apParental',
-        'apMaternal',
-        'genre',
-        'birth',
-        'state_id',
-        'municipal_id',
-        'age',
-        'street',
-        'nInterior',
-        'nExterior',
-        'suburb',
-        'postalCode',
-        'federalEntity',
-        'delegation',
-        'mobilePhone',
-        'officePhone',
-        'extension',
-        'curp',
         'email',
         'password'
     ];
@@ -119,6 +101,6 @@ class User extends Authenticatable
     }
     public function sendPasswordResetNotification($token)
     {
-    $this->notify(new MyResetPassword($token));
+        $this->notify(new MyResetPassword($token));
     }
 }

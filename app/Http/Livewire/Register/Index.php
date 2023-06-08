@@ -8,9 +8,11 @@ use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use WireUi\Traits\Actions;
 
 class Index extends Component
 {
+    use Actions;
     public function rules()
     {
         return [
@@ -71,8 +73,7 @@ class Index extends Component
     public function register()
     {
         $this->validate();
-        $user = User::updateOrCreate(
-            ['id' => $this->id_register],
+        $user = User::create(
             [
                 'name' => strtoupper($this->name),
                 'email' => $this->email,
@@ -100,7 +101,7 @@ class Index extends Component
             'extension' => $this->extension,
             'curp' => $this->curp,
         ]);
-        Auth::login($user);
+        auth()->login($user);
         return redirect()->route('afac.home');
     }
     public function messages()
