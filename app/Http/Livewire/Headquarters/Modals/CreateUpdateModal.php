@@ -61,6 +61,14 @@ class CreateUpdateModal extends ModalComponent
     {
         $this->reset(['name', 'email', 'password', 'system_id', 'direction', 'url']);
     }
+    public static function closeModalOnEscape(): bool
+    {
+        return false;
+    }
+    public static function closeModalOnClickAway(): bool
+    {
+        return false;
+    }
     public function save()
     {
         $accion="ACTUALIZA SEDE";

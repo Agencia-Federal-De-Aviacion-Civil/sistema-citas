@@ -25,24 +25,24 @@
                     <x-input wire:model.lazy="email" label="CORREO" placeholder="ESCRIBE..." />
                 </div>
                 @hasrole('super_admin')
-                <div class="mt-4 relative w-full group">
-                    <x-select wire:model.lazy="system_id" label="SISTEMA" placeholder="Seleccione...">
-                        @foreach ($qSystems as $qSystem)
-                            <x-select.option label="{{ $qSystem->name }}" value="{{ $qSystem->id }}" />
-                        @endforeach
-                    </x-select>
-                </div>
+                    <div class="mt-4 relative w-full group">
+                        <x-select wire:model.lazy="system_id" label="SISTEMA" placeholder="Seleccione...">
+                            @foreach ($qSystems as $qSystem)
+                                <x-select.option label="{{ $qSystem->name }}" value="{{ $qSystem->id }}" />
+                            @endforeach
+                        </x-select>
+                    </div>
                 @else
                 @endhasrole
             </div>
-            <x-errors></x-errors>
             <div class="grid xl:grid-cols-1 xl:gap-6">
                 <div class="mt-4 relative w-full group">
                     <x-textarea wire:model.lazy="url" label="URL" placeholder="INGRESA URL DE GOOGLE MAPS..." />
                 </div>
             </div>
-            <div class="mt-6 mb-6">
+            <div class="flex items-center justify-between w-full gap-4 mt-8">
                 <x-button wire:click.prevent="save()" label="GUARDAR" blue right-icon="save-as" />
+                <x-button wire:click.prevent="$emit('closeModal')" label="SALIR" right-icon="login" />
             </div>
         </div>
     </div>
