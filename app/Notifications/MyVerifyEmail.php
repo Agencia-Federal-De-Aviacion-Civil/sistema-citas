@@ -21,8 +21,8 @@ class MyVerifyEmail extends VerifyEmail
         return (new MailMessage)
             ->subject('Verificación de Correo electronico')
             ->greeting(new HtmlString($someHtmlBody))
-            ->line('Estimado(a)')
-            ->line('Porfavor dar clic en el botón para verificar tu correo electronico.')
+            ->line('Bienvenido!')
+            ->line('Para poder acceder al sistema de citas de la AFAC porfavor dar clic en el botón para verificar su dirección de correo electronico.')
             ->action('Verificar correo electronico', $verificationUrl)
             ->line('Si no creó una cuenta, no se requiere ninguna otra acción.')
             ->salutation('Agencia Federal de Aviación Civil');
