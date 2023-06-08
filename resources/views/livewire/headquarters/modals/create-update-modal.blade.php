@@ -25,24 +25,32 @@
                     <x-input wire:model.lazy="email" label="CORREO" placeholder="ESCRIBE..." />
                 </div>
                 @hasrole('super_admin')
-                <div class="mt-4 relative w-full group">
-                    <x-select wire:model.lazy="system_id" label="SISTEMA" placeholder="Seleccione...">
-                        @foreach ($qSystems as $qSystem)
-                            <x-select.option label="{{ $qSystem->name }}" value="{{ $qSystem->id }}" />
-                        @endforeach
-                    </x-select>
+                    <div class="mt-4 relative w-full group">
+                        <label for="systems"
+                            class="block text-sm font-medium text-gray-900 dark:text-white">SISTEMA</label>
+                        <select wire:model.lazy="system_id"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <option selected value="">Selecciona...</option>
+                            @foreach ($qSystems as $qSystem)
+                                <option value="{{ $qSystem->id }}" {{ $system_id == $qSystem->id ? 'selected' : '' }}>{{ $qSystem->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('system_id')
+                            <span
+                                class="text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5">{{ $message }}</span>
+                        @enderror
+                    </div>
                 </div>
-                @else
-                @endhasrole
-            </div>
-            <x-errors></x-errors>
+            @else
+            @endhasrole
             <div class="grid xl:grid-cols-1 xl:gap-6">
                 <div class="mt-4 relative w-full group">
                     <x-textarea wire:model.lazy="url" label="URL" placeholder="INGRESA URL DE GOOGLE MAPS..." />
                 </div>
             </div>
-            <div class="mt-6 mb-6">
+            <div class="flex items-center justify-between w-full gap-4 mt-8">
                 <x-button wire:click.prevent="save()" label="GUARDAR" blue right-icon="save-as" />
+                <x-button wire:click.prevent="$emit('closeModal')" label="SALIR" right-icon="login" />
             </div>
         </div>
     </div>

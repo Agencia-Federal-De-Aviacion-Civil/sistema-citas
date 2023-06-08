@@ -15,8 +15,8 @@ class homeController extends Controller
     public $headquarters;
     public function index()
     {
-        Date::setLocale('ES');
-        $date = Date::now()->parse();
+        Date::setLocale('es');
+        $date = Date::now()->format('l j F Y');
         $date1 = Date::now()->format('Y-m-d');
         $date2 = Date::now()->format('d-m-Y');
         $tomorrow = Date::tomorrow()->format('Y-m-d');

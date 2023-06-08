@@ -4,19 +4,25 @@ namespace App\Http\Livewire\Headquarters;
 
 use App\Models\Catalogue\Headquarter;
 use App\Models\Medicine\MedicineDisabledDays;
+use Jenssegers\Date\Date;
 use Livewire\Component;
 use WireUi\Traits\Actions;
 
 class HomeHeadquarter extends Component
 {
     use Actions;
-    public $disabled_days, $user_headquarters_id, $id_disabledDays;
+    public $disabled_days, $user_headquarters_id, $id_disabledDays, $dateNow;
     public function rules()
     {
         return [
             'disabled_days' => 'required',
             'user_headquarters_id' => 'required|unique:medicine_disabled_days',
         ];
+    }
+    public function mount()
+    {
+        Date::setLocale('es');
+        $this->dateNow = Date::now()->format('l j F Y');
     }
     public function render()
     {
