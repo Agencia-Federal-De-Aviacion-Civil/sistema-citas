@@ -9,6 +9,16 @@
                 <h4 tabindex="0" class="focus:outline-none text-2xl font-bold leading-tight text-white">ADMINISTRACIÓN
                     DE SEDES</h4>
                 <ul class="flex flex-col md:flex-row items-start md:items-center text-gray-300 text-sm mt-3">
+                    <li class="flex items-center mt-4 md:mt-0">
+                        <div class="mr-1">
+                            <img src="https://tuk-cdn.s3.amazonaws.com/can-uploader/background_with_sub_text-svg3.svg"
+                                alt="date">
+                        </div>
+                        <span tabindex="0" class="focus:outline-none">
+                            {{ $dateNow }}
+                        </span>
+                        {{-- <p>Estado de la conexión: <span id="connection-status"></span></p> --}}
+                    </li>
                 </ul>
             </div>
         </div>
@@ -43,11 +53,12 @@
                         </div>
                         <div x-show="activeTab === 'schedules'">
                             {{-- <div class="flex-grow pl-4"> --}}
-                                <div class="mb-6">
-                                    <x-button wire:click="$emit('openModal', 'headquarters.modals.create-update-schedule-modal')"
-                                        icon="calendar" primary label="DESHABILITAR FECHAS" />
-                                </div>
-                                {{-- <div class="grid xl:grid-cols-2 xl:gap-6">
+                            <div class="mb-6">
+                                <x-button
+                                    wire:click="$emit('openModal', 'headquarters.modals.create-update-schedule-modal')"
+                                    icon="calendar" primary label="DESHABILITAR FECHAS" />
+                            </div>
+                            {{-- <div class="grid xl:grid-cols-2 xl:gap-6">
                                     <div class="mt-1 relative w-full group">
                                         <x-select label="SELECCIONE..." placeholder="SELECCIONE UNA SEDE..."
                                             wire:model.lazy="user_headquarters_id">
