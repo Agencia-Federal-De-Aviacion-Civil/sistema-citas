@@ -9,6 +9,7 @@ namespace App\Models;
 
 use App\Models\Catalogue\Headquarter;
 use App\Models\Medicine\Medicine;
+use App\Models\Medicine\medicine_history_movements;
 use App\Models\Medicine\MedicineDisabledDays;
 use App\Models\Medicine\MedicineReserve;
 use App\Models\Medicine\MedicineSchedule;
@@ -107,5 +108,8 @@ class User extends Authenticatable implements MustVerifyEmail
     public function SendEmailVerificationNotification()
     {
         $this->notify(new MyVerifyEmail);
+    }
+    public function userHistory(){
+        return $this->hasMany(medicine_history_movements::class);
     }
 }
