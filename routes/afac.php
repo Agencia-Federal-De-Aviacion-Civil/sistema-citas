@@ -9,7 +9,8 @@ use App\Http\Livewire\Linguistics\HomeLinguistics;
 use App\Http\Livewire\Register\Peoplehistoryrecords;
 use App\Http\Livewire\Medicine\HomeMedicine;
 use App\Http\Livewire\Medicine\ScheduleAppointment;
-use App\Http\Livewire\Medicine\HistoryMovements;
+use App\Http\Livewire\Medicine\HistoryMedicieMovements;
+use App\Http\Livewire\Linguistics\HistoryLinguisticsMovements;
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Validate\Qr as ValidateQr;
 
@@ -39,7 +40,8 @@ Route::middleware([
         Route::get('/headquarters', HomeHeadquarter::class)->name('afac.headquarterMedicine');
         Route::get('/register', Peoplehistoryrecords::class)->name('afac.historyRegister');
         Route::get('/validate', ValidateQr::class)->name('validate');
-        Route::get('/history', HistoryMovements::class)->name('afac.medicienMovements');
+        Route::get('/historymedicine', HistoryMedicieMovements::class)->name('afac.medicienMovements');
+        Route::get('/historylinguistics', HistoryLinguisticsMovements::class)->name('afac.linguisticsMovements');
     });
     Route::get('/appointments', [IndexController::class, 'index'])->name('afac.appointment');
     Route::get('/users', [userMedicine::class, 'index'])->name('afac.users');
