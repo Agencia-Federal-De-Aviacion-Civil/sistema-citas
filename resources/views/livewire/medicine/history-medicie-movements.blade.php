@@ -24,4 +24,13 @@
             </div>
         </div>
     </div>
+    <div class="py-12">
+        <div class="container mx-auto px-4 py-4 bg-white shadow-xl sm:rounded-lg">
+            <div class="mt-12 max-w-8xl mx-auto sm:px-6 lg:px-8">
+                <div class="ml-4 py-6 mr-4 uppercase text-sm">
+                   'aqui'
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
