@@ -255,6 +255,8 @@
                         </a>
                     </li>
                 </ul>
+            </div>
+            <div x-cloak x-data="{ open: false }" class="py-3 z-50">
                 <button x-on:click="open = true"
                     class="flex items-center bg-white focus:bg-gray-50 text-gray-700 focus:text-gray-900 rounded py-2 px-4 z-50"
                     type="button">
