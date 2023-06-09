@@ -110,6 +110,6 @@ class User extends Authenticatable implements MustVerifyEmail
         $this->notify(new MyVerifyEmail);
     }
     public function userHistory(){
-        return $this->hasMany(medicine_history_movements::class);
+        return $this->hasOne(medicine_history_movements::class);
     }
 }

@@ -12,6 +12,6 @@ class medicine_history_movements extends Model
     protected $guarded = ['id'];
 
     public function historyUser(){
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class,'user_id');
     }
 }

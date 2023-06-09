@@ -7,7 +7,7 @@
         <div
             class="z-10 relative container px-6 mx-auto flex flex-col md:flex-row items-start md:items-center justify-between">
             <div>
-                <h4 tabindex="0" class="focus:outline-none text-2xl font-bold leading-tight text-white">Historial 
+                <h4 tabindex="0" class="focus:outline-none text-2xl font-bold leading-tight text-white">Historial
                     de movimientos citas medicas
                 </h4>
                 <ul class="flex flex-col md:flex-row items-start md:items-center text-gray-300 text-sm mt-3">
@@ -28,7 +28,7 @@
         <div class="container mx-auto px-4 py-4 bg-white shadow-xl sm:rounded-lg">
             <div class="mt-12 max-w-8xl mx-auto sm:px-6 lg:px-8">
                 <div class="ml-4 py-6 mr-4 uppercase text-sm">
-                   'aqui'
+                    @livewire('medicine.tables.history-medicie-table')
                 </div>
             </div>
         </div>
