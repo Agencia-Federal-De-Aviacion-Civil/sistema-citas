@@ -12,10 +12,11 @@ use Jenssegers\Date\Date;
 
 class homeController extends Controller
 {
-    public $headquarters;
+    public $headquarters,$dateNow;
     public function index()
     {
         Date::setLocale('es');
+        $dateNow = Date::now()->format('l j F Y');
         $date = Date::now()->format('l j F Y');
         $date1 = Date::now()->format('Y-m-d');
         $date2 = Date::now()->format('d-m-Y');
@@ -55,6 +56,6 @@ class homeController extends Controller
         $porreagendado = $registradas != 0 ? round($appointment->where('status', '4')->sum('count') * 100 / $registradas) : 0;
         $porcanceladas = $registradas != 0 ? round($appointment->whereIn('status', ['2', '3', '5'])->sum('count') * 100 / $registradas, 0) : 0;
         $medicine =  round($registradas ? $registradas * 100 / $registradas : '0');
-        return view('afac.dashboard.index', compact('headquarters', 'registradas', 'pendientes', 'validado', 'canceladas', 'reagendado', 'porconfir', 'porpendientes', 'porreagendado', 'porcanceladas', 'now', 'date', 'date2', 'medicine', 'date1', 'tomorrow'));
+        return view('afac.dashboard.index', compact('headquarters', 'registradas', 'pendientes', 'validado', 'canceladas', 'reagendado', 'porconfir', 'porpendientes', 'porreagendado', 'porcanceladas', 'now', 'date', 'date2', 'medicine', 'date1', 'tomorrow','dateNow'));
     }
 }
