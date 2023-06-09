@@ -50,6 +50,12 @@
                                         Validación de QR
                                     </a>
                                 </li>
+                                <li>
+                                    <a href="{{ route('afac.medicienMovements') }}"
+                                        class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
+                                        Historial
+                                    </a>
+                                </li>
                             </ul>
                         </div>
 
@@ -202,6 +208,12 @@
                     <li>
                         <a href="{{ route('validate') }}" class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
                             Validación de QR
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('afac.medicienMovements') }}"
+                            class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
+                            Historial
                         </a>
                     </li>
                 </ul>
