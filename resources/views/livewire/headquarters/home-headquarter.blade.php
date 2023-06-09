@@ -31,14 +31,14 @@
                         <li class="mr-2">
                             <a href="#" class="inline-block p-4 bg-white rounded-t-lg active"
                                 x-on:click.prevent="activeTab = 'headquarters'"
-                                :class="{ 'text-blue-600': activeTab === 'headquarters'}">
+                                :class="{ 'text-blue-600 border-b-2 border-blue-500': activeTab === 'headquarters'}">
                                 SEDES
                             </a>
                         </li>
                         <li class="mr-2">
                             <a href="#" class="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50"
                                 x-on:click.prevent="activeTab = 'schedules'"
-                                :class="{ 'text-blue-600': activeTab === 'schedules' }">
+                                :class="{ 'text-blue-600 border-b-2 border-blue-500': activeTab === 'schedules' }">
                                 HORARIOS
                             </a>
                         </li>
