@@ -36,7 +36,6 @@ class ExportSelectedJob implements ShouldQueue
     public function handle()
     {
         try {
-            $date = Date::now();
             $filePath = 'medicina-preventiva/exports/report-appointment.xlsx';
             Excel::store(new ScheduledExport($this->results), $filePath, 'do');
         } catch (\Exception $e) {
