@@ -13,7 +13,6 @@
     </div>
     
     @push('scripts')
-        <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.3.1/main.min.js'></script>
         
         <script>
             document.addEventListener('livewire:load', function() {
