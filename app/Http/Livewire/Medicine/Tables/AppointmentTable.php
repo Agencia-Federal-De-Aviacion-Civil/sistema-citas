@@ -45,6 +45,7 @@ class AppointmentTable extends DataTableComponent
         $this->setEagerLoadAllRelationsEnabled();
     }
 
+
     public function columns(): array
     {
         return [
@@ -161,7 +162,6 @@ class AppointmentTable extends DataTableComponent
         return $action = MedicineReserve::query()
             ->where('users.name', '!=', 'admin');
     }
-
     public function filters(): array
     {
         return [
@@ -185,7 +185,6 @@ class AppointmentTable extends DataTableComponent
                 ->filter(function ($query, $value) {
                     $query->whereDate('dateReserve', '<=', $value);
                 }),
-
             SelectFilter::make('SEDE')
                 ->options([
                     '' => 'TODOS',
@@ -217,7 +216,6 @@ class AppointmentTable extends DataTableComponent
                 }),
         ];
     }
-
     public function exportSelected()
     {
         if ($this->getSelected()) {
