@@ -48,6 +48,7 @@
     @stack('modals')
     @livewire('livewire-ui-modal')
     @livewireScripts
+    @stack('scripts')
 </body>
 
 </html>

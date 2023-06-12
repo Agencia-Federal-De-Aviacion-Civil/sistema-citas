@@ -15,6 +15,7 @@ class CalendarAppointment extends Component
     }
     public function render()
     {
+       
         return view('livewire.medicine.calendar-appointment');
     }
 }
