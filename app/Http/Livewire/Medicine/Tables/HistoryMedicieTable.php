@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Medicine\Tables;
 
+use App\Models\Medicine\medicine_history_movements;
 use App\Models\UserParticipant;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\Views\Column;
@@ -29,29 +30,29 @@ class HistoryMedicieTable extends DataTableComponent
             Column::make("Id", "id")
                 ->sortable(),
 
-            Column::make("Nombre", "userParticipantUser.name")
+            Column::make("Nombre", "historyUser.name")
                 ->sortable()
                 ->searchable(fn ($query, $searchTerm) => $query->orWhere('name', 'like', '%' . $searchTerm . '%')),
 
-            Column::make("Apellido Paterno", "apParental")
+            Column::make("Apellido Paterno", "historyUser.UserPart.apParental")
                 ->sortable(),
 
-            Column::make("Apellido Materno", "apMaternal")
+            Column::make("Apellido Materno", "historyUser.UserPart.apMaternal")
                 ->sortable(),
 
-            Column::make("Acción", "userParticipantUser.userHistory.action")
+            Column::make("Acción", "action")
                 ->sortable(),
 
-            Column::make("Proceso", "userParticipantUser.userHistory.process")
+            Column::make("Proceso", "process")
                 ->sortable(),
-            Column::make("Creo", "userParticipantUser.userHistory.created_at")
+            Column::make("Creo", "created_at")
                 ->sortable(),
-            Column::make("Actualizo", "userParticipantUser.userHistory.updated_at")
+            Column::make("Actualizo", "updated_at")
                 ->sortable(),
         ];
     }
     public function builder(): Builder
     {
-        return UserParticipant::with('userParticipantUser');
+        return medicine_history_movements::with('historyUser');
     }
 }
