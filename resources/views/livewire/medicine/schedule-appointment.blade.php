@@ -21,18 +21,38 @@
         <div class="container mx-auto px-4 py-4 bg-white shadow-xl sm:rounded-lg">
             <div class="mt-12 max-w-8xl mx-auto sm:px-6 lg:px-8">
                 <div class="ml-4 py-6 mr-4 uppercase text-sm">
-                    @if ($exportJobProcessed)
-                    <div class="alert alert-success">
-                        TU ARCHIVO SE GENERÓ CON EXITO
+                    <div class="text-center">
+                        @if ($exporting && !$exportFinished)
+                            <div class="flex flex-col items-center" wire:poll="updateExportProgress">
+                                <div class="mt-20">
+                                    <div style="color: #0061cf" class="la-line-spin-clockwise-fade-rotating la-2x">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </div>
+                                <div
+                                    class="mb-5 text-lg font-semibold text-gray-500 text-center p-0.5 leading-none rounded-full px-2 dark:bg-blue-900 dark:text-blue-200 absolute -translate-y-1/2 -translate-x-1/2 top-2/4 left-1/2">
+                                    SE ESTA GENERANDO EL DOCUMENTO...POR FAVOR ESPERE</div>
+                            </div>
+                        @endif
+                        @if ($exportFinished)
+                            Listo. Descarga el documento <button class="hover:underline"
+                                wire:click="downloadExport">AQUI.</button>
+                        @endif
                     </div>
-                @endif
                     @livewire('medicine.tables.appointment-table')
                 </div>
             </div>
 
         </div>
     </div>
-        <script>
+    {{-- <script>
             function pollExportJobProcessed() {
                 Livewire.emit('checkExportJobProcessed');
                 setTimeout(pollExportJobProcessed, 5000); // Verificar cada 5 segundos (ajusta el tiempo según tus necesidades)
@@ -41,5 +61,5 @@
             document.addEventListener('livewire:load', function() {
                 pollExportJobProcessed();
             });
-        </script>
+        </script> --}}
 </div>

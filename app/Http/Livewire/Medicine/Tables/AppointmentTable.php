@@ -6,6 +6,7 @@ use App\Events\Medicine\ExportCompleted;
 use App\Jobs\ExportSelectedJob;
 use App\Models\Medicine\MedicineReserve;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Bus;
 use Livewire\Component;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
@@ -14,6 +15,9 @@ use WireUi\Traits\Actions;
 class AppointmentTable extends DataTableComponent
 {
     use Actions;
+    public $batchId;
+    public $exporting;
+    public $exportFinished;
     public function configure(): void
     {
         $this->setPrimaryKey('id');
@@ -75,10 +79,14 @@ class AppointmentTable extends DataTableComponent
                 'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
             ])->whereIn('id', $this->getSelected());
             $results = $query->get();
-            $job = new ExportSelectedJob($results);
-            dispatch($job); // Agregar el trabajo a la cola
+            $this->exporting = true;
+            $this->exportFinished = false;
+            $batch = Bus::batch([
+                new ExportSelectedJob($results),
+            ])->dispatch();
+            $this->batchId = $batch->id;
+            $this->emit('BatchDispatch', [$this->batchId, $this->exporting, $this->exportFinished]);
         } else {
-            // Lógica para manejar el caso en el que no se hayan seleccionado registros
         }
     }
 }
