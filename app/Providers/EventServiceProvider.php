@@ -55,7 +55,6 @@ class EventServiceProvider extends ServiceProvider
                 $request->session()->put('user_information_logged', true);
             }
         });
-        $this->app['events']->listen(JobProcessed::class, ExportJobProcessedListener::class);
     }
 
     /**
