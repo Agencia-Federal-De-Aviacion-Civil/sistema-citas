@@ -9,7 +9,9 @@ class Calendar extends Component
 
     public function getevent()
     {       
-        $events = MedicineReserve::select('id','medicine_id as title' ,'dateReserve as start')->get();
+        $events = MedicineReserve::select('id','medicine_id as title' ,'dateReserve as start')
+        ->where('status', 'in(0,1,4)')
+        ->get();
         return  json_encode($events);
         
     }
@@ -45,7 +47,9 @@ class Calendar extends Component
     */
     public function render()
     {       
-        $events = MedicineReserve::select('id','medicine_id as title' ,'dateReserve as start')->get();
+        $events = MedicineReserve::select('id','medicine_id as title' ,'dateReserve as start')
+        ->where('status', 'in(0,1,4)')
+        ->get();
        // dd($events);
         $this->events = json_encode($events);
         return view('livewire.calendar');

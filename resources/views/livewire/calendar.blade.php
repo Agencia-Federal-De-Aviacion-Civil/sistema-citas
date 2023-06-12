@@ -30,10 +30,10 @@
           },
           locales: 'es',
                 events: JSON.parse(data),
-                editable: true,
-                selectable: true,
+                editable: false,
+                selectable: false,
                 displayEventTime: false,
-                droppable: true, // this allows things to be dropped onto the calendar
+                droppable: false, // this allows things to be dropped onto the calendar
                 drop: function(info) {
                     // is the "remove after drop" checkbox checked?
                     if (checkbox.checked) {
