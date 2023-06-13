@@ -75,17 +75,35 @@ class AppointmentTable extends DataTableComponent
     public function exportSelected()
     {
         if ($this->getSelected()) {
-            $query = MedicineReserve::with([
-                'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
-            ])->whereIn('id', $this->getSelected());
-            $results = $query->get();
-            $this->exporting = true;
-            $this->exportFinished = false;
-            $batch = Bus::batch([
-                new ExportSelectedJob($results),
-            ])->dispatch();
-            $this->batchId = $batch->id;
-            $this->emit('BatchDispatch', [$this->batchId, $this->exporting, $this->exportFinished]);
+            try {
+                $query = MedicineReserve::with([
+                    'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
+                ])->whereIn('id', $this->getSelected());
+                $results = $query->get();
+                foreach ($results as $result) {
+                    if (empty($result->userParticipantUser->apParental) || empty($result->userParticipantUser->apMaternal) || empty($result->userParticipantUser->genre)) {
+                        $emptyFields[] = $result->id;
+                    }
+                }
+                if (!empty($emptyFields)) {
+                    $errorMessage = 'Los siguientes registros tienen campos vacíos en informacion personal del participante: ' . implode(', ', $emptyFields);
+                    throw new \Exception($errorMessage);
+                }
+                $this->exporting = true;
+                $this->exportFinished = false;
+                $batch = Bus::batch([
+                    new ExportSelectedJob($results),
+                ])->dispatch();
+                $this->batchId = $batch->id;
+                $this->emit('BatchDispatch', [$this->batchId, $this->exporting, $this->exportFinished]);
+            } catch (\Exception $e) {
+                $this->notification([
+                    'title'       => 'ERROR DE EXPORTACIÓN!',
+                    'description' =>  $errorMessage = $e->getMessage(),
+                    'icon'        => 'error',
+                    'timeout' => '3100'
+                ]);
+            }
         } else {
         }
     }
