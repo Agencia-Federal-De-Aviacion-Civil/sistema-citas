@@ -51,7 +51,7 @@ final class HeadquarterTable extends PowerGridComponent
      */
     public function datasource(): Builder
     {
-        return Headquarter::query()->with(['headquarterUser'])->where('status', false);
+        return Headquarter::query()->with(['headquarterUser']);
     }
 
     /*
