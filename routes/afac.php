@@ -2,8 +2,8 @@
 
 use App\Http\Controllers\Afac\Appointment\AppointmentController;
 use App\Http\Controllers\afac\homeController;
-use App\Http\Controllers\afac\schedule\userMedicine;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserMedicineController;
 use App\Http\Livewire\Headquarters\HomeHeadquarter;
 use App\Http\Livewire\Linguistics\HomeLinguistics;
 use App\Http\Livewire\Register\Peoplehistoryrecords;
@@ -44,7 +44,7 @@ Route::middleware([
         Route::get('/historylinguistics', HistoryLinguisticsMovements::class)->name('afac.linguisticsMovements');
     });
     Route::get('/appointments', [AppointmentController::class, 'index'])->name('afac.appointment');
-    Route::get('/users', [userMedicine::class, 'index'])->name('afac.users');
+    Route::get('/users', [UserMedicineController::class, 'index'])->name('afac.users');
     Route::get('/downloadFile/{scheduleId}', [AppointmentController::class, 'download'])->name('afac.downloadFile');
     Route::resource('/roles', RoleController::class)->names('afac.roles');
 });
