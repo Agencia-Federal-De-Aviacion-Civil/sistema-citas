@@ -106,7 +106,8 @@ class CreateUpdateModal extends ModalComponent
                     'user_id' => $saveHeadrquearter->id,
                     'system_id' => 1,
                     'direction' => $this->direction,
-                    'url' => $this->url
+                    'url' => $this->url,
+                    'status' => $this->status
                 ]
             );
         }
@@ -141,6 +142,7 @@ class CreateUpdateModal extends ModalComponent
             'direction.required' => 'Campo obligatorio',
             'url.required' => 'Campo obligatorio',
             'url.url' => 'Dirección no valida',
+            'status.required' => 'Campo obligatorio',
         ];
     }
 }

@@ -69,6 +69,9 @@
                         </div>
                     </li>
                 </ul>
+                @error('status')
+                    <span class="text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5">{{ $message }}</span>
+                @enderror
             </div>
             <div class="flex items-center justify-between w-full gap-4 mt-8">
                 <x-button wire:click.prevent="save()" label="GUARDAR" blue right-icon="save-as" />
