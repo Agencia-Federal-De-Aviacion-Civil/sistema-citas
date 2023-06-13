@@ -26,8 +26,7 @@ class HomeHeadquarter extends Component
     }
     public function render()
     {
-        $headquarters = Headquarter::with('headquarterUser')->where('status', false)->get();
-        return view('livewire.headquarters.home-headquarter', compact('headquarters'))
+        return view('livewire.headquarters.home-headquarter')
             ->layout('layouts.app');
     }
     public function updated($propertyName)
