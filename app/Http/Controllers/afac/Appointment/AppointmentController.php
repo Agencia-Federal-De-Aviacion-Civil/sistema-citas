@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\afac\schedule;
+namespace App\Http\Controllers\Afac\Appointment;
 
 use App\Http\Controllers\Controller;
 use App\Models\Medicine\MedicineReserve;
@@ -9,16 +9,15 @@ use Illuminate\Support\Facades\Crypt;
 use Jenssegers\Date\Date;
 use PDF;
 
-class IndexController extends Controller
+class AppointmentController extends Controller
 {
-    // log
     public function __construct()
     {
         $this->middleware(['role:super_admin|user|medicine_admin|headquarters|super_admin_medicine']);
     }
     public function index()
     {
-        return view('afac.schedule.index');
+        return view('afac.medicine.home-appointment');
     }
     public function download($scheduleId)
     {
@@ -37,7 +36,7 @@ class IndexController extends Controller
         } else if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 2) {
             $pdf = PDF::loadView('livewire.medicine.documents.medicine-renovation', compact('medicineReserves', 'keyEncrypt', 'dateConvertedFormatted'));
             return $pdf->download($fileName);
-        }else if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 3) {
+        } else if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 3) {
             $pdf = PDF::loadView('livewire.medicine.documents.medicine-revaluation', compact('medicineReserves', 'keyEncrypt', 'dateConvertedFormatted'));
             return $pdf->download($fileName);
         }

@@ -6,12 +6,14 @@ use App\Models\Medicine\MedicineReserve;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Crypt;
 use Livewire\Component;
+use Jenssegers\Date\Date;
 use WireUi\Traits\Actions;
 
 class Qr extends Component
 {
     use Actions;
-    public $textRead, $licenses, $medicineReserves;
+    
+    public $textRead, $licenses, $medicineReserves,$dateNow;
     protected $rules = [
         'textRead' => 'required'
     ];
@@ -21,6 +23,8 @@ class Qr extends Component
     }
     public function render()
     {
+        Date::setLocale('es');
+        $this->dateNow = Date::now()->format('l j F Y');
         return view('livewire.validate.qr')
             ->layout('layouts.app');
     }

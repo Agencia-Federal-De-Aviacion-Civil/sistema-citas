@@ -3,34 +3,26 @@
 namespace App\Exports;
 
 use Carbon\Carbon;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
-use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
-use Maatwebsite\Excel\DefaultValueBinder;
-use PhpOffice\PhpSpreadsheet\Shared\Date;
 use Maatwebsite\Excel\Concerns\WithStyles;
+use Maatwebsite\Excel\DefaultValueBinder;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class ScheduledExport extends DefaultValueBinder implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize, WithColumnFormatting, WithStyles
+class AppointmentExport extends DefaultValueBinder implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize, WithColumnFormatting, WithStyles
 {
-    /**
-     * @return \Illuminate\Support\Collection
-     */
     use Exportable;
     public $results;
     private $rowNumber = 1;
-
     public function __construct($results)
     {
         $this->results = $results;
     }
-
     public function collection()
     {
         return $this->results->flatten();
@@ -38,12 +30,20 @@ class ScheduledExport extends DefaultValueBinder implements FromCollection, With
     public function map($results): array
     {
         if ($results->medicineReserveMedicine->medicineTypeExam->id == 1) {
-            $nameClass = ($results->medicineReserveMedicine->medicineInitialExc->medicineInitialTypeClass ?? null) ? $results->medicineReserveMedicine->medicineInitialExc->medicineInitialTypeClass->name : 'SIN INFORMACIÓN';
-            $typeLicense = ($results->medicineReserveMedicine->medicineInitialExc->medicineInitialClasificationClass ?? null) ? $results->medicineReserveMedicine->medicineInitialExc->medicineInitialClasificationClass->name : 'SIN INFORMACIÓN';
+            $nameClass = ($results->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass ?? null) ? $results->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name : 'SIN INFORMACIÓN';
+            $typeLicense = ($results->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass ?? null) ? $results->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass->name : 'SIN INFORMACIÓN';
         } else if ($results->medicineReserveMedicine->medicineTypeExam->id == 2) {
-            $nameClass = ($results->medicineReserveMedicine->medicineRenovationExc->renovationTypeClass ?? null) ? $results->medicineReserveMedicine->medicineRenovationExc->renovationTypeClass->name : 'SIN INFORMACIÓN';
-            $typeLicense = ($results->medicineReserveMedicine->medicineRenovationExc->renovationClasificationClass ?? null) ? $results->medicineReserveMedicine->medicineRenovationExc->renovationClasificationClass->name : 'SIN INFORMACIÓN';
+            $nameClass = ($results->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass ?? null) ? $results->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name : 'SIN INFORMACIÓN';
+            $typeLicense = ($results->medicineReserveMedicine->medicineRenovation[0]->renovationClasificationClass ?? null) ? $results->medicineReserveMedicine->medicineRenovation[0]->renovationClasificationClass->name : 'SIN INFORMACIÓN';
+        } else if ($results->medicineReserveMedicine->medicineTypeExam->id == 3) {
+            $nameClass = ($results->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->revaluationInitialTypeClass ?? null) ? $results->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->revaluationInitialTypeClass->name : 'SIN INFORMACIÓN';
+            if ($results->medicineReserveMedicine->medicineRevaluation[0]->RevaluationTypeExam->id == 1) {
+                $typeLicense = ($results->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->revaluationInitialClasificationClass ?? null) ? $results->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->revaluationInitialClasificationClass->name : 'SIN INFORMACIÓN';
+            } else {
+                $typeLicense = ($results->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->revaluationRenovationClasificationClass ?? null) ? $results->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->revaluationRenovationClasificationClass->name : 'SIN INFORMACIÓN';
+            }
         }
+
         if ($results->status == 1) {
             $status = 'ASISTIO';
         } else if ($results->status == 2) {
@@ -64,19 +64,18 @@ class ScheduledExport extends DefaultValueBinder implements FromCollection, With
             $nameClass,
             $typeLicense,
             ($results->user->name ?? null) ? $results->user->name : 'SIN INFORMACIÓN',
-            Carbon::parse($results->dateReserve)->format('d/m/Y'),
+            ($results->dateReserve ?? null) ? Carbon::parse($results->dateReserve)->format('d/m/Y') : 'SIN INFORMACIÓN',
             ($results->reserveSchedule ?? null) ? $results->reserveSchedule->time_start : 'SIN INFORMACIÓN',
             ($results->userParticipantUser ?? null) ? $results->userParticipantUser->curp : 'SIN INFORMACIÓN',
             ($results->medicineReserveMedicine ?? null) ? $results->medicineReserveMedicine->reference_number : 'SIN INFORMACIÓN',
             ($results->userParticipantUser ?? null) ? $results->userParticipantUser->genre : 'SIN INFORMACIÓN',
-            Carbon::parse($results->userParticipantUser->birth)->format('d/m/Y'),
+            ($results->userParticipantUser->birth ?? null) ? Carbon::parse($results->userParticipantUser->birth)->format('d/m/Y') : 'SIN INFORMACIÓN',
             ($results->userParticipantUser->participantState ?? null) ? $results->userParticipantUser->participantState->name : 'SIN INFORMACIÓN',
             ($results->userParticipantUser ?? null) ? $results->userParticipantUser->age : 'SIN INFORMACIÓN',
             ($results->userParticipantUser ?? null) ? $results->userParticipantUser->mobilePhone : 'SIN INFORMACIÓN',
             ($results->userParticipantUser ?? null) ? $results->userParticipantUser->officePhone : 'SIN INFORMACIÓN',
             ($results->userParticipantUser ?? null) ? $results->userParticipantUser->extension : 'SIN INFORMACIÓN',
             $status,
-
         ];
     }
     public function columnFormats(): array
@@ -88,7 +87,6 @@ class ScheduledExport extends DefaultValueBinder implements FromCollection, With
             'N' => 'dd/mm/yyyy',
         ];
     }
-
     public function headings(): array
     {
         return [
@@ -130,4 +128,5 @@ class ScheduledExport extends DefaultValueBinder implements FromCollection, With
             ]
         ]);
     }
+
 }

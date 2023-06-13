@@ -8,9 +8,10 @@ use App\Models\Document;
 use App\Models\Linguistic\Linguistic;
 use App\Models\Linguistic\Reserve;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Date;
+use Jenssegers\Date\Date;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+
 
 class HomeLinguistics extends Component
 {
@@ -34,11 +35,12 @@ class HomeLinguistics extends Component
     }
     public function mount()
     {
+        
         $this->exams = TypeExam::all();
         $this->headquartersQueries = Headquarter::with('headquarterUser')
             ->where('system_id', 2)->get();
-        Date::setLocale('ES');
-        $this->date = Date::now()->parse();
+            Date::setLocale('es');
+            $this->dateNow = Date::now()->format('l j F Y');
     }
     public function updated($propertyName)
     {

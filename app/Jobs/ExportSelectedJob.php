@@ -2,20 +2,18 @@
 
 namespace App\Jobs;
 
-use App\Exports\ScheduledExport;
+use App\Exports\AppointmentExport;
+use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Storage;
-use Jenssegers\Date\Date;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ExportSelectedJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     protected $results;
     /**
      * Create a new job instance.
@@ -35,9 +33,8 @@ class ExportSelectedJob implements ShouldQueue
     public function handle()
     {
         try {
-            $date = Date::now();
-            $filePath = 'uploads/citas-app/medicine/exports/' . $date . '.xlsx';
-            Excel::store(new ScheduledExport($this->results), $filePath, 'do');
+            $filePath = 'medicina-preventiva/exports/report-appointment.xlsx';
+            Excel::store(new AppointmentExport($this->results), $filePath, 'do');
         } catch (\Exception $e) {
             $e->getMessage();
         }

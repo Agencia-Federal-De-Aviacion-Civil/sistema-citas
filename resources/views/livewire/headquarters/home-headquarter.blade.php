@@ -6,9 +6,19 @@
         <div
             class="z-10 relative container px-6 mx-auto flex flex-col md:flex-row items-start md:items-center justify-between">
             <div>
-                <h4 tabindex="0" class="focus:outline-none text-2xl font-bold leading-tight text-white">ADMINISTRACIÓN
-                    DE SEDES</h4>
+                <h4 tabindex="0" class="focus:outline-none text-2xl font-bold leading-tight text-white">Administración
+                    de Sedes</h4>
                 <ul class="flex flex-col md:flex-row items-start md:items-center text-gray-300 text-sm mt-3">
+                    <li class="flex items-center mt-4 md:mt-0">
+                        <div class="mr-1">
+                            <img src="https://tuk-cdn.s3.amazonaws.com/can-uploader/background_with_sub_text-svg3.svg"
+                                alt="date">
+                        </div>
+                        <span tabindex="0" class="focus:outline-none">
+                            {{ $dateNow }}
+                        </span>
+                        {{-- <p>Estado de la conexión: <span id="connection-status"></span></p> --}}
+                    </li>
                 </ul>
             </div>
         </div>
@@ -19,16 +29,16 @@
                 <div x-data="{ activeTab: 'headquarters' }">
                     <ul class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 ">
                         <li class="mr-2">
-                            <a href="#" class="inline-block p-4 text-gray-800 bg-white rounded-t-lg active"
+                            <a href="#" class="inline-block p-4 bg-white rounded-t-lg active"
                                 x-on:click.prevent="activeTab = 'headquarters'"
-                                :class="{ 'active': activeTab === 'headquarters' }">
+                                :class="{ 'text-blue-600 border-b-2 border-blue-500': activeTab === 'headquarters'}">
                                 SEDES
                             </a>
                         </li>
                         <li class="mr-2">
                             <a href="#" class="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50"
                                 x-on:click.prevent="activeTab = 'schedules'"
-                                :class="{ 'active': activeTab === 'schedules' }">
+                                :class="{ 'text-blue-600 border-b-2 border-blue-500': activeTab === 'schedules' }">
                                 HORARIOS
                             </a>
                         </li>
@@ -43,11 +53,12 @@
                         </div>
                         <div x-show="activeTab === 'schedules'">
                             {{-- <div class="flex-grow pl-4"> --}}
-                                <div class="mb-6">
-                                    <x-button wire:click="$emit('openModal', 'headquarters.modals.create-update-schedule-modal')"
-                                        icon="calendar" primary label="DESHABILITAR FECHAS" />
-                                </div>
-                                {{-- <div class="grid xl:grid-cols-2 xl:gap-6">
+                            <div class="mb-6">
+                                <x-button
+                                    wire:click="$emit('openModal', 'headquarters.modals.create-update-schedule-modal')"
+                                    icon="calendar" primary label="DESHABILITAR FECHAS" />
+                            </div>
+                            {{-- <div class="grid xl:grid-cols-2 xl:gap-6">
                                     <div class="mt-1 relative w-full group">
                                         <x-select label="SELECCIONE..." placeholder="SELECCIONE UNA SEDE..."
                                             wire:model.lazy="user_headquarters_id">

@@ -13,10 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('testers', function (Blueprint $table) {
-            $table->id();
-            $table->string('document');
-            $table->timestamps();
+        Schema::table('headquarters', function (Blueprint $table) {
+            $table->boolean('status')->default(0)->after('url');
         });
     }
 
@@ -27,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('testers');
+        Schema::table('headquarters', function (Blueprint $table) {
+            $table->dropColumn('status');
+        });
     }
 };

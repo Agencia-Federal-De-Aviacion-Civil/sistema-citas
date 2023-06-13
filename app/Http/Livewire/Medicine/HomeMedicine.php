@@ -197,8 +197,11 @@ class HomeMedicine extends Component
     }
     public function save()
     {
+        $this->validate();
         try {
-            $this->validate();
+            if (is_array($this->clasification_class_id) && empty(array_filter($this->clasification_class_id))) {
+                throw new \Exception();
+            }
             $citas = MedicineReserve::where('to_user_headquarters', $this->to_user_headquarters)
                 // ->where('medicine_schedule_id', $this->medicine_schedule_id)
                 ->where('dateReserve', $this->dateReserve)
@@ -329,9 +332,12 @@ class HomeMedicine extends Component
                     'icon'        => 'error'
                 ]);
             } else {
-                $extension = $this->document_pay->extension();
+                // $extension = $this->document_pay->extension();
+                $extension = $this->document_pay->getClientOriginalExtension();
+                $fileName = $this->reference_number . '-' . $this->pay_date . '.' . $extension;
                 $saveDocument = Document::create([
-                    'name_document' => $this->document_pay->storeAs('uploads/citas-app/medicine', $this->reference_number . '-' . $this->pay_date .  '.' . $extension, 'do'),
+                    // 'name_document' => $this->document_pay->storeAs('uploads/citas-app/medicine', $this->reference_number . '-' . $this->pay_date .  '.' . $extension, 'do'),
+                    'name_document' => $this->document_pay->storeAs('documentos/medicina',$fileName, 'public'),
                 ]);
                 $this->saveMedicine = Medicine::create([
                     'user_id' => Auth::user()->id,
@@ -421,7 +427,7 @@ class HomeMedicine extends Component
         } catch (\Exception $e) {
             $this->dialog([
                 'title' => '¡ERROR!',
-                'description' => 'Ocurrió un error al guardar el registro, verifica que los datos esten completos e intenta nuevamente.',
+                'description' => $e->getMessage(),
                 'icon' => 'error'
             ]);
         }

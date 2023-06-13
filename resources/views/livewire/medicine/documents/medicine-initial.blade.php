@@ -120,7 +120,21 @@
             <tr>
                 <td>TIPO DE LICENCIA:</td>
                 <td>
-                    {{ ($medicineReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass->name ?? 'SIN INFORMACIÓN') }}
+                    {{-- {{ ($medicineReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass->name ?? 'SIN INFORMACIÓN') }} --}}
+                    @foreach ($medicineReserves[0]->medicineReserveMedicine->medicineInitial as $inicialEach)
+                    {{-- MAS DE UNA LICENCIA --}}
+                    @if ($medicineReserves[0]->medicineReserveMedicine->medicineInitial->count() > 1)
+                    <ul>
+                        <li>
+                            {{ $inicialEach->medicineInitialClasificationClass->name ?? 'SIN INFORMACIÓN' }}
+                        </li>
+                    </ul>
+                    @else
+                    {{-- UNA SOLA LICENCIA --}}
+                        {{ $inicialEach->medicineInitialClasificationClass->name ?? 'SIN INFORMACIÓN' }}
+                    @endif
+                @endforeach
+                
                 </td>
             </tr>
             <tr>
