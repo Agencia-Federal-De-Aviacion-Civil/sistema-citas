@@ -43,7 +43,7 @@ Route::middleware([
     });
     // Route::get('/appointments', [AppointmentController::class, 'index'])->name('afac.appointment');
     Route::get('/appointments', [AppointmentMedicineController::class, 'index'])->name('afac.appointment');
-    // Route::get('/downloadFile/{scheduleId}', [AppointmentController::class, 'download'])->name('afac.downloadFile');
+    Route::get('/downloadFile/{scheduleId}', [AppointmentMedicineController::class, 'download'])->name('afac.downloadFile');
     Route::middleware(['role:super_admin'])->group(function () {
         Route::get('/users', [UserMedicineController::class, 'index'])->name('afac.users');
         Route::resource('/roles', RoleController::class)->names('afac.roles');
