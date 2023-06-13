@@ -40,7 +40,7 @@ class Schedule extends ModalComponent
         $this->scheduleId = $scheduleId;
         $this->medicineId = $medicineId;
         $this->valores($this->scheduleId);
-        $this->sedes = Headquarter::where('system_id', 1)->get();
+        $this->sedes = Headquarter::where('system_id', 1)->where('status', false)->get();
         $this->scheduleMedicines = collect();
         Date::setLocale('ES');
         $this->date = Date::now()->parse();
