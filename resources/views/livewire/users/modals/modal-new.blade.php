@@ -34,14 +34,11 @@
                         </div>
                     </div>
                     <div class="mt-4 relative w-full group">
-                        <x-select wire:model.defer="privileges" label="ROL" placeholder="Seleccione...">
-
-                            <x-select.option label="SUPER ADMINISTRADOR" value="super_admin" />
-                            <x-select.option label="MEDICINA ADMINISTRADOR" value="medicine_admin" />
-                            <x-select.option label="LINGÜÍSTICA ADMINISTRADOR" value="linguistic_admin" />
-                            <x-select.option label="USUARIO" value="user" />
-                            {{-- <x-select.option label="SEDE" value="headquarters" /> --}}
-                        </x-select>
+                            <x-select wire:model="privileges" label="ROL" placeholder="Seleccione...">
+                                @foreach ($roles as $role)
+                                <x-select.option label="{{ $role->name }}" value="{{ $role->name }}" />
+                                @endforeach
+                            </x-select>
                     </div>
                     <div class="float-right mt-6">
                         <x-button wire:click.prevent="save()" label="GUARDAR" blue right-icon="save-as" />

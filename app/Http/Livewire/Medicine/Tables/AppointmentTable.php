@@ -16,7 +16,6 @@ use WireUi\Traits\Actions;
 
 class AppointmentTable extends DataTableComponent
 {
-
     use Actions;
 
     protected function getListeners(): array

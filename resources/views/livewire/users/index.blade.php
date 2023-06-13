@@ -20,17 +20,21 @@
            </div>
 
 
-           {{-- <div class="py-12">
+           <div class="py-12">
                <div class="container mx-auto px-4 py-4 bg-white shadow-xl sm:rounded-lg">
                    <div class="mt-12 max-w-8xl mx-auto sm:px-6 lg:px-8">
                        <div class="ml-4 py-6 mr-4 uppercase text-sm">
+                        <x-button class="mb-2"
+                        onclick="Livewire.emit('openModal', 'users.modals.modal-new', {{ json_encode(['privilegesId' => 0]) }})"
+                        right-icon="user-add" xs blue label="AGREGAR" />
+
                            @livewire('medicine.tables.user-roles-table')
                        </div>
                    </div>
                </div>
-           </div> --}}
+           </div>
 
-           <div class="py-12">
+           {{-- <div class="py-12">
                <div class="container mx-auto px-4 py-4 bg-white shadow-xl sm:rounded-lg">
                    <div class="mt-8 max-w-8xl mx-auto sm:px-6 lg:px-8">
                        <div class="ml-4 py-0 mr-4 uppercase text-sm">
@@ -38,7 +42,7 @@
                        </div>
                    </div>
                </div>
-           </div>
+           </div> --}}
 
 
        </div>
