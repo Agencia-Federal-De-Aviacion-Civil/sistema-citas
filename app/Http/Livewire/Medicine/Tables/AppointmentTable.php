@@ -7,6 +7,7 @@ use App\Jobs\ExportSelectedJob;
 use App\Models\Medicine\MedicineReserve;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Bus;
 use Livewire\Component;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
@@ -158,8 +159,23 @@ class AppointmentTable extends DataTableComponent
     }
     public function builder(): Builder
     {
-        return MedicineReserve::query()
-            ->where('users.name', '!=', 'admin');
+        // return MedicineReserve::query()
+        //     ->where('users.name', '!=', 'admin');
+         if (Auth::user()->can('super_admin.medicine_admin.see.schedule.table')) {
+            return MedicineReserve::query()->with([
+                'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
+            ]);
+        } else if (Auth::user()->can('user.see.schedule.table')) {
+            return MedicineReserve::query()->with([
+                'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
+            ])->whereHas('medicineReserveMedicine', function ($q1) {
+                $q1->where('user_id', Auth::user()->id);
+            });
+        } else if (Auth::user()->can('headquarters.see.schedule.table')) {
+            return MedicineReserve::query()->with([
+                'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
+            ])->where('to_user_headquarters', Auth::user()->id);
+        }
     }
     public function filters(): array
     {

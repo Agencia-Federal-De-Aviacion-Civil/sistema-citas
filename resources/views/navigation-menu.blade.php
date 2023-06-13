@@ -31,7 +31,8 @@
                                 </svg>
                             </button>
                             <ul x-show="open" x-on:click.away="open = false"
-                                class="z-20 bg-white text-gray-700 rounded shadow-lg absolute py-2 mt-1" style="min-width:15rem">
+                                class="z-20 bg-white text-gray-700 rounded shadow-lg absolute py-2 mt-1"
+                                style="min-width:15rem">
                                 <li>
                                     <a href="{{ route('afac.medicine') }}"
                                         class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
@@ -69,7 +70,8 @@
                                 </svg>
                             </button>
                             <ul x-show="open" x-on:click.away="open = false"
-                                class="z-20 bg-white text-gray-700 rounded shadow-lg absolute py-2 mt-1" style="min-width:15rem">
+                                class="z-20 bg-white text-gray-700 rounded shadow-lg absolute py-2 mt-1"
+                                style="min-width:15rem">
                                 <li>
                                     <a href="{{ route('afac.linguistics') }}"
                                         class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
@@ -77,14 +79,12 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#"
-                                        class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
+                                    <a href="#" class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
                                         Sedes
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#"
-                                        class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
+                                    <a href="#" class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
                                         Validación de QR
                                     </a>
                                 </li>
@@ -96,11 +96,6 @@
                                 </li>
                             </ul>
                         </div>
-
-                        <x-jet-nav-link href="{{ route('afac.historyRegister') }}" :active="request()->routeIs('afac.historyRegister')">
-                            {{ __('Personas registradas') }}
-                        </x-jet-nav-link>
-
                         <x-jet-nav-link href="{{ route('afac.users') }}" :active="request()->routeIs('afac.users')">
                             {{ __('Usuarios') }}
                         </x-jet-nav-link>
@@ -159,7 +154,7 @@
                                 {{ __('Cuenta') }}
                             </div>
 
-                             <x-jet-dropdown-link href="{{ route('profile.show') }}">
+                            <x-jet-dropdown-link href="{{ route('profile.show') }}">
                                 {{ __('Perfil') }}
                             </x-jet-dropdown-link>
 
@@ -167,7 +162,7 @@
                                 <x-jet-dropdown-link href="{{ route('api-tokens.index') }}">
                                     {{ __('API Tokens') }}
                                 </x-jet-dropdown-link>
-                            @endif 
+                            @endif
 
                             <div class="border-t border-gray-100"></div>
 
@@ -275,14 +270,12 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#"
-                            class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
+                        <a href="#" class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
                             Citas agendadas
                         </a>
                     </li>
                     <li>
-                        <a href="#"
-                            class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
+                        <a href="#" class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
                             Sedes
                         </a>
                     </li>
@@ -299,9 +292,6 @@
                     </li>
                 </ul>
             </div>
-            <x-jet-nav-link href="{{ route('afac.historyRegister') }}">
-                {{ __('Personas Registradas') }}
-            </x-jet-nav-link>
             <x-jet-nav-link href="{{ route('afac.users') }}" :active="request()->routeIs('afac.users')">
                 {{ __('Usuarios') }}
             </x-jet-nav-link>
