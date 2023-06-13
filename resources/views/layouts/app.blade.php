@@ -11,6 +11,7 @@
     <!-- Fonts -->
     <link rel="stylesheet" href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap">
     <script src="https://cdn.jsdelivr.net/npm/countup@1.8.2/dist/countUp.min.js"></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.3.1/main.min.js'></script>
 
     <!-- Scripts -->
     @wireUiScripts
@@ -48,6 +49,7 @@
     @stack('modals')
     @livewire('livewire-ui-modal')
     @livewireScripts
+    @stack('scripts')
 </body>
 
 </html>
