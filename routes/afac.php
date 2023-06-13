@@ -6,9 +6,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserMedicineController;
 use App\Http\Livewire\Headquarters\HomeHeadquarter;
 use App\Http\Livewire\Linguistics\HomeLinguistics;
-use App\Http\Livewire\Register\Peoplehistoryrecords;
 use App\Http\Livewire\Medicine\HomeMedicine;
-use App\Http\Livewire\Medicine\ScheduleAppointment;
 use App\Http\Livewire\Medicine\HistoryMedicieMovements;
 use App\Http\Livewire\Linguistics\HistoryLinguisticsMovements;
 use Illuminate\Support\Facades\Route;
@@ -38,13 +36,14 @@ Route::middleware([
     });
     Route::middleware(['role:super_admin|medicine_admin|super_admin_medicine'])->group(function () {
         Route::get('/headquarters', HomeHeadquarter::class)->name('afac.headquarterMedicine');
-        Route::get('/register', Peoplehistoryrecords::class)->name('afac.historyRegister');
         Route::get('/validate', ValidateQr::class)->name('validate');
         Route::get('/historymedicine', HistoryMedicieMovements::class)->name('afac.medicienMovements');
         Route::get('/historylinguistics', HistoryLinguisticsMovements::class)->name('afac.linguisticsMovements');
     });
     Route::get('/appointments', [AppointmentController::class, 'index'])->name('afac.appointment');
-    Route::get('/users', [UserMedicineController::class, 'index'])->name('afac.users');
     Route::get('/downloadFile/{scheduleId}', [AppointmentController::class, 'download'])->name('afac.downloadFile');
-    Route::resource('/roles', RoleController::class)->names('afac.roles');
+    Route::middleware(['role:super_admin'])->group(function () {
+        Route::get('/users', [UserMedicineController::class, 'index'])->name('afac.users');
+        Route::resource('/roles', RoleController::class)->names('afac.roles');
+    });
 });
