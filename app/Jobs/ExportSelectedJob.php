@@ -2,16 +2,13 @@
 
 namespace App\Jobs;
 
-use App\Exports\ScheduledExport;
+use App\Exports\AppointmentExport;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Storage;
-use Jenssegers\Date\Date;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ExportSelectedJob implements ShouldQueue
@@ -37,7 +34,7 @@ class ExportSelectedJob implements ShouldQueue
     {
         try {
             $filePath = 'medicina-preventiva/exports/report-appointment.xlsx';
-            Excel::store(new ScheduledExport($this->results), $filePath, 'do');
+            Excel::store(new AppointmentExport($this->results), $filePath, 'do');
         } catch (\Exception $e) {
             $e->getMessage();
         }

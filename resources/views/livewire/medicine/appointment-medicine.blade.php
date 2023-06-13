@@ -52,14 +52,4 @@
 
         </div>
     </div>
-    {{-- <script>
-            function pollExportJobProcessed() {
-                Livewire.emit('checkExportJobProcessed');
-                setTimeout(pollExportJobProcessed, 5000); // Verificar cada 5 segundos (ajusta el tiempo según tus necesidades)
-            }
-
-            document.addEventListener('livewire:load', function() {
-                pollExportJobProcessed();
-            });
-        </script> --}}
 </div>

@@ -1,7 +1,7 @@
 <?php
 
+use App\Http\Controllers\Afac\Appointment\AppointmentController;
 use App\Http\Controllers\afac\homeController;
-use App\Http\Controllers\afac\schedule\IndexController;
 use App\Http\Controllers\afac\schedule\userMedicine;
 use App\Http\Controllers\RoleController;
 use App\Http\Livewire\Headquarters\HomeHeadquarter;
@@ -43,9 +43,8 @@ Route::middleware([
         Route::get('/historymedicine', HistoryMedicieMovements::class)->name('afac.medicienMovements');
         Route::get('/historylinguistics', HistoryLinguisticsMovements::class)->name('afac.linguisticsMovements');
     });
-    Route::get('/appointments', [IndexController::class, 'index'])->name('afac.appointment');
+    Route::get('/appointments', [AppointmentController::class, 'index'])->name('afac.appointment');
     Route::get('/users', [userMedicine::class, 'index'])->name('afac.users');
-    Route::get('/downloadFile/{scheduleId}', [IndexController::class, 'download'])->name('afac.downloadFile');
-    Route::get('/schedule', ScheduleAppointment::class)->name('afac.schedule');
+    Route::get('/downloadFile/{scheduleId}', [AppointmentController::class, 'download'])->name('afac.downloadFile');
     Route::resource('/roles', RoleController::class)->names('afac.roles');
 });

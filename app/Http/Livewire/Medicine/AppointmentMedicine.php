@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 
-class ScheduleAppointment extends Component
+class AppointmentMedicine extends Component
 {
     public $batchId;
     public $exporting;
@@ -51,6 +51,6 @@ class ScheduleAppointment extends Component
     }
     public function render()
     {
-        return view('livewire.medicine.schedule-appointment');
+        return view('livewire.medicine.appointment-medicine');
     }
 }
