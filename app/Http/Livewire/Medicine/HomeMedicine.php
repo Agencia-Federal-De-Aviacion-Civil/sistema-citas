@@ -45,7 +45,7 @@ class HomeMedicine extends Component
         Date::setLocale('es');
         $this->dateNow = Date::now()->format('l j F Y');
         $this->typeExams = TypeExam::all();
-        $this->sedes = Headquarter::where('system_id', 1)->where('status', true)->get();
+        $this->sedes = Headquarter::where('system_id', 1)->where('status', false)->get();
         $this->userQuestions = MedicineQuestion::all();
         $this->questionClassess = collect();
         $this->clasificationClass = collect();
