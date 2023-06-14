@@ -26,9 +26,9 @@ class ModalNew extends ModalComponent
             'privileges' => 'required',
             // 'email' => 'required|email|unique:users',
             'email' => ['required', 'email', Rule::unique('users')->ignore($this->privilegesId)],
-            'password' => 'required|min:6|same:passwordConfirmation'
+            // 'password' => 'required|min:6|same:passwordConfirmation'
         ];
-        $rules['password'] = $this->privilegesId ? '' : 'required|min:6|same:passwordConfirmation';
+        $rules['password'] = $this->privilegesId ? 'min:6|same:passwordConfirmation' : 'required|min:6|same:passwordConfirmation';
         return $rules;
     }
     public function mount($privilegesId)
@@ -107,7 +107,7 @@ class ModalNew extends ModalComponent
             'name' => $this->name,
             'email' => $this->email,
         ];
-        if (!$this->privilegesId) {
+        if (!$this->privilegesId || $this->password!='') {
             $userData['password'] = Hash::make($this->password);
         }
         $privilegesUser = User::updateOrCreate(
