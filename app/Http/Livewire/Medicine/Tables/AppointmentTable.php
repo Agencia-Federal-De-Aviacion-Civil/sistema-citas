@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Medicine\Tables;
 
 use App\Events\Medicine\ExportCompleted;
 use App\Jobs\ExportSelectedJob;
+use App\Models\Catalogue\Headquarter;
 use App\Models\Medicine\MedicineReserve;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -88,10 +89,16 @@ class AppointmentTable extends DataTableComponent
                         'licencias' => $licencia
                     ]
                 )),
-
-            // Column::make("SEDE", "medicineSchedule.sede")
-            //     ->sortable(),
-
+                Column::make("SEDE", "sede")
+                ->label(fn ($row) => view(
+                    'afac.tables.appointmentTable.actions.sedes-filter',
+                    [
+                        $sede = MedicineReserve::with([
+                            'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
+                        ])->where('id', $row->id)->get(),
+                        'sede' => $sede
+                    ]
+                )),
             Column::make("FECHA", "dateReserve")
                 ->sortable()
                 ->searchable()
@@ -218,21 +225,21 @@ class AppointmentTable extends DataTableComponent
             SelectFilter::make('SEDE')
                 ->options([
                     '' => 'TODOS',
-                    'CANCUN QUINTANA ROO' => 'CANCUN QUINTANA ROO',
-                    'TIJUANA BC' => 'TIJUANA BC',
-                    'TOLUCA AEROPUERTO' => 'TOLUCA AEROPUERTO',
-                    'MONTERREY AEROPUERTO' => 'MONTERREY AEROPUERTO',
-                    'GUADALAJARA AEROPUERTO' => 'GUADALAJARA AEROPUERTO',
-                    'CIUDAD DE MÉXICO AEROPUERTO BJ' => 'CIUDAD DE MÉXICO AEROPUERTO BJ',
-                    'MAZATLAN SINALOA' => 'MAZATLAN SINALOA',
-                    'TUXTLA GTZ. CHIAPAS' => 'TUXTLA GTZ. CHIAPAS',
-                    'VERACRUZ VERACRUZ' => 'VERACRUZ VERACRUZ',
-                    'HERMOSILLO SONORA' => 'HERMOSILLO SONORA',
-                    'QUERETARO QRO' => 'QUERETARO QRO',
-                    'MERIDA YUC' => 'MERIDA YUC'
+                    '2' => 'CANCUN QUINTANA ROO',
+                    '3' => 'TIJUANA BC',
+                    '4' => 'TOLUCA AEROPUERTO',
+                    '5' => 'MONTERREY AEROPUERTO',
+                    '6' => 'GUADALAJARA AEROPUERTO',
+                    '7' => 'CIUDAD DE MÉXICO AEROPUERTO BJ',
+                    '528' => 'MAZATLAN SINALOA',
+                    '529' => 'TUXTLA GTZ. CHIAPAS',
+                    '530' => 'VERACRUZ VERACRUZ',
+                    '531' => 'HERMOSILLO SONORA',
+                    '532' => 'QUERETARO QRO',
+                    '533' => 'MERIDA YUC'
                 ])
                 ->filter(function ($query, $value) {
-                    $query->where('sede', $value);
+                    $query->where('to_user_headquarters', $value);
                 }),
 
             SelectFilter::make('GENERO')
