@@ -25,8 +25,8 @@ tasks:
     - npm:run:prod
     - deploy:publish
   npm:run:prod:
-    - cd: "{{release_path}}"
-    - run: "npm run prod"
-
+    script:
+      - 'cd {{release_path}} && npm run prod'
+      
 after:
   deploy:failed: deploy:unlock
