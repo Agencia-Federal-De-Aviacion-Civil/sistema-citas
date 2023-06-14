@@ -22,6 +22,7 @@
                 var checkbox = document.getElementById('drop-remove');
                 var data =   @this.events;
                 var calendar = new Calendar(calendarEl, {
+                    hiddenDays: [ 0, 6 ],
                     headerToolbar: {
             left: 'prev,next today',
             center: 'title',
