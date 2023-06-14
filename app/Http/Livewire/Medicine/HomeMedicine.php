@@ -337,7 +337,7 @@ class HomeMedicine extends Component
                 $fileName = $this->reference_number . '-' . $this->pay_date . '.' . $extension;
                 $saveDocument = Document::create([
                     // 'name_document' => $this->document_pay->storeAs('uploads/citas-app/medicine', $this->reference_number . '-' . $this->pay_date .  '.' . $extension, 'do'),
-                    'name_document' => $this->document_pay->storeAs('documentos/medicina',$fileName, 'public'),
+                    'name_document' => $this->document_pay->storeAs('documentos/medicina', $fileName, 'public'),
                 ]);
                 $this->saveMedicine = Medicine::create([
                     'user_id' => Auth::user()->id,
@@ -374,9 +374,11 @@ class HomeMedicine extends Component
                         ]);
                     }
                 } else if ($this->type_exam_id == 3) {
-                    $extension = $this->document_authorization->extension();
+                    // $extension = $this->document_authorization->extension();
+                    $extension = $this->document_pay->getClientOriginalExtension();
+                    $fileName = $this->reference_number . '-' . $this->pay_date . '.' . $extension;
                     $saveDocumentRevaloration = Document::create([
-                        'name_document' => $this->document_authorization->storeAs('uploads/citas-app/medicine/revaloration', $this->reference_number . '-' . $this->pay_date .  '.' . $extension, 'do'),
+                        'name_document' => $this->document_authorization->storeAs('documentos/medicina', $fileName, 'public'),
                     ]);
                     $medicineReId = MedicineRevaluation::create([
                         'medicine_id' => $this->saveMedicine->id,
