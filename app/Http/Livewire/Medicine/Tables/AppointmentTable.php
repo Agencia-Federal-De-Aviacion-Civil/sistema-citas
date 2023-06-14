@@ -231,12 +231,13 @@ class AppointmentTable extends DataTableComponent
                     '5' => 'MONTERREY AEROPUERTO',
                     '6' => 'GUADALAJARA AEROPUERTO',
                     '7' => 'CIUDAD DE MÉXICO AEROPUERTO BJ',
-                    '528' => 'MAZATLAN SINALOA',
-                    '529' => 'TUXTLA GTZ. CHIAPAS',
-                    '530' => 'VERACRUZ VERACRUZ',
-                    '531' => 'HERMOSILLO SONORA',
-                    '532' => 'QUERETARO QRO',
-                    '533' => 'MERIDA YUC'
+                    '518' => 'MAZATLAN SINALOA',
+                    '519' => 'TUXTLA GTZ. CHIAPAS',
+                    '520' => 'VERACRUZ VERACRUZ',
+                    '521' => 'HERMOSILLO SONORA',
+                    '522' => 'QUERETARO QRO',
+                    '523' => 'MERIDA YUCATAN',
+                    '7958' => 'SINALOA CULIACAN'
                 ])
                 ->filter(function ($query, $value) {
                     $query->where('to_user_headquarters', $value);
