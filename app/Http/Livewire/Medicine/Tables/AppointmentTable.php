@@ -191,6 +191,21 @@ class AppointmentTable extends DataTableComponent
                     $query->where('type_exam_id', $value);
                 }),
 
+                SelectFilter::make('STATUS')
+                ->options([
+                    '' => 'TODOS',
+                    '0' => 'PENDIENTE',
+                    '1' => 'ASISITIO',
+                    '2' => 'CANCELADO',
+                    '3' => 'CANCELO',
+                    '4' => 'REAGENDO',
+                    '5' => 'LIBERADO'
+
+                ])
+                ->filter(function ($query, $value) {
+                    $query->where('medicine_reserves.status', $value);
+                }),
+
             DateFilter::make('Desde')
                 ->filter(function ($query, $value) {
                     $query->whereDate('dateReserve', '>=', $value);
