@@ -1,11 +1,14 @@
 <div>
-    @foreach ($class as $clas)
-        @if ($clas->medicineReserveMedicine->medicineTypeExam->id == 1)
-            {{ $clas->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name }}
-        @elseif ($clas->medicineReserveMedicine->medicineTypeExam->id == 2)
-            {{ $clas->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name }}
-        @elseif ($clas->medicineReserveMedicine->medicineTypeExam->id == 3)
-            {{ $clas->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->revaluationInitialTypeClass->name }}
+    @foreach ($classes as $class)
+        @if ($class->medicineReserveMedicine->medicineTypeExam->id == 1)
+            ok
+            {{-- {{ $class->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name }} --}}
+        @elseif ($class->medicineReserveMedicine->medicineTypeExam->id == 2)
+            {{-- {{ $class->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name }} --}}
+            ok
+        @elseif ($class->medicineReserveMedicine->medicineTypeExam->id == 3)
+            {{-- {{ $class->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->revaluationInitialTypeClass->name }} --}}
+            ok
         @endif
     @endforeach
 </div>
