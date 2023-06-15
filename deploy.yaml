@@ -22,7 +22,7 @@ tasks:
     - artisan:event:cache
     - artisan:migrate
     - npm:install
-    - build
+    - run: cd {{release_path}} && npm run prod
     - deploy:publish
 
   build:
