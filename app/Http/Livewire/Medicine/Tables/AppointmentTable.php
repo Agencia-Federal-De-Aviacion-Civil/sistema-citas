@@ -438,7 +438,7 @@ class AppointmentTable extends DataTableComponent
 
                 $results = $query->get();
 
-                $batches = collect($results)->chunk(500)->map(function ($chunk) {
+                $batches = collect($results)->chunk(5000)->map(function ($chunk) {
                     return Bus::batch([
                         new ExportSelectedJob($chunk),
                     ])->dispatch();
