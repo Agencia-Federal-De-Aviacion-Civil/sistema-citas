@@ -25,7 +25,7 @@ class AppointmentExport extends DefaultValueBinder implements FromCollection, Wi
     }
     public function collection()
     {
-        return $this->results->flatten();
+        return $this->results;
     }
     public function map($results): array
     {
