@@ -26,7 +26,7 @@
         "wireui/wireui": "^1.17"
     },
     "require-dev": {
-        "deployer/deployer": "^7.0",
+        "deployer/deployer": "^7.3",
         "fakerphp/faker": "^1.9.1",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.0.1",
