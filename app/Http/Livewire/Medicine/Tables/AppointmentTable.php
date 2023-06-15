@@ -53,7 +53,8 @@ class AppointmentTable extends DataTableComponent
             return [
 
                 Column::make("Id", "id")
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(fn ($query, $searchTerm) => $query->orWhere('medicine_reserves.id', 'like', '%' . $searchTerm . '%')),
                 Column::make("Nombre", "medicineReserveFromUser.name")
                     ->sortable()
                     ->searchable(fn ($query, $searchTerm) => $query->orWhere('users.name', 'like', '%' . $searchTerm . '%')),
