@@ -15,6 +15,7 @@ use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateFilter;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
+use Rappasoft\LaravelLivewireTables\Views\Filters\TextFilter;
 use WireUi\Traits\Actions;
 
 class AppointmentTable extends DataTableComponent
@@ -421,6 +422,14 @@ class AppointmentTable extends DataTableComponent
                     ])
                     ->filter(function ($query, $value) {
                         $query->where('genre', $value);
+                    }),
+
+                    TextFilter::make('ID CITA')
+                    ->config([
+                        'placeholder' => 'Buscar cita',
+                    ])
+                    ->filter(function (Builder $builder, string $value) {
+                        $builder->where('medicine_reserves.id', 'like', '%' . $value . '%');
                     }),
             ];
         } else {
