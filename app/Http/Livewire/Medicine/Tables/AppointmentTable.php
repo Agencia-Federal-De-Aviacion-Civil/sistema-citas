@@ -444,51 +444,23 @@ class AppointmentTable extends DataTableComponent
                 $query = MedicineReserve::with([
                     'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
                 ])->whereIn('id', $this->getSelected());
-
                 $results = $query->get();
-
-                $batches = collect($results)->chunk(5000)->map(function ($chunk) {
-                    return Bus::batch([
-                        new ExportSelectedJob($chunk),
-                    ])->dispatch();
-                });
                 $this->exporting = true;
                 $this->exportFinished = false;
-                $this->batchId = $batches->first()->id;
+                $batch = Bus::batch([
+                    new ExportSelectedJob($results),
+                ])->dispatch();
+                $this->batchId = $batch->id;
                 $this->emit('BatchDispatch', [$this->batchId, $this->exporting, $this->exportFinished]);
             } catch (\Exception $e) {
                 $this->notification([
                     'title'       => 'ERROR DE EXPORTACIÓN!',
-                    'description' => $e->getMessage(),
+                    'description' =>  $e->getMessage(),
                     'icon'        => 'error',
-                    'timeout'     => '3100'
+                    'timeout' => '3100'
                 ]);
             }
         } else {
-            // Acciones cuando no hay elementos seleccionados
         }
-        // if ($this->getSelected()) {
-        //     try {
-        //         $query = MedicineReserve::with([
-        //             'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
-        //         ])->whereIn('id', $this->getSelected());
-        //         $results = $query->get();
-        //         $this->exporting = true;
-        //         $this->exportFinished = false;
-        //         $batch = Bus::batch([
-        //             new ExportSelectedJob($results),
-        //         ])->dispatch();
-        //         $this->batchId = $batch->id;
-        //         $this->emit('BatchDispatch', [$this->batchId, $this->exporting, $this->exportFinished]);
-        //     } catch (\Exception $e) {
-        //         $this->notification([
-        //             'title'       => 'ERROR DE EXPORTACIÓN!',
-        //             'description' =>  $e->getMessage(),
-        //             'icon'        => 'error',
-        //             'timeout' => '3100'
-        //         ]);
-        //     }
-        // } else {
-        // }
     }
 }
