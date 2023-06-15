@@ -1,8 +1,7 @@
 <div>
     @foreach ($class as $clas)
         @if ($clas->medicineReserveMedicine->medicineTypeExam->id == 1)
-            ok
-            {{-- {{ $class->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name }} --}}
+            {{ $class->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name }}
         @elseif ($clas->medicineReserveMedicine->medicineTypeExam->id == 2)
             {{-- {{ $class->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name }} --}}
             ok
