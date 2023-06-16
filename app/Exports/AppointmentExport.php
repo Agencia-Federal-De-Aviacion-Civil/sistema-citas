@@ -57,7 +57,7 @@ class AppointmentExport extends DefaultValueBinder implements FromCollection, Wi
         }
         return [
             'rowNumber' => $this->rowNumber++,
-            // ($results->medicineReserveFromUser ?? null) ? $results->medicineReserveFromUser->name : 'SIN INFORMACIÓN',
+            ($results->medicineReserveMedicine ?? null) ? $results->medicineReserveFromUser->name : 'SIN INFORMACIÓN',
             // ($results->userParticipantUser ?? null) ? $results->userParticipantUser->apParental : 'SIN INFORMACIÓN',
             // ($results->userParticipantUser ?? null) ? $results->userParticipantUser->apMaternal : 'SIN INFORMACIÓN',
             // ($results->medicineReserveMedicine->medicineTypeExam ?? null) ? $results->medicineReserveMedicine->medicineTypeExam->name : 'SIN INFORMACIÓN',

@@ -6,7 +6,6 @@ use App\Events\Medicine\ExportCompleted;
 use App\Jobs\ExportSelectedJob;
 use App\Models\Catalogue\Headquarter;
 use App\Models\Medicine\MedicineReserve;
-use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -442,8 +441,10 @@ class AppointmentTable extends DataTableComponent
     {
         if ($this->getSelected()) {
             try {
-                $query = MedicineReserve::with('medicineReserveMedicine:reference_number')->get();
-                $results = $query;
+                $query = MedicineReserve::with([
+                    'medicineReserveMedicine:id,reference_number', 'medicineReserveFromUser:id,name'
+                ])->whereIn('id', $this->getSelected());
+                $results = $query->get();
                 $this->exporting = true;
                 $this->exportFinished = false;
                 $batch = Bus::batch([
