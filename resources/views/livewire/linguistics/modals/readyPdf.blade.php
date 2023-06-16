@@ -45,7 +45,7 @@
                         {{-- <a href="{{ route('download') }}" target="_blank" class="text-center w-full px-4 py-2 mt-4 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-sky-600 rounded-md sm:mt-0 sm:w-1/2 sm:mx-2 hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40">
                             Descargar Acuse
                         </a> --}}
-                        <a target="_blank" class="sm:mt-0 sm:w-1/2 sm:mx-2 bg-sky-700 w-full px-4 py-2 text-md text-center font-medium tracking-wide text-gray-700 transition-colors duration-300 transform border border-gray-200 rounded-md sm:w-1/2 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-blue-500 hover:bg-blue-100 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-40" href="{{ route('download') }}">
+                        <a target="_blank" class="sm:mt-0 sm:w-1/2 sm:mx-2 bg-sky-700 w-full px-4 py-2 text-md text-center font-medium tracking-wide text-gray-700 transition-colors duration-300 transform border border-gray-200 rounded-md sm:w-1/2 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-blue-500 hover:bg-blue-100 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-40" href="{{ route('download2') }}">
                         <button class="w-full text-md text-center text-white font-medium tracking-wide text-gray-700 transition-colors duration-300 transform rounded-md dark:text-gray-200 dark:border-gray-700">
                             Descargar Acuse
                         </button>

@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Jenssegers\Date\Date;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use PDF;
 
 
 class HomeLinguistics extends Component
@@ -116,6 +117,17 @@ class HomeLinguistics extends Component
     public function returnDashboard()
     {
         return redirect()->route('afac.home');
+    }
+    public function downloadpdf()
+    {
+        return response()->download(public_path('documents/Formatos_Cita_lingüistica.pdf'));
+    }
+    public function generatePdf()
+    {
+        $fileName =  'pruebas.pdf';
+            $pdf = PDF::loadView('livewire.linguistics.documents.medicine-initial');
+            return $pdf->download($fileName);
+        
     }
     public function messages()
     {

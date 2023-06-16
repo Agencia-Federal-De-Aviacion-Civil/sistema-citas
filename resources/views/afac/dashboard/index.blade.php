@@ -70,6 +70,37 @@
                                         </div>
                                     </div>
                                 </a>
+                                <a href="{{ route('afac.linguistics') }}">
+                                    <div
+                                        class="group bg-white h-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden transition duration-100 transform hover:scale-105 hover:cursor-pointer">
+                                        <div class="overflow-hidden bg-cover cursor-pointer lg:h-48 md:h-36 w-full object-cover object-center group"
+                                            style="background-image:url('{{ asset('images/competencia.jpg') }}')">
+                                            <div
+                                                class="flex flex-col justify-center w-full h-full px-8 py-4 transition-opacity duration-700 opacity-0 backdrop-blur-sm bg-gray-800 group-hover:opacity-70">
+                                                <h2 class="mt-4 text-2xl font-semibold text-white">NUEVA CITA</h2>
+                                                <p class="mt-2 text-lg tracking-wider text-blue-300 uppercase ">COMPETENCIA
+                                                    LINGÜISTICA
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="p-6">
+                                            <h1 class="title-font text-lg font-medium text-gray-900 mb-3">COMPETENCIA
+                                                LINGÜISTICA</h1>
+                                            <div class="flex items-center flex-wrap">
+                                                <p
+                                                    class="group-hover:animate-pulse text-sky-700 inline-flex items-center md:mb-2 lg:mb-0">
+                                                    GENERAR CITA
+                                                    <svg class="w-4 h-4 ml-2" viewBox="0 0 24 24" stroke="currentColor"
+                                                        stroke-width="2" fill="none" stroke-linecap="round"
+                                                        stroke-linejoin="round">
+                                                        <path d="M5 12h14"></path>
+                                                        <path d="M12 5l7 7-7 7"></path>
+                                                    </svg>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
                             </div>
                         </div>
                     </section>
