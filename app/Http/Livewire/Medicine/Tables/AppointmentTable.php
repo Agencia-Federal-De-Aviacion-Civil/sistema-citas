@@ -446,14 +446,15 @@ class AppointmentTable extends DataTableComponent
                     'userParticipantUser:id,apParental,apMaternal,curp,genre,birth,age,mobilePhone,officePhone,extension',
                     'userParticipantUser.participantState:id,name', 'reserveSchedule:id,time_start'
                 ])->whereIn('id', $this->getSelected());
-                $results = $query->get();
                 $this->exporting = true;
                 $this->exportFinished = false;
-                $batch = Bus::batch([
-                    new ExportSelectedJob($results),
-                ])->dispatch();
-                $this->batchId = $batch->id;
-                $this->emit('BatchDispatch', [$this->batchId, $this->exporting, $this->exportFinished]);
+                $query->chunk(100, function ($results) {
+                    $batch = Bus::batch([
+                        new ExportSelectedJob($results),
+                    ])->dispatch();
+                    $this->batchId = $batch->id;
+                    $this->emit('BatchDispatch', [$this->batchId, $this->exporting, $this->exportFinished]);
+                });
             } catch (\Exception $e) {
                 $this->notification([
                     'title'       => 'ERROR DE EXPORTACIÓN!',
