@@ -7,6 +7,7 @@ use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
+use Maatwebsite\Excel\Concerns\WithCustomQuerySize;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithStyles;
@@ -14,7 +15,7 @@ use Maatwebsite\Excel\DefaultValueBinder;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class AppointmentExport extends DefaultValueBinder implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize, WithColumnFormatting, WithStyles
+class AppointmentExport extends DefaultValueBinder implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize, WithColumnFormatting, WithStyles, WithCustomQuerySize
 {
     use Exportable;
     public $results;
@@ -27,23 +28,19 @@ class AppointmentExport extends DefaultValueBinder implements FromCollection, Wi
     {
         return $this->results;
     }
+
     public function map($results): array
     {
-        if ($results->medicineReserveMedicine->medicineTypeExam->id == 1) {
-            $nameClass = ($results->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass ?? null) ? $results->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name : 'SIN INFORMACIÓN';
-            $typeLicense = ($results->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass ?? null) ? $results->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass->name : 'SIN INFORMACIÓN';
-        } else if ($results->medicineReserveMedicine->medicineTypeExam->id == 2) {
-            $nameClass = ($results->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass ?? null) ? $results->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name : 'SIN INFORMACIÓN';
-            $typeLicense = ($results->medicineReserveMedicine->medicineRenovation[0]->renovationClasificationClass ?? null) ? $results->medicineReserveMedicine->medicineRenovation[0]->renovationClasificationClass->name : 'SIN INFORMACIÓN';
-        } else if ($results->medicineReserveMedicine->medicineTypeExam->id == 3) {
-            $nameClass = ($results->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->revaluationInitialTypeClass ?? null) ? $results->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->revaluationInitialTypeClass->name : 'SIN INFORMACIÓN';
-            if ($results->medicineReserveMedicine->medicineRevaluation[0]->RevaluationTypeExam->id == 1) {
-                $typeLicense = ($results->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->revaluationInitialClasificationClass ?? null) ? $results->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->revaluationInitialClasificationClass->name : 'SIN INFORMACIÓN';
-            } else {
-                $typeLicense = ($results->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->revaluationRenovationClasificationClass ?? null) ? $results->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->revaluationRenovationClasificationClass->name : 'SIN INFORMACIÓN';
-            }
+        if ($results->medicineReserveMedicine->type_exam_id == 1) {
+            $nameClass = 'CLASE';
+            $typeLicense = 'LICENCIA';
+        } else if ($results->medicineReserveMedicine->type_exam_id == 2) {
+            $nameClass = 'CLASE';
+            $typeLicense = 'LICENCIA';
+        } else {
+            $nameClass = 'CLASE';
+            $typeLicense = 'LICENCIA';
         }
-
         if ($results->status == 1) {
             $status = 'ASISTIO';
         } else if ($results->status == 2) {
@@ -57,13 +54,13 @@ class AppointmentExport extends DefaultValueBinder implements FromCollection, Wi
         }
         return [
             'rowNumber' => $this->rowNumber++,
-            ($results->medicineReserveFromUser ?? null) ? $results->medicineReserveFromUser->name : 'SIN INFORMACIÓN',
+            ($results->medicineReserveMedicine ?? null) ? $results->medicineReserveFromUser->name : 'SIN INFORMACIÓN',
             ($results->userParticipantUser ?? null) ? $results->userParticipantUser->apParental : 'SIN INFORMACIÓN',
             ($results->userParticipantUser ?? null) ? $results->userParticipantUser->apMaternal : 'SIN INFORMACIÓN',
             ($results->medicineReserveMedicine->medicineTypeExam ?? null) ? $results->medicineReserveMedicine->medicineTypeExam->name : 'SIN INFORMACIÓN',
             $nameClass,
             $typeLicense,
-            ($results->user->name ?? null) ? $results->user->name : 'SIN INFORMACIÓN',
+            // ($results->user->name ?? null) ? $results->user->name : 'SIN INFORMACIÓN',
             ($results->dateReserve ?? null) ? Carbon::parse($results->dateReserve)->format('d/m/Y') : 'SIN INFORMACIÓN',
             ($results->reserveSchedule ?? null) ? $results->reserveSchedule->time_start : 'SIN INFORMACIÓN',
             ($results->userParticipantUser ?? null) ? $results->userParticipantUser->curp : 'SIN INFORMACIÓN',
@@ -104,7 +101,7 @@ class AppointmentExport extends DefaultValueBinder implements FromCollection, Wi
             'LLAVE PAGO',
             'GENERO',
             'FECHA NACIMIENTO',
-            'ESTADO NACIMINETO',
+            'ESTADO NACIMIENTO',
             'EDAD',
             'CELULAR',
             'OFICINA',
@@ -128,5 +125,8 @@ class AppointmentExport extends DefaultValueBinder implements FromCollection, Wi
             ]
         ]);
     }
-
+    public function querySize(): int
+    {
+        return 1000; // Ajusta el tamaño de consulta según tus necesidades
+    }
 }
