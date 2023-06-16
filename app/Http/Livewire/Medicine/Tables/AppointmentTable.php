@@ -443,6 +443,7 @@ class AppointmentTable extends DataTableComponent
             try {
                 $query = MedicineReserve::with([
                     'medicineReserveMedicine:id,reference_number,type_exam_id', 'medicineReserveFromUser:id,name',
+                    'medicineReserveMedicine.medicineTypeExam:name',
                     'userParticipantUser:id,apParental,apMaternal,curp,genre,birth,age,mobilePhone,officePhone,extension',
                     'userParticipantUser.participantState:id,name', 'reserveSchedule:id,time_start'
                 ])->whereIn('id', $this->getSelected());
