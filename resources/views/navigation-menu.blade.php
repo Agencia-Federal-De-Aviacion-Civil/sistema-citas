@@ -14,13 +14,13 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    @can('generate.appointment')
+                    @can('user.see.navigation')
                         <x-jet-nav-link href="{{ route('afac.home') }}" :active="request()->routeIs('afac.home')">
                             {{ __('Inicio') }}
                         </x-jet-nav-link>
                     @endcan
-                    @can('see.navigation.controller.systems')
-                        <div x-cloak x-data="{ open: false }" class="py-3 z-50">
+                    @can('super_admin.see.tabs.navigation')
+                        <div x-cloak x-data="{ open: false }" class="py-3">
                             <button x-on:click="open = true"
                                 class="flex items-center bg-white focus:bg-gray-50 text-gray-700 focus:text-gray-900 rounded py-2 px-4"
                                 type="button">
@@ -31,7 +31,8 @@
                                 </svg>
                             </button>
                             <ul x-show="open" x-on:click.away="open = false"
-                                class="bg-white text-gray-700 rounded shadow-lg absolute py-2 mt-1" style="min-width:15rem">
+                                class="z-20 bg-white text-gray-700 rounded shadow-lg absolute py-2 mt-1"
+                                style="min-width:15rem">
                                 <li>
                                     <a href="{{ route('afac.medicine') }}"
                                         class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
@@ -50,26 +51,66 @@
                                         Validación de QR
                                     </a>
                                 </li>
+                                <li>
+                                    <a href="{{ route('afac.medicienMovements') }}"
+                                        class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
+                                        Historial
+                                    </a>
+                                </li>
                             </ul>
                         </div>
-                        <x-jet-nav-link href="{{ route('afac.historyRegister') }}" :active="request()->routeIs('afac.historyRegister')">
-                            {{ __('Personas registradas') }}
+                        <div x-cloak x-data="{ open: false }" class="py-3">
+                            <button x-on:click="open = true"
+                                class="flex items-center bg-white focus:bg-gray-50 text-gray-700 focus:text-gray-900 rounded py-2 px-4"
+                                type="button">
+                                <span class="mr-1 text-base">Lingüistica</span>
+                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                    style="margin-top:3px">
+                                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                                </svg>
+                            </button>
+                            <ul x-show="open" x-on:click.away="open = false"
+                                class="z-20 bg-white text-gray-700 rounded shadow-lg absolute py-2 mt-1"
+                                style="min-width:15rem">
+                                <li>
+                                    <a href="{{ route('afac.linguistics') }}"
+                                        class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
+                                        Generar cita
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
+                                        Sedes
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
+                                        Validación de QR
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('afac.linguisticsMovements') }}"
+                                        class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
+                                        Historial
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <x-jet-nav-link href="{{ route('afac.users') }}" :active="request()->routeIs('afac.users')">
+                            {{ __('Usuarios') }}
                         </x-jet-nav-link>
                     @endcan
-                    @can('see.navigation.schedule.table')
-                    <x-jet-nav-link href="{{ route('afac.appointment') }}" :active="request()->routeIs('afac.appointment')">
-                        {{ __('Citas agendadas') }}
-                    </x-jet-nav-link>
-                @endcan
-                    @can('see.navigation.medicine')
+                    @can('see.schedule.tabs')
                         <x-jet-nav-link href="{{ route('afac.appointment') }}" :active="request()->routeIs('afac.appointment')">
-                            {{ __('INICIO') }}
+                            {{ __('Citas agendadas') }}
                         </x-jet-nav-link>
+                    @endcan
+                    @can('medicine_admin.see.tabs.navigation')
                         <x-jet-nav-link href="{{ route('afac.headquarterMedicine') }}" :active="request()->routeIs('afac.headquarterMedicine')">
-                            {{ __('SEDES') }}
+                            {{ __('Administrador de Sedes') }}
                         </x-jet-nav-link>
                         <x-jet-nav-link href="{{ route('validate') }}" :active="request()->routeIs('validate')">
-                            {{ __('VALIDACIÓN DE CITAS') }}
+                            {{ __('Validación de citas') }}
                         </x-jet-nav-link>
                     @endcan
                 </div>
@@ -113,15 +154,15 @@
                                 {{ __('Cuenta') }}
                             </div>
 
-                            {{-- <x-jet-dropdown-link href="{{ route('profile.show') }}">
-                                {{ __('Profile') }}
+                            <x-jet-dropdown-link href="{{ route('profile.show') }}">
+                                {{ __('Perfil') }}
                             </x-jet-dropdown-link>
 
                             @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
                                 <x-jet-dropdown-link href="{{ route('api-tokens.index') }}">
                                     {{ __('API Tokens') }}
                                 </x-jet-dropdown-link>
-                            @endif --}}
+                            @endif
 
                             <div class="border-t border-gray-100"></div>
 
@@ -166,7 +207,7 @@
                 {{ __('Inicio') }}
             </x-jet-nav-link>
         @endcan
-        @can('see.navigation.controller.systems')
+        @can('super_admin.see.tabs.navigation')
             <div x-cloak x-data="{ open: false }" class="py-3 z-50">
                 <button x-on:click="open = true"
                     class="flex items-center bg-white focus:bg-gray-50 text-gray-700 focus:text-gray-900 rounded py-2 px-4"
@@ -202,11 +243,91 @@
                             Validación de QR
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ route('afac.medicienMovements') }}"
+                            class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
+                            Historial
+                        </a>
+                    </li>
                 </ul>
             </div>
-            <x-jet-nav-link href="{{ route('afac.historyRegister') }}">
-                {{ __('Personas Registradas') }}
+            <div x-cloak x-data="{ open: false }" class="py-3 z-50">
+                <button x-on:click="open = true"
+                    class="flex items-center bg-white focus:bg-gray-50 text-gray-700 focus:text-gray-900 rounded py-2 px-4 z-50"
+                    type="button">
+                    <span class="mr-1 text-base">Lingüistica</span>
+                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                        style="margin-top:3px">
+                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                    </svg>
+                </button>
+                <ul x-show="open" x-on:click.away="open = false"
+                    class="bg-white text-gray-700 rounded shadow-lg absolute py-2 mt-1" style="min-width:15rem">
+                    <li>
+                        <a href="{{ route('afac.linguistics') }}"
+                            class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
+                            Generar cita
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
+                            Citas agendadas
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
+                            Sedes
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
+                            Validación de QR
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('afac.linguisticsMovements') }}"
+                            class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
+                            Historial
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <x-jet-nav-link href="{{ route('afac.users') }}" :active="request()->routeIs('afac.users')">
+                {{ __('Usuarios') }}
             </x-jet-nav-link>
+        @endcan
+        @can('medicine_admin.see.tabs.navigation')
+            <div x-cloak x-data="{ open: false }" class="py-3 z-50">
+                <button x-on:click="open = true"
+                    class="flex items-center bg-white focus:bg-gray-50 text-gray-700 focus:text-gray-900 rounded py-2 px-4"
+                    type="button">
+                    <span class="mr-1 text-base">Medicina de Aviacion</span>
+                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                        style="margin-top:3px">
+                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                    </svg>
+                </button>
+                <ul x-show="open" x-on:click.away="open = false"
+                    class="bg-white text-gray-700 rounded shadow-lg absolute py-2 mt-1" style="min-width:15rem">
+                    <li>
+                        <a href="{{ route('afac.appointment') }}"
+                            class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
+                            Citas agendadas
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('afac.headquarterMedicine') }}"
+                            class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
+                            Sedes
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('validate') }}" class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
+                            Validación de QR
+                        </a>
+                    </li>
+                </ul>
+            </div>
         @endcan
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">

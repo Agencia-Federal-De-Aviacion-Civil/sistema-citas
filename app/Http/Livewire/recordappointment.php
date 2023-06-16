@@ -3,7 +3,9 @@
 namespace App\Http\Livewire;
 
 use App\Models\Medicine\MedicineReserve;
-use DeepCopy\Filter\Filter;
+use App\Models\UserParticipant;
+// use DeepCopy\Filter\Filter;
+use PowerComponents\LivewirePowerGrid\Traits\Filter;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -29,19 +31,39 @@ final class recordappointment extends PowerGridComponent
     }
     public function setUp(): array
     {
-        // $this->showCheckBox();
-        // $this->persist(['columns', 'filters']);
-        return [
-            Exportable::make('export')
-                ->striped()
-                ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
-            Header::make()
-                ->showSearchInput()
-                ->showToggleColumns(),
-            Footer::make()
-                ->showPerPage(25)
-                ->showRecordCount(),
-        ];
+        if (Auth::user()->can('super_admin.medicine_admin.see.schedule.table')) {
+            $this->showCheckBox();
+            return [
+                Exportable::make('export')
+                    ->striped()
+                    ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
+                Header::make()
+                    ->showSearchInput()
+                    ->showToggleColumns(),
+                Footer::make()
+                    ->showPerPage(10)
+                    ->showRecordCount(),
+            ];
+        } else if (Auth::user()->can('user.see.schedule.table')) {
+            return [
+                Footer::make()
+                    ->showPerPage(10)
+                    ->showRecordCount(),
+            ];
+        } else if (Auth::user()->can('headquarters.see.schedule.table')) {
+            $this->showCheckBox();
+            return [
+                Exportable::make('export')
+                    ->striped()
+                    ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
+                Header::make()
+                    ->showSearchInput()
+                    ->showToggleColumns(),
+                Footer::make()
+                    ->showPerPage(10)
+                    ->showRecordCount(),
+            ];
+        }
     }
 
     /*
@@ -59,16 +81,20 @@ final class recordappointment extends PowerGridComponent
      */
     public function datasource(): Builder
     {
-        if (Auth::user()->can('see.navigation.controller.systems')) {
+        if (Auth::user()->can('super_admin.medicine_admin.see.schedule.table')) {
             return MedicineReserve::query()->with([
                 'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
             ]);
-        } else {
+        } else if (Auth::user()->can('user.see.schedule.table')) {
             return MedicineReserve::query()->with([
                 'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
             ])->whereHas('medicineReserveMedicine', function ($q1) {
                 $q1->where('user_id', Auth::user()->id);
             });
+        } else if (Auth::user()->can('headquarters.see.schedule.table')) {
+            return MedicineReserve::query()->with([
+                'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
+            ])->where('to_user_headquarters', Auth::user()->id);
         }
     }
 
@@ -97,7 +123,14 @@ final class recordappointment extends PowerGridComponent
             'userParticipantUser' => [
                 'apParental',
                 'apMaternal',
+                'curp',
             ],
+            'user' => [
+                'name',
+            ],
+            'medicineReserveMedicine' => [
+                'dateReserve'
+            ]
 
         ];
     }
@@ -115,49 +148,200 @@ final class recordappointment extends PowerGridComponent
     */
     public function addColumns(): PowerGridEloquent
     {
-        return PowerGrid::eloquent()
-            ->addColumn('id')
-            ->addColumn('name', function (MedicineReserve $regiser) {
-                return $regiser->medicineReserveFromUser->name . ' ' . ($regiser->userParticipantUser ? $regiser->userParticipantUser->apParental : '') . ' ' . ($regiser->userParticipantUser ? $regiser->userParticipantUser->apMaternal : '');
+        if (Auth::user()->can('super_admin.medicine_admin.see.schedule.table')) {
+            return PowerGrid::eloquent()
+                ->addColumn('id')
+                ->addColumn('name', function (MedicineReserve $regiser) {
+                    return ($regiser->medicineReserveFromUser ? $regiser->medicineReserveFromUser->name : '') . ' ' . ($regiser->userParticipantUser ? $regiser->userParticipantUser->apParental : '') . ' ' . ($regiser->userParticipantUser ? $regiser->userParticipantUser->apMaternal : '');
+                    //return $regiser->medicineReserveFromUser->name;
+                })
 
-                //return $regiser->medicineReserveFromUser->name;
-            })
-            // ->addColumn('folio', function (MedicineReserve $type) {
-            //     return 'MED-' . $type->medicineReserveMedicine->id;
-            // })
-            ->addColumn('type', function (MedicineReserve $type) {
-                return $type->medicineReserveMedicine->medicineTypeExam->name;
-            })
-            ->addColumn('hours', function (MedicineReserve $type) {
-                return $type->reserveSchedule->time_start;
-            })
-            ->addColumn('class', function (MedicineReserve $class) {
-                if ($class->medicineReserveMedicine->medicineTypeExam->id == 1) {
-                    return $class->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name;
-                } else if ($class->medicineReserveMedicine->type_exam_id == 2) {
-                    return $class->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name;
-                }
-            })
-            ->addColumn('typelicens', function (MedicineReserve $class) {
-                if ($class->medicineReserveMedicine->medicineTypeExam->id == 1) {
-                    return $class->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass->name;
-                } else if ($class->medicineReserveMedicine->type_exam_id == 2) {
-                    return $class->medicineReserveMedicine->medicineRenovation[0]->renovationClasificationClass->name;
-                }
-            })
-            ->addColumn('headquarters', function (MedicineReserve $headquarters) {
-                return $headquarters->user->name;
-            })
-            ->addColumn('curp', function (MedicineReserve $regiser) {
-                return ($regiser->userParticipantUser ? $regiser->userParticipantUser->curp : '');
-            })
-            ->addColumn('reference_number', function (MedicineReserve $regiser) {
-                return $regiser->medicineReserveMedicine->reference_number;
-            })
-            ->addColumn('created_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->dateReserve)->format('d/m/Y H:i:s'))
-            ->addColumn('created_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
-        //->addColumn('updated_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'));
+                ->addColumn('folio', function (MedicineReserve $type) {
+                    return 'MED-' . $type->medicineReserveMedicine->id;
+                })
+                ->addColumn('type', function (MedicineReserve $type) {
+                    return ($type->medicineReserveMedicine->medicineTypeExam ? $type->medicineReserveMedicine->medicineTypeExam->name : '');
+                })
+                ->addColumn('hours', function (MedicineReserve $type) {
+                    return ($type->reserveSchedule ? $type->reserveSchedule->time_start : '');
+                })
+                ->addColumn('class', function (MedicineReserve $class) {
+                    if ($class->medicineReserveMedicine->medicineTypeExam->id == 1) {
+                        return ($class->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass ? $class->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name : '');
+                    } else if ($class->medicineReserveMedicine->type_exam_id == 2) {
+                        return ($class->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass ? $class->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name : '');
+                    } else if ($class->medicineReserveMedicine->type_exam_id == 3) {
+                        if($class->medicineReserveMedicine->medicineRevaluation[0]->RevaluationTypeExam->id == 1){
+                            return ($class->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->revaluationInitialTypeClass->name);
+                        }else {
+                            return ($class->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->revaluationRenovationTypeClass->name);
+                        }                        
+                    }
+                })
+                ->addColumn('typelicens', function (MedicineReserve $class) {
+                    if ($class->medicineReserveMedicine->medicineTypeExam->id == 1) {
+                        return ($class->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass ? $class->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass->name : '');
+                    } else if ($class->medicineReserveMedicine->type_exam_id == 2) {
+                        return ($class->medicineReserveMedicine->medicineRenovation[0]->renovationClasificationClass ? $class->medicineReserveMedicine->medicineRenovation[0]->renovationClasificationClass->name : '');
+                    } else if ($class->medicineReserveMedicine->type_exam_id == 3) {
+                        if($class->medicineReserveMedicine->medicineRevaluation[0]->RevaluationTypeExam->id == 1){
+                            return ($class->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->revaluationInitialClasificationClass->name);
+                        }else {
+                            return ($class->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->revaluationRenovationClasificationClass->name);
+                        }                        
+                    }
+                })
+                ->addColumn('headquarters', function (MedicineReserve $headquarters) {
+                    return ($headquarters->user ? $headquarters->user->name : '');
+                })
+                ->addColumn('curp', function (MedicineReserve $regiser) {
+                    return ($regiser->userParticipantUser ? $regiser->userParticipantUser->curp : '');
+                })
+                ->addColumn('reference_number', function (MedicineReserve $regiser) {
+                    return $regiser->medicineReserveMedicine->reference_number;
+                })
+                ->addColumn('medicine_id', function (MedicineReserve $regiser) {
+                    return $regiser->medicineReserveMedicine->id;
+                })
+                ->addColumn('document', function (MedicineReserve $document) {
+                    return '<a target="_blank" href=' . e($document->medicineReserveMedicine->medicineDocument ? 'https://afac-disk.sfo3.digitaloceanspaces.com/' .$document->medicineReserveMedicine->medicineDocument->name_document : '') . '>' . 'VER PAGO' . '</a>';
+                })
+                ->addColumn('genre', function (MedicineReserve $regiser) {
+                    return ($regiser->userParticipantUser ? $regiser->userParticipantUser->genre : '');
+                })
+                ->addColumn('birth', function (MedicineReserve $regiser) {
+                    return ($regiser->userParticipantUser ? $regiser->userParticipantUser->birth : '');
+                })
+                ->addColumn('state_id', function (MedicineReserve $regiser) {
+                    return ($regiser->userParticipantUser ? $regiser->userParticipantUser->state_id : '');
+                })
+                ->addColumn('state_id', function (MedicineReserve $regiser) {
+                    return ($regiser->userParticipantUser ? $regiser->userParticipantUser->municipal_id : '');
+                })
+                ->addColumn('age', function (MedicineReserve $regiser) {
+                    return ($regiser->userParticipantUser ? $regiser->userParticipantUser->age : '');
+                })
+                ->addColumn('domicile', function (MedicineReserve $regiser) {
+                    return ($regiser->userParticipantUser ? $regiser->userParticipantUser->street : '') . ' No.' . ($regiser->userParticipantUser ? $regiser->userParticipantUser->nInterior : '') . ' No.ext.' . ($regiser->userParticipantUser ? $regiser->userParticipantUser->nExterior : '') . ' ' . ($regiser->userParticipantUser ? $regiser->userParticipantUser->suburb : '') . ' ,' . ($regiser->userParticipantUser ? $regiser->userParticipantUser->postalCode : '') . ' ,' . ($regiser->userParticipantUser ? $regiser->userParticipantUser->delegation : '') . ' ,' . ($regiser->userParticipantUser ? $regiser->userParticipantUser->federalEntity : '');
+                })
+                ->addColumn('mobilePhone', function (MedicineReserve $regiser) {
+                    return ($regiser->userParticipantUser ? $regiser->userParticipantUser->mobilePhone : '');
+                })
+                ->addColumn('officePhone', function (MedicineReserve $regiser) {
+                    return ($regiser->userParticipantUser ? $regiser->userParticipantUser->officePhone : '');
+                })
+                ->addColumn('extension', function (MedicineReserve $regiser) {
+                    return ($regiser->userParticipantUser ? $regiser->userParticipantUser->extension : '');
+                })
 
+
+                //state_id 
+                ->addColumn('created_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->dateReserve)->format('d/m/Y H:i:s'))
+                ->addColumn('created_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
+            //->addColumn('updated_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'));
+        } else if (Auth::user()->can('user.see.schedule.table')) {
+            return PowerGrid::eloquent()
+                ->addColumn('id')
+                ->addColumn('type', function (MedicineReserve $type) {
+                    return ($type->medicineReserveMedicine->medicineTypeExam ? $type->medicineReserveMedicine->medicineTypeExam->name : '');
+                })
+                ->addColumn('hours', function (MedicineReserve $type) {
+                    return ($type->reserveSchedule ? $type->reserveSchedule->time_start : '');
+                })
+                ->addColumn('class', function (MedicineReserve $class) {
+                    if ($class->medicineReserveMedicine->medicineTypeExam->id == 1) {
+                        return ($class->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass ? $class->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name : '');
+                    } else if ($class->medicineReserveMedicine->type_exam_id == 2) {
+                        return ($class->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass ? $class->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name : '');
+                    }
+                })
+                ->addColumn('typelicens', function (MedicineReserve $class) {
+                    if ($class->medicineReserveMedicine->medicineTypeExam->id == 1) {
+                        return ($class->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass ? $class->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass->name : '');
+                    } else if ($class->medicineReserveMedicine->type_exam_id == 2) {
+                        return ($class->medicineReserveMedicine->medicineRenovation[0]->renovationClasificationClass ? $class->medicineReserveMedicine->medicineRenovation[0]->renovationClasificationClass->name : '');
+                    }
+                })
+                ->addColumn('headquarters', function (MedicineReserve $headquarters) {
+                    return ($headquarters->user ? $headquarters->user->name : '');
+                })
+                ->addColumn('reference_number', function (MedicineReserve $regiser) {
+                    return $regiser->medicineReserveMedicine->reference_number;
+                });
+        } else if (Auth::user()->can('headquarters.see.schedule.table')) {
+            return PowerGrid::eloquent()
+                ->addColumn('id')
+                ->addColumn('name', function (MedicineReserve $regiser) {
+                    return ($regiser->medicineReserveFromUser ? $regiser->medicineReserveFromUser->name : '') . ' ' . ($regiser->userParticipantUser ? $regiser->userParticipantUser->apParental : '') . ' ' . ($regiser->userParticipantUser ? $regiser->userParticipantUser->apMaternal : '');
+                    //return $regiser->medicineReserveFromUser->name;
+                })
+
+                ->addColumn('folio', function (MedicineReserve $type) {
+                    return 'MED-' . $type->medicineReserveMedicine->id;
+                })
+                ->addColumn('type', function (MedicineReserve $type) {
+                    return ($type->medicineReserveMedicine->medicineTypeExam ? $type->medicineReserveMedicine->medicineTypeExam->name : '');
+                })
+                ->addColumn('hours', function (MedicineReserve $type) {
+                    return ($type->reserveSchedule ? $type->reserveSchedule->time_start : '');
+                })
+                ->addColumn('class', function (MedicineReserve $class) {
+                    if ($class->medicineReserveMedicine->medicineTypeExam->id == 1) {
+                        return ($class->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass ? $class->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name : '');
+                    } else if ($class->medicineReserveMedicine->type_exam_id == 2) {
+                        return ($class->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass ? $class->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name : '');
+                    }
+                })
+                ->addColumn('typelicens', function (MedicineReserve $class) {
+                    if ($class->medicineReserveMedicine->medicineTypeExam->id == 1) {
+                        return ($class->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass ? $class->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass->name : '');
+                    } else if ($class->medicineReserveMedicine->type_exam_id == 2) {
+                        return ($class->medicineReserveMedicine->medicineRenovation[0]->renovationClasificationClass ? $class->medicineReserveMedicine->medicineRenovation[0]->renovationClasificationClass->name : '');
+                    }
+                })
+                ->addColumn('headquarters', function (MedicineReserve $headquarters) {
+                    return ($headquarters->user ? $headquarters->user->name : '');
+                })
+                ->addColumn('curp', function (MedicineReserve $regiser) {
+                    return ($regiser->userParticipantUser ? $regiser->userParticipantUser->curp : '');
+                })
+                ->addColumn('reference_number', function (MedicineReserve $regiser) {
+                    return $regiser->medicineReserveMedicine->reference_number;
+                })
+                ->addColumn('genre', function (MedicineReserve $regiser) {
+                    return ($regiser->userParticipantUser ? $regiser->userParticipantUser->genre : '');
+                })
+                ->addColumn('birth', function (MedicineReserve $regiser) {
+                    return ($regiser->userParticipantUser ? $regiser->userParticipantUser->birth : '');
+                })
+                ->addColumn('state_id', function (MedicineReserve $regiser) {
+                    return ($regiser->userParticipantUser ? $regiser->userParticipantUser->state_id : '');
+                })
+                ->addColumn('state_id', function (MedicineReserve $regiser) {
+                    return ($regiser->userParticipantUser ? $regiser->userParticipantUser->municipal_id : '');
+                })
+                ->addColumn('age', function (MedicineReserve $regiser) {
+                    return ($regiser->userParticipantUser ? $regiser->userParticipantUser->age : '');
+                })
+                ->addColumn('domicile', function (MedicineReserve $regiser) {
+                    return ($regiser->userParticipantUser ? $regiser->userParticipantUser->street : '') . ' No.' . ($regiser->userParticipantUser ? $regiser->userParticipantUser->nInterior : '') . ' No.ext.' . ($regiser->userParticipantUser ? $regiser->userParticipantUser->nExterior : '') . ' ' . ($regiser->userParticipantUser ? $regiser->userParticipantUser->suburb : '') . ' ,' . ($regiser->userParticipantUser ? $regiser->userParticipantUser->postalCode : '') . ' ,' . ($regiser->userParticipantUser ? $regiser->userParticipantUser->delegation : '') . ' ,' . ($regiser->userParticipantUser ? $regiser->userParticipantUser->federalEntity : '');
+                })
+                ->addColumn('mobilePhone', function (MedicineReserve $regiser) {
+                    return ($regiser->userParticipantUser ? $regiser->userParticipantUser->mobilePhone : '');
+                })
+                ->addColumn('officePhone', function (MedicineReserve $regiser) {
+                    return ($regiser->userParticipantUser ? $regiser->userParticipantUser->officePhone : '');
+                })
+                ->addColumn('extension', function (MedicineReserve $regiser) {
+                    return ($regiser->userParticipantUser ? $regiser->userParticipantUser->extension : '');
+                })
+
+
+                //state_id 
+                ->addColumn('created_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->dateReserve)->format('d/m/Y H:i:s'))
+                ->addColumn('created_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
+            //->addColumn('updated_at_formatted', fn (MedicineReserve $model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'));
+        }
     }
 
     // public function filters(): array
@@ -183,82 +367,271 @@ final class recordappointment extends PowerGridComponent
      */
     public function columns(): array
     {
-        return [
-            Column::make('ID', 'id')
-                ->makeInputRange(),
 
-            // Column::make('FOLIO', 'folio')
-            //     ->searchable(),
-            // ->sortable()
-            // ->makeInputText(),
+        if (Auth::user()->can('super_admin.medicine_admin.see.schedule.table')) {
+            return [
+                Column::make('ID', 'id')
+                    ->searchable(),
+                // Column::make('FOLIO', 'folio')
+                //     ->searchable(),
+                // ->sortable()
+                // ->makeInputText(),
 
-            Column::make('NOMBRE', 'name')
-                ->searchable()
-                ->makeInputText(),
+                Column::make('NOMBRE', 'name')
+                    ->searchable(),
+                //->makeInputText(),
 
-            // ->sortable(),
-            //->makeInputDatePicker(),
+                // ->sortable(),
+                //->makeInputDatePicker(),
 
-            Column::make('TIPO', 'type')
-                ->searchable(),
-            // ->makeInputText(),
-            // ->sortable(),
-            //->makeInputDatePicker(),
+                Column::make('TIPO', 'type')
+                    ->searchable(),
+                // ->makeInputText(),
+                // ->sortable(),
+                //->makeInputDatePicker(),
 
-            Column::make('CLASE', 'class')
-                ->searchable(),
-            // ->sortable(),
-            //->makeInputDatePicker(),
+                Column::make('CLASE', 'class')
+                    ->searchable(),
+                // ->sortable(),
+                //->makeInputDatePicker(),
 
-            Column::make('TIPO DE LICENCIA', 'typelicens')
-                ->searchable(),
-            // ->sortable(),
-            //->makeInputDatePicker(),
+                Column::make('TIPO DE LICENCIA', 'typelicens')
+                    ->searchable(),
+                // ->sortable(),
+                //->makeInputDatePicker(),
 
-            Column::make('SEDE', 'headquarters')
-                ->searchable(),
-            // ->sortable(),
-            //->makeInputDatePicker(),
+                Column::make('SEDE', 'headquarters')
+                    ->searchable(),
+                // ->sortable(),
+                //->makeInputDatePicker(),
 
-            Column::make('FECHA', 'dateReserve')
-                ->searchable(),
-            // ->sortable(),
+                Column::make('FECHA', 'dateReserve')
+                    ->searchable(),
+                // ->sortable(),
 
-            Column::make('HORA', 'hours')
-                ->searchable(),
-            // ->sortable(),
-            //->makeInputDatePicker(),
+                Column::make('HORA', 'hours')
+                    ->searchable(),
+                // ->sortable(),
+                //->makeInputDatePicker(),
 
-            Column::make('CURP', 'curp')
-                ->searchable()
-                ->sortable(),
-            //->makeInputDatePicker(),
+                Column::make('CURP', 'curp')
+                    ->searchable()
+                    ->sortable(),
+                //->makeInputDatePicker(),
+    
+                Column::make('PAGO', 'reference_number') 
+                    ->searchable()
+                    ->sortable(),
 
-            Column::make('PAGO', 'reference_number')
-                ->searchable()
-                ->sortable(),
-            // Column::make('CREADA EL', 'created_at_formatted', 'created_at')
-            //     ->searchable()
-            //     ->sortable(),
-            //->makeInputDatePicker(),
+                Column::make('VER PAGO', 'document')//16052023
+                    ->searchable()
+                    ->sortable(),
 
-            //Column::make('UPDATED AT', 'updated_at_formatted', 'updated_at')
-            //    ->searchable()
-            //    ->sortable(),
-            //->makeInputDatePicker(),
+                Column::make('GENERO', 'genre')
+                    ->searchable()
+                    ->sortable(),
 
-        ];
+                Column::make('FECHA DE NACIMIENTO', 'birth')
+                    ->searchable()
+                    ->sortable(),
+
+                Column::make('ESTADO DE NACIMIENTO', 'state_id')
+                    ->searchable()
+                    ->sortable(),
+
+                Column::make('EDAD', 'age')
+                    ->searchable()
+                    ->sortable(),
+
+                Column::make('DIRECCIÓN', 'domicile')
+                    ->sortable()
+                    ->searchable(),
+
+                Column::make('CELULAR', 'mobilePhone')
+                    ->sortable()
+                    ->searchable(),
+
+                Column::make('OFICINA', 'officePhone')
+                    ->sortable()
+                    ->searchable(),
+
+                Column::make('EXTENSIÓN', 'extension')
+                    ->sortable()
+                    ->searchable(),
+                //->makeInputText(),
+
+                //  Column::make('CREADA EL', 'created_at_formatted', 'created_at')
+                //     ->searchable()
+                //     ->sortable(),
+                //->makeInputDatePicker(),
+
+                //Column::make('UPDATED AT', 'updated_at_formatted', 'updated_at')
+                //    ->searchable()
+                //    ->sortable(),
+                //->makeInputDatePicker(),
+
+
+            ];
+        } else if (Auth::user()->can('user.see.schedule.table')) {
+            return [
+                Column::make('ID', 'id')
+                    ->searchable(),
+                Column::make('TIPO', 'type')
+                    ->searchable(),
+                // ->makeInputText(),
+                // ->sortable(),
+                //->makeInputDatePicker(),
+
+                Column::make('CLASE', 'class')
+                    ->searchable(),
+                // ->sortable(),
+                //->makeInputDatePicker(),
+
+                Column::make('TIPO DE LICENCIA', 'typelicens')
+                    ->searchable(),
+                // ->sortable(),
+                //->makeInputDatePicker(),
+
+                Column::make('SEDE', 'headquarters')
+                    ->searchable(),
+                // ->sortable(),
+                //->makeInputDatePicker(),
+
+                Column::make('FECHA', 'dateReserve')
+                    ->searchable(),
+                // ->sortable(),
+
+                Column::make('HORA', 'hours')
+                    ->searchable(),
+                // ->sortable(),
+                //->makeInputDatePicker(),
+
+                Column::make('PAGO', 'reference_number')
+                    ->searchable()
+                    ->sortable(),
+            ];
+        } else if (Auth::user()->can('headquarters.see.schedule.table')) {
+            return [
+                Column::make('ID', 'id')
+                    ->searchable(),
+
+                // Column::make('FOLIO', 'folio')
+                //     ->searchable(),
+                // ->sortable()
+                // ->makeInputText(),
+
+                Column::make('NOMBRE', 'name')
+                    ->searchable(),
+                //->makeInputText(),
+
+                // ->sortable(),
+                //->makeInputDatePicker(),
+
+                Column::make('TIPO', 'type')
+                    ->searchable(),
+                // ->makeInputText(),
+                // ->sortable(),
+                //->makeInputDatePicker(),
+
+                Column::make('CLASE', 'class')
+                    ->searchable(),
+                // ->sortable(),
+                //->makeInputDatePicker(),
+
+                Column::make('TIPO DE LICENCIA', 'typelicens')
+                    ->searchable(),
+                // ->sortable(),
+                //->makeInputDatePicker(),
+
+                Column::make('SEDE', 'headquarters')
+                    ->searchable(),
+                // ->sortable(),
+                //->makeInputDatePicker(),
+
+                Column::make('FECHA', 'dateReserve')
+                    ->searchable(),
+                // ->sortable(),
+
+                Column::make('HORA', 'hours')
+                    ->searchable(),
+                // ->sortable(),
+                //->makeInputDatePicker(),
+
+                Column::make('CURP', 'curp')
+                    ->searchable()
+                    ->sortable(),
+                //->makeInputDatePicker(),
+
+                Column::make('PAGO', 'reference_number')
+                    ->searchable()
+                    ->sortable(),
+
+                Column::make('GENERO', 'genre')
+                    ->searchable()
+                    ->sortable(),
+
+                Column::make('FECHA DE NACIMIENTO', 'birth')
+                    ->searchable()
+                    ->sortable(),
+
+                Column::make('ESTADO DE NACIMIENTO', 'state_id')
+                    ->searchable()
+                    ->sortable(),
+
+                Column::make('EDAD', 'age')
+                    ->searchable()
+                    ->sortable(),
+
+                Column::make('DIRECCIÓN', 'domicile')
+                    ->sortable()
+                    ->searchable(),
+
+                Column::make('CELULAR', 'mobilePhone')
+                    ->sortable()
+                    ->searchable(),
+
+                Column::make('OFICINA', 'officePhone')
+                    ->sortable()
+                    ->searchable(),
+
+                Column::make('EXTENSIÓN', 'extension')
+                    ->sortable()
+                    ->searchable(),
+                //->makeInputText(),
+
+                //  Column::make('CREADA EL', 'created_at_formatted', 'created_at')
+                //     ->searchable()
+                //     ->sortable(),
+                //->makeInputDatePicker(),
+
+                //Column::make('UPDATED AT', 'updated_at_formatted', 'updated_at')
+                //    ->searchable()
+                //    ->sortable(),
+                //->makeInputDatePicker(),
+
+
+            ];
+        }
     }
     public function filters(): array
     {
         return [
-            //    Filter::inputText('curp', 'curp')
-            //       ->operators(['contains', 'is', 'is_not']),
-
-
-
+            Filter::InputText('curp', 'curp')
+                ->operators(['contains', 'is', 'is_not']),
         ];
     }
+
+    // public function filters(): array
+    // {
+
+    // ->dataSource(UserParticipant::select('curp')->distinct()->get())
+    // ->optionValue('curp')
+    // ->optionLabel('curp'),           
+    //     return [
+    //        Filter::inputText('curp', 'curp'),
+    //         //   ->operators(['contains', 'is', 'is_not']),        
+    //     ];
+    // } 
     /*
     |--------------------------------------------------------------------------
     | Actions Method
@@ -277,7 +650,7 @@ final class recordappointment extends PowerGridComponent
     {
         return [
             Button::add('schedule-button-component')
-                ->bladeComponent('schedule-component', ['scheduleId' => 'id', 'status' => 'status']),
+                ->bladeComponent('schedule-component', ['scheduleId' => 'id', 'medicineId' => 'medicine_id', 'status' => 'status']),
         ];
     }
 
