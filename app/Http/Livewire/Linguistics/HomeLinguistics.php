@@ -18,9 +18,9 @@ use Livewire\WithFileUploads;
 class HomeLinguistics extends Component
 {
     use WithFileUploads;
-    public $confirmModal = false;
-    public $name_document, $dateNow,$reference_number, $pay_date, $type_exam_id, $type_license, $license_number, $red_number, $to_user_headquarters, $date_reserve;
-    public $exams, $headquartersQueries, $date, $schedules, $schedule_id;
+    public $confirmModal = false,$modal = false;
+    public $name_document, $dateNow,$reference_number, $pay_date, $type_exam_id, $type_license, $license_number, $red_number, $to_user_headquarters, $date_reserve,$dateConvertedFormatted;
+    public $exams, $headquartersQueries, $date, $schedules, $schedule_id,$linguisticReserves,$saveLinguistic,$cita;
     public function rules()
     {
         return [
@@ -40,10 +40,10 @@ class HomeLinguistics extends Component
     {
         
         $this->exams = TypeExam::all();
-        $this->headquartersQueries = Headquarter::with('headquarterUser')
-            ->where('system_id', 2)->get();
-            Date::setLocale('es');
-            $this->dateNow = Date::now()->format('l j F Y');
+        $this->headquartersQueries = Headquarter::where('system_id', 2)->get();
+        Date::setLocale('ES');
+        $this->date = Date::now()->parse();
+        $this->schedules = collect();
     }
     public function updated($propertyName)
     {
@@ -95,6 +95,27 @@ class HomeLinguistics extends Component
             'date_reserve' => $this->date_reserve,
             'schedule_id' => $this->schedule_id
         ]);
+        $cita = new LinguisticReserve();
+        //$cita->save();
+        session(['saved_linguistic_id' => $saveLinguistic->id]);
+        $this->openConfirm();
+    }
+    public function openConfirm()
+    {
+        $this->linguisticReserves = LinguisticReserve::with(['reserveLinguistic', 'reserveSchedule'])
+            ->where('linguistic_id', 2)->get();
+        $dateConverted = $this->linguisticReserves[0]->dateReserve;
+        $this->dateConvertedFormatted = Date::parse($dateConverted)->format('l j F Y');
+        $this->confirmModal = true;
+    }
+    public function openModalPdf()
+    {
+        $this->confirmModal = false;
+        $this->modal = true;
+    }
+    public function returnDashboard()
+    {
+        return redirect()->route('afac.home');
     }
     public function messages()
     {
