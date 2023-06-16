@@ -442,7 +442,7 @@ class AppointmentTable extends DataTableComponent
     {
         if ($this->getSelected()) {
             try {
-                $query = User::all();
+                $query = MedicineReserve::all();
                 $results = $query;
                 $this->exporting = true;
                 $this->exportFinished = false;
