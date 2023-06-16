@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire\Users\Modals;
 
+use App\Models\Catalogue\Municipal;
+use App\Models\Catalogue\State;
 use App\Models\User;
 use App\Models\UserParticipant;
 use Illuminate\Support\Facades\Hash;
@@ -16,7 +18,7 @@ class ModalNew extends ModalComponent
     use Actions;
     use WithFileUploads;
     public $roles, $modal, $id_save, $id_update, $name, $email, $apParental, $apMaternal, $state_id, $municipal_id, $password, $passwordConfirmation, $privileges, $privilegesId, $title,
-        $genre, $birth, $age, $street, $nInterior, $nExterior, $suburb, $postalCode, $federalEntity, $delegation, $mobilePhone, $officePhone, $extension, $curp;
+        $genre, $birth, $age, $street, $nInterior, $nExterior, $suburb, $postalCode, $federalEntity, $delegation, $mobilePhone, $officePhone, $extension, $curp, $states, $municipals;
     public function rules()
     {
         $rules =  [
@@ -28,7 +30,7 @@ class ModalNew extends ModalComponent
             'email' => ['required', 'email', Rule::unique('users')->ignore($this->privilegesId)],
             // 'password' => 'required|min:6|same:passwordConfirmation'
         ];
-        $rules['password'] = $this->privilegesId ? 'min:6|same:passwordConfirmation' : 'required|min:6|same:passwordConfirmation';
+        $rules['password'] = $this->privilegesId ? 'same:passwordConfirmation' : 'required|min:6|same:passwordConfirmation';
         return $rules;
     }
     public function mount($privilegesId)
@@ -36,12 +38,21 @@ class ModalNew extends ModalComponent
         $this->privilegesId = $privilegesId;
         $this->valores($privilegesId);
         $this->roles = Role::all()->where('id', '<>', 5);
+        $this->states = State::all();
+        $this->municipals = collect();
     }
     public function render()
     {
         return view('livewire.users.modals.modal-new');
     }
-
+    public function updatedStateId($id)
+    {
+        $this->municipals = Municipal::with('municipalState')->where('state_id', $id)->get();
+    }
+    public static function modalMaxWidth(): string
+    {
+        return '4xl';
+    }
     public function clean()
     {
         $this->reset(['name', 'email', 'password', 'apParental', 'apMaternal']);
