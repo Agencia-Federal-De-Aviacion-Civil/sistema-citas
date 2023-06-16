@@ -7,6 +7,7 @@ use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
+use Maatwebsite\Excel\Concerns\WithCustomQuerySize;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithStyles;
@@ -14,7 +15,7 @@ use Maatwebsite\Excel\DefaultValueBinder;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class AppointmentExport extends DefaultValueBinder implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize, WithColumnFormatting, WithStyles
+class AppointmentExport extends DefaultValueBinder implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize, WithColumnFormatting, WithStyles, WithCustomQuerySize
 {
     use Exportable;
     public $results;
@@ -27,6 +28,7 @@ class AppointmentExport extends DefaultValueBinder implements FromCollection, Wi
     {
         return $this->results;
     }
+
     public function map($results): array
     {
         // if ($results->medicineReserveMedicine->medicineTypeExam->id == 1) {
@@ -128,5 +130,8 @@ class AppointmentExport extends DefaultValueBinder implements FromCollection, Wi
             ]
         ]);
     }
-
+    public function querySize(): int
+    {
+        return 1000; // Ajusta el tamaño de consulta según tus necesidades
+    }
 }
