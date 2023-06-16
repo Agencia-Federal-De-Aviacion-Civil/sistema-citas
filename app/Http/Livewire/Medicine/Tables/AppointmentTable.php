@@ -448,7 +448,7 @@ class AppointmentTable extends DataTableComponent
                 ])->whereIn('id', $this->getSelected());
                 $this->exporting = true;
                 $this->exportFinished = false;
-                $query->chunk(100, function ($results) {
+                $query->chunkById(500, function ($results) {
                     $batch = Bus::batch([
                         new ExportSelectedJob($results),
                     ])->dispatch();
