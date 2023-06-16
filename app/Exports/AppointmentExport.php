@@ -65,7 +65,7 @@ class AppointmentExport extends DefaultValueBinder implements FromCollection, Wi
             // ($results->medicineReserveMedicine->medicineTypeExam ?? null) ? $results->medicineReserveMedicine->medicineTypeExam->name : 'SIN INFORMACIÓN',
             // $nameClass,
             // $typeLicense,
-            // ($results->user->name ?? null) ? $results->user->name : 'SIN INFORMACIÓN',
+            ($results->user->name ?? null) ? $results->user->name : 'SIN INFORMACIÓN',
             ($results->dateReserve ?? null) ? Carbon::parse($results->dateReserve)->format('d/m/Y') : 'SIN INFORMACIÓN',
             ($results->reserveSchedule ?? null) ? $results->reserveSchedule->time_start : 'SIN INFORMACIÓN',
             ($results->userParticipantUser ?? null) ? $results->userParticipantUser->curp : 'SIN INFORMACIÓN',
@@ -132,6 +132,6 @@ class AppointmentExport extends DefaultValueBinder implements FromCollection, Wi
     }
     public function querySize(): int
     {
-        return 1000; // Ajusta el tamaño de consulta según tus necesidades
+        return 1500; // Ajusta el tamaño de consulta según tus necesidades
     }
 }
