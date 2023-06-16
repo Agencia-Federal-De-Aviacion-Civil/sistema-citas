@@ -65,7 +65,7 @@
                                     </svg>
                                     <p class="text-lg title-font font-normal">Folio:
                                     <p class="text-xl text-sky-800 font-semibold">
-                                        LIN-0001
+                                        LINGÜISTICA-{{ $linguisticReserves[0]->id }}
                                     </p>
                                     </p>
                                 </div>
@@ -81,24 +81,9 @@
                                             <path stroke-linecap="round" stroke-linejoin="round"
                                                 d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
-                                        <p class="text-lg title-font font-normal">Tipo de examen:
+                                        <p class="text-lg title-font font-normal">Tipo de Evaluación:
                                         <p class="text-xl font-semibold">
-                                            {{-- {{ $medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->name }} --}}
-                                        </p>
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="sm:w-full w-full">
-                                    <div class="rounded flex p-0 h-full items-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            stroke-width="1.5" stroke="currentColor"
-                                            class="text-sky-700 w-6 h-6 flex-shrink-0 mr-2">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                        </svg>
-                                        <p class="text-lg title-font font-normal">Tipo de clase:
-                                        <p class="text-xl font-semibold">
-                                            {{-- {{ $medicineReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name }} --}}
+                                            {{ $linguisticReserves[0]->reserveLinguistic->linguisticTypeExam->name }}
                                         </p>
                                         </p>
                                     </div>
@@ -116,19 +101,7 @@
                                     </svg>
                                     <p class="text-lg title-font font-normal">Tipo de Licencia:
                                     <p class="text-lg font-semibold">
-                                        {{-- @foreach ($medicineReserves as $medicineReserve)
-                                            @if ($medicineReserve->medicineReserveMedicine->medicineInitial[0]->medicine_question_id == 1)
-                                                {{ $medicineReserve->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass->name }}
-                                            @else
-                                                @foreach ($medicineReserve->medicineReserveMedicine->medicineInitial as $medicineEach)
-                                                    <ul>
-                                                        <li>
-                                                            {{ $medicineEach->medicineInitialClasificationClass->name }}
-                                                        </li>
-                                                    </ul>
-                                                @endforeach
-                                            @endif
-                                        @endforeach --}}
+                                        
                                     </p>
                                     </p>
                                 </div>
@@ -145,7 +118,7 @@
                                     </svg>
                                     <p class="text-lg title-font font-normal">Referencia de pago:
                                     <p class="text-lg font-semibold">
-                                        {{-- {{ $medicineReserves[0]->medicineReserveMedicine->reference_number }} --}}
+                                        {{ $linguisticReserves[0]->reserveLinguistic->reference_number }}
                                     </p>
                                     </p>
                                 </div>
@@ -164,26 +137,12 @@
 
                                         <p class="text-lg title-font font-normal">Fecha y Hora:
                                         <p class="text-xl font-semibold">
-                                            {{-- {{ mb_strtoupper($dateConvertedFormatted) }} A LAS --}}
-                                            {{-- {{ $medicineReserves[0]->reserveSchedule->time_start }} --}}
+                                            {{ mb_strtoupper($dateConvertedFormatted) }} A LAS
+                                            {{ $linguisticReserves[0]->reserveSchedule->time_start }}
                                         </p>
                                         </p>
                                     </div>
                                 </div>
-                                {{-- <div class="sm:w-full w-full">
-                                <div class="rounded flex p-0 h-full items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke-width="1.5" stroke="currentColor"
-                                        class="text-sky-700 w-6 h-6 flex-shrink-0 mr-2">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                    <p class="text-lg title-font font-normal">hora:
-                                    <p class="text-xl font-semibold">
-                                    </p>
-                                    </p>
-                                </div>
-                            </div> --}}
                             </div>
                         </div>
                         <div class="py-8 flex flex-wrap sm:mx-auto sm:-mb-8 -mx-2">
@@ -201,7 +160,7 @@
 
                                         <p class="text-lg title-font font-normal">Sede:
                                         <p class="text-lg font-semibold">
-                                            {{-- {{ $medicineReserves[0]->user->name }} --}}
+                                            {{ $linguisticReserves[0]->user->name }}
                                         </p>
                                         </p>
                                     </div>
@@ -215,10 +174,10 @@
                                 <div class="sm:w-full w-full">
                                     <div class="rounded flex p-0 h-full items-center">
                                         <p class="text-lg title-font font-normal">
-                                            {{-- {{ $medicineReserves[0]->user->userHeadquarter[0]->direction }}"
-                                            <a href="{{ $medicineReserves[0]->user->userHeadquarter[0]->url }}"
+                                            {{ $linguisticReserves[0]->user->userHeadquarter[0]->direction }}"
+                                            <a href="{{ $linguisticReserves[0]->user->userHeadquarter[0]->url }}"
                                                 target="_blank" class="text-lg font-semibold text-sky-600">Consultar
-                                                mapa</a> --}}
+                                                mapa</a>
                                         </p>
                                     </div>
                                 </div>

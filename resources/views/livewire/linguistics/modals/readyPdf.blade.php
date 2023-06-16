@@ -15,11 +15,6 @@
                     <div class="p-3 text-center">
                         <div
                             class="animate-pulse flex-shrink-0 w-24 h-24 bg-green-100 text-green-500 rounded-full inline-flex items-center justify-center">
-                            {{-- <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                stroke-width="1.5" stroke="currentColor" class="w-12 h-12">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg> --}}
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor" class="w-12 h-12">
                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -45,7 +40,7 @@
                         {{-- <a href="{{ route('download') }}" target="_blank" class="text-center w-full px-4 py-2 mt-4 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-sky-600 rounded-md sm:mt-0 sm:w-1/2 sm:mx-2 hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40">
                             Descargar Acuse
                         </a> --}}
-                        <a target="_blank" class="sm:mt-0 sm:w-1/2 sm:mx-2 bg-sky-700 w-full px-4 py-2 text-md text-center font-medium tracking-wide text-gray-700 transition-colors duration-300 transform border border-gray-200 rounded-md sm:w-1/2 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-blue-500 hover:bg-blue-100 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-40" href="{{ route('download2') }}">
+                        <a target="_blank" class="sm:mt-0 w-full sm:mx-2 bg-sky-700 w-full px-4 py-2 text-md text-center font-medium tracking-wide text-gray-700 transition-colors duration-300 transform border border-gray-200 rounded-md dark:text-gray-200 dark:border-gray-700 dark:hover:bg-blue-500 hover:bg-blue-500 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-40" href="{{ route('download2') }}">
                         <button class="w-full text-md text-center text-white font-medium tracking-wide text-gray-700 transition-colors duration-300 transform rounded-md dark:text-gray-200 dark:border-gray-700">
                             Descargar Acuse
                         </button>

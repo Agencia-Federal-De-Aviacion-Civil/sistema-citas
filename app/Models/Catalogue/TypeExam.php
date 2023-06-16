@@ -3,6 +3,7 @@
 namespace App\Models\Catalogue;
 
 use App\Models\Medicine\Medicine;
+use App\Models\Linguistic\Linguistic;
 use App\Models\Medicine\MedicineRevaluation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -18,6 +19,10 @@ class TypeExam extends Model
     public function typeExamMedicine()
     {
         return $this->hasMany(Medicine::class);
+    }
+    public function typeExamLinguistic()
+    {
+        return $this->hasMany(Linguistic::class);
     }
     public function typeExamRevaluation()
     {

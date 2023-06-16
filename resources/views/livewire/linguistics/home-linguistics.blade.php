@@ -31,7 +31,7 @@
         </div>
     </div>
     <div class="py-12">
-        <div x-data="{
+        <div x-cloak x-data="{
             licensenumber: @entangle('license_number'),
             reservedate: @entangle('date_reserve'),
             fileName: '',
@@ -39,6 +39,26 @@
             {{-- step's --}}
             <div class="container mx-auto px-4 py-4 bg-white shadow-xl sm:rounded-lg">
                 <div class="mt-12 max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    <div class="bg-blue-50 border border-blue-200 rounded-md p-4" role="alert">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <svg class="h-4 w-4 text-blue-600 mt-1" xmlns="http://www.w3.org/2000/svg"
+                                    width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                    <path
+                                        d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
+                                </svg>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-gray-800 font-semibold">
+                                    Verifique la información
+                                </h3>
+                                <div class="mt-2 text-sm text-gray-600">
+                                    Por favor verifique la información antes de realizar su cita ya que no podra hacer ninguna modificación una vezr relizada
+                                </div>
+                            </div>
+            
+                        </div>
+                    </div>
                     <section class="text-gray-600 body-font">
                         <div class="container md:px-2 lg:px-5 py-0 mx-auto flex flex-wrap">
                             <div class="flex flex-wrap w-full">
