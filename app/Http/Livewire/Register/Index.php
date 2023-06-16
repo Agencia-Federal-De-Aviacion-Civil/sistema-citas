@@ -8,9 +8,11 @@ use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use WireUi\Traits\Actions;
 
 class Index extends Component
 {
+    use Actions;
     public function rules()
     {
         return [
@@ -32,7 +34,7 @@ class Index extends Component
             'mobilePhone' => 'required|max:10',
             'officePhone' => 'max:10',
             'extension' => '',
-            'curp' => 'required|unique:user_participants',
+            'curp' => 'required|unique:user_participants|max:18|min:18',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6|same:passwordConfirmation'
         ];
@@ -71,8 +73,7 @@ class Index extends Component
     public function register()
     {
         $this->validate();
-        $user = User::updateOrCreate(
-            ['id' => $this->id_register],
+        $user = User::create(
             [
                 'name' => strtoupper($this->name),
                 'email' => $this->email,
@@ -100,7 +101,7 @@ class Index extends Component
             'extension' => $this->extension,
             'curp' => $this->curp,
         ]);
-        Auth::login($user);
+        auth()->login($user);
         return redirect()->route('afac.home');
     }
     public function messages()
@@ -124,6 +125,8 @@ class Index extends Component
             'extension.required' => 'Campo obligatorio',
             'curp.required' => 'Campo obligatorio',
             'curp.unique' => 'El curp ingresado ya se ha registrado',
+            'curp.max' => 'Máximo 18 caracteres',
+            'curp.min' => 'Mínimo 18 caracteres',
             'email.required' => 'Campo obligatorio',
             'email.email' => 'No valido',
             'email.unique' => 'El correo electrónico registrado ya existe',

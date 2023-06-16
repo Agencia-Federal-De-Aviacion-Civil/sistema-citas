@@ -18,4 +18,8 @@ class MedicineQuestion extends Model
     {
         return $this->hasMany(MedicineInitial::class);
     }
+    public function questionRevaluationInitial()
+    {
+        return $this->hasMany(MedicineRevaluationInitial::class);
+    }
 }

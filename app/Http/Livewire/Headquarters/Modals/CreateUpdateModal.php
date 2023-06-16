@@ -5,6 +5,8 @@ namespace App\Http\Livewire\Headquarters\Modals;
 use App\Models\Catalogue\Headquarter;
 use App\Models\System;
 use App\Models\User;
+use App\Models\Medicine\medicine_history_movements;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
@@ -14,17 +16,20 @@ use WireUi\Traits\Actions;
 class CreateUpdateModal extends ModalComponent
 {
     use Actions;
-    public $id_user, $id_edit, $userId, $id_headquarter, $name, $direction, $passwordConfirmation, $password, $email, $system_id, $url;
+    public $id_user, $id_edit, $userId, $id_headquarter, $name, $direction, $passwordConfirmation, $password, $email, $system_id, $url, $status;
     public $sedes;
     public function rules()
     {
         $rules = [
-            'system_id' => 'required',
             'name' => 'required',
             'email' => ['required', 'email', Rule::unique('users')->ignore($this->id_user)],
             'direction' => 'required',
-            'url' => 'required|url'
+            'url' => 'required|url',
+            'status' => 'required',
         ];
+        if (Auth::user()->hasRole('super_admin')) {
+            $rules['system_id'] = 'required';
+        }
         $rules['password'] = $this->id_user ? '' : 'required|min:6|same:passwordConfirmation';
         return $rules;
     }
@@ -37,6 +42,8 @@ class CreateUpdateModal extends ModalComponent
             $this->direction = $this->sedes[0]->direction;
             $this->email = $this->sedes[0]->headquarterUser->email;
             $this->url = $this->sedes[0]->url;
+            $this->system_id = $this->sedes[0]->system_id;
+            $this->status = $this->sedes[0]->status;
             $this->id_user = $userId;
             $this->id_headquarter = $this->sedes[0]->id;
         } else {
@@ -55,10 +62,19 @@ class CreateUpdateModal extends ModalComponent
     }
     public function clean()
     {
-        $this->reset(['name', 'email', 'password', 'system_id', 'direction', 'url']);
+        $this->reset(['name', 'email', 'password', 'system_id', 'direction', 'url', 'status']);
+    }
+    public static function closeModalOnEscape(): bool
+    {
+        return false;
+    }
+    public static function closeModalOnClickAway(): bool
+    {
+        return false;
     }
     public function save()
     {
+        $accion = "ACTUALIZA SEDE";
         $this->validate();
         $userData = [
             'name' => $this->name,
@@ -66,20 +82,43 @@ class CreateUpdateModal extends ModalComponent
         ];
         if (!$this->id_user) {
             $userData['password'] = Hash::make($this->password);
+            $accion = "CREA NUEVA SEDE";
         }
         $saveHeadrquearter = User::updateOrCreate(
             ['id' => $this->id_user],
             $userData
         )->assignRole('headquarters');
-        $saveHeadrquearter = Headquarter::updateOrCreate(
-            ['id' => $this->id_headquarter],
-            [
-                'user_id' => $saveHeadrquearter->id,
-                'system_id' => $this->system_id,
-                'direction' => $this->direction,
-                'url' => $this->url
-            ]
-        );
+        if (Auth::user()->hasRole('super_admin')) {
+            $saveHeadrquearter = Headquarter::updateOrCreate(
+                ['id' => $this->id_headquarter],
+                [
+                    'user_id' => $saveHeadrquearter->id,
+                    'system_id' => $this->system_id,
+                    'direction' => $this->direction,
+                    'url' => $this->url,
+                    'status' => $this->status
+                ]
+            );
+        } else {
+            $saveHeadrquearter = Headquarter::updateOrCreate(
+                ['id' => $this->id_headquarter],
+                [
+                    'user_id' => $saveHeadrquearter->id,
+                    'system_id' => 1,
+                    'direction' => $this->direction,
+                    'url' => $this->url,
+                    'status' => $this->status
+                ]
+            );
+        }
+
+        //Historial de guardar y editar Sedes
+        medicine_history_movements::create([
+            'user_id' => Auth::user()->id,
+            'action' => $accion,
+            'process' => $this->name . ' ' . ' DIRECCIÓN:' . $this->direction . ' URL:' . $this->url
+        ]);
+
         $this->emit('saveHeadquarter');
         $this->clean();
         $this->closeModal();
@@ -103,6 +142,7 @@ class CreateUpdateModal extends ModalComponent
             'direction.required' => 'Campo obligatorio',
             'url.required' => 'Campo obligatorio',
             'url.url' => 'Dirección no valida',
+            'status.required' => 'Campo obligatorio',
         ];
     }
 }

@@ -1,4 +1,5 @@
 <div>
+    <x-dialog z-index="z-50" blur="md" align="center" />
     <div class="relative">
         <section class="min-h-screen bg-cover " style="background-image: url('{{ asset('images/citas_internet.jpg') }}')">
             <div class="flex flex-col min-h-screen bg-black/50">
@@ -104,7 +105,7 @@
                                     <div class="relative mb-6 w-full group">
                                         {{-- <x-inputs.maskable class="uppercase" wire:model.defer="curp"
                                             mask="AAAA######AAAAAA##" label="CURP" placeholder="INGRESE..." /> --}}
-                                            <x-input class="uppercase" wire:model.defer="curp"
+                                            <x-input class="uppercase" wire:model.lazy="curp"
                                             label="CURP" placeholder="INGRESE..." />
                                         {{-- <input type="text" name="floating_curp" id="floating_curp"
                                             wire:model.lazy="curp"

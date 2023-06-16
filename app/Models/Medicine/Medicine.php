@@ -36,4 +36,17 @@ class Medicine extends Model
     {
         return $this->hasMany(MedicineRenovation::class);
     }
+    public function medicineRevaluation()
+    {
+        return $this->hasMany(MedicineRevaluation::class);
+    }
+    public function medicineInitialExc()
+    {
+        return $this->hasOne(MedicineInitial::class);
+    }
+    public function medicineRenovationExc()
+    {
+        return $this->hasOne(MedicineRenovation::class);
+    }
+
 }

@@ -10,6 +10,8 @@ namespace App\Models;
 use App\Models\Catalogue\Headquarter;
 use App\Models\Catalogue\Schedule;
 use App\Models\Medicine\Medicine;
+use App\Models\Medicine\medicine_history_movements;
+use App\Models\Medicine\MedicineDisabledDays;
 use App\Models\Medicine\MedicineReserve;
 use App\Models\Medicine\MedicineSchedule;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -20,8 +22,10 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use App\Notifications\MyResetPassword;
+use App\Notifications\MyVerifyEmail;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens;
     use HasFactory;
@@ -37,24 +41,6 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
-        'apParental',
-        'apMaternal',
-        'genre',
-        'birth',
-        'state_id',
-        'municipal_id',
-        'age',
-        'street',
-        'nInterior',
-        'nExterior',
-        'suburb',
-        'postalCode',
-        'federalEntity',
-        'delegation',
-        'mobilePhone',
-        'officePhone',
-        'extension',
-        'curp',
         'email',
         'password'
     ];
@@ -112,8 +98,23 @@ class User extends Authenticatable
     {
         return $this->hasMany(MedicineSchedule::class);
     }
-    public function userSchedule()
+    public function userDisabledDays()
     {
-        return $this->hasMany(Schedule::class);
+        return $this->hasMany(MedicineDisabledDays::class, 'user_headquarters_id');
+    }
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new MyResetPassword($token));
+    }
+    public function SendEmailVerificationNotification()
+    {
+        $this->notify(new MyVerifyEmail);
+    }
+    public function userHistory(){
+        return $this->hasMany(medicine_history_movements::class);
+    }
+    public function UserPart()
+    {
+        return $this->hasOne(UserParticipant::class);
     }
 }
