@@ -132,6 +132,6 @@ class AppointmentExport extends DefaultValueBinder implements FromCollection, Wi
     }
     public function querySize(): int
     {
-        return 1500; // Ajusta el tamaño de consulta según tus necesidades
+        return 1000; // Ajusta el tamaño de consulta según tus necesidades
     }
 }
