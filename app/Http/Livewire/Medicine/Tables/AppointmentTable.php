@@ -444,7 +444,7 @@ class AppointmentTable extends DataTableComponent
                 $query = MedicineReserve::with([
                     'medicineReserveMedicine:id,reference_number', 'medicineReserveFromUser:id,name',
                     'userParticipantUser:id,apParental,apMaternal,curp,genre,birth,age,mobilePhone,officePhone,extension',
-                    'userParticipantUser.participantState:id,name', 'reserveSchedule:id,time_start','user:id,name'
+                    'userParticipantUser.participantState:id,name', 'reserveSchedule:id,time_start'
                 ])->whereIn('id', $this->getSelected());
                 $results = $query->get();
                 $this->exporting = true;
