@@ -93,24 +93,19 @@
             <tr>
                 <td>NOMBRE:</td>
                 <td>
-                    
+                    {{ ($linguisticReserves[0]->reserveLinguistic->linguisticUser->name ?? 'SIN INFORMACIÓN') . ' ' . $linguisticReserves[0]->reserveLinguistic->linguisticUser->UserParticipant->pluck('apParental')->first() . ' ' . $linguisticReserves[0]->reserveLinguistic->linguisticUser->UserParticipant->pluck('apMaternal')->first() }}
                 </td>
             </tr>
             <tr>
                 <td>CURP:</td>
                 <td>
+                    {{ ($linguisticReserves[0]->reserveLinguistic->linguisticUser->userParticipant->pluck('curp')->first() ?? 'SIN INFORMACIÓN') }}
                 </td>
             </tr>
             <tr>
-                <td>TIPO DE EXAMEN:</td>
+                <td>TIPO DE EVALUACIÓN:</td>
                 <td>
-                    
-                </td>
-            </tr>
-            <tr>
-                <td>TIPO DE CLASE:</td>
-                <td>
-                   
+                    {{ $linguisticReserves[0]->reserveLinguistic->linguisticTypeExam->name }}
                 </td>
             </tr>
             <tr>
@@ -126,26 +121,29 @@
                 <td colspan="12">NO. DE CITA:</td>
             </tr> --}}
             <tr>
-                <td>UNIDAD MÉDICA:</td>
+                <td>LUGAR:</td>
                 <td>
+                    {{ $linguisticReserves[0]->user->name }}
                 </td>
             </tr>
             <tr>
                 <td>DIRECCIÓN SEDE:</td>
                 <td>
+                    {{ $linguisticReserves[0]->user->userHeadquarter[0]->direction }}
                 </td>
             </tr>
             <tr>
                 <td>FECHA</td>
+                {{ mb_strtoupper($dateConvertedFormatted) }}
                 <td>
             </tr>
             <tr>
                 <td>HORA</td>
-                <td></td>
+                <td>{{ $linguisticReserves[0]->reserveSchedule->time_start }}</td>
             </tr>
             <tr>
                 <td>LLAVE DE PAGO</td>
-                <td></td>
+                <td>{{ $linguisticReserves[0]->reserveLinguistic->reference_number }}</td>
             </tr>
         </table>
         {{-- <div class="codigoqr">

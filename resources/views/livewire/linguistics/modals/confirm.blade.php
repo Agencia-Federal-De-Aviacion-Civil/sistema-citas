@@ -174,7 +174,7 @@
                                 <div class="sm:w-full w-full">
                                     <div class="rounded flex p-0 h-full items-center">
                                         <p class="text-lg title-font font-normal">
-                                            {{ $linguisticReserves[0]->user->userHeadquarter[0]->direction }}"
+                                            {{ $linguisticReserves[0]->user->userHeadquarter[0]->direction }}
                                             <a href="{{ $linguisticReserves[0]->user->userHeadquarter[0]->url }}"
                                                 target="_blank" class="text-lg font-semibold text-sky-600">Consultar
                                                 mapa</a>
