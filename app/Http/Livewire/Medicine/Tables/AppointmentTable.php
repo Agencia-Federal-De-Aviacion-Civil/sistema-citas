@@ -424,7 +424,7 @@ class AppointmentTable extends DataTableComponent
                         $query->where('genre', $value);
                     }),
 
-                    TextFilter::make('ID CITA')
+                TextFilter::make('ID CITA')
                     ->config([
                         'placeholder' => 'Buscar cita',
                     ])
@@ -442,7 +442,10 @@ class AppointmentTable extends DataTableComponent
         if ($this->getSelected()) {
             try {
                 $query = MedicineReserve::with([
-                    'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
+                    'medicineReserveMedicine:id,reference_number,type_exam_id', 'medicineReserveFromUser:id,name',
+                    'medicineReserveMedicine.medicineTypeExam:name','user:id,name',
+                    'userParticipantUser:id,apParental,apMaternal,curp,genre,birth,age,mobilePhone,officePhone,extension',
+                    'userParticipantUser.participantState:id,name', 'reserveSchedule:id,time_start'
                 ])->whereIn('id', $this->getSelected());
                 $results = $query->get();
                 $this->exporting = true;

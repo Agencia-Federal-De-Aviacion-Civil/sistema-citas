@@ -2,12 +2,14 @@
 
 namespace App\Http\Livewire\Medicine\Tables;
 
+use App\Exports\UserExport;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Medicine\MedicineReserve;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Maatwebsite\Excel\Facades\Excel;
 use WireUi\Traits\Actions;
 
 class UserRolesTable extends DataTableComponent
@@ -164,5 +166,14 @@ class UserRolesTable extends DataTableComponent
             ->whereHas('roles', function ($q1) {
                 $q1->where('roles.id', '<>', 5);
             });
+    }
+    public function exportSelected(){
+
+if($this->getSelected()){
+
+    $result = User::whereIn('id',$this->getSelected())->get();
+
+    return Excel::download(new UserExport($result),'useroles.xlsx');
+}
     }
 }
