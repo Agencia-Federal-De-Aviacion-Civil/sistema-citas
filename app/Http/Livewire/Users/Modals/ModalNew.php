@@ -18,7 +18,7 @@ class ModalNew extends ModalComponent
     use Actions;
     use WithFileUploads;
     public $roles, $modal, $id_save, $id_update, $name, $email, $apParental, $apMaternal, $state_id, $municipal_id, $password, $passwordConfirmation, $privileges, $privilegesId, $title,
-        $genre, $birth, $age, $street, $nInterior, $nExterior, $suburb, $postalCode, $federalEntity, $delegation, $mobilePhone, $officePhone, $extension, $curp, $states, $municipals,$municipio,$select=0;
+        $genre, $birth, $age, $street, $nInterior, $nExterior, $suburb, $postalCode, $federalEntity, $delegation, $mobilePhone, $officePhone, $extension, $curp, $states, $municipals,$municipio,$select;
     public function rules()
     {
         $rules =  [
@@ -47,7 +47,7 @@ class ModalNew extends ModalComponent
     }
     public function updatedStateId($id)
     {
-        $this->select = 1;
+        $this->select = 0;
         $this->municipals = Municipal::with('municipalState')->where('state_id', $id)->get();
     }
     public static function modalMaxWidth(): string
