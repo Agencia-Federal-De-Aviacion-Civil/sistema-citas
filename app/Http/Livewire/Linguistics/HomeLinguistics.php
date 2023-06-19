@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Linguistics;
 use App\Models\Catalogue\Headquarter;
 use App\Models\Catalogue\Schedule;
 use App\Models\Catalogue\TypeExam;
+use App\Models\Catalogue\TypeLicense;
 use App\Models\Linguistic\Linguistic;
 use App\Models\Linguistic\LinguisticReserve;
 use App\Models\Document;
@@ -22,13 +23,14 @@ class HomeLinguistics extends Component
     use WithFileUploads;
     public $confirmModal = false,$modal = false;
     public $name_document, $dateNow,$reference_number, $pay_date, $type_exam_id, $type_license, $license_number, $red_number, $to_user_headquarters, $date_reserve,$dateConvertedFormatted;
-    public $exams, $headquartersQueries, $date, $schedules, $schedule_id,$linguisticReserves,$saveLinguistic,$cita;
+    public $exams,$licens, $headquartersQueries, $date, $schedules, $schedule_id,$linguisticReserves,$saveLinguistic,$cita;
     public function mount()
     {
 
         Date::setLocale('es');
         $this->dateNow = Date::now()->format('l j F Y');
         $this->exams = TypeExam::all();
+        $this->licens = TypeLicense::all();
         $this->headquartersQueries = Headquarter::where('system_id', 2)->where('status', false)->get();
         $this->schedules = collect();
 
@@ -159,13 +161,13 @@ class HomeLinguistics extends Component
         $savedLinguisticId = session('saved_linguistic_id');
         $linguisticReserves = LinguisticReserve::with(['reserveLinguistic', 'reserveSchedule','user'])
             ->where('linguistic_id', $savedLinguisticId)->get();
-        $linguisticId = $linguisticReserves[0]->linguistic_id;
+        $linguisticId = $linguisticReserves[0]->id;
         $dateAppointment = $linguisticReserves[0]->date_reserve;
         $dateConvertedFormatted = Date::parse($dateAppointment)->format('l j F Y');
         $curp = $linguisticReserves[0]->reserveLinguistic->linguisticUser->userParticipant->pluck('curp')->first();
         $keyEncrypt =  Crypt::encryptString($linguisticId . '*' . $dateAppointment . '*' . $curp);
-        $fileName =  $linguisticReserves[0]->date_reserve . '-' . $curp . '-' . 'MED-' . $linguisticId . '.pdf';
-            $pdf = PDF::loadView('livewire.linguistics.documents.medicine-initial', compact('linguisticReserves', 'keyEncrypt', 'dateConvertedFormatted'));
+        $fileName =  $linguisticReserves[0]->date_reserve . '-' . $curp . '-' . 'LINGUISTIC-' . $linguisticId . '.pdf';
+            $pdf = PDF::loadView('livewire.linguistics.documents.linguistic-initial', compact('linguisticReserves', 'keyEncrypt', 'dateConvertedFormatted'));
             return $pdf->download($fileName);
         
     }

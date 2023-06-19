@@ -135,9 +135,10 @@
                                                 <div class="relative z-auto w-full mb-6 group">
                                                     <x-select wire:model.lazy="type_license" label="TIPO DE LICENCIA"
                                                         placeholder="Seleccione...">
-                                                        <x-select.option label="PILOTO" value="PILOTO" />
-                                                        <x-select.option label="CONTROLADOR ÁEREO"
-                                                            value="CONTROLADOR ÁEREO" />
+                                                        @foreach ($licens as $licen)
+                                                        <x-select.option label="{{ $licen->name }}"
+                                                            value="{{ $licen->id }}" />
+                                                        @endforeach
                                                     </x-select>
                                                 </div>
                                                 <div class="relative z-auto w-full mb-6 group">
