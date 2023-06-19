@@ -22,7 +22,7 @@ class Schedule extends ModalComponent
     use Actions;
     use WithFileUploads;
     public $comment1, $comment2, $scheduleId, $status, $medicineReserves, $name, $type, $class, $typLicense, $sede, $dateReserve, $date, $time, $scheduleMedicines, $sedes,
-        $to_user_headquarters, $medicine_schedule_id, $selectedOption, $comment, $comment_cancelate, $hoursReserve, $observation,$medicineId,$accion;
+        $to_user_headquarters, $medicine_schedule_id, $selectedOption, $comment, $comment_cancelate, $hoursReserve, $observation, $medicineId, $accion;
 
     public function rules()
     {
@@ -121,7 +121,7 @@ class Schedule extends ModalComponent
                 'status' => $this->selectedOption,
             ]);
             $this->emit('attendeReserve');
-            $accion='VALIDO CITA';
+            $accion = 'VALIDO CITA';
             //CANCELO EL ADMIN
         } elseif ($this->selectedOption == 2) {
 
@@ -138,10 +138,10 @@ class Schedule extends ModalComponent
                 'status' => $this->selectedOption,
             ]);
             $this->emit('cancelReserve');
-            $accion='CANCELO CITA';
+            $accion = 'CANCELO CITA';
             //REAGENDO
         } elseif ($this->selectedOption == 4) {
-            $accion='REAGENDO CITA';
+            $accion = 'REAGENDO CITA';
             $this->validate([
                 'comment' => 'required',
                 'to_user_headquarters' => 'required',
@@ -161,36 +161,36 @@ class Schedule extends ModalComponent
                         ->orWhere('status', 4);
                 })
                 ->count();
-                switch ($this->to_user_headquarters) {
-                    case 7: // CIUDAD DE MEXICO
-                        $maxCitas = 58;
-                        break;
-                    case 2: // CANCUN
-                    case 3: // TIJUANA
-                    case 4: // TOLUCA
-                    case 5: // MONTERREY
-                    case 518: //MAZATLAN SINALOA
-                    case 519: //CHIAPAS
-                    case 520: //VERACRUZ
-                    case 521: //HERMOSILLO SONORA
-                        $maxCitas = 10;
-                        break;
-                    case 522: //QUERETARO
-                        $maxCitas = 12;
-                        break;
-                    case 7958: //SINALOA CULIACAN
-                        $maxCitas = 15;
-                        break;
-                    case 6: // GUADALAJARA
-                        $maxCitas = 25;
-                        break;
-                    case 523: // YUCATAN
-                        $maxCitas = 5;
-                        break;
-                    default:
-                        $maxCitas = 0;
-                        break;
-                }
+            switch ($this->to_user_headquarters) {
+                case 7: // CIUDAD DE MEXICO
+                    $maxCitas = 50;
+                    break;
+                case 2: // CANCUN
+                case 3: // TIJUANA
+                case 4: // TOLUCA
+                case 5: // MONTERREY
+                case 518: //MAZATLAN SINALOA
+                case 519: //CHIAPAS
+                case 520: //VERACRUZ
+                case 521: //HERMOSILLO SONORA
+                    $maxCitas = 10;
+                    break;
+                case 522: //QUERETARO
+                    $maxCitas = 10;
+                    break;
+                case 7958: //SINALOA CULIACAN
+                    $maxCitas = 10;
+                    break;
+                case 6: // GUADALAJARA
+                    $maxCitas = 20;
+                    break;
+                case 523: // YUCATAN
+                    $maxCitas = 5;
+                    break;
+                default:
+                    $maxCitas = 0;
+                    break;
+            }
             if ($citas >= $maxCitas) {
                 $this->notification([
                     'title'       => 'CITA NO GENERADA!',
@@ -212,7 +212,7 @@ class Schedule extends ModalComponent
         medicine_history_movements::create([
             'user_id' => Auth::user()->id,
             'action' => $accion,
-            'process' => $this->name. ' FOLIO CITA:'.$this->id_appoint
+            'process' => $this->name . ' FOLIO CITA:' . $this->id_appoint
         ]);
         $this->closeModal();
     }
@@ -239,7 +239,7 @@ class Schedule extends ModalComponent
         medicine_history_movements::create([
             'user_id' => Auth::user()->id,
             'action' => "LIBERA LLAVE DE PAGO",
-            'process' => $this->name. ' FOLIO CITA:'.$this->id_appoint
+            'process' => $this->name . ' FOLIO CITA:' . $this->id_appoint
         ]);
         $this->closeModal();
     }
