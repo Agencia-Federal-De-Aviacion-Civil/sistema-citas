@@ -27,15 +27,15 @@
                 <div x-data="{ activeTab: 'roles' }">
                     <ul class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 ">
                         <li class="mr-2">
-                            <a href="#" class="inline-block p-4 text-gray-800 bg-white rounded-t-lg active"
-                                x-on:click.prevent="activeTab = 'roles'" :class="{ 'active': activeTab === 'roles' }">
+                            <a href="#" class="inline-block p-4 bg-white rounded-t-lg active"
+                                x-on:click.prevent="activeTab = 'roles'" :class="{ 'text-blue-600 font-semibold': activeTab === 'roles' }">
                                 ROLES
                             </a>
                         </li>
                         <li class="mr-2">
                             <a href="#" class="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50"
                                 x-on:click.prevent="activeTab = 'permissions'"
-                                :class="{ 'active': activeTab === 'permissions' }">
+                                :class="{ 'text-blue-600 font-semibold': activeTab === 'permissions' }">
                                 PERMISOS
                             </a>
                         </li>
