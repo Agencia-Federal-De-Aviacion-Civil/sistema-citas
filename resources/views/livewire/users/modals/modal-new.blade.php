@@ -97,13 +97,33 @@
                             <x-inputs.maskable label="EDAD" mask="##" placeholder="ESCRIBE..."
                                 wire:model.defer="age" />
                         </div>
-                        <div class="mt-4 relative w-full group">
+
+                        {{-- <div class="mt-4 relative w-full group">
                             <x-select label="ESTADO" placeholder="SELECCIONE..." wire:model.lazy="state_id">
                                 @foreach ($states as $state)
                                     <x-select.option label="{{ $state->name }}" value="{{ $state->id }}" />
                                 @endforeach
                             </x-select>
+                        </div> --}}
+
+                        <div class="mt-4 relative w-full group">
+                            <label for="systems"
+                                class="block text-sm font-medium text-gray-900 dark:text-white">ESTADO</label>
+                            <select wire:model.lazy="state_id"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option selected value="">Selecciona...</option>
+                                @foreach ($states as $states)
+                                    <option value="{{ $states->id }}" {{ $state_id == $states->id ? 'selected' : '' }}>
+                                        {{ $states->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
+
+                        @if($this->select==0)
+                        <div class="mt-4 relative w-full group">
+                            <x-input class="uppercase" wire:model.lazy="municipio" label="MUNICIPIO" disabled/>
+                        </div>
+                        @else
                         <div class="mt-4 relative w-full group">
                             <x-select label="MUNICIPIO" placeholder="SELECCIONE..." wire:model.defer="municipal_id">
                                 <x-select.option label="SELECCIONE..." value="" />
@@ -112,6 +132,7 @@
                                 @endforeach
                             </x-select>
                         </div>
+                        @endif
                     </div>
                     <div class="grid xl:grid-cols-3 xl:gap-6">
                         <div class="mt-4 relative w-full group">

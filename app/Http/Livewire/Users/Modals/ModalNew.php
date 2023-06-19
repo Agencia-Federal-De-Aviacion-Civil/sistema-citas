@@ -18,7 +18,7 @@ class ModalNew extends ModalComponent
     use Actions;
     use WithFileUploads;
     public $roles, $modal, $id_save, $id_update, $name, $email, $apParental, $apMaternal, $state_id, $municipal_id, $password, $passwordConfirmation, $privileges, $privilegesId, $title,
-        $genre, $birth, $age, $street, $nInterior, $nExterior, $suburb, $postalCode, $federalEntity, $delegation, $mobilePhone, $officePhone, $extension, $curp, $states, $municipals;
+        $genre, $birth, $age, $street, $nInterior, $nExterior, $suburb, $postalCode, $federalEntity, $delegation, $mobilePhone, $officePhone, $extension, $curp, $states, $municipals,$municipio,$select=0;
     public function rules()
     {
         $rules =  [
@@ -47,6 +47,7 @@ class ModalNew extends ModalComponent
     }
     public function updatedStateId($id)
     {
+        $this->select = 1;
         $this->municipals = Municipal::with('municipalState')->where('state_id', $id)->get();
     }
     public static function modalMaxWidth(): string
@@ -68,6 +69,7 @@ class ModalNew extends ModalComponent
             $this->apMaternal = $userPrivileges[0]->UserParticipant[0]->apMaternal;
             $this->state_id = $userPrivileges[0]->UserParticipant[0]->state_id;
             $this->municipal_id = $userPrivileges[0]->UserParticipant[0]->municipal_id;
+            $this->municipio = $userPrivileges[0]->UserParticipant[0]->participantMunicipal->name;
             $this->email = $userPrivileges[0]->email;
             $this->privileges = $userPrivileges[0]->roles[0]->name;
             $this->title = 'EDITAR USUARIO';
