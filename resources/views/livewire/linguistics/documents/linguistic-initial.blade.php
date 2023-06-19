@@ -84,10 +84,10 @@
         {{-- <img src="{{ public_path('images/AFAC1.png') }}" width="130" height="100" alt=""> --}}
         <img src="{{ public_path('images/banner2023afac.png') }}" width="450" height="45" alt="">
         <div class="cuadrado-2">
-            <p>Folio de cita: <b>LING-{{ $linguisticReserves[0]->id }}</b></p>
+            <p>Folio de cita: <b>CL-{{ $linguisticReserves[0]->id }}</b></p>
         </div>
         <div class="titulo">
-            <h3>ACUSE DE CITA PARA EXAMEN DE LINGüISTICA</h3>
+            <h3>ACUSE DE CITA PARA EVALUACIÓN DE COMPETENCIA LINGÜISTICA</h3>
         </div>
         <table style="margin-top: 3%;">
             <tr>
@@ -103,9 +103,23 @@
                 </td>
             </tr>
             <tr>
+                <td>LLAVE DE PAGO</td>
+                <td>{{ $linguisticReserves[0]->reserveLinguistic->reference_number }}</td>
+            </tr>
+            <tr>
+                <td>FECHA DE PAGO</td>
+                <td>{{ $linguisticReserves[0]->reserveLinguistic->pay_date }}</td>
+            </tr>
+            <tr>
                 <td>TIPO DE EVALUACIÓN:</td>
                 <td>
                     {{ $linguisticReserves[0]->reserveLinguistic->linguisticTypeExam->name }}
+                </td>
+            </tr>
+            <tr>
+                <td>NÚMERO DE LICENCIA:</td>
+                <td>
+                    {{ $linguisticReserves[0]->reserveLinguistic->license_number }}
                 </td>
             </tr>
             <tr>
@@ -115,14 +129,13 @@
                 </td>
             </tr>
             <tr>
-                <td>TRAMITE:</td>
-                <td>EVALUACIÓN MEDICA</td>
+                <td>NÚMERO ROJO:</td>
+                <td>
+                    {{ $linguisticReserves[0]->reserveLinguistic->red_number }}
+                </td>
             </tr>
-            {{-- <tr>
-                <td colspan="12">NO. DE CITA:</td>
-            </tr> --}}
             <tr>
-                <td>LUGAR:</td>
+                <td>SEDE:</td>
                 <td>
                     {{ $linguisticReserves[0]->user->name }}
                 </td>
@@ -142,302 +155,29 @@
                 <td>HORA</td>
                 <td>{{ $linguisticReserves[0]->reserveSchedule->time_start }}</td>
             </tr>
-            <tr>
-                <td>LLAVE DE PAGO</td>
-                <td>{{ $linguisticReserves[0]->reserveLinguistic->reference_number }}</td>
-            </tr>
+          
         </table>
-        {{-- <div class="codigoqr">
+        <div class="codigoqr">
             <img src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ $keyEncrypt }}"
                 width="120" height="120" />
-        </div> --}}
+        </div>
         <div style="background-color: #e6e6e6;height: 25px;">
             <h3 class="titulo2">REQUISITOS</h3>
         </div>
-        {{-- <div style="padding-top:2%">
-            <label style="text-align: justify;font-size:17px" for="">Estimado usuario, con el fin de facilitar
-                el procedimiento de registro y apoyarle en el
-                proceso de su <b> EVALUACIÓN MÉDICA</b>, le mostramos los siguientes
-                <b>requisitos indispensables</b> con los que deberá acudir a su cita <u>original y
-                    copia</u>, de lo contrario no
-                podrá realizar su examen y éste se perderá:</label>
+        <div style="padding-top:2%">
+            <label style="text-align: justify;font-size:17px" for="">Estimado usuario, con el fin de facilitar el procedimiento de su EVALUACIÓN DE COMPETENCIA LINGÜÍSTICA, le mostramos los siguientes
+                <b>requisitos</b>, para realizar su evaluación.
+            </label>
         </div>
         <div style="padding-top:1%;font-size:17px">
             <ol style="text-align: justify">
-                <li value="1">Acta de nacimiento (Con formato vigente a la fecha de su examen).</li>
-                <li>Comprobante de domicilio con vigencia no mayor a 3 meses.</li>
-                <li>Comprobante de pago.</li>
-                <li>Comprobante de cita.</li>
-                <li>Clave Única de Registro de Población (CURP).</li>
-                <li>Deberá presentar en forma impresa los formatos de declaración de salud,
-                    consentimiento informado (mismos que debe llenar y firmar) así como el vale de
-                    servicios que se incluyen al final de este documento.</li>
-                <li>Una de las siguientes identificaciones con fotografía:</li>
-                <p style="padding-left:2%;">A. Cédula de identidad ciudadana (INE) vigente.</p>
-                <p style="padding-left:2%;margin-top:-2%;">B. Cédula profesional (siempre y cuando cuente con
-                    fotografía).</p>
-                <p style="padding-left:2%;margin-top:-2%;">C. Cartilla Militar (personal masculino).</p>
-                <p style="padding-left:2%;margin-top:-2%;">D. Pasaporte.</p>
-                <p style="padding-left:2%;margin-top:-2%;">E. Credencial con fotografía de la Institución Educativa,
-                    donde esté realizando
-                    estudios, exclusivamente para menores de edad, que no cuenten con ninguna
-                    de las identificaciones anteriores, y en caso de no contar con esta última, se
-                    podrá utilizar la CURP como identificación oficial.</p>
-                <li>En caso de ser menor de edad, para poder realizar la evaluación médica, deberá
-                    presentarse con uno de los padres o tutor, mismo que deberá presentar alguna de
-                    las identificaciones citadas en el numeral 7.</li>
-                <li>Acudir con ropa cómoda, evitando sea de una sola pieza.</li>
-                <li>Tomar un desayuno ligero, en caso de acudir en ayuno llevar su refrigerio.</li>
-                <li>No suspender medicación prescrita.</li>
-                <li>En caso de haber tenido algún procedimiento dental, esperar mínimo 72 horas
-                    posteriores al mismo para agendar su cita.</li>
-                <li>En caso de haber sido diagnosticado con alguna(s) enfermedad(es) crónica(s)
-                    (enfermedades cardiacas, respiratorias, hipertiroidismo, etc.), presentar un resumen
-                    clínico expedido por su médico tratante de especialidad acorde a la patología y
-                    estudios <b> adicionales (Ver Anexo)</b> con vigencia no mayor a 2 meses para acreditar
-                    el estado actual de salud.
-                </li>
-                <li>
-                    En caso de presentar disminución en la agudeza visual, deberá presentarse con
-                    lentes de armazón o de contacto con graduación actualizada. Si alterna el uso de
-                    ambos, deberá presentarlos. Para el personal de pilotos en caso de usar lentes de
-                    contacto deberá acudir con sus lentes de armazón de repuesto.
-                </li>
-                <li>En caso de encontrarse embarazada, presentar constancia o expediente de control
-                    del mismo actualizada y hacerle saber al servicio de rayos X al acudir a su examen.
-                </li>
-                <li>Acudir con los estudios de laboratorio que a continuación se enlistan, los cuales
-                    deberán realizarse en una institución acreditada por la <b> Norma ISO15189-2012</b>,
-                    debiendo contener nombre de la institución, dirección, nombre completo del
-                    laboratorista, cédula profesional y número telefónico, así como <b>fecha de emisión no
-                        mayor a un mes de la cita programada.</b></li>
-                <p style="padding-left:3%">A) Biometría hemática.</p>
-                <p style="padding-left:3%">B) Química sanguínea de 6 elementos (Glucosa, Nitrógeno Ureico en Sangre,
-                    Creatinina, Ácido úrico, Colesterol total y Triglicéridos).</p>
-                <p style="padding-left:3%">C) Examen General de Orina.</p>
-                <p style="padding-left:3%">D) Prueba de detección de VIH (Anticuerpos).</p>
-                <p style="padding-left:3%">E) Prueba de detección de sustancias psicoactivas en orina, de 5
-                    reactivos (Cocaína, Cannabinoides, Opiaceos, Anfetaminas y Benzodiazepinas).</p>
-                <p style="padding-left:3%">F) Hemoglobina glucosilada.</p>
-                <p style="padding-left:3%">G) Radiografía de tórax postero-anterior o más conocida como la tele de tórax
-                    <b> (en
-                        caso de hacer cita en la Unidad Médica Aeropuerto, Ciudad de México, no será
-                        necesario presentar RX de Tórax)</b>.
-                </p>
+                <li value="I">Presentarse puntual según la cita agendada.</li>
+                <li>Presentar identificación oficial (INE, pasaporte, cédula profesional).</li>
+                <li>Durante la prueba no se permitirá utilizar teléfono celular o cualquier dispositivo electrónico de almacenamiento</li>
+                <li>Se podrá llevar lápiz y pluma para tomar nota de lo que se considere necesario durante el desarrollo del examen.</li>
+                <li>La evaluación tendrá una duración de 30 minutos y una vez iniciado el examen no se podrá suspender por lo que se solicita considerar el tiempo necesario para dicha evaluación.</li>
             </ol>
         </div>
- --}}
-        {{-- PAGINA 2 --}}
-        {{-- <div style='page-break-before:always;'></div>
-        <div class="mt-4 mx-4 text-justify">
-            <p>Para realizar su evaluación médica, se le proporciona la siguiente <b>guía de requisitos:</b></p>
-            <ol>
-                <li value="1">Acudir con ropa cómoda, evitando sea de una sola pieza.
-                </li>
-                <li>Tomar un desayuno ligero, en caso de acudir en ayuno llevar su refrigerio.
-                </li>
-                <li>No suspender medicación prescrita.</u>
-                </li>
-                <li>En caso de haber tenido algún procedimiento dental, esperar mínimo 72 horas posteriores al mismo
-                    para agendar su cita.
-                </li>
-                <li>En caso de haber sido diagnosticado con alguna(s) enfermedad(es) crónica(s) (enfermedades cardiacas,
-                    respiratorias, hipertiroidismo, etc.), presentar un resumen clínico expedido por su médico tratante
-                    de especialidad acorde a la patología y estudios
-                    <b>adicionales (ver Anexo)</b> con vigencia no mayor a 2 meses para acreditar el estado actual de
-                    salud.
-                </li>
-                <li>En caso de presentar disminución en la agudeza visual, deberá presentarse con lentes de armazón o de
-                    contacto con graduación actualizada. Si alterna el uso de ambos, deberá presentarlos. Para el
-                    personal de pilotos en caso de usar lentes de contacto deberá acudir con sus lentes de armazón de
-                    repuesto.
-                </li>
-                <li>En caso de encontrarse embarazada, presentar constancia de control del mismo actualizada y hacerle
-                    saber al servicio de rayos X al acudir a su examen.
-                </li>
-                <li>Acudir con los estudios de laboratorio que a continuación se enlistan, los cuales deberán
-                    realizarse en una institución acreditada por la <b>Norma ISO15189-2012</b>, deberá contener:
-                    nombre
-                    de la institución, dirección, nombre completo del laboratorista, su cédula profesional y número
-                    telefónico, a fin de que la Autoridad de Aviación Civil cuente con los elementos para acreditar su
-                    validez:
-                    <p style="padding-left:3%">A) Biometría hemática.</p>
-                    <p style="padding-left:3%">B) Química sanguínea de 6 elementos (Glucosa, Nitrógeno Ureico en Sangre,
-                        Creatinina, Ácido úrico, Colesterol total y Triglicéridos).</p>
-                    <p style="padding-left:3%">C) Examen General de Orina.</p>
-                    <p style="padding-left:3%">D) Prueba de detección de VIH (Anticuerpos).</p>
-                    <p style="padding-left:3%">E) Prueba de detección de sustancias psicoactivas en orina, de 5
-                        reactivos (Cocaína, Cannabinoides (Marihuana), Opiaceos, Anfetaminas y Benzodiazepinas).</p>
-                    <p style="padding-left:3%">F) En el caso del <u>examen médico inicial</u>, presentar radiografía de tórax
-                        posteroanterior, y para el <u>examen médico de renovación</u> como a continuación se indica:</p>
-                    <p style="padding-left:5%;margin-top:-2%">1. Clase I – cada 3 años.</p>
-                    <p style="padding-left:5%;margin-top:-2%">2. Clase II – cada 3 años.</p>
-                    <p style="padding-left:5%;margin-top:-2%">3. Clase III – cada 3 años.</p>
-                    <p style="padding-left:5%;margin-top:-2%">4. O antes a indicación de su médico examinador.</p>
-                </li>
-                <p style="margin-top:-2%">****En caso de hacer cita en la Unidad Médica Aeropuerto Ciudad de México no será necesario presentar RX de Tórax</p>
-                <li>Los estudios previamente descritos deberán tener fecha de emisión no mayor a un mes.
-                </li>
-            </ol>
-        </div> --}}
-        {{-- PAGINA 3 ANEXOS --}}
-        {{-- <div style='page-break-before:always;'></div>
-        <h2 class="titulo3">ANEXO</h2>
-        <h4 style="margin-top:-2%" class="titulo3">Estudios de laboratorio en caso de tener diagnóstico de enfermedad
-            crónica</h4>
-        <div class="mt-4 mx-7">
-            <table class="normal" style="width:100%">
-                <tr>
-                    <th style="background-color: #e6e6e6">Diagnostico</th>
-                    <th style="background-color: #e6e6e6">Estudios complementarios</th>
-                </tr>
-                <tr>
-                    <td>Diabetes tipo 2</td>
-                    <td>Hemoglobina glucosilada y los demás que solicite su
-                        médico examinador de acuerdo con su condición clínica.</td>
-                </tr>
-                <tr>
-                    <td>Hipertensión arterial sistémica</td>
-                    <td>Presentar curva de tensión arterial de 10 días previos a su
-                        valoración médica, <b>ver guía*</b>.</td>
-                </tr>
-                <tr>
-                    <td>Hiper o hipotiroidismo</td>
-                    <td>Perfil tiroideo (TSH, T4 Libre y T3 Total)</td>
-                </tr>
-                <tr>
-                    <td>Antecedente de COVID 19</td>
-                    <td>Telerradiografía de tórax o algún otro estudio de imagen y
-                        de la función pulmonar que determine su médico
-                        examinador de acuerdo con su condición clínica.</td>
-                </tr>
-                <tr>
-                    <td>Antecedente de Infarto Agudo al Miocardio</td>
-                    <td>Perfil lipídico (Colesterol total, triglicéridos, HDL, LDL),
-                        electrocardiograma de esfuerzo y los estudios que se
-                        determinen de acuerdo con su condición clínica.</td>
-                </tr>
-                <tr>
-                    <td>HIV positivo</td>
-                    <td>Carga viral, recuento de linfocitos CD4, CD8 y las que
-                        determine su médico examinador de acuerdo con su
-                        condición clínica.
-                    </td>
-                </tr>
-            </table>
-            <p> <b> Nota: </b>Para todos los casos se deberá contar con la nota médica o valoración del
-                especialista de cabecera que lleve control de su padecimiento</p>
-        </div> --}}
-        {{-- <p>*Pasos para el registro de la toma de tensión arterial:</p>
-        <ol>
-            <li value="1">Recuerde la medida de la presión arterial consta de 2 números presión sistólica sobre
-                diastólica (por ejemplo, 120/80)
-            </li>
-            <li>Elija una hora del día para su medición la cual deberá ser la misma durante los 10 días de medición.
-            </li>
-            <li>Antes de realizarla asegúrese de no estar agitador permanezca 10 minutos sentado y tranquilo antes de
-                realizar la medición.</u>
-            </li>
-            <li>Si lleva ropa de manga larga suba la manga lo mayor posible evitando que quede demasiado apretada, sino
-                es posible, retire esa prenda.
-            </li>
-            <li>Asegúrese de haber colocado adecuadamente el aparto para la medición (siga las instrucciones de uso)
-            </li>
-            <li>Tras la toma, registre los datos en el día correspondiente
-            </li>
-        </ol>
-        <div class="mt-4 mx-7">
-            <table class="normal" style="width:100%">
-                <tr>
-                    <td colspan="5">Nombre del paciente:</td>
-                </tr>
-                <tr>
-                    <td colspan="5">Medicamentos que está tomando para la presión (anotar dosis y frecuencia)
-                        Ejemplo: Captopril 50 mg cada 24 hrs.
-                    </td>
-                </tr>
-                <tr style="text-align: center;">
-                    <td rowspan="2">Día</td>
-                    <td rowspan="2">Fecha</td>
-                    <td rowspan="2">Hora</td>
-                    <td colspan="2">PRESIÓN ARTERIAL</td>
-                </tr>
-                <tr style="text-align: center;">
-                    <td>SISTOLICA</td>
-                    <td>DIASTOLICA</td>
-                </tr>
-                <tr style="text-align: center;">
-                    <td>1</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr style="text-align: center;">
-                    <td>2</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr style="text-align: center;">
-                    <td>3</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr style="text-align: center;">
-                    <td>4</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr style="text-align: center;">
-                    <td>5</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr style="text-align: center;">
-                    <td>6</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr style="text-align: center;">
-                    <td>7</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr style="text-align: center;">
-                    <td>8</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr style="text-align: center;">
-                    <td>9</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr style="text-align: center;">
-                    <td>10</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-            </table>
-        </div> --}}
     </div>
 </body>
 
