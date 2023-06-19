@@ -96,6 +96,32 @@
                                 </li>
                             </ul>
                         </div>
+                        <div x-cloak x-data="{ open: false }" class="py-3">
+                            <button x-on:click="open = true"
+                                class="flex items-center bg-white focus:bg-gray-50 text-gray-700 focus:text-gray-900 rounded py-2 px-4"
+                                type="button">
+                                <span class="mr-1 text-base">Admin</span>
+                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                    style="margin-top:3px">
+                                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                                </svg>
+                            </button>
+                            <ul x-show="open" x-on:click.away="open = false"
+                                class="z-20 bg-white text-gray-700 rounded shadow-lg absolute py-2 mt-1"
+                                style="min-width:15rem">
+                                <li>
+                                    <a href="{{ route('afac.roles.index')}}"
+                                        class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
+                                        Roles & Permisos 
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
+                                        Catalogos
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                         <x-jet-nav-link href="{{ route('afac.users') }}" :active="request()->routeIs('afac.users')">
                             {{ __('Usuarios') }}
                         </x-jet-nav-link>
@@ -291,6 +317,31 @@
                         <a href="{{ route('afac.linguisticsMovements') }}"
                             class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
                             Historial
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div x-cloak x-data="{ open: false }" class="py-3 z-50">
+                <button x-on:click="open = true"
+                    class="flex items-center bg-white focus:bg-gray-50 text-gray-700 focus:text-gray-900 rounded py-2 px-4 z-50"
+                    type="button">
+                    <span class="mr-1 text-base">Admin</span>
+                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                        style="margin-top:3px">
+                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                    </svg>
+                </button>
+                <ul x-show="open" x-on:click.away="open = false"
+                    class="bg-white text-gray-700 rounded shadow-lg absolute py-2 mt-1" style="min-width:15rem">
+                    <li>
+                        <a href="#"
+                            class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
+                            Roles & Permisos
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
+                            Catálogos
                         </a>
                     </li>
                 </ul>
