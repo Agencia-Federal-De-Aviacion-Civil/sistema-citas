@@ -170,7 +170,7 @@
             </label>
         </div>
         <div style="padding-top:1%;font-size:17px">
-            <ol style="text-align: justify">
+            <ol style="text-align: justify" type="I">
                 <li value="I">Presentarse puntual según la cita agendada.</li>
                 <li>Presentar identificación oficial (INE, pasaporte, cédula profesional).</li>
                 <li>Durante la prueba no se permitirá utilizar teléfono celular o cualquier dispositivo electrónico de almacenamiento</li>
