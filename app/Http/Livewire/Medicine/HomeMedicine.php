@@ -157,14 +157,79 @@ class HomeMedicine extends Component
     }
     public function searchDisabledDays()
     {
-        $value = $this->to_user_headquarters;
-        $disabledDays = MedicineDisabledDays::where('user_headquarters_id', $value)->pluck('disabled_days');
-        $disabledDaysArray = [];
+        // $value = $this->to_user_headquarters;
+        // $disabledDays = MedicineDisabledDays::where('user_headquarters_id', $value)->pluck('disabled_days');
+        // $disabledDaysArray = [];
 
+        // foreach ($disabledDays as $days) {
+        //     $daysArray = array_map('trim', explode(',', $days));
+        //     $disabledDaysArray = array_merge($disabledDaysArray, $daysArray);
+        // }
+        // $this->disabledDaysFilter = $disabledDaysArray;
+        // $this->dispatchBrowserEvent('headquartersUpdated', [
+        //     'disabledDaysFilter' => $disabledDaysArray
+        // ]);
+        $value = $this->to_user_headquarters;
+        $disabledDays = MedicineDisabledDays::where('user_headquarters_id', $value)
+            ->pluck('disabled_days')
+            ->toArray();
+        $occupiedDays = MedicineReserve::where('to_user_headquarters', $value)
+            ->whereIn('status', [0, 1, 4])
+            ->pluck('dateReserve')
+            ->toArray();
+        $disabledDaysArray = [];
         foreach ($disabledDays as $days) {
             $daysArray = array_map('trim', explode(',', $days));
             $disabledDaysArray = array_merge($disabledDaysArray, $daysArray);
         }
+        if ($this->to_user_headquarters !== null) {
+            $maxCitas = 0;
+
+            switch ($this->to_user_headquarters) {
+                case 7: // CIUDAD DE MEXICO
+                    $maxCitas = 58;
+                    break;
+                case 2: // CANCUN
+                case 3: // TIJUANA
+                case 4: // TOLUCA
+                case 5: // MONTERREY
+                case 518: //MAZATLAN SINALOA
+                case 519: //CHIAPAS
+                case 520: //VERACRUZ
+                case 521: //HERMOSILLO SONORA
+                    $maxCitas = 10;
+                    break;
+                case 522: //QUERETARO
+                    $maxCitas = 12;
+                    break;
+                case 7958: //SINALOA CULIACAN
+                    $maxCitas = 15;
+                    break;
+                case 6: // GUADALAJARA
+                    $maxCitas = 25;
+                    break;
+                case 523: // YUCATAN
+                    $maxCitas = 5;
+                    break;
+                default:
+                    $maxCitas = 0;
+                    break;
+            }
+            $datesExceedingLimit = MedicineReserve::select('dateReserve')
+                ->where('to_user_headquarters', $this->to_user_headquarters)
+                ->whereIn('status', [0, 1, 4])
+                ->groupBy('dateReserve')
+                ->havingRaw('COUNT(*) >= ?', [$maxCitas])
+                ->pluck('dateReserve')
+                ->toArray();
+            $datesExceedingLimit;
+            $occupiedDays = array_filter($occupiedDays, function ($day) use ($datesExceedingLimit) {
+                return in_array($day, $datesExceedingLimit);
+            });
+            $occupiedDays;
+            $disabledDaysArray = array_merge($disabledDaysArray, $occupiedDays);
+        }
+
         $this->disabledDaysFilter = $disabledDaysArray;
         $this->dispatchBrowserEvent('headquartersUpdated', [
             'disabledDaysFilter' => $disabledDaysArray

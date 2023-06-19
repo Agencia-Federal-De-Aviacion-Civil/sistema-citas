@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
@@ -128,7 +129,9 @@ class AppointmentTable extends DataTableComponent
                             )->where('id', $row->id)->get(),
                             'medicine' => $medicine,
                             'tipo' => $medicine[0]->medicineReserveMedicine->medicineTypeExam->id,
-                            'id' => $medicine[0]->medicineReserveMedicine->medicineDocument->name_document
+                            'id' => $medicine[0]->medicineReserveMedicine->type_exam_id == 3
+                                ? Storage::url($medicine[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationDocument->name_document)
+                                : Storage::url($medicine[0]->medicineReserveMedicine->medicineDocument->name_document),
                         ]
                     )),
 
@@ -294,7 +297,9 @@ class AppointmentTable extends DataTableComponent
                             )->where('id', $row->id)->get(),
                             'medicine' => $medicine,
                             'tipo' => $medicine[0]->medicineReserveMedicine->medicineTypeExam->id,
-                            'id' => $medicine[0]->medicineReserveMedicine->medicineDocument->name_document
+                            'id' => $medicine[0]->medicineReserveMedicine->type_exam_id == 3
+                                ? Storage::url($medicine[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationDocument->name_document)
+                                : Storage::url($medicine[0]->medicineReserveMedicine->medicineDocument->name_document),
                         ]
                     )),
 
@@ -443,7 +448,7 @@ class AppointmentTable extends DataTableComponent
             try {
                 $query = MedicineReserve::with([
                     'medicineReserveMedicine:id,reference_number,type_exam_id', 'medicineReserveFromUser:id,name',
-                    'medicineReserveMedicine.medicineTypeExam:name',
+                    'medicineReserveMedicine.medicineTypeExam:name', 'user:id,name',
                     'userParticipantUser:id,apParental,apMaternal,curp,genre,birth,age,mobilePhone,officePhone,extension',
                     'userParticipantUser.participantState:id,name', 'reserveSchedule:id,time_start'
                 ])->whereIn('id', $this->getSelected());
