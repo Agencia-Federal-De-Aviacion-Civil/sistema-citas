@@ -14,8 +14,9 @@ use App\Models\Medicine\medicine_history_movements;
 use App\Models\Medicine\MedicineDisabledDays;
 use App\Models\Medicine\MedicineReserve;
 use App\Models\Medicine\MedicineSchedule;
-use App\Models\Medicine\LinguisticReserve;
-use App\Models\Medicine\Linguistic;
+use App\Models\Linguistic\LinguisticReserve;
+use App\Models\Linguistic\Linguistic;
+use App\Models\Linguistic\LinguisticHistoryMovements;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -130,5 +131,8 @@ class User extends Authenticatable implements MustVerifyEmail
     public function userlinguistic()
     {
         return $this->hasMany(Linguistic::class);
+    }
+    public function userHistoryLinguistic(){
+        return $this->hasMany(LinguisticHistoryMovements::class);
     }
 }
