@@ -104,7 +104,7 @@
                         <x-jet-nav-link href="{{ route('afac.appointment') }}" :active="request()->routeIs('afac.appointment')">
                             {{ __('Citas agendadas') }}
                         </x-jet-nav-link>
-                        <x-jet-nav-link href="{{ route('afac.appointment') }}" :active="request()->routeIs('afac.appointment')">
+                        <x-jet-nav-link href="{{ route('afac.appointmentlinguistic') }}" :active="request()->routeIs('afac.appointmentlinguistic')">
                             {{ __('Citas agendadas linguistica') }}
                         </x-jet-nav-link>
                     @endcan

@@ -10,6 +10,7 @@ use App\Http\Livewire\Linguistics\HomeLinguistics;
 use App\Http\Livewire\Medicine\HomeMedicine;
 use App\Http\Livewire\Medicine\HistoryMedicieMovements;
 use App\Http\Livewire\Linguistics\HistoryLinguisticsMovements;
+use App\Http\Livewire\Linguistics\AppointmentLinguistics;
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Validate\Qr as ValidateQr;
 
@@ -44,6 +45,7 @@ Route::middleware([
     });
     // Route::get('/appointments', [AppointmentController::class, 'index'])->name('afac.appointment');
     Route::get('/appointments', [AppointmentMedicineController::class, 'index'])->name('afac.appointment');
+    Route::get('/appointmentlinguistic',AppointmentLinguistics::class)->name('afac.appointmentlinguistic');
     Route::get('/downloadFile/{scheduleId}', [AppointmentMedicineController::class, 'download'])->name('afac.downloadFile');
     Route::middleware(['role:super_admin'])->group(function () {
         Route::get('/users', [UserMedicineController::class, 'index'])->name('afac.users');
