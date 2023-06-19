@@ -187,7 +187,7 @@ class HomeMedicine extends Component
 
             switch ($this->to_user_headquarters) {
                 case 7: // CIUDAD DE MEXICO
-                    $maxCitas = 58;
+                    $maxCitas = 50;
                     break;
                 case 2: // CANCUN
                 case 3: // TIJUANA
@@ -200,13 +200,13 @@ class HomeMedicine extends Component
                     $maxCitas = 10;
                     break;
                 case 522: //QUERETARO
-                    $maxCitas = 12;
+                    $maxCitas = 10;
                     break;
                 case 7958: //SINALOA CULIACAN
-                    $maxCitas = 15;
+                    $maxCitas = 10;
                     break;
                 case 6: // GUADALAJARA
-                    $maxCitas = 25;
+                    $maxCitas = 20;
                     break;
                 case 523: // YUCATAN
                     $maxCitas = 5;
@@ -279,7 +279,7 @@ class HomeMedicine extends Component
             // dd($citas);
             switch ($this->to_user_headquarters) {
                 case 7: // CIUDAD DE MEXICO
-                    $maxCitas = 58;
+                    $maxCitas = 50;
                     break;
                 case 2: // CANCUN
                 case 3: // TIJUANA
@@ -292,13 +292,13 @@ class HomeMedicine extends Component
                     $maxCitas = 10;
                     break;
                 case 522: //QUERETARO
-                    $maxCitas = 12;
+                    $maxCitas = 10;
                     break;
                 case 7958: //SINALOA CULIACAN
-                    $maxCitas = 15;
+                    $maxCitas = 10;
                     break;
                 case 6: // GUADALAJARA
-                    $maxCitas = 25;
+                    $maxCitas = 20;
                     break;
                 case 523: // YUCATAN
                     $maxCitas = 5;
