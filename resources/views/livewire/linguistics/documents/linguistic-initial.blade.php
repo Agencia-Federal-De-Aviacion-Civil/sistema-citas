@@ -111,6 +111,7 @@
             <tr>
                 <td>TIPO DE LICENCIA:</td>
                 <td>
+                    {{ $linguisticReserves[0]->reserveLinguistic->linguisticTypeLicense->name }}
                 </td>
             </tr>
             <tr>

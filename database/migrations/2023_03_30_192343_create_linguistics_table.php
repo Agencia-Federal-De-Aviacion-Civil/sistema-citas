@@ -23,8 +23,8 @@ return new class extends Migration
             $table->foreign('document_id')->references('id')->on('documents')->onDelete('cascade');
             $table->unsignedBigInteger('type_exam_id')->nullable();
             $table->foreign('type_exam_id')->references('id')->on('type_exams')->onDelete('cascade');
-            $table->unsignedBigInteger('type_license')->nullable();
-            $table->foreign('type_license')->references('id')->on('type_licenses')->onDelete('cascade');
+            $table->unsignedBigInteger('type_license_id')->nullable();
+            $table->foreign('type_license_id')->references('id')->on('type_licenses')->onDelete('cascade');
             $table->string('license_number');
             $table->string('red_number');
             $table->timestamps();

@@ -101,7 +101,7 @@
                                     </svg>
                                     <p class="text-lg title-font font-normal">Tipo de Licencia:
                                     <p class="text-lg font-semibold">
-                                        
+                                        {{ $linguisticReserves[0]->reserveLinguistic->linguisticTypeLicense->name }}
                                     </p>
                                     </p>
                                 </div>

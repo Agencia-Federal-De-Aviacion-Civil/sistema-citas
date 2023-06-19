@@ -108,7 +108,7 @@ class HomeLinguistics extends Component
             'pay_date' => $this->pay_date,
             'document_id' => $saveDocument->id,
             'type_exam_id' => $this->type_exam_id,
-            'type_license' => $this->type_license,
+            'type_license_id' => $this->type_license,
             'license_number' => $this->license_number,
             'red_number' => $this->red_number
         ]);
