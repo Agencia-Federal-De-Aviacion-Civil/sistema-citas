@@ -49,7 +49,8 @@
                                 <x-button wire:click="$emit('openModal', 'headquarters.modals.create-update-modal')"
                                     icon="pencil" primary label="AÑADIR" />
                             </div>
-                            <livewire:headquarter-table>
+                            @livewire('headquarters.tables.headquarters-table')
+                            {{-- <livewire:headquarter-table> --}}
                         </div>
                         <div x-show="activeTab === 'schedules'">
                             {{-- <div class="flex-grow pl-4"> --}}
