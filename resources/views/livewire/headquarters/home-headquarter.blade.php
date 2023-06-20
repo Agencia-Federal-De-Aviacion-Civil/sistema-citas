@@ -80,7 +80,8 @@
                                 <x-button wire:click.prevent="save" icon="home" label="GUARDAR" />
                             </div> --}}
                             <div class="mt-2">
-                                <livewire:disabled-day-table />
+                                @livewire('headquarters.tables.disabled-day-table')
+                                {{-- <livewire:disabled-day-table /> --}}
                             </div>
                         </div>
                     </div>
