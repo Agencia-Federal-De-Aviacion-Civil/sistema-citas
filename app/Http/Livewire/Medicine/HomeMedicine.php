@@ -115,9 +115,12 @@ class HomeMedicine extends Component
         if ($type_exam_id === '3') {
             $type_exam_id = '2';
             $this->typeRenovationExams = TypeClass::where('type_exam_id', $type_exam_id)->get();
-        } else {
+        } else if ($type_exam_id === '4') {
+            $type_exam_id = '2';
             $this->typeRenovationExams = TypeClass::where('type_exam_id', $type_exam_id)->get();
-        }
+        }else {
+            $this->typeRenovationExams = TypeClass::where('type_exam_id', $type_exam_id)->get();
+        } 
     }
     public function updatedTypeClassId($type_class_id)
     {
