@@ -22,6 +22,7 @@ class HistoryMedicieTable extends DataTableComponent
         ]);
         $this->setOfflineIndicatorEnabled();
         $this->setEagerLoadAllRelationsEnabled();
+        $this->setDefaultSort('id','asc');
     }
 
     public function columns(): array
