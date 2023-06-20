@@ -40,8 +40,8 @@ class MedicineReserve extends Model
     {
         return $this->hasMany(MedicineObservation::class);
     }
-    public function medicineSchedule()
-    {
-        return $this->belongsTo(MedicineSchedule::class, 'medicine_schedule_id');
-    }
+    // public function medicineSchedule()
+    // {
+    //     return $this->belongsTo(MedicineSchedule::class, 'medicine_schedule_id');
+    // }
 }

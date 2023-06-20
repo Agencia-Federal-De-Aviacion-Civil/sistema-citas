@@ -137,26 +137,15 @@ class HomeMedicine extends Component
     }
     public function updatedToUserHeadquarters($value)
     {
-        $this->scheduleMedicines = MedicineSchedule::where('user_id', $value)
-            ->where('status', 0)
-            ->get();
+        $this->scheduleMedicines = MedicineSchedule::with('scheduleHeadquarter')
+            ->whereHas('scheduleHeadquarter', function ($max) use ($value) {
+                $max->where('user_id', $value);
+            })->where('status', 0)->get();
         $this->searchDisabledDays();
         $this->dateReserve = '';
     }
     public function searchDisabledDays()
     {
-        // $value = $this->to_user_headquarters;
-        // $disabledDays = MedicineDisabledDays::where('user_headquarters_id', $value)->pluck('disabled_days');
-        // $disabledDaysArray = [];
-
-        // foreach ($disabledDays as $days) {
-        //     $daysArray = array_map('trim', explode(',', $days));
-        //     $disabledDaysArray = array_merge($disabledDaysArray, $daysArray);
-        // }
-        // $this->disabledDaysFilter = $disabledDaysArray;
-        // $this->dispatchBrowserEvent('headquartersUpdated', [
-        //     'disabledDaysFilter' => $disabledDaysArray
-        // ]);
         $value = $this->to_user_headquarters;
         $disabledDays = MedicineDisabledDays::where('user_headquarters_id', $value)
             ->pluck('disabled_days')
@@ -171,7 +160,10 @@ class HomeMedicine extends Component
             $disabledDaysArray = array_merge($disabledDaysArray, $daysArray);
         }
         if ($this->to_user_headquarters !== null) {
-            $maxCitas = MedicineSchedule::where('user_id', $this->to_user_headquarters)->value('max_schedules');
+            $maxCitas = MedicineSchedule::with('scheduleHeadquarter')
+                ->whereHas('scheduleHeadquarter', function ($max) {
+                    $max->where('user_id', $this->to_user_headquarters);
+                })->value('max_schedules');
             $datesExceedingLimit = MedicineReserve::select('dateReserve')
                 ->where('to_user_headquarters', $this->to_user_headquarters)
                 ->whereIn('status', [0, 1, 4])
@@ -342,7 +334,11 @@ class HomeMedicine extends Component
             }
             // $maxCitasHorario = $schedule->max_schedules;
             //  if ($citas >= $maxCitas || $citas >= $maxCitasHorario) ALFORITMO QUE SEPARA CITAS POR HORAS
-            $maxCitas = MedicineSchedule::where('user_id', $this->to_user_headquarters)->value('max_schedules');
+            // $maxCitas = MedicineSchedule::where('user_id', $this->to_user_headquarters)->value('max_schedules');
+            $maxCitas = MedicineSchedule::with('scheduleHeadquarter')
+                ->whereHas('scheduleHeadquarter', function ($max) {
+                    $max->where('user_id', $this->to_user_headquarters);
+                })->value('max_schedules');
             if ($citas >= $maxCitas) {
                 $this->notification([
                     'title'       => 'CITA NO GENERADA!',
