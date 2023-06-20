@@ -14,16 +14,18 @@ use Illuminate\Support\Facades\Crypt;
 use Jenssegers\Date\Date;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use WireUi\Traits\Actions;
 use PDF;
 
 
 
 class HomeLinguistics extends Component
 {
+    use Actions;
     use WithFileUploads;
     public $confirmModal = false,$modal = false;
     public $name_document, $dateNow,$reference_number, $pay_date, $type_exam_id, $type_license, $license_number, $red_number, $to_user_headquarters, $date_reserve,$dateConvertedFormatted;
-    public $exams,$licens, $headquartersQueries, $date, $schedules, $schedule_id,$linguisticReserves,$saveLinguistic,$cita;
+    public $exams,$licens, $headquartersQueries, $date, $schedules, $schedule_id,$linguisticReserves,$saveLinguistic,$cita,$id_linguisticReserve,$idLinguistic;
     public function mount()
     {
 
@@ -169,6 +171,48 @@ class HomeLinguistics extends Component
             $pdf = PDF::loadView('livewire.linguistics.documents.linguistic-initial', compact('linguisticReserves', 'keyEncrypt', 'dateConvertedFormatted'));
             return $pdf->download($fileName);
         
+    }
+    public function delete($idUpdate)
+    {
+        LinguisticReserve::find($idUpdate);
+        $savedLinguisticId = session('saved_linguistic_id');
+        Linguistic::find($savedLinguisticId);
+        $this->id_linguisticReserve = $idUpdate;
+        $this->idLinguistic = $savedLinguisticId;
+        $this->deleteRelationShip();
+    }
+    public function deleteRelationShip()
+    {
+        $this->confirmModal = false;
+        $this->dialog()->confirm([
+            'title'       => '¡ATENCIÓN!',
+            'description' => '¿ESTAS SEGURO DE CANCELAR ESTA CITA?',
+            'icon'        => 'info',
+            'accept'      => [
+                'label'  => 'SI',
+                'method' => 'confirmDelete',
+            ],
+            'reject' => [
+                'label'  => 'NO',
+                'method' => 'openModal',
+            ],
+        ]);
+    }
+    public function confirmDelete()
+    {
+        $updateReserve = LinguisticReserve::find($this->id_linguisticReserve);
+        $updateReserve->update([
+            'status' => 3
+        ]);
+        $updateReservePay = Linguistic::find($this->idLinguistic);
+        $updateReservePay->update([
+            'reference_number' => "CANCELADO" . '-' . $this->idLinguistic
+        ]);
+        $this->notification([
+            'title'       => 'CITA CANCELADA ÉXITOSAMENTE',
+            'icon'        => 'error',
+            'timeout' => '3100'
+        ]);
     }
     public function messages()
     {
