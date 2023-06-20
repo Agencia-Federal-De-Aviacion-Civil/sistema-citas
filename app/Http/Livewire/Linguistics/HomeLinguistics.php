@@ -125,7 +125,6 @@ class HomeLinguistics extends Component
         $cita->to_user_headquarters = $this->to_user_headquarters;
         $cita->date_reserve = $this->date_reserve;
         $cita->schedule_id = $this->schedule_id;
-        $cita->save();
         session(['saved_linguistic_id' => $this->saveLinguistic->id]);
         $this->generatePdf();
         $this->clean();
