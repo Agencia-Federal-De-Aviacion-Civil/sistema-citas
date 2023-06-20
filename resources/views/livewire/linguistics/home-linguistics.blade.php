@@ -271,13 +271,18 @@
             minDate: "today",
             dateFormat: "Y-m-d",
             disableMobile: "true",
-            disable: [
-                function(date) {
-                    // Devuelve 'true' si la fecha es un sábado o domingo
-                    return date.getDay() === 6 || date.getDay() === 0 || date <=
-                        new Date();
-                },
-            ],
+            maxDate: new Date(new Date().getFullYear(), 11, 31),
+            disable: event.detail.disabledDaysFilter,
+            onDayCreate: function(dObj, dStr, fp, dayElem) {
+                        /* if (dayElem.dateObj.getDay() === 0 || dayElem.dateObj.getDay() === 6 || dayElem
+                             .dateObj <= new Date()) {
+                             dayElem.className += " flatpickr-disabled nextMonthDayflatpickr-disabled";
+                         }*/
+                        if (dayElem.dateObj.getDay() === 0 || dayElem.dateObj.getDay() === 6) {
+                            dayElem.className +=
+                                " flatpickr-disabled nextMonthDayflatpickr-disabled";
+                        }
+            },
             locale: {
                 weekdays: {
                     shorthand: ['Dom', 'Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab'],

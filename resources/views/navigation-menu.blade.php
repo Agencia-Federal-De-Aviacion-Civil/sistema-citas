@@ -40,12 +40,6 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('afac.headquarterMedicine') }}"
-                                        class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
-                                        Sedes
-                                    </a>
-                                </li>
-                                <li>
                                     <a href="{{ route('validate') }}"
                                         class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
                                         Validación de QR
@@ -76,11 +70,6 @@
                                     <a href="{{ route('afac.linguistics') }}"
                                         class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
                                         Generar cita
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
-                                        Sedes
                                     </a>
                                 </li>
                                 <li>
@@ -116,15 +105,26 @@
                                     </a>
                                 </li>
                                 <li>
+                                    <a href="{{ route('afac.headquarterMedicine') }}"
+                                        class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
+                                        Sedes
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('afac.users') }}" class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
+                                        Usuarios
+                                    </a>
+                                </li>
+                                <li>
                                     <a href="#" class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
                                         Catalogos
                                     </a>
                                 </li>
                             </ul>
                         </div>
-                        <x-jet-nav-link href="{{ route('afac.users') }}" :active="request()->routeIs('afac.users')">
+                        {{-- <x-jet-nav-link href="{{ route('afac.users') }}" :active="request()->routeIs('afac.users')">
                             {{ __('Usuarios') }}
-                        </x-jet-nav-link>
+                        </x-jet-nav-link> --}}
                     @endcan
                     @can('see.schedule.tabs')
                         <x-jet-nav-link href="{{ route('afac.appointment') }}" :active="request()->routeIs('afac.appointment')">

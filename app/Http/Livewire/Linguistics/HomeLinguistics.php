@@ -25,7 +25,8 @@ class HomeLinguistics extends Component
     use WithFileUploads;
     public $confirmModal = false,$modal = false;
     public $name_document, $dateNow,$reference_number, $pay_date, $type_exam_id, $type_license, $license_number, $red_number, $to_user_headquarters, $date_reserve,$dateConvertedFormatted;
-    public $exams,$licens, $headquartersQueries, $date, $schedules, $schedule_id,$linguisticReserves,$saveLinguistic,$cita,$id_linguisticReserve,$idLinguistic;
+    public $exams,$licens, $headquartersQueries, $date, $schedules, $schedule_id,$linguisticReserves,$saveLinguistic,$cita,$id_linguisticReserve,$idLinguistic,$disabledDaysFilter;
+   
     public function mount()
     {
 
@@ -35,6 +36,7 @@ class HomeLinguistics extends Component
         $this->licens = TypeLicense::all();
         $this->headquartersQueries = Headquarter::where('system_id', 2)->where('status', false)->get();
         $this->schedules = collect();
+        $this->disabledDaysFilter = collect();
 
     }
     public function rules()
@@ -95,6 +97,9 @@ class HomeLinguistics extends Component
     public function downloadpdf()
     {
         return response()->download(public_path('documents/Formatos_Cita_lingüistica.pdf'));
+    }
+    public function searchDisabledDays(){
+        $value = $this->to_user_headquarters;
     }
 
     public function save()
