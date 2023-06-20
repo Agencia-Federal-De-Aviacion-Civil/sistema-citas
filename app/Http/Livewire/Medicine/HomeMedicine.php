@@ -446,6 +446,14 @@ class HomeMedicine extends Component
                             'clasification_class_id' => $clasifications
                         ]);
                     }
+                } else if ($this->type_exam_id == 4) {
+                    foreach ($this->clasification_class_id as $clasifications) {
+                        MedicineRenovation::create([
+                            'medicine_id' => $this->saveMedicine->id,
+                            'type_class_id' => $this->type_class_id,
+                            'clasification_class_id' => $clasifications
+                        ]);
+                    }
                 } else if ($this->type_exam_id == 3) {
                     // $extension = $this->document_authorization->extension();
                     $extension = $this->document_pay->getClientOriginalExtension();
@@ -576,6 +584,9 @@ class HomeMedicine extends Component
             return $pdf->download($fileName);
         } else if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 3) {
             $pdf = PDF::loadView('livewire.medicine.documents.medicine-revaluation', compact('medicineReserves', 'keyEncrypt', 'dateConvertedFormatted'));
+            return $pdf->download($fileName);
+        }else if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 4) {
+            $pdf = PDF::loadView('livewire.medicine.documents.medicine-revaluation-accident', compact('medicineReserves', 'keyEncrypt', 'dateConvertedFormatted'));
             return $pdf->download($fileName);
         }
     }
