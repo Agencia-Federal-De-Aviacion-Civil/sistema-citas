@@ -40,6 +40,12 @@
                             <span class="text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5">{{ $message }}</span>
                         @enderror
                     </div>
+                    <div class="mt-4 relative w-full group">
+                        <x-time-picker label="HORARIO" placeholder="7:00 AM" interval="60" wire:model.defer="time_start" />
+                    </div>
+                    <div class="mt-4 relative w-full group">
+                        <x-inputs.number label="CAPACIDAD CITAS POR DÍA" wire:model.defer="max_schedules" />
+                    </div>
                 </div>
             @else
             @endhasrole
