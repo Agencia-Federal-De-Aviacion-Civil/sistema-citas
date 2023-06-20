@@ -124,6 +124,11 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasOne(UserParticipant::class);
     }
+
+    public function userLinguisticReserveFrom()
+    {
+        return $this->hasMany(LinguisticReserve::class);
+    }
     public function userLinguisticReserveTo()
     {
         return $this->hasMany(LinguisticReserve::class, 'to_user_headquarters');

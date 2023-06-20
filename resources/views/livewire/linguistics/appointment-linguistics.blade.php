@@ -39,17 +39,17 @@
                                 <div
                                     class="mb-5 text-lg font-semibold text-gray-500 text-center p-0.5 leading-none rounded-full px-2 dark:bg-blue-900 dark:text-blue-200 absolute -translate-y-1/2 -translate-x-1/2 top-2/4 left-1/2">
                                     SE ESTA GENERANDO EL DOCUMENTO...POR FAVOR ESPERE</div>
-                                    
+
                             </div>
                         @endif
                         @if ($exportFinished)
-                                
+
                                 <div x-data="{ open: false }"  x-init="() => setTimeout(() => open = true, 500)" class="fixed bottom-0 right-0 z-[60] sm:max-w-sm w-full mx-auto p-6">
                                     <div x-show="open">
                                     <div class="p-2 bg-gray/[.6] backdrop-blur-lg rounded-xl shadow-2xl dark:bg-slate-900/[.6] dark:shadow-black/[.7]">
                                         <div class="p-2 sm:p-2 text-center overflow-y-auto">
                                             <div class="flex justify-between items-center gap-x-5 sm:gap-x-10">
-                                            
+
                                             <button @click="open = false" type="button" class="inline-flex rounded-full p-2 text-gray-500 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-gray-600 dark:hover:bg-gray-600 dark:text-gray-300" data-hs-remove-element="#cookies-with-stacked-buttons">
                                                 <span class="sr-only">Dismiss</span>
                                                 <svg class="h-3 w-3" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -63,17 +63,17 @@
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                                                     <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                                                   </svg>
-                                                  
+
                                             </span>
                                             <!-- End Icon -->
-                            
+
                                             <h3 class="mb-2 text-xl font-bold text-gray-800 dark:text-gray-200">
                                                 Listo!
                                             </h3>
                                             <p class="text-gray-500">
                                                 El documento ya se encuentra disponible para su descarga.
                                             </p>
-                            
+
                                             <div class="mt-2 flex justify-center gap-x-4">
                                                 <button type="button" wire:click="downloadExport" @click="open = false"
                                                     class="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800"
@@ -82,12 +82,12 @@
                                                 </button>
                                             </div>
                                         </div>
-                                        
+
                                   </div>
                                 </div>
                         @endif --}}
                     </div>
-                    {{-- @livewire('medicine.tables.appointment-table') --}}
+                    @livewire('linguistics.tables.appointment-table')
                 </div>
             </div>
 
