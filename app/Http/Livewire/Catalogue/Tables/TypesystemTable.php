@@ -9,6 +9,15 @@ use App\Models\System;
 class TypesystemTable extends DataTableComponent
 {
     protected $model = System::class;
+    protected function getListeners(): array
+    {
+        return array_merge(
+            parent::getListeners(),
+            [
+                'systems' => '$refresh'
+            ]
+        );
+    }
 
     public function configure(): void
     {

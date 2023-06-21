@@ -11,7 +11,7 @@ class ModalNew extends ModalComponent
 {
     use Actions;
     use WithFileUploads;
-    public $roles, $modal, $id_save, $id_update, $name, $catalogsId, $title;
+    public $modal, $id_save, $id_update, $name, $catalogsId, $title,$systems,$system;
        
     public function rules()
     {
@@ -24,6 +24,7 @@ class ModalNew extends ModalComponent
     {
         $this->catalogsId = $catalogsId;
         $this->valores($catalogsId);
+        $this->system = System::all();
     }
     public function render()
     {
@@ -42,7 +43,9 @@ class ModalNew extends ModalComponent
     {
         $this->catalogsId = $catalogsId;
         if ($this->catalogsId != 0) {
+            $this->title = 'EDITA USUARIO';
             $system = System::where('id', $this->catalogsId)->get();
+            $this->id_save = $system[0]->id;
             $this->name = $system[0]->name;
         } else {
             $this->title = 'AGREGAR USUARIO';
