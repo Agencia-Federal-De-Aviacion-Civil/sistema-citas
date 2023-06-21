@@ -17,6 +17,7 @@ use App\Models\Medicine\MedicineRevaluation;
 use App\Models\Medicine\MedicineRevaluationInitial;
 use App\Models\Medicine\MedicineRevaluationRenovation;
 use App\Models\Medicine\MedicineSchedule;
+use App\Models\Medicine\MedicineScheduleException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Jenssegers\Date\Date;
@@ -29,7 +30,7 @@ class HomeMedicine extends Component
 {
     use Actions;
     use WithFileUploads;
-    public $medicine_question_id, $type_class_id, $clasificationClass, $clasification_class_id;
+    public $medicine_question_id, $type_class_id, $clasificationClass, $clasification_class_id, $type_exception_id;
     public $document_pay, $reference_number, $pay_date, $type_exam_id, $typeRenovationExams, $dateConvertedFormatted;
     public $questionClassess, $typeExams, $sedes, $userQuestions, $to_user_headquarters, $dateReserve, $saveMedicine, $disabledDaysFilter;
     public $confirmModal = false, $modal = false;
@@ -164,6 +165,18 @@ class HomeMedicine extends Component
                 ->whereHas('scheduleHeadquarter', function ($max) {
                     $max->where('user_id', $this->to_user_headquarters);
                 })->value('max_schedules');
+            if ($this->type_exam_id == $this->type_exam_id) {
+                $maxCitasException = MedicineScheduleException::with('medicineSchedules.scheduleHeadquarter')
+                    ->whereHas('medicineSchedules.scheduleHeadquarter', function ($qException) {
+                        $qException->where('user_id', $this->to_user_headquarters);
+                    })
+                    // ->where('medicine_schedule_id', $this->medicine_schedule_id)
+                    ->where('type_exam_id', $this->type_exam_id)
+                    ->value('max_schedules_exception');
+                if ($maxCitasException !== null) {
+                    $maxCitas = $maxCitasException;
+                }
+            }
             $datesExceedingLimit = MedicineReserve::select('dateReserve')
                 ->where('to_user_headquarters', $this->to_user_headquarters)
                 ->whereIn('status', [0, 1, 4])
@@ -339,6 +352,18 @@ class HomeMedicine extends Component
                 ->whereHas('scheduleHeadquarter', function ($max) {
                     $max->where('user_id', $this->to_user_headquarters);
                 })->value('max_schedules');
+            if ($this->type_exam_id == $this->type_exam_id) {
+                $maxCitasException = MedicineScheduleException::with('medicineSchedules.scheduleHeadquarter')
+                    ->whereHas('medicineSchedules.scheduleHeadquarter', function ($qException) {
+                        $qException->where('user_id', $this->to_user_headquarters);
+                    })
+                    // ->where('medicine_schedule_id', $this->medicine_schedule_id)
+                    ->where('type_exam_id', $this->type_exam_id)
+                    ->value('max_schedules_exception');
+                if ($maxCitasException !== null) {
+                    $maxCitas = $maxCitasException;
+                }
+            }
             if ($citas >= $maxCitas) {
                 $this->notification([
                     'title'       => 'CITA NO GENERADA!',

@@ -11,10 +11,6 @@ class MedicineSchedule extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
-    // public function scheduleMedicine()
-    // {
-    //     return $this->hasMany(MedicineReserve::class);
-    // }
     public function scheduleReserve()
     {
         return $this->hasMany(MedicineReserve::class);
@@ -22,5 +18,9 @@ class MedicineSchedule extends Model
     public function scheduleHeadquarter()
     {
         return $this->hasMany(Headquarter::class);
+    }
+    public function schedulesMedicineException()
+    {
+        return $this->hasMany(MedicineScheduleException::class);
     }
 }
