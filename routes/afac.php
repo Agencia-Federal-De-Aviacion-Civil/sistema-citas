@@ -10,7 +10,7 @@ use App\Http\Livewire\Linguistics\HomeLinguistics;
 use App\Http\Livewire\Medicine\HomeMedicine;
 use App\Http\Livewire\Medicine\HistoryMedicieMovements;
 use App\Http\Livewire\Linguistics\HistoryLinguisticsMovements;
-use App\Http\Livewire\Catalogs\HomeCatalogs;
+use App\Http\Livewire\Catalogue\HomeCatalogs;
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Validate\Qr as ValidateQr;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Catalogs;
+namespace App\Http\Livewire\Catalogue;
 
 use Jenssegers\Date\Date;
 use Livewire\Component;
@@ -15,7 +15,7 @@ class HomeCatalogs extends Component
     }
     public function render()
     {
-        return view('livewire.catalogs.home-catalogs');
+        return view('livewire.catalogue.home-catalogs');
     }
     
 }

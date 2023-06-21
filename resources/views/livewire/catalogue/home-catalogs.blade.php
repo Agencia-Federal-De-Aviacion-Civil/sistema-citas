@@ -1,13 +1,7 @@
 <div>
-    {{-- <x-notifications position="top-bottom" />
+    <x-notifications position="top-bottom" />
     <x-dialog z-index="z-50" blur="md" align="center" />
-    @if ($confirmModal)
-        @include('livewire.medicine.modals.confirm')
-    @endif
-    @if ($modal)
-        @include('livewire.medicine.modals.readyPdf')
-    @endif
-    @livewire('medicine.modals.modal-index') --}}
+    {{-- @livewire('catalogue.modal.modal-new') --}}
     <div class="relative py-6 lg:py-4">
         <img class="z-0 w-full h-full absolute inset-0 object-cover" src="{{ asset('images/banner_testing.jpg') }}"
             alt="bg" />
@@ -55,7 +49,12 @@
                                     <div class="flex items-center focus:outline-none">
                                         <svg class="flex-shrink-0 w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path></svg>
                                         <h1 class="mx-4 text-xl text-gray-700 dark:text-white">Sistemas</h1>
+                                      
                                     </div>
+                                    <div class="my-2">
+                                        @livewire('catalogue.tables.typesystem-table')
+                                    </div>
+                                    
                                 </div>
                                 <div x-show="content=='typelicens'">
                                     <div class="flex items-center focus:outline-none">
