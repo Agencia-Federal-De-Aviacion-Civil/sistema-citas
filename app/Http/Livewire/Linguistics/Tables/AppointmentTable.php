@@ -78,6 +78,19 @@ class AppointmentTable extends DataTableComponent
                     Column::make("Hora", "linguisticReserveSchedule.time_start")
                     ->sortable(),
 
+                    Column::make("ACCIÓN")
+                    ->label(
+                        fn ($row) => view(
+                            'components.linguistic.schedule-component',
+                            [
+                                $action = LinguisticReserve::where('id', $row->id)->get(),
+                                'status' => $action[0]->status,
+                                'scheduleId' => $action[0]->id,
+                                'linguisticId' => $action[0]->linguistic_id
+                            ]
+                        )
+                    ),
+
 
                 ];
     }
@@ -89,7 +102,8 @@ class AppointmentTable extends DataTableComponent
                 'linguisticReserveFromUser.UserPart:apParental,apMaternal',
                 'linguisticReserve.linguisticTypeExam:name',
                 'linguisticReserve.linguisticTypeLicense:name',
-                'linguisticReserve:license_number,red_number,reference_number,time_start'
+                'linguisticReserve:license_number,red_number,reference_number',
+                'linguisticReserveSchedule.time_start'
             ]);
     }
 
