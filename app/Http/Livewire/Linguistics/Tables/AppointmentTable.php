@@ -5,12 +5,31 @@ namespace App\Http\Livewire\Linguistics\Tables;
 use App\Models\Linguistic\LinguisticReserve;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
+use Rappasoft\LaravelLivewireTables\Views\Filters\DateFilter;
+use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
+use Rappasoft\LaravelLivewireTables\Views\Filters\TextFilter;
+use WireUi\Traits\Actions;
 
 class AppointmentTable extends DataTableComponent
 {
-
+    use Actions;
+    public $batchId;
+    public $exporting;
+    public $exportFinished;
+    protected function getListeners(): array
+    {
+        return array_merge(
+            parent::getListeners(),
+            [
+                'cancelReserve' => '$refresh',
+                'attendeReserve' => '$refresh',
+                'reserveAppointment' => '$refresh',
+            ]
+        );
+    }
     public function configure(): void
     {
         $this->setPrimaryKey('id');
@@ -106,8 +125,74 @@ class AppointmentTable extends DataTableComponent
                 'linguisticReserveSchedule.time_start'
             ]);
     }
+    public function filters(): array
+    {
+        if (Auth::user()->can('super_admin.medicine_admin.see.schedule.table') || Auth::user()->can('headquarters.see.schedule.table')) {
+            return [
+                SelectFilter::make('TIPO')
+                    ->options([
+                        '' => 'TODOS',
+                        '1' => 'INICIAL',
+                        '2' => 'RENOVACIÓN',
+                    ])
+                    ->filter(function ($query, $value) {
+                        $query->where('type_exam_id', $value);
+                    }),
 
+                SelectFilter::make('STATUS')
+                    ->options([
+                        '' => 'TODOS',
+                        '0' => 'PENDIENTE',
+                        '1' => 'ASISTIÓ',
+                        '2' => 'CANCELADO',
+                        '3' => 'CANCELÓ',
+                        '4' => 'REAGENDADA',
+                        '5' => 'LIBERADA'
 
+                    ])
+                    ->filter(function ($query, $value) {
+                        $query->where('linguistic_reserves.status', $value);
+                    }),
 
+                DateFilter::make('Desde')
+                    ->filter(function ($query, $value) {
+                        $query->whereDate('date_Reserve', '>=', $value);
+                    }),
+
+                DateFilter::make('Hasta')
+                    ->filter(function ($query, $value) {
+                        $query->whereDate('date_Reserve', '<=', $value);
+                    }),
+                SelectFilter::make('SEDE')
+                    ->options([
+                        '' => 'TODOS',
+                        '2' => 'PRUEBA',
+                    ])
+                    ->filter(function ($query, $value) {
+                        $query->where('to_user_headquarters', $value);
+                    }),
+
+                SelectFilter::make('GENERO')
+                    ->options([
+                        '' => 'TODOS',
+                        'FEMENINO' => 'FEMENINO',
+                        'MASCULINO' => 'MASCULINO',
+                    ])
+                    ->filter(function ($query, $value) {
+                        $query->where('genre', $value);
+                    }),
+
+                TextFilter::make('ID CITA')
+                    ->config([
+                        'placeholder' => 'Buscar cita',
+                    ])
+                    ->filter(function (Builder $builder, string $value) {
+                        $builder->where('linguistic_reserves.id', 'like', '%' . $value . '%');
+                    }),
+            ];
+        } else {
+            return [];
+        }
+    }
 
 }

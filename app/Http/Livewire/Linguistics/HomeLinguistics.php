@@ -148,7 +148,7 @@ class HomeLinguistics extends Component
 
     public function openConfirm()
     {
-        $this->linguisticReserves = LinguisticReserve::with(['reserveLinguistic', 'reserveSchedule','user'])
+        $this->linguisticReserves = LinguisticReserve::with(['linguisticReserve', 'linguisticReserveSchedule','user'])
             ->where('linguistic_id', $this->saveLinguistic->id)->get();
         $dateConverted = $this->linguisticReserves[0]->date_reserve;
         $this->dateConvertedFormatted = Date::parse($dateConverted)->format('l j F Y');
@@ -160,12 +160,12 @@ class HomeLinguistics extends Component
     public function generatePdf()
     {
         $savedLinguisticId = session('saved_linguistic_id');
-        $linguisticReserves = LinguisticReserve::with(['reserveLinguistic', 'reserveSchedule','user'])
+        $linguisticReserves = LinguisticReserve::with(['linguisticReserve', 'linguisticReserveSchedule','user'])
             ->where('linguistic_id', $savedLinguisticId)->get();
         $linguisticId = $linguisticReserves[0]->id;
         $dateAppointment = $linguisticReserves[0]->date_reserve;
         $dateConvertedFormatted = Date::parse($dateAppointment)->format('l j F Y');
-        $curp = $linguisticReserves[0]->reserveLinguistic->linguisticUser->userParticipant->pluck('curp')->first();
+        $curp = $linguisticReserves[0]->linguisticReserve->linguisticUser->userParticipant->pluck('curp')->first();
         $keyEncrypt =  Crypt::encryptString($linguisticId . '*' . $dateAppointment . '*' . $curp);
         $fileName =  $linguisticReserves[0]->date_reserve . '-' . $curp . '-' . 'LINGUISTIC-' . $linguisticId . '.pdf';
             $pdf = PDF::loadView('livewire.linguistics.documents.linguistic-initial', compact('linguisticReserves', 'keyEncrypt', 'dateConvertedFormatted'));

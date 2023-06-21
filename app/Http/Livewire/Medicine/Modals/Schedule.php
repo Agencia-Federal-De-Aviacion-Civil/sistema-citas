@@ -22,7 +22,7 @@ class Schedule extends ModalComponent
     use Actions;
     use WithFileUploads;
     public $comment1, $comment2, $scheduleId, $status, $medicineReserves, $name, $type, $class, $typLicense, $sede, $dateReserve, $date, $time, $scheduleMedicines, $sedes,
-        $to_user_headquarters, $medicine_schedule_id, $selectedOption, $comment, $comment_cancelate, $hoursReserve, $observation, $medicineId, $accion;
+        $to_user_headquarters, $medicine_schedule_id, $selectedOption, $comment, $comment_cancelate, $hoursReserve, $observation, $medicineId, $accion,$id_appoint;
 
     public function rules()
     {

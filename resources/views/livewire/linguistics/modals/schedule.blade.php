@@ -17,6 +17,8 @@
                         CANCELÓ CITA
                     @elseif ($this->status == 4)
                         CITA REAGENDADA
+                    @elseif ($this->status == 5)
+                        LLAVE LIBERADA
                     @endif
 
                     {{-- {{ $license_number }} --}}
@@ -38,17 +40,13 @@
 
                 <div class="grid xl:grid-cols-2 xl:gap-6">
                     <div class="mt-1 relative w-full group">
-                        <x-input wire:model="license_number" label="NÚMERO DE LICENCIA" placeholder="ESCRIBE..." disabled />
+                        <x-input wire:model="license_number" label="NÚMERO DE LICENCIA" placeholder="ESCRIBE..."
+                            disabled />
                     </div>
                     <div class="mt-1 relative w-full group">
                         <x-input wire:model="red_number" label="NÚMERO ROJO" placeholder="ESCRIBE..." disabled />
                     </div>
                 </div>
-                {{-- <div class="grid xl:grid-cols-1 xl:gap-6">
-                    <div class="mt-4 relative w-full group">
-                        <x-input wire:model="typLicense" label="TIPO DE LICENCIA" disabled />
-                    </div>
-                </div> --}}
                 @if ($this->status != 0)
                     <div class="grid xl:grid-cols-1 xl:gap-6">
                         <div class="mt-4 relative w-full group">
@@ -80,7 +78,7 @@
                                 <x-textarea wire:model="comment" label="MOTIVO" disabled />
                             </div>
                         @endif
-                        @hasrole('super_admin|medicine_admin')
+                        @hasrole('super_admin|linguistic_admin')
                             <div class="mt-6 relative w-full group">
                                 <select name="my_option" label="SELECIONE OPCIÓN" x-model="selectedOption"
                                     wire:model="selectedOption"
@@ -98,7 +96,7 @@
                     <div class="float-left mt-6">
                         <x-button sm icone="exit" wire:click="$emit('closeModal')" label="SALIR" silver />
                     </div>
-                    @hasrole('super_admin|super_admin_medicine')
+                    @hasrole('super_admin|super_admin_linguistic')
                         @if ($this->status == 3 || $this->status == 2)
                             <div class="float-right mt-6">
                                 <x-button wire:click.prevent="saveActive" spinner="saveActive" loading-delay="short" sm
@@ -150,16 +148,16 @@
                                     <div class="mt-4 relative w-full group">
                                         <label>SELECCIONE HORA</label>
                                         <select id="small" label="SELECCIONE HORA" placeholder="seleccione..."
-                                            wire:model.lazy="medicine_schedule_id"
+                                            wire:model.lazy="linguistic_schedule_id"
                                             class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                             <option value="">Seleccione...</option>
-                                            {{-- @foreach ($scheduleMedicines as $scheduleMedicine)
-                                                <option value="{{ $scheduleMedicine->id }}">
-                                                    {{ $scheduleMedicine->time_start }}
+                                            @foreach ($schedulelinguistics as $schedulelinguistic)
+                                                <option value="{{ $schedulelinguistic->id }}">
+                                                    {{ $schedulelinguistic->time_start }}
                                                 </option>
-                                            @endforeach --}}
+                                            @endforeach
                                         </select>
-                                        @error('medicine_schedule_id')
+                                        @error('linguistic_schedule_id')
                                             <span class="mt-2 text-sm text-negative-600">Seleccione opción</span>
                                         @enderror
 
@@ -178,28 +176,28 @@
                             </div>
                         </div>
 
-                        @hasrole('super_admin|medicine_admin')
-                        <div class="mt-6 relative w-full group">
-                            <select name="my_option" label="SELECIONE OPCIÓN" x-model="selectedOption"
-                                wire:model="selectedOption"
-                                class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-300 dark:border-gray-300 dark:placeholder-gray-300 dark:text-white">
-                                <option value="">SELECCIONE OPCIÓN</option>
-                                <option value="1">ASISTIÓ A SU CITA</option>
-                                <option value="2">CANCELAR CITA</option>
-                                <option value="4">REAGENDAR CITA</option>
-                            </select>
-                        </div>
+                        @hasrole('super_admin|linguistic_admin')
+                            <div class="mt-6 relative w-full group">
+                                <select name="my_option" label="SELECIONE OPCIÓN" x-model="selectedOption"
+                                    wire:model="selectedOption"
+                                    class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-300 dark:border-gray-300 dark:placeholder-gray-300 dark:text-white">
+                                    <option value="">SELECCIONE OPCIÓN</option>
+                                    <option value="1">ASISTIÓ A SU CITA</option>
+                                    <option value="2">CANCELAR CITA</option>
+                                    <option value="4">REAGENDAR CITA</option>
+                                </select>
+                            </div>
                         @endhasrole
                         @hasrole('headquarters')
-                        <div class="mt-6 relative w-full group">
-                            <select name="my_option" label="SELECIONE OPCIÓN" x-model="selectedOption"
-                                wire:model="selectedOption"
-                                class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-300 dark:border-gray-300 dark:placeholder-gray-300 dark:text-white">
-                                <option value="">SELECCIONE OPCIÓN</option>
-                                <option value="1">ASISTIÓ A SU CITA</option>
-                                <option value="2">CANCELAR CITA</option>
-                            </select>
-                        </div>
+                            <div class="mt-6 relative w-full group">
+                                <select name="my_option" label="SELECIONE OPCIÓN" x-model="selectedOption"
+                                    wire:model="selectedOption"
+                                    class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-300 dark:border-gray-300 dark:placeholder-gray-300 dark:text-white">
+                                    <option value="">SELECCIONE OPCIÓN</option>
+                                    <option value="1">ASISTIÓ A SU CITA</option>
+                                    <option value="2">CANCELAR CITA</option>
+                                </select>
+                            </div>
                         @endhasrole
                         @error('selectedOption')
                             <span class="mt-2 text-sm text-negative-600">Seleccione opción</span>
@@ -211,8 +209,6 @@
                     <div class="float-left mt-6">
                         <x-button wire:click="$emit('closeModal')" label="SALIR" silver />
                     </div>
-
-
                 @endif
             </div>
         </div>

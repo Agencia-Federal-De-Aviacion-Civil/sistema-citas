@@ -29,4 +29,8 @@ class LinguisticReserve extends Model
     {
         return $this->belongsTo(User::class, 'to_user_headquarters');
     }
+    public function reserveObserv()
+    {
+        return $this->hasMany(LinguisticObservation::class);
+    }
 }

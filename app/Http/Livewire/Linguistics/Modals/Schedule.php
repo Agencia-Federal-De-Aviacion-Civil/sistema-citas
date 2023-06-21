@@ -3,10 +3,13 @@
 namespace App\Http\Livewire\Linguistics\Modals;
 
 use App\Models\Catalogue\Headquarter;
+use App\Models\Catalogue\Schedule as CatalogueSchedule;
+use App\Models\Linguistic\Linguistic;
 use App\Models\Linguistic\LinguisticHistoryMovements;
+use App\Models\Linguistic\LinguisticObservation;
 use App\Models\Linguistic\LinguisticReserve;
 use Illuminate\Support\Facades\Auth;
-use Livewire\Component;
+use Illuminate\Support\Facades\Date;
 use Livewire\WithFileUploads;
 use LivewireUI\Modal\ModalComponent;
 use WireUi\Traits\Actions;
@@ -16,14 +19,28 @@ class Schedule extends ModalComponent
     use Actions;
     use WithFileUploads;
     public $scheduleId, $linguisticId;
-    public $name, $status,$type,$typLicense,$license_number,$red_number,$sedes,$sede,$hoursReserve,$dateReserve;
+    public $id_appoint, $name, $status, $type, $typLicense, $license_number, $red_number, $sedes, $sede, $hoursReserve, $dateReserve, $schedulelinguistics;
+    public $linguistic_schedule_id, $selectedOption, $comment, $comment_cancelate, $to_user_headquarters, $date, $comment1, $comment2;
+    public function rules()
+    {
+        return [
+            'comment' => '',
+            'comment_cancelate' => '',
+            'selectedOption' => 'required',
+            'to_user_headquarters' => '',
+            'linguistic_schedule_id' => ''
+        ];
+    }
+
     public function mount($scheduleId, $linguisticId)
     {
         $this->scheduleId = $scheduleId;
         $this->linguisticId = $linguisticId;
         $this->valores($this->scheduleId);
         $this->sedes = Headquarter::where('system_id', 2)->where('status', false)->get();
-
+        $this->schedulelinguistics = collect();
+        Date::setLocale('ES');
+        $this->date = Date::now()->parse();
     }
     public function render()
     {
@@ -33,9 +50,14 @@ class Schedule extends ModalComponent
     {
         return 'xl';
     }
+    public function updatedToUserHeadquarters($value)
+    {
+        // Obtener los horarios disponibles para la fecha especificada
+        $this->schedulelinguistics = CatalogueSchedule::where('user_id', $value)
+            ->get();
+    }
     public function valores($cheduleId)
     {
-
         $this->scheduleId = $cheduleId;
         $linguisticReserves = LinguisticReserve::with([
             'linguisticReserveFromUser',
@@ -43,10 +65,9 @@ class Schedule extends ModalComponent
             'linguisticReserveSchedule'
         ])->where('id', $this->scheduleId)->get();
 
-        $this->name = $linguisticReserves[0]->linguisticReserveFromUser->name. ' ' .
-        $linguisticReserves[0]->linguisticReserveFromUser->UserParticipant[0]->apParental. ' ' .
-        $linguisticReserves[0]->linguisticReserveFromUser->UserParticipant[0]->apMaternal;
-
+        $this->name = $linguisticReserves[0]->linguisticReserveFromUser->name . ' ' .
+            $linguisticReserves[0]->linguisticReserveFromUser->UserParticipant[0]->apParental . ' ' .
+            $linguisticReserves[0]->linguisticReserveFromUser->UserParticipant[0]->apMaternal;
         $this->type = $linguisticReserves[0]->linguisticReserve->linguisticTypeExam->name;
         $this->typLicense = $linguisticReserves[0]->linguisticReserve->linguisticTypeLicense->name;
         $this->license_number = $linguisticReserves[0]->linguisticReserve->license_number;
@@ -55,40 +76,35 @@ class Schedule extends ModalComponent
         $this->dateReserve = $linguisticReserves[0]->date_reserve;
         $this->hoursReserve = $linguisticReserves[0]->linguisticReserveSchedule->time_start;
         $this->status = $linguisticReserves[0]->status;
+        $this->id_appoint = $linguisticReserves[0]->id;
 
-        // $this->id_appoint = $linguisticReserves[0]->id;
+        if (empty($linguisticReserves[0]->reserveObserv[0]->observation)) {
+            $this->comment;
+        } else {
+            if (!empty($linguisticReserves[0]->reserveObserv[0]->observation)) {
 
-        // if ($linguisticReserves[0]->medicineReserveMedicine->medicineTypeExam->id == 1) {
-        //     $this->class = $linguisticReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name;
-        //     $this->typLicense = $linguisticReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass->name;
-        // } else if ($linguisticReserves[0]->medicineReserveMedicine->medicineTypeExam->id == 2) {
-        //     $this->class = $linguisticReserves[0]->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name;
-        //     $this->typLicense = $linguisticReserves[0]->medicineReserveMedicine->medicineRenovation[0]->renovationClasificationClass->name;
-        // }
-        // $this->to_user_headquarters = $linguisticReserves[0]->user->name;
-        // $this->dateReserve = $linguisticReserves[0]->dateReserve;
+                if ($linguisticReserves[0]->reserveObserv[0]->status == 2) {
+                    $comn = 'CANCELADO';
+                } else {
+                    $comn = 'REAGENDADO';
+                }
+                $this->comment1 = $comn . ': ' . $linguisticReserves[0]->reserveObserv[0]->observation;
+            } else {
+                $this->comment1;
+            }
+            if (!empty($linguisticReserves[0]->reserveObserv[1]->observation)) {
 
-
-        // $this->hoursReserve = $linguisticReserves[0]->reserveSchedule->time_start;
-
-        // if (empty($linguisticReserves[0]->reserveObserv[0]->observation)) {
-        //     $this->comment;
-        // } else {
-
-        //     if (!empty($linguisticReserves[0]->reserveObserv[0]->observation)) {
-        //         $this->comment1 = $linguisticReserves[0]->reserveObserv[0]->observation;
-        //     } else {
-        //         $this->comment1;
-        //     }
-        //     if (!empty($linguisticReserves[0]->reserveObserv[1]->observation)) {
-        //         $this->comment2 = $linguisticReserves[0]->reserveObserv[1]->observation;
-        //     } else {
-        //         $this->comment2;
-        //     }
-        //     $this->comment = $this->comment1 . ' / ' . $this->comment2;
-        // }
-
-        // $this->sede = $linguisticReserves[0]->user->name;
+                if ($linguisticReserves[0]->reserveObserv[1]->status == 2) {
+                    $comn = 'CANCELADO';
+                } else {
+                    $comn = 'REAGENDADO';
+                }
+                $this->comment2 = ' / ' . $comn . ': ' . $linguisticReserves[0]->reserveObserv[1]->observation;
+            } else {
+                $this->comment2;
+            }
+            $this->comment = $this->comment1 . '' . $this->comment2;
+        }
     }
 
     public function updated($propertyName)
@@ -112,8 +128,8 @@ class Schedule extends ModalComponent
             $this->validate([
                 'comment_cancelate' => 'required',
             ]);
-            $observation = new MedicineObservation();
-            $observation->medicine_reserve_id = $this->scheduleId;
+            $observation = new LinguisticObservation();
+            $observation->linguistic_reserve_id = $this->scheduleId;
             $observation->observation = $this->comment_cancelate;
             $observation->status = 2;
             $observation->save();
@@ -129,16 +145,15 @@ class Schedule extends ModalComponent
             $this->validate([
                 'comment' => 'required',
                 'to_user_headquarters' => 'required',
-                'medicine_schedule_id' => 'required'
-
+                'linguistic_schedule_id' => 'required'
             ]);
-            $observation = new MedicineObservation();
-            $observation->medicine_reserve_id = $this->scheduleId;
+            $observation = new LinguisticObservation();
+            $observation->linguistic_reserve_id = $this->scheduleId;
             $observation->observation = $this->comment;
             $observation->status = 4;
             $observation->save();
             $citas = LinguisticReserve::where('to_user_headquarters', $this->to_user_headquarters)
-                ->where('dateReserve', $this->dateReserve)
+                ->where('date_Reserve', $this->dateReserve)
                 ->where(function ($query) {
                     $query->where('status', 0)
                         ->orWhere('status', 1)
@@ -184,7 +199,7 @@ class Schedule extends ModalComponent
             } else {
                 $cita = LinguisticReserve::find($this->scheduleId);
                 $cita->to_user_headquarters = $this->to_user_headquarters;
-                $cita->dateReserve = $this->dateReserve;
+                $cita->date_Reserve = $this->dateReserve;
                 $cita->status = $this->selectedOption;
                 $cita->save();
                 $this->emit('reserveAppointment');
@@ -200,5 +215,40 @@ class Schedule extends ModalComponent
         ]);
         $this->closeModal();
     }
-
+    public function saveActive()
+    {
+        $activeReserve = Linguistic::find($this->linguisticId);
+        $activeReserve->update([
+            'reference_number' => 'ACTIVE' . '-' . $this->linguisticId,
+        ]);
+        $updateStatus = LinguisticReserve::find($this->scheduleId);
+        $updateStatus->update([
+            'status' => '5',
+        ]);
+        $this->notification([
+            'title'       => 'LLAVE DE PAGO LIBERADA!',
+            'description' => 'La llave de pago se liberó.',
+            'icon'        => 'info',
+            'timeout' => '3100'
+        ]);
+        $this->closeModal();
+        $this->emit('reserveAppointment');
+        //Historial de liberar llave de pago
+        LinguisticHistoryMovements::create([
+            'user_id' => Auth::user()->id,
+            'action' => "LIBERA LLAVE DE PAGO",
+            'process' => $this->name . ' FOLIO CITA:' . $this->id_appoint
+        ]);
+        $this->closeModal();
+    }
+    public function messages()
+    {
+        return [
+            'comment_cancelate.required' => 'Campo obligatorio',
+            'comment.required' => 'Campo obligatorio',
+            'selectedOption.required' => 'Seleccione opción',
+            'to_user_headquarters.required' => 'Seleccione opción',
+            'linguistic_schedule_id.required' => 'Seleccione opción'
+        ];
+    }
 }
