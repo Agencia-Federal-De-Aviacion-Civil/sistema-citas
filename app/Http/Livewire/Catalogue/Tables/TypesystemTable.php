@@ -27,7 +27,7 @@ class TypesystemTable extends DataTableComponent
                 Column::make("ACCIÓN")
                 ->label(
                     fn ($row) => view(
-                        'components.catalog.catalogos-component',
+                        'components.catalogue.catalogue-component',
                         [
                             $action = System::where('id', $row->id)->get(),
                             'name' => $action[0]->name,
