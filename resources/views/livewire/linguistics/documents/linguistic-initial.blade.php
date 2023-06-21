@@ -93,57 +93,57 @@
             <tr>
                 <td>NOMBRE:</td>
                 <td>
-                    {{ ($linguisticReserves[0]->reserveLinguistic->linguisticUser->name ?? 'SIN INFORMACIÓN') . ' ' . $linguisticReserves[0]->reserveLinguistic->linguisticUser->UserParticipant->pluck('apParental')->first() . ' ' . $linguisticReserves[0]->reserveLinguistic->linguisticUser->UserParticipant->pluck('apMaternal')->first() }}
+                    {{ ($linguisticReserves[0]->linguisticReserve->linguisticUser->name ?? 'SIN INFORMACIÓN') . ' ' . $linguisticReserves[0]->linguisticReserve->linguisticUser->UserParticipant->pluck('apParental')->first() . ' ' . $linguisticReserves[0]->linguisticReserve->linguisticUser->UserParticipant->pluck('apMaternal')->first() }}
                 </td>
             </tr>
             <tr>
                 <td>CURP:</td>
                 <td>
-                    {{ ($linguisticReserves[0]->reserveLinguistic->linguisticUser->userParticipant->pluck('curp')->first() ?? 'SIN INFORMACIÓN') }}
+                    {{ ($linguisticReserves[0]->linguisticReserve->linguisticUser->userParticipant->pluck('curp')->first() ?? 'SIN INFORMACIÓN') }}
                 </td>
             </tr>
             <tr>
                 <td>LLAVE DE PAGO</td>
-                <td>{{ $linguisticReserves[0]->reserveLinguistic->reference_number }}</td>
+                <td>{{ $linguisticReserves[0]->linguisticReserve->reference_number }}</td>
             </tr>
             <tr>
                 <td>FECHA DE PAGO</td>
-                <td>{{ $linguisticReserves[0]->reserveLinguistic->pay_date }}</td>
+                <td>{{ $linguisticReserves[0]->linguisticReserve->pay_date }}</td>
             </tr>
             <tr>
                 <td>TIPO DE EVALUACIÓN:</td>
                 <td>
-                    {{ $linguisticReserves[0]->reserveLinguistic->linguisticTypeExam->name }}
+                    {{ $linguisticReserves[0]->linguisticReserve->linguisticTypeExam->name }}
                 </td>
             </tr>
             <tr>
                 <td>NÚMERO DE LICENCIA:</td>
                 <td>
-                    {{ $linguisticReserves[0]->reserveLinguistic->license_number }}
+                    {{ $linguisticReserves[0]->linguisticReserve->license_number }}
                 </td>
             </tr>
             <tr>
                 <td>TIPO DE LICENCIA:</td>
                 <td>
-                    {{ $linguisticReserves[0]->reserveLinguistic->linguisticTypeLicense->name }}
+                    {{ $linguisticReserves[0]->linguisticReserve->linguisticTypeLicense->name }}
                 </td>
             </tr>
             <tr>
                 <td>NÚMERO ROJO:</td>
                 <td>
-                    {{ $linguisticReserves[0]->reserveLinguistic->red_number }}
+                    {{ $linguisticReserves[0]->linguisticReserve->red_number }}
                 </td>
             </tr>
             <tr>
                 <td>SEDE:</td>
                 <td>
-                    {{ $linguisticReserves[0]->user->name }}
+                    {{ $linguisticReserves[0]->linguisticUserHeadquers->name }}
                 </td>
             </tr>
             <tr>
                 <td>DIRECCIÓN SEDE:</td>
                 <td>
-                    {{ $linguisticReserves[0]->user->userHeadquarter[0]->direction }}
+                    {{ $linguisticReserves[0]->linguisticUserHeadquers->userHeadquarter[0]->direction }}
                 </td>
             </tr>
             <tr>
@@ -153,9 +153,9 @@
             </tr>
             <tr>
                 <td>HORA</td>
-                <td>{{ $linguisticReserves[0]->reserveSchedule->time_start }}</td>
+                <td>{{ $linguisticReserves[0]->linguisticReserveSchedule->time_start }}</td>
             </tr>
-          
+
         </table>
         <div class="codigoqr">
             <img src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ $keyEncrypt }}"

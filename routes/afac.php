@@ -39,13 +39,15 @@ Route::middleware([
     });
     Route::middleware(['role:super_admin|medicine_admin|super_admin_medicine'])->group(function () {
         Route::get('/headquarters', HomeHeadquarter::class)->name('afac.headquarterMedicine');
-        Route::get('/validate', ValidateQr::class)->name('validate');  
+        Route::get('/validate', ValidateQr::class)->name('validate');
     });
     // Route::get('/appointments', [AppointmentController::class, 'index'])->name('afac.appointment');
     Route::get('/appointments', [AppointmentMedicineController::class, 'index'])->name('afac.appointment');
     Route::get('/appointmentlinguistic',AppointmentLinguistics::class)->name('afac.appointmentlinguistic');
     Route::get('/downloadFile/{scheduleId}', [AppointmentMedicineController::class, 'download'])->name('afac.downloadFile');
-    
+
+    Route::get('/downloadFileLinguistic/{scheduleId}', [HomeLinguistics::class, 'download'])->name('afac.downloadFileLinguistic');
+
     Route::middleware(['role:super_admin'])->group(function () {
         Route::get('/users', [UserMedicineController::class, 'index'])->name('afac.users');
         Route::resource('/roles', RoleController::class)->names('afac.roles');

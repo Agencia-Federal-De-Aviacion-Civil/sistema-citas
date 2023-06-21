@@ -37,7 +37,7 @@
             wire:click="$emit('openModal', 'linguistics.modals.schedule', {{ json_encode(['scheduleId' => $scheduleId, 'linguisticId' => $linguisticId]) }})"
             label="REAGENDADA" xs warning />
         @hasrole('super_admin|linguistic_admin|user')
-            <x-button xs positive href="{{ route('afac.downloadFile', $scheduleId) }}" label="DESCARGAR" />
+            <x-button xs positive href="{{ route('afac.downloadFileLinguistic', $scheduleId) }}" label="DESCARGAR" />
         @endhasrole
     @elseif($status == 5)
         <x-button
@@ -46,7 +46,7 @@
     @endif
     @if ($status == 0)
         @hasrole('super_admin|linguistic_admin|user')
-            <x-button xs positive href="{{ route('afac.downloadFile', $scheduleId) }}" label="DESCARGAR" />
+            <x-button xs positive href="{{ route('afac.downloadFileLinguistic', $scheduleId) }}" label="DESCARGAR" />
         @endhasrole
     @endif
 </div>

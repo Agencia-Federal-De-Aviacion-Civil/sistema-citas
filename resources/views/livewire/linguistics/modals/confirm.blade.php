@@ -83,7 +83,7 @@
                                         </svg>
                                         <p class="text-lg title-font font-normal">Tipo de Evaluación:
                                         <p class="text-xl font-semibold">
-                                            {{ $linguisticReserves[0]->reserveLinguistic->linguisticTypeExam->name }}
+                                            {{ $linguisticReserves[0]->linguisticReserve->linguisticTypeExam->name }}
                                         </p>
                                         </p>
                                     </div>
@@ -101,7 +101,7 @@
                                     </svg>
                                     <p class="text-lg title-font font-normal">Tipo de Licencia:
                                     <p class="text-lg font-semibold">
-                                        {{ $linguisticReserves[0]->reserveLinguistic->linguisticTypeLicense->name }}
+                                        {{ $linguisticReserves[0]->linguisticReserve->linguisticTypeLicense->name }}
                                     </p>
                                     </p>
                                 </div>
@@ -118,7 +118,7 @@
                                     </svg>
                                     <p class="text-lg title-font font-normal">Referencia de pago:
                                     <p class="text-lg font-semibold">
-                                        {{ $linguisticReserves[0]->reserveLinguistic->reference_number }}
+                                        {{ $linguisticReserves[0]->linguisticReserve->reference_number }}
                                     </p>
                                     </p>
                                 </div>
@@ -138,7 +138,7 @@
                                         <p class="text-lg title-font font-normal">Fecha y Hora:
                                         <p class="text-xl font-semibold">
                                             {{ mb_strtoupper($dateConvertedFormatted) }} A LAS
-                                            {{ $linguisticReserves[0]->reserveSchedule->time_start }}
+                                            {{ $linguisticReserves[0]->linguisticReserveSchedule->time_start }}
                                         </p>
                                         </p>
                                     </div>
@@ -160,7 +160,7 @@
 
                                         <p class="text-lg title-font font-normal">Sede:
                                         <p class="text-lg font-semibold">
-                                            {{ $linguisticReserves[0]->user->name }}
+                                            {{ $linguisticReserves[0]->linguisticUserHeadquers->name }}
                                         </p>
                                         </p>
                                     </div>
@@ -174,8 +174,8 @@
                                 <div class="sm:w-full w-full">
                                     <div class="rounded flex p-0 h-full items-center">
                                         <p class="text-lg title-font font-normal">
-                                            {{ $linguisticReserves[0]->user->userHeadquarter[0]->direction }}
-                                            <a href="{{ $linguisticReserves[0]->user->userHeadquarter[0]->url }}"
+                                            {{ $linguisticReserves[0]->linguisticUserHeadquers->userHeadquarter[0]->direction }}
+                                            <a href="{{ $linguisticReserves[0]->linguisticUserHeadquers->userHeadquarter[0]->url }}"
                                                 target="_blank" class="text-lg font-semibold text-sky-600">Consultar
                                                 mapa</a>
                                         </p>
