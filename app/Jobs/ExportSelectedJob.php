@@ -10,36 +10,27 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Auth;
+use Jenssegers\Date\Date;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ExportSelectedJob implements ShouldQueue
 {
     use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-    protected $results, $userId;
+    protected $results, $userId, $dateExport, $dataExports;
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($results)
+    public function __construct($results, $dataExports)
     {
         $this->results = $results;
-        if (Auth::user()) {
-            $this->userId = Auth::user()->id;
-        } else {
-            $this->userId = null;
-        }
+        $this->dataExports = $dataExports;
     }
-
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
     public function handle()
     {
         try {
-            $filePath = 'medicina-preventiva/exports/' . $this->userId . '.xlsx';
+            $filePath = 'medicina-preventiva/exports/' . $this->dataExports . '.xlsx';
             Excel::store(new AppointmentExport($this->results), $filePath, 'do');
         } catch (\Exception $e) {
             echo $e->getMessage();
