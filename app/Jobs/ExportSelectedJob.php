@@ -9,34 +9,31 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Auth;
+use Jenssegers\Date\Date;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ExportSelectedJob implements ShouldQueue
 {
     use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-    protected $results;
+    protected $results, $userId, $dateExport, $dataExports;
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($results)
+    public function __construct($results, $dataExports)
     {
         $this->results = $results;
+        $this->dataExports = $dataExports;
     }
-
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
     public function handle()
     {
         try {
-            $filePath = 'medicina-preventiva/exports/report-appointment.xlsx';
+            $filePath = 'medicina-preventiva/exports/' . $this->dataExports . '.xlsx';
             Excel::store(new AppointmentExport($this->results), $filePath, 'do');
         } catch (\Exception $e) {
-            $e->getMessage();
+            echo $e->getMessage();
         }
     }
 }

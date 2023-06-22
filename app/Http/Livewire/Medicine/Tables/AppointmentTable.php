@@ -5,12 +5,14 @@ namespace App\Http\Livewire\Medicine\Tables;
 use App\Events\Medicine\ExportCompleted;
 use App\Jobs\ExportSelectedJob;
 use App\Models\Catalogue\Headquarter;
+use App\Models\Medicine\MedicineExportHistory;
 use App\Models\Medicine\MedicineReserve;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Storage;
+use Jenssegers\Date\Date;
 use Livewire\Component;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
@@ -48,7 +50,7 @@ class AppointmentTable extends DataTableComponent
         ]);
         $this->setOfflineIndicatorEnabled();
         $this->setEagerLoadAllRelationsEnabled();
-        $this->setDefaultSort('id','asc');
+        $this->setDefaultSort('id', 'asc');
     }
     public function columns(): array
     {
@@ -374,6 +376,16 @@ class AppointmentTable extends DataTableComponent
                     ->filter(function ($query, $value) {
                         $query->where('type_exam_id', $value);
                     }),
+                SelectFilter::make('CLASE')
+                    ->options([
+                        '' => 'TODOS',
+                        '1' => 'CLASE I',
+                        '2' => 'CLASE II',
+                        '3' => 'CLASE III',
+                    ])
+                    ->filter(function ($query, $value) {
+                        $query->where('type_exam_id', $value);
+                    }),
 
                 SelectFilter::make('STATUS')
                     ->options([
@@ -449,6 +461,7 @@ class AppointmentTable extends DataTableComponent
             try {
                 $query = MedicineReserve::with([
                     'medicineReserveMedicine:id,reference_number,type_exam_id', 'medicineReserveFromUser:id,name',
+                    'medicineReserveMedicine.medicineRevaluation:id,type_exam_id',
                     'medicineReserveMedicine.medicineTypeExam:name', 'user:id,name',
                     'userParticipantUser:id,apParental,apMaternal,curp,genre,birth,age,mobilePhone,officePhone,extension',
                     'userParticipantUser.participantState:id,name', 'reserveSchedule:id,time_start'
@@ -456,8 +469,14 @@ class AppointmentTable extends DataTableComponent
                 $results = $query->get();
                 $this->exporting = true;
                 $this->exportFinished = false;
+                $saveExports = MedicineExportHistory::create(
+                    [
+                        'auth' => Auth::user()->id,
+                    ]
+                );
+                $dataExports = $saveExports->auth . '-' . $saveExports->created_at;
                 $batch = Bus::batch([
-                    new ExportSelectedJob($results),
+                    new ExportSelectedJob($results, $dataExports),
                 ])->dispatch();
                 $this->batchId = $batch->id;
                 $this->emit('BatchDispatch', [$this->batchId, $this->exporting, $this->exportFinished]);
