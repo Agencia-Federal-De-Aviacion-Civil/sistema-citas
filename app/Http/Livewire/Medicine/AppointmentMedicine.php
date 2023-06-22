@@ -7,13 +7,19 @@ use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
+use Jenssegers\Date\Date;
 
 class AppointmentMedicine extends Component
 {
     public $batchId;
     public $exporting;
-    public $exportFinished;
+    public $exportFinished,$dateNow;
     protected $listeners = ['BatchDispatch'];
+    public function mount()
+    {
+        Date::setLocale('es');
+        $this->dateNow = Date::now()->format('l j F Y');
+    }
     public function BatchDispatch($data)
     {
         $this->batchId = $data[0];

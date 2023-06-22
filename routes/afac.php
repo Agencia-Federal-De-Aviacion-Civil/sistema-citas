@@ -10,6 +10,7 @@ use App\Http\Livewire\Linguistics\HomeLinguistics;
 use App\Http\Livewire\Medicine\HomeMedicine;
 use App\Http\Livewire\Medicine\HistoryMedicieMovements;
 use App\Http\Livewire\Linguistics\HistoryLinguisticsMovements;
+use App\Http\Livewire\Catalogue\HomeCatalogs;
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Validate\Qr as ValidateQr;
 
@@ -48,5 +49,7 @@ Route::middleware([
         Route::resource('/roles', RoleController::class)->names('afac.roles');
         Route::get('/historymedicine', HistoryMedicieMovements::class)->name('afac.medicienMovements');
         Route::get('/historylinguistics', HistoryLinguisticsMovements::class)->name('afac.linguisticsMovements');
+        Route::get('/homecatalogs', HomeCatalogs::class)->name('afac.catalogappointment');
+        
     });
 });
