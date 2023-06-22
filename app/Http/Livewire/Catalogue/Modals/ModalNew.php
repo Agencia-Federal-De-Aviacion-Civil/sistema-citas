@@ -43,12 +43,12 @@ class ModalNew extends ModalComponent
     {
         $this->catalogsId = $catalogsId;
         if ($this->catalogsId != 0) {
-            $this->title = 'EDITA USUARIO';
+            $this->title = 'EDITA SISTEMA';
             $system = System::where('id', $this->catalogsId)->get();
             $this->id_save = $system[0]->id;
             $this->name = $system[0]->name;
         } else {
-            $this->title = 'AGREGAR USUARIO';
+            $this->title = 'AGREGAR SISTEMA';
             $this->name =  '';
         }
     }

@@ -46,13 +46,13 @@ class ModalNewclasification extends ModalComponent
     {
         $this->classificId = $classificId;
         if ($this->classificId != 0) {
-            $this->title = 'EDITA USUARIO';
+            $this->title = 'EDITA CLASIFICACIÓN';
             $clasification = ClasificationClass::where('id', $this->classificId)->get();
             $this->id_save = $clasification[0]->id;
             $this->name = $clasification[0]->name;
             $this->type_class_id=$clasification[0]->type_class_id;
         } else {
-            $this->title = 'AGREGAR USUARIO';
+            $this->title = 'AGREGAR CLASIFICACIÓN';
             $this->name =  '';
             $this->type_class_id =  '';
         }

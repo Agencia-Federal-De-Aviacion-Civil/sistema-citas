@@ -49,14 +49,14 @@ class ModalNewclass extends ModalComponent
     {
         $this->classId = $classId;
         if ($this->classId != 0) {
-            $this->title = 'EDITA USUARIO';
+            $this->title = 'EDITA TIPO DE CLASE';
             $classe = TypeClass::where('id', $this->classId)->get();
             $this->id_save = $classe[0]->id;
             $this->name = $classe[0]->name;
             $this->type_exam_id=$classe[0]->type_exam_id;
             $this->medicine_question_id=$classe[0]->medicine_question_id;
         } else {
-            $this->title = 'AGREGAR USUARIO';
+            $this->title = 'AGREGAR TIPO DE CLASE';
             $this->name =  '';
             $this->type_exam_id =  '';
             $this->medicine_question_id =  '';

@@ -5,12 +5,14 @@ namespace App\Http\Livewire\Medicine\Tables;
 use App\Events\Medicine\ExportCompleted;
 use App\Jobs\ExportSelectedJob;
 use App\Models\Catalogue\Headquarter;
+use App\Models\Medicine\MedicineExportHistory;
 use App\Models\Medicine\MedicineReserve;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Storage;
+use Jenssegers\Date\Date;
 use Livewire\Component;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
@@ -467,8 +469,14 @@ class AppointmentTable extends DataTableComponent
                 $results = $query->get();
                 $this->exporting = true;
                 $this->exportFinished = false;
+                $saveExports = MedicineExportHistory::create(
+                    [
+                        'auth' => Auth::user()->id,
+                    ]
+                );
+                $dataExports = $saveExports->auth . '-' . $saveExports->created_at;
                 $batch = Bus::batch([
-                    new ExportSelectedJob($results),
+                    new ExportSelectedJob($results, $dataExports),
                 ])->dispatch();
                 $this->batchId = $batch->id;
                 $this->emit('BatchDispatch', [$this->batchId, $this->exporting, $this->exportFinished]);

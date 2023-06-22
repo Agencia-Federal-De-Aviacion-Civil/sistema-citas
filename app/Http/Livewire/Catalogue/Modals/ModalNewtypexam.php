@@ -43,12 +43,12 @@ class ModalNewtypexam extends ModalComponent
     {
         $this->typexamsId = $typexamsId;
         if ($this->typexamsId != 0) {
-            $this->title = 'EDITA EXAMEN';
+            $this->title = 'EDITA TIPO EXAMEN';
             $typexam = TypeExam::where('id', $this->typexamsId)->get();
             $this->id_save = $typexam[0]->id;
             $this->name = $typexam[0]->name;
         } else {
-            $this->title = 'AGREGAR EXAMEN';
+            $this->title = 'AGREGAR TIPO EXAMEN';
             $this->name =  '';
         }
     }

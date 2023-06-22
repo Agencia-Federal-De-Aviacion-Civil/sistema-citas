@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Medicine;
 
+use App\Models\Medicine\MedicineExportHistory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Cache;
@@ -44,14 +45,16 @@ class AppointmentMedicine extends Component
     }
     public function downloadExport()
     {
-        $userId = Auth::user()->id;
-        $filePath = 'medicina-preventiva/exports/' . $userId . '.xlsx';
+        $queryExports = MedicineExportHistory::where('auth', Auth::user()->id)->latest()->first();
+        $querySend = $queryExports->auth . '-' . $queryExports->created_at;
+        $filePath = 'medicina-preventiva/exports/' . $querySend . '.xlsx';
         $disk = Storage::disk('do');
         if ($disk->exists($filePath)) {
             $headers = [
                 'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
                 'Content-Disposition' => 'attachment; filename="reporte-citas.xlsx"',
             ];
+            MedicineExportHistory::find($queryExports->id)->delete();
             return response()->streamDownload(function () use ($disk, $filePath) {
                 $fileStream = $disk->readStream($filePath); // Obtener el flujo del archivo
                 while (!feof($fileStream)) {
@@ -59,7 +62,7 @@ class AppointmentMedicine extends Component
                 }
                 fclose($fileStream); // Cerrar el flujo del archivo
                 $disk->delete($filePath); // Eliminar el archivo después de ser descargado
-            }, 'reporte-citas-' . $userId . '.xlsx', $headers);
+            }, 'reporte-citas-' . $querySend . '.xlsx', $headers);
         } else {
             abort(404);
         }
