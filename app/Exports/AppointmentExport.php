@@ -31,15 +31,23 @@ class AppointmentExport extends DefaultValueBinder implements FromCollection, Wi
 
     public function map($results): array
     {
-        if ($results->medicineReserveMedicine->type_exam_id == 1) {
-            $nameClass = 'CLASE';
-            $typeLicense = 'LICENCIA';
-        } else if ($results->medicineReserveMedicine->type_exam_id == 2) {
-            $nameClass = 'CLASE';
-            $typeLicense = 'LICENCIA';
-        } else {
-            $nameClass = 'CLASE';
-            $typeLicense = 'LICENCIA';
+        try {
+            if ($results->medicineReserveMedicine->type_exam_id == 1) {
+                $nameClass = ($results->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass ?? null) ? $results->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name : 'SIN INFORMACIÓN';
+                $typeLicense = ($results->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass ?? null) ? $results->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass->name : 'SIN INFORMACIÓN';
+            } else if ($results->medicineReserveMedicine->type_exam_id == 2) {
+                $nameClass = ($results->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass ?? null) ? $results->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name : 'SIN INFORMACIÓN';
+                $typeLicense = ($results->medicineReserveMedicine->medicineRenovation[0]->renovationClasificationClass ?? null) ? $results->medicineReserveMedicine->medicineRenovation[0]->renovationClasificationClass->name : 'SIN INFORMACIÓN';
+            } else if ($results->medicineReserveMedicine->type_exam_id == 3) {
+                $nameClass = ($results->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->revaluationInitialTypeClass ?? null) ? $results->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->revaluationInitialTypeClass->name : 'SIN INFORMACIÓN';
+                if ($results->medicineReserveMedicine->medicineRevaluation[0]->type_exam_id == 1) {
+                    $typeLicense = ($results->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->revaluationInitialClasificationClass ?? null) ? $results->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->revaluationInitialClasificationClass->name : 'SIN INFORMACIÓN';
+                } else {
+                    $typeLicense = ($results->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->revaluationRenovationClasificationClass ?? null) ? $results->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->revaluationRenovationClasificationClass->name : 'SIN INFORMACIÓN';
+                }
+            }
+        } catch (\Exception $e) {
+            echo $e;
         }
         if ($results->status == 1) {
             $status = 'ASISTIO';
