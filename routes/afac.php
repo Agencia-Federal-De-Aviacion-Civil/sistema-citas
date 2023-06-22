@@ -55,6 +55,6 @@ Route::middleware([
         Route::get('/historymedicine', HistoryMedicieMovements::class)->name('afac.medicienMovements');
         Route::get('/historylinguistics', HistoryLinguisticsMovements::class)->name('afac.linguisticsMovements');
         Route::get('/homecatalogs', HomeCatalogs::class)->name('afac.catalogappointment');
-        
+
     });
 });
