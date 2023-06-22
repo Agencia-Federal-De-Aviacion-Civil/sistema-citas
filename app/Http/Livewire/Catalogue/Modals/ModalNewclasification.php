@@ -40,8 +40,7 @@ class ModalNewclasification extends ModalComponent
     }
     public function clean()
     {
-        $this->reset(['name']);
-        $this->reset(['type_class_id']);
+        $this->reset(['name','type_class_id']);
     }
     public function valores($classificId)
     {

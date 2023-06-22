@@ -43,8 +43,7 @@ class ModalNewclass extends ModalComponent
     }
     public function clean()
     {
-        $this->reset(['name']);
-        $this->reset(['type_exam_id']);
+        $this->reset(['name','type_exam_id']);
     }
     public function valores($classId)
     {
