@@ -54,9 +54,14 @@
                                     onclick="Livewire.emit('openModal', 'catalogue.modals.modal-new', {{ json_encode(['catalogsId' => 0]) }})"
                                     right-icon="plus" xs blue label="AGREGAR" />
                                     <div class="my-2">
-                                        @livewire('catalogue.tables.typesystem-table')
-                                    </div>
-                                    
+                                        <div class="container mx-auto">
+                                            <div class="mt-2 max-w-4xl mx-auto">
+                                                <div class="ml-4 uppercase text-sm">
+                                                    @livewire('catalogue.tables.typesystem-table')
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>  
                                 </div>
                                 <div x-show="content=='typelicens'">
                                     <div class="flex items-center focus:outline-none">
@@ -73,7 +78,13 @@
                                     onclick="Livewire.emit('openModal', 'catalogue.modals.modal-newclass', {{ json_encode(['classId' => 0]) }})"
                                     right-icon="plus" xs blue label="AGREGAR" />
                                     <div class="my-2">
-                                        @livewire('catalogue.tables.typeclasses-table')
+                                        <div class="container mx-auto">
+                                            <div class="mt-2 max-w-4xl mx-auto">
+                                                <div class="ml-4 uppercase text-sm">
+                                                    @livewire('catalogue.tables.typeclasses-table')
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div x-show="content=='classeclasif'">
@@ -85,7 +96,13 @@
                                     onclick="Livewire.emit('openModal', 'catalogue.modals.modal-newclasification', {{ json_encode(['classificId' => 0]) }})"
                                     right-icon="plus" xs blue label="AGREGAR" />
                                     <div class="my-2">
-                                        @livewire('catalogue.tables.clasificationclasses-table')
+                                        <div class="container mx-auto">
+                                            <div class="max-w-4xl mx-auto">
+                                                <div>
+                                                    @livewire('catalogue.tables.clasificationclasses-table')
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div x-show="content=='tyexamen'">
@@ -97,7 +114,13 @@
                                     onclick="Livewire.emit('openModal', 'catalogue.modals.modal-newtypexam', {{ json_encode(['typexamsId' => 0]) }})"
                                     right-icon="plus" xs blue label="AGREGAR" />
                                     <div class="my-2">
-                                        @livewire('catalogue.tables.typeexam-table')
+                                        <div class="container mx-auto">
+                                            <div class="mt-2 max-w-4xl mx-auto">
+                                                <div class="ml-4 uppercase text-sm">
+                                                    @livewire('catalogue.tables.typeexam-table')
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
