@@ -92,52 +92,6 @@
 
 
                 </div>
-                {{-- <div class="flex w-full">
-            <h3 class="text-lg font-semibold leading-tight flex-1">TOTAL DE CITAS</h3>
-            <div class="relative h-5 leading-none">
-                <button class="text-xl text-gray-500 hover:text-gray-300 h-6 focus:outline-none" @click.prevent="cardOpen=!cardOpen">
-                        <i class="mdi" :class="'mdi-chevron-'+(cardOpen?'up':'down')"></i>
-                    </button>
-            </div>
-        </div>
-        <div class="relative overflow-hidden transition-all duration-500" x-ref="card" x-bind:style="`max-height:${cardOpen?$refs.card.scrollHeight:0}px; opacity:${cardOpen?1:0}`">
-            <div>
-                <div class="pb-4 lg:pb-6">
-                    <h4 class="text-2xl lg:text-3xl text-black font-semibold leading-tight inline-block" x-ref="total">0</h4>
-                </div>
-                <div class="pb-4 lg:pb-6">
-                    <div class="overflow-hidden rounded-full h-3 bg-gray-800 flex transition-all duration-500" :class="cardOpen?'w-full':'w-0'">
-                        <template x-for="(item,index) in cardData.sessions">
-                                <div class="h-full" :class="`bg-${item.color}`" :style="`width:${item.size}%`"></div>
-                            </template>
-                    </div>
-                </div>
-                <div class="-mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                    <div class="flex items-start p-2">
-                      <div class="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50">
-                        <span href="#blue" class="block w-3 h-3 bg-blue-800 rounded-full"></span>
-                      </div>
-                
-                      <div class="ml-4">
-                        <h3 class="font-semibold">Medicina preventiva: {{$registradasall}}</h3>
-                        <p class="mt-2 text-sm text-gray-500">{{$medicine}}%</p>
-                      </div>
-                    </div>
-                
-                    <div class="flex items-start p-2">
-                      <div class="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50">
-                        <span href="#blue" class="block w-3 h-3 bg-blue-500 rounded-full"></span>
-                      </div>
-                
-                      <div class="ml-4">
-                        <h2 class="font-semibold">Lingüistica</h2>
-                        <p class="mt-2 text-sm text-gray-500">0</p>
-                      </div>
-                    </div>
-                    
-                </div>
-            </div>
-        </div> --}}
             </div>
 
             <div class="bg-gray-100 text-gray-500 rounded shadow-xl py-5 px-5 w-full sm:w-full md:w-full lg:w-full"
@@ -217,17 +171,12 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="grid grid-cols-1 lg:grid-cols-1 p-2 gap-4">
-
-                    <!-- Social Traffic -->
                     <div
                         class="relative flex flex-col min-w-0 mb-4 lg:mb-0 break-words bg-gray-50 dark:bg-gray-800 w-full shadow-lg rounded">
                         <div class="rounded-t mb-0 px-0 border-0">
                             <div class="flex flex-wrap items-center px-4 py-2">
                                 <div class="relative w-full max-w-full flex-grow flex-1">
-                                    {{-- <h3 class="font-semibold text-base text-gray-900 dark:text-gray-50">Sedes</h3> --}}
-                                    {{-- <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1"> --}}
                                         <div class="flex items-start rounded-xl p-4">
                                             <div
                                                 class="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50">
@@ -310,45 +259,11 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Recent Activities -->
-                    {{-- <div
-                        class="relative flex flex-col min-w-0 break-words bg-gray-50 dark:bg-gray-800 w-full shadow-lg rounded">
-                        <div class="rounded-t mb-0 px-0 border-0">
-                            <div class="flex flex-wrap items-center px-4 py-2">
-                                <div class="relative w-full max-w-full flex-grow flex-1">
-                                    <h3 class="font-semibold text-base text-gray-900 dark:text-gray-50">Citas Recientes
-                                    </h3>
-                                </div>
-                                <div class="relative w-full max-w-full flex-grow flex-1 text-right">
-                                    <a href="{{ route('afac.appointment') }}"
-                                        class="bg-blue-500 dark:bg-gray-100 text-white active:bg-blue-600 dark:text-gray-800 dark:active:text-gray-700 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                                        type="button">VER TODAS</a>
-                                </div>
-                            </div>
-                            <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1">
-                                <div class="flex items-start rounded-xl bg-white p-4 shadow-lg">
-                                    <div
-                                        class="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
-                                        </svg>
-                                    </div>
-                                    <div class="ml-4">
-                                        <h2 class="font-semibold">{{ $now }} Citas</h2>
-                                        <p class="mt-2 text-sm text-gray-500">hoy {{ $date }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> --}}
-                    <!-- ./Recent Activities -->
                 </div>
                 <div class="py-12">
                     <div class="container mx-auto px-4 py-4 bg-white sm:rounded-lg">
-                        <div class="mt-12 max-w-8xl mx-auto sm:px-6 lg:px-8">
-                            <div class="ml-4 py-6 mr-4 uppercase text-sm">
+                        <div class="mt-12 md:max-w-8xl  xs:max-w-4xl  mx-auto sm:px-6 lg:px-8">
+                            <div class="ml-4 py-6 mr-4 uppercase md:text-sm xs:text-xs">
                                 <livewire:calendar />
                             </div>
                         </div>
