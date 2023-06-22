@@ -4,17 +4,17 @@ namespace App\Http\Livewire\Catalogue\Tables;
 
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
-use App\Models\System;
+use App\Models\Catalogue\TypeExam;
 
-class TypesystemTable extends DataTableComponent
+class TypeexamTable extends DataTableComponent
 {
-    protected $model = System::class;
+    protected $model = TypeExam::class;
     protected function getListeners(): array
     {
         return array_merge(
             parent::getListeners(),
             [
-                'systems' => '$refresh'
+                'exams' => '$refresh'
             ]
         );
     }
@@ -36,11 +36,11 @@ class TypesystemTable extends DataTableComponent
             Column::make("ACCIÓN")
                 ->label(
                     fn ($row) => view(
-                        'components.catalogue.catalogue-component',
+                        'components.catalogue.typeexam-component',
                         [
-                            $action = System::where('id', $row->id)->get(),
+                            $action = TypeExam::where('id', $row->id)->get(),
                             'name' => $action[0]->name,
-                            'catalogsId' => $action[0]->id,
+                            'typexamsId' => $action[0]->id,
                         ]
                     )
                 ),
