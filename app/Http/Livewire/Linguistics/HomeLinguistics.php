@@ -100,10 +100,14 @@ class HomeLinguistics extends Component
     public function save()
     {
         $this->validate();
-        $extension = $this->name_document->extension();
+        $extension = $this->name_document->getClientOriginalExtension();
+        $fileName = $this->reference_number . '-' . $this->pay_date . '.' . $extension;
         $saveDocument = Document::create([
-            'name_document' => $this->name_document->storeAs('uploads/tester', 'linguistica' .  '.' . $extension, 'do'),
+        'name_document' => $this->name_document->storeAs('documentos/linguistic', $fileName, 'public'),
         ]);
+
+
+
         $this->saveLinguistic = Linguistic::create([
             'user_id' => Auth::user()->id,
             'reference_number' => $this->reference_number,
@@ -222,8 +226,10 @@ class HomeLinguistics extends Component
         $linguisticReserves = LinguisticReserve::with(['linguisticReserve', 'linguisticReserveSchedule','linguisticUserHeadquers'])
             ->where('id', $scheduleId)->get();
         $linguisticId = $linguisticReserves[0]->id;
+        Date::setLocale('es');
         $dateAppointment = $linguisticReserves[0]->date_reserve;
         $dateConvertedFormatted = Date::parse($dateAppointment)->format('l j F Y');
+
         $curp = $linguisticReserves[0]->linguisticReserve->linguisticUser->userParticipant->pluck('curp')->first();
         $keyEncrypt =  Crypt::encryptString($linguisticId . '*' . $dateAppointment . '*' . $curp);
         $fileName =  $linguisticReserves[0]->date_reserve . '-' . $curp . '-' . 'LINGUISTIC-' . $linguisticId . '.pdf';

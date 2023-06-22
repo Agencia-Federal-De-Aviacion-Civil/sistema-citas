@@ -148,8 +148,9 @@
             </tr>
             <tr>
                 <td>FECHA</td>
-                {{ mb_strtoupper($dateConvertedFormatted) }}
                 <td>
+                {{ mb_strtoupper($dateConvertedFormatted) }}
+                </td>
             </tr>
             <tr>
                 <td>HORA</td>

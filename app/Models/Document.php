@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Linguistic\Linguistic;
 use App\Models\Medicine\Medicine;
 use App\Models\Medicine\MedicineRevaluation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -18,5 +19,9 @@ class Document extends Model
     public function documentRevaluation()
     {
         return $this->hasMany(MedicineRevaluation::class, 'document_revaloration_id');
+    }
+    public function documentLinguistic()
+    {
+        return $this->hasMany(Linguistic::class);
     }
 }
