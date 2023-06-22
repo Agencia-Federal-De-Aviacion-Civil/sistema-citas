@@ -48,7 +48,7 @@ class AppointmentTable extends DataTableComponent
         ]);
         $this->setOfflineIndicatorEnabled();
         $this->setEagerLoadAllRelationsEnabled();
-        $this->setDefaultSort('id','asc');
+        $this->setDefaultSort('id', 'asc');
     }
     public function columns(): array
     {
@@ -374,6 +374,16 @@ class AppointmentTable extends DataTableComponent
                     ->filter(function ($query, $value) {
                         $query->where('type_exam_id', $value);
                     }),
+                SelectFilter::make('CLASE')
+                    ->options([
+                        '' => 'TODOS',
+                        '1' => 'CLASE I',
+                        '2' => 'CLASE II',
+                        '3' => 'CLASE III',
+                    ])
+                    ->filter(function ($query, $value) {
+                        $query->where('type_exam_id', $value);
+                    }),
 
                 SelectFilter::make('STATUS')
                     ->options([
@@ -449,6 +459,7 @@ class AppointmentTable extends DataTableComponent
             try {
                 $query = MedicineReserve::with([
                     'medicineReserveMedicine:id,reference_number,type_exam_id', 'medicineReserveFromUser:id,name',
+                    'medicineReserveMedicine.medicineRevaluation:id,type_exam_id',
                     'medicineReserveMedicine.medicineTypeExam:name', 'user:id,name',
                     'userParticipantUser:id,apParental,apMaternal,curp,genre,birth,age,mobilePhone,officePhone,extension',
                     'userParticipantUser.participantState:id,name', 'reserveSchedule:id,time_start'
