@@ -71,7 +71,7 @@ class ModalNewclass extends ModalComponent
         // dd($this->id_save);
         $this->validate();
         $classeData = [
-            'name' => $this->name,
+            'name' => strtoupper($this->name),
             'type_exam_id' => $this->type_exam_id,
             'medicine_question_id' => $this->medicine_question_id,
         ];

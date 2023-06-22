@@ -61,7 +61,7 @@ class ModalNewtypexam extends ModalComponent
         // dd($this->id_save);
         $this->validate();
         $examData = [
-            'name' => $this->name,
+            'name' => strtoupper($this->name),
         ];
         $exams = TypeExam::updateOrCreate(
             ['id' => $this->id_save],

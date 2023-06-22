@@ -66,7 +66,7 @@ class ModalNewclasification extends ModalComponent
         // dd($this->id_save);
         $this->validate();
         $clasificationData = [
-            'name' => $this->name,
+            'name' => strtoupper($this->name),
             'type_class_id' => $this->type_class_id,
         ];
         $clasifications = ClasificationClass::updateOrCreate(

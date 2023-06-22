@@ -5,7 +5,7 @@
         </div>      
         <div class="grid xl:grid-cols-2 xl:gap-9">
             <div class="mt-1 relative w-full group">
-                <x-input wire:model="name" label="NOMBRE DE LA CLASE" placeholder="ESCRIBE..." class="bg-gray-50" />
+                <x-input class="uppercase" wire:model="name" label="NOMBRE DE LA CLASE" placeholder="ESCRIBE..." class="bg-gray-50" />
             </div>
             <div class="mt-1 relative w-full group">
                 <label for="systems" class="block text-sm font-medium text-gray-900 dark:text-white">TIPO DE EXAMEN</label>

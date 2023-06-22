@@ -61,7 +61,7 @@ class ModalNew extends ModalComponent
         // dd($this->id_save);
         $this->validate();
         $systemData = [
-            'name' => $this->name,
+            'name' => strtoupper($this->name),
         ];
         $systems = system::updateOrCreate(
             ['id' => $this->id_save],

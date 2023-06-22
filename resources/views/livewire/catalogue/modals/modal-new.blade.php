@@ -5,7 +5,7 @@
             </div>
             <div class="grid xl:grid-cols-1 xl:gap-9">
                 <div class="mt-1 relative w-full group">
-                    <x-input wire:model="name" label="INGRESA EL NOMBRE DEL SISTEMA" placeholder="ESCRIBE..." />
+                    <x-input class="uppercase" wire:model="name" label="INGRESA EL NOMBRE DEL SISTEMA" placeholder="ESCRIBE..." />
                 </div>
             </div>
             </div>
