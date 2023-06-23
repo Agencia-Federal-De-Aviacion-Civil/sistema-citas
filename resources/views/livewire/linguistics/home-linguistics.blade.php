@@ -34,6 +34,7 @@
         <div x-cloak x-data="{
             licensenumber: @entangle('license_number'),
             reservedate: @entangle('date_reserve'),
+            shudele: @entangle('schedule_id'),
             fileName: '',
         }">
             {{-- step's --}}
@@ -188,7 +189,7 @@
                                                         class="block text-base font-medium text-gray-900 dark:text-white">SELECCIONE
                                                         HORA</label>
                                                     <select id="small" placeholder="seleccione..."
-                                                        wire:model.lazy="schedule_id"
+                                                        wire:model.lazy="schedule_id" x-ref="shudele"
                                                         class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                                         <option value="">Seleccione...</option>
                                                         @foreach ($schedules as $schedule)
@@ -202,7 +203,7 @@
                                         </div>
                                     </div>
                                     {{-- paso3 --}}
-                                    <div x-show="reservedate > '0'" class="flex relative">
+                                    <div x-show="reservedate > '0' && shudele > '0'" class="flex relative">
                                         <div
                                             class="flex-shrink-0 w-10 h-10 rounded-full bg-green-500 inline-flex items-center justify-center text-white relative z-10">
                                             <svg fill="none" stroke="currentColor" stroke-linecap="round"
