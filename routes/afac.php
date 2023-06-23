@@ -38,18 +38,16 @@ Route::middleware([
     });
     Route::middleware(['role:super_admin|medicine_admin|super_admin_medicine|super_admin_medicine_two'])->group(function () {
         Route::get('/headquarters', HomeHeadquarter::class)->name('afac.headquarterMedicine');
-        Route::get('/validate', ValidateQr::class)->name('validate');  
+        Route::get('/validate', ValidateQr::class)->name('validate');
     });
     // Route::get('/appointments', [AppointmentController::class, 'index'])->name('afac.appointment');
     Route::get('/appointments', [AppointmentMedicineController::class, 'index'])->name('afac.appointment');
     Route::get('/downloadFile/{scheduleId}', [AppointmentMedicineController::class, 'download'])->name('afac.downloadFile');
-    
+    Route::get('/users', [UserMedicineController::class, 'index'])->name('afac.users');
     Route::middleware(['role:super_admin'])->group(function () {
-        Route::get('/users', [UserMedicineController::class, 'index'])->name('afac.users');
         Route::resource('/roles', RoleController::class)->names('afac.roles');
         Route::get('/historymedicine', HistoryMedicieMovements::class)->name('afac.medicienMovements');
         Route::get('/historylinguistics', HistoryLinguisticsMovements::class)->name('afac.linguisticsMovements');
         Route::get('/homecatalogs', HomeCatalogs::class)->name('afac.catalogappointment');
-        
     });
 });
