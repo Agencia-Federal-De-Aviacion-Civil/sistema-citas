@@ -134,6 +134,7 @@ class HomeMedicine extends Component
     public function resetQuestions()
     {
         $this->medicine_question_id = [];
+        $this->to_user_headquarters = '';
     }
     public function openModal()
     {
