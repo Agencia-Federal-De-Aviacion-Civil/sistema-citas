@@ -341,7 +341,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div x-show="tipoExamen === '2' || typerevalora==='2'"
+                                        <div x-show="tipoExamen === '2'|| tipoExamen==='4' || typerevalora==='2'"
                                             class="flex relative pb-6">
                                             <div class="h-full w-10 absolute inset-0 flex items-center justify-center">
                                                 <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>

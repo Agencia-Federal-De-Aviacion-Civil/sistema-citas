@@ -35,7 +35,7 @@ class UserRolesTable extends DataTableComponent
         ]);
         $this->setOfflineIndicatorEnabled();
         $this->setEagerLoadAllRelationsEnabled();
-        $this->setDefaultSort('id','asc');
+        $this->setDefaultSort('id', 'asc');
     }
     public function columns(): array
     {
@@ -168,13 +168,14 @@ class UserRolesTable extends DataTableComponent
                 $q1->where('roles.id', '<>', 5);
             });
     }
-    public function exportSelected(){
+    public function exportSelected()
+    {
 
-if($this->getSelected()){
+        if ($this->getSelected()) {
 
-    $result = User::whereIn('id',$this->getSelected())->get();
+            $result = User::whereIn('id', $this->getSelected())->get();
 
-    return Excel::download(new UserExport($result),'useroles.xlsx');
-}
+            return Excel::download(new UserExport($result), 'useroles.xlsx');
+        }
     }
 }
