@@ -19,11 +19,6 @@
                             {{ __('Inicio') }}
                         </x-jet-nav-link>
                     @endcan
-                    @can('super.admin.medicine.two.see.table.users')
-                        <x-jet-nav-link href="{{ route('afac.users') }}" :active="request()->routeIs('afac.users')">
-                            {{ __('Usuarios') }}
-                        </x-jet-nav-link>
-                    @endcan
                     @can('super_admin.see.tabs.navigation')
                         <div x-cloak x-data="{ open: false }" class="py-3">
                             <button x-on:click="open = true"
