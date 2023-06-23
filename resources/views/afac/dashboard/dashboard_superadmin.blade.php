@@ -45,7 +45,7 @@
                                 <div class="my-2">
                                     <p class="font-semibold text-base mb-2">Total de citas</p>
                                     <div class="flex space-x-2">
-                                        <p>{{ $registradas }}</p>
+                                        <p>{{ $datingmedicine }}</p>
                                     </div>
                                 </div>
                                 <div class="my-2">
