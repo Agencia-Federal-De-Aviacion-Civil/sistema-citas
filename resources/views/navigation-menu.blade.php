@@ -19,7 +19,7 @@
                             {{ __('Inicio') }}
                         </x-jet-nav-link>
                     @endcan
-                    @can('super_admin_medicine_two_see_table_users')
+                    @can('super.admin.medicine.two.see.table.users')
                         <x-jet-nav-link href="{{ route('afac.users') }}" :active="request()->routeIs('afac.users')">
                             {{ __('Usuarios') }}
                         </x-jet-nav-link>
@@ -239,7 +239,7 @@
                 {{ __('Inicio') }}
             </x-jet-nav-link>
         @endcan
-        @can('super_admin_medicine_two_see_table_users')
+        @can('super.admin.medicine.two.see.table.users')
             <x-jet-nav-link href="{{ route('afac.users') }}" :active="request()->routeIs('afac.users')">
                 {{ __('Usuarios') }}
             </x-jet-nav-link>
