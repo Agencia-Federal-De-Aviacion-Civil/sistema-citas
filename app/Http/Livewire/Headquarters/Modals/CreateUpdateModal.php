@@ -60,7 +60,7 @@ class CreateUpdateModal extends ModalComponent
             $this->id_user = $userId;
             $this->id_headquarter = $this->sedes[0]->id;
             $this->id_schedule = $this->sedes[0]->headquarterSchedule->id;
-            $this->id_exception = $this->sedes[0]->headquarterSchedule->schedulesMedicineException[0]->id;
+            // $this->id_exception = $this->sedes[0]->headquarterSchedule->schedulesMedicineException[0]->id;
         } else {
             $this->userId = null; // o cualquier otro valor predeterminado que desees
         }
