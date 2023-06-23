@@ -84,7 +84,7 @@
                     <div class="flex justify-end items-center gap-x-2 my-2 py-2 sm:px-7 border-t dark:border-gray-700">
                         <x-button sm icone="exit" wire:click="$emit('closeModal')" label="SALIR" silver />
                     </div>
-                    @hasrole('super_admin|super_admin_medicine')
+                    @hasrole('super_admin|super_admin_medicine|super_admin_medicine_two')
                         @if ($this->status == 3 || $this->status == 2)
                             <div class="float-right mt-6">
                                 <x-button wire:click.prevent="saveActive" spinner="saveActive" loading-delay="short" sm
