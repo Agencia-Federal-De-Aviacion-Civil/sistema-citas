@@ -4,6 +4,7 @@ namespace App\Models\Catalogue;
 
 use App\Models\User;
 use App\Models\Medicine\MedicineReserve;
+use App\Models\Medicine\MedicineSchedule;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,5 +25,9 @@ class Headquarter extends Model
     public function headquarterUser()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+    public function headquarterSchedule()
+    {
+        return $this->belongsTo(MedicineSchedule::class, 'medicine_schedule_id');
     }
 }

@@ -40,7 +40,46 @@
                             <span class="text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5">{{ $message }}</span>
                         @enderror
                     </div>
+                    <div class="mt-4 relative w-full group">
+                        <x-time-picker label="HORARIO" placeholder="7:00 AM" interval="60" wire:model.defer="time_start" />
+                    </div>
+                    <div class="mt-4 relative w-full group">
+                        <x-inputs.number label="CAPACIDAD CITAS POR DÍA" wire:model.defer="max_schedules" />
+                    </div>
                 </div>
+                {{-- @if (!empty($sedes)) --}}
+                <div class="mt-4" x-data="{ open: false }">
+                    <div class="inline-flex items-center justify-center w-full">
+                        <button x-on:click="open = ! open">¿DESEAS REALIZAR UNA EXCEPCIÓN?</button>
+                    </div>
+                    <div x-show="open">
+                        <div class="grid xl:grid-cols-2 xl:gap-6">
+                            <div class="mt-4 relative w-full group">
+                                <label for="systems" class="block text-sm font-medium text-gray-900 dark:text-white">TIPO
+                                    DE EXAMEN</label>
+                                <select wire:model.lazy="type_exam_id"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <option selected value="">Selecciona...</option>
+                                    @foreach ($typeExams as $typeExam)
+                                        <option value="{{ $typeExam->id }}"
+                                            {{ $type_exam_id == $typeExam->id ? 'selected' : '' }}>{{ $typeExam->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('type_exam_id')
+                                    <span
+                                        class="text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="mt-4 relative w-full group">
+                                <x-inputs.number label="CITAS POR DÍA PARA ESTE EXAMEN"
+                                    wire:model.defer="max_schedules_exception" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{-- @else
+                @endif --}}
             @else
             @endhasrole
             <div class="grid xl:grid-cols-1 xl:gap-6">

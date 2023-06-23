@@ -93,10 +93,6 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(MedicineReserve::class);
     }
-    public function userMedicineSchedule()
-    {
-        return $this->hasMany(MedicineSchedule::class);
-    }
     public function userDisabledDays()
     {
         return $this->hasMany(MedicineDisabledDays::class, 'user_headquarters_id');
