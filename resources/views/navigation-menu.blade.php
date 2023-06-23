@@ -145,6 +145,11 @@
                             {{ __('Validación de citas') }}
                         </x-jet-nav-link>
                     @endcan
+                    @can('super.admin.medicine.two.see.table.users')
+                        <x-jet-nav-link href="{{ route('afac.users') }}" :active="request()->routeIs('afac.users')">
+                            {{ __('Usuarios') }}
+                        </x-jet-nav-link>
+                    @endcan
                 </div>
             </div>
 
@@ -237,11 +242,6 @@
         @can('generate.appointment')
             <x-jet-nav-link href="{{ route('afac.home') }}" :active="request()->routeIs('afac.home')">
                 {{ __('Inicio') }}
-            </x-jet-nav-link>
-        @endcan
-        @can('super.admin.medicine.two.see.table.users')
-            <x-jet-nav-link href="{{ route('afac.users') }}" :active="request()->routeIs('afac.users')">
-                {{ __('Usuarios') }}
             </x-jet-nav-link>
         @endcan
         @can('super_admin.see.tabs.navigation')
