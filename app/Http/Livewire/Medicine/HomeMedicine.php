@@ -135,6 +135,17 @@ class HomeMedicine extends Component
     {
         $this->medicine_question_id = [];
         $this->to_user_headquarters = '';
+        $this->clasificationClass = [];
+        $this->reset([
+            'medicine_question_id',
+            'type_class_id',
+            'medicine_question_id',
+            'to_user_headquarters',
+            'dateReserve',
+            'medicine_schedule_id',
+            'type_exam_revaloration_id',
+            'document_authorization'
+        ]);
     }
     public function openModal()
     {
