@@ -103,9 +103,10 @@ class Schedule extends ModalComponent
     }
     public function updatedToUserHeadquarters($value)
     {
-        // Obtener los horarios disponibles para la fecha especificada
-        $this->scheduleMedicines = MedicineSchedule::where('user_id', $value)
-            ->get();
+        $this->scheduleMedicines = MedicineSchedule::with('scheduleHeadquarter')
+        ->whereHas('scheduleHeadquarter', function ($max) use ($value) {
+            $max->where('user_id', $value);
+        })->where('status', 0)->get();
     }
     public function updated($propertyName)
     {
