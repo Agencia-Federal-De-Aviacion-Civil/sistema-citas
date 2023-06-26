@@ -34,6 +34,7 @@ class ExportSelectedJob implements ShouldQueue
             Excel::store(new AppointmentExport($this->results), $filePath, 'do');
         } catch (\Exception $e) {
             echo $e->getMessage();
+            // mensaje
         }
     }
 }
