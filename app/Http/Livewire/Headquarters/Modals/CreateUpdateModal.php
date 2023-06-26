@@ -55,8 +55,8 @@ class CreateUpdateModal extends ModalComponent
             $this->status = $this->sedes[0]->status;
             $this->time_start = $this->sedes[0]->headquarterSchedule->time_start;
             $this->max_schedules = $this->sedes[0]->headquarterSchedule->max_schedules;
-            // $this->max_schedules_exception = $this->sedes[0]->headquarterSchedule->schedulesMedicineException[0]->max_schedules_exception;
-            // $this->type_exam_id = $this->sedes[0]->headquarterSchedule->schedulesMedicineException[0]->type_exam_id;
+            $this->max_schedules_exception = isset($this->sedes[0]->headquarterSchedule->schedulesMedicineException[0]->max_schedules_exception) ? $this->sedes[0]->headquarterSchedule->schedulesMedicineException[0]->max_schedules_exception : '';
+            $this->type_exam_id = isset($this->sedes[0]->headquarterSchedule->schedulesMedicineException[0]->type_exam_id) ? $this->sedes[0]->headquarterSchedule->schedulesMedicineException[0]->type_exam_id : '';
             $this->id_user = $userId;
             $this->id_headquarter = $this->sedes[0]->id;
             $this->id_schedule = $this->sedes[0]->headquarterSchedule->id;
