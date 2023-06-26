@@ -167,11 +167,11 @@ return [
         'notifiable' => \Spatie\Backup\Notifications\Notifiable::class,
 
         'mail' => [
-            'to' => 'your@example.com',
+            'to' => 'alberto.mondragon@afac.gob.mx',
 
             'from' => [
-                'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
-                'name' => env('MAIL_FROM_NAME', 'Example'),
+                'address' => env('MAIL_FROM_ADDRESS', 'notificaciones@citas.afac-avciv.com'),
+                'name' => env('MAIL_FROM_NAME', 'SISTEMA DE CITAS'),
             ],
         ],
 
