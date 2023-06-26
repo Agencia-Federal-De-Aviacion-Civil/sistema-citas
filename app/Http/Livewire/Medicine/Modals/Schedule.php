@@ -104,9 +104,9 @@ class Schedule extends ModalComponent
     public function updatedToUserHeadquarters($value)
     {
         $this->scheduleMedicines = MedicineSchedule::with('scheduleHeadquarter')
-        ->whereHas('scheduleHeadquarter', function ($max) use ($value) {
-            $max->where('user_id', $value);
-        })->where('status', 0)->get();
+            ->whereHas('scheduleHeadquarter', function ($max) use ($value) {
+                $max->where('user_id', $value);
+            })->where('status', 0)->get();
     }
     public function updated($propertyName)
     {
@@ -167,18 +167,6 @@ class Schedule extends ModalComponent
                 ->whereHas('scheduleHeadquarter', function ($max) {
                     $max->where('user_id', $this->to_user_headquarters);
                 })->value('max_schedules');
-            if ($this->type_exam_id == $this->type_exam_id) {
-                $maxCitasException = MedicineScheduleException::with('medicineSchedules.scheduleHeadquarter')
-                    ->whereHas('medicineSchedules.scheduleHeadquarter', function ($qException) {
-                        $qException->where('user_id', $this->to_user_headquarters);
-                    })
-                    // ->where('medicine_schedule_id', $this->medicine_schedule_id)
-                    ->where('type_exam_id', $this->type_exam_id)
-                    ->value('max_schedules_exception');
-                if ($maxCitasException !== null) {
-                    $maxCitas = $maxCitasException;
-                }
-            }
             if ($citas >= $maxCitas) {
                 $this->notification([
                     'title'       => 'CITA NO GENERADA!',
