@@ -8,9 +8,10 @@ class UserMedicineController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['role:super_admin|super_admin_medicine']);
+        $this->middleware(['role:super_admin|super_admin_medicine|medicine_admin']);
     }
-    public function index(){
+    public function index()
+    {
         return view('afac.users.index');
     }
 }
