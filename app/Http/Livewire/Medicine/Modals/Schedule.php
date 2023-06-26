@@ -8,6 +8,7 @@ use App\Models\Medicine\MedicineObservation;
 use App\Models\Medicine\MedicineReserve;
 use App\Models\Medicine\MedicineSchedule;
 use App\Models\Medicine\medicine_history_movements;
+use App\Models\Medicine\MedicineScheduleException;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Observation;
 use Illuminate\Support\Facades\Date;
@@ -161,35 +162,21 @@ class Schedule extends ModalComponent
                         ->orWhere('status', 4);
                 })
                 ->count();
-            switch ($this->to_user_headquarters) {
-                case 7: // CIUDAD DE MEXICO
-                    $maxCitas = 50;
-                    break;
-                case 2: // CANCUN
-                case 3: // TIJUANA
-                case 4: // TOLUCA
-                case 5: // MONTERREY
-                case 518: //MAZATLAN SINALOA
-                case 519: //CHIAPAS
-                case 520: //VERACRUZ
-                case 521: //HERMOSILLO SONORA
-                    $maxCitas = 10;
-                    break;
-                case 522: //QUERETARO
-                    $maxCitas = 10;
-                    break;
-                case 7958: //SINALOA CULIACAN
-                    $maxCitas = 10;
-                    break;
-                case 6: // GUADALAJARA
-                    $maxCitas = 20;
-                    break;
-                case 523: // YUCATAN
-                    $maxCitas = 5;
-                    break;
-                default:
-                    $maxCitas = 0;
-                    break;
+            $maxCitas = MedicineSchedule::with('scheduleHeadquarter')
+                ->whereHas('scheduleHeadquarter', function ($max) {
+                    $max->where('user_id', $this->to_user_headquarters);
+                })->value('max_schedules');
+            if ($this->type_exam_id == $this->type_exam_id) {
+                $maxCitasException = MedicineScheduleException::with('medicineSchedules.scheduleHeadquarter')
+                    ->whereHas('medicineSchedules.scheduleHeadquarter', function ($qException) {
+                        $qException->where('user_id', $this->to_user_headquarters);
+                    })
+                    // ->where('medicine_schedule_id', $this->medicine_schedule_id)
+                    ->where('type_exam_id', $this->type_exam_id)
+                    ->value('max_schedules_exception');
+                if ($maxCitasException !== null) {
+                    $maxCitas = $maxCitasException;
+                }
             }
             if ($citas >= $maxCitas) {
                 $this->notification([
