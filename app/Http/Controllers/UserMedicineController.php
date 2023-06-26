@@ -8,7 +8,7 @@ class UserMedicineController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['role:super_admin|super_admin_medicine|medicine_admin']);
+        $this->middleware(['role:super_admin|super_admin_medicine|admin_medicine_v2']);
     }
     public function index()
     {
