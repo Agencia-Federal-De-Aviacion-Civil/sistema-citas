@@ -45,6 +45,9 @@ class AppointmentExport extends DefaultValueBinder implements FromCollection, Wi
                 } else {
                     $typeLicense = ($results->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->revaluationRenovationClasificationClass ?? null) ? $results->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->revaluationRenovationClasificationClass->name : 'SIN INFORMACIÓN';
                 }
+            } else {
+                $nameClass = ($results->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass ?? null) ? $results->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name : 'SIN INFORMACIÓN';
+                $typeLicense = ($results->medicineReserveMedicine->medicineRenovation[0]->renovationClasificationClass ?? null) ? $results->medicineReserveMedicine->medicineRenovation[0]->renovationClasificationClass->name : 'SIN INFORMACIÓN';
             }
         } catch (\Exception $e) {
             echo $e;
