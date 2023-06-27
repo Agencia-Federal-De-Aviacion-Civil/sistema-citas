@@ -66,6 +66,6 @@ class homeController extends Controller
         $medicine =  round($registradas ? $registradas * 100 / $registradas : '0');
         //Statistics for linguistics
 
-        return view('afac.dashboard.index', compact('headquarters', 'registradas', 'pendientes', 'validado', 'canceladas', 'reagendado', 'porconfir', 'porpendientes', 'porreagendado', 'porcanceladas', 'now', 'date', 'date2', 'medicine', 'date1', 'tomorrow','dateNow'));
+        return view('afac.dashboard.index', compact('headquarters', 'datingmedicine','registradas', 'pendientes', 'validado', 'canceladas', 'reagendado', 'porconfir', 'porpendientes', 'porreagendado', 'porcanceladas', 'now', 'date', 'date2', 'medicine', 'date1', 'tomorrow','dateNow'));
     }
 }
