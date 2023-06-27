@@ -9,14 +9,14 @@ use Livewire\Component;
 
 class HomeQr extends Component
 {
-    public $linguistcId;
-    public function mount($linguistcId)
+    public $linguisticId;
+    public function mount($linguisticId)
     {
-        $this->linguistcId = $linguistcId;
+        $this->linguisticId = $linguisticId;
     }
     public function render()
     {
-        $decrypted = Crypt::decryptString($this->linguistcId);
+        $decrypted = Crypt::decryptString($this->linguisticId);
         Date::setLocale('es');
         $lingisticQuerys = LinguisticReserve::with(['linguisticReserve', 'linguisticReserveFromUser'])->where('linguistic_id', $decrypted)->get();
         $dateAppointment = $lingisticQuerys[0]->dateReserve;

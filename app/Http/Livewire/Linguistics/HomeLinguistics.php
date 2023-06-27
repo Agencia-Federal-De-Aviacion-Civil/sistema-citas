@@ -172,7 +172,7 @@ class HomeLinguistics extends Component
         $curp = $linguisticReserves[0]->linguisticReserve->linguisticUser->userParticipant->pluck('curp')->first();
         $keyEncrypt =  Crypt::encryptString($linguisticId . '*' . $dateAppointment . '*' . $curp);
         $fileName =  $linguisticReserves[0]->date_reserve . '-' . $curp . '-' . 'LINGUISTIC-' . $linguisticId . '.pdf';
-            $pdf = PDF::loadView('livewire.linguistics.documents.linguistic-initial', compact('linguisticReserves', 'keyEncrypt', 'dateConvertedFormatted'));
+            $pdf = PDF::loadView('livewire.linguistics.documents.linguistic-initial', compact('linguisticReserves', 'keyEncrypt', 'dateConvertedFormatted','linguisticId'));
             return $pdf->download($fileName);
 
     }

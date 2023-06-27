@@ -42,7 +42,7 @@ Route::middleware([
     Route::middleware(['role:super_admin|medicine_admin|super_admin_medicine|admin_medicine_v2'])->group(function () {
         Route::get('/headquarters', HomeHeadquarter::class)->name('afac.headquarterMedicine');
         Route::get('/validate', ValidateQr::class)->name('validate');
-        Route::get('/homelector/{linguistcId}', HomeQr::class)->name('afac.homeQr');
+        Route::get('/homelector/{linguisticId}', HomeQr::class)->name('afac.homeQr');
     });
     // Route::get('/appointments', [AppointmentController::class, 'index'])->name('afac.appointment');
     Route::get('/appointments', [AppointmentMedicineController::class, 'index'])->name('afac.appointment');
