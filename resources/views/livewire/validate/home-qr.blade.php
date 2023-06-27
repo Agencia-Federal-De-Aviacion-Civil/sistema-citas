@@ -22,8 +22,8 @@
     <div class="py-12">
         {{-- <div class="container mx-auto px-4 py-2 bg-white shadow-xl sm:rounded-lg">
             <div class="mt-2 max-w-6xl mx-auto sm:px-6 lg:px-8"> --}}
-        {{-- @foreach ($medicineQuerys as $medicineQuery)
-            <div class="flex items-center justify-center px-5 py-5">
+        @foreach ($lingisticQuerys as $lingisticQuery)
+            {{-- <div class="flex items-center justify-center px-5 py-5">
                 <div
                     class="w-full max-w-xl px-5 pt-5 pb-10 mx-auto text-gray-800 bg-white rounded-lg shadow-lg dark:bg-gray-800 dark:text-gray-50">
                     <div class="w-full pt-1 pb-5 mx-auto -mt-16 text-center">
@@ -79,7 +79,10 @@
                         </div>
                     @endif
                 </div>
-            </div>
-        @endforeach --}}
+            </div> --}}
+        @endforeach
     </div>
+    {{-- </div>
+    </div> --}}
+
 </div>

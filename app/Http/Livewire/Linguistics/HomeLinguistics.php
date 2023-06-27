@@ -225,14 +225,14 @@ class HomeLinguistics extends Component
     {
         $linguisticReserves = LinguisticReserve::with(['linguisticReserve', 'linguisticReserveSchedule','linguisticUserHeadquers'])
             ->where('id', $scheduleId)->get();
-        $linguisticId = $linguisticReserves[0]->id;
+        $linguisticId2 = $linguisticReserves[0]->id;
         Date::setLocale('es');
         $dateAppointment = $linguisticReserves[0]->date_reserve;
         $dateConvertedFormatted = Date::parse($dateAppointment)->format('l j F Y');
-
+        $linguisticId =  Crypt::encryptString($linguisticReserves[0]->medicine_id);
         $curp = $linguisticReserves[0]->linguisticReserve->linguisticUser->userParticipant->pluck('curp')->first();
-        $keyEncrypt =  Crypt::encryptString($linguisticId . '*' . $dateAppointment . '*' . $curp);
-        $fileName =  $linguisticReserves[0]->date_reserve . '-' . $curp . '-' . 'LINGUISTIC-' . $linguisticId . '.pdf';
+        $keyEncrypt =  Crypt::encryptString($linguisticId2 . '*' . $dateAppointment . '*' . $curp);
+        $fileName =  $linguisticReserves[0]->date_reserve . '-' . $curp . '-' . 'LINGUISTIC-' . $linguisticId2 . '.pdf';
             $pdf = PDF::loadView('livewire.linguistics.documents.linguistic-initial', compact('linguisticReserves', 'keyEncrypt', 'dateConvertedFormatted','linguisticId'));
             return $pdf->download($fileName);
     }

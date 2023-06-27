@@ -18,8 +18,9 @@ class HomeQr extends Component
     {
         $decrypted = Crypt::decryptString($this->linguisticId);
         Date::setLocale('es');
+        dd($decrypted);
         $lingisticQuerys = LinguisticReserve::with(['linguisticReserve', 'linguisticReserveFromUser'])->where('linguistic_id', $decrypted)->get();
-        $dateAppointment = $lingisticQuerys[0]->dateReserve;
+        $dateAppointment = $lingisticQuerys[0]->date_reserve;
         $dateConvertedFormatted = Date::parse($dateAppointment)->format('l j F Y');
         return view('livewire.validate.home-qr', compact('lingisticQuerys', 'dateConvertedFormatted'))
             ->layout('layouts.app');
