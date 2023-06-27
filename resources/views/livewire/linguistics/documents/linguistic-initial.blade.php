@@ -158,6 +158,10 @@
             </tr>
 
         </table>
+        {{-- <div class="codigoqr">
+            <img src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ route('afac.homeQr', $linguistcId) }}"
+                width="120" height="120" />
+        </div> --}}
         <div class="codigoqr">
             <img src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ $keyEncrypt }}"
                 width="120" height="120" />

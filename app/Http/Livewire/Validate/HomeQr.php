@@ -2,26 +2,26 @@
 
 namespace App\Http\Livewire\Validate;
 
-use App\Models\Medicine\MedicineReserve;
+use App\Models\Linguistic\LinguisticReserve;
 use Illuminate\Support\Facades\Crypt;
 use Jenssegers\Date\Date;
 use Livewire\Component;
 
 class HomeQr extends Component
 {
-    public $medicineId;
-    public function mount($medicineId)
+    public $linguistcId;
+    public function mount($linguistcId)
     {
-        $this->medicineId = $medicineId;
+        $this->linguistcId = $linguistcId;
     }
     public function render()
     {
-        $decrypted = Crypt::decryptString($this->medicineId);
+        $decrypted = Crypt::decryptString($this->linguistcId);
         Date::setLocale('es');
-        $medicineQuerys = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser'])->where('medicine_id', $decrypted)->get();
-        $dateAppointment = $medicineQuerys[0]->dateReserve;
+        $lingisticQuerys = LinguisticReserve::with(['linguisticReserve', 'linguisticReserveFromUser'])->where('linguistic_id', $decrypted)->get();
+        $dateAppointment = $lingisticQuerys[0]->dateReserve;
         $dateConvertedFormatted = Date::parse($dateAppointment)->format('l j F Y');
-        return view('livewire.validate.home-qr', compact('medicineQuerys', 'dateConvertedFormatted'))
+        return view('livewire.validate.home-qr', compact('lingisticQuerys', 'dateConvertedFormatted'))
             ->layout('layouts.app');
     }
 }
