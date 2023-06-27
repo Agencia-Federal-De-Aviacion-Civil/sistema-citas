@@ -13,6 +13,7 @@ use App\Http\Livewire\Linguistics\HistoryLinguisticsMovements;
 use App\Http\Livewire\Linguistics\AppointmentLinguistics;
 use App\Http\Livewire\Catalogue\HomeCatalogs;
 use Illuminate\Support\Facades\Route;
+use App\Http\Livewire\Validate\HomeQr;
 use App\Http\Livewire\Validate\Qr as ValidateQr;
 
 /*
@@ -51,10 +52,10 @@ Route::middleware([
 
     Route::get('/users', [UserMedicineController::class, 'index'])->name('afac.users');
     Route::middleware(['role:super_admin'])->group(function () {
-        Route::resource('/roles', RoleController::class)->names('afac.roles');
-        Route::get('/historymedicine', HistoryMedicieMovements::class)->name('afac.medicienMovements');
-        Route::get('/historylinguistics', HistoryLinguisticsMovements::class)->name('afac.linguisticsMovements');
-        Route::get('/homecatalogs', HomeCatalogs::class)->name('afac.catalogappointment');
+    Route::resource('/roles', RoleController::class)->names('afac.roles');
+    Route::get('/historymedicine', HistoryMedicieMovements::class)->name('afac.medicienMovements');
+    Route::get('/historylinguistics', HistoryLinguisticsMovements::class)->name('afac.linguisticsMovements');
+    Route::get('/homecatalogs', HomeCatalogs::class)->name('afac.catalogappointment');
 
     });
 });
