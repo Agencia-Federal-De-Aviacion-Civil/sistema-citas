@@ -66,7 +66,7 @@
                                 <x-textarea wire:model="comment" label="MOTIVO" disabled />
                             </div>
                         @endif
-                        @hasrole('super_admin|medicine_admin')
+                        @hasrole('super_admin|medicine_admin|super_admin_medicine|admin_medicine_v2')
                             <div class="mt-6 relative w-full group">
                                 <select name="my_option" label="SELECIONE OPCIÓN" x-model="selectedOption"
                                     wire:model="selectedOption"
@@ -164,7 +164,7 @@
                             </div>
                         </div>
 
-                        @hasrole('super_admin|medicine_admin')
+                        @hasrole('super_admin|medicine_admin|super_admin_medicine|admin_medicine_v2')
                         <div class="mt-6 relative w-full group">
                             <select name="my_option" label="SELECIONE OPCIÓN" x-model="selectedOption"
                                 wire:model="selectedOption"

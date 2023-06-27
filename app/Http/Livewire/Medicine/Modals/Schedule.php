@@ -8,6 +8,7 @@ use App\Models\Medicine\MedicineObservation;
 use App\Models\Medicine\MedicineReserve;
 use App\Models\Medicine\MedicineSchedule;
 use App\Models\Medicine\medicine_history_movements;
+use App\Models\Medicine\MedicineScheduleException;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Observation;
 use Illuminate\Support\Facades\Date;
@@ -102,9 +103,10 @@ class Schedule extends ModalComponent
     }
     public function updatedToUserHeadquarters($value)
     {
-        // Obtener los horarios disponibles para la fecha especificada
-        $this->scheduleMedicines = MedicineSchedule::where('user_id', $value)
-            ->get();
+        $this->scheduleMedicines = MedicineSchedule::with('scheduleHeadquarter')
+            ->whereHas('scheduleHeadquarter', function ($max) use ($value) {
+                $max->where('user_id', $value);
+            })->where('status', 0)->get();
     }
     public function updated($propertyName)
     {
@@ -161,36 +163,10 @@ class Schedule extends ModalComponent
                         ->orWhere('status', 4);
                 })
                 ->count();
-            switch ($this->to_user_headquarters) {
-                case 7: // CIUDAD DE MEXICO
-                    $maxCitas = 50;
-                    break;
-                case 2: // CANCUN
-                case 3: // TIJUANA
-                case 4: // TOLUCA
-                case 5: // MONTERREY
-                case 518: //MAZATLAN SINALOA
-                case 519: //CHIAPAS
-                case 520: //VERACRUZ
-                case 521: //HERMOSILLO SONORA
-                    $maxCitas = 10;
-                    break;
-                case 522: //QUERETARO
-                    $maxCitas = 10;
-                    break;
-                case 7958: //SINALOA CULIACAN
-                    $maxCitas = 10;
-                    break;
-                case 6: // GUADALAJARA
-                    $maxCitas = 20;
-                    break;
-                case 523: // YUCATAN
-                    $maxCitas = 5;
-                    break;
-                default:
-                    $maxCitas = 0;
-                    break;
-            }
+            $maxCitas = MedicineSchedule::with('scheduleHeadquarter')
+                ->whereHas('scheduleHeadquarter', function ($max) {
+                    $max->where('user_id', $this->to_user_headquarters);
+                })->value('max_schedules');
             if ($citas >= $maxCitas) {
                 $this->notification([
                     'title'       => 'CITA NO GENERADA!',

@@ -24,7 +24,7 @@ return new class extends Migration
             $table->date('dateReserve');
             $table->unsignedBigInteger('medicine_schedule_id')->nullable();
             $table->foreign('medicine_schedule_id')->references('id')->on('medicine_schedules')->onDelete('cascade');
-            $table->tinyInteger('status')->default(0); //cero es pendiente ok amor?
+            $table->tinyInteger('status')->default(0); 
             $table->timestamps();
         });
     }

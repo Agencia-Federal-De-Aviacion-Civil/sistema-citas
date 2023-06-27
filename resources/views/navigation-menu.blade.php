@@ -99,13 +99,14 @@
                                 class="z-20 bg-white text-gray-700 rounded shadow-lg absolute py-2 mt-1"
                                 style="min-width:15rem">
                                 <li>
-                                    <a href="{{ route('afac.roles.index')}}"
+                                    <a href="{{ route('afac.roles.index') }}"
                                         class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
-                                        Roles & Permisos 
+                                        Roles & Permisos
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('afac.catalogappointment') }}" class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
+                                    <a href="{{ route('afac.catalogappointment') }}"
+                                        class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
                                         Catalogos
                                     </a>
                                 </li>
@@ -141,6 +142,11 @@
                         </x-jet-nav-link>
                         <x-jet-nav-link href="{{ route('validate') }}" :active="request()->routeIs('validate')">
                             {{ __('Validación de citas') }}
+                        </x-jet-nav-link>
+                    @endcan
+                    @can('super.admin.medicine.two.see.table.users')
+                        <x-jet-nav-link href="{{ route('afac.users') }}" :active="request()->routeIs('afac.users')">
+                            {{ __('Usuarios') }}
                         </x-jet-nav-link>
                     @endcan
                 </div>
@@ -324,13 +330,14 @@
                 <ul x-show="open" x-on:click.away="open = false"
                     class="bg-white text-gray-700 rounded shadow-lg absolute py-2 mt-1" style="min-width:15rem">
                     <li>
-                        <a href="{{ route('afac.roles.index')}}"
+                        <a href="{{ route('afac.roles.index') }}"
                             class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
                             Roles & Permisos
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('afac.catalogappointment') }}" class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
+                        <a href="{{ route('afac.catalogappointment') }}"
+                            class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
                             Catálogos
                         </a>
                     </li>

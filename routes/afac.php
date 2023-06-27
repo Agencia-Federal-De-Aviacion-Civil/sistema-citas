@@ -38,7 +38,7 @@ Route::middleware([
         Route::get('/download', [HomeMedicine::class, 'generatePdf'])->name('download');
         Route::get('/downloadlinguistic', [HomeLinguistics::class, 'generatePdf'])->name('download2');
     });
-    Route::middleware(['role:super_admin|medicine_admin|super_admin_medicine'])->group(function () {
+    Route::middleware(['role:super_admin|medicine_admin|super_admin_medicine|admin_medicine_v2'])->group(function () {
         Route::get('/headquarters', HomeHeadquarter::class)->name('afac.headquarterMedicine');
         Route::get('/validate', ValidateQr::class)->name('validate');
     });
@@ -49,8 +49,8 @@ Route::middleware([
 
     Route::get('/downloadFileLinguistic/{scheduleId}', [HomeLinguistics::class, 'download'])->name('afac.downloadFileLinguistic');
 
+    Route::get('/users', [UserMedicineController::class, 'index'])->name('afac.users');
     Route::middleware(['role:super_admin'])->group(function () {
-        Route::get('/users', [UserMedicineController::class, 'index'])->name('afac.users');
         Route::resource('/roles', RoleController::class)->names('afac.roles');
         Route::get('/historymedicine', HistoryMedicieMovements::class)->name('afac.medicienMovements');
         Route::get('/historylinguistics', HistoryLinguisticsMovements::class)->name('afac.linguisticsMovements');

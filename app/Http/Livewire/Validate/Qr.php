@@ -49,7 +49,7 @@ class Qr extends Component
                     . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apMaternal')->first()
                     . '<br> CURP: ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->userParticipant->pluck('curp')->first()
                     . '<br> TIPO: ' . $medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->name
-                    . '<br> UNIDAD MEDICA: ' . $medicineReserves[0]->user->name . '<br> FECHA: ' . $medicineReserves[0]->dateReserve . '<br> HORA: ' . $medicineReserves[0]->medicineSchedule->time_start,
+                    . '<br> UNIDAD MEDICA: ' . $medicineReserves[0]->user->name . '<br> FECHA: ' . $medicineReserves[0]->dateReserve . '<br> HORA: ' . $medicineReserves[0]->reserveSchedule->time_start,
                 'icon'        => 'success'
             ]);
         } catch (DecryptException $e) {

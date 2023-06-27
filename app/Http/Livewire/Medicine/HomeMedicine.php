@@ -17,6 +17,7 @@ use App\Models\Medicine\MedicineRevaluation;
 use App\Models\Medicine\MedicineRevaluationInitial;
 use App\Models\Medicine\MedicineRevaluationRenovation;
 use App\Models\Medicine\MedicineSchedule;
+use App\Models\Medicine\MedicineScheduleException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Jenssegers\Date\Date;
@@ -29,7 +30,7 @@ class HomeMedicine extends Component
 {
     use Actions;
     use WithFileUploads;
-    public $medicine_question_id, $type_class_id, $clasificationClass, $clasification_class_id;
+    public $medicine_question_id, $type_class_id, $clasificationClass, $clasification_class_id, $type_exception_id;
     public $document_pay, $reference_number, $pay_date, $type_exam_id, $typeRenovationExams, $dateConvertedFormatted;
     public $questionClassess, $typeExams, $sedes, $userQuestions, $to_user_headquarters, $dateReserve, $saveMedicine, $disabledDaysFilter;
     public $confirmModal = false, $modal = false;
@@ -133,6 +134,18 @@ class HomeMedicine extends Component
     public function resetQuestions()
     {
         $this->medicine_question_id = [];
+        $this->to_user_headquarters = '';
+        $this->clasificationClass = [];
+        $this->reset([
+            'medicine_question_id',
+            'type_class_id',
+            'medicine_question_id',
+            'to_user_headquarters',
+            'dateReserve',
+            'medicine_schedule_id',
+            'type_exam_revaloration_id',
+            'document_authorization'
+        ]);
     }
     public function openModal()
     {
@@ -140,38 +153,15 @@ class HomeMedicine extends Component
     }
     public function updatedToUserHeadquarters($value)
     {
-
-        // Obtener los horarios disponibles para la fecha especificada
-        $this->scheduleMedicines = MedicineSchedule::where('user_id', $value)
-            ->where('max_schedules', 0)
-            // ->whereNotIn('id', function ($query) {
-            //     // Subconsulta para obtener los horarios reservados
-            //     $query->select('medicine_schedule_id')
-            //         ->from('medicine_reserves')
-            //         ->where('dateReserve', $this->dateReserve)
-            //         ->groupBy('medicine_schedule_id')
-            //         ->havingRaw('COUNT(*) >= max_schedules');
-            // })
-            ->get();
+        $this->scheduleMedicines = MedicineSchedule::with('scheduleHeadquarter')
+            ->whereHas('scheduleHeadquarter', function ($max) use ($value) {
+                $max->where('user_id', $value);
+            })->where('status', 0)->get();
         $this->searchDisabledDays();
-
-        // Restablecer la fecha seleccionada a un valor vacío
         $this->dateReserve = '';
     }
     public function searchDisabledDays()
     {
-        // $value = $this->to_user_headquarters;
-        // $disabledDays = MedicineDisabledDays::where('user_headquarters_id', $value)->pluck('disabled_days');
-        // $disabledDaysArray = [];
-
-        // foreach ($disabledDays as $days) {
-        //     $daysArray = array_map('trim', explode(',', $days));
-        //     $disabledDaysArray = array_merge($disabledDaysArray, $daysArray);
-        // }
-        // $this->disabledDaysFilter = $disabledDaysArray;
-        // $this->dispatchBrowserEvent('headquartersUpdated', [
-        //     'disabledDaysFilter' => $disabledDaysArray
-        // ]);
         $value = $this->to_user_headquarters;
         $disabledDays = MedicineDisabledDays::where('user_headquarters_id', $value)
             ->pluck('disabled_days')
@@ -186,37 +176,21 @@ class HomeMedicine extends Component
             $disabledDaysArray = array_merge($disabledDaysArray, $daysArray);
         }
         if ($this->to_user_headquarters !== null) {
-            $maxCitas = 0;
-
-            switch ($this->to_user_headquarters) {
-                case 7: // CIUDAD DE MEXICO
-                    $maxCitas = 50;
-                    break;
-                case 2: // CANCUN
-                case 3: // TIJUANA
-                case 4: // TOLUCA
-                case 5: // MONTERREY
-                case 518: //MAZATLAN SINALOA
-                case 519: //CHIAPAS
-                case 520: //VERACRUZ
-                case 521: //HERMOSILLO SONORA
-                    $maxCitas = 10;
-                    break;
-                case 522: //QUERETARO
-                    $maxCitas = 10;
-                    break;
-                case 7958: //SINALOA CULIACAN
-                    $maxCitas = 10;
-                    break;
-                case 6: // GUADALAJARA
-                    $maxCitas = 20;
-                    break;
-                case 523: // YUCATAN
-                    $maxCitas = 5;
-                    break;
-                default:
-                    $maxCitas = 0;
-                    break;
+            $maxCitas = MedicineSchedule::with('scheduleHeadquarter')
+                ->whereHas('scheduleHeadquarter', function ($max) {
+                    $max->where('user_id', $this->to_user_headquarters);
+                })->value('max_schedules');
+            if ($this->type_exam_id == $this->type_exam_id) {
+                $maxCitasException = MedicineScheduleException::with('medicineSchedules.scheduleHeadquarter')
+                    ->whereHas('medicineSchedules.scheduleHeadquarter', function ($qException) {
+                        $qException->where('user_id', $this->to_user_headquarters);
+                    })
+                    // ->where('medicine_schedule_id', $this->medicine_schedule_id)
+                    ->where('type_exam_id', $this->type_exam_id)
+                    ->value('max_schedules_exception');
+                if ($maxCitasException !== null) {
+                    $maxCitas = $maxCitasException;
+                }
             }
             $datesExceedingLimit = MedicineReserve::select('dateReserve')
                 ->where('to_user_headquarters', $this->to_user_headquarters)
@@ -271,7 +245,6 @@ class HomeMedicine extends Component
                 throw new \Exception();
             }
             $citas = MedicineReserve::where('to_user_headquarters', $this->to_user_headquarters)
-                // ->where('medicine_schedule_id', $this->medicine_schedule_id)
                 ->where('dateReserve', $this->dateReserve)
                 ->where(function ($query) {
                     $query->where('status', 0)
@@ -280,53 +253,44 @@ class HomeMedicine extends Component
                 })
                 ->count();
             // dd($citas);
-            switch ($this->to_user_headquarters) {
-                case 7: // CIUDAD DE MEXICO
-                    $maxCitas = 50;
-                    break;
-                case 2: // CANCUN
-                case 3: // TIJUANA
-                case 4: // TOLUCA
-                case 5: // MONTERREY
-                case 518: //MAZATLAN SINALOA
-                case 519: //CHIAPAS
-                case 520: //VERACRUZ
-                case 521: //HERMOSILLO SONORA
-                    $maxCitas = 10;
-                    break;
-                case 522: //QUERETARO
-                    $maxCitas = 10;
-                    break;
-                case 7958: //SINALOA CULIACAN
-                    $maxCitas = 10;
-                    break;
-                case 6: // GUADALAJARA
-                    $maxCitas = 20;
-                    break;
-                case 523: // YUCATAN
-                    $maxCitas = 5;
-                    break;
-                default:
-                    $maxCitas = 0;
-                    break;
-            }
+            // TODO ABRE ALGOTIRMO QUE FUNCIONA CON SWITCH CASE
+            // switch ($this->to_user_headquarters) {
+            //     case 7: // CIUDAD DE MEXICO
+            //         $maxCitas = 50;
+            //         break;
+            //     case 2: // CANCUN
+            //     case 3: // TIJUANA
+            //     case 4: // TOLUCA
+            //     case 5: // MONTERREY
+            //     case 518: //MAZATLAN SINALOA
+            //     case 519: //CHIAPAS
+            //     case 520: //VERACRUZ
+            //     case 521: //HERMOSILLO SONORA
+            //         $maxCitas = 10;
+            //         break;
+            //     case 522: //QUERETARO
+            //         $maxCitas = 10;
+            //         break;
+            //     case 7958: //SINALOA CULIACAN
+            //         $maxCitas = 10;
+            //         break;
+            //     case 6: // GUADALAJARA
+            //         $maxCitas = 20;
+            //         break;
+            //     case 523: // YUCATAN
+            //         $maxCitas = 5;
+            //         break;
+            //     default:
+            //         $maxCitas = 0;
+            //         break;
+            // }
+            // TODO CIERRA ALGORITMO QUE FUNCIONA CON SWITCH CASE
             // $schedule = MedicineSchedule::find($this->medicine_schedule_id);
             $userMedicines = MedicineReserve::with(['medicineReserveMedicine'])
                 ->whereHas('medicineReserveMedicine', function ($q1) {
                     $q1->where('user_id', Auth::user()->id);
                     $q1->where('type_exam_id', $this->type_exam_id);
                 })
-                // ->where(function ($q) {
-                //     $q->whereHas('medicineReserveMedicine.medicineInitial', function ($q2) {
-                //         $q2->where('type_class_id', $this->type_class_id);
-                //     })
-                //         ->orWhereHas('medicineReserveMedicine.medicineRenovation', function ($q2) {
-                //             $q2->where('type_class_id', $this->type_class_id);
-                //         })
-                //         ->orWhereHas('medicineReserveMedicine.medicineRevaluation.revaluationMedicineInitial', function ($q2) {
-                //             $q2->where('type_class_id', $this->type_class_id);
-                //         });
-                // })
                 ->where(function ($q) {
                     $q->where(function ($q2) {
                         $q2->whereHas('medicineReserveMedicine.medicineInitial', function ($q3) {
@@ -398,6 +362,23 @@ class HomeMedicine extends Component
             }
             // $maxCitasHorario = $schedule->max_schedules;
             //  if ($citas >= $maxCitas || $citas >= $maxCitasHorario) ALFORITMO QUE SEPARA CITAS POR HORAS
+            // $maxCitas = MedicineSchedule::where('user_id', $this->to_user_headquarters)->value('max_schedules');
+            $maxCitas = MedicineSchedule::with('scheduleHeadquarter')
+                ->whereHas('scheduleHeadquarter', function ($max) {
+                    $max->where('user_id', $this->to_user_headquarters);
+                })->value('max_schedules');
+            if ($this->type_exam_id == $this->type_exam_id) {
+                $maxCitasException = MedicineScheduleException::with('medicineSchedules.scheduleHeadquarter')
+                    ->whereHas('medicineSchedules.scheduleHeadquarter', function ($qException) {
+                        $qException->where('user_id', $this->to_user_headquarters);
+                    })
+                    // ->where('medicine_schedule_id', $this->medicine_schedule_id)
+                    ->where('type_exam_id', $this->type_exam_id)
+                    ->value('max_schedules_exception');
+                if ($maxCitasException !== null) {
+                    $maxCitas = $maxCitasException;
+                }
+            }
             if ($citas >= $maxCitas) {
                 $this->notification([
                     'title'       => 'CITA NO GENERADA!',

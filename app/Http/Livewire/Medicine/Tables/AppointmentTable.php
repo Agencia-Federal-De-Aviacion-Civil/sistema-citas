@@ -111,7 +111,7 @@ class AppointmentTable extends DataTableComponent
                     ->searchable()
                     ->format(fn ($value) => Carbon::parse($value)->format('d/m/Y')),
 
-                Column::make("HORA", "medicineSchedule.time_start")
+                Column::make("HORA", "reserveSchedule.time_start")
                     ->sortable(),
 
                 Column::make("CURP", "userParticipantUser.curp")
@@ -217,7 +217,7 @@ class AppointmentTable extends DataTableComponent
                     ->searchable()
                     ->format(fn ($value) => Carbon::parse($value)->format('d/m/Y')),
 
-                Column::make("HORA", "medicineSchedule.time_start")
+                Column::make("HORA", "reserveSchedule.time_start")
                     ->sortable(),
 
                 Column::make("ACCIÓN")
@@ -279,7 +279,7 @@ class AppointmentTable extends DataTableComponent
                     ->searchable()
                     ->format(fn ($value) => Carbon::parse($value)->format('d/m/Y')),
 
-                Column::make("HORA", "medicineSchedule.time_start")
+                Column::make("HORA", "reserveSchedule.time_start")
                     ->sortable(),
 
                 Column::make("CURP", "userParticipantUser.curp")
