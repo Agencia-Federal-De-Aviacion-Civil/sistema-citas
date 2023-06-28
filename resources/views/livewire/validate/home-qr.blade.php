@@ -20,69 +20,54 @@
         </div>
     </div>
     <div class="py-12">
-        {{-- <div class="container mx-auto px-4 py-2 bg-white shadow-xl sm:rounded-lg">
-            <div class="mt-2 max-w-6xl mx-auto sm:px-6 lg:px-8"> --}}
         @foreach ($lingisticQuerys as $lingisticQuery)
             <div class="flex items-center justify-center px-5 py-5">
                 <div
                     class="w-full max-w-xl px-5 pt-5 pb-10 mx-auto text-gray-800 bg-white rounded-lg shadow-lg dark:bg-gray-800 dark:text-gray-50">
-                    <div class="w-full pt-1 pb-5 mx-auto -mt-16 text-center">
-                        <a href="#" class="relative block">
-                            <img alt="profil" src="{{ asset('images/validate.png') }}"
-                                class="mx-auto object-cover rounded-full h-20 w-20 " />
-                        </a>
-                    </div>
-                    <div class="w-full mb-10">
-                        <p class="px-5 text-base text-center text-gray-600 dark:text-gray-100">
-                            {{ $lingisticQuery->linguisticReserve->linguisticUser->name . ' ' . $lingisticQuery->linguisticReserve->linguisticUser->UserParticipant->pluck('apParental')->first() . ' ' . $lingisticQuery->linguisticReserve->linguisticUser->UserParticipant->pluck('apMaternal')->first() }}
-                        </p>
-                        <p class="px-5 text-base text-center text-gray-600 dark:text-gray-100 font-extrabold">
-                            {{ $lingisticQuery->linguisticReserve->linguisticUser->userParticipant->pluck('curp')->first() }}
-                        </p>
-                        <p class="px-5 text-base text-center text-gray-600 dark:text-gray-100">
-                            {{ $lingisticQuery->linguisticReserve->linguisticTypeExam->name }}
-                        </p>
-                        {{-- <p class="px-5 text-base text-center text-gray-600 dark:text-gray-100 font-extrabold">
-                            {{ mb_strtoupper($dateConvertedFormatted) }}
-                        <p class="px-5 text-base text-center text-gray-600 dark:text-gray-100 font-extrabold">
-                            {{ $lingisticQuery->reserveSchedule->time_start }}</p> --}}
-                    </div>
-                    {{-- @if ($lingisticQuery->linguisticReserve->type_exam_id == 1)
-                        <div class="w-full">
-                            @if ($lingisticQuery->linguisticReserve->medicineInitial[0]->medicine_question_id == 1)
-                                <p class="font-bold text-center text-blue-700 text-md">
-                                    {{ $lingisticQuery->linguisticReserve->medicineInitial[0]->medicineInitialClasificationClass->name }}
+                    <div class="mt-3 text-center">
+                        <div class="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-green-100">
+                            <svg class="h-12 w-12 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                xmlnx="http://www.w.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
+                                </path>
+                            </svg>
+                        </div>
+                        <h3 class="py-6 text-2xl leading-6 font-medium text-gray-900">CITA CL-{{ $lingisticQuery->id }} VALIDA</h3>
+                        <div class="mt-2 px-7 py-0">
+                            {{-- <p class="text-sm text-gray-500">Account has been Successful registered.</p> --}}
+                            <div class="w-full mb-10">
+                                <p class="px-5 text-base text-center text-gray-600 dark:text-gray-100 uppercase">
+                                   NOMBRE: {{ $lingisticQuery->linguisticReserve->linguisticUser->name . ' ' . $lingisticQuery->linguisticReserve->linguisticUser->UserParticipant->pluck('apParental')->first() . ' ' . $lingisticQuery->linguisticReserve->linguisticUser->UserParticipant->pluck('apMaternal')->first() }}
                                 </p>
-                            @else
-                                @foreach ($lingisticQuery->linguisticReserve->medicineInitial as $medicineEach)
-                                    <ul class="font-bold text-center text-blue-700 text-md">
-                                        <li>
-                                            {{ $medicineEach->medicineInitialClasificationClass->name }}
-                                        </li>
-                                    </ul>
-                                @endforeach
-                            @endif
-                            <p class="text-xs text-center text-gray-500 dark:text-gray-300">
-                                {{ $lingisticQuery->linguisticReserve->medicineInitial[0]->medicineInitialTypeClass->name }}
-                            </p>
+                                <p class="px-5 text-base text-center text-gray-600 dark:text-gray-100 uppercase">
+                                    CURP: {{ $lingisticQuery->linguisticReserve->linguisticUser->userParticipant->pluck('curp')->first() }}
+                                </p>
+                                <p class="px-5 text-base text-center text-gray-600 dark:text-gray-100 uppercase">
+                                    Tipo de Evaluación: {{ $lingisticQuery->linguisticReserve->linguisticTypeExam->name }}
+                                </p>
+                                <p class="px-5 text-base text-center text-gray-600 dark:text-gray-100 uppercase">
+                                    Tipo de Licencia: {{ $lingisticQuery->linguisticReserve->linguisticTypeLicense->name }}
+                                </p>
+                                <p class="px-5 text-base text-center text-gray-600 dark:text-gray-100 uppercase">
+                                    Referencia de pago: {{ $lingisticQuery->linguisticReserve->reference_number }}
+                                </p>
+                                <p class="text-lg title-font font-normal">Fecha y Hora:
+                                    <p class="text-base font-semibold">
+                                        {{ mb_strtoupper($dateConvertedFormatted) }} A LAS
+                                        {{ $lingisticQuery->linguisticReserveSchedule->time_start }}
+                                </p>
+                            </div>
                         </div>
-                    @else
-                        <div class="w-full">
-                            <p class="font-bold text-center text-blue-700 text-md">
-                                @foreach ($lingisticQuery->linguisticReserve->medicineRenovation as $renovation)
-                                    {{ $renovation->renovationClasificationClass->name }}
-                                @endforeach
-                            </p>
-                            <p class="text-xs text-center text-gray-500 dark:text-gray-300">
-                                {{ $lingisticQuery->linguisticReserve->medicineRenovation[0]->renovationTypeClass->name }}
-                            </p>
+                        <div class="items-center px-4 py-0">
+                            <button id="ok-btn" class="px-4 py-2 bg-blue-500 text-white
+                                text-base font-medium rounded-md w-full
+                                shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300">
+                                OK
+                            </button>
                         </div>
-                    @endif --}}
+                    </div>
                 </div>
             </div>
         @endforeach
     </div>
-    {{-- </div>
-    </div> --}}
-
 </div>
