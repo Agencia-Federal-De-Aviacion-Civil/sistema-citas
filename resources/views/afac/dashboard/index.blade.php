@@ -2,6 +2,9 @@
     @can('headquarters.see.dashboard')
         @include('afac.dashboard.dashboard_headquarters')
     @endcan
+    @can('sub_headquarters.see.dashboard')
+    @include('afac.dashboard.dashboard_headquarters')
+    @endcan
     @can('medicine_admin.see.dashboard')
         @include('afac.dashboard.dashboard_medicine')
     @endcan

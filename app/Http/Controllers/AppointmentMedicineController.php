@@ -12,7 +12,7 @@ class AppointmentMedicineController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['role:super_admin|user|medicine_admin|headquarters|super_admin_medicine|admin_medicine_v2']);
+        $this->middleware(['role:super_admin|user|medicine_admin|sub_headquarters|headquarters|super_admin_medicine|admin_medicine_v2']);
     }
     public function index()
     {

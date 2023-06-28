@@ -340,6 +340,113 @@ class AppointmentTable extends DataTableComponent
                         )
                     ),
             ];
+        }else if (Auth::user()->can('sub_headquarters.see.schedule.table')) {
+            return [
+
+                Column::make("Id", "id")
+                    ->sortable(),
+                Column::make("Nombre", "medicineReserveFromUser.name")
+                    ->sortable()
+                    ->searchable(fn ($query, $searchTerm) => $query->orWhere('users.name', 'like', '%' . $searchTerm . '%')),
+
+                Column::make("Apellido Paterno", "userParticipantUser.apParental")
+                    ->sortable()
+                    ->searchable(fn ($query, $searchTerm) => $query->orWhere('apParental', 'like', '%' . $searchTerm . '%')),
+
+                Column::make("Apellido Materno", "userParticipantUser.apMaternal")
+                    ->sortable()
+                    ->searchable(fn ($query, $searchTerm) => $query->orWhere('apMaternal', 'like', '%' . $searchTerm . '%')),
+
+                Column::make("Tipo", "medicineReserveMedicine.medicineTypeExam.name")
+                    ->sortable(),
+
+                Column::make("CLASE", "class")
+                    ->label(fn ($row) => view(
+                        'afac.tables.appointmentTable.actions.type-classes',
+                        [
+                            $class = MedicineReserve::with([
+                                'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
+                            ])->where('id', $row->id)->get(),
+                            'class' => $class
+                        ]
+                    )),
+
+                Column::make("TIPO DE LICENCIA", "licencia")
+                    ->label(fn ($row) => view(
+                        'afac.tables.appointmentTable.actions.classification-classes',
+                        [
+                            $licencia = MedicineReserve::with([
+                                'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
+                            ])->where('id', $row->id)->get(),
+                            'licencias' => $licencia
+                        ]
+                    )),
+                Column::make("FECHA", "dateReserve")
+                    ->sortable()
+                    ->searchable()
+                    ->format(fn ($value) => Carbon::parse($value)->format('d/m/Y')),
+
+                Column::make("HORA", "reserveSchedule.time_start")
+                    ->sortable(),
+
+                Column::make("CURP", "userParticipantUser.curp")
+                    ->sortable()
+                    ->searchable(fn ($query, $searchTerm) => $query->orWhere('curp', 'like', '%' . $searchTerm . '%')),
+
+                Column::make("LLAVE DE PAGO", "medicineReserveMedicine.reference_number")
+                    ->sortable()
+                    ->searchable(fn ($query, $searchTerm) => $query->orWhere('reference_number', 'like', '%' . $searchTerm . '%')),
+
+                Column::make('FORMATOS')
+                    ->sortable()
+                    ->label(fn ($row) => view(
+                        'afac.tables.appointmentTable.actions.download-file',
+                        [
+                            $medicine = MedicineReserve::with(
+                                'medicineReserveMedicine'
+                            )->where('id', $row->id)->get(),
+                            'medicine' => $medicine,
+                            'tipo' => $medicine[0]->medicineReserveMedicine->medicineTypeExam->id,
+                            'id' => $medicine[0]->medicineReserveMedicine->type_exam_id == 3
+                                ? Storage::url($medicine[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationDocument->name_document)
+                                : Storage::url($medicine[0]->medicineReserveMedicine->medicineDocument->name_document),
+                        ]
+                    )),
+
+                Column::make("GENERO", "userParticipantUser.genre")
+                    ->sortable(),
+
+                Column::make("NACIMIENTO", "userParticipantUser.birth")
+                    ->sortable(),
+
+                Column::make("NACIÓ", "userParticipantUser.participantState.name")
+                    ->sortable(),
+
+                Column::make("EDAD", "userParticipantUser.age")
+                    ->sortable(),
+
+                Column::make("CELULAR", "userParticipantUser.mobilePhone")
+                    ->sortable(),
+
+                Column::make("OFICINA", "userParticipantUser.officePhone")
+                    ->sortable(),
+
+                Column::make("EXTENSIÓN", "userParticipantUser.extension")
+                    ->sortable(),
+
+                Column::make("ACCIÓN")
+                    ->label(
+                        fn ($row) => view(
+                            'components.schedule-component',
+                            [
+                                $action = MedicineReserve::where('id', $row->id)->get(),
+                                'status' => $action[0]->status,
+                                'scheduleId' => $action[0]->id,
+                                'medicineId' => $action[0]->medicine_id
+                            ]
+                        )
+                    ),
+            ];
         }
     }
     public function builder(): Builder
@@ -350,16 +457,28 @@ class AppointmentTable extends DataTableComponent
             return MedicineReserve::query()->with([
                 'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
             ]);
+
         } else if (Auth::user()->can('user.see.schedule.table')) {
             return MedicineReserve::query()->with([
                 'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
             ])->whereHas('medicineReserveMedicine', function ($q1) {
                 $q1->where('user_id', Auth::user()->id);
             });
+
         } else if (Auth::user()->can('headquarters.see.schedule.table')) {
             return MedicineReserve::query()->with([
                 'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
             ])->where('to_user_headquarters', Auth::user()->id);
+
+        }else if (Auth::user()->can('sub_headquarters.see.schedule.table')) {
+
+            Date::setLocale('es');
+            $day = Date::now()->format('Y-m-d');
+
+            return MedicineReserve::query()->with([
+                'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
+            ])->where('to_user_headquarters', 7)
+            ->where('dateReserve',$day);
         }
     }
     public function filters(): array
@@ -450,7 +569,53 @@ class AppointmentTable extends DataTableComponent
                         $builder->where('medicine_reserves.id', 'like', '%' . $value . '%');
                     }),
             ];
-        } else {
+        } else if(Auth::user()->can('sub_headquarters.see.schedule.table')){
+            return [
+                SelectFilter::make('TIPO')
+                    ->options([
+                        '' => 'TODOS',
+                        '1' => 'INICIAL',
+                        '2' => 'RENOVACIÓN',
+                        '3' => 'REVALORACIÓN'
+                    ])
+                    ->filter(function ($query, $value) {
+                        $query->where('type_exam_id', $value);
+                    }),
+
+                SelectFilter::make('STATUS')
+                    ->options([
+                        '' => 'TODOS',
+                        '0' => 'PENDIENTE',
+                        '1' => 'ASISTIÓ',
+                        '2' => 'CANCELADO',
+                        '3' => 'CANCELÓ',
+                        '4' => 'REAGENDADA',
+                        '5' => 'LIBERADA'
+
+                    ])
+                    ->filter(function ($query, $value) {
+                        $query->where('medicine_reserves.status', $value);
+                    }),
+
+                SelectFilter::make('GENERO')
+                    ->options([
+                        '' => 'TODOS',
+                        'FEMENINO' => 'FEMENINO',
+                        'MASCULINO' => 'MASCULINO',
+                    ])
+                    ->filter(function ($query, $value) {
+                        $query->where('genre', $value);
+                    }),
+
+                TextFilter::make('ID CITA')
+                    ->config([
+                        'placeholder' => 'Buscar cita',
+                    ])
+                    ->filter(function (Builder $builder, string $value) {
+                        $builder->where('medicine_reserves.id', 'like', '%' . $value . '%');
+                    }),
+            ];
+        }else{
             return [];
         }
     }
