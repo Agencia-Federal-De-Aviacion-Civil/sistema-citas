@@ -23,7 +23,7 @@
         {{-- <div class="container mx-auto px-4 py-2 bg-white shadow-xl sm:rounded-lg">
             <div class="mt-2 max-w-6xl mx-auto sm:px-6 lg:px-8"> --}}
         @foreach ($lingisticQuerys as $lingisticQuery)
-            {{-- <div class="flex items-center justify-center px-5 py-5">
+            <div class="flex items-center justify-center px-5 py-5">
                 <div
                     class="w-full max-w-xl px-5 pt-5 pb-10 mx-auto text-gray-800 bg-white rounded-lg shadow-lg dark:bg-gray-800 dark:text-gray-50">
                     <div class="w-full pt-1 pb-5 mx-auto -mt-16 text-center">
@@ -34,27 +34,27 @@
                     </div>
                     <div class="w-full mb-10">
                         <p class="px-5 text-base text-center text-gray-600 dark:text-gray-100">
-                            {{ $medicineQuery->medicineReserveMedicine->medicineUser->name . ' ' . $medicineQuery->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apParental')->first() . ' ' . $medicineQuery->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apMaternal')->first() }}
+                            {{ $lingisticQuery->linguisticReserve->linguisticUser->name . ' ' . $lingisticQuery->linguisticReserve->linguisticUser->UserParticipant->pluck('apParental')->first() . ' ' . $lingisticQuery->linguisticReserve->linguisticUser->UserParticipant->pluck('apMaternal')->first() }}
                         </p>
                         <p class="px-5 text-base text-center text-gray-600 dark:text-gray-100 font-extrabold">
-                            {{ $medicineQuery->medicineReserveMedicine->medicineUser->userParticipant->pluck('curp')->first() }}
+                            {{ $lingisticQuery->linguisticReserve->linguisticUser->userParticipant->pluck('curp')->first() }}
                         </p>
                         <p class="px-5 text-base text-center text-gray-600 dark:text-gray-100">
-                            {{ $medicineQuery->medicineReserveMedicine->medicineTypeExam->name }}
+                            {{ $lingisticQuery->linguisticReserve->linguisticTypeExam->name }}
                         </p>
-                        <p class="px-5 text-base text-center text-gray-600 dark:text-gray-100 font-extrabold">
+                        {{-- <p class="px-5 text-base text-center text-gray-600 dark:text-gray-100 font-extrabold">
                             {{ mb_strtoupper($dateConvertedFormatted) }}
                         <p class="px-5 text-base text-center text-gray-600 dark:text-gray-100 font-extrabold">
-                            {{ $medicineQuery->reserveSchedule->time_start }}</p>
+                            {{ $lingisticQuery->reserveSchedule->time_start }}</p> --}}
                     </div>
-                    @if ($medicineQuery->medicineReserveMedicine->type_exam_id == 1)
+                    {{-- @if ($lingisticQuery->linguisticReserve->type_exam_id == 1)
                         <div class="w-full">
-                            @if ($medicineQuery->medicineReserveMedicine->medicineInitial[0]->medicine_question_id == 1)
+                            @if ($lingisticQuery->linguisticReserve->medicineInitial[0]->medicine_question_id == 1)
                                 <p class="font-bold text-center text-blue-700 text-md">
-                                    {{ $medicineQuery->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass->name }}
+                                    {{ $lingisticQuery->linguisticReserve->medicineInitial[0]->medicineInitialClasificationClass->name }}
                                 </p>
                             @else
-                                @foreach ($medicineQuery->medicineReserveMedicine->medicineInitial as $medicineEach)
+                                @foreach ($lingisticQuery->linguisticReserve->medicineInitial as $medicineEach)
                                     <ul class="font-bold text-center text-blue-700 text-md">
                                         <li>
                                             {{ $medicineEach->medicineInitialClasificationClass->name }}
@@ -63,23 +63,23 @@
                                 @endforeach
                             @endif
                             <p class="text-xs text-center text-gray-500 dark:text-gray-300">
-                                {{ $medicineQuery->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name }}
+                                {{ $lingisticQuery->linguisticReserve->medicineInitial[0]->medicineInitialTypeClass->name }}
                             </p>
                         </div>
                     @else
                         <div class="w-full">
                             <p class="font-bold text-center text-blue-700 text-md">
-                                @foreach ($medicineQuery->medicineReserveMedicine->medicineRenovation as $renovation)
+                                @foreach ($lingisticQuery->linguisticReserve->medicineRenovation as $renovation)
                                     {{ $renovation->renovationClasificationClass->name }}
                                 @endforeach
                             </p>
                             <p class="text-xs text-center text-gray-500 dark:text-gray-300">
-                                {{ $medicineQuery->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name }}
+                                {{ $lingisticQuery->linguisticReserve->medicineRenovation[0]->renovationTypeClass->name }}
                             </p>
                         </div>
-                    @endif
+                    @endif --}}
                 </div>
-            </div> --}}
+            </div>
         @endforeach
     </div>
     {{-- </div>
