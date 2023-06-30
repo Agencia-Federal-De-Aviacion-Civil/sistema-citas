@@ -490,21 +490,22 @@ class AppointmentTable extends DataTableComponent
                         '' => 'TODOS',
                         '1' => 'INICIAL',
                         '2' => 'RENOVACIÓN',
-                        '3' => 'REVALORACIÓN'
+                        '3' => 'REVALORACIÓN',
+                        '4' => 'REVALORACIÓN POST ACCIDENTE'
                     ])
                     ->filter(function ($query, $value) {
                         $query->where('type_exam_id', $value);
                     }),
-                SelectFilter::make('CLASE')
-                    ->options([
-                        '' => 'TODOS',
-                        '1' => 'CLASE I',
-                        '2' => 'CLASE II',
-                        '3' => 'CLASE III',
-                    ])
-                    ->filter(function ($query, $value) {
-                        $query->where('type_exam_id', $value);
-                    }),
+                // SelectFilter::make('CLASE')
+                //     ->options([
+                //         '' => 'TODOS',
+                //         '1' => 'CLASE I',
+                //         '2' => 'CLASE II',
+                //         '3' => 'CLASE III',
+                //     ])
+                //     ->filter(function ($query, $value) {
+                //         $query->where('type_exam_id', $value);
+                //     }),
 
                 SelectFilter::make('STATUS')
                     ->options([
