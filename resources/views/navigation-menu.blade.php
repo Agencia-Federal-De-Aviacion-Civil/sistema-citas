@@ -131,6 +131,41 @@
                         <x-jet-nav-link href="{{ route('afac.appointment') }}" :active="request()->routeIs('afac.appointment')">
                             {{ __('Citas agendadas') }}
                         </x-jet-nav-link>
+
+                        <x-jet-nav-link href="{{ route('validate') }}" :active="request()->routeIs('afac.appointment')">
+                            {{ __('Validación de QR') }}
+                        </x-jet-nav-link>
+
+                        {{-- <ul x-show="open" x-on:click.away="open = false"
+                        class="z-20 bg-white text-gray-700 rounded shadow-lg absolute py-2 mt-1"
+                        style="min-width:15rem">
+                        <li>
+                            <a href="{{ route('afac.medicine') }}"
+                                class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
+                                Generar cita
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('afac.headquarterMedicine') }}"
+                                class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
+                                Sedes
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('validate') }}"
+                                class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
+                                Validación de QR
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('afac.medicienMovements') }}"
+                                class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
+                                Historial
+                            </a>
+                        </li>
+                    </ul> --}}
+
+
                     @endcan
                     @can('medicine_admin.see.tabs.navigation')
                         <x-jet-nav-link href="{{ route('afac.headquarterMedicine') }}" :active="request()->routeIs('afac.headquarterMedicine')">
