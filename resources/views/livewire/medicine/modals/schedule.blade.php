@@ -174,9 +174,9 @@
                                 <option value="2">CANCELAR CITA</option>
                                 <option value="4">REAGENDAR CITA</option>
                             </select>
-                        </div>                     
+                        </div>
                         @endhasrole
-                        @hasrole('headquarters')
+                        @hasrole('headquarters|sub_headquarters')
                         <div class="mt-6 relative w-full group">
                             <select name="my_option" label="SELECIONE OPCIÓN" x-model="selectedOption"
                                 wire:model="selectedOption"
@@ -191,7 +191,7 @@
                             <span class="mt-2 text-sm text-negative-600">Seleccione opción</span>
                         @enderror
                     </div>
-                
+
                 <div class="flex justify-end items-center gap-x-2 p-2 sm:px-7 border-t dark:border-gray-700">
                     <div class="float-right mt-6">
                         <x-button wire:click="reschedules()" label="ACEPTAR" blue right-icon="save-as" />
