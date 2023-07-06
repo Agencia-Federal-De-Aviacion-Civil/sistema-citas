@@ -132,7 +132,7 @@
                             {{ __('Citas agendadas') }}
                         </x-jet-nav-link>
 
-                        <x-jet-nav-link href="{{ route('validate') }}" :active="request()->routeIs('afac.appointment')">
+                        <x-jet-nav-link href="{{ route('validate') }}">
                             {{ __('Validación de QR') }}
                         </x-jet-nav-link>
 
