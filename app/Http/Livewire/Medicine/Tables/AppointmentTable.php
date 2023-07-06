@@ -472,13 +472,19 @@ class AppointmentTable extends DataTableComponent
 
         }else if (Auth::user()->can('sub_headquarters.see.schedule.table')) {
 
-            Date::setLocale('es');
-            $day = Date::now()->format('Y-m-d');
+            if(Auth::user()->id==11100){
+                return MedicineReserve::query()->with([
+                    'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
+                ])->where('to_user_headquarters', 520);
+            }else{
+                Date::setLocale('es');
+                $day = Date::now()->format('Y-m-d');
+                return MedicineReserve::query()->with([
+                    'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
+                ])->where('to_user_headquarters', 7)
+                ->where('dateReserve',$day);
+            }
 
-            return MedicineReserve::query()->with([
-                'medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'userParticipantUser'
-            ])->where('to_user_headquarters', 7)
-            ->where('dateReserve',$day);
         }
     }
     public function filters(): array

@@ -33,17 +33,33 @@ class homeController extends Controller
                 'headquarterUser'
             ])->where('user_id', Auth::user()->id)->get();
         }else if(Auth::user()->can('sub_headquarters.see.dashboard')){
-            $appointment = MedicineReserve::query()
+
+            if(Auth::user()->id==11100){
+
+                $appointment = MedicineReserve::query()
+                ->select('status', DB::raw('count(*) as count'), 'dateReserve')
+                // ->where('dateReserve', $date1)
+                ->groupBy('status', 'dateReserve')
+                ->where('to_user_headquarters', 520)
+                ->get();
+            $headquarters = Headquarter::with([
+                'headquarterUser'
+            ])->where('user_id', Auth::user()->id)->get();
+
+            }else{
+                $appointment = MedicineReserve::query()
                 ->select('status', DB::raw('count(*) as count'), 'dateReserve')
                 // ->where('dateReserve', $date1)
                 ->groupBy('status', 'dateReserve')
                 ->where('to_user_headquarters', 7)
                 ->where('dateReserve',$date1)
                 ->get();
-
             $headquarters = Headquarter::with([
                 'headquarterUser'
             ])->where('user_id', Auth::user()->id)->get();
+
+            }
+
         }else {
             $appointment = MedicineReserve::query()
                 ->select('status', DB::raw('count(*) as count'), 'dateReserve')
