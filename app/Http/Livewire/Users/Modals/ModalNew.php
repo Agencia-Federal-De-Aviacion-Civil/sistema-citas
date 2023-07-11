@@ -6,6 +6,7 @@ use App\Models\Catalogue\Municipal;
 use App\Models\Catalogue\State;
 use App\Models\User;
 use App\Models\UserParticipant;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Livewire\WithFileUploads;
@@ -17,7 +18,7 @@ class ModalNew extends ModalComponent
 {
     use Actions;
     use WithFileUploads;
-    public $roles, $modal, $id_save, $id_update, $name, $email, $apParental, $apMaternal, $state_id, $municipal_id, $password, $passwordConfirmation, $privileges, $privilegesId, $title,
+    public $roles, $modal, $id_save, $id_update, $name, $email, $apParental, $apMaternal, $state_id, $municipal_id, $password, $passwordConfirmation, $privileges, $privilegesId, $title,$email_verified,$dateNow,
         $genre, $birth, $age, $street, $nInterior, $nExterior, $suburb, $postalCode, $federalEntity, $delegation, $mobilePhone, $officePhone, $extension, $curp, $states, $municipals,$municipio,$select;
     public function rules()
     {
@@ -88,6 +89,10 @@ class ModalNew extends ModalComponent
             $this->officePhone = $userPrivileges[0]->UserParticipant[0]->officePhone;
             $this->extension = $userPrivileges[0]->UserParticipant[0]->extension;
             $this->curp = $userPrivileges[0]->UserParticipant[0]->curp;
+
+            $this->email_verified = $userPrivileges[0]->email_verified_at;
+
+
         } else {
             $this->title = 'AGREGAR USUARIO';
             $this->state_id = 1;
@@ -163,6 +168,16 @@ class ModalNew extends ModalComponent
         $this->emit('privilegesUser');
         $this->closeModal();
     }
+    public function verified($id_save){
+        Date::setLocale('es');
+        $this->dateNow = Date::now()->format('Y-m-d h:i:s');
+        $verifiedUser = User::where('id', $id_save);
+        $verifiedUser->update([
+            'email_verified_at' => $this->dateNow,
+        ]);
+        $this->valores($id_save);
+    }
+
     public function messages()
     {
         return [
