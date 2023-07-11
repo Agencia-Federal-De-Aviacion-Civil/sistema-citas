@@ -6,6 +6,7 @@ use App\Models\Catalogue\Municipal;
 use App\Models\Catalogue\State;
 use App\Models\User;
 use App\Models\UserParticipant;
+use App\Models\Medicine\medicine_history_movements;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
@@ -13,6 +14,7 @@ use Livewire\WithFileUploads;
 use LivewireUI\Modal\ModalComponent;
 use Spatie\Permission\Models\Role;
 use WireUi\Traits\Actions;
+use Illuminate\Support\Facades\Auth;
 
 class ModalNew extends ModalComponent
 {
@@ -175,6 +177,13 @@ class ModalNew extends ModalComponent
         $verifiedUser->update([
             'email_verified_at' => $this->dateNow,
         ]);
+        //save history veryficate e-mail
+        medicine_history_movements::create([
+            'user_id' => Auth::user()->id,
+            'action' => "VERIFICA CORREO",
+            'process' => 'USUARIO: '.$this->name.' '.$this->apParental.' '.$this->apMaternal.' ID:'.$id_save
+        ]);
+        
         $this->valores($id_save);
     }
 
