@@ -131,11 +131,13 @@
                         <x-jet-nav-link href="{{ route('afac.appointment') }}" :active="request()->routeIs('afac.appointment')">
                             {{ __('Citas agendadas') }}
                         </x-jet-nav-link>
-
-                        <x-jet-nav-link href="{{ route('validate') }}">
-                            {{ __('Validación de QR') }}
-                        </x-jet-nav-link>
                     @endcan
+                    @can('headquarters.see.qr')
+                    <x-jet-nav-link href="{{ route('validate') }}">
+                        {{ __('Validación de QR') }}
+                    </x-jet-nav-link>
+                    @endcan
+
                     @can('medicine_admin.see.tabs.navigation')
                         <x-jet-nav-link href="{{ route('afac.headquarterMedicine') }}" :active="request()->routeIs('afac.headquarterMedicine')">
                             {{ __('Administrador de Sedes') }}
