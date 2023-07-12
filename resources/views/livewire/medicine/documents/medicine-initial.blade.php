@@ -186,7 +186,7 @@
             <ol style="text-align: justify">
                 <li value="1">Acta de nacimiento (Con formato vigente a la fecha de su examen).</li>
                 <li>Comprobante de domicilio con vigencia no mayor a 3 meses.</li>
-                <li>Comprobante de pago.</li>
+                <li>Comprobante de pago (original).</li>
                 <li>Comprobante de cita.</li>
                 <li>Clave Única de Registro de Población (CURP).</li>
                 <li>Deberá presentar en forma impresa los formatos de declaración de salud,
@@ -237,7 +237,7 @@
                 <p style="padding-left:3%">C) Examen General de Orina.</p>
                 <p style="padding-left:3%">D) Prueba de detección de VIH (Anticuerpos).</p>
                 <p style="padding-left:3%">E) Prueba de detección de sustancias psicoactivas en orina, de 5
-                    reactivos (Cocaína, Cannabinoides, Opiaceos, Anfetaminas y Benzodiazepinas).</p>
+                    reactivos (Cocaína, Cannabinoides, Opiaceos, Anfetaminas y Benzodiazepinas). Verificar que la totalidad de sus resultados esten reportados o de lo contrario no podrá ser atendido</p>
                 <p style="padding-left:3%">F) Hemoglobina glucosilada.</p>
                 <p style="padding-left:3%">G) Radiografía de tórax postero-anterior o más conocida como la tele de tórax
                     <b> (en
