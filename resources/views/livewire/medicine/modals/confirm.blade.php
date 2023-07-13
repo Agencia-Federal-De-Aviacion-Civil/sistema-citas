@@ -202,7 +202,7 @@
 
                                         <p class="text-lg title-font font-normal">Sede:
                                         <p class="text-lg font-semibold">
-                                            {{ $medicineReserves[0]->user->name }}
+                                            {{ $medicineReserves[0]->medicineReserveHeadquarter->name_headquarter }}
                                         </p>
                                         </p>
                                     </div>
@@ -216,8 +216,8 @@
                                 <div class="sm:w-full w-full">
                                     <div class="rounded flex p-0 h-full items-center">
                                         <p class="text-lg title-font font-normal">
-                                            {{ $medicineReserves[0]->user->userHeadquarter[0]->direction }}"
-                                            <a href="{{ $medicineReserves[0]->user->userHeadquarter[0]->url }}"
+                                            {{ $medicineReserves[0]->medicineReserveHeadquarter->direction }}"
+                                            <a href="{{ $medicineReserves[0]->medicineReserveHeadquarter->url }}"
                                                 target="_blank" class="text-lg font-semibold text-sky-600">Consultar
                                                 mapa</a>
                                         </p>
@@ -377,7 +377,7 @@
 
                                         <p class="text-lg title-font font-normal">Sede:
                                         <p class="text-lg font-semibold">
-                                            {{ $medicineReserves[0]->user->name }}
+                                            {{ $medicineReserves[0]->medicineReserveHeadquarter->name_headquarter }}
                                         </p>
                                         </p>
                                     </div>
@@ -391,8 +391,8 @@
                                 <div class="sm:w-full w-full">
                                     <div class="rounded flex p-0 h-full items-center">
                                         <p class="text-lg title-font font-normal">
-                                            {{ $medicineReserves[0]->user->userHeadquarter[0]->direction }}"
-                                            <a href="{{ $medicineReserves[0]->user->userHeadquarter[0]->url }}"
+                                            {{ $medicineReserves[0]->medicineReserveHeadquarter->direction }}"
+                                            <a href="{{ $medicineReserves[0]->medicineReserveHeadquarter->url }}"
                                                 target="_blank" class="text-lg font-semibold text-sky-600">Consultar
                                                 mapa</a>
                                         </p>
@@ -552,7 +552,7 @@
 
                                         <p class="text-lg title-font font-normal">Sede:
                                         <p class="text-lg font-semibold">
-                                            {{ $medicineReserves[0]->user->name }}
+                                            {{ $medicineReserves[0]->medicineReserveHeadquarter->name_headquarter }}
                                         </p>
                                         </p>
                                     </div>
@@ -566,8 +566,8 @@
                                 <div class="sm:w-full w-full">
                                     <div class="rounded flex p-0 h-full items-center">
                                         <p class="text-lg title-font font-normal">
-                                            {{ $medicineReserves[0]->user->userHeadquarter[0]->direction }}"
-                                            <a href="{{ $medicineReserves[0]->user->userHeadquarter[0]->url }}"
+                                            {{ $medicineReserves[0]->medicineReserveHeadquarter->direction }}"
+                                            <a href="{{ $medicineReserves[0]->medicineReserveHeadquarter->url }}"
                                                 target="_blank" class="text-lg font-semibold text-sky-600">Consultar
                                                 mapa</a>
                                         </p>
@@ -753,7 +753,7 @@
 
                                         <p class="text-lg title-font font-normal">Sede:
                                         <p class="text-lg font-semibold">
-                                            {{ $medicineReserves[0]->user->name }}
+                                            {{ $medicineReserves[0]->medicineReserveHeadquarter->name_headquarter }}
                                         </p>
                                         </p>
                                     </div>
@@ -767,8 +767,8 @@
                                 <div class="sm:w-full w-full">
                                     <div class="rounded flex p-0 h-full items-center">
                                         <p class="text-lg title-font font-normal">
-                                            {{ $medicineReserves[0]->user->userHeadquarter[0]->direction }}"
-                                            <a href="{{ $medicineReserves[0]->user->userHeadquarter[0]->url }}"
+                                            {{ $medicineReserves[0]->medicineReserveHeadquarter->direction }}"
+                                            <a href="{{ $medicineReserves[0]->medicineReserveHeadquarter->url }}"
                                                 target="_blank" class="text-lg font-semibold text-sky-600">Consultar
                                                 mapa</a>
                                         </p>
