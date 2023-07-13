@@ -77,17 +77,21 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(UserParticipant::class);
     }
-    public function userHeadquarter()
-    {
-        return $this->hasMany(Headquarter::class);
-    }
+    // public function userHeadquarter()
+    // {
+    //     return $this->hasMany(Headquarter::class);
+    // }
     public function userMedicine()
     {
         return $this->hasMany(Medicine::class);
     }
-    public function userMedicineReserveTo()
+    // public function userMedicineReserveTo()
+    // {
+    //     return $this->hasMany(MedicineReserve::class, 'to_user_headquarters');
+    // }
+    public function userHeadquarter()
     {
-        return $this->hasMany(MedicineReserve::class, 'to_user_headquarters');
+        return $this->belongsToMany(Headquarter::class, 'user_headquarters');
     }
     public function usermedicineReserveFrom()
     {

@@ -2,6 +2,7 @@
 
 namespace App\Models\Medicine;
 
+use App\Models\Catalogue\Headquarter;
 use App\Models\Observation;
 use App\Models\User;
 use App\Models\UserParticipant;
@@ -20,9 +21,9 @@ class MedicineReserve extends Model
     {
         return $this->belongsTo(Medicine::class, 'medicine_id');
     }
-    public function user()
+    public function medicineReserveHeadquarter()
     {
-        return $this->belongsTo(User::class, 'to_user_headquarters');
+        return $this->belongsTo(Headquarter::class, 'headquarter_id');
     }
     public function reserveMedicine()
     {
@@ -34,7 +35,7 @@ class MedicineReserve extends Model
     }
     public function reserveSchedule()
     {
-        return $this->belongsTo(MedicineSchedule::class, 'medicine_schedule_id');        
+        return $this->belongsTo(MedicineSchedule::class, 'medicine_schedule_id');
     }
     public function reserveObserv()
     {

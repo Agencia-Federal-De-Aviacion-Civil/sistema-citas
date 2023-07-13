@@ -24,7 +24,11 @@ class Headquarter extends Model
     }
     public function headquarterUser()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsToMany(User::class, 'user_headquarters');
+    }
+    public function headquarterMedicineReserve()
+    {
+        return $this->hasMany(MedicineReserve::class);
     }
     public function headquarterSchedule()
     {
