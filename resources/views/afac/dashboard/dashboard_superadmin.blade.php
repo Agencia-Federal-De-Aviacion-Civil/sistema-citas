@@ -9,7 +9,8 @@
             <ul class="flex flex-col md:flex-row items-start md:items-center text-gray-300 text-sm mt-3">
                 <li class="flex items-center mt-4 md:mt-0">
                     <div class="mr-1">
-                        <img src="https://tuk-cdn.s3.amazonaws.com/can-uploader/background_with_sub_text-svg3.svg" alt="date">
+                        <img src="https://tuk-cdn.s3.amazonaws.com/can-uploader/background_with_sub_text-svg3.svg"
+                            alt="date">
                     </div>
                     <span tabindex="0" class="focus:outline-none">
                         {{ $dateNow }}
@@ -95,8 +96,8 @@
             </div>
 
             <div class="bg-gray-100 text-gray-500 rounded shadow-xl py-5 px-5 w-full sm:w-full md:w-full lg:w-full"
-            x-data="{ cardOpen: false, cardData: cardData() }" x-init="$watch('cardOpen', value => value ? (cardData.countUp($refs.total, 0,  {{ $registradas }}, null, 0.8), cardData.sessions.forEach((el, i) => cardData.countUp($refs[`device${i}`], 0, cardData.sessions[i].size, null, 1.6))) : null);
-    setTimeout(() => { cardOpen = true }, 100)">
+                x-data="{ cardOpen: false, cardData: cardData() }" x-init="$watch('cardOpen', value => value ? (cardData.countUp($refs.total, 0, {{ $registradas }}, null, 0.8), cardData.sessions.forEach((el, i) => cardData.countUp($refs[`device${i}`], 0, cardData.sessions[i].size, null, 1.6))) : null);
+                setTimeout(() => { cardOpen = true }, 100)">
                 <div class="flex w-full">
                     <h3 class="text-lg font-semibold leading-tight flex-1">TOTAL DE CITAS MEDICINA DE AVIACIÓN</h3>
                     <div class="relative h-5 leading-none">
@@ -165,7 +166,7 @@
 
                                 <div class="ml-4">
                                     <h2 class="font-semibold">Canceladas: {{ $canceladas }}</h2>
-                                    <p class="mt-2 text-sm text-gray-500">{{ $porcanceladas }}%</p>    
+                                    <p class="mt-2 text-sm text-gray-500">{{ $porcanceladas }}%</p>
                                 </div>
                             </div>
                         </div>
@@ -177,20 +178,21 @@
                         <div class="rounded-t mb-0 px-0 border-0">
                             <div class="flex flex-wrap items-center px-4 py-2">
                                 <div class="relative w-full max-w-full flex-grow flex-1">
-                                        <div class="flex items-start rounded-xl p-4">
-                                            <div
-                                                class="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                    stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
-                                                </svg>
-                                            </div>
-                                            <div class="ml-4">
-                                                <h2 class="font-semibold">{{ $now }} Citas</h2>
-                                                <p class="mt-2 text-sm text-gray-500">hoy {{ $date2 }}</p>
-                                            </div>
+                                    <div class="flex items-start rounded-xl p-4">
+                                        <div
+                                            class="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                class="w-6 h-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
+                                            </svg>
                                         </div>
+                                        <div class="ml-4">
+                                            <h2 class="font-semibold">{{ $now }} Citas</h2>
+                                            <p class="mt-2 text-sm text-gray-500">hoy {{ $date2 }}</p>
+                                        </div>
+                                    </div>
                                     {{-- </div> --}}
                                 </div>
                             </div>
@@ -206,8 +208,8 @@
                                                 Citas para hoy
                                             </th>
                                             <th
-                                              class="px-4 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-100 align-middle border border-solid border-gray-200 dark:border-gray-500 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                               Citas para mañana
+                                                class="px-4 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-100 align-middle border border-solid border-gray-200 dark:border-gray-500 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                                Citas para mañana
                                             </th>
                                             <th
                                                 class="px-4 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-100 align-middle border border-solid border-gray-200 dark:border-gray-500 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
@@ -224,28 +226,28 @@
                                             <tr class="text-gray-700 dark:text-gray-100">
                                                 <th
                                                     class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                                    {{ $headquarter->headquarterUser->name }}</th>
+                                                    {{ $headquarter->name_headquarter }}</th>
                                                 <td
                                                     class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                                    {{ $headquarter->headquarterUser->userMedicineReserveTo->where('dateReserve', $date1)->whereIn('status',['0','1','4'])->count() }}
+                                                    {{ $headquarter->headquarterMedicineReserve->where('dateReserve', $date1)->whereIn('status', ['0', '1', '4'])->count() }}
                                                 </td>
                                                 <td
-                                                class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                                {{ $headquarter->headquarterUser->userMedicineReserveTo->where('dateReserve', $tomorrow)->whereIn('status',['0','1','4'])->count() }}
-                                            </td>
+                                                    class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                                                    {{ $headquarter->headquarterMedicineReserve->where('dateReserve', $tomorrow)->whereIn('status', ['0', '1', '4'])->count() }}
+                                                </td>
                                                 <td
-                                                class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                                {{ $headquarter->headquarterUser->userMedicineReserveTo->count() }}
+                                                    class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                                                    {{ $headquarter->headquarterMedicineReserve->count() }}
                                                 </td>
                                                 <td
                                                     class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                                                     <div class="flex items-center">
                                                         <span
-                                                            class="mr-2">{{ round(($headquarter->headquarterUser->userMedicineReserveTo->count() * 100) / $registradas, 1) }}%</span>
+                                                            class="mr-2">{{ round(($headquarter->headquarterMedicineReserve->count() * 100) / $registradas, 1) }}%</span>
                                                         <div class="relative w-full">
                                                             <div
                                                                 class="overflow-hidden h-2 text-xs flex rounded bg-blue-200">
-                                                                <div style="width:{{ ($headquarter->headquarterUser->userMedicineReserveTo->count() * 100) / $registradas }}%"
+                                                                <div style="width:{{ ($headquarter->headquarterMedicineReserve->count() * 100) / $registradas }}%"
                                                                     class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-600">
                                                                 </div>
                                                             </div>
@@ -268,7 +270,7 @@
                             </div>
                         </div>
                     </div>
-                </div>    
+                </div>
             </div>
         </div>
     </div>

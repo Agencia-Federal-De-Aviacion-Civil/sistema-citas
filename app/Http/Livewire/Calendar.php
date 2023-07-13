@@ -49,20 +49,18 @@ class Calendar extends Component
     public function render()
     {
 
-        $queryEvents = MedicineReserve::with('user')
+        $queryEvents = MedicineReserve::with('medicineReserveHeadquarter')
             ->whereIn('status', [0, 1, 4])
             ->get();
-
         $groupedEvents = $queryEvents->groupBy(function ($event) {
-            return $event->user->name . '_' . $event->dateReserve;
+            return $event->medicineReserveHeadquarter->name_headquarter . '_' . $event->dateReserve;
         });
-
         $events = $groupedEvents->map(function ($events) {
             $count = $events->count();
 
             return [
                 'id' => $events->first()->id,
-                'title' => $events->first()->user->name . ' (' . $count . ')',
+                'title' => $events->first()->medicineReserveHeadquarter->name_headquarter . ' (' . $count . ')',
                 'start' => $events->first()->dateReserve,
             ];
         })->values();
