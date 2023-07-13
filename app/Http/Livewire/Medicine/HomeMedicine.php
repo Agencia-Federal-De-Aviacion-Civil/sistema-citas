@@ -32,7 +32,7 @@ class HomeMedicine extends Component
     use WithFileUploads;
     public $medicine_question_id, $type_class_id, $clasificationClass, $clasification_class_id, $type_exception_id;
     public $document_pay, $reference_number, $pay_date, $type_exam_id, $typeRenovationExams, $dateConvertedFormatted;
-    public $questionClassess, $typeExams, $sedes, $userQuestions, $to_user_headquarters, $dateReserve, $saveMedicine, $disabledDaysFilter;
+    public $questionClassess, $typeExams, $sedes, $userQuestions, $headquarter_id, $dateReserve, $saveMedicine, $disabledDaysFilter;
     public $confirmModal = false, $modal = false;
     public $medicineQueries, $medicineReserves, $medicineInitials, $medicineRenovations, $id_medicineReserve, $idMedicine, $savedMedicineId, $scheduleMedicines, $medicine_schedule_id;
     // MEDICINE INITIAL TABLE
@@ -68,7 +68,7 @@ class HomeMedicine extends Component
             'document_authorization' => 'required_if:type_exam_id,3',
             'type_exam_revaloration_id' => 'required_if:type_exam_id,3',
             'clasification_class_id' => 'required',
-            'to_user_headquarters' => 'required',
+            'headquarter_id' => 'required',
             'dateReserve' => 'required',
             'medicine_schedule_id' => 'required'
         ];
@@ -101,7 +101,7 @@ class HomeMedicine extends Component
             'type_class_id',
             'clasification_class_id',
             'medicine_question_id',
-            'to_user_headquarters',
+            'headquarter_id',
             'dateReserve',
             'medicine_schedule_id'
         ]);
@@ -119,9 +119,9 @@ class HomeMedicine extends Component
         } else if ($type_exam_id === '4') {
             $type_exam_id = '2';
             $this->typeRenovationExams = TypeClass::where('type_exam_id', $type_exam_id)->get();
-        }else {
+        } else {
             $this->typeRenovationExams = TypeClass::where('type_exam_id', $type_exam_id)->get();
-        } 
+        }
     }
     public function updatedTypeClassId($type_class_id)
     {
@@ -134,13 +134,13 @@ class HomeMedicine extends Component
     public function resetQuestions()
     {
         $this->medicine_question_id = [];
-        $this->to_user_headquarters = '';
+        $this->headquarter_id = '';
         $this->clasificationClass = [];
         $this->reset([
             'medicine_question_id',
             'type_class_id',
             'medicine_question_id',
-            'to_user_headquarters',
+            'headquarter_id',
             'dateReserve',
             'medicine_schedule_id',
             'type_exam_revaloration_id',
@@ -151,22 +151,22 @@ class HomeMedicine extends Component
     {
         $this->confirmModal = true;
     }
-    public function updatedToUserHeadquarters($value)
+    public function updatedHeadquarterId($value)
     {
         $this->scheduleMedicines = MedicineSchedule::with('scheduleHeadquarter')
             ->whereHas('scheduleHeadquarter', function ($max) use ($value) {
-                $max->where('user_id', $value);
+                $max->where('id', $value);
             })->where('status', 0)->get();
         $this->searchDisabledDays();
         $this->dateReserve = '';
     }
     public function searchDisabledDays()
     {
-        $value = $this->to_user_headquarters;
-        $disabledDays = MedicineDisabledDays::where('user_headquarters_id', $value)
+        $value = $this->headquarter_id;
+        $disabledDays = MedicineDisabledDays::where('headquarter_id', $value)
             ->pluck('disabled_days')
             ->toArray();
-        $occupiedDays = MedicineReserve::where('to_user_headquarters', $value)
+        $occupiedDays = MedicineReserve::where('headquarter_id', $value)
             ->whereIn('status', [0, 1, 4])
             ->pluck('dateReserve')
             ->toArray();
@@ -175,17 +175,17 @@ class HomeMedicine extends Component
             $daysArray = array_map('trim', explode(',', $days));
             $disabledDaysArray = array_merge($disabledDaysArray, $daysArray);
         }
-        if ($this->to_user_headquarters !== null) {
+        if ($this->headquarter_id !== null) {
             $maxCitas = MedicineSchedule::with('scheduleHeadquarter')
                 ->whereHas('scheduleHeadquarter', function ($max) {
-                    $max->where('user_id', $this->to_user_headquarters);
-                })->value('max_schedules');
+                    $max->where('id', $this->headquarter_id);
+                })
+                ->value('max_schedules');
             if ($this->type_exam_id == $this->type_exam_id) {
                 $maxCitasException = MedicineScheduleException::with('medicineSchedules.scheduleHeadquarter')
                     ->whereHas('medicineSchedules.scheduleHeadquarter', function ($qException) {
-                        $qException->where('user_id', $this->to_user_headquarters);
+                        $qException->where('id', $this->headquarter_id);
                     })
-                    // ->where('medicine_schedule_id', $this->medicine_schedule_id)
                     ->where('type_exam_id', $this->type_exam_id)
                     ->value('max_schedules_exception');
                 if ($maxCitasException !== null) {
@@ -193,7 +193,7 @@ class HomeMedicine extends Component
                 }
             }
             $datesExceedingLimit = MedicineReserve::select('dateReserve')
-                ->where('to_user_headquarters', $this->to_user_headquarters)
+                ->where('headquarter_id', $this->headquarter_id)
                 ->whereIn('status', [0, 1, 4])
                 ->groupBy('dateReserve')
                 ->havingRaw('COUNT(*) >= ?', [$maxCitas])
@@ -244,7 +244,7 @@ class HomeMedicine extends Component
             if (is_array($this->clasification_class_id) && empty(array_filter($this->clasification_class_id))) {
                 throw new \Exception();
             }
-            $citas = MedicineReserve::where('to_user_headquarters', $this->to_user_headquarters)
+            $citas = MedicineReserve::where('headquarter_id', $this->headquarter_id)
                 ->where('dateReserve', $this->dateReserve)
                 ->where(function ($query) {
                     $query->where('status', 0)
@@ -365,12 +365,12 @@ class HomeMedicine extends Component
             // $maxCitas = MedicineSchedule::where('user_id', $this->to_user_headquarters)->value('max_schedules');
             $maxCitas = MedicineSchedule::with('scheduleHeadquarter')
                 ->whereHas('scheduleHeadquarter', function ($max) {
-                    $max->where('user_id', $this->to_user_headquarters);
+                    $max->where('id', $this->headquarter_id);
                 })->value('max_schedules');
             if ($this->type_exam_id == $this->type_exam_id) {
                 $maxCitasException = MedicineScheduleException::with('medicineSchedules.scheduleHeadquarter')
                     ->whereHas('medicineSchedules.scheduleHeadquarter', function ($qException) {
-                        $qException->where('user_id', $this->to_user_headquarters);
+                        $qException->where('id', $this->headquarter_id);
                     })
                     // ->where('medicine_schedule_id', $this->medicine_schedule_id)
                     ->where('type_exam_id', $this->type_exam_id)
@@ -479,7 +479,7 @@ class HomeMedicine extends Component
                 $cita = new MedicineReserve();
                 $cita->from_user_appointment = Auth::user()->id;
                 $cita->medicine_id = $this->saveMedicine->id;
-                $cita->to_user_headquarters = $this->to_user_headquarters;
+                $cita->headquarter_id = $this->headquarter_id;
                 $cita->dateReserve = $this->dateReserve;
                 $cita->medicine_schedule_id = $this->medicine_schedule_id;
                 $cita->save();
@@ -498,7 +498,7 @@ class HomeMedicine extends Component
     }
     public function openConfirm()
     {
-        $this->medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'user', 'reserveSchedule'])
+        $this->medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'medicineReserveHeadquarter', 'reserveSchedule'])
             ->where('medicine_id', $this->saveMedicine->id)->get();
         $dateConverted = $this->medicineReserves[0]->dateReserve;
         $this->dateConvertedFormatted = Date::parse($dateConverted)->format('l j F Y');
@@ -549,7 +549,7 @@ class HomeMedicine extends Component
     public function generatePdf()
     {
         $savedMedicineId = session('saved_medicine_id');
-        $medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'user'])
+        $medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'medicineReserveHeadquarter'])
             ->where('medicine_id', $savedMedicineId)->get();
         $medicineId = $medicineReserves[0]->medicine_id;
         $dateAppointment = $medicineReserves[0]->dateReserve;
@@ -566,7 +566,7 @@ class HomeMedicine extends Component
         } else if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 3) {
             $pdf = PDF::loadView('livewire.medicine.documents.medicine-revaluation', compact('medicineReserves', 'keyEncrypt', 'dateConvertedFormatted'));
             return $pdf->download($fileName);
-        }else if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 4) {
+        } else if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 4) {
             $pdf = PDF::loadView('livewire.medicine.documents.medicine-revaluation-accident', compact('medicineReserves', 'keyEncrypt', 'dateConvertedFormatted'));
             return $pdf->download($fileName);
         }
