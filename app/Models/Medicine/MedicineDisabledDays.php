@@ -2,7 +2,7 @@
 
 namespace App\Models\Medicine;
 
-use App\Models\User;
+use App\Models\Catalogue\Headquarter;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -10,8 +10,8 @@ class MedicineDisabledDays extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
-    public function disabledDaysUser()
+    public function disabledDaysHeadquarter()
     {
-        return $this->belongsTo(User::class, 'user_headquarters_id');
+        return $this->belongsTo(Headquarter::class, 'headquarter_id');
     }
 }

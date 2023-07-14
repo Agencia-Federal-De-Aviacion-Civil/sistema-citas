@@ -20,25 +20,25 @@ class CreateUpdateModal extends ModalComponent
 {
     use Actions;
     public $id_user, $id_edit, $id_schedule, $id_exception, $userId, $id_headquarter, $time_start, $type_exam_id,
-        $max_schedules_exception, $max_schedules, $name, $direction, $passwordConfirmation, $password, $email, $system_id, $url, $status;
-    public $sedes, $typeExams;
+        $max_schedules_exception, $max_schedules, $name_headquarter, $direction, $passwordConfirmation, $password, $email, $system_id, $url, $status;
+    public $sedes, $typeExams, $questionException = '0';
     public function rules()
     {
         $rules = [
-            'name' => 'required',
-            'email' => ['required', 'email', Rule::unique('users')->ignore($this->id_user)],
+            'name_headquarter' => 'required',
+            // 'email' => ['required', 'email', Rule::unique('users')->ignore($this->id_user)],
             'direction' => 'required',
             'url' => 'required|url',
             'status' => 'required',
             'time_start' => 'required',
             'max_schedules' => 'required',
-            'type_exam_id' => '',
-            'max_schedules_exception' => ''
+            'type_exam_id' => 'required_unless:questionException,0',
+            'max_schedules_exception' => 'required_unless:questionException,0'
         ];
         if (Auth::user()->hasRole('super_admin')) {
             $rules['system_id'] = 'required';
         }
-        $rules['password'] = $this->id_user ? '' : 'required|min:6|same:passwordConfirmation';
+        // $rules['password'] = $this->id_user ? '' : 'required|min:6|same:passwordConfirmation';
         return $rules;
     }
     public function mount($userId = null)
@@ -46,10 +46,10 @@ class CreateUpdateModal extends ModalComponent
         $this->typeExams = TypeExam::all();
         if (isset($userId)) {
             $this->userId = $userId;
-            $this->sedes = Headquarter::with(['headquarterUser', 'headquarterSchedule'])->where('user_id', $userId)->get();
-            $this->name = $this->sedes[0]->headquarterUser->name;
+            $this->sedes = Headquarter::with(['headquarterUser', 'headquarterSchedule'])->where('id', $userId)->get();
+            $this->name_headquarter = $this->sedes[0]->name_headquarter;
             $this->direction = $this->sedes[0]->direction;
-            $this->email = $this->sedes[0]->headquarterUser->email;
+            $this->email = $this->sedes[0]->headquarterUser;
             $this->url = $this->sedes[0]->url;
             $this->system_id = $this->sedes[0]->system_id;
             $this->status = $this->sedes[0]->status;
@@ -77,7 +77,7 @@ class CreateUpdateModal extends ModalComponent
     }
     public function clean()
     {
-        $this->reset(['name', 'email', 'password', 'system_id', 'direction', 'url', 'status']);
+        $this->reset(['name_headquarter', 'email', 'password', 'system_id', 'direction', 'url', 'status']);
     }
     public static function closeModalOnEscape(): bool
     {
@@ -91,43 +91,45 @@ class CreateUpdateModal extends ModalComponent
     {
         $accion = "ACTUALIZA SEDE";
         $this->validate();
-        $userData = [
-            'name' => $this->name,
-            'email' => $this->email,
-        ];
-        if (!$this->id_user) {
-            $userData['password'] = Hash::make($this->password);
-            $accion = "CREA NUEVA SEDE";
-        }
-        $saveHeadrquearter = User::updateOrCreate(
-            ['id' => $this->id_user],
-            $userData
-        )->assignRole('headquarters');
+        // $userData = [
+        //     'name' => $this->name,
+        //     'email' => $this->email,
+        // ];
+        // if (!$this->id_user) {
+        //     $userData['password'] = Hash::make($this->password);
+        //     $accion = "CREA NUEVA SEDE";
+        // }
+        // $saveHeadrquearter = User::updateOrCreate(
+        //     ['id' => $this->id_user],
+        //     $userData
+        // )->assignRole('headquarters');
         if (Auth::user()->hasRole('super_admin')) {
             $medicineControl = MedicineSchedule::updateOrCreate(
                 ['id' => $this->id_schedule],
                 [
-                    'user_id' => $saveHeadrquearter->id,
                     'time_start' => $this->time_start,
                     'max_schedules' => $this->max_schedules,
                 ]
             );
-            $medicineException = MedicineScheduleException::updateOrCreate(
-                [
-                    'id' => $this->id_exception
-                ],
-                [
-                    'medicine_schedule_id' => $medicineControl->id,
-                    'type_exam_id' => $this->type_exam_id,
-                    'max_schedules_exception' => $this->max_schedules_exception
-                ]
-            );
+            if ($this->questionException == 1) {
+                MedicineScheduleException::updateOrCreate(
+                    [
+                        'id' => $this->id_exception
+                    ],
+                    [
+                        'medicine_schedule_id' => $medicineControl->id,
+                        'type_exam_id' => $this->type_exam_id,
+                        'max_schedules_exception' => $this->max_schedules_exception
+                    ]
+                );
+            }
             $saveHeadrquearter = Headquarter::updateOrCreate(
                 ['id' => $this->id_headquarter],
                 [
-                    'user_id' => $saveHeadrquearter->id,
+                    'name_headquarter' => $this->name_headquarter,
                     'system_id' => $this->system_id,
                     'medicine_schedule_id' => $medicineControl->id,
+                    'name_headquarter' => $this->name_headquarter,
                     'direction' => $this->direction,
                     'url' => $this->url,
                     'status' => $this->status
@@ -150,7 +152,7 @@ class CreateUpdateModal extends ModalComponent
         medicine_history_movements::create([
             'user_id' => Auth::user()->id,
             'action' => $accion,
-            'process' => $this->name . ' ' . ' DIRECCIÓN:' . $this->direction . ' URL:' . $this->url
+            'process' => $this->name_headquarter . ' ' . ' DIRECCIÓN:' . $this->direction . ' URL:' . $this->url
         ]);
 
         $this->emit('saveHeadquarter');

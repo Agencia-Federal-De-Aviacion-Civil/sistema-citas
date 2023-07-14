@@ -2,6 +2,7 @@
 
 namespace App\Models\Catalogue;
 
+use App\Models\Medicine\MedicineDisabledDays;
 use App\Models\User;
 use App\Models\Medicine\MedicineReserve;
 use App\Models\Medicine\MedicineSchedule;
@@ -33,5 +34,9 @@ class Headquarter extends Model
     public function headquarterSchedule()
     {
         return $this->belongsTo(MedicineSchedule::class, 'medicine_schedule_id');
+    }
+    public function headquarterDisabledDays()
+    {
+        return $this->hasMany(MedicineDisabledDays::class);
     }
 }

@@ -37,7 +37,7 @@ class DisabledDayTable extends DataTableComponent
         return [
             Column::make('ID', 'id')
                 ->sortable(),
-            Column::make('SEDE', 'disabledDaysUser.name')
+            Column::make('SEDE', 'disabledDaysHeadquarter.name_headquarter')
                 ->searchable(),
             // ->sortable(),
             // ->makeInputRange(),
@@ -59,6 +59,6 @@ class DisabledDayTable extends DataTableComponent
     }
     public function builder(): Builder
     {
-        return MedicineDisabledDays::query()->with('disabledDaysUser');
+        return MedicineDisabledDays::query()->with('disabledDaysHeadquarter');
     }
 }

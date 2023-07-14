@@ -30,7 +30,7 @@ class homeController extends Controller
                 ->get();
 
             $headquarters = Headquarter::with([
-                'headquarterUser'
+                'headquarterMedicineReserve'
             ])->where('user_id', Auth::user()->id)->get();
         }else if(Auth::user()->can('sub_headquarters.see.dashboard')){
             $appointment = MedicineReserve::query()
@@ -42,7 +42,7 @@ class homeController extends Controller
                 ->get();
 
             $headquarters = Headquarter::with([
-                'headquarterUser'
+                'headquarterMedicineReserve'
             ])->where('user_id', Auth::user()->id)->get();
         }else {
             $appointment = MedicineReserve::query()
@@ -51,7 +51,7 @@ class homeController extends Controller
                 ->groupBy('status', 'dateReserve')
                 ->get();
             $headquarters = Headquarter::with([
-                'headquarterUser'
+                'headquarterMedicineReserve'
             ])->get();
         }
 
