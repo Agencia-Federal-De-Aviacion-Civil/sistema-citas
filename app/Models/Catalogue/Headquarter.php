@@ -6,6 +6,7 @@ use App\Models\Medicine\MedicineDisabledDays;
 use App\Models\User;
 use App\Models\Medicine\MedicineReserve;
 use App\Models\Medicine\MedicineSchedule;
+use App\Models\UserHeadquarter;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -38,5 +39,9 @@ class Headquarter extends Model
     public function headquarterDisabledDays()
     {
         return $this->hasMany(MedicineDisabledDays::class);
+    }
+    public function HeadquarterUserHeadquarter()
+    {
+        return $this->hasMany(UserHeadquarter::class);
     }
 }

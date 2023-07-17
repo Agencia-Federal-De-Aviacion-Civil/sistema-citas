@@ -4,13 +4,21 @@
             <div class="grid xl:grid-cols-2 xl:gap-6">
                 <div class="mt-1 relative w-full group">
                     <x-errors></x-errors>
-                    <x-input wire:model.lazy="name_headquarter" label="NOMBRE" placeholder="ESCRIBE..." />
+                    <x-input wire:model.lazy="name_headquarter" label="SEDE" placeholder="ESCRIBE..." />
                 </div>
                 <div class="mt-1 relative w-full group">
                     <x-input wire:model.lazy="direction" label="DIRECCIÓN" placeholder="ESCRIBE..." />
                 </div>
             </div>
-            @if (empty($sedes))
+            {{-- @if (empty($sedes))
+                <div class="grid xl:grid-cols-2 xl:gap-6">
+                    <div class="mt-4 relative w-full group">
+                        <x-input wire:model.lazy="name" label="NOMBRE DEL RESPONSABLE" placeholder="ESCRIBE..." />
+                    </div>
+                    <div class="mt-4 relative w-full group">
+                        <x-input wire:model.lazy="email" label="CORREO" placeholder="ESCRIBE..." />
+                    </div>
+                </div>
                 <div class="grid xl:grid-cols-2 xl:gap-6">
                     <div class="mt-4 relative w-full group">
                         <x-inputs.password wire:model.lazy="passwordConfirmation" label="CONTRASEÑA" />
@@ -20,16 +28,11 @@
                     </div>
                 </div>
             @else
-            @endif
+            <div class="mt-4 relative w-full group">
+                <x-input wire:model.lazy="name" label="NOMBRE DEL RESPONSABLE" placeholder="ESCRIBE..." />
+            </div>
+            @endif --}}
             <div class="grid xl:grid-cols-2 xl:gap-6">
-                {{-- @foreach ($email as $index => $emailoop)
-                    <div class="mt-4 relative w-full group">
-                        <x-input wire:model.lazy="email.{{ $index }}" label="CORREO RESPONSABLE" placeholder="ESCRIBE..." />
-                    </div>
-                @endforeach --}}
-                <div class="mt-4 relative w-full group">
-                    <x-input wire:model.lazy="email" label="CORREO" placeholder="ESCRIBE..." />
-                </div>
                 @hasrole('super_admin')
                     <div class="mt-4 relative w-full group">
                         <label for="systems"
@@ -49,6 +52,8 @@
                     <div class="mt-4 relative w-full group">
                         <x-time-picker label="HORARIO" placeholder="7:00 AM" interval="60" wire:model.defer="time_start" />
                     </div>
+                </div>
+                <div class="grid xl:grid-cols-1 xl:gap-6">
                     <div class="mt-4 relative w-full group">
                         <x-inputs.number label="CAPACIDAD CITAS POR DÍA" wire:model.defer="max_schedules" />
                     </div>
@@ -81,7 +86,7 @@
                                 </div>
                             </li>
                         </ul>
-                        @error('status')
+                        @error('questionException')
                             <span class="text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5">{{ $message }}</span>
                         @enderror
                     </div>

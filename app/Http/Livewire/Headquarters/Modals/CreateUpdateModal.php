@@ -10,8 +10,6 @@ use App\Models\Medicine\medicine_history_movements;
 use App\Models\Medicine\MedicineSchedule;
 use App\Models\Medicine\MedicineScheduleException;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rule;
 use Livewire\Component;
 use LivewireUI\Modal\ModalComponent;
 use WireUi\Traits\Actions;
@@ -20,16 +18,16 @@ class CreateUpdateModal extends ModalComponent
 {
     use Actions;
     public $id_user, $id_edit, $id_schedule, $id_exception, $userId, $id_headquarter, $time_start, $type_exam_id,
-        $max_schedules_exception, $max_schedules, $name_headquarter, $direction, $passwordConfirmation, $password, $email, $system_id, $url, $status;
+        $max_schedules_exception, $max_schedules, $name_headquarter, $direction, $system_id, $url, $status;
     public $sedes, $typeExams, $questionException = '0';
     public function rules()
     {
         $rules = [
             'name_headquarter' => 'required',
-            // 'email' => ['required', 'email', Rule::unique('users')->ignore($this->id_user)],
             'direction' => 'required',
             'url' => 'required|url',
             'status' => 'required',
+            'questionException' => 'required',
             'time_start' => 'required',
             'max_schedules' => 'required',
             'type_exam_id' => 'required_unless:questionException,0',
@@ -38,7 +36,6 @@ class CreateUpdateModal extends ModalComponent
         if (Auth::user()->hasRole('super_admin')) {
             $rules['system_id'] = 'required';
         }
-        // $rules['password'] = $this->id_user ? '' : 'required|min:6|same:passwordConfirmation';
         return $rules;
     }
     public function mount($userId = null)
@@ -47,9 +44,10 @@ class CreateUpdateModal extends ModalComponent
         if (isset($userId)) {
             $this->userId = $userId;
             $this->sedes = Headquarter::with(['headquarterUser', 'headquarterSchedule'])->where('id', $userId)->get();
+            // $this->name = $this->sedes[0]->headquarterUser[0]->name;
             $this->name_headquarter = $this->sedes[0]->name_headquarter;
             $this->direction = $this->sedes[0]->direction;
-            $this->email = $this->sedes[0]->headquarterUser;
+            // $this->email = $this->sedes[0]->headquarterUser;
             $this->url = $this->sedes[0]->url;
             $this->system_id = $this->sedes[0]->system_id;
             $this->status = $this->sedes[0]->status;
@@ -57,7 +55,7 @@ class CreateUpdateModal extends ModalComponent
             $this->max_schedules = $this->sedes[0]->headquarterSchedule->max_schedules;
             $this->max_schedules_exception = isset($this->sedes[0]->headquarterSchedule->schedulesMedicineException[0]->max_schedules_exception) ? $this->sedes[0]->headquarterSchedule->schedulesMedicineException[0]->max_schedules_exception : '';
             $this->type_exam_id = isset($this->sedes[0]->headquarterSchedule->schedulesMedicineException[0]->type_exam_id) ? $this->sedes[0]->headquarterSchedule->schedulesMedicineException[0]->type_exam_id : '';
-            $this->id_user = $userId;
+            // $this->id_user = $userId;
             $this->id_headquarter = $this->sedes[0]->id;
             $this->id_schedule = $this->sedes[0]->headquarterSchedule->id;
             $this->id_exception = isset($this->sedes[0]->headquarterSchedule->schedulesMedicineException[0]->id) ? $this->sedes[0]->headquarterSchedule->schedulesMedicineException[0]->id : '';
@@ -77,7 +75,7 @@ class CreateUpdateModal extends ModalComponent
     }
     public function clean()
     {
-        $this->reset(['name_headquarter', 'email', 'password', 'system_id', 'direction', 'url', 'status']);
+        $this->reset(['name_headquarter', 'system_id', 'direction', 'url', 'status']);
     }
     public static function closeModalOnEscape(): bool
     {
@@ -99,7 +97,7 @@ class CreateUpdateModal extends ModalComponent
         //     $userData['password'] = Hash::make($this->password);
         //     $accion = "CREA NUEVA SEDE";
         // }
-        // $saveHeadrquearter = User::updateOrCreate(
+        // $userSave = User::updateOrCreate(
         //     ['id' => $this->id_user],
         //     $userData
         // )->assignRole('headquarters');
@@ -123,7 +121,7 @@ class CreateUpdateModal extends ModalComponent
                     ]
                 );
             }
-            $saveHeadrquearter = Headquarter::updateOrCreate(
+            $saveHeadquarter = Headquarter::updateOrCreate(
                 ['id' => $this->id_headquarter],
                 [
                     'name_headquarter' => $this->name_headquarter,
@@ -135,11 +133,16 @@ class CreateUpdateModal extends ModalComponent
                     'status' => $this->status
                 ]
             );
+            // UserHeadquarter::create(
+            //     [
+            //         'headquarter_id' => $saveHeadquarter->id,
+            //         'user_id' => $userSave->id
+            //     ]
+            // );
         } else {
-            $saveHeadrquearter = Headquarter::updateOrCreate(
+            $saveHeadquarter = Headquarter::updateOrCreate(
                 ['id' => $this->id_headquarter],
                 [
-                    'user_id' => $saveHeadrquearter->id,
                     'system_id' => 1,
                     'direction' => $this->direction,
                     'url' => $this->url,
@@ -147,7 +150,6 @@ class CreateUpdateModal extends ModalComponent
                 ]
             );
         }
-
         //Historial de guardar y editar Sedes
         medicine_history_movements::create([
             'user_id' => Auth::user()->id,
@@ -168,13 +170,6 @@ class CreateUpdateModal extends ModalComponent
     {
         return [
             'system_id.required' => 'Campo obligatorio',
-            'name.required' => 'Campo obligatorio',
-            'email.required' => 'Campo obligatorio',
-            'email.email' => 'Correo no valido',
-            'email.unique' => 'Correo electrónico ya existe',
-            'password.required' => 'Campo obligatorio',
-            'password.min' => 'Mínimo 6 carácteres',
-            'password.same' => 'La contraseña no coíncide',
             'direction.required' => 'Campo obligatorio',
             'url.required' => 'Campo obligatorio',
             'url.url' => 'Dirección no valida',
