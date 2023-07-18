@@ -77,7 +77,11 @@ class CreateUpdateResponsibleModal extends ModalComponent
     }
     public function delete($idDelete)
     {
-        UserHeadquarter::find($idDelete)->delete();
+        $userFirst = UserHeadquarter::with(
+            'userHeadquarterUser'
+        )->where('id', $idDelete)->get();
+        $userFirst[0]->userHeadquarterUser->removeRole('headquarters');
+        $userFirst[0]->delete();
         $this->notification([
             'title'       => 'ELIMINADO EXITOSAMENTE',
             'icon'        => 'success',
