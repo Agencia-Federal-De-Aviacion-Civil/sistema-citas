@@ -432,8 +432,10 @@ class AppointmentTable extends DataTableComponent
             });
         } else if (Auth::user()->can('headquarters.see.schedule.table')) {
             return MedicineReserve::query()->with([
-                'medicineReserveMedicine', 'medicineReserveFromUser', 'userParticipantUser'
-            ])->where('to_user_headquarters', Auth::user()->id);
+                'medicineReserveMedicine', 'medicineReserveFromUser', 'userParticipantUser', 'medicineReserveHeadquarter.HeadquarterUserHeadquarter'
+            ])->whereHas('medicineReserveHeadquarter.HeadquarterUserHeadquarter', function ($q1) {
+                $q1->where('user_id', Auth::user()->id);
+            });
         } else if (Auth::user()->can('sub_headquarters.see.schedule.table')) {
             Date::setLocale('es');
             $day = Date::now()->format('Y-m-d');
