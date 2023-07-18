@@ -159,9 +159,6 @@ class ModalNew extends ModalComponent
                 'curp' => $this->curp,
             ]
         );
-
-        // $this->emit('privilegesUser');
-        // $this->reset([]);
         $this->notification([
             'title'       => 'USUARIO AGREGADO CON EXITO',
             'icon'        => 'success',
