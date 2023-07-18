@@ -12,8 +12,8 @@ use WireUi\Traits\Actions;
 class Qr extends Component
 {
     use Actions;
-    
-    public $textRead, $licenses, $medicineReserves,$dateNow;
+
+    public $textRead, $licenses, $medicineReserves, $dateNow;
     protected $rules = [
         'textRead' => 'required'
     ];
@@ -37,7 +37,7 @@ class Qr extends Component
             $medicine_id = $separated[0];
             $date_reserve = $separated[1];
             $curp = $separated[2];
-            $medicineReserves = MedicineReserve::with(['medicineReserveMedicine.medicineUser.userParticipant', 'medicineReserveFromUser', 'user'])
+            $medicineReserves = MedicineReserve::with(['medicineReserveMedicine.medicineUser.userParticipant', 'medicineReserveFromUser', 'medicineReserveHeadquarter'])
                 ->whereHas('medicineReserveMedicine.medicineUser.userParticipant', function ($q) use ($curp) {
                     $q->where('curp', $curp);
                 })->where('medicine_id', $medicine_id)
@@ -49,7 +49,7 @@ class Qr extends Component
                     . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apMaternal')->first()
                     . '<br> CURP: ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->userParticipant->pluck('curp')->first()
                     . '<br> TIPO: ' . $medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->name
-                    . '<br> UNIDAD MEDICA: ' . $medicineReserves[0]->user->name . '<br> FECHA: ' . $medicineReserves[0]->dateReserve . '<br> HORA: ' . $medicineReserves[0]->reserveSchedule->time_start,
+                    . '<br> UNIDAD MEDICA: ' . $medicineReserves[0]->medicineReserveHeadquarter->name_headquarter . '<br> FECHA: ' . $medicineReserves[0]->dateReserve . '<br> HORA: ' . $medicineReserves[0]->reserveSchedule->time_start,
                 'icon'        => 'success'
             ]);
         } catch (DecryptException $e) {

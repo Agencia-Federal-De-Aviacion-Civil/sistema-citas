@@ -21,7 +21,7 @@ class AppointmentMedicineController extends Controller
     public function download($scheduleId)
     {
         Date::setLocale('es');
-        $medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'user'])
+        $medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser'])
             ->where('id', $scheduleId)->get();
         $medicineId = $medicineReserves[0]->medicine_id;
         $dateAppointment = $medicineReserves[0]->dateReserve;
