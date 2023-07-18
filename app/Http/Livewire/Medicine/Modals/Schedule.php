@@ -8,6 +8,7 @@ use App\Models\Medicine\MedicineObservation;
 use App\Models\Medicine\MedicineReserve;
 use App\Models\Medicine\MedicineSchedule;
 use App\Models\Medicine\medicine_history_movements;
+use App\Models\Medicine\MedicineDisabledDays;
 use App\Models\Medicine\MedicineScheduleException;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Observation;
@@ -23,16 +24,18 @@ class Schedule extends ModalComponent
     use Actions;
     use WithFileUploads;
     public $comment1, $comment2, $scheduleId, $status, $medicineReserves, $name, $type, $class, $typLicense, $sede, $dateReserve, $date, $time, $scheduleMedicines, $sedes,
-        $to_user_headquarters, $medicine_schedule_id, $selectedOption, $comment, $comment_cancelate, $hoursReserve, $observation, $medicineId, $accion;
+        $headquarter_id, $medicine_schedule_id, $selectedOption, $comment, $comment_cancelate, $hoursReserve, $observation, $medicineId, $accion,
+        $disabledDaysFilter;
 
     public function rules()
     {
         return [
-            'comment' => '',
-            'comment_cancelate' => '',
+            'comment' => 'required_if:selectedOption,4',
+            'comment_cancelate' => 'required_if:selectedOption,2',
             'selectedOption' => 'required',
-            'to_user_headquarters' => '',
-            'medicine_schedule_id' => ''
+            'headquarter_id' => 'required_if:selectedOption,4',
+            'medicine_schedule_id' => 'required_if:selectedOption,4',
+            'dateReserve' => 'required_if:selectedOption,4'
         ];
     }
 
@@ -58,11 +61,61 @@ class Schedule extends ModalComponent
     {
         return 'xl';
     }
+    public function updatedHeadquarterId($value)
+    {
+        $this->scheduleMedicines = MedicineSchedule::with('scheduleHeadquarter')
+            ->whereHas('scheduleHeadquarter', function ($max) use ($value) {
+                $max->where('id', $value);
+            })->where('status', 0)->get();
+        $this->searchDisabledDays();
+        $this->dateReserve = '';
+    }
+    public function searchDisabledDays()
+    {
+        $value = $this->headquarter_id;
+        $disabledDays = MedicineDisabledDays::where('headquarter_id', $value)
+            ->pluck('disabled_days')
+            ->toArray();
+        $occupiedDays = MedicineReserve::where('headquarter_id', $value)
+            ->whereIn('status', [0, 1, 4])
+            ->pluck('dateReserve')
+            ->toArray();
+        $disabledDaysArray = [];
+        foreach ($disabledDays as $days) {
+            $daysArray = array_map('trim', explode(',', $days));
+            $disabledDaysArray = array_merge($disabledDaysArray, $daysArray);
+        }
+        if ($this->headquarter_id !== null) {
+            $maxCitas = MedicineSchedule::with('scheduleHeadquarter')
+                ->whereHas('scheduleHeadquarter', function ($max) {
+                    $max->where('id', $this->headquarter_id);
+                })
+                ->value('max_schedules');
+            $datesExceedingLimit = MedicineReserve::select('dateReserve')
+                ->where('headquarter_id', $this->headquarter_id)
+                ->whereIn('status', [0, 1, 4])
+                ->groupBy('dateReserve')
+                ->havingRaw('COUNT(*) >= ?', [$maxCitas])
+                ->pluck('dateReserve')
+                ->toArray();
+            $datesExceedingLimit;
+            $occupiedDays = array_filter($occupiedDays, function ($day) use ($datesExceedingLimit) {
+                return in_array($day, $datesExceedingLimit);
+            });
+            $occupiedDays;
+            $disabledDaysArray = array_merge($disabledDaysArray, $occupiedDays);
+        }
+
+        $this->disabledDaysFilter = $disabledDaysArray;
+        $this->dispatchBrowserEvent('headquartersUpdated', [
+            'disabledDaysFilter' => $disabledDaysArray
+        ]);
+    }
     public function valores($cheduleId)
     {
 
         $this->scheduleId = $cheduleId;
-        $medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'user'])
+        $medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'medicineReserveHeadquarter'])
             ->where('id', $this->scheduleId)->get();
         $this->name = $medicineReserves[0]->medicineReserveMedicine->medicineUser->name . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant[0]->apParental . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant[0]->apMaternal;
         $this->type = $medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->name;
@@ -75,7 +128,7 @@ class Schedule extends ModalComponent
             $this->class = $medicineReserves[0]->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name;
             $this->typLicense = $medicineReserves[0]->medicineReserveMedicine->medicineRenovation[0]->renovationClasificationClass->name;
         }
-        $this->to_user_headquarters = $medicineReserves[0]->user->name;
+        $this->headquarter_id = $medicineReserves[0]->medicineReserveHeadquarter->id;
         $this->dateReserve = $medicineReserves[0]->dateReserve;
 
         $this->status = $medicineReserves[0]->status;
@@ -99,7 +152,7 @@ class Schedule extends ModalComponent
             $this->comment = $this->comment1 . ' / ' . $this->comment2;
         }
 
-        $this->sede = $medicineReserves[0]->user->name;
+        $this->sede = $medicineReserves[0]->medicineReserveHeadquarter->name_headquarter;
     }
     public function updatedToUserHeadquarters($value)
     {
@@ -116,6 +169,7 @@ class Schedule extends ModalComponent
     {
 
         //ASISTIÓ
+        $this->validate();
         if ($this->selectedOption == 1) {
 
             $attendeReserve = MedicineReserve::find($this->scheduleId);
@@ -126,10 +180,6 @@ class Schedule extends ModalComponent
             $accion = 'VALIDO CITA';
             //CANCELO EL ADMIN
         } elseif ($this->selectedOption == 2) {
-
-            $this->validate([
-                'comment_cancelate' => 'required',
-            ]);
             $observation = new MedicineObservation();
             $observation->medicine_reserve_id = $this->scheduleId;
             $observation->observation = $this->comment_cancelate;
@@ -144,18 +194,12 @@ class Schedule extends ModalComponent
             //REAGENDO
         } elseif ($this->selectedOption == 4) {
             $accion = 'REAGENDO CITA';
-            $this->validate([
-                'comment' => 'required',
-                'to_user_headquarters' => 'required',
-                'medicine_schedule_id' => 'required'
-
-            ]);
             $observation = new MedicineObservation();
             $observation->medicine_reserve_id = $this->scheduleId;
             $observation->observation = $this->comment;
             $observation->status = 4;
             $observation->save();
-            $citas = MedicineReserve::where('to_user_headquarters', $this->to_user_headquarters)
+            $citas = MedicineReserve::where('headquarter_id', $this->headquarter_id)
                 ->where('dateReserve', $this->dateReserve)
                 ->where(function ($query) {
                     $query->where('status', 0)
@@ -165,7 +209,7 @@ class Schedule extends ModalComponent
                 ->count();
             $maxCitas = MedicineSchedule::with('scheduleHeadquarter')
                 ->whereHas('scheduleHeadquarter', function ($max) {
-                    $max->where('user_id', $this->to_user_headquarters);
+                    $max->where('id', $this->headquarter_id);
                 })->value('max_schedules');
             if ($citas >= $maxCitas) {
                 $this->notification([
@@ -175,14 +219,12 @@ class Schedule extends ModalComponent
                 ]);
             } else {
                 $cita = MedicineReserve::find($this->scheduleId);
-                $cita->to_user_headquarters = $this->to_user_headquarters;
+                $cita->headquarter_id = $this->headquarter_id;
                 $cita->dateReserve = $this->dateReserve;
                 $cita->status = $this->selectedOption;
                 $cita->save();
                 $this->emit('reserveAppointment');
             }
-        } else {
-            $this->validate();
         }
         //Historial de validar cita
         medicine_history_movements::create([
@@ -222,10 +264,11 @@ class Schedule extends ModalComponent
     public function messages()
     {
         return [
-            'comment_cancelate.required' => 'Campo obligatorio',
-            'comment.required' => 'Campo obligatorio',
+            'comment_cancelate.required_if' => 'Campo obligatorio',
+            'dateReserve.required_if' => 'Campo obligatorio',
+            'comment.required_if' => 'Campo obligatorio',
             'selectedOption.required' => 'Seleccione opción',
-            'to_user_headquarters.required' => 'Seleccione opción',
+            'headquarter_id.required' => 'Seleccione opción',
             'medicine_schedule_id.required' => 'Seleccione opción'
         ];
     }
