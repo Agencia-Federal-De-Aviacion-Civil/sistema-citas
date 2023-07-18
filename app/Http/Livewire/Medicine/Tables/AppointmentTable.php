@@ -588,7 +588,7 @@ class AppointmentTable extends DataTableComponent
         if ($this->getSelected()) {
             try {
                 $query = MedicineReserve::with([
-                    'medicineReserveHeadquarter.id,name_headquarter',
+                    'medicineReserveHeadquarter:id,name_headquarter',
                     'medicineReserveMedicine:id,reference_number,type_exam_id', 'medicineReserveFromUser:id,name',
                     'medicineReserveMedicine.medicineRevaluation:id,type_exam_id',
                     'medicineReserveMedicine.medicineTypeExam:name',
