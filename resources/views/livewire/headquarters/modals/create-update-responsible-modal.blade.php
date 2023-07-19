@@ -1,24 +1,17 @@
 <div>
-    <div class="container mx-auto px-4 py-4 bg-white shadow-xl sm:rounded-lg">
-        <div class="mt-12 max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="grid xl:grid-cols-2 xl:gap-6">
-                <div class="mt-4 relative w-full group">
-                    <x-input wire:model.lazy="name" label="NOMBRE DEL RESPONSABLE" placeholder="ESCRIBE..." />
-                </div>
-                <div class="mt-4 relative w-full group">
-                    <x-input wire:model.lazy="email" label="CORREO" placeholder="ESCRIBE..." />
-                </div>
-            </div>
-            <div class="grid xl:grid-cols-2 xl:gap-6">
-                <div class="mt-4 relative w-full group">
-                    <x-inputs.password wire:model.lazy="passwordConfirmation" label="CONTRASEÑA" />
-                </div>
-                <div class="mt-4 relative w-full group">
-                    <x-inputs.password wire:model.lazy="password" label="CONFIRMAR CONTRASEÑA" />
-                </div>
-            </div>
-            @if ($queryResponsibles->count())
-                <div class="py-8">
+    <div class="p-4 m-auto bg-white shadow-lg rounded-2xl dark:bg-gray-800">
+        <div class="w-full h-full text-center">
+            <div class="flex flex-col justify-between h-full">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-20 h-20 m-auto mt-4 text-indigo-500">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                </svg>
+                <p class="mt-4 text-xl font-bold text-gray-500 dark:text-gray-200">
+                    {{ $nameHeadquarter[0]->name_headquarter }}
+                </p>
+                <div class="mt-6">
                     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
@@ -28,8 +21,6 @@
                                 <th scope="col" class="px-6 py-3">
                                     EMAIL
                                 </th>
-                                <th scope="col" class="px-6 py-3">
-                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -37,26 +28,23 @@
                                 <tr
                                     class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                     <td class="px-6 py-4">
-                                        {{ $queryResponsible->userHeadquarterUser->name }}
+                                        {{ $queryResponsible->userHeadquarterUserParticipant->userParticipantUser->name . ' ' . $queryResponsible->userHeadquarterUserParticipant->apParental . ' ' . $queryResponsible->userHeadquarterUserParticipant->apMaternal }}
                                     </td>
                                     <td class="px-6 py-4">
-                                        {{ $queryResponsible->userHeadquarterUser->email }}
-                                    </td>
-                                    <td>
-                                        <x-button wire:click.prevent="delete({{ $queryResponsible->id }})"
-                                            label="ELIMINAR" xs red right-icon="trash" />
+                                        {{ $queryResponsible->userHeadquarterUserParticipant->userParticipantUser->email }}
                                     </td>
                                 </tr>
                         </tbody>
-            @endforeach
-            </table>
-        </div>
-    @else
-        @endif
-        <div class="flex items-center justify-between w-full gap-4 mt-12">
-            <x-button wire:click.prevent="save()" label="GUARDAR" blue right-icon="save-as" />
-            <x-button wire:click.prevent="$emit('closeModal')" label="SALIR" right-icon="login" />
+                        @endforeach
+                    </table>
+                </div>
+                <div class="flex items-center justify-between w-full gap-4 mt-12">
+                    <button wire:click="$emit('closeModal')"
+                        class="py-2 px-4  bg-white hover:bg-gray-100 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-indigo-500 w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
+                        CERRAR
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
-</div>
 </div>

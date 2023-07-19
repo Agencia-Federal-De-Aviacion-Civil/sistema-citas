@@ -4,6 +4,7 @@
             <div>
                 <div class="p-0 text-center">
                     {{-- {{ $this->title }} --}}
+                    <x-errors></x-errors>
                 </div>
                 <div class="mt-4 text-center">
                     <h3 class="text-xl font-semibold leading-6 text-gray-800 capitalize dark:text-white" id="modal-title">
@@ -64,7 +65,6 @@
                             <label for="systems"
                                 class="block text-sm font-medium text-gray-900 dark:text-white">RESPONSABLE DE LA
                                 SEDE:</label>
-                                {{$user_headquarter_id}}
                             <select wire:model.lazy="headquarter_id"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option value="">Selecciona...</option>
@@ -103,7 +103,6 @@
                             <div class="grid xl:grid-cols-3 xl:gap-6">
                                 <div class="mt-4 relative w-full group">
                                     <x-select label="GENERO" placeholder="SELECCIONE..." wire:model.defer="genre">
-                                        <x-select.option label="SELECCIONE..." value="" />
                                         <x-select.option label="FEMENINO" value="FEMENINO" />
                                         <x-select.option label="MASCULINO" value="MASCULINO" />
                                     </x-select>

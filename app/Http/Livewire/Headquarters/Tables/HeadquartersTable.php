@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Headquarters\Tables;
 
 use App\Exports\HeadquarterExport;
 use App\Models\Catalogue\Headquarter;
+use App\Models\UserHeadquarter;
 use Illuminate\Database\Eloquent\Builder;
 use Maatwebsite\Excel\Facades\Excel;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
@@ -51,7 +52,9 @@ class HeadquartersTable extends DataTableComponent
                     fn ($value) => view(
                         'components.edit-headquarter',
                         [
+                            $userHeadquarters = UserHeadquarter::where('headquarter_id', $value)->get(),
                             'userId' => $value,
+                            'userHeadquarters' => $userHeadquarters
                         ]
                     )
                 ),

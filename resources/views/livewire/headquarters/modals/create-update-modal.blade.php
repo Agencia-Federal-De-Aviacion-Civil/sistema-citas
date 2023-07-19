@@ -10,28 +10,6 @@
                     <x-input wire:model.lazy="direction" label="DIRECCIÓN" placeholder="ESCRIBE..." />
                 </div>
             </div>
-            {{-- @if (empty($sedes))
-                <div class="grid xl:grid-cols-2 xl:gap-6">
-                    <div class="mt-4 relative w-full group">
-                        <x-input wire:model.lazy="name" label="NOMBRE DEL RESPONSABLE" placeholder="ESCRIBE..." />
-                    </div>
-                    <div class="mt-4 relative w-full group">
-                        <x-input wire:model.lazy="email" label="CORREO" placeholder="ESCRIBE..." />
-                    </div>
-                </div>
-                <div class="grid xl:grid-cols-2 xl:gap-6">
-                    <div class="mt-4 relative w-full group">
-                        <x-inputs.password wire:model.lazy="passwordConfirmation" label="CONTRASEÑA" />
-                    </div>
-                    <div class="mt-4 relative w-full group">
-                        <x-inputs.password wire:model.lazy="password" label="CONFIRMAR CONTRASEÑA" />
-                    </div>
-                </div>
-            @else
-            <div class="mt-4 relative w-full group">
-                <x-input wire:model.lazy="name" label="NOMBRE DEL RESPONSABLE" placeholder="ESCRIBE..." />
-            </div>
-            @endif --}}
             <div class="grid xl:grid-cols-2 xl:gap-6">
                 @hasrole('super_admin')
                     <div class="mt-4 relative w-full group">

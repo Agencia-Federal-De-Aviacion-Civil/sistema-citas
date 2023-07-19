@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Medicine\MedicineReserve;
 use App\Models\Medicine\MedicineSchedule;
 use App\Models\UserHeadquarter;
+use App\Models\UserParticipant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,9 +25,13 @@ class Headquarter extends Model
             }
         });
     }
-    public function headquarterUser()
+    // public function headquarterUser()
+    // {
+    //     return $this->belongsToMany(User::class, 'user_headquarters');
+    // }
+    public function headquarterUserParticipant()
     {
-        return $this->belongsToMany(User::class, 'user_headquarters');
+        return $this->belongsToMany(UserParticipant::class, 'user_headquarters');
     }
     public function headquarterMedicineReserve()
     {

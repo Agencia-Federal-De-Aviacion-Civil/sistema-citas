@@ -43,11 +43,9 @@ class CreateUpdateModal extends ModalComponent
         $this->typeExams = TypeExam::all();
         if (isset($userId)) {
             $this->userId = $userId;
-            $this->sedes = Headquarter::with(['headquarterUser', 'headquarterSchedule'])->where('id', $userId)->get();
-            // $this->name = $this->sedes[0]->headquarterUser[0]->name;
+            $this->sedes = Headquarter::with(['headquarterUserParticipant', 'headquarterSchedule'])->where('id', $userId)->get();
             $this->name_headquarter = $this->sedes[0]->name_headquarter;
             $this->direction = $this->sedes[0]->direction;
-            // $this->email = $this->sedes[0]->headquarterUser;
             $this->url = $this->sedes[0]->url;
             $this->system_id = $this->sedes[0]->system_id;
             $this->status = $this->sedes[0]->status;
@@ -55,7 +53,6 @@ class CreateUpdateModal extends ModalComponent
             $this->max_schedules = $this->sedes[0]->headquarterSchedule->max_schedules;
             $this->max_schedules_exception = isset($this->sedes[0]->headquarterSchedule->schedulesMedicineException[0]->max_schedules_exception) ? $this->sedes[0]->headquarterSchedule->schedulesMedicineException[0]->max_schedules_exception : '';
             $this->type_exam_id = isset($this->sedes[0]->headquarterSchedule->schedulesMedicineException[0]->type_exam_id) ? $this->sedes[0]->headquarterSchedule->schedulesMedicineException[0]->type_exam_id : '';
-            // $this->id_user = $userId;
             $this->id_headquarter = $this->sedes[0]->id;
             $this->id_schedule = $this->sedes[0]->headquarterSchedule->id;
             $this->id_exception = isset($this->sedes[0]->headquarterSchedule->schedulesMedicineException[0]->id) ? $this->sedes[0]->headquarterSchedule->schedulesMedicineException[0]->id : '';
@@ -66,7 +63,7 @@ class CreateUpdateModal extends ModalComponent
     public function render()
     {
         $qSystems = System::all();
-        $headquarters = Headquarter::with('headquarterUser')->get();
+        $headquarters = Headquarter::with('headquarterUserParticipant')->get();
         return view('livewire.headquarters.modals.create-update-modal', compact('qSystems', 'headquarters'));
     }
     public function updated($propertyName)
@@ -89,18 +86,6 @@ class CreateUpdateModal extends ModalComponent
     {
         $accion = "ACTUALIZA SEDE";
         $this->validate();
-        // $userData = [
-        //     'name' => $this->name,
-        //     'email' => $this->email,
-        // ];
-        // if (!$this->id_user) {
-        //     $userData['password'] = Hash::make($this->password);
-        //     $accion = "CREA NUEVA SEDE";
-        // }
-        // $userSave = User::updateOrCreate(
-        //     ['id' => $this->id_user],
-        //     $userData
-        // )->assignRole('headquarters');
         if (Auth::user()->hasRole('super_admin')) {
             $medicineControl = MedicineSchedule::updateOrCreate(
                 ['id' => $this->id_schedule],
@@ -133,12 +118,6 @@ class CreateUpdateModal extends ModalComponent
                     'status' => $this->status
                 ]
             );
-            // UserHeadquarter::create(
-            //     [
-            //         'headquarter_id' => $saveHeadquarter->id,
-            //         'user_id' => $userSave->id
-            //     ]
-            // );
         } else {
             $saveHeadquarter = Headquarter::updateOrCreate(
                 ['id' => $this->id_headquarter],

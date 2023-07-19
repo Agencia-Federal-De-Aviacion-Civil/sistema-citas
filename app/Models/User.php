@@ -113,8 +113,8 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasOne(UserParticipant::class);
     }
-    public function userUserHeadquarter()
-    {
-        return $this->hasMany(UserHeadquarter::class);
-    }
+    // public function userUserHeadquarter()
+    // {
+    //     return $this->hasMany(UserHeadquarter::class);
+    // }
 }

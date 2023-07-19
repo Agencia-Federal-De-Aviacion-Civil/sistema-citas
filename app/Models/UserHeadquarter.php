@@ -14,10 +14,10 @@ class UserHeadquarter extends Model
     {
         return $this->belongsTo(Headquarter::class, 'headquarter_id');
     }
-    public function userHeadquarterUser()
-    {
-        return $this->belongsTo(User::class, 'user_id');
-    }
+    // public function userHeadquarterUser()
+    // {
+    //     return $this->belongsTo(User::class, 'user_id');
+    // }
     public function userHeadquarterUserParticipant()
     {
         return $this->belongsTo(UserParticipant::class, 'user_participant_id');
