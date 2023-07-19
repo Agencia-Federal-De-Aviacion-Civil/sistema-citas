@@ -148,13 +148,12 @@ class UserRolesTable extends DataTableComponent
                     ->searchable()
                     ->format(fn ($value) => Carbon::parse($value)->format('d/m/Y H:i:s')),
 
-                Column::make("ACCIÓN")
-                    ->label(
-                        fn ($row) => view(
+                Column::make("ACCIÓN",'id')
+                    ->format(
+                        fn ($value) => view(
                             'components.privileges-component',
                             [
-                                $action = User::where('id', $row->id)->get(),
-                                'privilegesId' => $action[0]->id,
+                                'privilegesId' => $value,
                             ]
                         )
                     ),
@@ -251,10 +250,7 @@ class UserRolesTable extends DataTableComponent
         return
             User::query()->with(['roles', 'UserPart'])
             ->where('status', 0)
-            ->where('users.id', '<>', 1)
-            ->whereHas('roles', function ($q1) {
-                $q1->where('roles.id', '<>', 5);
-            });
+            ->where('users.id', '<>', 1);
     }
     public function exportSelected()
     {
