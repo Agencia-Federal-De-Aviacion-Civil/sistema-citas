@@ -427,14 +427,6 @@
                                                         <span
                                                             class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
                                                     @enderror
-                                                        {{-- <x-select label="ELIJA LA SEDE" placeholder="Selecciona"
-                                                            x-ref="selec_sede" wire:model.lazy="headquarter_id" wire:change="searchDisabledDays()">
-                                                            @foreach ($sedes as $sede)
-                                                                <x-select.option
-                                                                    label="{{ $sede->headquarterUser->name }}"
-                                                                    value="{{ $sede->headquarterUser->id }}" />
-                                                            @endforeach
-                                                        </x-select> --}}
                                                     </div>
                                                     <div class="text-base relative z-auto w-full mt-2 group">
                                                         <x-input x-ref="reservedate" wire:model.lazy="dateReserve"
