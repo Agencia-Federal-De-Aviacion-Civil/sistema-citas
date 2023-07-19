@@ -9,15 +9,15 @@
                 </svg>
                 @if (empty($days))
                     <p class="mt-4 text-xl font-bold text-gray-500 dark:text-gray-200">
-                       DESHABILITAR DIAS
+                        DESHABILITAR DIAS
                     </p>
                     <div class="mt-12 relative w-full group">
                         <label for="sedes" class="px-6 py-2 text-xs text-gray-600 dark:text-gray-400e">SELECCIONE
                             SEDE</label>
-                        <x-select placeholder="SELECCIONE UNA SEDE..." wire:model.lazy="user_headquarters_id">
+                        <x-select placeholder="SELECCIONE UNA SEDE..." wire:model.lazy="headquarter_id">
                             @foreach ($headquarters as $headquarter)
-                                <x-select.option label="{{ $headquarter->headquarterUser->name }}"
-                                    value="{{ $headquarter->headquarterUser->id }}" />
+                                <x-select.option label="{{ $headquarter->name_headquarter }}"
+                                    value="{{ $headquarter->id }}" />
                             @endforeach
                             {{-- <x-select.option label="TODOS" value="0" /> --}}
                         </x-select>
@@ -29,7 +29,7 @@
                     </div>
                 @else
                     <p class="mt-4 text-xl font-bold text-gray-500 dark:text-gray-200">
-                        {{ $nameHeadquarter->name }}
+                        {{ $nameHeadquarter }}
                     </p>
                     <div class="mt-6 relative z-0 w-full group">
                         <label for="sedes" class="px-6 py-2 text-xs text-gray-600 dark:text-gray-400e">SELECCIONE
@@ -64,8 +64,8 @@
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option value="" selected>SELECCIONE UNA OPCIÓN</option>
                             @foreach ($headquarters as $headquarter)
-                                <option value="{{ $headquarter->headquarterUser->id }}">
-                                    {{ $headquarter->headquarterUser->name }}</option>
+                                <option value="{{ $headquarter->->id }}">
+                                    {{ $headquarter->->name }}</option>
                             @endforeach
                             <option value="0">TODOS</option>
                         </select>

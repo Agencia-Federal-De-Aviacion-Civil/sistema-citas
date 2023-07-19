@@ -14,21 +14,22 @@ use WireUi\Traits\Actions;
 class CreateUpdateScheduleModal extends ModalComponent
 {
     use Actions;
-    public $actionId, $days, $disabled_days, $id_disabledDays, $user_headquarters_id, $nameHeadquarter;
+    public $actionId, $days, $disabled_days, $id_disabledDays, $headquarter_id, $nameHeadquarter;
     public function rules()
     {
         $rules = [
             'disabled_days' => 'required',
         ];
-        $rules['user_headquarters_id'] = $this->id_disabledDays ? '' : 'required|unique:medicine_disabled_days';
+        $rules['headquarter_id'] = $this->id_disabledDays ? '' : 'required|unique:medicine_disabled_days';
         return $rules;
     }
     public function mount($actionId = null)
     {
         if (isset($actionId)) {
             $this->actionId = $actionId;
-            $this->days = MedicineDisabledDays::with('disabledDaysUser')->where('id', $actionId)->get();
-            $this->nameHeadquarter = $this->days[0]->disabledDaysUser;
+            $this->days = MedicineDisabledDays::with('disabledDaysHeadquarter')->where('id', $actionId)->get();
+            $this->nameHeadquarter = $this->days[0]->disabledDaysHeadquarter->name_headquarter;
+            $this->headquarter_id = $this->days[0]->headquarter_id;
             $this->disabled_days = $this->days[0]->disabled_days;
             $this->id_disabledDays = $this->days[0]->id;
         } else {
@@ -37,7 +38,7 @@ class CreateUpdateScheduleModal extends ModalComponent
     }
     public function render()
     {
-        $headquarters = Headquarter::with('headquarterUser')->get();
+        $headquarters = Headquarter::with('HeadquarterUserHeadquarter')->get();
         return view('livewire.headquarters.modals.create-update-schedule-modal', compact('headquarters'));
     }
     /**
@@ -58,18 +59,19 @@ class CreateUpdateScheduleModal extends ModalComponent
     public function actionSave()
     {
         $this->validate();
-        $accions="ACTUALIZA BLOQUEO DE DIAS";
+        $accions = "ACTUALIZA BLOQUEO DE DIAS";
         $userData = [
+            'headquarter_id' => $this->headquarter_id,
             'disabled_days' => $this->disabled_days,
         ];
         if (!$this->id_disabledDays) {
-            $userData['user_headquarters_id'] = $this->user_headquarters_id;
-            $accions="GENERA BLOQUEO DE DIAS";
+            $userData['headquarter_id'] = $this->headquarter_id;
+            $accions = "GENERA BLOQUEO DE DIAS";
         }
-        // if ($this->user_headquarters_id == 0) {
+        // if ($this->headquarter_id == 0) {
         //     $all_headquarters = Headquarter::with('headquarterUser')->get();
         //     foreach ($all_headquarters as $headquarter) {
-        //         $userData['user_headquarters_id'] = $headquarter->headquarterUser->id;
+        //         $userData['headquarter_id'] = $headquarter->headquarterUser->id;
         //         MedicineDisabledDays::updateOrCreate(
         //             ['id' => $this->id_disabledDays],
         //             $userData $this->nameHeadquarter->name
@@ -85,7 +87,7 @@ class CreateUpdateScheduleModal extends ModalComponent
         medicine_history_movements::create([
             'user_id' => Auth::user()->id,
             'action' => $accions,
-            'process' => $this->disabled_days.' '.'SEDE: '.$this->id_disabledDays
+            'process' => $this->disabled_days . ' ' . 'SEDE: ' . $this->id_disabledDays
         ]);
         // }
         $this->notification([
@@ -100,8 +102,8 @@ class CreateUpdateScheduleModal extends ModalComponent
     {
         return [
             'disabled_days.required' => 'Campo obligatorio',
-            'user_headquarters_id.required' => 'Campo obligatorio',
-            'user_headquarters_id.unique' => 'La sede seleccionada ya cuenta con días deshabilitados, por favor selecciona otra o bien, si deseas añadir más días a esta sede, selecciona editar en el botón de la tabla.',
+            'headquarter_id.required' => 'Campo obligatorio',
+            'headquarter_id.unique' => 'La sede seleccionada ya cuenta con días deshabilitados, por favor selecciona otra o bien, si deseas añadir más días a esta sede, selecciona editar en el botón de la tabla.',
         ];
     }
 }
