@@ -40,7 +40,7 @@ class Qr extends Component
             $medicineReserves = MedicineReserve::with(['medicineReserveMedicine.medicineUser.userParticipant', 'medicineReserveFromUser', 'medicineReserveHeadquarter'])
                 ->whereHas('medicineReserveMedicine.medicineUser.userParticipant', function ($q) use ($curp) {
                     $q->where('curp', $curp);
-                })->where('medicine_id', $medicine_id)
+                })->where('id', $medicine_id)
                 ->where('dateReserve', $date_reserve)->get();
             $this->dialog([
                 'title'       => '¡CITA MÉDICA VERIFICADA!',
