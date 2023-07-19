@@ -49,31 +49,31 @@ class ModalNew extends ModalComponent
             $this->privilegesId = $privilegesId;
             $this->userPrivileges = User::with('roles', 'UserParticipant.userParticipantUserHeadquarter')->where('id', $this->privilegesId)->get();
             $this->id_save = $this->userPrivileges[0]->id;
-            $this->id_update = $this->userPrivileges[0]->UserParticipant[0]->id;
-            $this->user_headquarter_id = $this->userPrivileges[0]->UserParticipant[0]->userParticipantUserHeadquarter[0]->id;
+            $this->id_update = isset($this->userPrivileges[0]->UserParticipant[0]->id) ? $this->userPrivileges[0]->UserParticipant[0]->id : '';
+            $this->user_headquarter_id = isset($this->userPrivileges[0]->UserParticipant[0]->userParticipantUserHeadquarter[0]->id) ? $this->userPrivileges[0]->UserParticipant[0]->userParticipantUserHeadquarter[0]->id : '';
             $this->privileges = $this->userPrivileges[0]->roles[0]->name;
             $this->name = $this->userPrivileges[0]->name;
-            $this->apParental = $this->userPrivileges[0]->UserParticipant[0]->apParental;
+            $this->apParental = isset($this->userPrivileges[0]->UserParticipant[0]->apParental) ? $this->userPrivileges[0]->UserParticipant[0]->apParental : '';
             $this->headquarter_id = isset($this->userPrivileges[0]->UserParticipant[0]->userParticipantUserHeadquarter[0]->headquarter_id) ? $this->userPrivileges[0]->UserParticipant[0]->userParticipantUserHeadquarter[0]->headquarter_id : '';
-            $this->apMaternal = $this->userPrivileges[0]->UserParticipant[0]->apMaternal;
+            $this->apMaternal = isset($this->userPrivileges[0]->UserParticipant[0]->apMaternal) ? $this->userPrivileges[0]->UserParticipant[0]->apMaternal : '';
             $this->email = $this->userPrivileges[0]->email;
-            $this->state_id = $this->userPrivileges[0]->UserParticipant[0]->state_id;
+            $this->state_id = isset($this->userPrivileges[0]->UserParticipant[0]->state_id) ? $this->userPrivileges[0]->UserParticipant[0]->state_id : '';
             $this->updatedStateId($this->state_id);
-            $this->municipal_id = $this->userPrivileges[0]->UserParticipant[0]->municipal_id;
-            $this->genre = $this->userPrivileges[0]->UserParticipant[0]->genre;
-            $this->curp = $this->userPrivileges[0]->UserParticipant[0]->curp;
-            $this->birth = $this->userPrivileges[0]->UserParticipant[0]->birth;
-            $this->age = $this->userPrivileges[0]->UserParticipant[0]->age;
-            $this->street = $this->userPrivileges[0]->UserParticipant[0]->street;
-            $this->nInterior = $this->userPrivileges[0]->UserParticipant[0]->nInterior;
-            $this->nExterior = $this->userPrivileges[0]->UserParticipant[0]->nExterior;
-            $this->suburb = $this->userPrivileges[0]->UserParticipant[0]->suburb;
-            $this->postalCode = $this->userPrivileges[0]->UserParticipant[0]->postalCode;
-            $this->federalEntity = $this->userPrivileges[0]->UserParticipant[0]->federalEntity;
-            $this->delegation = $this->userPrivileges[0]->UserParticipant[0]->delegation;
-            $this->mobilePhone = $this->userPrivileges[0]->UserParticipant[0]->mobilePhone;
-            $this->officePhone = $this->userPrivileges[0]->UserParticipant[0]->officePhone;
-            $this->extension = $this->userPrivileges[0]->UserParticipant[0]->extension;
+            $this->municipal_id = isset($this->userPrivileges[0]->UserParticipant[0]->municipal_id) ? $this->userPrivileges[0]->UserParticipant[0]->municipal_id : '';
+            $this->genre = isset($this->userPrivileges[0]->UserParticipant[0]->genre) ? $this->userPrivileges[0]->UserParticipant[0]->genre : '';
+            $this->curp = isset($this->userPrivileges[0]->UserParticipant[0]->curp) ? $this->userPrivileges[0]->UserParticipant[0]->curp : '';
+            $this->birth = isset($this->userPrivileges[0]->UserParticipant[0]->birth) ? $this->userPrivileges[0]->UserParticipant[0]->birth : '';
+            $this->age = isset($this->userPrivileges[0]->UserParticipant[0]->age) ? $this->userPrivileges[0]->UserParticipant[0]->age : '';
+            $this->street = isset($this->userPrivileges[0]->UserParticipant[0]->street) ? $this->userPrivileges[0]->UserParticipant[0]->street : '';
+            $this->nInterior = isset($this->userPrivileges[0]->UserParticipant[0]->nInterior) ? $this->userPrivileges[0]->UserParticipant[0]->nInterior : '';
+            $this->nExterior = isset($this->userPrivileges[0]->UserParticipant[0]->nExterior) ? $this->userPrivileges[0]->UserParticipant[0]->nExterior : '';
+            $this->suburb = isset($this->userPrivileges[0]->UserParticipant[0]->suburb) ? $this->userPrivileges[0]->UserParticipant[0]->suburb : '';
+            $this->postalCode = isset($this->userPrivileges[0]->UserParticipant[0]->postalCode) ? $this->userPrivileges[0]->UserParticipant[0]->postalCode : '';
+            $this->federalEntity = isset($this->userPrivileges[0]->UserParticipant[0]->federalEntity) ? $this->userPrivileges[0]->UserParticipant[0]->federalEntity : '';
+            $this->delegation = isset($this->userPrivileges[0]->UserParticipant[0]->delegation) ? $this->userPrivileges[0]->UserParticipant[0]->delegation : '';
+            $this->mobilePhone = isset($this->userPrivileges[0]->UserParticipant[0]->mobilePhone) ? $this->userPrivileges[0]->UserParticipant[0]->mobilePhone : '';
+            $this->officePhone = isset($this->userPrivileges[0]->UserParticipant[0]->officePhone) ? $this->userPrivileges[0]->UserParticipant[0]->officePhone : '';
+            $this->extension = isset($this->userPrivileges[0]->UserParticipant[0]->extension) ? $this->userPrivileges[0]->UserParticipant[0]->extension : '';
         } else {
             $this->privilegesId = null;
         }
@@ -95,58 +95,6 @@ class ModalNew extends ModalComponent
     {
         $this->reset(['name', 'email', 'password', 'apParental', 'apMaternal']);
     }
-    // public function valores($privilegesId)
-    // {
-    //     $this->privilegesId = $privilegesId;
-    //     if ($this->privilegesId != 0) {
-    //         $userPrivileges = User::with('roles', 'UserParticipant')->where('id', $this->privilegesId)->get();
-    //         $this->id_save = $userPrivileges[0]->id;
-    //         $this->name = $userPrivileges[0]->name;
-    //         $this->apParental = $userPrivileges[0]->UserParticipant[0]->apParental;
-    //         $this->apMaternal = $userPrivileges[0]->UserParticipant[0]->apMaternal;
-    //         $this->state_id = $userPrivileges[0]->UserParticipant[0]->state_id;
-    //         $this->municipal_id = $userPrivileges[0]->UserParticipant[0]->municipal_id;
-    //         $this->municipio = $userPrivileges[0]->UserParticipant[0]->participantMunicipal->name;
-    //         $this->email = $userPrivileges[0]->email;
-    //         $this->privileges = $userPrivileges[0]->roles[0]->name;
-    //         $this->title = 'EDITAR USUARIO';
-    //         $this->id_update = $userPrivileges[0]->UserParticipant[0]->id;
-    //         $this->genre = $userPrivileges[0]->UserParticipant[0]->genre;
-    //         $this->birth = $userPrivileges[0]->UserParticipant[0]->birth;
-    //         $this->age = $userPrivileges[0]->UserParticipant[0]->age;
-    //         $this->street = $userPrivileges[0]->UserParticipant[0]->street;
-    //         $this->nInterior = $userPrivileges[0]->UserParticipant[0]->nInterior;
-    //         $this->nExterior = $userPrivileges[0]->UserParticipant[0]->nExterior;
-    //         $this->suburb = $userPrivileges[0]->UserParticipant[0]->suburb;
-    //         $this->postalCode = $userPrivileges[0]->UserParticipant[0]->postalCode;
-    //         $this->federalEntity = $userPrivileges[0]->UserParticipant[0]->federalEntity;
-    //         $this->delegation = $userPrivileges[0]->UserParticipant[0]->delegation;
-    //         $this->mobilePhone = $userPrivileges[0]->UserParticipant[0]->mobilePhone;
-    //         $this->officePhone = $userPrivileges[0]->UserParticipant[0]->officePhone;
-    //         $this->extension = $userPrivileges[0]->UserParticipant[0]->extension;
-    //         $this->curp = $userPrivileges[0]->UserParticipant[0]->curp;
-
-    //         $this->email_verified = $userPrivileges[0]->email_verified_at;
-    //     } else {
-    //         $this->title = 'AGREGAR USUARIO';
-    //         $this->state_id = 1;
-    //         $this->municipal_id = 1;
-    //         $this->genre = 0;
-    //         $this->birth = 0;
-    //         $this->age = 0;
-    //         $this->street = 0;
-    //         $this->nInterior = 0;
-    //         $this->nExterior = 0;
-    //         $this->suburb = 0;
-    //         $this->postalCode = 0;
-    //         $this->federalEntity = 0;
-    //         $this->delegation = 0;
-    //         $this->mobilePhone = 0;
-    //         $this->officePhone = 0;
-    //         $this->extension = 0;
-    //         $this->curp = 0;
-    //     }
-    // }
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
@@ -170,33 +118,35 @@ class ModalNew extends ModalComponent
                 ['id' => $this->id_update],
                 [
                     'user_id' => $privilegesUser->id,
-                    'apParental' => $this->apParental,
-                    'apMaternal' => $this->apMaternal,
-                    'genre' => $this->genre,
-                    'birth' => $this->birth,
-                    'state_id' => $this->state_id,
-                    'municipal_id' => $this->municipal_id,
-                    'age' => $this->age,
-                    'street' => $this->street,
-                    'nInterior' => $this->nInterior,
-                    'nExterior' => $this->nExterior,
-                    'suburb' => $this->suburb,
-                    'postalCode' => $this->postalCode,
-                    'federalEntity' => $this->federalEntity,
-                    'delegation' => $this->delegation,
-                    'mobilePhone' => $this->mobilePhone,
-                    'officePhone' => $this->officePhone,
-                    'extension' => $this->extension,
+                    'apParental' => $this->apParental ?: '',
+                    'apMaternal' => $this->apMaternal ?: '',
+                    'genre' => $this->genre ?: '',
+                    'birth' => $this->birth ?: '',
+                    'state_id' => $this->state_id ?: '7',
+                    'municipal_id' => $this->municipal_id ?: '218',
+                    'age' => $this->age ?: '',
+                    'street' => $this->street ?: '',
+                    'nInterior' => $this->nInterior ?: '',
+                    'nExterior' => $this->nExterior ?: '',
+                    'suburb' => $this->suburb ?: '',
+                    'postalCode' => $this->postalCode ?: '',
+                    'federalEntity' => $this->federalEntity ?: '',
+                    'delegation' => $this->delegation ?: '',
+                    'mobilePhone' => $this->mobilePhone ?: '',
+                    'officePhone' => $this->officePhone ?: '',
+                    'extension' => $this->extension ?: '',
                     'curp' => $this->curp,
                 ]
             );
-            $userHeadquarters = UserHeadquarter::updateOrCreate(
-                ['id' => $this->user_headquarter_id],
-                [
-                    'headquarter_id' => $this->headquarter_id,
-                    'user_participant_id' => $user_participants->id
-                ]
-            );
+            if ($this->privileges === 'headquarters') {
+                UserHeadquarter::updateOrCreate(
+                    ['id' => $this->user_headquarter_id],
+                    [
+                        'headquarter_id' => $this->headquarter_id,
+                        'user_participant_id' => $user_participants->id
+                    ]
+                );
+            }
             $this->notification([
                 'title'       => 'USUARIO AGREGADO CON EXITO',
                 'icon'        => 'success',
@@ -204,10 +154,9 @@ class ModalNew extends ModalComponent
             ]);
             $this->emit('privilegesUser');
         } catch (\Exception $e) {
-            $this->notification([
+            $this->dialog([
                 'title'       => $e->getMessage(),
                 'icon'        => 'error',
-                'timeout' => '3100'
             ]);
         }
         $this->closeModal();

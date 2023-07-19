@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('headquarter_id')->nullable();
             $table->foreign('headquarter_id')->references('id')->on('headquarters')->onDelete('cascade');
-            $table->unsignedBigInteger('user_id')->nullable();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            // $table->unsignedBigInteger('user_id')->nullable();
+            // $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('user_participant_id')->nullable();
             $table->foreign('user_participant_id')->references('id')->on('user_participants')->onDelete('cascade');
             $table->timestamps();
