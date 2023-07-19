@@ -30,7 +30,7 @@ class CreateUpdateResponsibleModal extends ModalComponent
      */
     public static function modalMaxWidth(): string
     {
-        return 'md';
+        return 'lg';
     }
     public static function closeModalOnEscape(): bool
     {

@@ -432,8 +432,8 @@ class AppointmentTable extends DataTableComponent
             });
         } else if (Auth::user()->can('headquarters.see.schedule.table')) {
             return MedicineReserve::query()->with([
-                'medicineReserveMedicine', 'medicineReserveFromUser', 'userParticipantUser', 'medicineReserveHeadquarter.HeadquarterUserHeadquarter'
-            ])->whereHas('medicineReserveHeadquarter.HeadquarterUserHeadquarter', function ($q1) {
+                'medicineReserveMedicine', 'medicineReserveFromUser', 'userParticipantUser', 'medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant'
+            ])->whereHas('medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q1) {
                 $q1->where('user_id', Auth::user()->id);
             });
         } else if (Auth::user()->can('sub_headquarters.see.schedule.table')) {

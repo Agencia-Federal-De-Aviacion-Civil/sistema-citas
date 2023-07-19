@@ -23,16 +23,16 @@ class homeController extends Controller
         $tomorrow = Date::tomorrow()->format('Y-m-d');
         $nameHeadquarter = '';
         if (Auth::user()->can('headquarters.see.dashboard')) {
-            $appointment = MedicineReserve::with('medicineReserveHeadquarter.HeadquarterUserHeadquarter')
-                ->whereHas('medicineReserveHeadquarter.HeadquarterUserHeadquarter', function ($q1) {
+            $appointment = MedicineReserve::with('medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant')
+                ->whereHas('medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q1) {
                     $q1->where('user_id', Auth::user()->id);
                 })
                 ->select('status', DB::raw('count(*) as count'), 'dateReserve')
                 ->groupBy('status', 'dateReserve')
                 ->get();
             $headquarters = Headquarter::with([
-                'HeadquarterUserHeadquarter'
-            ])->whereHas('HeadquarterUserHeadquarter', function ($q2) {
+                'HeadquarterUserHeadquarter.userHeadquarterUserParticipant'
+            ])->whereHas('HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q2) {
                 $q2->where('user_id', Auth::user()->id);
             })->get();
             $nameHeadquarter = $headquarters->pluck('name_headquarter')->first();
