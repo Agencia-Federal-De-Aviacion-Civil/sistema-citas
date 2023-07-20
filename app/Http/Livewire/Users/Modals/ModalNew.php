@@ -25,7 +25,7 @@ class ModalNew extends ModalComponent
     public $roles, $modal, $id_save, $id_update, $name, $email, $apParental, $apMaternal, $state_id, $municipal_id, $password, $passwordConfirmation, $privileges, $privilegesId, $title, $email_verified, $dateNow,
         $genre, $birth, $age, $street, $nInterior, $nExterior, $suburb, $postalCode, $federalEntity, $delegation, $mobilePhone, $officePhone, $extension, $curp, $states, $municipals, $municipio, $select, $user_headquarter_id,
         $headquarter_id;
-    public $headquarters, $userPrivileges;
+    public $headquarters, $userPrivileges, $isVerified;
     public function rules()
     {
         $rules =  [
@@ -48,6 +48,7 @@ class ModalNew extends ModalComponent
         if (isset($privilegesId)) {
             $this->privilegesId = $privilegesId;
             $this->userPrivileges = User::with('roles', 'UserParticipant.userParticipantUserHeadquarter')->where('id', $this->privilegesId)->get();
+            $this->isVerified = $this->userPrivileges[0]->email_verified_at !== null;
             $this->id_save = $this->userPrivileges[0]->id;
             $this->id_update = isset($this->userPrivileges[0]->UserParticipant[0]->id) ? $this->userPrivileges[0]->UserParticipant[0]->id : '';
             $this->user_headquarter_id = isset($this->userPrivileges[0]->UserParticipant[0]->userParticipantUserHeadquarter[0]->id) ? $this->userPrivileges[0]->UserParticipant[0]->userParticipantUserHeadquarter[0]->id : '';
@@ -78,9 +79,22 @@ class ModalNew extends ModalComponent
             $this->privilegesId = null;
         }
     }
+    public function verified()
+    {
+        $idVerify = $this->userPrivileges[0]->id;
+        $user = User::find($idVerify);
+        $user->email_verified_at = now();
+        $user->save();
+        $this->isVerified = true;
+        medicine_history_movements::create([
+            'user_id' => Auth::user()->id,
+            'action' => "VERIFICA CORREO",
+            'process' => 'USUARIO: ' . $this->name . ' ' . $this->apParental . ' ' . $this->apMaternal . ' ID:' . $idVerify
+        ]);
+    }
     public function render()
     {
-        return view('livewire.users.modals.modal-new');
+        return view('livewire.users.modals.modal-new', ['isVerified' => $this->isVerified]);
     }
     public function updatedStateId($id)
     {
@@ -161,24 +175,6 @@ class ModalNew extends ModalComponent
         }
         $this->closeModal();
     }
-    public function verified($id_save)
-    {
-        Date::setLocale('es');
-        $this->dateNow = Date::now()->format('Y-m-d h:i:s');
-        $verifiedUser = User::where('id', $id_save);
-        $verifiedUser->update([
-            'email_verified_at' => $this->dateNow,
-        ]);
-        //save history veryficate e-mail
-        medicine_history_movements::create([
-            'user_id' => Auth::user()->id,
-            'action' => "VERIFICA CORREO",
-            'process' => 'USUARIO: ' . $this->name . ' ' . $this->apParental . ' ' . $this->apMaternal . ' ID:' . $id_save
-        ]);
-
-        $this->valores($id_save);
-    }
-
     public function messages()
     {
         return [

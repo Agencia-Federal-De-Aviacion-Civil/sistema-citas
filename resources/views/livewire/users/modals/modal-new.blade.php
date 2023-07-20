@@ -32,17 +32,19 @@
                             <x-inputs.password wire:model="passwordConfirmation" label="CONFIRMAR CONTRASEÑA" />
                         </div>
                     </div>
-
-                    <div class="grid xl:grid-cols-0 xl:gap-6">
-                        <div class="mt-4 relative w-full group">
-                            @if ($email_verified == '')
-                                <x-button outline wire:click.prevent="verified({{ $id_save }})" primary
-                                    label="VERIFICAR CORREO" />
-                            @else
-                                <p class="text-slate-300">CORREO VERIFICADO</p>
-                            @endif
+                    @empty($userPrivileges)
+                    @else
+                        <div class="grid xl:grid-cols-0 xl:gap-6">
+                            <div class="mt-4 relative w-full group">
+                                @if (!$isVerified)
+                                    <x-button outline wire:click.prevent="verified({{ $id_save }})" primary
+                                        label="VERIFICAR CORREO" right-icon="mail"/>
+                                @else
+                                    <x-badge flat lg positive label="VERIFICADO" right-icon="mail-open" />
+                                @endif
+                            </div>
                         </div>
-                    </div>
+                    @endempty
                     <div x-data="{ roleuser: @entangle('roleuser') }">
                         <div class="mt-4 relative w-full group">
                             <label for="systems"
