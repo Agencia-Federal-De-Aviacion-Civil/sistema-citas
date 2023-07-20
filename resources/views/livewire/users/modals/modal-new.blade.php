@@ -45,7 +45,7 @@
                             </div>
                         </div>
                     @endempty
-                    <div x-data="{ roleuser: @entangle('roleuser') }">
+                    <div x-data="{ roleuser: @entangle('privileges') }">
                         <div class="mt-4 relative w-full group">
                             <label for="systems"
                                 class="block text-sm font-medium text-gray-900 dark:text-white">ROL</label>
@@ -54,7 +54,7 @@
                                 <option value="">Selecciona...</option>
                                 @foreach ($roles as $role)
                                     <option value="{{ $role->name }}"
-                                        {{ $privileges === $role->name ? 'selected' : '' }}>
+                                        {{ $privileges == $role->name ? 'selected' : '' }}>
                                         {{ $role->name }}</option>
                                 @endforeach
                             </select>

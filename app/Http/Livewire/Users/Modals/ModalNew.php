@@ -52,7 +52,7 @@ class ModalNew extends ModalComponent
             $this->id_save = $this->userPrivileges[0]->id;
             $this->id_update = isset($this->userPrivileges[0]->UserParticipant[0]->id) ? $this->userPrivileges[0]->UserParticipant[0]->id : '';
             $this->user_headquarter_id = isset($this->userPrivileges[0]->UserParticipant[0]->userParticipantUserHeadquarter[0]->id) ? $this->userPrivileges[0]->UserParticipant[0]->userParticipantUserHeadquarter[0]->id : '';
-            $this->privileges = $this->userPrivileges[0]->roles[0]->name;
+            $this->privileges = isset($this->userPrivileges[0]->roles[0]->name) ? $this->userPrivileges[0]->roles[0]->name : '';
             $this->name = $this->userPrivileges[0]->name;
             $this->apParental = isset($this->userPrivileges[0]->UserParticipant[0]->apParental) ? $this->userPrivileges[0]->UserParticipant[0]->apParental : '';
             $this->headquarter_id = isset($this->userPrivileges[0]->UserParticipant[0]->userParticipantUserHeadquarter[0]->headquarter_id) ? $this->userPrivileges[0]->UserParticipant[0]->userParticipantUserHeadquarter[0]->headquarter_id : '';
