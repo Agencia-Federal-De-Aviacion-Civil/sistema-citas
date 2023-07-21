@@ -128,6 +128,8 @@
                                 {{-- </div> --}}
                             </div>
                         </div>
+                        @hasrole(['super_admin', 'medicine_admin', 'headquarters', 'super_admin_medicine',
+                            'super_admin_medicine_v2'])
                         <div class="block w-full overflow-x-auto">
                             <table class="items-center w-full bg-transparent border-collapse">
                                 <thead>
@@ -191,6 +193,7 @@
                                 </tbody>
                             </table>
                         </div>
+                        @endhasrole
                     </div>
                 </div>
                 <!-- Recent Activities -->

@@ -34,7 +34,7 @@ class ModalNew extends ModalComponent
             'apMaternal' => 'required',
             'privileges' => 'required',
             'email' => ['required', 'email', Rule::unique('users')->ignore($this->privilegesId)],
-            'headquarter_id' => 'required_if:privileges,headquarters'
+            'headquarter_id' => 'required_if:privileges,headquarters,sub_headquarters'
         ];
         $rules['password'] = $this->privilegesId ? 'same:passwordConfirmation' : 'required|min:6|same:passwordConfirmation';
         return $rules;
@@ -152,7 +152,7 @@ class ModalNew extends ModalComponent
                     'curp' => $this->curp,
                 ]
             );
-            if ($this->privileges === 'headquarters') {
+            if ($this->privileges === 'headquarters' || $this->privileges === 'sub_headquarters') {
                 UserHeadquarter::updateOrCreate(
                     ['id' => $this->user_headquarter_id],
                     [
