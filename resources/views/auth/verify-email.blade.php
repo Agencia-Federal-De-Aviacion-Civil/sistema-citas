@@ -16,7 +16,8 @@
 
                 </h2>
                 <p class="mb-6 text-base font-thin tracking-wide text-gray-200 md:text-xl">
-                    Antes de continuar, ¿Verificar su dirección de correo electrónico haciendo clic en el enlace que le acabamos de enviar? Si no recibiste el correo electrónico, con gusto te enviaremos otro.
+                    Antes de continuar, ¿Verificar su dirección de correo electrónico haciendo clic en el enlace que le
+                    acabamos de enviar? Si no recibiste el correo electrónico, con gusto te enviaremos otro.
                 </p>
                 <div class="animate-pulse">
                     <form class="flex flex-col items-center w-full mb-4 md:flex-row md:px-16">
@@ -27,19 +28,27 @@
                 </div>
                 <div class="px-6 py-6 md:px-8 md:py-0 text-base text-gray-600">
                     @if (session('status') == 'verification-link-sent')
-                    <div class="mb-4 font-medium text-sm text-green-600">
-                        {{ __('Se ha enviado un nuevo enlace de verificación a la dirección de correo electrónico que proporcionó en la configuración de su perfil.') }}
-                    </div>
+                        <div class="mb-4 font-medium text-sm text-green-600">
+                            {{ __('Se ha enviado un nuevo enlace de verificación a la dirección de correo electrónico que proporcionó en la configuración de su perfil.') }}
+                        </div>
                     @endif
                     <div class="text-center items-center justify-center">
                         <form method="POST" action="{{ route('verification.send') }}">
                             @csrf
                             <div>
-                                <button type="submit" class="flex items-center justify-center px-3 py-2 mx-auto text-sm rounded-full font-medium text-center text-white bg-sky-900 rounded-lg hover:bg-blue-500 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                               REENVIAR VERIFICACIÓN
-                            </button>
+                                <button type="submit"
+                                    class="flex items-center justify-center px-3 py-2 mx-auto text-sm rounded-full font-medium text-center text-white bg-sky-900 rounded-lg hover:bg-blue-500 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                    REENVIAR VERIFICACIÓN
+                                </button>
                             </div>
                         </form>
+                        <div class="mt-4">
+                            <form method="POST" action="{{ route('logout') }}" class="inline">
+                                @csrf
+                                <button type="submit"
+                                    class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">SALIR</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
