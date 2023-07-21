@@ -25,10 +25,6 @@ class Headquarter extends Model
             }
         });
     }
-    // public function headquarterUser()
-    // {
-    //     return $this->belongsToMany(User::class, 'user_headquarters');
-    // }
     public function headquarterUserParticipant()
     {
         return $this->belongsToMany(UserParticipant::class, 'user_headquarters');
