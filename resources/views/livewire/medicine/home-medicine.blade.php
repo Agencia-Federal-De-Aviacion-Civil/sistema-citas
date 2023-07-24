@@ -68,6 +68,7 @@
                         fileName: '',
                         typerevalora: @entangle('type_exam_revaloration_id'),
                         filereval: '',
+                        filedicta: '',
                     }">
                         {{-- estep --}}
                         <section class="text-gray-600 body-font">
@@ -144,7 +145,7 @@
                                                     class="block mb-2 text-base font-medium text-gray-900 dark:text-white">¿QUE
                                                     TIPO DE EXÁMEN VAS A REALIZAR?</label>
                                                 <select id="small" x-ref="tipoExamen" wire:model.lazy="type_exam_id"
-                                                    wire:change="resetQuestions()" placeholder="seleccione..."
+                                                    wire:change="resetQuestions()" placeholder="seleccione..." 
                                                     class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                                     <option value="" selected>Seleccione...</option>
                                                     @foreach ($typeExams as $typeExam)
@@ -158,8 +159,8 @@
                                                 @enderror
                                             </div>
                                         </div>
-                                        {{-- ADJUNTAR DOCUMENTOS PARA REVALORACIÓN --}}
-                                        <div x-show="tipoExamen ==='3'" class="flex relative pb-6">
+                                        {{-- ADJUNTAR DOCUMENTOS PARA REVALORACIÓN Y FLEXIBILIDAD --}}
+                                        <div x-show="tipoExamen ==='3'||tipoExamen ==='5'" class="flex relative pb-6">
                                             <div class="h-full w-10 absolute inset-0 flex items-center justify-center">
                                                 <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
                                             </div>
@@ -172,14 +173,22 @@
                                                         d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m6.75 12l-3-3m0 0l-3 3m3-3v6m-1.5-15H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
                                                 </svg>
                                             </div>
-                                            {{-- AUTORIZCIÓN DE REVALORACIÓN --}}
+                                            {{-- AUTORIZACIÓN DE REVALORACIÓN Y FLEXIBILIDAD --}}
                                             <div class="flex-grow pl-4">
-                                                <label for="small"
+                                                <div x-show="tipoExamen ==='3'">
+                                                    <label for="small"
                                                     class="block mb-2 text-base font-medium text-gray-900 dark:text-white">ADJUNTAR
                                                     LA AUTORIZACIÓN POR PARTE DE LA AGENCIA FEDERAL DE AVIACIÓN
                                                     CIVIL</label>
+                                                </div>
+                                                <div x-show="tipoExamen ==='5'">
+                                                    <label for="small"
+                                                    class="block mb-2 text-base font-medium text-gray-900 dark:text-white">ADJUNTAR
+                                                    EL DICTAMEN POR PARTE DE LA AGENCIA FEDERAL DE AVIACIÓN
+                                                    CIVIL</label>
+                                                </div>
                                                 <label for="file-input" class="sr-only">Adjunta el
-                                                    comprobante</label>
+                                                    documento</label>
                                                 <input type="file" wire:model="document_authorization"
                                                     x-ref="file2" accept=".pdf"
                                                     @change="filereval = $refs.file2.files[0].name"
@@ -200,8 +209,8 @@
                                                 @enderror
                                             </div>
                                         </div>
-                                        {{-- paso revaloración --}}
-                                        <div x-show="tipoExamen === '3' && filereval != '' "
+                                        {{-- paso revaloración y flexibilidad --}}
+                                        <div x-show="tipoExamen === '3'  && filereval != ''"
                                             class="flex relative pb-6">
                                             <div class="h-full w-10 absolute inset-0 flex items-center justify-center">
                                                 <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
@@ -220,13 +229,13 @@
                                                 <label for="typerva"
                                                     class="block mb-2 text-base font-medium text-gray-900 dark:text-white">¿QUE
                                                     TIPO DE REVALORACIÓN VAS A REALIZAR?</label>
-                                                <select id="typerva" x-model="typerevalora"
+                                                    <select id="typerva" x-model="typerevalora"
                                                     wire:model.lazy="type_exam_revaloration_id"
                                                     class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                    <option value="0" selected>Seleccione...</option>
-                                                    <option value="1" selected>INICIAL</option>
-                                                    <option value="2" selected>RENOVACIÓN</option>
-                                                </select>
+                                                        <option value="0" selected>Seleccione...</option>
+                                                        <option value="1" selected>INICIAL</option>
+                                                        <option value="2" selected>RENOVACIÓN</option>
+                                                    </select>
                                                 @error('type_exam_revaloration_id')
                                                     <span
                                                         class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
@@ -341,7 +350,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div x-show="tipoExamen === '2'|| tipoExamen==='4' || typerevalora==='2'"
+                                        <div x-show="tipoExamen === '2'|| tipoExamen==='4' || typerevalora==='2'||tipoExamen === '5'  && filereval != ''"
                                             class="flex relative pb-6">
                                             <div class="h-full w-10 absolute inset-0 flex items-center justify-center">
                                                 <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>

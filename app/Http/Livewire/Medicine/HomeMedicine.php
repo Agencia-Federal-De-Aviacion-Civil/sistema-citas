@@ -113,7 +113,7 @@ class HomeMedicine extends Component
     public function updatedTypeExamId($type_exam_id)
     {
         $this->typeRenovationExams = TypeClass::where('type_exam_id', $type_exam_id)->get();
-        if ($type_exam_id === '3') {
+        if ($type_exam_id === '3'||$type_exam_id === '5') {
             $type_exam_id = '2';
             $this->typeRenovationExams = TypeClass::where('type_exam_id', $type_exam_id)->get();
         } else if ($type_exam_id === '4') {
@@ -435,13 +435,58 @@ class HomeMedicine extends Component
                             'clasification_class_id' => $clasifications
                         ]);
                     }
-                } else if ($this->type_exam_id == 3) {
-                    // $extension = $this->document_authorization->extension();
+                } else if ($this->type_exam_id == 3||$this->type_exam_id == 5) {
+                    // REGLAS FLEXIBILIDAD Y REVALORACIÓN
                     $extension = $this->document_pay->getClientOriginalExtension();
                     $fileName = $this->reference_number . '-' . $this->pay_date . '.' . $extension;
                     $saveDocumentRevaloration = Document::create([
                         'name_document' => $this->document_authorization->storeAs('documentos/medicina', $fileName, 'public'),
                     ]);
+                    if ($this->type_exam_id == 5){
+                        $this->type_exam_revaloration_id = 2;
+                    }
+                    $medicineReId = MedicineRevaluation::create([
+                        'medicine_id' => $this->saveMedicine->id,
+                        'document_revaloration_id' => $saveDocumentRevaloration->id,
+                        'type_exam_id' => $this->type_exam_revaloration_id
+                    ]);
+                    if ($this->type_exam_revaloration_id == 1) {
+                        $clasification_class_ids = $this->clasification_class_id;
+                        if (is_array($clasification_class_ids)) {
+                            foreach ($clasification_class_ids as $clasifications) {
+                                MedicineRevaluationInitial::create([
+                                    'medicine_revaluation_id' => $medicineReId->id,
+                                    'medicine_question_id' => $this->medicine_question_id,
+                                    'type_class_id' => $this->type_class_id,
+                                    'clasification_class_id' => $clasifications
+                                ]);
+                            }
+                        } else {
+                            MedicineRevaluationInitial::create([
+                                'medicine_revaluation_id' => $medicineReId->id,
+                                'medicine_question_id' => $this->medicine_question_id,
+                                'type_class_id' => $this->type_class_id,
+                                'clasification_class_id' => $clasification_class_ids
+                            ]);
+                        }
+                    } else if ($this->type_exam_revaloration_id == 2) {
+                        foreach ($this->clasification_class_id as $clasifications) {
+                            MedicineRevaluationRenovation::create([
+                                'medicine_revaluation_id' => $medicineReId->id,
+                                'type_class_id' => $this->type_class_id,
+                                'clasification_class_id' => $clasifications
+                            ]);
+                        }
+                    }
+                }else if ($this->type_exam_id == 3||$this->type_exam_id == 5) {
+                    // $extension = $this->document_authorization->extension();
+                    //condicion para tomar revalroción cuando es flexibilidad
+                    $extension = $this->document_pay->getClientOriginalExtension();
+                    $fileName = $this->reference_number . '-' . $this->pay_date . '.' . $extension;
+                    $saveDocumentRevaloration = Document::create([
+                        'name_document' => $this->document_authorization->storeAs('documentos/medicina', $fileName, 'public'),
+                    ]);
+
                     $medicineReId = MedicineRevaluation::create([
                         'medicine_id' => $this->saveMedicine->id,
                         'document_revaloration_id' => $saveDocumentRevaloration->id,
@@ -568,6 +613,9 @@ class HomeMedicine extends Component
             return $pdf->download($fileName);
         }else if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 4) {
             $pdf = PDF::loadView('livewire.medicine.documents.medicine-revaluation-accident', compact('medicineReserves', 'keyEncrypt', 'dateConvertedFormatted'));
+            return $pdf->download($fileName);
+        }else if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 5) {
+            $pdf = PDF::loadView('livewire.medicine.documents.medicine-flexibility', compact('medicineReserves', 'keyEncrypt', 'dateConvertedFormatted'));
             return $pdf->download($fileName);
         }
     }

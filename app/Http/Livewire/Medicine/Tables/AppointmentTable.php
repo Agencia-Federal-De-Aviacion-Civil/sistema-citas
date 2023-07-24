@@ -491,7 +491,8 @@ class AppointmentTable extends DataTableComponent
                         '1' => 'INICIAL',
                         '2' => 'RENOVACIÓN',
                         '3' => 'REVALORACIÓN',
-                        '4' => 'REVALORACIÓN POST ACCIDENTE'
+                        '4' => 'REVALORACIÓN POST ACCIDENTE',
+                        '5' => 'FLEXIBILIDAD'
                     ])
                     ->filter(function ($query, $value) {
                         $query->where('type_exam_id', $value);
