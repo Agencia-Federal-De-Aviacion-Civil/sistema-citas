@@ -627,11 +627,18 @@
                                             <path stroke-linecap="round" stroke-linejoin="round"
                                                 d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
+                                        {{-- dependiendo de revaloración --}}
+                                        @if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 5)
+                                        <p class="text-lg title-font font-normal">
+                                            Revaloración post Flexibilidad
+                                        </p>
+                                        @else
                                         <p class="text-lg title-font font-normal">Tipo de revaloración:
-                                        <p class="text-xl font-semibold">
-                                            {{ $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->RevaluationTypeExam->name }}
+                                            <p class="text-xl font-semibold">
+                                                {{ $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->RevaluationTypeExam->name }}
+                                            </p>
                                         </p>
-                                        </p>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
