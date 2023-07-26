@@ -441,7 +441,7 @@ class AppointmentTable extends DataTableComponent
             $day = Date::now()->format('Y-m-d');
             return MedicineReserve::query()->with([
                 'medicineReserveMedicine', 'medicineReserveFromUser', 'userParticipantUser', 'medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant'
-            ])->where('headquarter_id', 7)->where('dateReserve', $day);
+            ])->where('headquarter_id', 6)->where('dateReserve', $day);
         }
     }
     public function filters(): array
