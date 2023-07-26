@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Headquarters\Tables;
 
 use App\Exports\HeadquarterExport;
 use App\Models\Catalogue\Headquarter;
+use App\Models\UserHeadquarter;
 use Illuminate\Database\Eloquent\Builder;
 use Maatwebsite\Excel\Facades\Excel;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
@@ -40,19 +41,20 @@ class HeadquartersTable extends DataTableComponent
         return [
             Column::make("Id", "id")
                 ->sortable(),
-            Column::make('SEDE', 'headquarterUser.name')
+            Column::make('SEDE', 'name_headquarter')
                 ->searchable(fn ($query, $searchTerm) => $query->orWhere('users.name', 'like', '%' . $searchTerm . '%'))
                 ->sortable(),
-            Column::make('CORREO', 'headquarterUser.email'),
+            // Column::make('CORREO', 'headquarterUser.id'),
             Column::make('DIRECCIÓN', 'direction'),
             Column::make('URL', 'url'),
-            Column::make("ACCIÓN")
-                ->label(
-                    fn ($row) => view(
+            Column::make("ACCIÓN", 'id')
+                ->format(
+                    fn ($value) => view(
                         'components.edit-headquarter',
                         [
-                            $userId = Headquarter::where('id', $row->id)->get(),
-                            'userId' => $userId[0]->user_id,
+                            $userHeadquarters = UserHeadquarter::where('headquarter_id', $value)->get(),
+                            'userId' => $value,
+                            'userHeadquarters' => $userHeadquarters
                         ]
                     )
                 ),
@@ -60,7 +62,7 @@ class HeadquartersTable extends DataTableComponent
     }
     public function builder(): Builder
     {
-        return Headquarter::query()->with(['headquarterUser'])->where('headquarters.status','=','0');
+        return Headquarter::query()->where('headquarters.status', '=', '0');
     }
     public function exportSelected()
     {

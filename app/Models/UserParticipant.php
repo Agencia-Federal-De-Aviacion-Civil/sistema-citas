@@ -33,4 +33,8 @@ class UserParticipant extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+    public function userParticipantUserHeadquarter()
+    {
+        return $this->hasMany(UserHeadquarter::class);
+    }
 }

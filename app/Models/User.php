@@ -77,25 +77,25 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(UserParticipant::class);
     }
-    public function userHeadquarter()
-    {
-        return $this->hasMany(Headquarter::class);
-    }
+    // public function userHeadquarter()
+    // {
+    //     return $this->hasMany(Headquarter::class);
+    // }
     public function userMedicine()
     {
         return $this->hasMany(Medicine::class);
     }
-    public function userMedicineReserveTo()
+    // public function userMedicineReserveTo()
+    // {
+    //     return $this->hasMany(MedicineReserve::class, 'to_user_headquarters');
+    // }
+    public function userHeadquarter()
     {
-        return $this->hasMany(MedicineReserve::class, 'to_user_headquarters');
+        return $this->belongsToMany(Headquarter::class, 'user_headquarters');
     }
     public function usermedicineReserveFrom()
     {
         return $this->hasMany(MedicineReserve::class);
-    }
-    public function userDisabledDays()
-    {
-        return $this->hasMany(MedicineDisabledDays::class, 'user_headquarters_id');
     }
     public function sendPasswordResetNotification($token)
     {
@@ -105,11 +105,16 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $this->notify(new MyVerifyEmail);
     }
-    public function userHistory(){
+    public function userHistory()
+    {
         return $this->hasMany(medicine_history_movements::class);
     }
     public function UserPart()
     {
         return $this->hasOne(UserParticipant::class);
     }
+    // public function userUserHeadquarter()
+    // {
+    //     return $this->hasMany(UserHeadquarter::class);
+    // }
 }

@@ -421,29 +421,21 @@
                                                             class="block mb-2 text-base font-medium text-gray-900 dark:text-white">ELIJA
                                                             LA SEDE</label>
                                                         <select id="small" x-ref="selec_sede"
-                                                            wire:model.lazy="to_user_headquarters"
+                                                            wire:model.lazy="headquarter_id"
                                                             wire:change="searchDisabledDays()"
                                                             placeholder="seleccione..."
                                                             class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                                             <option value="" selected>Seleccione...</option>
                                                             @foreach ($sedes as $sede)
-                                                                <option value="{{ $sede->headquarterUser->id }}">
-                                                                    {{ $sede->headquarterUser->name }}
+                                                                <option value="{{ $sede->id }}">
+                                                                    {{ $sede->name_headquarter }}
                                                                 </option>
                                                             @endforeach
                                                         </select>
-                                                        @error('to_user_headquarters')
+                                                        @error('headquarter_id')
                                                         <span
                                                             class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
                                                     @enderror
-                                                        {{-- <x-select label="ELIJA LA SEDE" placeholder="Selecciona"
-                                                            x-ref="selec_sede" wire:model.lazy="to_user_headquarters" wire:change="searchDisabledDays()">
-                                                            @foreach ($sedes as $sede)
-                                                                <x-select.option
-                                                                    label="{{ $sede->headquarterUser->name }}"
-                                                                    value="{{ $sede->headquarterUser->id }}" />
-                                                            @endforeach
-                                                        </x-select> --}}
                                                     </div>
                                                     <div class="text-base relative z-auto w-full mt-2 group">
                                                         <x-input x-ref="reservedate" wire:model.lazy="dateReserve"

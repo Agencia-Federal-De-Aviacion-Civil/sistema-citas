@@ -16,8 +16,8 @@ class DeleteScheduleModal extends ModalComponent
     public function mount($actionId)
     {
         $this->actionId = $actionId;
-        $this->days = MedicineDisabledDays::with('disabledDaysUser')->where('id', $actionId)->get();
-        $this->nameHeadquarter = $this->days[0]->disabledDaysUser;
+        $this->days = MedicineDisabledDays::with('disabledDaysHeadquarter')->where('id', $actionId)->get();
+        $this->nameHeadquarter = $this->days[0]->disabledDaysHeadquarter;
     }
     public static function modalMaxWidth(): string
     {

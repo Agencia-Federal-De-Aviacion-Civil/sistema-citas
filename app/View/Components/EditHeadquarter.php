@@ -2,6 +2,7 @@
 
 namespace App\View\Components;
 
+use App\Models\UserHeadquarter;
 use Illuminate\View\Component;
 
 class EditHeadquarter extends Component
@@ -14,7 +15,8 @@ class EditHeadquarter extends Component
     public $userId;
     public function __construct($userId)
     {
-        $this->userId = $userId;
+        // $this->userHeadquarters = UserHeadquarter::where('id', $this->userId)->get();
+        // $this->userId = $userId;
     }
 
     /**

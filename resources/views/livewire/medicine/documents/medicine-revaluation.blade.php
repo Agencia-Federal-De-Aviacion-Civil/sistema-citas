@@ -148,12 +148,12 @@
             </tr> --}}
             <tr>
                 <td>UNIDAD MÉDICA:</td>
-                <td> <b>{{ $medicineReserves[0]->user->name }}</b></p>
+                <td> <b>{{ $medicineReserves[0]->medicineReserveHeadquarter->name_headquarter }}</b></p>
                 </td>
             </tr>
             <tr>
                 <td>DIRECCIÓN SEDE:</td>
-                <td> {{ $medicineReserves[0]->user->userHeadquarter[0]->direction }}</p>
+                <td> {{ $medicineReserves[0]->medicineReserveHeadquarter->direction }}</p>
                 </td>
             </tr>
             <tr>
