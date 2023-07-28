@@ -498,22 +498,22 @@ class AppointmentTable extends DataTableComponent
                 SelectFilter::make('SEDE')
                     ->options([
                         '' => 'TODOS',
-                        '2' => 'CANCUN QUINTANA ROO',
-                        '3' => 'TIJUANA BC',
-                        '4' => 'TOLUCA AEROPUERTO',
-                        '5' => 'MONTERREY AEROPUERTO',
-                        '6' => 'GUADALAJARA AEROPUERTO',
-                        '7' => 'CIUDAD DE MÉXICO AEROPUERTO BJ',
-                        '518' => 'MAZATLAN SINALOA',
-                        '519' => 'TUXTLA GTZ. CHIAPAS',
-                        '520' => 'VERACRUZ VERACRUZ',
-                        '521' => 'HERMOSILLO SONORA',
-                        '522' => 'QUERETARO QRO',
-                        '523' => 'MERIDA YUCATAN',
-                        '7958' => 'SINALOA CULIACAN'
+                        '1' => 'CANCUN QUINTANA ROO',
+                        '2' => 'TIJUANA BC',
+                        '3' => 'TOLUCA AEROPUERTO',
+                        '4' => 'MONTERREY AEROPUERTO',
+                        '5' => 'GUADALAJARA AEROPUERTO',
+                        '6' => 'CIUDAD DE MÉXICO AEROPUERTO BJ',
+                        '7' => 'MAZATLAN SINALOA',
+                        '8' => 'TUXTLA GTZ. CHIAPAS',
+                        '9' => 'VERACRUZ VERACRUZ',
+                        '10' => 'HERMOSILLO SONORA',
+                        '11' => 'QUERETARO QRO',
+                        '12' => 'MERIDA YUCATAN',
+                        '13' => 'SINALOA CULIACAN'
                     ])
                     ->filter(function ($query, $value) {
-                        $query->where('to_user_headquarters', $value);
+                        $query->where('headquarter_id', $value);
                     }),
 
                 SelectFilter::make('GENERO')
