@@ -39,15 +39,29 @@ class Schedule extends ModalComponent
         ];
     }
 
-    public function mount($scheduleId, $medicineId)
+    public function mount($scheduleId = null, $medicineId)
     {
-        $this->scheduleId = $scheduleId;
         $this->medicineId = $medicineId;
-        $this->valores($this->scheduleId);
-        $this->sedes = Headquarter::where('system_id', 1)->where('status', false)->get();
-        $this->scheduleMedicines = collect();
-        Date::setLocale('ES');
-        $this->date = Date::now()->parse();
+        if (isset($scheduleId)) {
+            $this->scheduleId = $scheduleId;
+            $this->scheduleMedicines = collect();
+            $this->sedes = Headquarter::where('system_id', 1)->where('status', false)->get();
+            $medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'medicineReserveHeadquarter'])
+                ->where('id', $this->scheduleId)->get();
+            $this->name = $medicineReserves[0]->medicineReserveMedicine->medicineUser->name . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant[0]->apParental . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant[0]->apMaternal;
+            $this->type = $medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->name;
+            if ($medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->id == 1) {
+                $this->class = $medicineReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name;
+                $this->typLicense = $medicineReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass->name;
+            } else if ($medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->id == 2) {
+                $this->class = $medicineReserves[0]->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name;
+                $this->typLicense = $medicineReserves[0]->medicineReserveMedicine->medicineRenovation[0]->renovationClasificationClass->name;
+            } else if($medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->id == 3){
+                $this->class = $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->revaluationInitialTypeClass->name;
+            }
+        } else {
+            $this->scheduleId = null;
+        }
     }
     public function render()
     {
@@ -114,45 +128,45 @@ class Schedule extends ModalComponent
     public function valores($cheduleId)
     {
 
-        $this->scheduleId = $cheduleId;
-        $medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'medicineReserveHeadquarter'])
-            ->where('id', $this->scheduleId)->get();
-        $this->name = $medicineReserves[0]->medicineReserveMedicine->medicineUser->name . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant[0]->apParental . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant[0]->apMaternal;
-        $this->type = $medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->name;
-        $this->id_appoint = $medicineReserves[0]->id;
+        // $this->scheduleId = $cheduleId;
+        // $medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'medicineReserveHeadquarter'])
+        //     ->where('id', $this->scheduleId)->get();
+        // $this->name = $medicineReserves[0]->medicineReserveMedicine->medicineUser->name . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant[0]->apParental . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant[0]->apMaternal;
+        // $this->type = $medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->name;
+        // $this->id_appoint = $medicineReserves[0]->id;
 
-        if ($medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->id == 1) {
-            $this->class = $medicineReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name;
-            $this->typLicense = $medicineReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass->name;
-        } else if ($medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->id == 2) {
-            $this->class = $medicineReserves[0]->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name;
-            $this->typLicense = $medicineReserves[0]->medicineReserveMedicine->medicineRenovation[0]->renovationClasificationClass->name;
-        }
-        $this->headquarter_id = $medicineReserves[0]->medicineReserveHeadquarter->id;
-        $this->dateReserve = $medicineReserves[0]->dateReserve;
+        // if ($medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->id == 1) {
+        //     $this->class = $medicineReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name;
+        //     $this->typLicense = $medicineReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass->name;
+        // } else if ($medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->id == 2) {
+        //     $this->class = $medicineReserves[0]->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name;
+        //     $this->typLicense = $medicineReserves[0]->medicineReserveMedicine->medicineRenovation[0]->renovationClasificationClass->name;
+        // }
+        // $this->headquarter_id = $medicineReserves[0]->medicineReserveHeadquarter->id ?? null;
+        // $this->dateReserve = $medicineReserves[0]->dateReserve;
 
-        $this->status = $medicineReserves[0]->status;
+        // $this->status = $medicineReserves[0]->status;
 
-        $this->hoursReserve = $medicineReserves[0]->reserveSchedule->time_start;
+        // $this->hoursReserve = $medicineReserves[0]->reserveSchedule->time_start ?? null;
 
-        if (empty($medicineReserves[0]->reserveObserv[0]->observation)) {
-            $this->comment;
-        } else {
+        // if (empty($medicineReserves[0]->reserveObserv[0]->observation)) {
+        //     $this->comment;
+        // } else {
 
-            if (!empty($medicineReserves[0]->reserveObserv[0]->observation)) {
-                $this->comment1 = $medicineReserves[0]->reserveObserv[0]->observation;
-            } else {
-                $this->comment1;
-            }
-            if (!empty($medicineReserves[0]->reserveObserv[1]->observation)) {
-                $this->comment2 = $medicineReserves[0]->reserveObserv[1]->observation;
-            } else {
-                $this->comment2;
-            }
-            $this->comment = $this->comment1 . ' / ' . $this->comment2;
-        }
+        //     if (!empty($medicineReserves[0]->reserveObserv[0]->observation)) {
+        //         $this->comment1 = $medicineReserves[0]->reserveObserv[0]->observation;
+        //     } else {
+        //         $this->comment1;
+        //     }
+        //     if (!empty($medicineReserves[0]->reserveObserv[1]->observation)) {
+        //         $this->comment2 = $medicineReserves[0]->reserveObserv[1]->observation;
+        //     } else {
+        //         $this->comment2;
+        //     }
+        //     $this->comment = $this->comment1 . ' / ' . $this->comment2;
+        // }
 
-        $this->sede = $medicineReserves[0]->medicineReserveHeadquarter->name_headquarter;
+        // $this->sede = $medicineReserves[0]->medicineReserveHeadquarter->name_headquarter ?? null;
     }
     public function updatedToUserHeadquarters($value)
     {

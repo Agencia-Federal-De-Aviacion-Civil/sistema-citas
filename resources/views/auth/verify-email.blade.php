@@ -43,6 +43,12 @@
                             </div>
                         </form>
                         <div class="mt-4">
+                            <label class="text-sm text-white">¿Sigues sin recibir el correo de verificación?. Verifica que lo has escrito correctamente,</label>
+                                <a href="{{ route('profile.show') }}"
+                                    class="underline text-sm text-white hover:text-gray-500">
+                                    aqui</a>
+                        </div>
+                        <div class="mt-4">
                             <form method="POST" action="{{ route('logout') }}" class="inline">
                                 @csrf
                                 <button type="submit"

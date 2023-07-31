@@ -9,7 +9,7 @@
             <x-badge flat info label="PENDIENTE" />
         @endhasrole
     @elseif($status == 1)
-        @hasrole('sub_headquarters|super_admin|medicine_admin|super_admin_medicine|admin_medicine_v2')
+        @hasrole('super_admin|medicine_admin|super_admin_medicine|admin_medicine_v2|headquarters')
             <x-button
                 wire:click="$emit('openModal', 'medicine.modals.schedule', {{ json_encode(['scheduleId' => $scheduleId, 'medicineId' => $medicineId]) }})"
                 label=" ASISTIÓ " xs green />
@@ -17,7 +17,7 @@
             <x-badge flat green label="ASISTIÓ" />
         @endhasrole
     @elseif($status == 2)
-        @hasrole('sub_headquarters|super_admin|medicine_admin|super_admin_medicine|admin_medicine_v2')
+        @hasrole('super_admin|medicine_admin|super_admin_medicine|admin_medicine_v2|sub_headquarters|headquarters')
             <x-button
                 wire:click="$emit('openModal', 'medicine.modals.schedule', {{ json_encode(['scheduleId' => $scheduleId, 'medicineId' => $medicineId]) }})"
                 label="CANCELADO" xs warning />
@@ -43,6 +43,10 @@
         <x-button
             wire:click="$emit('openModal', 'medicine.modals.schedule', {{ json_encode(['scheduleId' => $scheduleId, 'medicineId' => $medicineId]) }})"
             label="LLAVE LIBERADA" icon="key" xs cyan />
+    @elseif($status == 6)
+        <x-button
+            wire:click="$emit('openModal', 'medicine.modals.schedule', {{ json_encode(['scheduleId' => $scheduleId, 'medicineId' => $medicineId]) }})"
+            label="COMPLETAR DATOS" icon="status-offline" xs red />
     @endif
     @if ($status == 0)
         @hasrole('sub_headquarters|super_admin|medicine_admin|super_admin_medicine|user|admin_medicine_v2')
