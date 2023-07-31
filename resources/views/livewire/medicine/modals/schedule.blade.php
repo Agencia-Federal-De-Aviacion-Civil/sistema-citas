@@ -15,7 +15,6 @@
                     CITA REAGENDADA
                     @endif
                 </h3>
-                <x-errors></x-errors>
                 <div x-data="{ selectedOption: '' }">
                     <div class="grid xl:grid-cols-1 xl:gap-6">
                         <div class="mt-1 relative w-full group">

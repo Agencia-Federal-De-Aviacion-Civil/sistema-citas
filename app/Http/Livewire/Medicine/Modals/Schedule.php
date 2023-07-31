@@ -60,6 +60,9 @@ class Schedule extends ModalComponent
                     $this->class = $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->revaluationRenovationTypeClass->name;
                     $this->typLicense = $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->revaluationRenovationClasificationClass->name;
                 }
+            } else if ($medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->id == 4) {
+                $this->class = $medicineReserves[0]->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name;
+                $this->typLicense = $medicineReserves[0]->medicineReserveMedicine->medicineRenovation[0]->renovationClasificationClass->name;
             }
             $this->id_medicine_observation = $medicineReserves[0]->reserveObserv[0]->id ?? null;
             $this->observation = $medicineReserves[0]->reserveObserv[0]->observation ?? null;
@@ -257,3 +260,6 @@ class Schedule extends ModalComponent
         ];
     }
 }
+
+
+
