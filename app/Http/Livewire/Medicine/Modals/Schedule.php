@@ -4,50 +4,76 @@ namespace App\Http\Livewire\Medicine\Modals;
 
 use App\Models\Catalogue\Headquarter;
 use App\Models\Medicine\Medicine;
+use App\Models\Medicine\MedicineDisabledDays;
 use App\Models\Medicine\MedicineObservation;
 use App\Models\Medicine\MedicineReserve;
 use App\Models\Medicine\MedicineSchedule;
 use App\Models\Medicine\medicine_history_movements;
-use App\Models\Medicine\MedicineDisabledDays;
-use App\Models\Medicine\MedicineScheduleException;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Observation;
-use Illuminate\Support\Facades\Date;
-use Livewire\Component;
-use Livewire\WithFileUploads;
-use LivewireUI\Modal\Modal;
+use Illuminate\Support\Facades\Auth;
 use LivewireUI\Modal\ModalComponent;
+use Livewire\WithFileUploads;
 use WireUi\Traits\Actions;
 
 class Schedule extends ModalComponent
 {
     use Actions;
     use WithFileUploads;
-    public $comment1, $comment2, $scheduleId, $status, $medicineReserves, $name, $type, $class, $typLicense, $sede, $dateReserve, $date, $time, $scheduleMedicines, $sedes,
-        $headquarter_id, $medicine_schedule_id, $selectedOption, $comment, $comment_cancelate, $hoursReserve, $observation, $medicineId, $accion,
+    public $id_appoint, $id_medicine_observation, $scheduleId, $status, $medicineReserves, $name, $type, $class, $typLicense, $sede, $dateReserve, $date, $time, $scheduleMedicines, $sedes,
+    $headquarter_id, $medicine_schedule_id, $selectedOption, $observation_reschedule, $observation_cancelate, $hoursReserve, $observation, $medicineId, $accion,
         $disabledDaysFilter;
 
     public function rules()
     {
-        return [
-            'comment' => 'required_if:selectedOption,4',
-            'comment_cancelate' => 'required_if:selectedOption,2',
-            'selectedOption' => 'required',
-            'headquarter_id' => 'required_if:selectedOption,4',
-            'medicine_schedule_id' => 'required_if:selectedOption,4',
-            'dateReserve' => 'required_if:selectedOption,4'
+        $rules = [
+            'observation' => 'required_if:selectedOption,2,4',
+            'headquarter_id' => 'required_if:selectedOption,4|required_if:status,6',
+            'medicine_schedule_id' => 'required_if:selectedOption,4|required_if:status,6',
+            'dateReserve' => 'required_if:selectedOption,4|required_if:status,6',
         ];
+        $rules['selectedOption'] = 'required_unless:status,6';
+        return $rules;
     }
 
-    public function mount($scheduleId, $medicineId)
+    public function mount($scheduleId = null, $medicineId)
     {
-        $this->scheduleId = $scheduleId;
         $this->medicineId = $medicineId;
-        $this->valores($this->scheduleId);
-        $this->sedes = Headquarter::where('system_id', 1)->where('status', false)->get();
-        $this->scheduleMedicines = collect();
-        Date::setLocale('ES');
-        $this->date = Date::now()->parse();
+        if (isset($scheduleId)) {
+            $this->scheduleId = $scheduleId;
+            $this->scheduleMedicines = collect();
+            $this->sedes = Headquarter::where('system_id', 1)->where('status', false)->get();
+            $medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'medicineReserveHeadquarter'])
+                ->where('id', $this->scheduleId)->get();
+            $this->name = $medicineReserves[0]->medicineReserveMedicine->medicineUser->name . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant[0]->apParental . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant[0]->apMaternal;
+            $this->type = $medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->name;
+            $this->id_appoint = $medicineReserves[0]->id;
+            if ($medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->id == 1) {
+                $this->class = $medicineReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name;
+                $this->typLicense = $medicineReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass->name;
+            } else if ($medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->id == 2) {
+                $this->class = $medicineReserves[0]->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name;
+                $this->typLicense = $medicineReserves[0]->medicineReserveMedicine->medicineRenovation[0]->renovationClasificationClass->name;
+            } else if ($medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->id == 3) {
+                if ($medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->type_exam_id == 1) {
+                    $this->class = $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->revaluationInitialTypeClass->name;
+                    $this->typLicense = $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->revaluationInitialClasificationClass->name;
+                } else if ($medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->type_exam_id == 2) {
+                    $this->class = $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->revaluationRenovationTypeClass->name;
+                    $this->typLicense = $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->revaluationRenovationClasificationClass->name;
+                }
+            } else if ($medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->id == 4) {
+                $this->class = $medicineReserves[0]->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name;
+                $this->typLicense = $medicineReserves[0]->medicineReserveMedicine->medicineRenovation[0]->renovationClasificationClass->name;
+            }
+            $this->id_medicine_observation = $medicineReserves[0]->reserveObserv[0]->id ?? null;
+            $this->observation = $medicineReserves[0]->reserveObserv[0]->observation ?? null;
+            $this->status = $medicineReserves[0]->status;
+            $this->sede = $medicineReserves[0]->medicineReserveHeadquarter->name_headquarter ?? null;
+            $this->hoursReserve = $medicineReserves[0]->reserveSchedule->time_start ?? null;
+            $this->dateReserve = $medicineReserves[0]->dateReserve;
+        } else {
+            $this->scheduleId = null;
+        }
     }
     public function render()
     {
@@ -108,51 +134,8 @@ class Schedule extends ModalComponent
 
         $this->disabledDaysFilter = $disabledDaysArray;
         $this->dispatchBrowserEvent('headquartersUpdated', [
-            'disabledDaysFilter' => $disabledDaysArray
+            'disabledDaysFilter' => $disabledDaysArray,
         ]);
-    }
-    public function valores($cheduleId)
-    {
-
-        $this->scheduleId = $cheduleId;
-        $medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'medicineReserveHeadquarter'])
-            ->where('id', $this->scheduleId)->get();
-        $this->name = $medicineReserves[0]->medicineReserveMedicine->medicineUser->name . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant[0]->apParental . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant[0]->apMaternal;
-        $this->type = $medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->name;
-        $this->id_appoint = $medicineReserves[0]->id;
-
-        if ($medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->id == 1) {
-            $this->class = $medicineReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name;
-            $this->typLicense = $medicineReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass->name;
-        } else if ($medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->id == 2) {
-            $this->class = $medicineReserves[0]->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name;
-            $this->typLicense = $medicineReserves[0]->medicineReserveMedicine->medicineRenovation[0]->renovationClasificationClass->name;
-        }
-        $this->headquarter_id = $medicineReserves[0]->medicineReserveHeadquarter->id;
-        $this->dateReserve = $medicineReserves[0]->dateReserve;
-
-        $this->status = $medicineReserves[0]->status;
-
-        $this->hoursReserve = $medicineReserves[0]->reserveSchedule->time_start;
-
-        if (empty($medicineReserves[0]->reserveObserv[0]->observation)) {
-            $this->comment;
-        } else {
-
-            if (!empty($medicineReserves[0]->reserveObserv[0]->observation)) {
-                $this->comment1 = $medicineReserves[0]->reserveObserv[0]->observation;
-            } else {
-                $this->comment1;
-            }
-            if (!empty($medicineReserves[0]->reserveObserv[1]->observation)) {
-                $this->comment2 = $medicineReserves[0]->reserveObserv[1]->observation;
-            } else {
-                $this->comment2;
-            }
-            $this->comment = $this->comment1 . ' / ' . $this->comment2;
-        }
-
-        $this->sede = $medicineReserves[0]->medicineReserveHeadquarter->name_headquarter;
     }
     public function updatedToUserHeadquarters($value)
     {
@@ -180,11 +163,13 @@ class Schedule extends ModalComponent
             $accion = 'VALIDO CITA';
             //CANCELO EL ADMIN
         } elseif ($this->selectedOption == 2) {
-            $observation = new MedicineObservation();
-            $observation->medicine_reserve_id = $this->scheduleId;
-            $observation->observation = $this->comment_cancelate;
-            $observation->status = 2;
-            $observation->save();
+            $medicineObservation = MedicineObservation::updateOrCreate(
+                ['id' => $this->id_medicine_observation],
+                [
+                    'medicine_reserve_id' => $this->scheduleId,
+                    'observation' => $this->observation,
+                    'status' => 2,
+                ]);
             $cancelReserve = MedicineReserve::find($this->scheduleId);
             $cancelReserve->update([
                 'status' => $this->selectedOption,
@@ -194,11 +179,13 @@ class Schedule extends ModalComponent
             //REAGENDO
         } elseif ($this->selectedOption == 4) {
             $accion = 'REAGENDO CITA';
-            $observation = new MedicineObservation();
-            $observation->medicine_reserve_id = $this->scheduleId;
-            $observation->observation = $this->comment;
-            $observation->status = 4;
-            $observation->save();
+            $medicineObservation = MedicineObservation::updateOrCreate(
+                ['id' => $this->id_medicine_observation],
+                [
+                    'medicine_reserve_id' => $this->scheduleId,
+                    'observation' => $this->observation,
+                    'status' => 4,
+                ]);
             $citas = MedicineReserve::where('headquarter_id', $this->headquarter_id)
                 ->where('dateReserve', $this->dateReserve)
                 ->where(function ($query) {
@@ -213,24 +200,51 @@ class Schedule extends ModalComponent
                 })->value('max_schedules');
             if ($citas >= $maxCitas) {
                 $this->notification([
-                    'title'       => 'CITA NO GENERADA!',
+                    'title' => 'CITA NO GENERADA!',
                     'description' => 'No hay citas disponibles para ese dia',
-                    'icon'        => 'error'
+                    'icon' => 'error',
                 ]);
             } else {
                 $cita = MedicineReserve::find($this->scheduleId);
                 $cita->headquarter_id = $this->headquarter_id;
                 $cita->dateReserve = $this->dateReserve;
-                $cita->status = $this->selectedOption;
+                $cita->medicine_schedule_id = $this->medicine_schedule_id;
+                $cita->status = $this->selectedOption ?: 0;
                 $cita->save();
                 $this->emit('reserveAppointment');
             }
+        } else {
+            $citas = MedicineReserve::where('headquarter_id', $this->headquarter_id)
+                ->where('dateReserve', $this->dateReserve)
+                ->where(function ($query) {
+                    $query->where('status', 0);
+                })
+                ->count();
+            $maxCitas = MedicineSchedule::with('scheduleHeadquarter')
+                ->whereHas('scheduleHeadquarter', function ($max) {
+                    $max->where('id', $this->headquarter_id);
+                })->value('max_schedules');
+            if ($citas >= $maxCitas) {
+                $this->notification([
+                    'title' => 'CITA NO GENERADA!',
+                    'description' => 'No hay citas disponibles para ese dia',
+                    'icon' => 'error',
+                ]);
+            } else {
+                $cita = MedicineReserve::find($this->scheduleId);
+                $cita->headquarter_id = $this->headquarter_id;
+                $cita->dateReserve = $this->dateReserve;
+                $cita->medicine_schedule_id = $this->medicine_schedule_id;
+                $cita->status = $this->selectedOption ?: 0;
+                $cita->save();
+                $this->emit('reserveAppointment');
+                $accion = 'COMPLETÓ DATOS';
+            }
         }
-        //Historial de validar cita
         medicine_history_movements::create([
             'user_id' => Auth::user()->id,
-            'action' => $accion,
-            'process' => $this->name . ' FOLIO CITA:' . $this->id_appoint
+            'action' => $accion ?: 'COMPLETÓ DATOS',
+            'process' => $this->name . ' FOLIO CITA:' . $this->id_appoint,
         ]);
         $this->closeModal();
     }
@@ -245,10 +259,10 @@ class Schedule extends ModalComponent
             'status' => '5',
         ]);
         $this->notification([
-            'title'       => 'LLAVE DE PAGO LIBERADA!',
+            'title' => 'LLAVE DE PAGO LIBERADA!',
             'description' => 'La llave de pago se liberó.',
-            'icon'        => 'info',
-            'timeout' => '3100'
+            'icon' => 'info',
+            'timeout' => '3100',
         ]);
         $this->closeModal();
         $this->emit('reserveAppointment');
@@ -257,7 +271,7 @@ class Schedule extends ModalComponent
         medicine_history_movements::create([
             'user_id' => Auth::user()->id,
             'action' => "LIBERA LLAVE DE PAGO",
-            'process' => $this->name . ' FOLIO CITA:' . $this->id_appoint
+            'process' => $this->name . ' FOLIO CITA:' . $this->id_appoint,
         ]);
         $this->closeModal();
     }
@@ -269,7 +283,7 @@ class Schedule extends ModalComponent
             'comment.required_if' => 'Campo obligatorio',
             'selectedOption.required' => 'Seleccione opción',
             'headquarter_id.required' => 'Seleccione opción',
-            'medicine_schedule_id.required' => 'Seleccione opción'
+            'medicine_schedule_id.required' => 'Seleccione opción',
         ];
     }
 }
