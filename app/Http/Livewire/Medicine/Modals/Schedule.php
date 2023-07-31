@@ -25,13 +25,14 @@ class Schedule extends ModalComponent
 
     public function rules()
     {
-        return [
+        $rules = [
             'observation' => 'required_if:selectedOption,2,4',
-            'selectedOption' => 'required',
-            'headquarter_id' => 'required_if:selectedOption,4',
-            'medicine_schedule_id' => 'required_if:selectedOption,4',
-            'dateReserve' => 'required_if:selectedOption,4',
+            'headquarter_id' => 'required_if:selectedOption,4|required_if:status,6',
+            'medicine_schedule_id' => 'required_if:selectedOption,4|required_if:status,6',
+            'dateReserve' => 'required_if:selectedOption,4|required_if:status,6',
         ];
+        $rules['selectedOption'] = 'required_unless:status,6';
+        return $rules;
     }
 
     public function mount($scheduleId = null, $medicineId)
@@ -185,7 +186,6 @@ class Schedule extends ModalComponent
                     'observation' => $this->observation,
                     'status' => 4,
                 ]);
-
             $citas = MedicineReserve::where('headquarter_id', $this->headquarter_id)
                 ->where('dateReserve', $this->dateReserve)
                 ->where(function ($query) {
@@ -208,15 +208,42 @@ class Schedule extends ModalComponent
                 $cita = MedicineReserve::find($this->scheduleId);
                 $cita->headquarter_id = $this->headquarter_id;
                 $cita->dateReserve = $this->dateReserve;
-                $cita->status = $this->selectedOption;
+                $cita->medicine_schedule_id = $this->medicine_schedule_id;
+                $cita->status = $this->selectedOption ?: 0;
                 $cita->save();
                 $this->emit('reserveAppointment');
             }
+        } else {
+            $citas = MedicineReserve::where('headquarter_id', $this->headquarter_id)
+                ->where('dateReserve', $this->dateReserve)
+                ->where(function ($query) {
+                    $query->where('status', 0);
+                })
+                ->count();
+            $maxCitas = MedicineSchedule::with('scheduleHeadquarter')
+                ->whereHas('scheduleHeadquarter', function ($max) {
+                    $max->where('id', $this->headquarter_id);
+                })->value('max_schedules');
+            if ($citas >= $maxCitas) {
+                $this->notification([
+                    'title' => 'CITA NO GENERADA!',
+                    'description' => 'No hay citas disponibles para ese dia',
+                    'icon' => 'error',
+                ]);
+            } else {
+                $cita = MedicineReserve::find($this->scheduleId);
+                $cita->headquarter_id = $this->headquarter_id;
+                $cita->dateReserve = $this->dateReserve;
+                $cita->medicine_schedule_id = $this->medicine_schedule_id;
+                $cita->status = $this->selectedOption ?: 0;
+                $cita->save();
+                $this->emit('reserveAppointment');
+                $accion = 'COMPLETÓ DATOS';
+            }
         }
-        //Historial de validar cita
         medicine_history_movements::create([
             'user_id' => Auth::user()->id,
-            'action' => $accion,
+            'action' => $accion ?: 'COMPLETÓ DATOS',
             'process' => $this->name . ' FOLIO CITA:' . $this->id_appoint,
         ]);
         $this->closeModal();
@@ -260,6 +287,3 @@ class Schedule extends ModalComponent
         ];
     }
 }
-
-
-
