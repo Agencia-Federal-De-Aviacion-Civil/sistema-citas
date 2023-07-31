@@ -46,7 +46,7 @@ class HomeMedicine extends Component
         Date::setLocale('es');
         $this->dateNow = Date::now()->format('l j F Y');
         $this->typeExams = TypeExam::all();
-        $this->sedes = Headquarter::where('system_id', 1)->where('status', false)->get();
+        $this->sedes = collect();
         $this->userQuestions = MedicineQuestion::all();
         $this->questionClassess = collect();
         $this->clasificationClass = collect();
@@ -110,17 +110,23 @@ class HomeMedicine extends Component
     {
         $this->questionClassess = TypeClass::where('medicine_question_id', $medicine_question_id)->get();
     }
+
     public function updatedTypeExamId($type_exam_id)
     {
         $this->typeRenovationExams = TypeClass::where('type_exam_id', $type_exam_id)->get();
+        $this->sedes = Headquarter::where('system_id', 1)->where('status', false)->get();
         if ($type_exam_id === '3'||$type_exam_id === '5') {
             $type_exam_id = '2';
             $this->typeRenovationExams = TypeClass::where('type_exam_id', $type_exam_id)->get();
+            $this->sedes = Headquarter::where('system_id', 1)->where('status', false)->get();
         } else if ($type_exam_id === '4') {
             $type_exam_id = '2';
             $this->typeRenovationExams = TypeClass::where('type_exam_id', $type_exam_id)->get();
+            //SOLO SEDE CIUDAD DE MÉXICO
+            $this->sedes = Headquarter::where('system_id', 1)->where('status', false)->where('id', 6)->get();
         } else {
             $this->typeRenovationExams = TypeClass::where('type_exam_id', $type_exam_id)->get();
+            $this->sedes = Headquarter::where('system_id', 1)->where('status', false)->get();
         }
     }
     public function updatedTypeClassId($type_class_id)

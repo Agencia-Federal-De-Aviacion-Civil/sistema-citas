@@ -91,12 +91,12 @@
             <tr>
                 <td>NOMBRE:</td>
                 <td>
-                    {{ $medicineReserves[0]->medicineReserveMedicine->medicineUser->name . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apParental')->first() . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apMaternal')->first() }}
+                    {{ ($medicineReserves[0]->medicineReserveMedicine->medicineUser->name ?? 'SIN INFORMACIÓN') . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apParental')->first() . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apMaternal')->first() }}
                 </td>
             </tr>
             <tr>
                 <td>CURP:</td>
-                <td>{{ $medicineReserves[0]->medicineReserveMedicine->medicineUser->userParticipant->pluck('curp')->first() }}
+                <td>{{ ($medicineReserves[0]->medicineReserveMedicine->medicineUser->userParticipant->pluck('curp')->first() ?? 'SIN INFORMACIÓN') }}
                 </td>
             </tr>
             <tr>
@@ -105,7 +105,7 @@
             </tr>
             <tr>
                 <td>TIPO DE EXAMEN:</td>
-                <td> <b> <u>{{ $medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->name }}</u> </b>
+                <td> <b> <u> {{ ($medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->name ?? 'SIN INFORMACIÓN') }}</u> </b>
                     </td>
             </tr>
             <tr>
@@ -149,12 +149,12 @@
             </tr> --}}
             <tr>
                 <td>UNIDAD MÉDICA:</td>
-                <td> <b>{{ $medicineReserves[0]->user->name }}</b></p>
+                <td> <b>{{ $medicineReserves[0]->medicineReserveHeadquarter->name_headquarter }}</b></p>
                 </td>
             </tr>
             <tr>
                 <td>DIRECCIÓN SEDE:</td>
-                <td> {{ $medicineReserves[0]->user->userHeadquarter[0]->direction }}</p>
+                <td> {{ $medicineReserves[0]->medicineReserveHeadquarter->direction }}</p>
                 </td>
             </tr>
             <tr>
