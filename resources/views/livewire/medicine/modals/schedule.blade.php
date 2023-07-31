@@ -63,7 +63,7 @@
                     </div>
                     <div class="mt-4 grid xl:grid-cols-2 xl:gap-6">
                         @if ($status == 6)
-                        <x-input wire:model.lazy="dateReserve" id="fecha-appointment" label="SELECCIONE FECHA"
+                        <x-input wire:model.lazy="dateReserve" id="fecha-appointment-restored" label="SELECCIONE FECHA"
                             placeholder="INGRESE..." />
                         @else
                         <div class="mt-1 relative w-full group">
@@ -196,6 +196,34 @@
                             " flatpickr-disabled nextMonthDayflatpickr-disabled";
                     }
                 },
+                locale: {
+                    weekdays: {
+                        shorthand: ['Dom', 'Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab'],
+                        longhand: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes',
+                            'Sábado'
+                        ],
+                    },
+                    months: {
+                        shorthand: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct',
+                            'Nov', 'Dic'
+                        ],
+                        longhand: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto',
+                            'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+                        ],
+                    },
+                },
+            });
+            flatpickr("#fecha-appointment-restored", {
+                dateFormat: "Y-m-d",
+                disableMobile: "true",
+                // minDate: "today",
+                maxDate: new Date(new Date().getFullYear(), 11, 31),
+                disable: [
+                function(date) {
+                    // Devuelve 'true' si la fecha es un sábado o domingo
+                    return date.getDay() === 6 || date.getDay() === 0;
+                },
+            ],
                 locale: {
                     weekdays: {
                         shorthand: ['Dom', 'Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab'],
