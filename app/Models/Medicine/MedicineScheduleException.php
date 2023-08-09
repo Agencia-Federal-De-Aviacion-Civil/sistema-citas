@@ -14,4 +14,8 @@ class MedicineScheduleException extends Model
     {
         return $this->belongsTo(MedicineSchedule::class, 'medicine_schedule_id');
     }
+    public function medicineScheduleMaxException()
+    {
+        return $this->belongsTo(MedicineScheduleExceptionMaxException::class, 'schedule_exception_max_id');
+    }
 }
