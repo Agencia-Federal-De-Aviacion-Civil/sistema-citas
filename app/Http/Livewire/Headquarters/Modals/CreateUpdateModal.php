@@ -20,7 +20,7 @@ class CreateUpdateModal extends ModalComponent
     use Actions;
     public $id_user, $id_edit, $id_schedule, $id_exception, $userId, $id_headquarter, $time_start, $type_exam_id,
         $max_schedules_exception, $max_schedules, $name_headquarter, $direction, $system_id, $url, $status;
-    public $sedes, $typeExams, $questionException = '0';
+    public $sedes, $typeExams, $questionException = '0', $schedulesExceptions, $max_schedules_exceptionGroup;
     public function rules()
     {
         $rules = [
@@ -31,7 +31,7 @@ class CreateUpdateModal extends ModalComponent
             'questionException' => 'required',
             'time_start' => 'required',
             'max_schedules' => 'required',
-            'type_exam_id' => 'required_unless:questionException,0',
+            'type_exam_id' => 'required_unless:questionException,0|unique:medicine_schedule_exceptions',
             'max_schedules_exception' => 'required_unless:questionException,0'
         ];
         if (Auth::user()->hasRole('super_admin')) {
@@ -45,6 +45,7 @@ class CreateUpdateModal extends ModalComponent
         if (isset($userId)) {
             $this->userId = $userId;
             $this->sedes = Headquarter::with(['headquarterUserParticipant', 'headquarterSchedule'])->where('id', $userId)->get();
+            $this->schedulesExceptions = $this->sedes[0]->headquarterSchedule->schedulesMedicineException;
             $this->name_headquarter = $this->sedes[0]->name_headquarter;
             $this->direction = $this->sedes[0]->direction;
             $this->url = $this->sedes[0]->url;
@@ -52,11 +53,11 @@ class CreateUpdateModal extends ModalComponent
             $this->status = $this->sedes[0]->status;
             $this->time_start = $this->sedes[0]->headquarterSchedule->time_start;
             $this->max_schedules = $this->sedes[0]->headquarterSchedule->max_schedules;
-            $this->max_schedules_exception = isset($this->sedes[0]->headquarterSchedule->schedulesMedicineException[0]->max_schedules_exception) ? $this->sedes[0]->headquarterSchedule->schedulesMedicineException[0]->max_schedules_exception : '';
-            $this->type_exam_id = isset($this->sedes[0]->headquarterSchedule->schedulesMedicineException[0]->type_exam_id) ? $this->sedes[0]->headquarterSchedule->schedulesMedicineException[0]->type_exam_id : '';
+            // $this->max_schedules_exception = isset($this->sedes[0]->headquarterSchedule->schedulesMedicineException[0]->max_schedules_exception) ? $this->sedes[0]->headquarterSchedule->schedulesMedicineException[0]->max_schedules_exception : '';
+            // $this->type_exam_id = isset($this->sedes[0]->headquarterSchedule->schedulesMedicineException[0]->type_exam_id) ? $this->sedes[0]->headquarterSchedule->schedulesMedicineException[0]->type_exam_id : '';
             $this->id_headquarter = $this->sedes[0]->id;
             $this->id_schedule = $this->sedes[0]->headquarterSchedule->id;
-            $this->id_exception = isset($this->sedes[0]->headquarterSchedule->schedulesMedicineException[0]->id) ? $this->sedes[0]->headquarterSchedule->schedulesMedicineException[0]->id : '';
+            // $this->id_exception = isset($this->sedes[0]->headquarterSchedule->schedulesMedicineException[0]->id) ? $this->sedes[0]->headquarterSchedule->schedulesMedicineException[0]->id : '';
         } else {
             $this->userId = null; // o cualquier otro valor predeterminado que desees
         }
@@ -102,10 +103,10 @@ class CreateUpdateModal extends ModalComponent
                 ]);
                 if (is_array($typeExamsEachs)) {
                     foreach ($typeExamsEachs as $typeExamsEach) {
-                        MedicineScheduleException::updateOrCreate(
-                            [
-                                'id' => $this->id_exception
-                            ],
+                        MedicineScheduleException::create(
+                            // [
+                            //     'id' => $this->id_exception
+                            // ],
                             [
                                 'medicine_schedule_id' => $medicineControl->id,
                                 'type_exam_id' => $typeExamsEach,
@@ -114,10 +115,10 @@ class CreateUpdateModal extends ModalComponent
                         );
                     }
                 } else {
-                    MedicineScheduleException::updateOrCreate(
-                        [
-                            'id' => $this->id_exception
-                        ],
+                    MedicineScheduleException::create(
+                        // [
+                        //     'id' => $this->id_exception
+                        // ],
                         [
                             'medicine_schedule_id' => $medicineControl->id,
                             'type_exam_id' => $this->type_exam_id,

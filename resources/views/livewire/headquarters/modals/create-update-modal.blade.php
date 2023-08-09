@@ -71,31 +71,56 @@
                     <div x-show="exception == '1'">
                         <div class="grid xl:grid-cols-2 xl:gap-6">
                             <div class="mt-4 relative w-full group">
-                                <label for="systems" class="block text-sm font-medium text-gray-900 dark:text-white">TIPO
-                                    DE EXAMEN</label>
-                                <select wire:model.lazy="type_exam_id"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                    <option value="">Selecciona...</option>
+                                <x-select label="TIPO DE EXAMEN" placeholder="Selecciona uno o más..."
+                                    wire:model.defer="type_exam_id" multiselect>
                                     @foreach ($typeExams as $typeExam)
-                                        <option value="{{ $typeExam->id }}"
-                                            {{ $type_exam_id == $typeExam->id ? 'selected' : '' }}>{{ $typeExam->name }}
-                                        </option>
+                                        <x-select.option label="{{ $typeExam->name }}" value="{{ $typeExam->id }}" />
                                     @endforeach
-                                </select>
-                                @error('type_exam_id')
-                                    <span
-                                        class="text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5">{{ $message }}</span>
-                                @enderror
+                                </x-select>
                             </div>
                             <div class="mt-4 relative w-full group">
                                 <x-inputs.number label="CITAS POR DÍA PARA ESTE EXAMEN"
                                     wire:model.defer="max_schedules_exception" />
                             </div>
                         </div>
+                        <div class="mt-6 mb-6">
+                            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                <thead
+                                    class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                    <tr>
+                                        <th scope="col" class="py-3 px-6">
+                                            <div class="flex items-center">
+                                                TIPO DE EXAMÉN
+                                            </div>
+                                        </th>
+                                        <th scope="col" class="py-3 px-6">
+                                            <div class="flex items-center w-36">
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                @foreach ($schedulesExceptions as $schedulesException)
+                                    <tbody>
+                                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                            <td class="py-4 px-6">
+                                                {{ $schedulesException->medicineSchedulesTypeExam->name }}
+                                            </td>
+                                            <td class="py-4 px-6">
+                                                {{ $schedulesException->medicineScheduleMaxException->pluck('max_schedules_exception')->first() }}
+                                            </td>
+                                            <td class="py-4 px-6 text-right">
+                                                <button wire:click=""
+                                                    class="px-3 py-2 text-xs font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-blue-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                                                    Eliminar
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                @endforeach
+                            </table>
+                        </div>
                     </div>
                 </div>
-                {{-- @else
-                @endif --}}
             @else
             @endhasrole
             <div class="grid xl:grid-cols-1 xl:gap-6">
