@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Medicine\medicine_history_movements;
 use App\Models\Medicine\MedicineSchedule;
 use App\Models\Medicine\MedicineScheduleException;
+use App\Models\Medicine\MedicineScheduleExceptionMaxException;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use LivewireUI\Modal\ModalComponent;
@@ -95,16 +96,35 @@ class CreateUpdateModal extends ModalComponent
                 ]
             );
             if ($this->questionException == 1) {
-                MedicineScheduleException::updateOrCreate(
-                    [
-                        'id' => $this->id_exception
-                    ],
-                    [
-                        'medicine_schedule_id' => $medicineControl->id,
-                        'type_exam_id' => $this->type_exam_id,
-                        'max_schedules_exception' => $this->max_schedules_exception
-                    ]
-                );
+                $typeExamsEachs = $this->type_exam_id;
+                $medicineScheduleExceptionMax = MedicineScheduleExceptionMaxException::create([
+                    'max_schedules_exception' => $this->max_schedules_exception
+                ]);
+                if (is_array($typeExamsEachs)) {
+                    foreach ($typeExamsEachs as $typeExamsEach) {
+                        MedicineScheduleException::updateOrCreate(
+                            [
+                                'id' => $this->id_exception
+                            ],
+                            [
+                                'medicine_schedule_id' => $medicineControl->id,
+                                'type_exam_id' => $typeExamsEach,
+                                'schedule_exception_max_id' => $medicineScheduleExceptionMax->id
+                            ]
+                        );
+                    }
+                } else {
+                    MedicineScheduleException::updateOrCreate(
+                        [
+                            'id' => $this->id_exception
+                        ],
+                        [
+                            'medicine_schedule_id' => $medicineControl->id,
+                            'type_exam_id' => $this->type_exam_id,
+                            'schedule_exception_max_id' => $medicineScheduleExceptionMax->id
+                        ]
+                    );
+                }
             }
             $saveHeadquarter = Headquarter::updateOrCreate(
                 ['id' => $this->id_headquarter],
