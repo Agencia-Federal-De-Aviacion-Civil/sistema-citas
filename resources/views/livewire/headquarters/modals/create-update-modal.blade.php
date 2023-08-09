@@ -84,40 +84,23 @@
                             </div>
                         </div>
                         <div class="mt-6 mb-6">
-                            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                                <thead
-                                    class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                    <tr>
-                                        <th scope="col" class="py-3 px-6">
-                                            <div class="flex items-center">
-                                                TIPO DE EXAMÉN
-                                            </div>
-                                        </th>
-                                        <th scope="col" class="py-3 px-6">
-                                            <div class="flex items-center w-36">
-                                            </div>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                @foreach ($schedulesExceptions as $schedulesException)
-                                    <tbody>
-                                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                            <td class="py-4 px-6">
-                                                {{ $schedulesException->medicineSchedulesTypeExam->name }}
-                                            </td>
-                                            <td class="py-4 px-6">
-                                                {{ $schedulesException->medicineScheduleMaxException->pluck('max_schedules_exception')->first() }}
-                                            </td>
-                                            <td class="py-4 px-6 text-right">
-                                                <button wire:click=""
-                                                    class="px-3 py-2 text-xs font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-blue-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
-                                                    Eliminar
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
+                            @if ($medicineSchedulesExceptions)
+                                @foreach ($medicineSchedulesExceptions as $medicineSchedulesException)
+                                    <ul class="space-y-4 text-gray-500 list-disc list-inside dark:text-gray-400">
+                                        <li>
+                                            CITAS POR DIA {{ $medicineSchedulesException->max_schedules_exception }}
+                                            <ol class="pl-5 mt-2 space-y-1 list-decimal list-inside">
+                                                @foreach ($medicineSchedulesException->maxExceptionMedicineSchedule as $typeExamEach)
+                                                    <li>
+                                                        {{ $typeExamEach->medicineSchedulesTypeExam->name }}
+                                                    </li>
+                                                @endforeach
+                                            </ol>
+                                        </li>
+                                    </ul>
                                 @endforeach
-                            </table>
+                            @else
+                            @endif
                         </div>
                     </div>
                 </div>

@@ -20,7 +20,7 @@ class CreateUpdateModal extends ModalComponent
     use Actions;
     public $id_user, $id_edit, $id_schedule, $id_exception, $userId, $id_headquarter, $time_start, $type_exam_id,
         $max_schedules_exception, $max_schedules, $name_headquarter, $direction, $system_id, $url, $status;
-    public $sedes, $typeExams, $questionException = '0', $schedulesExceptions, $max_schedules_exceptionGroup;
+    public $sedes, $typeExams, $questionException = '0', $schedulesExceptions, $medicineSchedulesExceptions;
     public function rules()
     {
         $rules = [
@@ -45,6 +45,13 @@ class CreateUpdateModal extends ModalComponent
         if (isset($userId)) {
             $this->userId = $userId;
             $this->sedes = Headquarter::with(['headquarterUserParticipant', 'headquarterSchedule'])->where('id', $userId)->get();
+            $this->medicineSchedulesExceptions = MedicineScheduleExceptionMaxException::with(
+                'maxExceptionMedicineSchedule.medicineSchedules.scheduleHeadquarter'
+            )
+                ->whereHas('maxExceptionMedicineSchedule.medicineSchedules.scheduleHeadquarter', function ($q1) use ($userId) {
+                    $q1->where('id', $userId);
+                })
+                ->get();
             $this->schedulesExceptions = $this->sedes[0]->headquarterSchedule->schedulesMedicineException;
             $this->name_headquarter = $this->sedes[0]->name_headquarter;
             $this->direction = $this->sedes[0]->direction;
