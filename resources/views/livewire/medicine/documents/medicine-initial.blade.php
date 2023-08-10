@@ -98,7 +98,7 @@
             </tr>
             <tr>
                 <td>CURP:</td>
-                <td>{{ ($medicineReserves[0]->medicineReserveMedicine->medicineUser->userParticipant->pluck('curp')->first() ?? 'SIN INFORMACIÓN') }}
+                <td>{{ $medicineReserves[0]->medicineReserveMedicine->medicineUser->userParticipant->pluck('curp')->first() ?? 'SIN INFORMACIÓN' }}
                 </td>
             </tr>
             <tr>
@@ -108,13 +108,13 @@
             <tr>
                 <td>TIPO DE EXAMEN:</td>
                 <td>
-                    {{ ($medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->name ?? 'SIN INFORMACIÓN') }}
+                    {{ $medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->name ?? 'SIN INFORMACIÓN' }}
                 </td>
             </tr>
             <tr>
                 <td>TIPO DE CLASE:</td>
                 <td>
-                    {{ ($medicineReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name ?? 'SIN INFORMACIÓN') }}
+                    {{ $medicineReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name ?? 'SIN INFORMACIÓN' }}
                 </td>
             </tr>
             <tr>
@@ -122,19 +122,19 @@
                 <td>
                     {{-- {{ ($medicineReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass->name ?? 'SIN INFORMACIÓN') }} --}}
                     @foreach ($medicineReserves[0]->medicineReserveMedicine->medicineInitial as $inicialEach)
-                    {{-- MAS DE UNA LICENCIA --}}
-                    @if ($medicineReserves[0]->medicineReserveMedicine->medicineInitial->count() > 1)
-                    <ul>
-                        <li>
+                        {{-- MAS DE UNA LICENCIA --}}
+                        @if ($medicineReserves[0]->medicineReserveMedicine->medicineInitial->count() > 1)
+                            <ul>
+                                <li>
+                                    {{ $inicialEach->medicineInitialClasificationClass->name ?? 'SIN INFORMACIÓN' }}
+                                </li>
+                            </ul>
+                        @else
+                            {{-- UNA SOLA LICENCIA --}}
                             {{ $inicialEach->medicineInitialClasificationClass->name ?? 'SIN INFORMACIÓN' }}
-                        </li>
-                    </ul>
-                    @else
-                    {{-- UNA SOLA LICENCIA --}}
-                        {{ $inicialEach->medicineInitialClasificationClass->name ?? 'SIN INFORMACIÓN' }}
-                    @endif
-                @endforeach
-                
+                        @endif
+                    @endforeach
+
                 </td>
             </tr>
             <tr>
@@ -168,7 +168,9 @@
             </tr>
         </table>
         <div class="codigoqr">
-            <img src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ $keyEncrypt }}"
+            {{-- <img src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ $keyEncrypt }}"
+                width="120" height="120" /> --}}
+            <img src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ route('validateUrl', $keyEncrypt) }}"
                 width="120" height="120" />
         </div>
         <div style="background-color: #e6e6e6;height: 25px;">
@@ -237,7 +239,8 @@
                 <p style="padding-left:3%">C) Examen General de Orina.</p>
                 <p style="padding-left:3%">D) Prueba de detección de VIH (Anticuerpos).</p>
                 <p style="padding-left:3%">E) Prueba de detección de sustancias psicoactivas en orina, de 5
-                    reactivos (Cocaína, Cannabinoides, Opiaceos, Anfetaminas y Benzodiazepinas). Verificar que la totalidad de sus resultados esten reportados o de lo contrario no podrá ser atendido.</p>
+                    reactivos (Cocaína, Cannabinoides, Opiaceos, Anfetaminas y Benzodiazepinas). Verificar que la
+                    totalidad de sus resultados esten reportados o de lo contrario no podrá ser atendido.</p>
                 <p style="padding-left:3%">F) Hemoglobina glucosilada.</p>
                 <p style="padding-left:3%">G) Radiografía de tórax postero-anterior o más conocida como la tele de tórax
                     <b> (en
