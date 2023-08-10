@@ -15,7 +15,7 @@ use Livewire\Component;
 use LivewireUI\Modal\ModalComponent;
 use WireUi\Traits\Actions;
 
-class CreateUpdateModal extends ModalComponent
+class CreateUpdateModalHeadquarter extends ModalComponent
 {
     use Actions;
     public $id_user, $id_edit, $id_schedule, $id_exception, $userId, $id_headquarter, $time_start, $type_exam_id,
@@ -73,7 +73,7 @@ class CreateUpdateModal extends ModalComponent
                 $q1->where('id', $this->userId);
             })
             ->get();
-        return view('livewire.headquarters.modals.create-update-modal', compact('qSystems', 'headquarters', 'medicineSchedulesExceptions'));
+        return view('livewire.headquarters.modals.create-update-modal-headquarter', compact('qSystems', 'headquarters', 'medicineSchedulesExceptions'));
     }
     public function updated($propertyName)
     {

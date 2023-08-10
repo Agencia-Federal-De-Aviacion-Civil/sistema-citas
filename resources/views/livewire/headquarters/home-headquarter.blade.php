@@ -46,7 +46,7 @@
                     <div class="mt-6">
                         <div x-show="activeTab === 'headquarters'">
                             <div class="mb-6">
-                                <x-button wire:click="$emit('openModal', 'headquarters.modals.create-update-modal')"
+                                <x-button wire:click="$emit('openModal', 'headquarters.modals.create-update-modal-headquarter')"
                                     icon="pencil" primary label="AÑADIR" />
                             </div>
                             @livewire('headquarters.tables.headquarters-table')
