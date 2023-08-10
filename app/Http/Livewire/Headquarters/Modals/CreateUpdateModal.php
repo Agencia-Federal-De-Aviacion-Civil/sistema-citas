@@ -190,6 +190,7 @@ class CreateUpdateModal extends ModalComponent
             'system_id.required' => 'Campo obligatorio',
             'direction.required' => 'Campo obligatorio',
             'max_schedules_exception.required_unless' => 'Campo obligatorio',
+            'type_exam_id.unique' => 'Algunas de las opciones ya se han agregado',
             'url.required' => 'Campo obligatorio',
             'url.url' => 'Dirección no valida',
             'status.required' => 'Campo obligatorio',
