@@ -3,7 +3,6 @@
         <div class="mt-12 max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="grid xl:grid-cols-2 xl:gap-6">
                 <div class="mt-1 relative w-full group">
-                    <x-errors></x-errors>
                     <x-input wire:model.lazy="name_headquarter" label="SEDE" placeholder="ESCRIBE..." />
                 </div>
                 <div class="mt-1 relative w-full group">
@@ -86,17 +85,24 @@
                         <div class="mt-6 mb-6">
                             @if ($medicineSchedulesExceptions)
                                 @foreach ($medicineSchedulesExceptions as $medicineSchedulesException)
-                                    <ul class="space-y-4 text-gray-500 list-disc list-inside dark:text-gray-400">
-                                        <li>
-                                            CITAS POR DIA {{ $medicineSchedulesException->max_schedules_exception }}
-                                            <ol class="pl-5 mt-2 space-y-1 list-decimal list-inside">
-                                                @foreach ($medicineSchedulesException->maxExceptionMedicineSchedule as $typeExamEach)
-                                                    <li>
-                                                        {{ $typeExamEach->medicineSchedulesTypeExam->name }}
-                                                    </li>
-                                                @endforeach
-                                            </ol>
+                                    <ul class="w-72">
+                                        <li class="w-full rounded-lg bg-blue-600 p-1 text-white">
+                                            CITAS POR DIA <span
+                                                class="text-lg">{{ $medicineSchedulesException->max_schedules_exception }}</span>
                                         </li>
+                                        @foreach ($medicineSchedulesException->maxExceptionMedicineSchedule as $typeExamEach)
+                                            <li class="w-full p-2"> {{ $typeExamEach->medicineSchedulesTypeExam->name }}
+                                                <button class="float-right"
+                                                    wire:click.prevent="delete({{ $typeExamEach->id }})">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                        class="w-6 h-6 text-red-500">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    </svg>
+                                                </button>
+                                            </li>
+                                        @endforeach
                                     </ul>
                                 @endforeach
                             @else
