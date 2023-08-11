@@ -168,10 +168,10 @@
             </tr>
         </table>
         <div class="codigoqr">
-            {{-- <img src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ $keyEncrypt }}"
-                width="120" height="120" /> --}}
-            <img src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ route('validateUrl', $keyEncrypt) }}"
+            <img src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ $keyEncrypt }}"
                 width="120" height="120" />
+            {{-- <img src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ route('validateUrl', $keyEncrypt) }}"
+                width="120" height="120" /> --}}
         </div>
         <div style="background-color: #e6e6e6;height: 25px;">
             <h3 class="titulo2">REQUISITOS</h3>
