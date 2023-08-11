@@ -115,7 +115,7 @@ class HomeMedicine extends Component
     {
         $this->typeRenovationExams = TypeClass::where('type_exam_id', $type_exam_id)->get();
         $this->sedes = Headquarter::where('system_id', 1)->where('status', false)->get();
-        if ($type_exam_id === '3'||$type_exam_id === '5') {
+        if ($type_exam_id === '3' || $type_exam_id === '5') {
             $type_exam_id = '2';
             $this->typeRenovationExams = TypeClass::where('type_exam_id', $type_exam_id)->get();
             $this->sedes = Headquarter::where('system_id', 1)->where('status', false)->get();
@@ -188,16 +188,18 @@ class HomeMedicine extends Component
                 })
                 ->value('max_schedules');
             if ($this->type_exam_id == $this->type_exam_id) {
-                $maxCitasException = MedicineScheduleException::with('medicineSchedules.scheduleHeadquarter')
+                $maxCitasException = MedicineScheduleException::with('medicineSchedules.scheduleHeadquarter', 'medicineScheduleMaxException')
                     ->whereHas('medicineSchedules.scheduleHeadquarter', function ($qException) {
                         $qException->where('id', $this->headquarter_id);
                     })
-                    ->where('type_exam_id', $this->type_exam_id)
-                    ->value('max_schedules_exception');
-                if ($maxCitasException !== null) {
-                    $maxCitas = $maxCitasException;
+                    ->whereHas('medicineScheduleMaxException')
+                    ->where('type_exam_id', $this->type_exam_id)->get();
+                $maxSchedulesExceptionValue = $maxCitasException[0]->medicineScheduleMaxException->max_schedules_exception ?? null;
+                if ($maxSchedulesExceptionValue !== null) {
+                    $maxCitas = $maxCitas + $maxSchedulesExceptionValue;
                 }
             }
+            // dd($maxCitas);
             $datesExceedingLimit = MedicineReserve::select('dateReserve')
                 ->where('headquarter_id', $this->headquarter_id)
                 ->whereIn('status', [0, 1, 4])
@@ -374,15 +376,15 @@ class HomeMedicine extends Component
                     $max->where('id', $this->headquarter_id);
                 })->value('max_schedules');
             if ($this->type_exam_id == $this->type_exam_id) {
-                $maxCitasException = MedicineScheduleException::with('medicineSchedules.scheduleHeadquarter')
+                $maxCitasException = MedicineScheduleException::with('medicineSchedules.scheduleHeadquarter', 'medicineScheduleMaxException')
                     ->whereHas('medicineSchedules.scheduleHeadquarter', function ($qException) {
                         $qException->where('id', $this->headquarter_id);
                     })
-                    // ->where('medicine_schedule_id', $this->medicine_schedule_id)
-                    ->where('type_exam_id', $this->type_exam_id)
-                    ->value('max_schedules_exception');
-                if ($maxCitasException !== null) {
-                    $maxCitas = $maxCitasException;
+                    ->whereHas('medicineScheduleMaxException')
+                    ->where('type_exam_id', $this->type_exam_id)->get();
+                $maxSchedulesExceptionValue = $maxCitasException[0]->medicineScheduleMaxException->max_schedules_exception ?? null;
+                if ($maxSchedulesExceptionValue !== null) {
+                    $maxCitas = $maxCitas + $maxSchedulesExceptionValue;
                 }
             }
             if ($citas >= $maxCitas) {
@@ -441,14 +443,14 @@ class HomeMedicine extends Component
                             'clasification_class_id' => $clasifications
                         ]);
                     }
-                } else if ($this->type_exam_id == 3||$this->type_exam_id == 5) {
+                } else if ($this->type_exam_id == 3 || $this->type_exam_id == 5) {
                     // REGLAS FLEXIBILIDAD Y REVALORACIÓN
                     $extension = $this->document_pay->getClientOriginalExtension();
                     $fileName = $this->reference_number . '-' . $this->pay_date . '.' . $extension;
                     $saveDocumentRevaloration = Document::create([
                         'name_document' => $this->document_authorization->storeAs('documentos/medicina', $fileName, 'public'),
                     ]);
-                    if ($this->type_exam_id == 5){
+                    if ($this->type_exam_id == 5) {
                         $this->type_exam_revaloration_id = 2;
                     }
                     $medicineReId = MedicineRevaluation::create([
@@ -484,7 +486,7 @@ class HomeMedicine extends Component
                             ]);
                         }
                     }
-                }else if ($this->type_exam_id == 3||$this->type_exam_id == 5) {
+                } else if ($this->type_exam_id == 3 || $this->type_exam_id == 5) {
                     // $extension = $this->document_authorization->extension();
                     //condicion para tomar revalroción cuando es flexibilidad
                     $extension = $this->document_pay->getClientOriginalExtension();
@@ -620,7 +622,7 @@ class HomeMedicine extends Component
         } else if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 4) {
             $pdf = PDF::loadView('livewire.medicine.documents.medicine-revaluation-accident', compact('medicineReserves', 'keyEncrypt', 'dateConvertedFormatted'));
             return $pdf->download($fileName);
-        }else if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 5) {
+        } else if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 5) {
             $pdf = PDF::loadView('livewire.medicine.documents.medicine-flexibility', compact('medicineReserves', 'keyEncrypt', 'dateConvertedFormatted'));
             return $pdf->download($fileName);
         }

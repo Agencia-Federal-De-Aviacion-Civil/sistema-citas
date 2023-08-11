@@ -3,7 +3,6 @@
         <div class="mt-12 max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="grid xl:grid-cols-2 xl:gap-6">
                 <div class="mt-1 relative w-full group">
-                    <x-errors></x-errors>
                     <x-input wire:model.lazy="name_headquarter" label="SEDE" placeholder="ESCRIBE..." />
                 </div>
                 <div class="mt-1 relative w-full group">
@@ -71,31 +70,46 @@
                     <div x-show="exception == '1'">
                         <div class="grid xl:grid-cols-2 xl:gap-6">
                             <div class="mt-4 relative w-full group">
-                                <label for="systems" class="block text-sm font-medium text-gray-900 dark:text-white">TIPO
-                                    DE EXAMEN</label>
-                                <select wire:model.lazy="type_exam_id"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                    <option value="">Selecciona...</option>
+                                <x-select label="TIPO DE EXAMEN" placeholder="Selecciona uno o más..."
+                                    wire:model.defer="type_exam_id" multiselect>
                                     @foreach ($typeExams as $typeExam)
-                                        <option value="{{ $typeExam->id }}"
-                                            {{ $type_exam_id == $typeExam->id ? 'selected' : '' }}>{{ $typeExam->name }}
-                                        </option>
+                                        <x-select.option label="{{ $typeExam->name }}" value="{{ $typeExam->id }}" />
                                     @endforeach
-                                </select>
-                                @error('type_exam_id')
-                                    <span
-                                        class="text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5">{{ $message }}</span>
-                                @enderror
+                                </x-select>
                             </div>
                             <div class="mt-4 relative w-full group">
                                 <x-inputs.number label="CITAS POR DÍA PARA ESTE EXAMEN"
                                     wire:model.defer="max_schedules_exception" />
                             </div>
                         </div>
+                        <div class="mt-6 mb-6">
+                            @if ($medicineSchedulesExceptions)
+                                @foreach ($medicineSchedulesExceptions as $medicineSchedulesException)
+                                    <ul class="w-72">
+                                        <li class="w-full rounded-lg bg-blue-600 p-1 text-white">
+                                            CITAS POR DIA <span
+                                                class="text-lg">{{ $medicineSchedulesException->max_schedules_exception }}</span>
+                                        </li>
+                                        @foreach ($medicineSchedulesException->maxExceptionMedicineSchedule as $typeExamEach)
+                                            <li class="w-full p-2"> {{ $typeExamEach->medicineSchedulesTypeExam->name }}
+                                                <button class="float-right"
+                                                    wire:click.prevent="delete({{ $typeExamEach->id }})">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                        class="w-6 h-6 text-red-500">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    </svg>
+                                                </button>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                @endforeach
+                            @else
+                            @endif
+                        </div>
                     </div>
                 </div>
-                {{-- @else
-                @endif --}}
             @else
             @endhasrole
             <div class="grid xl:grid-cols-1 xl:gap-6">
