@@ -3,23 +3,30 @@
 namespace App\Http\Livewire\Medicine\CertificateQr;
 
 use App\Models\Catalogue\Nationality;
+use App\Models\Document;
+use App\Models\Medicine\CertificateQr\MedicineCertificateQr;
 use App\Models\Medicine\MedicineReserve;
 use App\Models\User;
 use Jenssegers\Date\Date;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use WireUi\Traits\Actions;
 
 class HomeCertificateQr extends Component
 {
     use Actions;
-    public $dateNow, $userQueries, $search = '', $userDetails = [], $nationalities;
+    use WithFileUploads;
+    public $date_expire, $medical_name, $evaluation_result, $document_license_id, $dateNow, $userQueries, $search = '', $userDetails = [], $nationalities;
     protected $listeners = [
         'searchUsers'
     ];
     public function rules()
     {
         return [
-            'search' => 'required',
+            'date_expire' => 'required',
+            'medical_name' => 'required',
+            'evaluation_result' => 'required',
+            'document_license_id' => 'required|mimetypes:application/pdf|max:5000',
         ];
     }
     public function mount()
@@ -28,6 +35,10 @@ class HomeCertificateQr extends Component
         $this->dateNow = Date::now()->format('l j F Y');
         $this->nationalities = Nationality::all();
     }
+    public function updated($propertyName)
+    {
+        $this->validateOnly($propertyName);
+    }
     public function render()
     {
         return view('livewire.medicine.certificate-qr.home-certificate-qr')
@@ -35,13 +46,17 @@ class HomeCertificateQr extends Component
     }
     public function searchUsers()
     {
-        $this->validate();
+        $this->validate([
+            'search' => 'required',
+        ]);
         try {
             $this->userQueries = MedicineReserve::with('medicineReserveFromUser.UserParticipant')
                 ->whereHas('medicineReserveFromUser.UserParticipant', function ($q1) {
                     $q1->where('curp', $this->search);
                 })
                 ->where('status', 1)->get();
+            $idMedicineReserve = $this->userQueries->pluck('id')->first();
+            session(['idReserve' => $idMedicineReserve]);
             if ($this->userQueries->isEmpty()) {
                 throw new \Exception('NO SE ENCONTRARON RESULTADOS PARA EL CURP' . ' ' . $this->search);
             } else {
@@ -58,5 +73,20 @@ class HomeCertificateQr extends Component
     public function save()
     {
         $this->validate();
+        $reserveId = session('idReserve');
+        $extension = $this->document_license_id->getClientOriginalExtension();
+        $fileName = $this->search . '-' . $this->date_expire . '-' . $this->evaluation_result . '.' . $extension;
+        $saveDocument = Document::create([
+            'name_document' => $this->document_license_id->storeAs('documentos/medicina/licenses', $fileName, 'public'),
+        ]);
+        MedicineCertificateQr::create([
+            'medicine_reserves_id' => $reserveId,
+            'date_expire' => $this->date_expire,
+            'medical_name' => $this->medical_name,
+            'evaluation_result' => $this->evaluation_result,
+            'document_license_id' => $saveDocument->id,
+        ]);
+        $this->userDetails = false;
+        session()->forget('idReserve');
     }
 }
