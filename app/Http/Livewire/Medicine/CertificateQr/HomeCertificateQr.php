@@ -16,7 +16,8 @@ class HomeCertificateQr extends Component
 {
     use Actions;
     use WithFileUploads;
-    public $date_expire, $medical_name, $evaluation_result, $document_license_id, $dateNow, $userQueries, $search = '', $userDetails = [], $nationalities;
+    public $date_expire, $medical_name, $evaluation_result, $document_license_id, $dateNow, $userQueries, $search = '', $userDetails = [], $nationalities,
+        $modalQr = false;
     protected $listeners = [
         'searchUsers'
     ];
@@ -43,6 +44,10 @@ class HomeCertificateQr extends Component
     {
         return view('livewire.medicine.certificate-qr.home-certificate-qr')
             ->layout('layouts.app');
+    }
+    public function closeModal()
+    {
+        $this->modalQr = false;
     }
     public function searchUsers()
     {
@@ -87,6 +92,7 @@ class HomeCertificateQr extends Component
             'document_license_id' => $saveDocument->id,
         ]);
         $this->userDetails = false;
+        $this->modalQr = true;
         session()->forget('idReserve');
     }
 }
