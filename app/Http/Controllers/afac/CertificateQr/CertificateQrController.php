@@ -9,9 +9,9 @@ use Illuminate\Support\Facades\Storage;
 
 class CertificateQrController extends Controller
 {
-    public function index()
+    public function index($idQr)
     {
-        $document = MedicineCertificateQr::with('certificateQrDocument')->where('id', 1)->firstOrFail();
+        $document = MedicineCertificateQr::with('certificateQrDocument')->where('id', $idQr)->firstOrFail();
         // $outputFile = Storage::disk('do')->path('ready.pdf');
         $outputFile = storage_path("app\public/" . $document->certificateQrDocument->name_document);
         // fill data

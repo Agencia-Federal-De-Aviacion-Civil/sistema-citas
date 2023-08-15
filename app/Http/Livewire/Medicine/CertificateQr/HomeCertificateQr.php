@@ -84,15 +84,23 @@ class HomeCertificateQr extends Component
         $saveDocument = Document::create([
             'name_document' => $this->document_license_id->storeAs('documentos/medicina/licenses', $fileName, 'public'),
         ]);
-        MedicineCertificateQr::create([
+        $medicineQr = MedicineCertificateQr::create([
             'medicine_reserves_id' => $reserveId,
             'date_expire' => $this->date_expire,
             'medical_name' => $this->medical_name,
             'evaluation_result' => $this->evaluation_result,
             'document_license_id' => $saveDocument->id,
         ]);
+        session(['idMedicineQr' => $medicineQr->id]);
         $this->userDetails = false;
         $this->modalQr = true;
         session()->forget('idReserve');
+    }
+    public function printQr()
+    {
+        $idQr = session('idMedicineQr');
+        $idCertificate = MedicineCertificateQr::where('id', $idQr)->pluck('id')->first();
+        session()->forget('idMedicineQr');
+        redirect()->route('afac.certificateGenerate', $idCertificate);
     }
 }

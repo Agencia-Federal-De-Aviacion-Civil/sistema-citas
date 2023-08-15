@@ -45,7 +45,7 @@ Route::middleware([
         Route::get('/validate', ValidateQr::class)->name('validate');
         Route::get('/link/{keyEncrypt}', UrlHome::class)->name('validateUrl')->middleware('validate.encrypted.url');
         Route::get('/certificate', HomeCertificateQr::class)->name('afac.certificateQr');
-        Route::get('/generate', [CertificateQrController::class, 'index'])->name('afac.certificateGenerate');
+        Route::get('/generate/{idQr}', [CertificateQrController::class, 'index'])->name('afac.certificateGenerate');
     });
     // Route::get('/appointments', [AppointmentController::class, 'index'])->name('afac.appointment');
     Route::get('/appointments', [AppointmentMedicineController::class, 'index'])->name('afac.appointment');
