@@ -3,13 +3,21 @@
 namespace App\Http\Controllers\Afac\CertificateQr;
 
 use App\Http\Controllers\Controller;
+use App\Models\Medicine\CertificateQr\MedicineCertificateQr;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CertificateQrController extends Controller
 {
     public function index()
     {
-        return 'hola';
+        $document = MedicineCertificateQr::with('certificateQrDocument')->where('id', 1)->firstOrFail();
+        // $outputFile = Storage::disk('do')->path('ready.pdf');
+        $outputFile = storage_path("app\public/" . $document->certificateQrDocument->name_document);
+        // fill data
+        $queuServer = $this->fillPDF(Storage::disk('do')->url($this->document->file), $outputFile);
+        //output to browser
+        return response()->file($outputFile);
     }
     public function fillPDF($file, $outputFile)
     {
