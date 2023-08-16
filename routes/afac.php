@@ -12,6 +12,7 @@ use App\Http\Livewire\Medicine\HomeMedicine;
 use App\Http\Livewire\Medicine\HistoryMedicieMovements;
 use App\Http\Livewire\Linguistics\HistoryLinguisticsMovements;
 use App\Http\Livewire\Catalogue\HomeCatalogs;
+use App\Http\Livewire\Medicine\CertificateQr\HistoryCertificateQr;
 use App\Http\Livewire\Medicine\CertificateQr\HomeCertificateQr;
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Validate\Qr as ValidateQr;
@@ -45,6 +46,7 @@ Route::middleware([
         Route::get('/validate', ValidateQr::class)->name('validate');
         Route::get('/link/{keyEncrypt}', UrlHome::class)->name('validateUrl')->middleware('validate.encrypted.url');
         Route::get('/certificate', HomeCertificateQr::class)->name('afac.certificateQr');
+        Route::get('/certificates', HistoryCertificateQr::class)->name('afac.historyCertificateQr');
         Route::get('/generate/{idQr}', [CertificateQrController::class, 'index'])->name('afac.certificateGenerate');
     });
     // Route::get('/appointments', [AppointmentController::class, 'index'])->name('afac.appointment');

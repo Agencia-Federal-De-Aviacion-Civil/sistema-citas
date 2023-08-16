@@ -42,8 +42,7 @@ class HomeCertificateQr extends Component
     }
     public function render()
     {
-        return view('livewire.medicine.certificate-qr.home-certificate-qr')
-            ->layout('layouts.app');
+        return view('livewire.medicine.certificate-qr.home-certificate-qr');
     }
     public function closeModal()
     {
