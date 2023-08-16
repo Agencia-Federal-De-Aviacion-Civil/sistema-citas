@@ -3,6 +3,7 @@
 namespace App\Models\Medicine;
 
 use App\Models\Catalogue\Headquarter;
+use App\Models\Medicine\CertificateQr\MedicineCertificateQr;
 use App\Models\Observation;
 use App\Models\User;
 use App\Models\UserParticipant;
@@ -41,8 +42,8 @@ class MedicineReserve extends Model
     {
         return $this->hasMany(MedicineObservation::class);
     }
-    // public function medicineSchedule()
-    // {
-    //     return $this->belongsTo(MedicineSchedule::class, 'medicine_schedule_id');
-    // }
+    public function certificateQrMedicineReserve()
+    {
+        return $this->hasMany(MedicineCertificateQr::class);
+    }
 }

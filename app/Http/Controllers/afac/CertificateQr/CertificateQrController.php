@@ -5,32 +5,31 @@ namespace App\Http\Controllers\Afac\CertificateQr;
 use App\Http\Controllers\Controller;
 use App\Models\Medicine\CertificateQr\MedicineCertificateQr;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Storage;
+use setasign\Fpdi\PdfParser\StreamReader;
 
 class CertificateQrController extends Controller
 {
+    public $document;
     public function index($idQr)
     {
-        $document = MedicineCertificateQr::with('certificateQrDocument')->where('id', $idQr)->firstOrFail();
-        // $outputFile = Storage::disk('do')->path('ready.pdf');
-        $outputFile = storage_path("app\public/" . $document->certificateQrDocument->name_document);
-        // fill data
-        $queuServer = $this->fillPDF(Storage::disk('do')->url($this->document->file), $outputFile);
-        //output to browser
-        return response()->file($outputFile);
+        $this->document = MedicineCertificateQr::with('certificateQrDocument')->where('id', $idQr)->firstOrFail();
+        $filePath = storage_path("app\public/" . $this->document->certificateQrDocument->name_document);
+        $outputFilePath = public_path($this->document->id . '-' . $this->document->date_expire . '-' . $this->document->certificateQrMedicineReserve->medicineReserveFromUser->UserParticipant->pluck('curp')->first() . '.pdf');
+        $this->fillPDF($filePath, $outputFilePath);
+        return response()->file($outputFilePath)->deleteFileAfterSend(true);
     }
-    public function fillPDF($file, $outputFile)
+    public function fillPDF($file, $outputFilePath)
     {
         $fpdi = new Rpdf;
-        // merger operations
-        // $count = $fpdi->setSourceFile($file);
         $count = $fpdi->setSourceFile(StreamReader::createByString(file_get_contents($file)));
         for ($i = 1; $i <= $count; $i++) {
             $template   = $fpdi->importPage($i);
             $size       = $fpdi->getTemplateSize($template);
             $fpdi->AddPage($size['orientation'], array($size['width'], $size['height']));
             $fpdi->useTemplate($template);
-            $dataResult = Crypt::encryptString($this->document->curp);
+            $dataResult = Crypt::encryptString($this->document->certificateQrMedicineReserve->medicineReserveFromUser->UserParticipant->pluck('curp')->first());
             //  $dataResult = $this->document->id;
             $fpdi->SetFont("arial", "", 7);
             $fpdi->Image('http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl=' . $dataResult . '&.png', 150, 170, 25, 0,);
@@ -69,8 +68,8 @@ class CertificateQrController extends Controller
             $fpdi->SetX(198);
             $fpdi->Rotate(270);
             $fpdi->SetFontSize(8);
-            $fpdi->MultiCell(66, 3, utf8_decode('1.Yo ' . $this->document->medical . ' bajo protesta de decir verdad, declaro ante la Agencia Federal de Aviación Civil, que verifiqué la veracidad de los documentos que avalan la identidad del personal, que emito este certificado derivado de la evaluación médica realizada el ' . $this->document->evaluationDay . ' en ' . $this->document->testPlace . ' y que la información contenida en el certificado de aptitud psicofísica es verídica, y fue obtenida empleando para ello las mejores prácticas médicas por personal calificado, que me hago responsable de la información aportada con mi firma y en su caso con mi cédula profesional, así como el equipo idóneo, apercibido de que aquél que interrogado por autoridad pública distinta de la judicial (en ejercicio de sus funciones o con motivo de ellas) faltare a la verdad, se hace acreedor a  lo estipulado por el artículo 247, fracción I del Código Penal.'), 0, 'J', false);
+            $fpdi->MultiCell(66, 3, utf8_decode('1.Yo ' . $this->document->medical_name . ' bajo protesta de decir verdad, declaro ante la Agencia Federal de Aviación Civil, que verifiqué la veracidad de los documentos que avalan la identidad del personal, que emito este certificado derivado de la evaluación médica realizada el ' . $this->document->evaluationDay . ' en ' . $this->document->testPlace . ' y que la información contenida en el certificado de aptitud psicofísica es verídica, y fue obtenida empleando para ello las mejores prácticas médicas por personal calificado, que me hago responsable de la información aportada con mi firma y en su caso con mi cédula profesional, así como el equipo idóneo, apercibido de que aquél que interrogado por autoridad pública distinta de la judicial (en ejercicio de sus funciones o con motivo de ellas) faltare a la verdad, se hace acreedor a  lo estipulado por el artículo 247, fracción I del Código Penal.'), 0, 'J', false);
         }
-        return $fpdi->Output($outputFile, 'F');
+        return $fpdi->Output($outputFilePath, 'F');
     }
 }
