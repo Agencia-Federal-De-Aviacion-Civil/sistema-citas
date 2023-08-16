@@ -14,9 +14,6 @@
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M6.75 6.75h.75v.75h-.75v-.75zM6.75 16.5h.75v.75h-.75v-.75zM16.5 6.75h.75v.75h-.75v-.75zM13.5 13.5h.75v.75h-.75v-.75zM13.5 19.5h.75v.75h-.75v-.75zM19.5 13.5h.75v.75h-.75v-.75zM19.5 19.5h.75v.75h-.75v-.75zM16.5 16.5h.75v.75h-.75v-.75z" />
                             </svg>
-                            <input type="hidden" wire:model="user_id"
-                                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                placeholder=" " required />
                             <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
                                 SE HA GENERADO LA VALIDACIÓN DEL QR ÉXITOSAMENTE</h3>
                             <div class="mt-5">
@@ -28,13 +25,11 @@
                                             <div></div>
                                         </div>
                                     </div>
-                                    <span class="text-xs ">Enviando respuesta...</span>
                                 </div>
                             </div>
-                            {{-- <a href="{{ route('afac.certificateGenerate') }}" target="_blank"
+                            <a href="" target="_blank" wire:click.prevent="printQr"
                                 class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
-                                x-on:click="">IMPRIMIR</a> --}}
-                            <button wire:click.prevent="printQr">IMPRIMIT</button>
+                                x-on:click="closeModal()">IMPRIMIR</a>
                         </div>
                     </div>
                 </div>

@@ -103,4 +103,14 @@ class HomeCertificateQr extends Component
         session()->forget('idMedicineQr');
         redirect()->route('afac.certificateGenerate', $idCertificate);
     }
+    public function messages()
+    {
+        return [
+            'search.required' => 'Campo obligatorio',
+            'date_expire.required' => 'Campo obligatorio',
+            'medical_name.required' => 'Campo obligatorio',
+            'evaluation_result.required' => 'Campo obligatorio',
+            'document_license_id.required' => 'Campo obligatorio',
+        ];
+    }
 }

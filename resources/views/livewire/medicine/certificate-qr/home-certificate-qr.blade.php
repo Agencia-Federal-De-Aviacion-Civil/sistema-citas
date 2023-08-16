@@ -26,17 +26,34 @@
         </div>
     </div>
     <div class="py-12">
-        <div class="container mx-auto px-4 py-4 bg-white shadow-xl sm:rounded-lg">
-            <div class="mt-12 max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="grid xl:grid-cols-2 xl:gap-6">
-                    <div class="mt-1 relative z-0 w-full group">
-                        <x-input right-icon="user" wire:model.lazy="search" label="CURP"
-                            placeholder="INGRESE CURP PARA BUSCAR" />
-                        <button wire:click="$emitSelf('searchUsers')"
-                            class="px-4 py-2 bg-blue-500 text-white rounded-lg ml-2">Buscar</button>
+        <div class="grid md:grid-cols-2 md:gap-6">
+            <div class="mt-1 relative z-0 w-full group">
+                <x-input right-icon="user" wire:model.lazy="search" label="CURP"
+                    placeholder="INGRESE CURP PARA BUSCAR" class="block w-full" />
+            </div>
+            <div class="relative z-0 w-full group">
+                <button wire:click="searchUsers"
+                    class="block px-4 py-2 bg-blue-500 text-white rounded-lg ml-2">Buscar</button>
+            </div>
+            <div wire:loading.delay.shortest wire:target="searchUsers">
+                <div
+                    class="flex justify-center bg-gray-200 z-40 h-full w-full fixed top-0 left-0 items-center opacity-75">
+                    <div style="color: #0061cf" class="la-line-spin-clockwise-fade-rotating la-3x">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
                     </div>
                 </div>
-                @if ($userDetails)
+            </div>
+        </div>
+        @if ($userDetails)
+            <div class="container mx-auto px-4 py-4 bg-white shadow-xl sm:rounded-lg">
+                <div class="mt-12 max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div class="grid xl:grid-cols-3 xl:gap-6">
                         <div class="mt-1 relative z-0 w-full group">
                             <x-input right-icon="user"
@@ -89,8 +106,8 @@
                     </div>
                     <div class="mt-4 grid xl:grid-cols-3 xl:gap-6">
                         <div class="mt-1 relative w-full group">
-                            <label for="small"
-                                class="block text-sm font-medium text-gray-900 dark:text-white">SUBIR ARCHIVO</label>
+                            <label for="small" class="block text-sm font-medium text-gray-900 dark:text-white">SUBIR
+                                ARCHIVO</label>
                             <input type="file" wire:model="document_license_id" accept=".pdf"
                                 class="block w-full border border-gray-200 shadow-sm rounded-md text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 file:bg-transparent file:border-0 file:bg-gray-100 file:mr-4 file:py-2.5 file:px-4 dark:file:bg-gray-700 dark:file:text-gray-400">
                             <div class="float-left">
@@ -114,8 +131,7 @@
                         <div wire:loading.delay.shortest wire:target="save">
                             <div
                                 class="flex justify-center bg-gray-200 z-40 h-full w-full fixed top-0 left-0 items-center opacity-75">
-                                <div style="color: #0061cf"
-                                    class="la-line-spin-clockwise-fade-rotating la-3x">
+                                <div style="color: #0061cf" class="la-line-spin-clockwise-fade-rotating la-3x">
                                     <div></div>
                                     <div></div>
                                     <div></div>
@@ -128,8 +144,8 @@
                             </div>
                         </div>
                     </div>
-                @endif
+                </div>
             </div>
-        </div>
+        @endif
     </div>
 </div>
