@@ -78,28 +78,46 @@ class HomeCertificateQr extends Component
     {
         $this->validate();
         $reserveId = session('idReserve');
-        $extension = $this->document_license_id->getClientOriginalExtension();
-        $fileName = $this->search . '-' . $this->date_expire . '-' . $this->evaluation_result . '.' . $extension;
-        $saveDocument = Document::create([
-            'name_document' => $this->document_license_id->storeAs('documentos/medicina/licenses', $fileName, 'public'),
-        ]);
-        $medicineQr = MedicineCertificateQr::create([
-            'medicine_reserves_id' => $reserveId,
-            'date_expire' => $this->date_expire,
-            'medical_name' => $this->medical_name,
-            'evaluation_result' => $this->evaluation_result,
-            'document_license_id' => $saveDocument->id,
-        ]);
-        session(['idMedicineQr' => $medicineQr->id]);
-        $this->userDetails = false;
-        $this->modalQr = true;
-        session()->forget('idReserve');
+        try {
+            $medicineQuery = MedicineCertificateQr::with(['certificateQrMedicineReserve.medicineReserveMedicine'])
+                ->where('medicine_reserves_id', $reserveId)->get();
+            if ($medicineQuery->count() > 0 && $medicineQuery[0]->certificateQrMedicineReserve->medicineReserveMedicine->type_exam_id == 1) {
+                throw new \Exception('ESTA LICENCIA YA CUENTA CON CODIGO QR');
+            } else if ($medicineQuery->count() > 0 && $medicineQuery[0]->certificateQrMedicineReserve->medicineReserveMedicine->type_exam_id == 2) {
+                throw new \Exception('ESTA LICENCIA YA CUENTA CON CODIGO QR');
+            } else if ($medicineQuery->count() > 0 && $medicineQuery[0]->certificateQrMedicineReserve->medicineReserveMedicine->type_exam_id == 3) {
+                throw new \Exception('ESTA LICENCIA YA CUENTA CON CODIGO QR');
+            }
+            $extension = $this->document_license_id->getClientOriginalExtension();
+            $fileName = $this->search . '-' . $this->date_expire . '-' . $this->evaluation_result . '.' . $extension;
+            $saveDocument = Document::create([
+                'name_document' => $this->document_license_id->storeAs('documentos/medicina/licenses', $fileName, 'public'),
+            ]);
+            $medicineQr = MedicineCertificateQr::create([
+                'medicine_reserves_id' => $reserveId,
+                'date_expire' => $this->date_expire,
+                'medical_name' => $this->medical_name,
+                'evaluation_result' => $this->evaluation_result,
+                'document_license_id' => $saveDocument->id,
+            ]);
+            session(['idMedicineQr' => $medicineQr->id]);
+            $this->userDetails = false;
+            $this->modalQr = true;
+            session()->forget('idReserve');
+        } catch (\Exception $e) {
+            $this->dialog([
+                'title'       => 'ATENCIÓN',
+                'description' => $e->getMessage(),
+                'icon'        => 'info',
+            ]);
+        }
     }
     public function printQr()
     {
         $idQr = session('idMedicineQr');
         $idCertificate = MedicineCertificateQr::where('id', $idQr)->pluck('id')->first();
         session()->forget('idMedicineQr');
+        $this->reset('search');
         redirect()->route('afac.certificateGenerate', $idCertificate);
     }
     public function messages()

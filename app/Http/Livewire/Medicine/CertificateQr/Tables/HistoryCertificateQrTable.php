@@ -22,6 +22,7 @@ class HistoryCertificateQrTable extends DataTableComponent
             Column::make("Id", "id")
                 ->sortable(),
             Column::make("CURP", "certificateQrMedicineReserve.medicineReserveFromUser.UserPart.curp")
+                ->searchable()
                 ->sortable(),
             Column::make("TIPO", "certificateQrMedicineReserve.medicineReserveMedicine.medicineTypeExam.name")
                 ->sortable(),
