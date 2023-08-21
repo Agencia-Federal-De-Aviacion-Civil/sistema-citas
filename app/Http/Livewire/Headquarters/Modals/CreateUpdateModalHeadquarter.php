@@ -20,7 +20,7 @@ class CreateUpdateModalHeadquarter extends ModalComponent
     use Actions;
     public $id_user, $id_edit, $id_schedule, $id_exception, $userId, $id_headquarter, $time_start, $type_exam_id,
         $max_schedules_exception, $max_schedules, $name_headquarter, $direction, $system_id, $url, $status;
-    public $sedes, $typeExams, $questionException = '0', $schedulesExceptions;
+    public $sedes, $typeExams, $questionException = '0', $schedulesExceptions, $is_external;
     public function rules()
     {
         $rules = [
@@ -32,7 +32,8 @@ class CreateUpdateModalHeadquarter extends ModalComponent
             'time_start' => 'required',
             'max_schedules' => 'required',
             'type_exam_id' => 'required_unless:questionException,0|unique:medicine_schedule_exceptions',
-            'max_schedules_exception' => 'required_unless:questionException,0'
+            'max_schedules_exception' => 'required_unless:questionException,0',
+            'is_external' => 'required'
         ];
         if (Auth::user()->hasRole('super_admin')) {
             $rules['system_id'] = 'required';
@@ -143,6 +144,7 @@ class CreateUpdateModalHeadquarter extends ModalComponent
                     'name_headquarter' => $this->name_headquarter,
                     'direction' => $this->direction,
                     'url' => $this->url,
+                    'is_external' => $this->is_external,
                     'status' => $this->status
                 ]
             );
@@ -193,6 +195,7 @@ class CreateUpdateModalHeadquarter extends ModalComponent
             'type_exam_id.unique' => 'Algunas de las opciones ya se han agregado',
             'url.required' => 'Campo obligatorio',
             'url.url' => 'Dirección no valida',
+            'is_external.required' => 'Campo obligatorio',
             'status.required' => 'Campo obligatorio',
         ];
     }

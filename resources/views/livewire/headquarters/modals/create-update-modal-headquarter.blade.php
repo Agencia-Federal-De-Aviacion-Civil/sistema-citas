@@ -27,12 +27,25 @@
                         @enderror
                     </div>
                     <div class="mt-4 relative w-full group">
-                        <x-time-picker label="HORARIO" placeholder="7:00 AM" interval="60" wire:model.defer="time_start" />
+                        <label for="systems" class="block text-sm font-medium text-gray-900 dark:text-white">TIPO DE
+                            CITA</label>
+                        <select wire:model.lazy="is_external"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <option selected value="">Selecciona...</option>
+                            <option value="0">AGENCIA FEDERAL DE AVIACIÓN CIVIL</option>
+                            <option value="1">TERCEROS AUTORIZADOS</option>
+                        </select>
+                        @error('is_external')
+                            <span class="text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
-                <div class="grid xl:grid-cols-1 xl:gap-6">
+                <div class="grid xl:grid-cols-2 xl:gap-6">
                     <div class="mt-4 relative w-full group">
                         <x-inputs.number label="CAPACIDAD CITAS POR DÍA" wire:model.defer="max_schedules" />
+                    </div>
+                    <div class="mt-4 relative w-full group">
+                        <x-time-picker label="HORARIO" placeholder="7:00 AM" interval="60" wire:model.defer="time_start" />
                     </div>
                 </div>
                 {{-- @if (!empty($sedes)) --}}
