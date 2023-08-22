@@ -38,7 +38,7 @@ class AppointmentMedicineController extends Controller
             $pdf = PDF::loadView('livewire.medicine.documents.medicine-initial', compact('medicineReserves', 'keyEncrypt', 'dateConvertedFormatted', 'idExternalInternal'));
             return $pdf->download($fileName);
         } else if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 2) {
-            $pdf = PDF::loadView('livewire.medicine.documents.medicine-renovation', compact('medicineReserves', 'keyEncrypt', 'dateConvertedFormatted'));
+            $pdf = PDF::loadView('livewire.medicine.documents.medicine-renovation', compact('medicineReserves', 'keyEncrypt', 'dateConvertedFormatted', 'idExternalInternal'));
             return $pdf->download($fileName);
         } else if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 3) {
             $pdf = PDF::loadView('livewire.medicine.documents.medicine-revaluation', compact('medicineReserves', 'keyEncrypt', 'dateConvertedFormatted'));
