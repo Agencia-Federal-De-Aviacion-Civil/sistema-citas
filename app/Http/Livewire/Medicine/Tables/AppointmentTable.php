@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Storage;
 use Jenssegers\Date\Date;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
+use Rappasoft\LaravelLivewireTables\Views\Columns\BooleanColumn;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateFilter;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 use Rappasoft\LaravelLivewireTables\Views\Filters\TextFilter;
@@ -194,7 +195,8 @@ class AppointmentTable extends DataTableComponent
 
                 Column::make("HORA", "reserveSchedule.time_start")
                     ->sortable(),
-
+                BooleanColumn::make("ES TERCEROS", "is_external")->yesNo()
+                    ->sortable(),
                 Column::make("ACCIÓN")
                     ->label(
                         fn ($row) => view(
