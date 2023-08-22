@@ -38,8 +38,6 @@ Route::middleware([
         Route::get('/medicine', HomeMedicine::class)->name('afac.medicine');
         Route::get('/linguistics', HomeLinguistics::class)->name('afac.linguistics');
         Route::get('/download', [HomeMedicine::class, 'generatePdf'])->name('download');
-        // EXTERNAL ROUTES
-        Route::get('/medicine-external', HomeMedicineExternal::class)->name('afac.homeMedicineExternal');
     });
     Route::middleware(['role:super_admin|medicine_admin|super_admin_medicine|admin_medicine_v2|sub_headquarters|headquarters'])->group(function () {
         Route::get('/headquarters', HomeHeadquarter::class)->name('afac.headquarterMedicine');
