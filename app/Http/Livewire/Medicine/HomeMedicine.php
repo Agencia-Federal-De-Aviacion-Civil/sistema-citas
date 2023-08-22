@@ -36,16 +36,20 @@ class HomeMedicine extends Component
     public $confirmModal = false, $modal = false;
     public $medicineQueries, $medicineReserves, $medicineInitials, $medicineRenovations, $id_medicineReserve, $idMedicine, $savedMedicineId, $scheduleMedicines, $medicine_schedule_id;
     // MEDICINE INITIAL TABLE
-    public $question, $date, $dateNow;
+    public $question, $date, $idTypeAppointment;
     public $document_authorization, $type_exam_revaloration_id;
     protected $listeners = [
         'saveDisabledDays' => '$refresh',
     ];
     public function mount()
     {
-        Date::setLocale('es');
-        $this->dateNow = Date::now()->format('l j F Y');
-        $this->typeExams = TypeExam::all();
+        $savedMedicineId = session('idType');
+        $this->idTypeAppointment = $savedMedicineId;
+        $this->typeExams = TypeExam::when($this->idTypeAppointment, function ($query) {
+            return $query->whereIn('id', [1, 2]);
+        }, function ($query) {
+            return $query->whereIn('id', [1, 2, 3, 4, 5]);
+        })->get();
         $this->sedes = collect();
         $this->userQuestions = MedicineQuestion::all();
         $this->questionClassess = collect();
@@ -53,15 +57,10 @@ class HomeMedicine extends Component
         $this->typeRenovationExams = collect();
         $this->scheduleMedicines = collect();
         $this->disabledDaysFilter = collect();
-
-        // $this->dateNow = Date::now()->format('Y-m-d');
     }
     public function rules()
     {
-        return [
-            'document_pay' => 'required|mimetypes:application/pdf|max:5000',
-            'reference_number' => 'required|unique:medicines',
-            'pay_date' => 'required',
+        $rules = [
             'type_exam_id' => 'required',
             'medicine_question_id' => 'required_if:type_exam_id,1',
             'type_class_id' => 'required',
@@ -72,17 +71,16 @@ class HomeMedicine extends Component
             'dateReserve' => 'required',
             'medicine_schedule_id' => 'required'
         ];
+        if ($this->idTypeAppointment === false) {
+            $rules['document_pay'] = 'required|mimetypes:application/pdf|max:5000';
+            $rules['reference_number'] = 'required|unique:medicines';
+            $rules['pay_date'] = 'required';
+        }
+        return $rules;
     }
     public function render()
     {
-        // dump($this->to_user_headquarters);
-        // $disabledDays = MedicineDisabledDays::pluck('disabled_days')->toArray();
-        // TODO ESTE CODIGO FUNCIONA
-        // dd($disabledDaysyes = MedicineDisabledDays::pluck('disabled_days'));
-        // $isDisabled = in_array($this->dateNow, $disabledDays);
-        // TODO NUEVO ALGORITMO
-        return view('livewire.medicine.home-medicine')
-            ->layout('layouts.app');
+        return view('livewire.medicine.home-medicine');
     }
     public function updated($propertyName)
     {
@@ -113,21 +111,32 @@ class HomeMedicine extends Component
 
     public function updatedTypeExamId($type_exam_id)
     {
-        $this->typeRenovationExams = TypeClass::where('type_exam_id', $type_exam_id)->get();
-        $this->sedes = Headquarter::where('system_id', 1)->where('status', false)->get();
-        if ($type_exam_id === '3' || $type_exam_id === '5') {
-            $type_exam_id = '2';
-            $this->typeRenovationExams = TypeClass::where('type_exam_id', $type_exam_id)->get();
-            $this->sedes = Headquarter::where('system_id', 1)->where('status', false)->get();
-        } else if ($type_exam_id === '4') {
-            $type_exam_id = '2';
-            $this->typeRenovationExams = TypeClass::where('type_exam_id', $type_exam_id)->get();
-            //SOLO SEDE CIUDAD DE MÉXICO
+        $type_exam_id_to_use = in_array($type_exam_id, ['3', '4', '5']) ? '2' : $type_exam_id;
+        $this->typeRenovationExams = TypeClass::where('type_exam_id', $type_exam_id_to_use)->get();
+        if ($type_exam_id === '4') {
+            // SOLO SEDE CIUDAD DE MÉXICO
             $this->sedes = Headquarter::where('system_id', 1)->where('status', false)->where('id', 6)->get();
         } else {
-            $this->typeRenovationExams = TypeClass::where('type_exam_id', $type_exam_id)->get();
-            $this->sedes = Headquarter::where('system_id', 1)->where('status', false)->get();
+            $this->sedes = Headquarter::when($this->idTypeAppointment, function ($query) {
+                return $query->where('is_external', true);
+            }, function ($query) {
+                return $query->where('is_external', false);
+            })->where('system_id', 1)->where('status', false)->get();
+            // $this->sedes = Headquarter::where('system_id', 1)->where('status', false)->get();
         }
+        // if ($type_exam_id === '3' || $type_exam_id === '5') {
+        //     $type_exam_id = '2';
+        //     $this->typeRenovationExams = TypeClass::where('type_exam_id', $type_exam_id)->get();
+        //     $this->sedes = Headquarter::where('system_id', 1)->where('status', false)->get();
+        // } else if ($type_exam_id === '4') {
+        //     $type_exam_id = '2';
+        //     $this->typeRenovationExams = TypeClass::where('type_exam_id', $type_exam_id)->get();
+        //     //SOLO SEDE CIUDAD DE MÉXICO
+        //     $this->sedes = Headquarter::where('system_id', 1)->where('status', false)->where('id', 6)->get();
+        // } else {
+        //     $this->typeRenovationExams = TypeClass::where('type_exam_id', $type_exam_id)->get();
+        //     $this->sedes = Headquarter::where('system_id', 1)->where('status', false)->get();
+        // }
     }
     public function updatedTypeClassId($type_class_id)
     {
@@ -220,18 +229,6 @@ class HomeMedicine extends Component
             'disabledDaysFilter' => $disabledDaysArray
         ]);
     }
-    // public function updatedDateReserve($value)
-    // {
-    //     $this->scheduleMedicines = MedicineSchedule::where('user_id', $this->to_user_headquarters)
-    //         ->whereNotIn('id', function ($query) use ($value) {
-    //             $query->select('medicine_schedule_id')
-    //                 ->from('medicine_reserves')
-    //                 ->where('to_user_headquarters', $this->to_user_headquarters)
-    //                 ->where('dateReserve', $value);
-    //         })
-    //         ->orderBy('time_start')
-    //         ->get();
-    // }
     public function openModalPdf()
     {
         $this->confirmModal = false;
@@ -394,18 +391,18 @@ class HomeMedicine extends Component
                     'icon'        => 'error'
                 ]);
             } else {
-                // $extension = $this->document_pay->extension();
-                $extension = $this->document_pay->getClientOriginalExtension();
-                $fileName = $this->reference_number . '-' . $this->pay_date . '.' . $extension;
-                $saveDocument = Document::create([
-                    // 'name_document' => $this->document_pay->storeAs('uploads/citas-app/medicine', $this->reference_number . '-' . $this->pay_date .  '.' . $extension, 'do'),
-                    'name_document' => $this->document_pay->storeAs('documentos/medicina', $fileName, 'public'),
-                ]);
+                if ($this->idTypeAppointment === false) {
+                    $extension = $this->document_pay->getClientOriginalExtension();
+                    $fileName = $this->reference_number . '-' . $this->pay_date . '.' . $extension;
+                    $saveDocument = Document::create([
+                        'name_document' => $this->document_pay->storeAs('documentos/medicina', $fileName, 'public'),
+                    ]);
+                }
                 $this->saveMedicine = Medicine::create([
                     'user_id' => Auth::user()->id,
-                    'reference_number' => $this->reference_number,
-                    'pay_date' => $this->pay_date,
-                    'document_id' => $saveDocument->id,
+                    'reference_number' => $this->reference_number ?? 'NO APLICA',
+                    'pay_date' => $this->pay_date ?? null,
+                    'document_id' => $saveDocument->id ?? null,
                     'type_exam_id' => $this->type_exam_id
                 ]);
                 if ($this->type_exam_id == 1) {
@@ -535,6 +532,7 @@ class HomeMedicine extends Component
                 $cita->headquarter_id = $this->headquarter_id;
                 $cita->dateReserve = $this->dateReserve;
                 $cita->medicine_schedule_id = $this->medicine_schedule_id;
+                $cita->is_external = $this->idTypeAppointment;
                 $cita->save();
                 session(['saved_medicine_id' => $this->saveMedicine->id]);
                 $this->generatePdf();
@@ -602,6 +600,7 @@ class HomeMedicine extends Component
     public function generatePdf()
     {
         $savedMedicineId = session('saved_medicine_id');
+        dd($idExternalInternal = $this->idTypeAppointment);
         $medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'medicineReserveHeadquarter'])
             ->where('medicine_id', $savedMedicineId)->get();
         $medicineId = $medicineReserves[0]->id;
@@ -609,9 +608,15 @@ class HomeMedicine extends Component
         $dateConvertedFormatted = Date::parse($dateAppointment)->format('l j F Y');
         $curp = $medicineReserves[0]->medicineReserveMedicine->medicineUser->userParticipant->pluck('curp')->first();
         $keyEncrypt =  Crypt::encryptString($medicineId . '*' . $dateAppointment . '*' . $curp);
-        $fileName = $medicineReserves[0]->dateReserve . '-' . $curp . '-' . 'MED-' . $medicineId . '.pdf';
+        if ($idExternalInternal === false) {
+            $fileName = $medicineReserves[0]->dateReserve . '-' . $curp . '-' . 'MED-EXT-' . $medicineId . '.pdf';
+        } else if ($idExternalInternal === true) {
+            $fileName = $medicineReserves[0]->dateReserve . '-' . $curp . '-' . 'MED-' . $medicineId . '.pdf';
+        } else {
+            dd($idExternalInternal ?? 'NO EXITE');
+        }
         if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 1) {
-            $pdf = PDF::loadView('livewire.medicine.documents.medicine-initial', compact('medicineReserves', 'keyEncrypt', 'dateConvertedFormatted'));
+            $pdf = PDF::loadView('livewire.medicine.documents.medicine-initial', compact('medicineReserves', 'keyEncrypt', 'dateConvertedFormatted', 'idExternalInternal'));
             return $pdf->download($fileName);
         } else if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 2) {
             $pdf = PDF::loadView('livewire.medicine.documents.medicine-renovation', compact('medicineReserves', 'keyEncrypt', 'dateConvertedFormatted'));

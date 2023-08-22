@@ -7,57 +7,40 @@
     @if ($modal)
         @include('livewire.medicine.modals.readyPdf')
     @endif
-    @livewire('medicine.modals.modal-index')
-    <div class="relative py-6 lg:py-4">
-        <img class="z-0 w-full h-full absolute inset-0 object-cover" src="{{ asset('images/banner_testing.jpg') }}"
-            alt="bg" />
-        <div
-            class="z-10 relative container px-6 mx-auto flex flex-col md:flex-row items-start md:items-center justify-between">
-            <div>
-                <h4 tabindex="0" class="focus:outline-none text-2xl font-bold leading-tight text-white">Generación
-                    de
-                    citas medicina de Aviación</h4>
-                <ul class="flex flex-col md:flex-row items-start md:items-center text-gray-300 text-sm mt-3">
-                    <li class="flex items-center mt-4 md:mt-0">
-                        <div class="mr-1">
-                            <img src="https://tuk-cdn.s3.amazonaws.com/can-uploader/background_with_sub_text-svg3.svg"
-                                alt="date">
-                        </div>
-                        <span tabindex="0" class="focus:outline-none">
-                            {{ $dateNow }}
-                        </span>
-                        {{-- <p>Estado de la conexión: <span id="connection-status"></span></p> --}}
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
+    @if ($idTypeAppointment == 0)
+        @livewire('medicine.modals.modal-index')
+    @endif
+    <x-banner-component :title="$idTypeAppointment == 0
+        ? 'Generación de citas medicina de Aviación AFAC'
+        : 'Generación de citas medicina de Aviación Terceros'" />
+    <x-errors></x-errors>
     <div class="py-12">
         <div class="container mx-auto px-4 py-4 bg-white shadow-xl sm:rounded-lg">
             <div class="mt-12 max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <form wire:submit.prevent="save">
-                    </button>
-                    <div class="bg-blue-50 border border-blue-200 rounded-md p-4" role="alert">
-                        <div class="flex">
-                            <div class="flex-shrink-0">
-                                <svg class="h-4 w-4 text-blue-600 mt-1" xmlns="http://www.w3.org/2000/svg"
-                                    width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                                    <path
-                                        d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
-                                </svg>
-                            </div>
-                            <div class="ml-4">
-                                <h3 class="text-gray-800 font-semibold">
-                                    Verifique la información
-                                </h3>
-                                <div class="mt-2 text-sm text-gray-600">
-                                    Por favor verifique que la sede seleccionada del pago corresponda con la de su
-                                    preferencia para su evaluación médica.
+                    @if ($idTypeAppointment == 0)
+                        <div class="bg-blue-50 border border-blue-200 rounded-md p-4" role="alert">
+                            <div class="flex">
+                                <div class="flex-shrink-0">
+                                    <svg class="h-4 w-4 text-blue-600 mt-1" xmlns="http://www.w3.org/2000/svg"
+                                        width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                        <path
+                                            d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
+                                    </svg>
                                 </div>
-                            </div>
+                                <div class="ml-4">
+                                    <h3 class="text-gray-800 font-semibold">
+                                        Verifique la información
+                                    </h3>
+                                    <div class="mt-2 text-sm text-gray-600">
+                                        Por favor verifique que la sede seleccionada del pago corresponda con la de su
+                                        preferencia para su evaluación médica.
+                                    </div>
+                                </div>
 
+                            </div>
                         </div>
-                    </div>
+                    @endif
                     <div x-cloak x-data="{
                         tipoExamen: @entangle('type_exam_id'),
                         question: @entangle('medicine_question_id'),
@@ -75,59 +58,66 @@
                             <div class="container md:px-2 lg:px-5 py-0 mx-auto flex flex-wrap">
                                 <div class="flex flex-wrap w-full">
                                     <div class="lg:w-full md:w-full md:pr-10 md:py-6">
-                                        <div class="flex relative pb-6">
-                                            <div class="h-full w-10 absolute inset-0 flex items-center justify-center">
-                                                <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
-                                            </div>
-                                            <div
-                                                class="flex-shrink-0 w-10 h-10 rounded-full bg-sky-700 inline-flex items-center justify-center text-white relative z-10">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                                    class="w-6 h-6">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M7.5 3.75H6A2.25 2.25 0 003.75 6v1.5M16.5 3.75H18A2.25 2.25 0 0120.25 6v1.5m0 9V18A2.25 2.25 0 0118 20.25h-1.5m-9 0H6A2.25 2.25 0 013.75 18v-1.5M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                </svg>
-                                            </div>
-                                            <div class="flex-grow pl-4">
-                                                <div class="grid xl:grid-cols-4 xl:gap-6">
-                                                    <div class="mt-1 relative z-0 w-full group">
-                                                        <x-input x-ref="payment" wire:model.lazy="reference_number"
-                                                            label="INGRESA LA LLAVE DE PAGO" placeholder="INGRESE..." />
-                                                    </div>
-                                                    <div class="mt-1 relative z-auto w-full group">
-                                                        <x-input wire:model.lazy="pay_date" id="fecha-pago"
-                                                            label="FECHA DE PAGO" placeholder="INGRESE..." readonly />
-                                                    </div>
-                                                    {{-- comprobante de pago --}}
-                                                    <div class="mt-1 relative w-full group xl:col-span-2">
-                                                        <label for="small"
-                                                            class="block text-sm font-medium text-gray-900 dark:text-white">ADJUNTA
-                                                            EL COMPROBANTE DE PAGO</label>
-                                                        <label for="file-input" class="sr-only">Adjunta el
-                                                            comprobante</label>
-                                                        <input type="file" wire:model="document_pay" x-ref="file"
-                                                            accept=".pdf" @change="fileName = $refs.file.files[0].name"
-                                                            class="block w-full border border-gray-200 shadow-sm rounded-md text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 file:bg-transparent file:border-0 file:bg-gray-100 file:mr-4 file:py-2.5 file:px-4 dark:file:bg-gray-700 dark:file:text-gray-400">
-                                                        <div class="float-left">
-                                                            <div wire:loading wire:target="document_pay">
-                                                                Subiendo...
-                                                                <div style="color: #0404059a" class="la-ball-fall">
-                                                                    <div></div>
-                                                                    <div></div>
-                                                                    <div></div>
+                                        @if ($idTypeAppointment == 0)
+                                            <div class="flex relative pb-6">
+                                                <div
+                                                    class="h-full w-10 absolute inset-0 flex items-center justify-center">
+                                                    <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
+                                                </div>
+                                                <div
+                                                    class="flex-shrink-0 w-10 h-10 rounded-full bg-sky-700 inline-flex items-center justify-center text-white relative z-10">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                        class="w-6 h-6">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M7.5 3.75H6A2.25 2.25 0 003.75 6v1.5M16.5 3.75H18A2.25 2.25 0 0120.25 6v1.5m0 9V18A2.25 2.25 0 0118 20.25h-1.5m-9 0H6A2.25 2.25 0 013.75 18v-1.5M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                    </svg>
+                                                </div>
+                                                <div class="flex-grow pl-4">
+                                                    <div class="grid xl:grid-cols-4 xl:gap-6">
+                                                        <div class="mt-1 relative z-0 w-full group">
+                                                            <x-input x-ref="payment" wire:model.lazy="reference_number"
+                                                                label="INGRESA LA LLAVE DE PAGO"
+                                                                placeholder="INGRESE..." />
+                                                        </div>
+                                                        <div class="mt-1 relative z-auto w-full group">
+                                                            <x-input wire:model.lazy="pay_date" id="fecha-pago"
+                                                                label="FECHA DE PAGO" placeholder="INGRESE..."
+                                                                readonly />
+                                                        </div>
+                                                        {{-- comprobante de pago --}}
+                                                        <div class="mt-1 relative w-full group xl:col-span-2">
+                                                            <label for="small"
+                                                                class="block text-sm font-medium text-gray-900 dark:text-white">ADJUNTA
+                                                                EL COMPROBANTE DE PAGO</label>
+                                                            <label for="file-input" class="sr-only">Adjunta el
+                                                                comprobante</label>
+                                                            <input type="file" wire:model="document_pay"
+                                                                x-ref="file" accept=".pdf"
+                                                                @change="fileName = $refs.file.files[0].name"
+                                                                class="block w-full border border-gray-200 shadow-sm rounded-md text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 file:bg-transparent file:border-0 file:bg-gray-100 file:mr-4 file:py-2.5 file:px-4 dark:file:bg-gray-700 dark:file:text-gray-400">
+                                                            <div class="float-left">
+                                                                <div wire:loading wire:target="document_pay">
+                                                                    Subiendo...
+                                                                    <div style="color: #0404059a" class="la-ball-fall">
+                                                                        <div></div>
+                                                                        <div></div>
+                                                                        <div></div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
+                                                            @error('document_pay')
+                                                                <span
+                                                                    class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
+                                                            @enderror
                                                         </div>
-                                                        @error('document_pay')
-                                                            <span
-                                                                class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
-                                                        @enderror
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        @endif
                                         {{-- paso1 --}}
-                                        <div x-show="fileName != ''" class="flex relative pb-6">
+                                        <div x-show="{{ $idTypeAppointment }} == 1 ? 'fileName' !== '' : true"
+                                            class="flex relative pb-6">
                                             <div class="h-full w-10 absolute inset-0 flex items-center justify-center">
                                                 <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
                                             </div>
@@ -145,7 +135,7 @@
                                                     class="block mb-2 text-base font-medium text-gray-900 dark:text-white">¿QUE
                                                     TIPO DE EXÁMEN VAS A REALIZAR?</label>
                                                 <select id="small" x-ref="tipoExamen" wire:model.lazy="type_exam_id"
-                                                    wire:change="resetQuestions()" placeholder="seleccione..." 
+                                                    wire:change="resetQuestions()" placeholder="seleccione..."
                                                     class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                                     <option value="" selected>Seleccione...</option>
                                                     @foreach ($typeExams as $typeExam)
@@ -177,15 +167,15 @@
                                             <div class="flex-grow pl-4">
                                                 <div x-show="tipoExamen ==='3'">
                                                     <label for="small"
-                                                    class="block mb-2 text-base font-medium text-gray-900 dark:text-white">ADJUNTAR
-                                                    LA AUTORIZACIÓN POR PARTE DE LA AGENCIA FEDERAL DE AVIACIÓN
-                                                    CIVIL</label>
+                                                        class="block mb-2 text-base font-medium text-gray-900 dark:text-white">ADJUNTAR
+                                                        LA AUTORIZACIÓN POR PARTE DE LA AGENCIA FEDERAL DE AVIACIÓN
+                                                        CIVIL</label>
                                                 </div>
                                                 <div x-show="tipoExamen ==='5'">
                                                     <label for="small"
-                                                    class="block mb-2 text-base font-medium text-gray-900 dark:text-white">ADJUNTAR
-                                                    EL DICTAMEN POR PARTE DE LA AGENCIA FEDERAL DE AVIACIÓN
-                                                    CIVIL</label>
+                                                        class="block mb-2 text-base font-medium text-gray-900 dark:text-white">ADJUNTAR
+                                                        EL DICTAMEN POR PARTE DE LA AGENCIA FEDERAL DE AVIACIÓN
+                                                        CIVIL</label>
                                                 </div>
                                                 <label for="file-input" class="sr-only">Adjunta el
                                                     documento</label>
@@ -229,13 +219,13 @@
                                                 <label for="typerva"
                                                     class="block mb-2 text-base font-medium text-gray-900 dark:text-white">¿QUE
                                                     TIPO DE REVALORACIÓN VAS A REALIZAR?</label>
-                                                    <select id="typerva" x-model="typerevalora"
+                                                <select id="typerva" x-model="typerevalora"
                                                     wire:model.lazy="type_exam_revaloration_id"
                                                     class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                        <option value="0" selected>Seleccione...</option>
-                                                        <option value="1" selected>INICIAL</option>
-                                                        <option value="2" selected>RENOVACIÓN</option>
-                                                    </select>
+                                                    <option value="0" selected>Seleccione...</option>
+                                                    <option value="1" selected>INICIAL</option>
+                                                    <option value="2" selected>RENOVACIÓN</option>
+                                                </select>
                                                 @error('type_exam_revaloration_id')
                                                     <span
                                                         class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
@@ -433,9 +423,9 @@
                                                             @endforeach
                                                         </select>
                                                         @error('headquarter_id')
-                                                        <span
-                                                            class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
-                                                    @enderror
+                                                            <span
+                                                                class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
+                                                        @enderror
                                                     </div>
                                                     <div class="text-base relative z-auto w-full mt-2 group">
                                                         <x-input x-ref="reservedate" wire:model.lazy="dateReserve"

@@ -81,10 +81,13 @@
         </center>
     </footer>
     <div>
-        {{-- <img src="{{ public_path('images/AFAC1.png') }}" width="130" height="100" alt=""> --}}
         <img src="{{ public_path('images/banner2023afac.png') }}" width="450" height="45" alt="">
         <div class="cuadrado-2">
-            <p>Folio de cita: <b>MED-{{ $medicineReserves[0]->id }}</b></p>
+            @if ($idExternalInternal === false)
+                <p>Folio de cita: <b>MED-{{ $medicineReserves[0]->id }}</b></p>
+            @else
+                <p>Folio de cita: <b>MED-EXT-{{ $medicineReserves[0]->id }}</b></p>
+            @endif
         </div>
         <div class="titulo">
             <h3>ACUSE DE CITA PARA EXAMEN MÉDICO INICIAL</h3>
