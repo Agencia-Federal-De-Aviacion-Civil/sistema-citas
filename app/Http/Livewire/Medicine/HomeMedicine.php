@@ -236,6 +236,7 @@ class HomeMedicine extends Component
     }
     public function returnDashboard()
     {
+        session()->forget('idType');
         return redirect()->route('afac.home');
     }
     public function downloadpdf()
@@ -600,7 +601,7 @@ class HomeMedicine extends Component
     public function generatePdf()
     {
         $savedMedicineId = session('saved_medicine_id');
-        dd($idExternalInternal = $this->idTypeAppointment);
+        $idExternalInternal = session('idType');
         $medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'medicineReserveHeadquarter'])
             ->where('medicine_id', $savedMedicineId)->get();
         $medicineId = $medicineReserves[0]->id;
@@ -608,12 +609,10 @@ class HomeMedicine extends Component
         $dateConvertedFormatted = Date::parse($dateAppointment)->format('l j F Y');
         $curp = $medicineReserves[0]->medicineReserveMedicine->medicineUser->userParticipant->pluck('curp')->first();
         $keyEncrypt =  Crypt::encryptString($medicineId . '*' . $dateAppointment . '*' . $curp);
-        if ($idExternalInternal === false) {
-            $fileName = $medicineReserves[0]->dateReserve . '-' . $curp . '-' . 'MED-EXT-' . $medicineId . '.pdf';
-        } else if ($idExternalInternal === true) {
+        if (!$idExternalInternal) {
             $fileName = $medicineReserves[0]->dateReserve . '-' . $curp . '-' . 'MED-' . $medicineId . '.pdf';
         } else {
-            dd($idExternalInternal ?? 'NO EXITE');
+            $fileName = $medicineReserves[0]->dateReserve . '-' . $curp . '-' . 'MED-EXT-' . $medicineId . '.pdf';
         }
         if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 1) {
             $pdf = PDF::loadView('livewire.medicine.documents.medicine-initial', compact('medicineReserves', 'keyEncrypt', 'dateConvertedFormatted', 'idExternalInternal'));

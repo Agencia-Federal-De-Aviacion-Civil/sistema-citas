@@ -12,7 +12,6 @@ class Dashboard extends Component
     }
     public function goAfac($idTypeAppointment)
     {
-        $this->emit('typeAp', $idTypeAppointment);
         $currentIdType = session('idType');
         if ($currentIdType !== $idTypeAppointment) {
             session()->forget('idType');

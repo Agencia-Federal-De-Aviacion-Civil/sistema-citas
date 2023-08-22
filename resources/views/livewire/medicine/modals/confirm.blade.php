@@ -27,12 +27,6 @@
                             class="py-2  text-lg font-semibold text-center text-gray-800 capitalize xl:text-2xl lg:text-xl dark:text-white">
                             Verifica tus datos de la <span class="text-sky-700 ">Cita</span>
                         </h1>
-                        {{-- <button wire:click="test()">GENERAR</button> --}}
-                        {{-- <div class="flex justify-center mx-auto mt-2">
-                            <span class="inline-block w-40 h-1 bg-sky-600 rounded-full"></span>
-                            <span class="inline-block w-3 h-1 mx-1 bg-sky-600 rounded-full"></span>
-                            <span class="inline-block w-1 h-1 bg-sky-600 rounded-full"></span>
-                        </div> --}}
                         <br>
                         <x-errors
                             title="Se han encontrado {errors} campo(s) vacio(s), por favor completalos para continuar..." />
@@ -629,15 +623,15 @@
                                         </svg>
                                         {{-- dependiendo de revaloración --}}
                                         @if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 5)
-                                        <p class="text-lg title-font font-normal">
-                                            Revaloración post Flexibilidad
-                                        </p>
+                                            <p class="text-lg title-font font-normal">
+                                                Revaloración post Flexibilidad
+                                            </p>
                                         @else
-                                        <p class="text-lg title-font font-normal">Tipo de revaloración:
+                                            <p class="text-lg title-font font-normal">Tipo de revaloración:
                                             <p class="text-xl font-semibold">
                                                 {{ $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->RevaluationTypeExam->name }}
                                             </p>
-                                        </p>
+                                            </p>
                                         @endif
                                     </div>
                                 </div>
@@ -695,7 +689,7 @@
                                             @else
                                                 @foreach ($medicineReserves[0]->medicineReserveMedicine->medicineRevaluation as $initialEach)
                                                     {{ $initialEach->revaluationMedicineInitial[0]->revaluationInitialClasificationClass->name }}
-                                                @endforeach 
+                                                @endforeach
                                                 {{-- TODO FALTA TERMINAR EL FOREACH DE INICIAL CUANDO EL USUARIO SELEECIONA QUE NO --}}
                                             @endif
                                         @else
