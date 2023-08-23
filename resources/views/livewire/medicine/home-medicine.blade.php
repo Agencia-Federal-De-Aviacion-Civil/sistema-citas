@@ -7,10 +7,10 @@
     @if ($modal)
         @include('livewire.medicine.modals.readyPdf')
     @endif
-    @if ($idTypeAppointment == 0)
+    @if ($idTypeAppointment === false)
         @livewire('medicine.modals.modal-index')
     @endif
-    <x-banner-component :title="$idTypeAppointment == 0
+    <x-banner-component :title="$idTypeAppointment === false
         ? 'Generación de citas medicina de Aviación AFAC'
         : 'Generación de citas medicina de Aviación Terceros'" />
     <x-errors></x-errors>
