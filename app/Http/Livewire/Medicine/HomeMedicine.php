@@ -36,7 +36,7 @@ class HomeMedicine extends Component
     public $confirmModal = false, $modal = false;
     public $medicineQueries, $medicineReserves, $medicineInitials, $medicineRenovations, $id_medicineReserve, $idMedicine, $savedMedicineId, $scheduleMedicines, $medicine_schedule_id;
     // MEDICINE INITIAL TABLE
-    public $question, $date, $idTypeAppointment;
+    public $question, $date, $idTypeAppointment, $idTypeAppointmentPass;
     public $document_authorization, $type_exam_revaloration_id;
     protected $listeners = [
         'saveDisabledDays' => '$refresh',
@@ -550,6 +550,8 @@ class HomeMedicine extends Component
     }
     public function openConfirm()
     {
+        $typeAppointment = $this->idTypeAppointment;
+        $this->idTypeAppointmentPass = $typeAppointment;
         $this->medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'medicineReserveHeadquarter', 'reserveSchedule'])
             ->where('medicine_id', $this->saveMedicine->id)->get();
         $dateConverted = $this->medicineReserves[0]->dateReserve;
