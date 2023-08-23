@@ -195,8 +195,6 @@ class AppointmentTable extends DataTableComponent
 
                 Column::make("HORA", "reserveSchedule.time_start")
                     ->sortable(),
-                BooleanColumn::make("ES TERCEROS", "is_external")->yesNo()
-                    ->sortable(),
                 Column::make("ACCIÓN")
                     ->label(
                         fn ($row) => view(
