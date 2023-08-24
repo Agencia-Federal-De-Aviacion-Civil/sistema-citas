@@ -1,10 +1,10 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\Permissions;
 
 use Illuminate\View\Component;
 
-class ActionRoles extends Component
+class RoleActionComponent extends Component
 {
     /**
      * Create a new component instance.
@@ -24,6 +24,6 @@ class ActionRoles extends Component
      */
     public function render()
     {
-        return view('components.action-roles');
+        return view('components.permissions.role-action-component');
     }
 }
