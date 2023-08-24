@@ -54,7 +54,7 @@
                                     </svg>
                                     <p class="text-lg title-font font-normal">Folio:
                                     <p class="text-xl text-sky-800 font-semibold">
-                                        @if ($idTypeAppointmentPass === false)
+                                        @if ($idAppointmentFull == 0)
                                             <p>Folio de cita: <b>MED-{{ $medicineReserves[0]->id }}</b></p>
                                         @else
                                             <p>Folio de cita: <b>MED-EXT-{{ $medicineReserves[0]->id }}</b></p>

@@ -36,15 +36,17 @@ class HomeMedicine extends Component
     public $confirmModal = false, $modal = false;
     public $medicineQueries, $medicineReserves, $medicineInitials, $medicineRenovations, $id_medicineReserve, $idMedicine, $savedMedicineId, $scheduleMedicines, $medicine_schedule_id;
     // MEDICINE INITIAL TABLE
-    public $question, $date, $idTypeAppointment, $idTypeAppointmentPass;
+    public $question, $date, $idTypeAppointment, $idAppointmentFull;
     public $document_authorization, $type_exam_revaloration_id;
     protected $listeners = [
         'saveDisabledDays' => '$refresh',
     ];
     public function mount()
     {
-        $savedMedicineId = session('idType');
-        $this->idTypeAppointment = $savedMedicineId;
+        $idIsExternal = session('idType');
+        $this->idTypeAppointment = $idIsExternal;
+        $boolTypeAppointment = $this->idTypeAppointment;
+        $this->idAppointmentFull = $boolTypeAppointment ? 1 : 0;
         $this->typeExams = TypeExam::when($this->idTypeAppointment, function ($query) {
             return $query->whereIn('id', [1, 2]);
         }, function ($query) {
@@ -71,7 +73,7 @@ class HomeMedicine extends Component
             'dateReserve' => 'required',
             'medicine_schedule_id' => 'required'
         ];
-        if ($this->idTypeAppointment === false) {
+        if (!$this->idTypeAppointment) {
             $rules['document_pay'] = 'required|mimetypes:application/pdf|max:5000';
             $rules['reference_number'] = 'required|unique:medicines';
             $rules['pay_date'] = 'required';
@@ -234,11 +236,6 @@ class HomeMedicine extends Component
         $this->confirmModal = false;
         $this->modal = true;
     }
-    public function returnDashboard()
-    {
-        session()->forget('idType');
-        return redirect()->route('afac.home');
-    }
     public function downloadpdf()
     {
         return response()->download(public_path('documents/Formatos_Cita_medica.pdf'));
@@ -392,7 +389,7 @@ class HomeMedicine extends Component
                     'icon'        => 'error'
                 ]);
             } else {
-                if ($this->idTypeAppointment === false) {
+                if (!$this->idTypeAppointment) {
                     $extension = $this->document_pay->getClientOriginalExtension();
                     $fileName = $this->reference_number . '-' . $this->pay_date . '.' . $extension;
                     $saveDocument = Document::create([
@@ -550,8 +547,7 @@ class HomeMedicine extends Component
     }
     public function openConfirm()
     {
-        $typeAppointment = $this->idTypeAppointment;
-        $this->idTypeAppointmentPass = $typeAppointment;
+        $this->idAppointmentFull;
         $this->medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'medicineReserveHeadquarter', 'reserveSchedule'])
             ->where('medicine_id', $this->saveMedicine->id)->get();
         $dateConverted = $this->medicineReserves[0]->dateReserve;
@@ -603,7 +599,7 @@ class HomeMedicine extends Component
     public function generatePdf()
     {
         $savedMedicineId = session('saved_medicine_id');
-        $idExternalInternal = session('idType');
+        $idExternalInternal = session('idType'); //TODO 
         $medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'medicineReserveHeadquarter'])
             ->where('medicine_id', $savedMedicineId)->get();
         $medicineId = $medicineReserves[0]->id;
@@ -632,6 +628,11 @@ class HomeMedicine extends Component
             $pdf = PDF::loadView('livewire.medicine.documents.medicine-flexibility', compact('medicineReserves', 'keyEncrypt', 'dateConvertedFormatted'));
             return $pdf->download($fileName);
         }
+    }
+    public function returnDashboard()
+    {
+        session()->forget('idType');
+        return redirect()->route('afac.home');
     }
     public function messages()
     {

@@ -12,10 +12,11 @@ class Dashboard extends Component
     }
     public function goAfac($idTypeAppointment)
     {
-        $currentIdType = session('idType');
-        if ($currentIdType !== $idTypeAppointment) {
-            session()->forget('idType');
-        }
+        // $currentIdType = session('idType');
+        // dd($currentIdType);
+        // if ($currentIdType !== $idTypeAppointment) {
+        //     session()->forget('idType');
+        // }
         session(['idType' => $idTypeAppointment]);
         redirect()->route('afac.medicine');
     }
