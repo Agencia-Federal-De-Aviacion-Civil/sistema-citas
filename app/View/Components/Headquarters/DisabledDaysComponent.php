@@ -1,10 +1,10 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\Headquarters;
 
 use Illuminate\View\Component;
 
-class ActionDisabledDaysComponent extends Component
+class DisabledDaysComponent extends Component
 {
     /**
      * Create a new component instance.
@@ -24,6 +24,6 @@ class ActionDisabledDaysComponent extends Component
      */
     public function render()
     {
-        return view('components.action-disabled-days-component');
+        return view('components.headquarters.disabled-days-component');
     }
 }

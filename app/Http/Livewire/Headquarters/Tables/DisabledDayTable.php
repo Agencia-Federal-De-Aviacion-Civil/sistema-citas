@@ -48,7 +48,7 @@ class DisabledDayTable extends DataTableComponent
             Column::make("ACCIÓN")
                 ->label(
                     fn ($row) => view(
-                        'components.action-disabled-days-component',
+                        'components.headquarters.disabled-days-component',
                         [
                             // $userId = Headquarter::where('id', $row->id)->get(),
                             'actionId' => $row->id,

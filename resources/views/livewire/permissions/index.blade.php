@@ -4,5 +4,5 @@
         <x-button wire:click="$emit('openModal', 'permissions.modals.create-update-modal')"
             icon="pencil" primary label="AÑADIR" />
     </div>
-    <livewire:permission-table />
+    {{-- <livewire:permission-table /> --}}
 </div>

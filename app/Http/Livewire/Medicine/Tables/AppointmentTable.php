@@ -148,7 +148,7 @@ class AppointmentTable extends DataTableComponent
                 Column::make("ACCIÓN")
                     ->label(
                         fn ($row) => view(
-                            'components.schedule-component',
+                            'components.medicine.appointment-actions-component',
                             [
                                 $action = MedicineReserve::where('id', $row->id)->get(),
                                 'status' => $action[0]->status,
@@ -198,7 +198,7 @@ class AppointmentTable extends DataTableComponent
                 Column::make("ACCIÓN")
                     ->label(
                         fn ($row) => view(
-                            'components.schedule-component',
+                            'components.medicine.appointment-actions-component',
                             [
                                 $action = MedicineReserve::where('id', $row->id)->get(),
                                 'status' => $action[0]->status,
@@ -297,7 +297,7 @@ class AppointmentTable extends DataTableComponent
                 Column::make("ACCIÓN")
                     ->label(
                         fn ($row) => view(
-                            'components.schedule-component',
+                            'components.medicine.appointment-actions-component',
                             [
                                 $action = MedicineReserve::where('id', $row->id)->get(),
                                 'status' => $action[0]->status,
@@ -404,7 +404,7 @@ class AppointmentTable extends DataTableComponent
                 Column::make("ACCIÓN")
                     ->label(
                         fn ($row) => view(
-                            'components.schedule-component',
+                            'components.medicine.appointment-actions-component',
                             [
                                 $action = MedicineReserve::where('id', $row->id)->get(),
                                 'status' => $action[0]->status,
