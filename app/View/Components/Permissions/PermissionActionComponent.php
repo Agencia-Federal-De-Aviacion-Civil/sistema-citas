@@ -1,10 +1,10 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\Permissions;
 
 use Illuminate\View\Component;
 
-class ActionPermission extends Component
+class PermissionActionComponent extends Component
 {
     /**
      * Create a new component instance.
@@ -23,6 +23,6 @@ class ActionPermission extends Component
      */
     public function render()
     {
-        return view('components.action-permission');
+        return view('components.permissions.permission-action-component');
     }
 }
