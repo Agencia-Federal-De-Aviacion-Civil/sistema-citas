@@ -1,8 +1,7 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\Headquarters;
 
-use App\Models\UserHeadquarter;
 use Illuminate\View\Component;
 
 class EditHeadquarter extends Component
@@ -15,8 +14,6 @@ class EditHeadquarter extends Component
     public $userId;
     public function __construct($userId)
     {
-        // $this->userHeadquarters = UserHeadquarter::where('id', $this->userId)->get();
-        // $this->userId = $userId;
     }
 
     /**
@@ -26,6 +23,6 @@ class EditHeadquarter extends Component
      */
     public function render()
     {
-        return view('components.edit-headquarter');
+        return view('components.headquarters.edit-headquarter');
     }
 }

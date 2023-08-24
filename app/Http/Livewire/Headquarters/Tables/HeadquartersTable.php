@@ -50,7 +50,7 @@ class HeadquartersTable extends DataTableComponent
             Column::make("ACCIÓN", 'id')
                 ->format(
                     fn ($value) => view(
-                        'components.edit-headquarter',
+                        'components.headquarters.edit-headquarter',
                         [
                             $userHeadquarters = UserHeadquarter::where('headquarter_id', $value)->get(),
                             'userId' => $value,
