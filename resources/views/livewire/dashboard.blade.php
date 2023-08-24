@@ -64,7 +64,7 @@
                                         </svg>
                                         <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
                                             ¿EN DONDE REALIZARAS TU CITA?</h3>
-                                        <div class="py-6 flex justify-center items-center">
+                                        {{-- <div class="py-6 flex justify-center items-center">
                                             <button wire:click.prevent='goAfac(false)'
                                                 class="text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
                                                 AGENCIA FEDERAL DE AVIACIÓN CIVIL
@@ -73,7 +73,30 @@
                                                 class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
                                                 INSTITUCIONES PARA TERCEROS
                                             </button>
+                                        </div> --}}
+                                        <div class="grid grid-cols-1 gap-4 mt-4 xl:mt-4 md:grid-cols-2 xl:grid-cols-2">
+                                            <button wire:click.prevent='goAfac(false)'>
+                                                <div
+                                                    class="flex flex-col items-center p-3 transition-colors duration-300 transform border cursor-pointer rounded-xl hover:border-transparent group hover:bg-gray-100 dark:border-gray-700 dark:hover:border-transparent">
+                                                    <img class="object-cover w-24" src="{{ asset('images/AFAC1.png') }}"
+                                                        alt="">
+                                                    <p
+                                                        class="mt-2 text-gray-500 capitalize dark:text-gray-300 group-hover:text-gray-600">
+                                                        Agencia Federal de Aviación Civil</p>
+                                                </div>
+                                            </button>
+                                            <button wire:click.prevent='goAfac(true)'>
+                                                <div
+                                                    class="flex flex-col items-center p-3 transition-colors duration-300 transform border cursor-pointer rounded-xl hover:border-transparent group hover:bg-gray-100 dark:border-gray-700 dark:hover:border-transparent">
+                                                    <img class="object-cover w-20" src="{{asset('images/saludlogo.png')}}"
+                                                        alt="">
+                                                    <p
+                                                        class="mt-2 text-gray-500 capitalize dark:text-gray-300 group-hover:text-gray-600">
+                                                        Instituciones para terceros</p>
+                                                </div>
+                                            </button>
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
