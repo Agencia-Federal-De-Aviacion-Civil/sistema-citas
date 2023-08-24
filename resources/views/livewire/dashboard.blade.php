@@ -75,7 +75,7 @@
                                             </button>
                                         </div> --}}
                                         <div class="grid grid-cols-1 gap-4 mt-4 xl:mt-4 md:grid-cols-2 xl:grid-cols-2">
-                                            <button wire:click.prevent='goAfac(false)'>
+                                            <button class="hover:animate-pulse" wire:click.prevent='goAfac(false)'>
                                                 <div
                                                     class="flex flex-col items-center p-3 transition-colors duration-300 transform border cursor-pointer rounded-xl hover:border-transparent group hover:bg-gray-100 dark:border-gray-700 dark:hover:border-transparent">
                                                     <img class="object-cover w-24" src="{{ asset('images/AFAC1.png') }}"
@@ -85,7 +85,7 @@
                                                         Agencia Federal de Aviación Civil</p>
                                                 </div>
                                             </button>
-                                            <button wire:click.prevent='goAfac(true)'>
+                                            <button class="hover:animate-pulse" wire:click.prevent='goAfac(true)'>
                                                 <div
                                                     class="flex flex-col items-center p-3 transition-colors duration-300 transform border cursor-pointer rounded-xl hover:border-transparent group hover:bg-gray-100 dark:border-gray-700 dark:hover:border-transparent">
                                                     <img class="object-cover w-20" src="{{asset('images/saludlogo.png')}}"
