@@ -36,7 +36,7 @@ class PermissionTable extends DataTableComponent
             Column::make("ACCIÓN")
                 ->label(
                     fn ($row) => view(
-                        'permissions.permission-action-component',
+                        'components.permissions.permission-action-component',
                         [
                             'permissionId' => $row->id
                         ]
