@@ -13,6 +13,7 @@ class RoleTable extends DataTableComponent
     public function configure(): void
     {
         $this->setPrimaryKey('id');
+        $this->setDefaultSort('id', 'asc');
     }
     public function columns(): array
     {
