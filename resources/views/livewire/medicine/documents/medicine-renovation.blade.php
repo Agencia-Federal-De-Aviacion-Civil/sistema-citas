@@ -144,9 +144,16 @@
                 <td>EVALUACIÓN MEDICA</td>
             </tr>
             <tr>
-                <td>UNIDAD MÉDICA:</td>
-                <td><b>{{ $medicineReserves[0]->medicineReserveHeadquarter->name_headquarter }}</b></p>
-                </td>
+                @if ($idExternalInternal === false)
+                    <td>UNIDAD MÉDICA:</td>
+                    <td> <b>{{ $medicineReserves[0]->medicineReserveHeadquarter->name_headquarter }}</b></p>
+                    </td>
+                @else
+                    <td>MÉDICO EXAMINADOR AUTORIZADO:</td>
+                    <td> <b>{{ $medicineReserves[0]->medicineReserveHeadquarter->HeadquarterUserHeadquarter[0]->userHeadquarterUserParticipant->userParticipantUser->name . ' ' . $medicineReserves[0]->medicineReserveHeadquarter->HeadquarterUserHeadquarter[0]->userHeadquarterUserParticipant->apParental . ' ' . $medicineReserves[0]->medicineReserveHeadquarter->HeadquarterUserHeadquarter[0]->userHeadquarterUserParticipant->apMaternal }}</b>
+                        </p>
+                    </td>
+                @endif
             </tr>
             <tr>
                 <td>DIRECCIÓN SEDE:</td>
@@ -161,10 +168,12 @@
                 <td>HORA</td>
                 <td>{{ $medicineReserves[0]->reserveSchedule->time_start }}</td>
             </tr>
-            <tr>
-                <td>LLAVE DE PAGO</td>
-                <td>{{ $medicineReserves[0]->medicineReserveMedicine->reference_number }}</td>
-            </tr>
+            @if ($idExternalInternal === false)
+                <tr>
+                    <td>LLAVE DE PAGO</td>
+                    <td>{{ $medicineReserves[0]->medicineReserveMedicine->reference_number }}</td>
+                </tr>
+            @endif
         </table>
         <div class="codigoqr">
             <img src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ $keyEncrypt }}"
@@ -338,6 +347,11 @@
             </table>
             <p> <b> Nota: </b>Para todos los casos se deberá contar con la nota médica o valoración del especialista de
                 cabecera que lleve control de su padecimiento</p>
+        </div>
+        <div class="cuadrado-2" style="margin-top: 70%">
+            @if ($idExternalInternal === true)
+                {{ $thirdAppointment . '/' . $medicineReserves[0]->medicineReserveHeadquarter->headquarterSchedule->max_schedules }}
+            @endif
         </div>
         {{--
         <p>*Pasos para el registro de la toma de tensión arterial:</p>
