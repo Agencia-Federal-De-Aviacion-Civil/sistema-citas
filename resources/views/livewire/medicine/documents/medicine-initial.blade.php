@@ -8,7 +8,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
     <title>
-        {{-- {{ $printQuery->appointmentUser->name . ' ' . $printQuery->appointmentUser->apParental . ' ' . $printQuery->appointmentUser->apMaternal }} --}}
+        {{-- {{ $printQuery->appointmentUser->name . ' ' . $printQuery->appointmentUser->apParental . ' ' .
+        $printQuery->appointmentUser->apMaternal }} --}}
     </title>
 </head>
 <style>
@@ -84,9 +85,9 @@
         <img src="{{ public_path('images/banner2023afac.png') }}" width="450" height="45" alt="">
         <div class="cuadrado-2">
             @if ($idExternalInternal === false)
-                <p>Folio de cita: <b>MED-{{ $medicineReserves[0]->id }}</b></p>
+            <p>Folio de cita: <b>MED-{{ $medicineReserves[0]->id }}</b></p>
             @else
-                <p>Folio de cita: <b>MED-EXT-{{ $medicineReserves[0]->id }}</b></p>
+            <p>Folio de cita: <b>MED-EXT-{{ $medicineReserves[0]->id }}</b></p>
             @endif
         </div>
         <div class="titulo">
@@ -96,12 +97,18 @@
             <tr>
                 <td>NOMBRE:</td>
                 <td>
-                    {{ ($medicineReserves[0]->medicineReserveMedicine->medicineUser->name ?? 'SIN INFORMACIÓN') . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apParental')->first() . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apMaternal')->first() }}
+                    {{ ($medicineReserves[0]->medicineReserveMedicine->medicineUser->name ?? 'SIN INFORMACIÓN') . ' ' .
+                    $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apParental')->first()
+                    . ' ' .
+                    $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apMaternal')->first()
+                    }}
                 </td>
             </tr>
             <tr>
                 <td>CURP:</td>
-                <td>{{ $medicineReserves[0]->medicineReserveMedicine->medicineUser->userParticipant->pluck('curp')->first() ?? 'SIN INFORMACIÓN' }}
+                <td>{{
+                    $medicineReserves[0]->medicineReserveMedicine->medicineUser->userParticipant->pluck('curp')->first()
+                    ?? 'SIN INFORMACIÓN' }}
                 </td>
             </tr>
             <tr>
@@ -117,25 +124,28 @@
             <tr>
                 <td>TIPO DE CLASE:</td>
                 <td>
-                    {{ $medicineReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name ?? 'SIN INFORMACIÓN' }}
+                    {{ $medicineReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name
+                    ?? 'SIN INFORMACIÓN' }}
                 </td>
             </tr>
             <tr>
                 <td>TIPO DE LICENCIA:</td>
                 <td>
-                    {{-- {{ ($medicineReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass->name ?? 'SIN INFORMACIÓN') }} --}}
+                    {{-- {{
+                    ($medicineReserves[0]->medicineReserveMedicine->medicineInitial[0]->medicineInitialClasificationClass->name
+                    ?? 'SIN INFORMACIÓN') }} --}}
                     @foreach ($medicineReserves[0]->medicineReserveMedicine->medicineInitial as $inicialEach)
-                        {{-- MAS DE UNA LICENCIA --}}
-                        @if ($medicineReserves[0]->medicineReserveMedicine->medicineInitial->count() > 1)
-                            <ul>
-                                <li>
-                                    {{ $inicialEach->medicineInitialClasificationClass->name ?? 'SIN INFORMACIÓN' }}
-                                </li>
-                            </ul>
-                        @else
-                            {{-- UNA SOLA LICENCIA --}}
+                    {{-- MAS DE UNA LICENCIA --}}
+                    @if ($medicineReserves[0]->medicineReserveMedicine->medicineInitial->count() > 1)
+                    <ul>
+                        <li>
                             {{ $inicialEach->medicineInitialClasificationClass->name ?? 'SIN INFORMACIÓN' }}
-                        @endif
+                        </li>
+                    </ul>
+                    @else
+                    {{-- UNA SOLA LICENCIA --}}
+                    {{ $inicialEach->medicineInitialClasificationClass->name ?? 'SIN INFORMACIÓN' }}
+                    @endif
                     @endforeach
 
                 </td>
@@ -149,14 +159,20 @@
             </tr> --}}
             <tr>
                 @if ($idExternalInternal === false)
-                    <td>UNIDAD MÉDICA:</td>
-                    <td> <b>{{ $medicineReserves[0]->medicineReserveHeadquarter->name_headquarter }}</b></p>
-                    </td>
+                <td>UNIDAD MÉDICA:</td>
+                <td> <b>{{ $medicineReserves[0]->medicineReserveHeadquarter->name_headquarter }}</b></p>
+                </td>
                 @else
-                    <td>MÉDICO EXAMINADOR AUTORIZADO:</td>
-                    <td> <b>{{ $medicineReserves[0]->medicineReserveHeadquarter->HeadquarterUserHeadquarter[0]->userHeadquarterUserParticipant->userParticipantUser->name . ' ' . $medicineReserves[0]->medicineReserveHeadquarter->HeadquarterUserHeadquarter[0]->userHeadquarterUserParticipant->apParental . ' ' . $medicineReserves[0]->medicineReserveHeadquarter->HeadquarterUserHeadquarter[0]->userHeadquarterUserParticipant->apMaternal }}</b>
-                        </p>
-                    </td>
+                <td>MÉDICO EXAMINADOR AUTORIZADO:</td>
+                <td> <b>{{
+                        $medicineReserves[0]->medicineReserveHeadquarter->HeadquarterUserHeadquarter[0]->userHeadquarterUserParticipant->userParticipantUser->name
+                        . ' ' .
+                        $medicineReserves[0]->medicineReserveHeadquarter->HeadquarterUserHeadquarter[0]->userHeadquarterUserParticipant->apParental
+                        . ' ' .
+                        $medicineReserves[0]->medicineReserveHeadquarter->HeadquarterUserHeadquarter[0]->userHeadquarterUserParticipant->apMaternal
+                        }}</b>
+                    </p>
+                </td>
                 @endif
             </tr>
             <tr>
@@ -173,16 +189,17 @@
                 <td>{{ $medicineReserves[0]->reserveSchedule->time_start }}</td>
             </tr>
             @if ($idExternalInternal === false)
-                <tr>
-                    <td>LLAVE DE PAGO</td>
-                    <td>{{ $medicineReserves[0]->medicineReserveMedicine->reference_number }}</td>
-                </tr>
+            <tr>
+                <td>LLAVE DE PAGO</td>
+                <td>{{ $medicineReserves[0]->medicineReserveMedicine->reference_number }}</td>
+            </tr>
             @endif
         </table>
         <div class="codigoqr">
-            <img src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ $keyEncrypt }}"
-                width="120" height="120" />
-            {{-- <img src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ route('validateUrl', $keyEncrypt) }}"
+            <img src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ $keyEncrypt }}" width="120"
+                height="120" />
+            {{-- <img
+                src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ route('validateUrl', $keyEncrypt) }}"
                 width="120" height="120" /> --}}
         </div>
         <div style="background-color: #e6e6e6;height: 25px;">
@@ -303,14 +320,16 @@
                     <p style="padding-left:3%">D) Prueba de detección de VIH (Anticuerpos).</p>
                     <p style="padding-left:3%">E) Prueba de detección de sustancias psicoactivas en orina, de 5
                         reactivos (Cocaína, Cannabinoides (Marihuana), Opiaceos, Anfetaminas y Benzodiazepinas).</p>
-                    <p style="padding-left:3%">F) En el caso del <u>examen médico inicial</u>, presentar radiografía de tórax
+                    <p style="padding-left:3%">F) En el caso del <u>examen médico inicial</u>, presentar radiografía de
+                        tórax
                         posteroanterior, y para el <u>examen médico de renovación</u> como a continuación se indica:</p>
                     <p style="padding-left:5%;margin-top:-2%">1. Clase I – cada 3 años.</p>
                     <p style="padding-left:5%;margin-top:-2%">2. Clase II – cada 3 años.</p>
                     <p style="padding-left:5%;margin-top:-2%">3. Clase III – cada 3 años.</p>
                     <p style="padding-left:5%;margin-top:-2%">4. O antes a indicación de su médico examinador.</p>
                 </li>
-                <p style="margin-top:-2%">****En caso de hacer cita en la Unidad Médica Aeropuerto Ciudad de México no será necesario presentar RX de Tórax</p>
+                <p style="margin-top:-2%">****En caso de hacer cita en la Unidad Médica Aeropuerto Ciudad de México no
+                    será necesario presentar RX de Tórax</p>
                 <li>Los estudios previamente descritos deberán tener fecha de emisión no mayor a un mes.
                 </li>
             </ol>
@@ -363,11 +382,12 @@
             <p> <b> Nota: </b>Para todos los casos se deberá contar con la nota médica o valoración del
                 especialista de cabecera que lleve control de su padecimiento</p>
         </div>
+        @if ($idExternalInternal === true)
         <div class="cuadrado-2" style="margin-top: 70%">
-            @if ($idExternalInternal === true)
-                {{ $thirdAppointment . '/' . $medicineReserves[0]->medicineReserveHeadquarter->headquarterSchedule->max_schedules }}
-            @endif
+            {{ $thirdAppointment . '/' .
+            $medicineReserves[0]->medicineReserveHeadquarter->headquarterSchedule->max_schedules }}
         </div>
+        @endif
         {{-- <p>*Pasos para el registro de la toma de tensión arterial:</p>
         <ol>
             <li value="1">Recuerde la medida de la presión arterial consta de 2 números presión sistólica sobre

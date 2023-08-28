@@ -85,9 +85,9 @@
         <img src="{{ public_path('images/banner2023afac.png') }}" width="450" height="45" alt="">
         <div class="cuadrado-2">
             @if ($idExternalInternal === false)
-                <p>Folio de cita: <b>MED-{{ $medicineReserves[0]->id }}</b></p>
+            <p>Folio de cita: <b>MED-{{ $medicineReserves[0]->id }}</b></p>
             @else
-                <p>Folio de cita: <b>MED-EXT-{{ $medicineReserves[0]->id }}</b></p>
+            <p>Folio de cita: <b>MED-EXT-{{ $medicineReserves[0]->id }}</b></p>
             @endif
         </div>
         <div class="titulo">
@@ -97,13 +97,19 @@
             <tr>
                 <td>NOMBRE:</td>
                 <td>
-                    {{ $medicineReserves[0]->medicineReserveMedicine->medicineUser->name . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apParental')->first() . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apMaternal')->first() }}
+                    {{ $medicineReserves[0]->medicineReserveMedicine->medicineUser->name . ' ' .
+                    $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apParental')->first()
+                    . ' ' .
+                    $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apMaternal')->first()
+                    }}
                 </td>
             </tr>
             <tr>
                 <td>CURP:</td>
                 <td>
-                    {{ $medicineReserves[0]->medicineReserveMedicine->medicineUser->userParticipant->pluck('curp')->first() }}
+                    {{
+                    $medicineReserves[0]->medicineReserveMedicine->medicineUser->userParticipant->pluck('curp')->first()
+                    }}
                 </td>
             </tr>
             <tr>
@@ -118,24 +124,25 @@
             <tr>
                 <td>TIPO DE CLASE:</td>
                 <td>
-                    {{ $medicineReserves[0]->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name }}
+                    {{ $medicineReserves[0]->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name
+                    }}
                 </td>
             </tr>
             <tr>
                 <td>TIPO DE LICENCIA:</td>
                 <td>
                     @foreach ($medicineReserves[0]->medicineReserveMedicine->medicineRenovation as $renovationEach)
-                        {{-- MAS DE UNA LICENCIA --}}
-                        @if ($medicineReserves[0]->medicineReserveMedicine->medicineRenovation->count() > 1)
-                            <ul>
-                                <li>
-                                    {{ $renovationEach->renovationClasificationClass->name }}
-                                </li>
-                            </ul>
-                        @else
-                            {{-- UNA SOLA LICENCIA --}}
+                    {{-- MAS DE UNA LICENCIA --}}
+                    @if ($medicineReserves[0]->medicineReserveMedicine->medicineRenovation->count() > 1)
+                    <ul>
+                        <li>
                             {{ $renovationEach->renovationClasificationClass->name }}
-                        @endif
+                        </li>
+                    </ul>
+                    @else
+                    {{-- UNA SOLA LICENCIA --}}
+                    {{ $renovationEach->renovationClasificationClass->name }}
+                    @endif
                     @endforeach
                 </td>
             </tr>
@@ -145,14 +152,20 @@
             </tr>
             <tr>
                 @if ($idExternalInternal === false)
-                    <td>UNIDAD MÉDICA:</td>
-                    <td> <b>{{ $medicineReserves[0]->medicineReserveHeadquarter->name_headquarter }}</b></p>
-                    </td>
+                <td>UNIDAD MÉDICA:</td>
+                <td> <b>{{ $medicineReserves[0]->medicineReserveHeadquarter->name_headquarter }}</b></p>
+                </td>
                 @else
-                    <td>MÉDICO EXAMINADOR AUTORIZADO:</td>
-                    <td> <b>{{ $medicineReserves[0]->medicineReserveHeadquarter->HeadquarterUserHeadquarter[0]->userHeadquarterUserParticipant->userParticipantUser->name . ' ' . $medicineReserves[0]->medicineReserveHeadquarter->HeadquarterUserHeadquarter[0]->userHeadquarterUserParticipant->apParental . ' ' . $medicineReserves[0]->medicineReserveHeadquarter->HeadquarterUserHeadquarter[0]->userHeadquarterUserParticipant->apMaternal }}</b>
-                        </p>
-                    </td>
+                <td>MÉDICO EXAMINADOR AUTORIZADO:</td>
+                <td> <b>{{
+                        $medicineReserves[0]->medicineReserveHeadquarter->HeadquarterUserHeadquarter[0]->userHeadquarterUserParticipant->userParticipantUser->name
+                        . ' ' .
+                        $medicineReserves[0]->medicineReserveHeadquarter->HeadquarterUserHeadquarter[0]->userHeadquarterUserParticipant->apParental
+                        . ' ' .
+                        $medicineReserves[0]->medicineReserveHeadquarter->HeadquarterUserHeadquarter[0]->userHeadquarterUserParticipant->apMaternal
+                        }}</b>
+                    </p>
+                </td>
                 @endif
             </tr>
             <tr>
@@ -169,15 +182,15 @@
                 <td>{{ $medicineReserves[0]->reserveSchedule->time_start }}</td>
             </tr>
             @if ($idExternalInternal === false)
-                <tr>
-                    <td>LLAVE DE PAGO</td>
-                    <td>{{ $medicineReserves[0]->medicineReserveMedicine->reference_number }}</td>
-                </tr>
+            <tr>
+                <td>LLAVE DE PAGO</td>
+                <td>{{ $medicineReserves[0]->medicineReserveMedicine->reference_number }}</td>
+            </tr>
             @endif
         </table>
         <div class="codigoqr">
-            <img src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ $keyEncrypt }}"
-                width="120" height="120" />
+            <img src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ $keyEncrypt }}" width="120"
+                height="120" />
         </div>
         <div style="background-color: #e6e6e6;height: 25px; ">
             <h3 class="titulo2">REQUISITOS</h3>
@@ -259,8 +272,8 @@
         </div>
         <footer>
             <div class="codigoqr">
-                <img src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ $keyEncrypt }}"
-                    width="120" height="120" />
+                <img src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ $keyEncrypt }}" width="120"
+                    height="120" />
             </div>
         </footer>
         {{-- PAGINA 2 --}} {{--
@@ -274,31 +287,46 @@
                 </li>
                 <li>No suspender medicación prescrita.</u>
                 </li>
-                <li>En caso de haber tenido algún procedimiento dental, esperar mínimo 72 horas posteriores al mismo para agendar su cita.
+                <li>En caso de haber tenido algún procedimiento dental, esperar mínimo 72 horas posteriores al mismo
+                    para agendar su cita.
                 </li>
-                <li>En caso de haber sido diagnosticado con alguna(s) enfermedad(es) crónica(s) (enfermedades cardiacas, respiratorias, hipertiroidismo, etc.), presentar un resumen clínico expedido por su médico tratante de especialidad acorde a la patología
+                <li>En caso de haber sido diagnosticado con alguna(s) enfermedad(es) crónica(s) (enfermedades cardiacas,
+                    respiratorias, hipertiroidismo, etc.), presentar un resumen clínico expedido por su médico tratante
+                    de especialidad acorde a la patología
                     y estudios
-                    <b>adicionales (ver Anexo)</b> con vigencia no mayor a 2 meses para acreditar el estado actual de salud.
+                    <b>adicionales (ver Anexo)</b> con vigencia no mayor a 2 meses para acreditar el estado actual de
+                    salud.
                 </li>
-                <li>En caso de presentar disminución en la agudeza visual, deberá presentarse con lentes de armazón o de contacto con graduación actualizada. Si alterna el uso de ambos, deberá presentarlos. Para el personal de pilotos en caso de usar lentes
+                <li>En caso de presentar disminución en la agudeza visual, deberá presentarse con lentes de armazón o de
+                    contacto con graduación actualizada. Si alterna el uso de ambos, deberá presentarlos. Para el
+                    personal de pilotos en caso de usar lentes
                     de contacto deberá acudir con sus lentes de armazón de repuesto.
                 </li>
-                <li>En caso de encontrarse embarazada, presentar constancia de control del mismo actualizada y hacerle saber al servicio de rayos X al acudir a su examen.
+                <li>En caso de encontrarse embarazada, presentar constancia de control del mismo actualizada y hacerle
+                    saber al servicio de rayos X al acudir a su examen.
                 </li>
-                <li>Acudir con los estudios de laboratorio que a continuación se enlistan, los cuales deberán realizarse en una institución acreditada por la <b>Norma ISO15189-2012</b>, deberá contener: nombre de la institución, dirección, nombre completo
-                    del laboratorista, su cédula profesional y número telefónico, a fin de que la Autoridad de Aviación Civil cuente con los elementos para acreditar su validez:
+                <li>Acudir con los estudios de laboratorio que a continuación se enlistan, los cuales deberán realizarse
+                    en una institución acreditada por la <b>Norma ISO15189-2012</b>, deberá contener: nombre de la
+                    institución, dirección, nombre completo
+                    del laboratorista, su cédula profesional y número telefónico, a fin de que la Autoridad de Aviación
+                    Civil cuente con los elementos para acreditar su validez:
                     <p style="padding-left:3%">A) Biometría hemática.</p>
-                    <p style="padding-left:3%">B) Química sanguínea de 6 elementos (Glucosa, Nitrógeno Ureico en Sangre, Creatinina, Ácido úrico, Colesterol total y Triglicéridos).</p>
+                    <p style="padding-left:3%">B) Química sanguínea de 6 elementos (Glucosa, Nitrógeno Ureico en Sangre,
+                        Creatinina, Ácido úrico, Colesterol total y Triglicéridos).</p>
                     <p style="padding-left:3%">C) Examen General de Orina.</p>
                     <p style="padding-left:3%">D) Prueba de detección de VIH (Anticuerpos).</p>
-                    <p style="padding-left:3%">E) Prueba de detección de sustancias psicoactivas en orina, de 5 reactivos (Cocaína, Cannabinoides (Marihuana), Opiaceos, Anfetaminas y Benzodiazepinas).</p>
-                    <p style="padding-left:3%">F) En el caso del <u>examen médico inicial</u>, presentar radiografía de tórax posteroanterior, y para el <u>examen médico de renovación</u> como a continuación se indica:</p>
+                    <p style="padding-left:3%">E) Prueba de detección de sustancias psicoactivas en orina, de 5
+                        reactivos (Cocaína, Cannabinoides (Marihuana), Opiaceos, Anfetaminas y Benzodiazepinas).</p>
+                    <p style="padding-left:3%">F) En el caso del <u>examen médico inicial</u>, presentar radiografía de
+                        tórax posteroanterior, y para el <u>examen médico de renovación</u> como a continuación se
+                        indica:</p>
                     <p style="padding-left:5%;margin-top:-2%">1. Clase I – cada 3 años.</p>
                     <p style="padding-left:5%;margin-top:-2%">2. Clase II – cada 3 años.</p>
                     <p style="padding-left:5%;margin-top:-2%">3. Clase III – cada 3 años.</p>
                     <p style="padding-left:5%;margin-top:-2%">4. O antes a indicación de su médico examinador.</p>
                 </li>
-                <p style="margin-top:-2%">****En caso de hacer cita en la Unidad Médica Aeropuerto Ciudad de México no será necesario presentar RX de Tórax</p>
+                <p style="margin-top:-2%">****En caso de hacer cita en la Unidad Médica Aeropuerto Ciudad de México no
+                    será necesario presentar RX de Tórax</p>
                 <li>Los estudios previamente descritos deberán tener fecha de emisión no mayor a un mes.
                 </li>
             </ol>
@@ -348,21 +376,25 @@
             <p> <b> Nota: </b>Para todos los casos se deberá contar con la nota médica o valoración del especialista de
                 cabecera que lleve control de su padecimiento</p>
         </div>
+        @if ($idExternalInternal === true)
         <div class="cuadrado-2" style="margin-top: 70%">
-            @if ($idExternalInternal === true)
-                {{ $thirdAppointment . '/' . $medicineReserves[0]->medicineReserveHeadquarter->headquarterSchedule->max_schedules }}
-            @endif
+            {{ $thirdAppointment . '/' .
+            $medicineReserves[0]->medicineReserveHeadquarter->headquarterSchedule->max_schedules }}
         </div>
+        @endif
         {{--
         <p>*Pasos para el registro de la toma de tensión arterial:</p>
         <ol>
-            <li value="1">Recuerde la medida de la presión arterial consta de 2 números presión sistólica sobre diastólica (por ejemplo, 120/80)
+            <li value="1">Recuerde la medida de la presión arterial consta de 2 números presión sistólica sobre
+                diastólica (por ejemplo, 120/80)
             </li>
             <li>Elija una hora del día para su medición la cual deberá ser la misma durante los 10 días de medición.
             </li>
-            <li>Antes de realizarla asegúrese de no estar agitador permanezca 10 minutos sentado y tranquilo antes de realizar la medición.</u>
+            <li>Antes de realizarla asegúrese de no estar agitador permanezca 10 minutos sentado y tranquilo antes de
+                realizar la medición.</u>
             </li>
-            <li>Si lleva ropa de manga larga suba la manga lo mayor posible evitando que quede demasiado apretada, sino es posible, retire esa prenda.
+            <li>Si lleva ropa de manga larga suba la manga lo mayor posible evitando que quede demasiado apretada, sino
+                es posible, retire esa prenda.
             </li>
             <li>Asegúrese de haber colocado adecuadamente el aparto para la medición (siga las instrucciones de uso)
             </li>
@@ -375,7 +407,8 @@
                     <td colspan="5">Nombre del paciente:</td>
                 </tr>
                 <tr>
-                    <td colspan="5">Medicamentos que está tomando para la presión (anotar dosis y frecuencia) Ejemplo: Captopril 50 mg cada 24 hrs.
+                    <td colspan="5">Medicamentos que está tomando para la presión (anotar dosis y frecuencia) Ejemplo:
+                        Captopril 50 mg cada 24 hrs.
                     </td>
                 </tr>
                 <tr style="text-align: center;">
