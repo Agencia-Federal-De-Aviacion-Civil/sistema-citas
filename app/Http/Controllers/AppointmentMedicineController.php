@@ -11,7 +11,7 @@ class AppointmentMedicineController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['role:super_admin|user|medicine_admin|sub_headquarters|headquarters|super_admin_medicine|admin_medicine_v2']);
+        $this->middleware(['role:super_admin|user|medicine_admin|sub_headquarters|headquarters|super_admin_medicine|admin_medicine_v2|headquarters_authorized']);
     }
     public function index()
     {
@@ -44,10 +44,10 @@ class AppointmentMedicineController extends Controller
             })
             ->count();
         if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 1) {
-            $pdf = PDF::loadView('livewire.medicine.documents.medicine-initial', compact('medicineReserves', 'keyEncrypt', 'dateConvertedFormatted', 'idExternalInternal','thirdAppointment'));
+            $pdf = PDF::loadView('livewire.medicine.documents.medicine-initial', compact('medicineReserves', 'keyEncrypt', 'dateConvertedFormatted', 'idExternalInternal', 'thirdAppointment'));
             return $pdf->download($fileName);
         } else if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 2) {
-            $pdf = PDF::loadView('livewire.medicine.documents.medicine-renovation', compact('medicineReserves', 'keyEncrypt', 'dateConvertedFormatted', 'idExternalInternal','thirdAppointment'));
+            $pdf = PDF::loadView('livewire.medicine.documents.medicine-renovation', compact('medicineReserves', 'keyEncrypt', 'dateConvertedFormatted', 'idExternalInternal', 'thirdAppointment'));
             return $pdf->download($fileName);
         } else if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 3) {
             $pdf = PDF::loadView('livewire.medicine.documents.medicine-revaluation', compact('medicineReserves', 'keyEncrypt', 'dateConvertedFormatted'));
