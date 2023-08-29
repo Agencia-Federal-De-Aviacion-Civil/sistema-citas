@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Afac\Appointment\AfacHomeController;
 use App\Http\Controllers\Afac\Appointment\AppointmentController;
 use App\Http\Controllers\afac\homeController;
 use App\Http\Controllers\AppointmentMedicineController;
@@ -33,7 +34,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified'
 ])->group(function () {
-    Route::get('', [homeController::class, 'index'])->name('afac.home');
+    Route::get('', [AfacHomeController::class, 'index'])->name('afac.home');
     Route::middleware(['role:super_admin|user|medicine_admin'])->group(function () {
         Route::get('/medicine', HomeMedicine::class)->name('afac.medicine');
         Route::get('/linguistics', HomeLinguistics::class)->name('afac.linguistics');

@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\afac;
+namespace App\Http\Controllers\Afac\Appointment;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Medicine\MedicineReserve;
 use App\Models\Catalogue\Headquarter;
+use App\Models\Medicine\MedicineReserve;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Jenssegers\Date\Date;
 
-class homeController extends Controller
+class AfacHomeController extends Controller
 {
     public $headquarters, $dateNow;
     public function index()
@@ -55,10 +55,13 @@ class homeController extends Controller
             $appointment = MedicineReserve::query()
                 ->select('status', DB::raw('count(*) as count'), 'dateReserve')
                 ->groupBy('status', 'dateReserve')
+                ->where('is_external', false)
                 ->get();
             $headquarters = Headquarter::with([
                 'headquarterMedicineReserve'
-            ])->get();
+            ])
+                ->where('is_external', false)
+                ->get();
         }
 
         $appointmentNow = $appointment->where('dateReserve', $date1);
