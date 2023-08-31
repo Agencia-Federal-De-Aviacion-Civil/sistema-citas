@@ -1,6 +1,6 @@
 <div>
     @if ($status == 0)
-        @hasrole('sub_headquarters|super_admin|medicine_admin|super_admin_medicine|headquarters|admin_medicine_v2')
+        @hasrole('sub_headquarters|super_admin|medicine_admin|super_admin_medicine|headquarters|admin_medicine_v2|headquarters_authorized')
             <x-button
                 wire:click="$emit('openModal', 'medicine.modals.schedule', {{ json_encode(['scheduleId' => $scheduleId, 'medicineId' => $medicineId]) }})"
                 label="PENDIENTE" xs silver />
@@ -8,7 +8,7 @@
             <x-badge flat info label="PENDIENTE" />
         @endhasrole
     @elseif($status == 1)
-        @hasrole('super_admin|medicine_admin|super_admin_medicine|admin_medicine_v2|headquarters')
+        @hasrole('super_admin|medicine_admin|super_admin_medicine|admin_medicine_v2|headquarters|headquarters_authorized')
             <x-button
                 wire:click="$emit('openModal', 'medicine.modals.schedule', {{ json_encode(['scheduleId' => $scheduleId, 'medicineId' => $medicineId]) }})"
                 label=" ASISTIÓ " xs green />
@@ -48,7 +48,7 @@
             label="COMPLETAR DATOS" icon="status-offline" xs red />
     @endif
     @if ($status == 0)
-        @hasrole('sub_headquarters|super_admin|medicine_admin|super_admin_medicine|user|admin_medicine_v2')
+        @hasrole('sub_headquarters|super_admin|medicine_admin|super_admin_medicine|user|admin_medicine_v2|headquarters_authorized')
             <x-button xs positive href="{{ route('afac.downloadFile', $scheduleId) }}" label="DESCARGAR" />
         @endhasrole
     @endif

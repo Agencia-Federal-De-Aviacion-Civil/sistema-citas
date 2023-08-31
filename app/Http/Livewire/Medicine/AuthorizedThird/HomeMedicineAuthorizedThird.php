@@ -1,22 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\Afac\Appointment;
+namespace App\Http\Livewire\Medicine\AuthorizedThird;
 
-use App\Http\Controllers\Controller;
 use App\Models\Catalogue\Headquarter;
 use App\Models\Medicine\MedicineReserve;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Jenssegers\Date\Date;
+use Livewire\Component;
 
-class AfacHomeController extends Controller
+class HomeMedicineAuthorizedThird extends Component
 {
-    public $headquarters, $dateNow;
-    public function index()
+
+    public function render()
     {
-        Date::setLocale('es');
-        $dateNow = Date::now()->format('l j F Y');
         $date = Date::now()->format('l j F Y');
         $date1 = Date::now()->format('Y-m-d');
         $date2 = Date::now()->format('d-m-Y');
@@ -55,11 +52,12 @@ class AfacHomeController extends Controller
             $appointment = MedicineReserve::query()
                 ->select('status', DB::raw('count(*) as count'), 'dateReserve')
                 ->groupBy('status', 'dateReserve')
+                ->where('is_external', true)
                 ->get();
             $headquarters = Headquarter::with([
                 'headquarterMedicineReserve'
             ])
-                ->where('is_external', false)
+                ->where('is_external', true)
                 ->get();
         }
 
@@ -75,6 +73,6 @@ class AfacHomeController extends Controller
         $porreagendado = $registradas != 0 ? round($appointment->where('status', '4')->sum('count') * 100 / $registradas) : 0;
         $porcanceladas = $registradas != 0 ? round($appointment->whereIn('status', ['2', '3', '5'])->sum('count') * 100 / $registradas, 0) : 0;
         $medicine =  round($registradas ? $registradas * 100 / $registradas : '0');
-        return view('afac.dashboard.index', compact('headquarters', 'nameHeadquarter', 'registradas', 'pendientes', 'validado', 'canceladas', 'reagendado', 'porconfir', 'porpendientes', 'porreagendado', 'porcanceladas', 'now', 'date', 'date2', 'medicine', 'date1', 'tomorrow', 'dateNow'));
+        return view('livewire.medicine.authorized-third.home-medicine-authorized-third', compact('headquarters', 'nameHeadquarter', 'registradas', 'pendientes', 'validado', 'canceladas', 'reagendado', 'porconfir', 'porpendientes', 'porreagendado', 'porcanceladas', 'now', 'date', 'date2', 'medicine', 'date1', 'tomorrow'));
     }
 }
