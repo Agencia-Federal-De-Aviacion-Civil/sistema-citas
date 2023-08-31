@@ -10,7 +10,7 @@
                 </div>
             </div>
             <div class="grid xl:grid-cols-2 xl:gap-6">
-                @hasrole('super_admin')
+                @hasrole(['super_admin','super_admin_medicine'])
                     <div class="mt-4 relative w-full group">
                         <label for="systems"
                             class="block text-sm font-medium text-gray-900 dark:text-white">SISTEMA</label>
