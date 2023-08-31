@@ -259,12 +259,6 @@
                 <ul x-show="open" x-on:click.away="open = false"
                     class="bg-white text-gray-700 rounded shadow-lg absolute py-2 mt-1" style="min-width:15rem">
                     <li>
-                        <a href="{{ route('afac.medicine') }}"
-                            class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
-                            Generar cita
-                        </a>
-                    </li>
-                    <li>
                         <a href="{{ route('afac.appointment') }}"
                             class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
                             Citas agendadas
