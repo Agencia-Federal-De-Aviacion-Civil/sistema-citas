@@ -15,6 +15,6 @@
     @livewire('dashboard')
     @endcan
     @can('headquarters_authorized.see.dashboard')
-    JAJAJAJA
+    @include('afac.dashboard.dashboard_headquarters_third')
     @endcan
 </x-app-layout>
