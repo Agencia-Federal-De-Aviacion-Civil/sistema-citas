@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Medicine;
 use App\Http\Controllers\Controller;
 use App\Models\Catalogue\TypeExam;
 use App\Models\Linguistic\Reserve;
+use App\Models\Medicine\CertificateQr\MedicineCertificateQr;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -13,12 +14,19 @@ class UsersController extends Controller
     public function create(Request $request)
     {
         $request->validate([
-            'name' => 'required',
+            'medicine_reserves_id' => 'required',
+            'date_expire' => 'required',
+            'medical_name' => 'required',
+            'evaluation_result' => 'required',
+            'document_license_id' => 'required',
         ]);
-        $users = new TypeExam();
-        $users->name = $request->name;
+        $users = new MedicineCertificateQr();
+        $users->medicine_reserves_id = $request->medicine_reserves_id;
+        $users->date_expire = $request->date_expire;
+        $users->medical_name = $request->medical_name;
+        $users->evaluation_result = $request->evaluation_result;
+        $users->document_license_id = $request->document_license_id;
         $users->save();
-
         return response([
             "status" => 1,
             "message" => "éxitoso"
