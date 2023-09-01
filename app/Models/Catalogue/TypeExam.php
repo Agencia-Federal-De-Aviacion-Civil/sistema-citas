@@ -7,10 +7,12 @@ use App\Models\Medicine\MedicineRevaluation;
 use App\Models\Medicine\MedicineScheduleException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Sanctum\HasApiTokens;
 
 class TypeExam extends Model
 {
     use HasFactory;
+    use HasApiTokens;
     protected $guarded = ['id'];
     public function typeExamTypeClass()
     {
