@@ -115,7 +115,7 @@
                                         CITAS AFAC
                                     </a>
                                 </li>
-                                @can('authorized.see.table.third')
+                                @can('medicine.tables.appointment-third-table')
                                 <li class="mr-2">
                                     <a href="#"
                                         class="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50"
@@ -132,7 +132,7 @@
                                         @livewire('medicine.tables.appointment-table')
                                     </div>
                                 </div>
-                                @can('authorized.see.table.third')
+                                @can('medicine.tables.appointment-third-table')
                                 <div x-show="activeTab === 'afacThird'">
                                     <div class="mt-2">
                                         @livewire('medicine.tables.appointment-third-table')
