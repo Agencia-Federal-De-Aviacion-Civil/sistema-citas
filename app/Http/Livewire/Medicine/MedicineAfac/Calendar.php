@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Medicine;
+namespace App\Http\Livewire\Medicine\MedicineAfac;
 
 use Livewire\Component;
 use App\Models\Medicine\MedicineReserve;
@@ -28,6 +28,6 @@ class Calendar extends Component
             ];
         })->values();
         $this->events = json_encode($events);
-        return view('livewire.medicine.calendar');
+        return view('livewire.medicine.medicine-afac.calendar');
     }
 }

@@ -2,12 +2,13 @@
     <div class="bg-gray-100 text-gray-500 rounded shadow-xl py-5 px-5 w-full sm:w-full md:w-full lg:w-full">
         <div class="flex w-full">
             <h3 class="text-lg font-semibold leading-tight flex-1">TOTAL DE CITAS MEDICINA DE
-                AVIACIÓN TERCEROS</h3>
+                AVIACIÓN AFAC</h3>
         </div>
-        <div class="relative overflow-hidden transition-all duration-500">
+        <div class="relative overflow-hidden transition-all duration-500" x-ref="card"
+            x-bind:style="`max-height:${cardOpen?$refs.card.scrollHeight:0}px; opacity:${cardOpen?1:0}`">
             <div>
                 <div class="pb-4 lg:pb-6">
-                    <h4 class="text-2xl lg:text-3xl text-black font-semibold leading-tight inline-block" x-ref="totalext">
+                    <h4 class="text-2xl lg:text-3xl text-black font-semibold leading-tight inline-block" x-ref="total">
                         {{ $registradas }}</h4>
                 </div>
                 <div class="pb-4 lg:pb-6">
@@ -161,12 +162,11 @@
                 </div>
             </div>
         </div>
-       
         <div class="py-12">
             <div class="container mx-auto px-4 py-4 bg-white sm:rounded-lg">
                 <div class="mt-12 md:max-w-8xl  xs:max-w-4xl  mx-auto sm:px-6 lg:px-8">
                     <div class="ml-4 py-6 mr-4 uppercase md:text-sm xs:text-xs">
-                        @livewire('medicine.authorized-third.calendar', key('medicine.authorized-third.calendar-'))
+                        @livewire('medicine.medicine-afac.calendar')
                     </div>
                 </div>
             </div>

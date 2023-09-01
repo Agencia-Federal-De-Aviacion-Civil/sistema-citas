@@ -52,6 +52,7 @@
                         typerevalora: @entangle('type_exam_revaloration_id'),
                         filereval: '',
                         filedicta: '',
+                        typeappointment: '{{ $idTypeAppointment }}',
                     }">
                         {{-- estep --}}
                         <section class="text-gray-600 body-font">
@@ -116,7 +117,7 @@
                                             </div>
                                         @endif
                                         {{-- paso1 --}}
-                                        <div x-show="{{ $idTypeAppointment }} == 1 ? 'fileName' !== '' : true"
+                                        <div x-show="fileName != '' && typeappointment==0||typeappointment==1"
                                             class="flex relative pb-6">
                                             <div class="h-full w-10 absolute inset-0 flex items-center justify-center">
                                                 <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
