@@ -59,11 +59,11 @@
             @else
                 <x-button
                     wire:click="$emit('openModal', 'medicine.modals.schedule', {{ json_encode(['scheduleId' => $scheduleId, 'medicineId' => $medicineId]) }})"
-                    label="PAUSADA" xs default />
+                    label="REANUDAR" xs default />
                 <x-button xs positive href="{{ route('afac.downloadFile', $scheduleId) }}" label="DESCARGAR" />
             @endif
         @else
-            <x-badge flat default label="CITA PAUSADO" />
+            <x-badge flat default label="CITA APLAZADA" />
         @endhasrole
     @endif
 

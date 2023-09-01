@@ -14,7 +14,7 @@
                     @elseif ($this->status == 4)
                     CITA REAGENDADA
                     @elseif ($this->status == 7)
-                    CITA PAUSADA
+                    CITA APLAZADA
                     @endif
                 </h3>
                 <div x-data="{ selectedOption: '' }">
@@ -133,7 +133,7 @@
                             <option value="2">CANCELAR CITA</option>
 
                             @if ($status != 7)
-                            <option value="7">PAUSAR CITA</option>
+                            <option value="7">APLAZAR CITA</option>
                             @endif
 
                             @hasrole('super_admin|medicine_admin|super_admin_medicine|admin_medicine_v2')
