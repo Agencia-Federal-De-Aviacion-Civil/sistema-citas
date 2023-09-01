@@ -29,19 +29,19 @@ class UsersController extends Controller
     }
     public function list(Request $request)
     {
-        if ($request->header('Authorization') === 'Bearer 2|4ZWgUwhajRaJQyQv40tBvMVHzh1YU1EWN9GMTtGZ') {
+        // if ($request->header('Authorization') === 'Bearer 2|4ZWgUwhajRaJQyQv40tBvMVHzh1YU1EWN9GMTtGZ') {
             $userList = User::all();
             return response([
                 "status" => 1,
                 "message" => "Lista de usuarios",
                 "data" => $userList
             ]);
-        } else {
-            return response([
-                "status" => 0,
-                "message" => "No autorizado",
-            ], 401);
-        }
+        // } else {
+        //     return response([
+        //         "status" => 0,
+        //         "message" => "No autorizado",
+        //     ], 401);
+        // }
     }
     public function show()
     {
