@@ -213,7 +213,22 @@ class Schedule extends ModalComponent
                 $cita->save();
                 $this->emit('reserveAppointment');
             }
-        } else {
+        } elseif ($this->selectedOption == 7) {
+
+            $medicineObservation = MedicineObservation::updateOrCreate(
+                ['id' => $this->id_medicine_observation],
+                [
+                    'medicine_reserve_id' => $this->scheduleId,
+                    'observation' => $this->observation,
+                    'status' => 7,
+                ]);
+            $postponeReserve = MedicineReserve::find($this->scheduleId);
+            $postponeReserve->update([
+                'status' => $this->selectedOption,
+            ]);
+            $this->emit('postponeReserve');
+            $accion = 'PAUSO CITA';
+        }else{
             $citas = MedicineReserve::where('headquarter_id', $this->headquarter_id)
                 ->where('dateReserve', $this->dateReserve)
                 ->where(function ($query) {

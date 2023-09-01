@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Date;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateFilter;
@@ -16,14 +17,20 @@ use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 use Rappasoft\LaravelLivewireTables\Views\Filters\TextFilter;
 use WireUi\Traits\Actions;
 
+use function Deployer\parse;
+
 class AppointmentThirdTable extends DataTableComponent
 {
     use Actions;
     public $batchId;
     public $exporting;
     public $exportFinished;
+    public $fecha;
     public function configure(): void
     {
+        Date::setLocale('es');
+        $this->fecha = Carbon::now()->timezone('America/Mexico_City');
+
         $this->setPrimaryKey('id');
         $this->setBulkActions([
             'exportSelected' => 'EXPORTAR'
@@ -40,6 +47,7 @@ class AppointmentThirdTable extends DataTableComponent
         return array_merge(
             parent::getListeners(),
             [
+                'postponeReserve' => '$refresh',
                 'cancelReserve' => '$refresh',
                 'attendeReserve' => '$refresh',
                 'reserveAppointment' => '$refresh',
@@ -129,6 +137,10 @@ class AppointmentThirdTable extends DataTableComponent
                                 'status' => $action[0]->status,
                                 'scheduleId' => $action[0]->id,
                                 'medicineId' => $action[0]->medicine_id,
+                                $fechaEspera = new Carbon($action[0]->dateReserve,'America/Mexico_City'),
+                                $diasEspera = $this->fecha->diffInDays($fechaEspera),
+                                'days' => $diasEspera,
+
                             ]
                         )
                     ),
@@ -299,6 +311,9 @@ class AppointmentThirdTable extends DataTableComponent
                                 'status' => $action[0]->status,
                                 'scheduleId' => $action[0]->id,
                                 'medicineId' => $action[0]->medicine_id,
+                                $fechaEspera = new Carbon($action[0]->dateReserve,'America/Mexico_City'),
+                                $diasEspera = $this->fecha->diffInDays($fechaEspera),
+                                'days' => $diasEspera,
                             ]
                         )
                     ),
@@ -454,12 +469,16 @@ class AppointmentThirdTable extends DataTableComponent
                 'medicineReserveMedicine', 'medicineReserveFromUser', 'userParticipantUser',
             ])->where('medicine_reserves.is_external', true);
         } else if (Auth::user()->can('user.see.schedule.table')) {
+
             return MedicineReserve::query()->with([
                 'medicineReserveMedicine', 'medicineReserveFromUser', 'userParticipantUser',
             ])->whereHas('medicineReserveMedicine', function ($q1) {
                 $q1->where('user_id', Auth::user()->id);
-            })->where('medicine_reserves.is_external', true);
-        } else if (Auth::user()->can('headquarters_authorized.see.table')) {
+            });
+
+
+        } else
+        if (Auth::user()->can('headquarters_authorized.see.table')) {
             return MedicineReserve::query()->with([
                 'medicineReserveMedicine', 'medicineReserveFromUser', 'userParticipantUser', 'medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant',
             ])->whereHas('medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q1) {
