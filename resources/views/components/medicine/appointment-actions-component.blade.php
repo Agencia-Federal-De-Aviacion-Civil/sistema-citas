@@ -54,12 +54,12 @@
             @if ($days > 20)
                 <x-button
                     wire:click="$emit('openModal', 'medicine.modals.schedule', {{ json_encode(['scheduleId' => $scheduleId, 'medicineId' => $medicineId]) }})"
-                    label="PAUSA EXPIRADA" xs red />
+                    label="EL PLAZO EXPIRO" xs red />
                 <x-button xs positive href="{{ route('afac.downloadFile', $scheduleId) }}" label="DESCARGAR" />
             @else
                 <x-button
                     wire:click="$emit('openModal', 'medicine.modals.schedule', {{ json_encode(['scheduleId' => $scheduleId, 'medicineId' => $medicineId]) }})"
-                    label="REANUDAR" xs default />
+                    label="REANUDAR" xs primary />
                 <x-button xs positive href="{{ route('afac.downloadFile', $scheduleId) }}" label="DESCARGAR" />
             @endif
         @else

@@ -124,13 +124,20 @@
                         @endif
                     </div>
                     @if ($status == 0 || $status == 4 || $status == 7)
+
+
                     <div class="mt-6 relative w-full group">
                         <select name="my_option" label="SELECIONE OPCIÓN" x-model="selectedOption"
                             wire:model="selectedOption"
                             class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-300 dark:border-gray-300 dark:placeholder-gray-300 dark:text-white">
-                            <option value="">SELECCIONE OPCIÓN</option>
-                            <option value="1">ASISTIÓ A SU CITA</option>
-                            <option value="2">CANCELAR CITA</option>
+
+                        <option value="">SELECCIONE OPCIÓN</option>
+                        @if ($days > 20 AND $status==7)
+                        <option  value="2">CANCELAR CITA</option>
+                        @else
+                        <option value="1">ASISTIÓ A SU CITA</option>
+                        <option value="2">CANCELAR CITA</option>
+                        @endif
 
                             @if ($status != 7)
                             <option value="7">APLAZAR CITA</option>

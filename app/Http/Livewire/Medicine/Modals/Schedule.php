@@ -10,6 +10,7 @@ use App\Models\Medicine\MedicineReserve;
 use App\Models\Medicine\MedicineSchedule;
 use App\Models\Medicine\medicine_history_movements;
 use App\Models\Observation;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use LivewireUI\Modal\ModalComponent;
 use Livewire\WithFileUploads;
@@ -21,7 +22,7 @@ class Schedule extends ModalComponent
     use WithFileUploads;
     public $id_appoint, $id_medicine_observation, $scheduleId, $status, $medicineReserves, $name, $type, $class, $typLicense, $sede, $dateReserve, $date, $time, $scheduleMedicines, $sedes,
     $headquarter_id, $medicine_schedule_id, $selectedOption, $observation_reschedule, $observation_cancelate, $hoursReserve, $observation, $medicineId, $accion,
-        $disabledDaysFilter;
+        $disabledDaysFilter,$days;
 
     public function rules()
     {
@@ -71,6 +72,13 @@ class Schedule extends ModalComponent
             $this->sede = $medicineReserves[0]->medicineReserveHeadquarter->name_headquarter ?? null;
             $this->hoursReserve = $medicineReserves[0]->reserveSchedule->time_start ?? null;
             $this->dateReserve = $medicineReserves[0]->dateReserve;
+
+
+            $fecha = Carbon::now()->timezone('America/Mexico_City');
+            $fechaEspera = new Carbon($medicineReserves[0]->dateReserve,'America/Mexico_City');
+            $this->days = $fecha->diffInDays($fechaEspera);
+
+
         } else {
             $this->scheduleId = null;
         }
