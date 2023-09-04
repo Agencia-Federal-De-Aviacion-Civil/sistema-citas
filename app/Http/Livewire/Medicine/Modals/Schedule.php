@@ -72,12 +72,9 @@ class Schedule extends ModalComponent
             $this->sede = $medicineReserves[0]->medicineReserveHeadquarter->name_headquarter ?? null;
             $this->hoursReserve = $medicineReserves[0]->reserveSchedule->time_start ?? null;
             $this->dateReserve = $medicineReserves[0]->dateReserve;
-
-
             $fecha = Carbon::now()->timezone('America/Mexico_City');
             $fechaEspera = new Carbon($medicineReserves[0]->dateReserve,'America/Mexico_City');
             $this->days = $fecha->diffInDays($fechaEspera);
-
 
         } else {
             $this->scheduleId = null;
@@ -235,7 +232,7 @@ class Schedule extends ModalComponent
                 'status' => $this->selectedOption,
             ]);
             $this->emit('postponeReserve');
-            $accion = 'PAUSO CITA';
+            $accion = 'REEMPLAZO CITA';
         }else{
             $citas = MedicineReserve::where('headquarter_id', $this->headquarter_id)
                 ->where('dateReserve', $this->dateReserve)

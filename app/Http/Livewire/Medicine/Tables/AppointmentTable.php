@@ -25,14 +25,18 @@ class AppointmentTable extends DataTableComponent
     public $batchId;
     public $exporting;
     public $exportFinished;
+    public $fecha;
     protected function getListeners(): array
     {
+        Date::setLocale('es');
+        $this->fecha = Carbon::now()->timezone('America/Mexico_City');
         return array_merge(
             parent::getListeners(),
             [
                 'cancelReserve' => '$refresh',
                 'attendeReserve' => '$refresh',
                 'reserveAppointment' => '$refresh',
+                'postponeReserve' => '$refresh',
             ]
         );
     }
@@ -153,7 +157,12 @@ class AppointmentTable extends DataTableComponent
                                 $action = MedicineReserve::where('id', $row->id)->get(),
                                 'status' => $action[0]->status,
                                 'scheduleId' => $action[0]->id,
-                                'medicineId' => $action[0]->medicine_id
+                                'medicineId' => $action[0]->medicine_id,
+                                $this->fecha = Carbon::now()->timezone('America/Mexico_City'),
+                                $wait_date = new Carbon($action[0]->dateReserve,'America/Mexico_City'),
+                                $days_wait = $this->fecha->diffInDays($wait_date),
+                                'days' => $days_wait,
+
                             ]
                         )
                     ),
@@ -203,8 +212,13 @@ class AppointmentTable extends DataTableComponent
                                 $action = MedicineReserve::where('id', $row->id)->get(),
                                 'status' => $action[0]->status,
                                 'scheduleId' => $action[0]->id,
-                                'medicineId' => $action[0]->medicine_id
-                            ]
+                                'medicineId' => $action[0]->medicine_id,
+                                $this->fecha = Carbon::now()->timezone('America/Mexico_City'),
+                                $wait_date = new Carbon($action[0]->dateReserve,'America/Mexico_City'),
+                                $days_wait = $this->fecha->diffInDays($wait_date),
+                                'days' => $days_wait,
+
+                                ]
                         )
                     ),
             ];
@@ -302,7 +316,11 @@ class AppointmentTable extends DataTableComponent
                                 $action = MedicineReserve::where('id', $row->id)->get(),
                                 'status' => $action[0]->status,
                                 'scheduleId' => $action[0]->id,
-                                'medicineId' => $action[0]->medicine_id
+                                'medicineId' => $action[0]->medicine_id,
+                                $this->fecha = Carbon::now()->timezone('America/Mexico_City'),
+                                $wait_date = new Carbon($action[0]->dateReserve,'America/Mexico_City'),
+                                $days_wait = $this->fecha->diffInDays($wait_date),
+                                'days' => $days_wait,
                             ]
                         )
                     ),
@@ -409,7 +427,11 @@ class AppointmentTable extends DataTableComponent
                                 $action = MedicineReserve::where('id', $row->id)->get(),
                                 'status' => $action[0]->status,
                                 'scheduleId' => $action[0]->id,
-                                'medicineId' => $action[0]->medicine_id
+                                'medicineId' => $action[0]->medicine_id,
+                                $this->fecha = Carbon::now()->timezone('America/Mexico_City'),
+                                $wait_date = new Carbon($action[0]->dateReserve,'America/Mexico_City'),
+                                $days_wait = $this->fecha->diffInDays($wait_date),
+                                'days' => $days_wait,
                             ]
                         )
                     ),
