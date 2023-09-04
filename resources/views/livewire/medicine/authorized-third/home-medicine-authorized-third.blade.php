@@ -2,7 +2,7 @@
     <div class="bg-gray-100 text-gray-500 rounded shadow-xl py-5 px-5 w-full sm:w-full md:w-full lg:w-full">
         <div class="flex w-full">
             <h3 class="text-lg font-semibold leading-tight flex-1">TOTAL DE CITAS MEDICINA DE
-                AVIACIÓN TERCEROS</h3>
+                AVIACIÓN {{$nameHeadquarter }}</h3>
         </div>
         <div class="relative overflow-hidden transition-all duration-500">
             <div>
