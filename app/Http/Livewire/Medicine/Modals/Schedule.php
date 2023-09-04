@@ -27,7 +27,7 @@ class Schedule extends ModalComponent
     public function rules()
     {
         $rules = [
-            'observation' => 'required_if:selectedOption,2,4',
+            'observation' => 'required_if:selectedOption,2,4,7',
             'headquarter_id' => 'required_if:selectedOption,4|required_if:status,6',
             'medicine_schedule_id' => 'required_if:selectedOption,4|required_if:status,6',
             'dateReserve' => 'required_if:selectedOption,4|required_if:status,6'
@@ -233,7 +233,7 @@ class Schedule extends ModalComponent
                 'status' => $this->selectedOption,
             ]);
             $this->emit('postponeReserve');
-            $accion = 'REEMPLAZO CITA';
+            $accion = 'APLAZAR CITA';
         }else{
             $citas = MedicineReserve::where('headquarter_id', $this->headquarter_id)
                 ->where('dateReserve', $this->dateReserve)
