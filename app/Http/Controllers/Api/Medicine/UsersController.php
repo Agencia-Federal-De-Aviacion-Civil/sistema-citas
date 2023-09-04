@@ -36,7 +36,12 @@ class UsersController extends Controller
     public function list(Request $request)
     {
         // if ($request->header('Authorization') === 'Bearer 2|4ZWgUwhajRaJQyQv40tBvMVHzh1YU1EWN9GMTtGZ') {
-        $userList = MedicineReserve::with('medicineReserveHeadquarter', 'medicineReserveMedicine', 'medicineReserveFromUser.UserParticipant')
+        $userList = MedicineReserve::with(
+            'medicineReserveHeadquarter:id,name_headquarter',
+            'medicineReserveMedicine',
+            'medicineReserveFromUser:id,name',
+            'medicineReserveFromUser.UserParticipant:id,user_id,apParental,apMaternal,age,curp'
+        )
             ->where('status', 1)->get();
         return response([
             "status" => 1,
