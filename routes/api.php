@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Medicine\UsersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,4 +17,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+Route::middleware([
+    // 'auth:sanctum',
+])->group(function () {
+    //API ROUTES TEST
+    Route::post('/create-users', [UsersController::class, 'create']);
+    Route::get('/list-users', [UsersController::class, 'list']);
+    Route::get('/show-users/{id}', [UsersController::class, 'show']);
 });
