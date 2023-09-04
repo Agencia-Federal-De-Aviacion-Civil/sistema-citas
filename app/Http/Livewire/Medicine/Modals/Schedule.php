@@ -22,7 +22,7 @@ class Schedule extends ModalComponent
     use WithFileUploads;
     public $id_appoint, $id_medicine_observation, $scheduleId, $status, $medicineReserves, $name, $type, $class, $typLicense, $sede, $dateReserve, $date, $time, $scheduleMedicines, $sedes,
     $headquarter_id, $medicine_schedule_id, $selectedOption, $observation_reschedule, $observation_cancelate, $hoursReserve, $observation, $medicineId, $accion,
-        $disabledDaysFilter,$days;
+        $disabledDaysFilter,$days,$is_external;
 
     public function rules()
     {
@@ -75,6 +75,7 @@ class Schedule extends ModalComponent
             $fecha = Carbon::now()->timezone('America/Mexico_City');
             $fechaEspera = new Carbon($medicineReserves[0]->dateReserve,'America/Mexico_City');
             $this->days = $fecha->diffInDays($fechaEspera);
+            $this->is_external = $medicineReserves[0]->is_external;
 
         } else {
             $this->scheduleId = null;

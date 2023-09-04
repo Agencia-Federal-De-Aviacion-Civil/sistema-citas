@@ -123,6 +123,7 @@
                         </div>
                         @endif
                     </div>
+
                     @if ($status == 0 || $status == 4 || $status == 7)
 
 
@@ -139,7 +140,7 @@
                         <option value="2">CANCELAR CITA</option>
                         @endif
 
-                            @if ($status != 7)
+                            @if ($status != 7 AND $is_external == 1)
                             <option value="7">APLAZAR CITA</option>
                             @endif
 
