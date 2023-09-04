@@ -38,8 +38,17 @@ class CreateUpdateScheduleModal extends ModalComponent
     }
     public function render()
     {
-        $headquarters = Headquarter::with('HeadquarterUserHeadquarter')->get();
-        return view('livewire.headquarters.modals.create-update-schedule-modal', compact('headquarters'));
+        if (Auth::user()->can('headquarters_authorized.see.tabs.navigation')) {
+            $headquarters = Headquarter::with('HeadquarterUserHeadquarter')
+            ->whereHas('HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q2) {
+                $q2->where('user_id', Auth::user()->id);
+            })->get();
+            return view('livewire.headquarters.modals.create-update-schedule-modal', compact('headquarters'));
+        }else{
+            $headquarters = Headquarter::with('HeadquarterUserHeadquarter')->get();
+            return view('livewire.headquarters.modals.create-update-schedule-modal', compact('headquarters'));
+        }
+       
     }
     /**
      * Supported: 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl', '7xl'
