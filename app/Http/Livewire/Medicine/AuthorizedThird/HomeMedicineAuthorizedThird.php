@@ -48,6 +48,20 @@ class HomeMedicineAuthorizedThird extends Component
             ])->whereHas('HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q2) {
                 $q2->where('user_id', Auth::user()->id);
             })->get();
+        } else if (Auth::user()->can('headquarters_authorized.see.dashboard')) {
+            $appointment = MedicineReserve::with('medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant')
+                ->whereHas('medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q1) {
+                    $q1->where('user_id', Auth::user()->id);
+                })
+                ->select('status', DB::raw('count(*) as count'), 'dateReserve')
+                ->groupBy('status', 'dateReserve')
+                ->get();
+            $headquarters = Headquarter::with([
+                'HeadquarterUserHeadquarter.userHeadquarterUserParticipant','headquarterMedicineReserve'
+            ])->whereHas('HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q2) {
+                $q2->where('user_id', Auth::user()->id);
+            })->where('is_external', true)->get();
+            $nameHeadquarter = '"'. $headquarters->pluck('name_headquarter')->first().'"';
         } else {
             $appointment = MedicineReserve::query()
                 ->select('status', DB::raw('count(*) as count'), 'dateReserve')
@@ -59,6 +73,7 @@ class HomeMedicineAuthorizedThird extends Component
             ])
                 ->where('is_external', true)
                 ->get();
+            $nameHeadquarter = 'TERCEROS';
         }
 
         $appointmentNow = $appointment->where('dateReserve', $date1);
