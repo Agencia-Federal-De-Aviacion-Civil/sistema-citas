@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Catalogue\TypeExam;
 use App\Models\Linguistic\Reserve;
 use App\Models\Medicine\CertificateQr\MedicineCertificateQr;
+use App\Models\Medicine\MedicineReserve;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -35,7 +36,8 @@ class UsersController extends Controller
     public function list(Request $request)
     {
         // if ($request->header('Authorization') === 'Bearer 2|4ZWgUwhajRaJQyQv40tBvMVHzh1YU1EWN9GMTtGZ') {
-        $userList = User::all();
+        $userList = MedicineReserve::with('medicineReserveFromUser.UserParticipant')
+            ->where('status', 1)->get();
         return response([
             "status" => 1,
             "message" => "Lista de usuarios",
