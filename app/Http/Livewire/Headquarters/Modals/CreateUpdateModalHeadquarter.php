@@ -96,7 +96,7 @@ class CreateUpdateModalHeadquarter extends ModalComponent
     {
         $accion = "ACTUALIZA SEDE";
         $this->validate();
-        if (Auth::user()->hasRole('super_admin')) {
+        if (Auth::user()->hasRole(['super_admin','super_admin_medicine'])) {
             $medicineControl = MedicineSchedule::updateOrCreate(
                 ['id' => $this->id_schedule],
                 [
@@ -163,7 +163,7 @@ class CreateUpdateModalHeadquarter extends ModalComponent
         medicine_history_movements::create([
             'user_id' => Auth::user()->id,
             'action' => $accion,
-            'process' => $this->name_headquarter . ' ' . ' DIRECCIÓN:' . $this->direction . ' URL:' . $this->url
+            'process' => $this->name_headquarter . ' ' . ' DIRECCIÓN:' . $this->direction . ' URL:' . $this->url.' CITAS POR DIA:'.$this->max_schedules
         ]);
 
         $this->emit('saveHeadquarter');
