@@ -30,7 +30,7 @@ class Schedule extends ModalComponent
             'observation' => 'required_if:selectedOption,2,4',
             'headquarter_id' => 'required_if:selectedOption,4|required_if:status,6',
             'medicine_schedule_id' => 'required_if:selectedOption,4|required_if:status,6',
-            'dateReserve' => 'required_if:selectedOption,4|required_if:status,6',
+            'dateReserve' => 'required_if:selectedOption,4|required_if:status,6'
         ];
         $rules['selectedOption'] = 'required_unless:status,6';
         return $rules;
@@ -307,6 +307,7 @@ class Schedule extends ModalComponent
             'selectedOption.required' => 'Seleccione opción',
             'headquarter_id.required' => 'Seleccione opción',
             'medicine_schedule_id.required' => 'Seleccione opción',
+            'selectedOption.required_unless' => 'El campo de opción seleccionado es obligatorio a menos que el estado esté en 6.'
         ];
     }
 }
