@@ -35,6 +35,7 @@ class UsersController extends Controller
     }
     public function list(Request $request)
     {
+        //TODO
         $userList = MedicineReserve::with(
             'medicineReserveHeadquarter:id,name_headquarter',
             'medicineReserveMedicine:id,user_id,type_exam_id',
