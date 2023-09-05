@@ -149,7 +149,7 @@
                             <x-jet-nav-link href="{{ route('afac.headquarterMedicine') }}" :active="request()->routeIs('afac.headquarterMedicine')">
                                 {{ __('Administrador de Horarios') }}
                             </x-jet-nav-link>
-                            <x-jet-nav-link href="{{ route('afac.headquarterMedicine') }}">
+                            <x-jet-nav-link href="{{ route('third.appointments') }}" :active="request()->routeIs('third.appointments')">
                                 {{ __('Generar citas') }}
                             </x-jet-nav-link>
                             <x-jet-nav-link href="{{ route('validate') }}" :active="request()->routeIs('validate')">
