@@ -25,11 +25,11 @@ class AppointmentThirdTable extends DataTableComponent
     public $batchId;
     public $exporting;
     public $exportFinished;
-    public $fecha;
+    public $date;
     public function configure(): void
     {
         Date::setLocale('es');
-        $this->fecha = Carbon::now()->timezone('America/Mexico_City');
+        $this->date = Carbon::now()->timezone('America/Mexico_City');
 
         $this->setPrimaryKey('id');
         $this->setBulkActions([
@@ -137,9 +137,10 @@ class AppointmentThirdTable extends DataTableComponent
                                 'status' => $action[0]->status,
                                 'scheduleId' => $action[0]->id,
                                 'medicineId' => $action[0]->medicine_id,
-                                $fechaEspera = new Carbon($action[0]->dateReserve,'America/Mexico_City'),
-                                $diasEspera = $this->fecha->diffInDays($fechaEspera),
-                                'days' => $diasEspera,
+                                $wait_date = new Carbon($action[0]->dateReserve,'America/Mexico_City'),
+                                $days_wait = $this->date->diffInDays($wait_date),
+                                'days' => $days_wait,
+                                'wait_date' => $wait_date
 
                             ]
                         )
@@ -311,9 +312,10 @@ class AppointmentThirdTable extends DataTableComponent
                                 'status' => $action[0]->status,
                                 'scheduleId' => $action[0]->id,
                                 'medicineId' => $action[0]->medicine_id,
-                                $fechaEspera = new Carbon($action[0]->dateReserve,'America/Mexico_City'),
-                                $diasEspera = $this->fecha->diffInDays($fechaEspera),
-                                'days' => $diasEspera,
+                                $wait_date = new Carbon($action[0]->dateReserve,'America/Mexico_City'),
+                                $days_wait = $this->date->diffInDays($wait_date),
+                                'days' => $days_wait,
+                                'wait_date' => $wait_date,
                             ]
                         )
                     ),

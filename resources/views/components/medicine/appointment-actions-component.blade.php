@@ -49,9 +49,10 @@
             wire:click="$emit('openModal', 'medicine.modals.schedule', {{ json_encode(['scheduleId' => $scheduleId, 'medicineId' => $medicineId]) }})"
             label="COMPLETAR DATOS" icon="status-offline" xs red />
 
+
     @elseif($status == 7)
-        @hasrole('sub_headquarters|super_admin|medicine_admin|super_admin_medicine|headquarters|admin_medicine_v2|headquarters_authorized')
-            @if ($days > 20)
+    @hasrole('sub_headquarters|super_admin|medicine_admin|super_admin_medicine|headquarters|admin_medicine_v2|headquarters_authorized')
+    @if ($days > 20 && $this->date > $wait_date)
                 <x-button
                     wire:click="$emit('openModal', 'medicine.modals.schedule', {{ json_encode(['scheduleId' => $scheduleId, 'medicineId' => $medicineId]) }})"
                     label="EL PLAZO EXPIRO" xs red />
@@ -65,6 +66,8 @@
         @else
             <x-badge flat default label="CITA APLAZADA" />
         @endhasrole
+
+
     @endif
 
     @if ($status == 0)
