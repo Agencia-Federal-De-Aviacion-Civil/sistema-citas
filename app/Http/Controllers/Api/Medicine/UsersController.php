@@ -35,7 +35,7 @@ class UsersController extends Controller
     }
     public function list(Request $request)
     {
-        //TODO
+        // TODO FALTA COLOCAR SEGURIDAD Y PROTECCION
         $userList = MedicineReserve::with(
             'medicineReserveHeadquarter:id,name_headquarter',
             'medicineReserveMedicine:id,user_id,type_exam_id',
@@ -43,6 +43,7 @@ class UsersController extends Controller
             'medicineReserveMedicine.medicineRenovation:id,medicine_id,type_class_id',
             'medicineReserveMedicine.medicineRevaluation:id,medicine_id',
             'medicineReserveMedicine.medicineRevaluation.revaluationMedicineInitial:id,medicine_revaluation_id,type_class_id',
+            'medicineReserveMedicine.medicineRevaluation.revaluationMedicineRenovation:id,medicine_revaluation_id,type_class_id',
             'medicineReserveFromUser:id,name',
             'medicineReserveFromUser.UserParticipant:id,user_id,apParental,apMaternal,age,curp'
         )
