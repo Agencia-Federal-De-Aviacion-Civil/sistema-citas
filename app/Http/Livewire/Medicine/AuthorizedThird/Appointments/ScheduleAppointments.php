@@ -13,7 +13,7 @@ class ScheduleAppointments extends Component
 {
     public $dateNow,$states, $municipals;
     public $curp_search,$userParticipant,$status,$title;
-    public $user_id, $id_register, $name, $apParental, $apMaternal, $genre, $birth, $state_id, $municipal_id, $age, $street, $nInterior, $nExterior, $suburb, $postalCode, $federalEntity,
+    public $user_id, $id_register,$name_search,$apParental_search,$apMaternal_search,$curp_searchs,$email_search, $name, $apParental, $apMaternal, $genre, $birth, $state_id, $municipal_id, $age, $street, $nInterior, $nExterior, $suburb, $postalCode, $federalEntity,
     $delegation, $mobilePhone, $officePhone, $extension, $curp, $email, $password = '', $passwordConfirmation = '';
     public function mount()
     {
@@ -38,11 +38,11 @@ class ScheduleAppointments extends Component
         if(count( $this->userParticipant) == 1) {
             $this->status ='1';
             $this->title ='VERIFICAR DATOS';
-            $this->name = $this->userParticipant[0]->apParental;
+            $this->name_search = $this->userParticipant[0]->apParental;
             $this->apParental = $this->userParticipant[0]->apParental;
-            $this->apMaternal = $this->userParticipant[0]->apMaternal;
-            $this->genre = $this->userParticipant[0]->genre;
-            $this->curp = $this->userParticipant[0]->curp;
+            $this->apMaternal = $this->userParticipant[0]->apMaternal_search;
+            $this->curp_searchs = $this->userParticipant[0]->curp;
+            $this->email_search = $this->userParticipant[0]->email;
         }else{
             $this->status ='2';
             $this->title ='REGISTAR USUARIO';

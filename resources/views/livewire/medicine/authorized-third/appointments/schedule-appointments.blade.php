@@ -90,9 +90,6 @@
                                 <div class="container mx-auto">
                                     <div class="w-full lg:px-3">
                                         <img src="{{ asset('images/e5cinco.jpg') }}" alt="">
-
-                                        {{-- <h1 class="text-3xl font-semibold text-gray-800 dark:text-gray-100">Registrar al usuario
-                                    </h1> --}}
                                         <div class="py-2">
                                             <h2 class="sr-only">Steps</h2>
                                             <div>
@@ -122,7 +119,7 @@
                                                         </svg>
                                                     </li>
                                                     <li class="flex items-center justify-end sm:gap-1.5"
-                                                        :class="{ 'text-blue-600': steps == 4 }">
+                                                        :class="{ 'text-blue-600': steps == 3 }">
                                                         <span class="hidden sm:inline"> Finalizar </span>
                                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                             viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
@@ -142,7 +139,33 @@
                                                     {{$title}}
                                                 </h1>
                                             </div>
+                                            @if ($status == 1)
+                                            <div class="mt-8 grid md:grid-cols-3 md:gap-6">
+                                                <div class="relative mb-6 w-full group">
+                                                    <x-input readonly class="uppercase bg-gray-100" wire:model.lazy="name_search"
+                                                        label="NOMBRE (S)" placeholder="ESCRIBE..." />
+                                                </div>
+                                                <div class="relative mb-6 w-full group">
+                                                    <x-input readonly class="uppercase bg-gray-100" wire:model.lazy="apParental_search"
+                                                        label="APELLIDO PATERNO" placeholder="ESCRIBE..." />
+                                                </div>
+                                                <div class="relative mb-6 w-full group">
+                                                    <x-input readonly class="uppercase bg-gray-100" wire:model.lazy="apMaternal_search"
+                                                        label="APELLIDO MATERNO" placeholder="ESCRIBE..." />
+                                                </div>
+                                            </div>
+                                            <div class="mt-2 grid md:grid-cols-2 md:gap-6">
+                                                <div class="relative mb-6 w-full group">
+                                                    <x-input readonly class="uppercase bg-gray-100" wire:model.lazy="curp_searchs"
+                                                        label="CURP" placeholder="INGRESE..." />
+                                                </div>
+                                                <div class="relative z-0 mb-6 w-full group">
+                                                    <x-input readonly class="pr-28 bg-gray-100" label="CORREO ELECTRÓNICO"
+                                                        wire:model.lazy="email_search" placeholder="INGRESE..." />
+                                                </div>
+                                            </div>
 
+                                            @else
                                             <div>
                                                 {{-- si no se encuentra registrado --}}
                                                 <div class="mt-8 grid md:grid-cols-3 md:gap-6">
@@ -308,6 +331,9 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            @endif
+
+                                            
                                         </div>
                                         <div x-show="steps == 2">
                                             @livewire('medicine.home-medicine')
