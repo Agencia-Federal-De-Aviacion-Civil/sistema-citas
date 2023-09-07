@@ -26,8 +26,15 @@
     <div class="py-12">
         <div class="container mx-auto px-4 py-4 bg-white shadow-xl sm:rounded-lg">
             <div class="mt-12 max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div x-data="{ activeTab: 'headquarters' }">
+                {{-- BUSCAR X-DATA CON CONDICION POR PERMISOS --}}
+                    @canany(['medicine_admin.see.tabs.navigation','super_admin.see.tabs.navigation'])
+                    <div x-data="{ activeTab: 'headquarters' }">
+                    @endcanany
+                    @can('headquarters_authorized.see.schedules.table')
+                    <div x-data="{ activeTab: 'schedules' }">
+                    @endcan
                     <ul class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 ">
+                        @canany(['medicine_admin.see.tabs.navigation','super_admin.see.tabs.navigation'])
                         <li class="mr-2">
                             <a href="#" class="inline-block p-4 bg-white rounded-t-lg active"
                                 x-on:click.prevent="activeTab = 'headquarters'"
@@ -35,6 +42,8 @@
                                 SEDES
                             </a>
                         </li>
+                        @endcanany
+                        @canany(['medicine_admin.see.tabs.navigation','headquarters_authorized.see.schedules.table','super_admin.see.tabs.navigation'])
                         <li class="mr-2">
                             <a href="#" class="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50"
                                 x-on:click.prevent="activeTab = 'schedules'"
@@ -42,8 +51,10 @@
                                 HORARIOS
                             </a>
                         </li>
+                        @endcanany
                     </ul>
                     <div class="mt-6">
+                        @canany(['medicine_admin.see.tabs.navigation','super_admin.see.tabs.navigation'])
                         <div x-show="activeTab === 'headquarters'">
                             <div class="mb-6">
                                 <x-button wire:click="$emit('openModal', 'headquarters.modals.create-update-modal-headquarter')"
@@ -52,6 +63,8 @@
                             @livewire('headquarters.tables.headquarters-table')
                             {{-- <livewire:headquarter-table> --}}
                         </div>
+                        @endcanany
+                        @canany(['medicine_admin.see.tabs.navigation','headquarters_authorized.see.schedules.table','super_admin.see.tabs.navigation'])
                         <div x-show="activeTab === 'schedules'">
                             {{-- <div class="flex-grow pl-4"> --}}
                             <div class="mb-6">
@@ -84,6 +97,7 @@
                                 {{-- <livewire:disabled-day-table /> --}}
                             </div>
                         </div>
+                        @endcanany
                     </div>
                 </div>
             </div>

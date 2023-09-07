@@ -141,9 +141,22 @@
                                 {{ __('Administrador de Sedes') }}
                             </x-jet-nav-link>
                             <x-jet-nav-link href="{{ route('validate') }}" :active="request()->routeIs('validate')">
-                                {{ __('Validación de citas') }}
+                                {{ __('Validación de citas') }} 
                             </x-jet-nav-link>
                         @endcan
+
+                        @can('headquarters_authorized.see.tabs.navigation')
+                            <x-jet-nav-link href="{{ route('afac.headquarterMedicine') }}" :active="request()->routeIs('afac.headquarterMedicine')">
+                                {{ __('Administrador de Horarios') }}
+                            </x-jet-nav-link>
+                            <x-jet-nav-link href="{{ route('third.appointments') }}" :active="request()->routeIs('third.appointments')">
+                                {{ __('Generar citas') }}
+                            </x-jet-nav-link>
+                            <x-jet-nav-link href="{{ route('validate') }}" :active="request()->routeIs('validate')">
+                                {{ __('Validación de citas') }} 
+                            </x-jet-nav-link>
+                        @endcan
+
                         @can('super.admin.medicine.two.see.table.users')
                             <x-jet-nav-link href="{{ route('afac.users') }}" :active="request()->routeIs('afac.users')">
                                 {{ __('Usuarios') }}

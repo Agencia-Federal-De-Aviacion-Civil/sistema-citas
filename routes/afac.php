@@ -13,6 +13,7 @@ use App\Http\Livewire\Medicine\HistoryMedicieMovements;
 use App\Http\Livewire\Linguistics\HistoryLinguisticsMovements;
 use App\Http\Livewire\Catalogue\HomeCatalogs;
 use App\Http\Livewire\Medicine\External\HomeMedicineExternal;
+use App\Http\Livewire\Medicine\AuthorizedThird\Appointments\ScheduleAppointments;
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Validate\Qr as ValidateQr;
 use App\Http\Livewire\Validate\UrlHome;
@@ -40,10 +41,13 @@ Route::middleware([
         Route::get('/linguistics', HomeLinguistics::class)->name('afac.linguistics');
         Route::get('/download', [HomeMedicine::class, 'generatePdf'])->name('download');
     });
-    Route::middleware(['role:super_admin|medicine_admin|super_admin_medicine|admin_medicine_v2|sub_headquarters|headquarters'])->group(function () {
+    Route::middleware(['role:super_admin|medicine_admin|super_admin_medicine|admin_medicine_v2|sub_headquarters|headquarters|headquarters_authorized'])->group(function () {
         Route::get('/headquarters', HomeHeadquarter::class)->name('afac.headquarterMedicine');
         Route::get('/validate', ValidateQr::class)->name('validate');
         Route::get('/link/{keyEncrypt}', UrlHome::class)->name('validateUrl')->middleware('validate.encrypted.url');
+    });
+    Route::middleware(['role:headquarters_authorized'])->group(function () {
+        Route::get('/appointmenthird', ScheduleAppointments::class)->name('third.appointments');
     });
     Route::get('/appointments', [AppointmentMedicineController::class, 'index'])->name('afac.appointment');
     Route::get('/downloadFile/{scheduleId}', [AppointmentMedicineController::class, 'download'])->name('afac.downloadFile');
