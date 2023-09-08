@@ -27,10 +27,8 @@
             <div class="mt-12 max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div x-cloak x-data="{
                     searchcurp: @entangle('curp_search'),
-                    steps: '{{ $stepsprogress }}',
+                    steps:@entangle('stepsprogress'),
                 }">
-                <p x-text="searchcurp"></p> 
-                <p x-text="steps"></p>
                     <div class="bg-blue-50 border border-blue-200 rounded-md p-3" role="alert">
                         <div class="flex">
                             <div class="flex-shrink-0">
@@ -61,7 +59,7 @@
                                 </div>
                                 <div class="inline-flex w-full mt-6 sm:w-auto">
                                     <x-button wire:click.prevent="searchcurp()" label="VALIDAR" blue
-                                        x-on:click="steps='{{ $stepsprogress }}'" right-icon="search" />
+                                        x-on:click="steps=1" right-icon="search" />
                                     <div wire:loading.delay.shortest wire:target="searchcurp">
                                         <div
                                             class="flex justify-center bg-gray-200 z-40 h-full w-full fixed top-0 left-0 items-center opacity-75">
@@ -93,10 +91,10 @@
                                                 <div>
                                                     <div class="overflow-hidden rounded-full bg-gray-200">
                                                         <div class="rounded-full bg-blue-700 text-xs leading-none h-2 text-center text-white"
-                                                            :style="'width: ' + parseInt((steps / 4) * 100) + '%'">
+                                                            :style="'width: ' + parseInt((steps / 2) * 100) + '%'">
                                                         </div>
                                                     </div>
-                                                    <ol class="mt-4 grid grid-cols-3 text-sm font-medium text-gray-500">
+                                                    <ol class="mt-4 grid grid-cols-2 text-sm font-medium text-gray-500">
                                                         <li class="flex items-center justify-start sm:gap-1.5"
                                                             :class="{ 'text-blue-600': steps > 1 }">
                                                             <span class="hidden sm:inline"> {{ $title }} </span>
@@ -115,17 +113,6 @@
                                                                 stroke="currentColor" class="w-6 h-6">
                                                                 <path stroke-linecap="round" stroke-linejoin="round"
                                                                     d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
-                                                            </svg>
-                                                        </li>
-                                                        <li class="flex items-center justify-end sm:gap-1.5"
-                                                            :class="{ 'text-blue-600': steps == 3 }">
-                                                            <span class="hidden sm:inline"> Finalizar </span>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                                viewBox="0 0 24 24" stroke-width="1.5"
-                                                                stroke="currentColor" class="w-6 h-6"
-                                                                :class="{ 'text-green-600': steps == 4 }">
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                    d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                                             </svg>
                                                         </li>
                                                     </ol>
@@ -339,7 +326,6 @@
                                                         <div class="text-right">
                                                             <x-button wire:click.prevent="register()"
                                                                 label="REGISTRAR" blue
-                                                                x-on:click="steps={{$stepsprogress}}"
                                                                 right-icon="plus-sm" />
                                                             <div wire:loading.delay.shortest wire:target="register">
                                                                 <div

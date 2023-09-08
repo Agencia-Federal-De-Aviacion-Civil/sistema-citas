@@ -86,6 +86,7 @@ class ScheduleAppointments extends Component
     {
         $this->reset([
             'user_id',
+            'name',
             'apParental',
             'apMaternal',
             'genre',
@@ -113,7 +114,6 @@ class ScheduleAppointments extends Component
 
     public function searchcurp()
     {
-        $this->clean();
         $this->validate(['curp_search' => 'required']);
         $this->userParticipant = UserParticipant::with('userParticipantUser')->where('curp', $this->curp_search)->get();
         if (count($this->userParticipant) == 1) {
@@ -124,11 +124,6 @@ class ScheduleAppointments extends Component
             $this->apMaternal_search = $this->userParticipant[0]->apMaternal;
             $this->curp_searchs = $this->userParticipant[0]->curp;
             $this->email_search = $this->userParticipant[0]->userParticipantUser->email;
-            $this->notification([
-                'title'       => 'USUARIO YA REGISTRADO',
-                'icon'        => 'info',
-                'timeout' => '3100'
-            ]);
             $this->user_appoimnet=$this->userParticipant[0]->userParticipantUser->id;
         } else {
             $this->status = '2';
@@ -140,7 +135,6 @@ class ScheduleAppointments extends Component
                 'timeout' => '3100'
             ]);
         }
-        $this->stepsprogress = 1;
     }
 
     public function register()
@@ -180,24 +174,15 @@ class ScheduleAppointments extends Component
                 'icon'        => 'success',
                 'timeout' => '3100'
             ]);
-            //$this->stepsprogress = 2;
-
-            if ($user->id == ''){
-                $this->stepsprogress = 1;
-                $this->user_appoimnet='';
-            }else{
-                $this->user_appoimnet=$user->id;
-                $this->stepsprogress = 2;
-            }
-
+            $this->curp_search = $this->curp;
+            $this->clean();
+            $this->searchcurp();
         } catch (\Exception $e) {
             $this->dialog([
                 'title'       => $e->getMessage(),
                 'icon'        => 'error',
             ]);
-            $this->stepsprogress = 1;
         }
-       
     }
 
     public function messages()

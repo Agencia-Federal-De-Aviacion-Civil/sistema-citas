@@ -151,18 +151,9 @@ class AppointmentThirdTable extends DataTableComponent
                 Column::make("Id", "id")
                     ->sortable()
                     ->searchable(fn ($query, $searchTerm) => $query->orWhere('medicine_reserves.id', 'like', '%' . $searchTerm . '%')),
-                Column::make("Nombre", "medicineReserveFromUser.name")
-                    ->sortable()
-                    ->searchable(fn ($query, $searchTerm) => $query->orWhere('users.name', 'like', '%' . $searchTerm . '%')),
-                Column::make("Apellido Paterno", "userParticipantUser.apParental")
-                    ->sortable()
-                    ->searchable(fn ($query, $searchTerm) => $query->orWhere('apParental', 'like', '%' . $searchTerm . '%')),
-                Column::make("Apellido Materno", "userParticipantUser.apMaternal")
-                    ->sortable()
-                    ->searchable(fn ($query, $searchTerm) => $query->orWhere('apMaternal', 'like', '%' . $searchTerm . '%')),
-                Column::make("SEDE", "medicineReserveHeadquarter.name_headquarter")
-                    ->sortable(),
                 Column::make("Tipo", "medicineReserveMedicine.medicineTypeExam.name")
+                    ->sortable(),
+                Column::make("SEDE", "medicineReserveHeadquarter.name_headquarter")
                     ->sortable(),
                 Column::make("CLASE", "class")
                     ->label(fn ($row) => view(
@@ -460,6 +451,9 @@ class AppointmentThirdTable extends DataTableComponent
                         $builder->where('medicine_reserves.id', 'like', '%' . $value . '%');
                     }),
             ];
+        }else if (Auth::user()->can('user.see.schedule.table')){
+            return [
+            ];
         }
     }
     public function builder(): Builder
@@ -469,14 +463,12 @@ class AppointmentThirdTable extends DataTableComponent
                 'medicineReserveMedicine', 'medicineReserveFromUser', 'userParticipantUser',
             ])->where('medicine_reserves.is_external', true);
         } else if (Auth::user()->can('user.see.schedule.table')) {
-
             return MedicineReserve::query()->with([
                 'medicineReserveMedicine', 'medicineReserveFromUser', 'userParticipantUser',
             ])->whereHas('medicineReserveMedicine', function ($q1) {
-                $q1->where('user_id', Auth::user()->id);
+                $q1->where('user_id', Auth::user()->id)
+                ->where('medicine_reserves.is_external', true);
             });
-
-
         } else
         if (Auth::user()->can('headquarters_authorized.see.table')) {
             return MedicineReserve::query()->with([
