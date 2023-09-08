@@ -29,6 +29,8 @@
                     searchcurp: @entangle('curp_search'),
                     steps: '{{ $stepsprogress }}',
                 }">
+                <p x-text="searchcurp"></p> 
+                <p x-text="steps"></p>
                     <div class="bg-blue-50 border border-blue-200 rounded-md p-3" role="alert">
                         <div class="flex">
                             <div class="flex-shrink-0">
@@ -59,7 +61,7 @@
                                 </div>
                                 <div class="inline-flex w-full mt-6 sm:w-auto">
                                     <x-button wire:click.prevent="searchcurp()" label="VALIDAR" blue
-                                        x-on:click="steps=2" right-icon="search" />
+                                        x-on:click="steps='{{ $stepsprogress }}'" right-icon="search" />
                                     <div wire:loading.delay.shortest wire:target="searchcurp">
                                         <div
                                             class="flex justify-center bg-gray-200 z-40 h-full w-full fixed top-0 left-0 items-center opacity-75">
@@ -337,7 +339,7 @@
                                                         <div class="text-right">
                                                             <x-button wire:click.prevent="register()"
                                                                 label="REGISTRAR" blue
-                                                                x-on:click="steps=@entangle('stepsprogress')"
+                                                                x-on:click="steps={{$stepsprogress}}"
                                                                 right-icon="plus-sm" />
                                                             <div wire:loading.delay.shortest wire:target="register">
                                                                 <div
@@ -357,10 +359,11 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <br>
                                                 @endif
                                             </div>
                                             <div x-show="steps == 2">
-                                                @livewire('medicine.home-medicine')
+                                                @livewire('medicine.home-medicine', ['user_appoimnet' => $user_appoimnet])
                                                 <div class="flow-root">
                                                     <x-button x-on:click="steps=1" class="float-left"
                                                         icon="arrow-left" blue label="Anterior" md />
@@ -377,3 +380,72 @@
         </div>
     </div>
 </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        flatpickr("#fecha-pago", {
+            dateFormat: "Y-m-d",
+            disableMobile: "true",
+            locale: {
+                weekdays: {
+                    shorthand: ['Dom', 'Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab'],
+                    longhand: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes',
+                        'Sábado'
+                    ],
+                },
+                months: {
+                    shorthand: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct',
+                        'Nov', 'Dic'
+                    ],
+                    longhand: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto',
+                        'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+                    ],
+                },
+            },
+        });
+        // CITAS MEDICAS
+        window.addEventListener('headquartersUpdated', event => {
+            flatpickr("#fecha-appointment", {
+                // enableTime: true,
+                // time_24hr: true,
+                dateFormat: "Y-m-d",
+                // minTime: "07:00",
+                // maxTime: "10:59",
+                disableMobile: "true",
+                // minuteIncrement: 10,
+                minDate: "today",
+                //minDate: new Date(new Date().getFullYear(), 0, 1),
+                maxDate: new Date(new Date().getFullYear(), 11, 31),
+                disable: event.detail.disabledDaysFilter,
+                onDayCreate: function(dObj, dStr, fp, dayElem) {
+                    /* if (dayElem.dateObj.getDay() === 0 || dayElem.dateObj.getDay() === 6 || dayElem
+                         .dateObj <= new Date()) {
+                         dayElem.className += " flatpickr-disabled nextMonthDayflatpickr-disabled";
+                     }*/
+                    if (dayElem.dateObj.getDay() === 0 || dayElem.dateObj.getDay() === 6) {
+                        dayElem.className +=
+                            " flatpickr-disabled nextMonthDayflatpickr-disabled";
+                    }
+                },
+                locale: {
+                    weekdays: {
+                        shorthand: ['Dom', 'Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab'],
+                        longhand: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves',
+                            'Viernes',
+                            'Sábado'
+                        ],
+                    },
+                    months: {
+                        shorthand: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago',
+                            'Sep', 'Oct',
+                            'Nov', 'Dic'
+                        ],
+                        longhand: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+                            'Julio', 'Agosto',
+                            'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+                        ],
+                    },
+                },
+            });
+        });
+    });
+</script>

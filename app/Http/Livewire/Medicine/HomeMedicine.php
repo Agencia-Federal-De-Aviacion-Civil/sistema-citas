@@ -37,13 +37,15 @@ class HomeMedicine extends Component
     public $medicineQueries, $medicineReserves, $medicineInitials, $medicineRenovations, $id_medicineReserve, $idMedicine, $savedMedicineId, $scheduleMedicines, $medicine_schedule_id;
     // MEDICINE INITIAL TABLE
     public $question, $date, $idTypeAppointment, $idAppointmentFull;
-    public $document_authorization, $type_exam_revaloration_id;
+    public $document_authorization, $type_exam_revaloration_id,$user_appoimnet,$typeid,$userid;
     protected $listeners = [
         'saveDisabledDays' => '$refresh',
     ];
     public function mount()
     {
-        $idIsExternal = session('idType');
+        //idType 2 es para cuando la sede de terceros autorizados quiere generer cita
+        $idIsExternal = (session('idType') == 2 ? 1 :session('idType'));
+        $this->typeid =(session('idType'));
         $this->idTypeAppointment = $idIsExternal;
         $boolTypeAppointment = $this->idTypeAppointment;
         $this->idAppointmentFull = $boolTypeAppointment ? 1 : 0;
@@ -289,9 +291,13 @@ class HomeMedicine extends Component
             // }
             // TODO CIERRA ALGORITMO QUE FUNCIONA CON SWITCH CASE
             // $schedule = MedicineSchedule::find($this->medicine_schedule_id);
-            $userMedicines = MedicineReserve::with(['medicineReserveMedicine'])
+            //agendar cita normal
+
+                $this->userid =($this->user_appoimnet != null  ? $this->user_appoimnet : Auth::user()->id);
+            // dd($this->userid);
+                $userMedicines = MedicineReserve::with(['medicineReserveMedicine'])
                 ->whereHas('medicineReserveMedicine', function ($q1) {
-                    $q1->where('user_id', Auth::user()->id);
+                    $q1->where('user_id',$this->userid);
                     $q1->where('type_exam_id', $this->type_exam_id);
                 })
                 ->where(function ($q) {
@@ -325,6 +331,7 @@ class HomeMedicine extends Component
                         ->orWhere('status', 4);
                 })
                 ->get();
+
             // dd($userMedicines[0]->medicineReserveMedicine->medicineInitial);
             foreach ($userMedicines as $userMedicine) {
                 if ($userMedicine->id) {
@@ -397,7 +404,7 @@ class HomeMedicine extends Component
                     ]);
                 }
                 $this->saveMedicine = Medicine::create([
-                    'user_id' => Auth::user()->id,
+                    'user_id' => $this->userid,
                     'reference_number' => $this->reference_number ?? 'NO APLICA',
                     'pay_date' => $this->pay_date ?? null,
                     'document_id' => $saveDocument->id ?? null,
@@ -524,8 +531,10 @@ class HomeMedicine extends Component
                         }
                     }
                 }
+                // dd($this->userid);
                 $cita = new MedicineReserve();
-                $cita->from_user_appointment = Auth::user()->id;
+                
+                $cita->from_user_appointment = $this->userid;
                 $cita->medicine_id = $this->saveMedicine->id;
                 $cita->headquarter_id = $this->headquarter_id;
                 $cita->dateReserve = $this->dateReserve;

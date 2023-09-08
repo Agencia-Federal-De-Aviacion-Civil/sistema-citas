@@ -16,7 +16,7 @@ class ScheduleAppointments extends Component
 {
 
     public $dateNow, $states, $municipals;
-    public $curp_search, $userParticipant, $status, $title, $stepsprogress;
+    public $curp_search, $userParticipant, $status, $title, $stepsprogress,$idTypeAppointment,$user_appoimnet;
     public $user_id, $id_register, $name_search, $apParental_search, $apMaternal_search, $curp_searchs, $email_search, $name, $apParental, $apMaternal, $genre, $birth, $state_id, $municipal_id, $age, $street, $nInterior, $nExterior, $suburb, $postalCode, $federalEntity,
         $delegation, $mobilePhone, $officePhone, $extension, $curp, $email, $password = '', $passwordConfirmation = '', $edad;
 
@@ -24,7 +24,6 @@ class ScheduleAppointments extends Component
     public function rules()
     {
         return [
-            'curp_searchs' => 'required',
             'name' => 'required',
             'apParental' => 'required',
             'apMaternal' => 'required',
@@ -56,6 +55,7 @@ class ScheduleAppointments extends Component
         $this->states = State::all();
         $this->municipals = collect();
         $this->stepsprogress = 1;
+        session(['idType' => 2]);
     }
 
     public function render()
@@ -82,9 +82,39 @@ class ScheduleAppointments extends Component
         $this->age = $this->edad;
     }
 
+    public function clean()
+    {
+        $this->reset([
+            'user_id',
+            'apParental',
+            'apMaternal',
+            'genre',
+            'birth',
+            'state_id',
+            'municipal_id',
+            'age',
+            'street',
+            'nInterior',
+            'nExterior',
+            'suburb',
+            'postalCode',
+            'federalEntity',
+            'delegation',
+            'mobilePhone',
+            'officePhone',
+            'extension',
+            'curp',
+            'email',
+            'password',
+            'passwordConfirmation',
+            'user_appoimnet'
+        ]);
+    }
+
     public function searchcurp()
     {
-        //$this->validate();
+        $this->clean();
+        $this->validate(['curp_search' => 'required']);
         $this->userParticipant = UserParticipant::with('userParticipantUser')->where('curp', $this->curp_search)->get();
         if (count($this->userParticipant) == 1) {
             $this->status = '1';
@@ -99,6 +129,7 @@ class ScheduleAppointments extends Component
                 'icon'        => 'info',
                 'timeout' => '3100'
             ]);
+            $this->user_appoimnet=$this->userParticipant[0]->userParticipantUser->id;
         } else {
             $this->status = '2';
             $this->title = 'REGISTAR USUARIO';
@@ -149,7 +180,16 @@ class ScheduleAppointments extends Component
                 'icon'        => 'success',
                 'timeout' => '3100'
             ]);
-            $this->stepsprogress = 2;
+            //$this->stepsprogress = 2;
+
+            if ($user->id == ''){
+                $this->stepsprogress = 1;
+                $this->user_appoimnet='';
+            }else{
+                $this->user_appoimnet=$user->id;
+                $this->stepsprogress = 2;
+            }
+
         } catch (\Exception $e) {
             $this->dialog([
                 'title'       => $e->getMessage(),
@@ -157,6 +197,7 @@ class ScheduleAppointments extends Component
             ]);
             $this->stepsprogress = 1;
         }
+       
     }
 
     public function messages()

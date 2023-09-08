@@ -13,7 +13,7 @@
     <x-banner-component :title="$idTypeAppointment === false
         ? 'Generación de citas medicina de Aviación AFAC'
         : 'Generación de citas medicina de Aviación Terceros'" />
-    <x-errors></x-errors>
+    {{-- <x-errors></x-errors> --}}
     <div class="py-12">
         <div class="container mx-auto px-4 py-4 bg-white shadow-xl sm:rounded-lg">
             <div class="mt-12 max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -117,7 +117,7 @@
                                             </div>
                                         @endif
                                         {{-- paso1 --}}
-                                        <div x-show="fileName != '' && typeappointment==0||typeappointment==1"
+                                        <div x-show="fileName != '' && typeappointment==0||typeappointment==1||typeappointment==2"
                                             class="flex relative pb-6">
                                             <div class="h-full w-10 absolute inset-0 flex items-center justify-center">
                                                 <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
