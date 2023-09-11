@@ -134,7 +134,7 @@
                                 </div>
                                 @can('medicine.tables.appointment-third-table')
                                 <div x-show="activeTab === 'afacThird'">
-                                    <div class="mt-2">
+                                    <div class="mt-2">  
                                         @livewire('medicine.tables.appointment-third-table')
                                     </div>
                                 </div>
