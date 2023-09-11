@@ -114,7 +114,7 @@ class ScheduleAppointments extends Component
 
     public function searchcurp()
     {
-        $this->validate(['curp_search' => 'required']);
+        $this->validate(['curp_search' => 'required|max:18|min:18']);
         $this->userParticipant = UserParticipant::with('userParticipantUser')->where('curp', $this->curp_search)->get();
         if (count($this->userParticipant) == 1) {
             $this->status = '1';
@@ -176,6 +176,7 @@ class ScheduleAppointments extends Component
             ]);
             $this->curp_search = $this->curp;
             $this->clean();
+            
             $this->searchcurp();
         } catch (\Exception $e) {
             $this->dialog([
