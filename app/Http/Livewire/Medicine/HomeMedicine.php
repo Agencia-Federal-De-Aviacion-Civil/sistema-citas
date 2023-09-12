@@ -37,15 +37,17 @@ class HomeMedicine extends Component
     public $medicineQueries, $medicineReserves, $medicineInitials, $medicineRenovations, $id_medicineReserve, $idMedicine, $savedMedicineId, $scheduleMedicines, $medicine_schedule_id;
     // MEDICINE INITIAL TABLE
     public $question, $date, $idTypeAppointment, $idAppointmentFull;
-    public $document_authorization, $type_exam_revaloration_id,$user_appoimnet,$typeid,$userid;
+    public $document_authorization, $type_exam_revaloration_id, $typeid, $userid, $registeredUserId, $showBannerBoolean;
     protected $listeners = [
         'saveDisabledDays' => '$refresh',
+        'registeredEmit',
+        'showBanner'
     ];
     public function mount()
     {
         //idType 2 es para cuando la sede de terceros autorizados quiere generer cita
-        $idIsExternal = (session('idType') == 2 ? 1 :session('idType'));
-        $this->typeid =(session('idType'));
+        $idIsExternal = (session('idType') == 2 ? 1 : session('idType'));
+        $this->typeid = (session('idType'));
         $this->idTypeAppointment = $idIsExternal;
         $boolTypeAppointment = $this->idTypeAppointment;
         $this->idAppointmentFull = $boolTypeAppointment ? 1 : 0;
@@ -61,6 +63,14 @@ class HomeMedicine extends Component
         $this->typeRenovationExams = collect();
         $this->scheduleMedicines = collect();
         $this->disabledDaysFilter = collect();
+    }
+    public function registeredEmit($payload)
+    {
+        $this->registeredUserId = $payload;
+    }
+    public function showBanner($payload)
+    {
+        $this->showBannerBoolean = $payload;
     }
     public function rules()
     {
@@ -293,11 +303,11 @@ class HomeMedicine extends Component
             // $schedule = MedicineSchedule::find($this->medicine_schedule_id);
             //agendar cita normal
 
-                $this->userid =($this->user_appoimnet != null  ? $this->user_appoimnet : Auth::user()->id);
+            $this->userid = ($this->registeredUserId != null  ? $this->registeredUserId : Auth::user()->id);
             // dd($this->userid);
-                $userMedicines = MedicineReserve::with(['medicineReserveMedicine'])
+            $userMedicines = MedicineReserve::with(['medicineReserveMedicine'])
                 ->whereHas('medicineReserveMedicine', function ($q1) {
-                    $q1->where('user_id',$this->userid);
+                    $q1->where('user_id', $this->userid);
                     $q1->where('type_exam_id', $this->type_exam_id);
                 })
                 ->where(function ($q) {
@@ -533,7 +543,7 @@ class HomeMedicine extends Component
                 }
                 // dd($this->userid);
                 $cita = new MedicineReserve();
-                
+
                 $cita->from_user_appointment = $this->userid;
                 $cita->medicine_id = $this->saveMedicine->id;
                 $cita->headquarter_id = $this->headquarter_id;
