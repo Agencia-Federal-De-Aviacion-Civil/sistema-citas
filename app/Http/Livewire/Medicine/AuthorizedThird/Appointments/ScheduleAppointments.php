@@ -16,7 +16,7 @@ class ScheduleAppointments extends Component
 {
 
     public $dateNow, $states, $municipals;
-    public $curp_search, $userParticipant, $status, $title, $stepsprogress,$idTypeAppointment,$user_appoimnet;
+    public $curp_search, $userParticipant, $status, $title, $stepsprogress, $idTypeAppointment, $registeredUserId;
     public $user_id, $id_register, $name_search, $apParental_search, $apMaternal_search, $curp_searchs, $email_search, $name, $apParental, $apMaternal, $genre, $birth, $state_id, $municipal_id, $age, $street, $nInterior, $nExterior, $suburb, $postalCode, $federalEntity,
         $delegation, $mobilePhone, $officePhone, $extension, $curp, $email, $password = '', $passwordConfirmation = '', $edad;
 
@@ -108,7 +108,6 @@ class ScheduleAppointments extends Component
             'email',
             'password',
             'passwordConfirmation',
-            'user_appoimnet'
         ]);
     }
 
@@ -124,7 +123,10 @@ class ScheduleAppointments extends Component
             $this->apMaternal_search = $this->userParticipant[0]->apMaternal;
             $this->curp_searchs = $this->userParticipant[0]->curp;
             $this->email_search = $this->userParticipant[0]->userParticipantUser->email;
-            $this->user_appoimnet=$this->userParticipant[0]->userParticipantUser->id;
+            $this->registeredUserId = $this->userParticipant[0]->userParticipantUser->id;
+            $this->emit('registeredEmit', $this->registeredUserId);
+            $showBanner = true;
+            $this->emit('showBanner', $showBanner);
         } else {
             $this->status = '2';
             $this->title = 'REGISTAR USUARIO';
@@ -169,6 +171,7 @@ class ScheduleAppointments extends Component
                 'extension' => $this->extension,
                 'curp' => $this->curp,
             ]);
+            $this->emit('registeredEmit', $this->registeredUserId);
             $this->notification([
                 'title'       => 'SE REGISTRO CORRECTAMENTE',
                 'icon'        => 'success',
@@ -176,7 +179,6 @@ class ScheduleAppointments extends Component
             ]);
             $this->curp_search = $this->curp;
             $this->clean();
-            
             $this->searchcurp();
         } catch (\Exception $e) {
             $this->dialog([

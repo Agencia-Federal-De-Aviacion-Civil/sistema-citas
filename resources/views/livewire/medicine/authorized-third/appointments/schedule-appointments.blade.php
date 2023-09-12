@@ -27,7 +27,7 @@
             <div class="mt-12 max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div x-cloak x-data="{
                     searchcurp: @entangle('curp_search'),
-                    steps:@entangle('stepsprogress'),
+                    steps: @entangle('stepsprogress'),
                 }">
                     <div class="bg-blue-50 border border-blue-200 rounded-md p-3" role="alert">
                         <div class="flex">
@@ -49,7 +49,6 @@
 
                         </div>
                     </div>
-                    <x-errors></x-errors>
                     <section class="bg-white dark:bg-gray-900">
                         <div class="container flex flex-col px-4 py-12 mx-auto text-center">
                             <div class="grid xl:grid-cols-6 xl:gap-6 py-2">
@@ -325,8 +324,7 @@
                                                         </div>
                                                         <div class="text-right">
                                                             <x-button wire:click.prevent="register()"
-                                                                label="REGISTRAR" blue
-                                                                right-icon="plus-sm" />
+                                                                label="REGISTRAR" blue right-icon="plus-sm" />
                                                             <div wire:loading.delay.shortest wire:target="register">
                                                                 <div
                                                                     class="flex justify-center bg-gray-200 z-40 h-full w-full fixed top-0 left-0 items-center opacity-75">
@@ -349,7 +347,7 @@
                                                 @endif
                                             </div>
                                             <div x-show="steps == 2">
-                                                @livewire('medicine.home-medicine', ['user_appoimnet' => $user_appoimnet])
+                                                @livewire('medicine.home-medicine')
                                                 <div class="flow-root">
                                                     <x-button x-on:click="steps=1" class="float-left"
                                                         icon="arrow-left" blue label="Anterior" md />
