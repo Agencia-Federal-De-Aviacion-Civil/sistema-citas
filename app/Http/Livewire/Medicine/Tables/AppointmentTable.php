@@ -195,12 +195,15 @@ class AppointmentTable extends DataTableComponent
 
                 Column::make("HORA", "reserveSchedule.time_start")
                     ->sortable(),
-                Column::make("ACCIÓN")
+                Column::make("ACCIÓNES")
                     ->label(
                         fn ($row) => view(
                             'components.medicine.appointment-actions-component',
                             [
                                 $action = MedicineReserve::where('id', $row->id)->get(),
+                                $dateExpire = Carbon::parse($action[0]->dateReserve),
+                                $showExpireButton = Auth::user()->hasRole('user') && Carbon::now()->lt($dateExpire),
+                                'buttonExpire' => $showExpireButton,
                                 'status' => $action[0]->status,
                                 'scheduleId' => $action[0]->id,
                                 'medicineId' => $action[0]->medicine_id
