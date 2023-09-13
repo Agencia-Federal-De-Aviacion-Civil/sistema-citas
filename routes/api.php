@@ -22,7 +22,6 @@ Route::middleware([
     // 'auth:sanctum',
 ])->group(function () {
     //API ROUTES TEST
-    Route::post('/create-users', [UsersController::class, 'create']);
     Route::get('/list-users', [UsersController::class, 'list']);
-    Route::get('/show-users/{id}', [UsersController::class, 'show']);
+    Route::put('/update-reserves/{id}', [UsersController::class, 'update']);
 });
