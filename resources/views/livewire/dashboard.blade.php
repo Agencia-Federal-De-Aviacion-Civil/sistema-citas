@@ -64,7 +64,14 @@
                                         </svg>
                                         <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
                                             ¿EN DONDE REALIZARAS TU CITA?</h3>
-                                        <div class="grid grid-cols-1 gap-4 mt-4 xl:mt-4 md:grid-cols-2 xl:grid-cols-2">
+                                        <x-select label="SELECCIONA LA SEDE" placeholder="SELECCIONA..."
+                                            wire:model.defer="selectedHeadquarter">
+                                            @foreach ($headquartersAfac as $headquarterAfac)
+                                                <x-select.option label="{{ $headquarterAfac->name_headquarter }}"
+                                                    value="{{ $headquarterAfac->id . '-' . $headquarterAfac->is_external }}" />
+                                            @endforeach
+                                        </x-select>
+                                        {{-- <div class="grid grid-cols-1 gap-4 mt-4 xl:mt-4 md:grid-cols-2 xl:grid-cols-2">
                                             <button class="hover:animate-pulse" wire:click.prevent='goAfac(false)'>
                                                 <div
                                                     class="flex flex-col items-center p-3 transition-colors duration-300 transform border cursor-pointer rounded-xl hover:border-transparent group hover:bg-gray-100 dark:border-gray-700 dark:hover:border-transparent">
@@ -85,8 +92,11 @@
                                                         Instituciones para terceros</p>
                                                 </div>
                                             </button>
+                                        </div> --}}
+                                        <div class="mt-6 mb-6">
+                                            <x-button wire:click.prevent="selected" right-icon="arrow-circle-right"
+                                                primary label="CONTINUAR" />
                                         </div>
-
                                     </div>
                                 </div>
                             </div>

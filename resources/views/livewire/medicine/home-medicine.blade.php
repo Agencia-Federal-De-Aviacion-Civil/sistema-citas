@@ -11,9 +11,9 @@
         @livewire('medicine.modals.modal-index')
     @endif
     @unless ($showBannerBoolean)
-    <x-banner-component :title="$idTypeAppointment === false
-    ? 'Generación de citas medicina de Aviación AFAC'
-    : 'Generación de citas medicina de Aviación Terceros'" />
+        <x-banner-component :title="$idTypeAppointment === false
+            ? 'Generación de citas medicina de Aviación AFAC'
+            : 'Generación de citas medicina de Aviación Terceros'" />
     @endunless
     <div class="py-12">
         <div class="container mx-auto px-4 py-4 bg-white shadow-xl sm:rounded-lg">
@@ -410,8 +410,7 @@
                                                 <div class="grid xl:grid-cols-3 xl:gap-6">
                                                     <div class="text-base relative z-auto w-full mb-2 group">
                                                         <label for="small"
-                                                            class="block mb-2 text-base font-medium text-gray-900 dark:text-white">ELIJA
-                                                            LA SEDE</label>
+                                                            class="block mb-2 text-base font-medium text-gray-900 dark:text-white">CONFIRMA SEDE</label>
                                                         <select id="small" x-ref="selec_sede"
                                                             wire:model.lazy="headquarter_id"
                                                             wire:change="searchDisabledDays()"
