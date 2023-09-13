@@ -47,7 +47,6 @@ class HomeMedicine extends Component
     {
         //idType 2 es para cuando la sede de terceros autorizados quiere generer cita
         $idIsExternal = (session('idType') == 2 ? 1 : session('idType'));
-        $this->typeid = (session('idType'));
         $this->idTypeAppointment = $idIsExternal;
         $boolTypeAppointment = $this->idTypeAppointment;
         $this->idAppointmentFull = $boolTypeAppointment ? 1 : 0;
@@ -131,11 +130,20 @@ class HomeMedicine extends Component
             // SOLO SEDE CIUDAD DE MÉXICO
             $this->sedes = Headquarter::where('system_id', 1)->where('status', false)->where('id', 6)->get();
         } else {
-            $this->sedes = Headquarter::when($this->idTypeAppointment, function ($query) {
-                return $query->where('is_external', true);
-            }, function ($query) {
-                return $query->where('is_external', false);
-            })->where('system_id', 1)->where('status', false)->get();
+            $idHeadquarter = session('idHeadquarter');
+            $this->sedes = Headquarter::with('HeadquarterUserHeadquarter.userHeadquarterUserParticipant')
+                ->when($this->idTypeAppointment, function ($query) use ($idHeadquarter) {
+                    return $query->where('id', $idHeadquarter);
+                }, function ($query) use ($idHeadquarter) {
+                    return $query->where('id', $idHeadquarter);
+                })
+                ->orWhere(function ($query) use ($idHeadquarter) {
+                    if (!$idHeadquarter) {
+                        $query->whereHas('HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($subquery) {
+                            $subquery->where('user_id', Auth::user()->id);
+                        });
+                    }
+                })->where('system_id', 1)->where('status', false)->get();
             // $this->sedes = Headquarter::where('system_id', 1)->where('status', false)->get();
         }
         // if ($type_exam_id === '3' || $type_exam_id === '5') {

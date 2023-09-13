@@ -137,7 +137,7 @@ class AppointmentThirdTable extends DataTableComponent
                                 'status' => $action[0]->status,
                                 'scheduleId' => $action[0]->id,
                                 'medicineId' => $action[0]->medicine_id,
-                                $wait_date = new Carbon($action[0]->dateReserve,'America/Mexico_City'),
+                                $wait_date = new Carbon($action[0]->dateReserve, 'America/Mexico_City'),
                                 $days_wait = $this->date->diffInDays($wait_date),
                                 'days' => $days_wait,
                                 'wait_date' => $wait_date
@@ -215,6 +215,9 @@ class AppointmentThirdTable extends DataTableComponent
                             'components.medicine.appointment-actions-component',
                             [
                                 $action = MedicineReserve::where('id', $row->id)->get(),
+                                $dateExpire = Carbon::parse($action[0]->dateReserve),
+                                $showExpireButton = Auth::user()->hasRole('user') && Carbon::now()->lt($dateExpire),
+                                'buttonExpire' => $showExpireButton,
                                 'status' => $action[0]->status,
                                 'scheduleId' => $action[0]->id,
                                 'medicineId' => $action[0]->medicine_id,
@@ -303,7 +306,7 @@ class AppointmentThirdTable extends DataTableComponent
                                 'status' => $action[0]->status,
                                 'scheduleId' => $action[0]->id,
                                 'medicineId' => $action[0]->medicine_id,
-                                $wait_date = new Carbon($action[0]->dateReserve,'America/Mexico_City'),
+                                $wait_date = new Carbon($action[0]->dateReserve, 'America/Mexico_City'),
                                 $days_wait = $this->date->diffInDays($wait_date),
                                 'days' => $days_wait,
                                 'wait_date' => $wait_date,
@@ -453,9 +456,8 @@ class AppointmentThirdTable extends DataTableComponent
                         $builder->where('medicine_reserves.id', 'like', '%' . $value . '%');
                     }),
             ];
-        }else if (Auth::user()->can('user.see.schedule.table')){
-            return [
-            ];
+        } else if (Auth::user()->can('user.see.schedule.table')) {
+            return [];
         }
     }
     public function builder(): Builder
@@ -469,7 +471,7 @@ class AppointmentThirdTable extends DataTableComponent
                 'medicineReserveMedicine', 'medicineReserveFromUser', 'userParticipantUser',
             ])->whereHas('medicineReserveMedicine', function ($q1) {
                 $q1->where('user_id', Auth::user()->id)
-                ->where('medicine_reserves.is_external', true);
+                    ->where('medicine_reserves.is_external', true);
             });
         } else
         if (Auth::user()->can('headquarters_authorized.see.table')) {
