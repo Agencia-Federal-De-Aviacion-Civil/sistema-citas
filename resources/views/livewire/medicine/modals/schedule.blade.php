@@ -132,23 +132,27 @@
                             wire:model="selectedOption"
                             class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-300 dark:border-gray-300 dark:placeholder-gray-300 dark:text-white">
 
-                        <option value="">SELECCIONE OPCIÓN</option>
-                        @if ($days > 20 AND $status==7)
-                        <option  value="2">CANCELAR CITA</option>
-                        @else
-                        <option value="1">ASISTIÓ A SU CITA</option>
-                        <option value="2">CANCELAR CITA</option>
-                        @endif
+                                <option value="">SELECCIONE OPCIÓN</option>
+                                @hasrole('super_admin|medicine_admin|super_admin_medicine|admin_medicine_v2|sub_headquarters|headquarters|headquarters_authorized')
+                                @if ($days > 20 AND $status==7)
+                                <option  value="2">CANCELAR CITA</option>
+                                @else
 
-                            @if ($status != 7 AND $is_external == 1)
-                            <option value="7">APLAZAR CITA</option>
-                            @endif
+                                <option value="1">ASISTIÓ A SU CITA</option>
+                                <option value="2">CANCELAR CITA</option>
 
-                            @hasrole('super_admin|medicine_admin|super_admin_medicine|admin_medicine_v2')
-                            @if ($status == 0)
-                            <option value="4">REAGENDAR CITA</option>
-                            @endif
-                            @endhasrole
+                                @endif
+                                @if ($status != 7 AND $is_external == 1)
+                                <option value="7">APLAZAR CITA</option>
+                                @endif
+                                @endhasrole
+                                @hasrole('user|super_admin|medicine_admin|super_admin_medicine|admin_medicine_v2')
+                                @if ($status == 0 )
+                                <option value="4">REAGENDAR CITA</option>
+                                @endif
+                                @endhasrole
+
+
                         </select>
                         @error('selectedOption')
                         <span class="mt-2 text-sm text-negative-600">{{ $message }}</span>
@@ -184,15 +188,24 @@
                     </div>
                 </div>
                 <div class="flex justify-end items-center gap-x-2 p-5 sm:px-7">
+                    @hasrole('super_admin|medicine_admin|super_admin_medicine|admin_medicine_v2|headquarters_authorized')
                     @if ($status == 0 || $status == 4 || $status == 6 || $status == 7)
                     <div class="float-right mt-6">
                         <x-button wire:click="reschedules()" label="ACEPTAR" blue right-icon="save-as" />
                     </div>
                     @endif
+                    @endhasrole
+                    @hasrole('user')
+                    @if ($status == 0)
+                    <div class="float-right mt-6">
+                    <x-button wire:click="reschedules()" label="ACEPTAR" blue right-icon="save-as" />
+                    </div>
+                    @endif
+                    @endhasrole
                     @hasrole('super_admin|super_admin_medicine')
                     @if ($this->status == 3 || $this->status == 2)
                     <div class="float-right mt-6">
-                        <x-button wire:click.prevent="saveActive" spinner="saveActive" loading-delay="short" sm
+                    <x-button wire:click.prevent="saveActive" spinner="saveActive" loading-delay="short" sm
                             icon="key" positive label="LIBERAR LLAVE DE PAGO" />
                     </div>
                     @endif

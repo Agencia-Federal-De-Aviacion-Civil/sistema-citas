@@ -6,9 +6,14 @@
                 label="PENDIENTE" xs silver />
         @else
             @if ($buttonExpire)
-                <x-button
+
+            <x-button
+            wire:click="$emit('openModal', 'medicine.modals.schedule', {{ json_encode(['scheduleId' => $scheduleId, 'medicineId' => $medicineId]) }})"
+            label="REAGENDAR" xs orange />
+
+                {{-- <x-button
                     wire:click="$emit('openModal', 'medicine.modals.cancel-appointment-user-modal', {{ json_encode(['scheduleId' => $scheduleId, 'medicineId' => $medicineId]) }})"
-                    label="CANCELAR" xs red />
+                    label="CANCELAR" xs red /> --}}
             @else
                 <x-badge flat info label="PENDIENTE" />
             @endif
@@ -38,9 +43,17 @@
             <x-badge flat negative label="CANCELADA" />
         @endhasrole
     @elseif($status == 4)
-        <x-button
+
+    @hasrole('super_admin|medicine_admin|super_admin_medicine|admin_medicine_v2|headquarters|headquarters_authorized')
+            <x-button
             wire:click="$emit('openModal', 'medicine.modals.schedule', {{ json_encode(['scheduleId' => $scheduleId, 'medicineId' => $medicineId]) }})"
             label="REAGENDADA" xs warning />
+    @endhasrole
+
+    @hasrole('user')
+    <x-badge flat warning label="CITA REAGENDADA" />
+    @endhasrole
+
         @hasrole('sub_headquarters|super_admin|medicine_admin|super_admin_medicine|user|admin_medicine_v2')
             <x-button xs positive href="{{ route('afac.downloadFile', $scheduleId) }}" label="DESCARGAR" />
         @endhasrole
@@ -53,7 +66,8 @@
             wire:click="$emit('openModal', 'medicine.modals.schedule', {{ json_encode(['scheduleId' => $scheduleId, 'medicineId' => $medicineId]) }})"
             label="COMPLETAR DATOS" icon="status-offline" xs red />
     @elseif($status == 7)
-        @hasrole('sub_headquarters|super_admin|medicine_admin|super_admin_medicine|headquarters|admin_medicine_v2|headquarters_authorized')
+
+    @hasrole('super_admin|medicine_admin|super_admin_medicine|admin_medicine_v2|headquarters_authorized')
             @if ($days > 20 && $this->date > $wait_date)
                 <x-button
                     wire:click="$emit('openModal', 'medicine.modals.schedule', {{ json_encode(['scheduleId' => $scheduleId, 'medicineId' => $medicineId]) }})"
