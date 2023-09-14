@@ -54,8 +54,8 @@
         @endhasrole
     @endif
     @if ($status == 8)
-        <x-badge flat positive label="APTO" />
+        <x-badge flat positive label="CONCLUYÓ APTO" />
     @elseif($status == 9)
-        <x-badge flat negative label="NO APTO" />
+        <x-badge flat negative label="CONCLUYÓ NO APTO />
     @endif
 </div>
