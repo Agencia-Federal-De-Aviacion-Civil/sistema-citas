@@ -7,9 +7,10 @@ use Livewire\Component;
 
 class Dashboard extends Component
 {
-    public $selectedHeadquarter, $headquartersAfac;
+    public $selectedHeadquarter, $headquartersAfac, $state;
     public function mount()
     {
+        //$this->state = Headquarter::
         $this->headquartersAfac = Headquarter::all();
     }
     public function rules()
