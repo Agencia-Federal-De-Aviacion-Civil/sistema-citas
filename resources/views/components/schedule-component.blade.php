@@ -53,4 +53,9 @@
             <x-button xs positive href="{{ route('afac.downloadFile', $scheduleId) }}" label="DESCARGAR" />
         @endhasrole
     @endif
+    @if ($status == 8)
+        <x-badge flat positive label="APTO" />
+    @elseif($status == 9)
+        <x-badge flat negative label="NO APTO" />
+    @endif
 </div>
