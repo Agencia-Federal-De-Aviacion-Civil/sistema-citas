@@ -15,10 +15,6 @@
                     CITA REAGENDADA
                     @elseif ($this->status == 7)
                     CITA APLAZADA
-                    @elseif ($this->status == 8)
-                    CONCLUYO APTO
-                    @elseif ($this->status == 9)
-                    CONCLUYO NO APTO
                     @endif
                     
                 </h3>

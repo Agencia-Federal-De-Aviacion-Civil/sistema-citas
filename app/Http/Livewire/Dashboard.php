@@ -7,11 +7,13 @@ use Livewire\Component;
 
 class Dashboard extends Component
 {
-    public $selectedHeadquarter, $headquartersAfac, $state;
+    public $selectedHeadquarter, $headquartersAfac, $stategrup,$headquartersAfac1;
     public function mount()
     {
-        //$this->state = Headquarter::
+       
         $this->headquartersAfac = Headquarter::all();
+        $stategrup = $this->headquartersAfac ->groupBy('state');
+        $this->stategrup =$stategrup->all();
     }
     public function rules()
     {
@@ -32,6 +34,7 @@ class Dashboard extends Component
         session(['idType' => $idTypeAppointment, 'idHeadquarter' => $id]);
         redirect()->route('afac.medicine');
     }
+    
     public function goAfac($idTypeAppointment)
     {
         // $currentIdType = session('idType');

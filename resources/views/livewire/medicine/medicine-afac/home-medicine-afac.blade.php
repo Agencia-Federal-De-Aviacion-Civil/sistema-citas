@@ -144,10 +144,10 @@
                                             class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                                             <div class="flex items-center">
                                                 <span
-                                                    class="mr-2">{{ round(($headquarter->headquarterMedicineReserve->count() * 100) / $registradas, 1) }}%</span>
+                                                    class="mr-2">{{ $headquarter->headquarterMedicineReserve->count() > 0 ? round(($headquarter->headquarterMedicineReserve->count() * 100) / $registradas, 1) : '0' }}%</span>
                                                 <div class="relative w-full">
                                                     <div class="overflow-hidden h-2 text-xs flex rounded bg-blue-200">
-                                                        <div style="width:{{ ($headquarter->headquarterMedicineReserve->count() * 100) / $registradas }}%"
+                                                        <div style="width:{{ $headquarter->headquarterMedicineReserve->count() > 0 ? ($headquarter->headquarterMedicineReserve->count() * 100) / $registradas : '0' }}%"
                                                             class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-600">
                                                         </div>
                                                     </div>
