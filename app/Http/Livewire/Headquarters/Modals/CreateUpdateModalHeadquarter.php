@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Headquarters\Modals;
 
 use App\Models\Catalogue\Headquarter;
 use App\Models\Catalogue\TypeExam;
+use App\Models\Catalogue\State;
 use App\Models\System;
 use App\Models\User;
 use App\Models\Medicine\medicine_history_movements;
@@ -19,7 +20,7 @@ class CreateUpdateModalHeadquarter extends ModalComponent
 {
     use Actions;
     public $id_user, $id_edit, $id_schedule, $id_exception, $userId, $id_headquarter, $time_start, $type_exam_id,
-        $max_schedules_exception, $max_schedules, $name_headquarter, $direction, $system_id, $url, $status;
+        $max_schedules_exception, $max_schedules, $name_headquarter, $direction, $system_id, $url, $status, $price, $state;
     public $sedes, $typeExams, $questionException = '0', $schedulesExceptions, $is_external;
     public function rules()
     {
@@ -58,6 +59,9 @@ class CreateUpdateModalHeadquarter extends ModalComponent
             // $this->type_exam_id = isset($this->sedes[0]->headquarterSchedule->schedulesMedicineException[0]->type_exam_id) ? $this->sedes[0]->headquarterSchedule->schedulesMedicineException[0]->type_exam_id : '';
             $this->id_headquarter = $this->sedes[0]->id;
             $this->id_schedule = $this->sedes[0]->headquarterSchedule->id;
+            $this->is_external = $this->sedes[0]->is_external;
+            $this->state = $this->sedes[0]->state;
+            $this->price = $this->sedes[0]->price;
             // $this->id_exception = isset($this->sedes[0]->headquarterSchedule->schedulesMedicineException[0]->id) ? $this->sedes[0]->headquarterSchedule->schedulesMedicineException[0]->id : '';
         } else {
             $this->userId = null; // o cualquier otro valor predeterminado que desees
@@ -66,6 +70,7 @@ class CreateUpdateModalHeadquarter extends ModalComponent
     public function render()
     {
         $qSystems = System::all();
+        $states = State::all();
         $headquarters = Headquarter::with('headquarterUserParticipant')->get();
         $medicineSchedulesExceptions = MedicineScheduleExceptionMaxException::with(
             'maxExceptionMedicineSchedule.medicineSchedules.scheduleHeadquarter'
@@ -74,7 +79,7 @@ class CreateUpdateModalHeadquarter extends ModalComponent
                 $q1->where('id', $this->userId);
             })
             ->get();
-        return view('livewire.headquarters.modals.create-update-modal-headquarter', compact('qSystems', 'headquarters', 'medicineSchedulesExceptions'));
+        return view('livewire.headquarters.modals.create-update-modal-headquarter', compact('qSystems', 'headquarters', 'medicineSchedulesExceptions','states'));
     }
     public function updated($propertyName)
     {
@@ -145,6 +150,8 @@ class CreateUpdateModalHeadquarter extends ModalComponent
                     'direction' => $this->direction,
                     'url' => $this->url,
                     'is_external' => $this->is_external,
+                    'state' => $this->state,
+                    'price' => $this->price,
                     'status' => $this->status
                 ]
             );

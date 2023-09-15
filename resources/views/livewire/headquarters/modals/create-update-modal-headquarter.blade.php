@@ -6,7 +6,20 @@
                     <x-input wire:model.lazy="name_headquarter" label="SEDE" placeholder="ESCRIBE..." />
                 </div>
                 <div class="mt-1 relative w-full group">
-                    <x-input wire:model.lazy="direction" label="DIRECCIÓN" placeholder="ESCRIBE..." />
+                    <x-input wire:model.lazy="direction" label="DIRECCIÓN" placeholder="ESCRIBE..."/>
+                </div>
+            </div>
+            <div class="grid xl:grid-cols-2 xl:gap-6">
+                <div class="mt-1 relative w-full group">
+                    <x-select label="ESTADO" placeholder="Selecciona el estado..."
+                    wire:model.defer="state">
+                    @foreach ($states as $state)
+                        <x-select.option label="{{ $state->name }}" value="{{ $state->name }}" />
+                    @endforeach
+                </x-select>
+                </div>
+                <div class="mt-1 relative w-full group">
+                    <x-input wire:model.lazy="price" label="COSTO" placeholder="ESCRIBE..." right-icon="currency-dollar"/>
                 </div>
             </div>
             <div class="grid xl:grid-cols-2 xl:gap-6">
