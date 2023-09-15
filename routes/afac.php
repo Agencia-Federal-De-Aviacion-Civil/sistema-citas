@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\afac\Appointment\DashboardController;
 use App\Http\Controllers\afac\homeController;
 use App\Http\Controllers\AppointmentMedicineController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserMedicineController;
 use App\Http\Livewire\Headquarters\HomeHeadquarter;
