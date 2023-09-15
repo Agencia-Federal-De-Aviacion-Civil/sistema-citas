@@ -16,7 +16,7 @@
                     @elseif ($this->status == 7)
                     CITA APLAZADA
                     @endif
-                    
+
                 </h3>
                 <div x-data="{ selectedOption: '' }">
                     <div class="grid xl:grid-cols-1 xl:gap-6">
@@ -42,7 +42,7 @@
                             @if ($status == 0 || $status == 1 || $status == 2 || $status == 3 || $status == 4 || $status
                             == 5 || $status == 7)
 
-                            <div x-show="selectedOption == '' || selectedOption == 1 || selectedOption == 2">
+                            <div x-show="selectedOption == '' || selectedOption == 1 || selectedOption == 2 || selectedOption == 7">
                                 <x-input wire:model="sede" label="SEDE" disabled />
                             </div>
 
@@ -141,7 +141,7 @@
                         <option value="2">CANCELAR CITA</option>
                         @endif
 
-                            @if ($status != 7 AND $is_external == 1)
+                            @if ($status != 7 )
                             <option value="7">APLAZAR CITA</option>
                             @endif
 

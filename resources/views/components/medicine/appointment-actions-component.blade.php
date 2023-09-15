@@ -59,14 +59,22 @@
                     wire:click="$emit('openModal', 'medicine.modals.schedule', {{ json_encode(['scheduleId' => $scheduleId, 'medicineId' => $medicineId]) }})"
                     label="EL PLAZO EXPIRO" xs red />
                 <x-button xs positive href="{{ route('afac.downloadFile', $scheduleId) }}" label="DESCARGAR" />
-            @else
+
+                @else
                 <x-button
                     wire:click="$emit('openModal', 'medicine.modals.schedule', {{ json_encode(['scheduleId' => $scheduleId, 'medicineId' => $medicineId]) }})"
                     label="REANUDAR" xs primary />
                 <x-button xs positive href="{{ route('afac.downloadFile', $scheduleId) }}" label="DESCARGAR" />
             @endif
         @else
-            <x-badge flat default label="CITA APLAZADA" />
+
+        @if ($days > 20 && $this->date > $wait_date)
+        <x-badge flat red label="CITA APLAZADA EXPIRO" />
+        @else
+        <x-badge flat default label="CITA APLAZADA" />
+        @endif
+
+
         @endhasrole
     @endif
     @if ($status == 0)
