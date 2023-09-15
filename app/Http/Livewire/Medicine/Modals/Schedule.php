@@ -22,7 +22,7 @@ class Schedule extends ModalComponent
     use WithFileUploads;
     public $id_appoint, $id_medicine_observation, $scheduleId, $status, $medicineReserves, $name, $type, $class, $typLicense, $sede, $dateReserve, $date, $time, $scheduleMedicines, $sedes,
     $headquarter_id, $medicine_schedule_id, $selectedOption, $observation_reschedule, $observation_cancelate, $hoursReserve, $observation, $medicineId, $accion,
-        $disabledDaysFilter,$days,$is_external;
+        $disabledDaysFilter,$days,$is_external,$value;
 
     public function rules()
     {
@@ -38,6 +38,7 @@ class Schedule extends ModalComponent
 
     public function mount($scheduleId = null, $medicineId)
     {
+
         $this->medicineId = $medicineId;
         if (isset($scheduleId)) {
             $this->scheduleId = $scheduleId;
@@ -77,6 +78,17 @@ class Schedule extends ModalComponent
             $this->days = $fecha->diffInDays($fechaEspera);
             $this->is_external = $medicineReserves[0]->is_external;
 
+            if (Auth::user()->can('user.see.schedule.table')) {
+                $this->selectedOption = 4;
+                $value = $medicineReserves[0]->medicineReserveHeadquarter->id;
+                $this->updatedHeadquarterId($value);
+                $this->headquarter_id = $value;
+                // $this->dateReserve = $medicineReserves[0]->dateReserve;
+                // $this->medicine_schedule_id = $medicineReserves[0]->reserveSchedule->id;
+                $this->status = 6;
+            }
+
+
         } else {
             $this->scheduleId = null;
         }
@@ -95,6 +107,7 @@ class Schedule extends ModalComponent
     }
     public function updatedHeadquarterId($value)
     {
+        // dd($value);
         $this->scheduleMedicines = MedicineSchedule::with('scheduleHeadquarter')
             ->whereHas('scheduleHeadquarter', function ($max) use ($value) {
                 $max->where('id', $value);
@@ -157,6 +170,7 @@ class Schedule extends ModalComponent
     public function reschedules()
     {
 
+        // dd($this->selectedOption);
         //ASISTIÓ
         $this->validate();
         if ($this->selectedOption == 1) {

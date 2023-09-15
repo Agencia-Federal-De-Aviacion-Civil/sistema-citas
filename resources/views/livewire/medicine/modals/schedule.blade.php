@@ -50,7 +50,9 @@
                             <x-select label="ELIJA LA SEDE" placeholder="Selecciona" wire:model.lazy="headquarter_id">
                                 <x-select.option label="Seleccione opción" value="" />
                                 @foreach ($sedes as $sede)
+                                @if($sede->id==2)
                                 <x-select.option label="{{ $sede->name_headquarter }}" value="{{ $sede->id }}" />
+                                @endif
                                 @endforeach
                             </x-select>
                             @endif
@@ -65,6 +67,7 @@
                             </div>
                         </div>
                     </div>
+{{-- {{ $headquarter_id }} --}}
                     <div class="mt-4 grid xl:grid-cols-2 xl:gap-6">
                         @if ($status == 6)
                         <x-input wire:model.lazy="dateReserve" id="fecha-appointment-restored" label="SELECCIONE FECHA"
@@ -126,6 +129,7 @@
 
                     @if ($status == 0 || $status == 4 || $status == 7)
 
+                    @hasrole('super_admin|medicine_admin|super_admin_medicine|admin_medicine_v2|sub_headquarters|headquarters|headquarters_authorized')
 
                     <div class="mt-6 relative w-full group">
                         <select name="my_option" label="SELECIONE OPCIÓN" x-model="selectedOption"
@@ -133,7 +137,6 @@
                             class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-300 dark:border-gray-300 dark:placeholder-gray-300 dark:text-white">
 
                                 <option value="">SELECCIONE OPCIÓN</option>
-                                @hasrole('super_admin|medicine_admin|super_admin_medicine|admin_medicine_v2|sub_headquarters|headquarters|headquarters_authorized')
                                 @if ($days > 20 AND $status==7)
                                 <option  value="2">CANCELAR CITA</option>
                                 @else
@@ -145,19 +148,17 @@
                                 @if ($status != 7 AND $is_external == 1)
                                 <option value="7">APLAZAR CITA</option>
                                 @endif
-                                @endhasrole
-                                @hasrole('user|super_admin|medicine_admin|super_admin_medicine|admin_medicine_v2')
-                                @if ($status == 0 )
+                                @if ($status == 0 AND $is_external != 1)
                                 <option value="4">REAGENDAR CITA</option>
                                 @endif
-                                @endhasrole
-
 
                         </select>
                         @error('selectedOption')
                         <span class="mt-2 text-sm text-negative-600">{{ $message }}</span>
                         @enderror
                     </div>
+                    @endhasrole
+
                     @endif
                     <div x-show="selectedOption == 2">
                         <div class="mt-4">
@@ -169,6 +170,16 @@
                         <x-textarea wire:model="observation" label="MOTIVO" placeholder="ESCRIBE..." disabled />
                     </div>
                     @endif
+
+
+                    @hasrole('user')
+                    @if ($status == 6)
+                    <div class="mt-4">
+                        <x-textarea wire:model="observation" label="MOTIVO" placeholder="ESCRIBE..." />
+                    </div>
+                    @endif
+                    @endhasrole
+
                     <div x-show="selectedOption == 4">
                         <div class="mt-4">
                             <x-textarea wire:model="observation" label="MOTIVO" placeholder="ESCRIBE..." />
@@ -196,7 +207,7 @@
                     @endif
                     @endhasrole
                     @hasrole('user')
-                    @if ($status == 0)
+                    @if ($status == 6)
                     <div class="float-right mt-6">
                     <x-button wire:click="reschedules()" label="ACEPTAR" blue right-icon="save-as" />
                     </div>
