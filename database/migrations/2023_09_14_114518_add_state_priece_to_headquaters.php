@@ -29,6 +29,7 @@ return new class extends Migration
         Schema::table('headquaters', function (Blueprint $table) {
             $table->dropColumn('state');
             $table->dropColumn('price');
+            // AQUI
         });
     }
 };
