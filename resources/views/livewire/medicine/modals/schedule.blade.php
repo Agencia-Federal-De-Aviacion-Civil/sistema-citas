@@ -50,7 +50,7 @@
                             <x-select label="ELIJA LA SEDE" placeholder="Selecciona" wire:model.lazy="headquarter_id">
                                 <x-select.option label="Seleccione opción" value="" />
                                 @foreach ($sedes as $sede)
-                                @if($sede->id==2)
+                                @if($sede->id==$this->medicine_schedule_id)
                                 <x-select.option label="{{ $sede->name_headquarter }}" value="{{ $sede->id }}" />
                                 @endif
                                 @endforeach

@@ -84,7 +84,7 @@ class Schedule extends ModalComponent
                 $this->updatedHeadquarterId($value);
                 $this->headquarter_id = $value;
                 // $this->dateReserve = $medicineReserves[0]->dateReserve;
-                // $this->medicine_schedule_id = $medicineReserves[0]->reserveSchedule->id;
+                $this->medicine_schedule_id = $medicineReserves[0]->reserveSchedule->id;
                 $this->status = 6;
             }
 
