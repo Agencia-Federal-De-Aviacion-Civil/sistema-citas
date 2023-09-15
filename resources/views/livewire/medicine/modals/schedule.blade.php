@@ -16,7 +16,7 @@
                     @elseif ($this->status == 7)
                     CITA APLAZADA
                     @endif
-                    
+
                 </h3>
                 <div x-data="{ selectedOption: '' }">
                     <div class="grid xl:grid-cols-1 xl:gap-6">
@@ -141,7 +141,7 @@
                         <option value="2">CANCELAR CITA</option>
                         @endif
 
-                            @if ($status != 7 AND $is_external == 1)
+                            @if ($status != 7)
                             <option value="7">APLAZAR CITA</option>
                             @endif
 

@@ -141,7 +141,6 @@ class AppointmentThirdTable extends DataTableComponent
                                 $days_wait = $this->date->diffInDays($wait_date),
                                 'days' => $days_wait,
                                 'wait_date' => $wait_date
-
                             ]
                         )
                     ),
@@ -221,6 +220,10 @@ class AppointmentThirdTable extends DataTableComponent
                                 'status' => $action[0]->status,
                                 'scheduleId' => $action[0]->id,
                                 'medicineId' => $action[0]->medicine_id,
+                                $wait_date = new Carbon($action[0]->dateReserve, 'America/Mexico_City'),
+                                $days_wait = $this->date->diffInDays($wait_date),
+                                'days' => $days_wait,
+                                'wait_date' => $wait_date
                             ]
                         )
                     ),

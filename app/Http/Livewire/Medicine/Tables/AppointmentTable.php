@@ -25,11 +25,13 @@ class AppointmentTable extends DataTableComponent
     public $batchId;
     public $exporting;
     public $exportFinished;
+    public $date;
     protected function getListeners(): array
     {
         return array_merge(
             parent::getListeners(),
             [
+                'postponeReserve' => '$refresh',
                 'cancelReserve' => '$refresh',
                 'attendeReserve' => '$refresh',
                 'reserveAppointment' => '$refresh',
@@ -38,6 +40,10 @@ class AppointmentTable extends DataTableComponent
     }
     public function configure(): void
     {
+
+        Date::setLocale('es');
+        $this->date = Carbon::now()->timezone('America/Mexico_City');
+
         $this->setPrimaryKey('id');
 
         $this->setBulkActions([
@@ -153,7 +159,11 @@ class AppointmentTable extends DataTableComponent
                                 $action = MedicineReserve::where('id', $row->id)->get(),
                                 'status' => $action[0]->status,
                                 'scheduleId' => $action[0]->id,
-                                'medicineId' => $action[0]->medicine_id
+                                'medicineId' => $action[0]->medicine_id,
+                                $wait_date = new Carbon($action[0]->dateReserve, 'America/Mexico_City'),
+                                $days_wait = $this->date->diffInDays($wait_date),
+                                'days' => $days_wait,
+                                'wait_date' => $wait_date
                             ]
                         )
                     ),
@@ -206,7 +216,11 @@ class AppointmentTable extends DataTableComponent
                                 'buttonExpire' => $showExpireButton,
                                 'status' => $action[0]->status,
                                 'scheduleId' => $action[0]->id,
-                                'medicineId' => $action[0]->medicine_id
+                                'medicineId' => $action[0]->medicine_id,
+                                $wait_date = new Carbon($action[0]->dateReserve, 'America/Mexico_City'),
+                                $days_wait = $this->date->diffInDays($wait_date),
+                                'days' => $days_wait,
+                                'wait_date' => $wait_date
                             ]
                         )
                     ),
@@ -305,7 +319,11 @@ class AppointmentTable extends DataTableComponent
                                 $action = MedicineReserve::where('id', $row->id)->get(),
                                 'status' => $action[0]->status,
                                 'scheduleId' => $action[0]->id,
-                                'medicineId' => $action[0]->medicine_id
+                                'medicineId' => $action[0]->medicine_id,
+                                $wait_date = new Carbon($action[0]->dateReserve, 'America/Mexico_City'),
+                                $days_wait = $this->date->diffInDays($wait_date),
+                                'days' => $days_wait,
+                                'wait_date' => $wait_date
                             ]
                         )
                     ),
@@ -412,7 +430,12 @@ class AppointmentTable extends DataTableComponent
                                 $action = MedicineReserve::where('id', $row->id)->get(),
                                 'status' => $action[0]->status,
                                 'scheduleId' => $action[0]->id,
-                                'medicineId' => $action[0]->medicine_id
+                                'medicineId' => $action[0]->medicine_id,
+                                $wait_date = new Carbon($action[0]->dateReserve, 'America/Mexico_City'),
+                                $days_wait = $this->date->diffInDays($wait_date),
+                                'days' => $days_wait,
+                                'wait_date' => $wait_date
+
                             ]
                         )
                     ),

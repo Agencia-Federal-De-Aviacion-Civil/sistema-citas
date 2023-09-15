@@ -66,7 +66,14 @@
                 <x-button xs positive href="{{ route('afac.downloadFile', $scheduleId) }}" label="DESCARGAR" />
             @endif
         @else
-            <x-badge flat default label="CITA APLAZADA" />
+
+
+        @if ($days > 20 && $this->date > $wait_date)
+        <x-badge flat red label="CITA APLAZADA EXPIRO" />
+        @else
+        <x-badge flat default label="CITA APLAZADA" />
+        @endif
+
         @endhasrole
     @endif
     @if ($status == 0)
