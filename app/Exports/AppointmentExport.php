@@ -60,7 +60,7 @@ class AppointmentExport extends DefaultValueBinder implements FromCollection, Wi
             $status = 'CANCELO USUARIO';
         } else if ($results->status == 4) {
             $status = 'REAGENDO';
-        } else {
+        }else {
             $status = 'PENDIENTE';
         }
         return [

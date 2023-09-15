@@ -16,6 +16,7 @@
                     @elseif ($this->status == 7)
                     CITA APLAZADA
                     @endif
+                    
                 </h3>
                 <div x-data="{ selectedOption: '' }">
                     <div class="grid xl:grid-cols-1 xl:gap-6">
