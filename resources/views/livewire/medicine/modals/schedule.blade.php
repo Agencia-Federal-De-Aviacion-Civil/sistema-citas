@@ -42,7 +42,7 @@
                             @if ($status == 0 || $status == 1 || $status == 2 || $status == 3 || $status == 4 || $status
                             == 5 || $status == 7)
 
-                            <div x-show="selectedOption == '' || selectedOption == 1 || selectedOption == 2">
+                            <div x-show="selectedOption == '' || selectedOption == 1 || selectedOption == 2 || selectedOption == 7">
                                 <x-input wire:model="sede" label="SEDE" disabled />
                             </div>
 
