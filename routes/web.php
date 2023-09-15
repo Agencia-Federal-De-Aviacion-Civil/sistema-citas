@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Afac\Appointment\AfacHomeController;
+use App\Http\Controllers\afac\Appointment\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,5 +23,5 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified'
 ])->group(function () {
-    Route::get('/', [AfacHomeController::class, 'index'])->name('afac.login');
+    Route::get('/', [DashboardController::class, 'index'])->name('afac.login');
 });
