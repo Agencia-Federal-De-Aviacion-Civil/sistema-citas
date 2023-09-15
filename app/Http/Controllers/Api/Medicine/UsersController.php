@@ -14,20 +14,24 @@ class UsersController extends Controller
 {
     public function list(Request $request)
     {
-        // if ($request->header('Authorization') === 'Bearer 2|4ZWgUwhajRaJQyQv40tBvMVHzh1YU1EWN9GMTtGZ') {
-        $userList = MedicineReserve::with('medicineReserveFromUser.UserParticipant')
+        // TODO FALTA COLOCAR SEGURIDAD Y PROTECCION
+        $userList = MedicineReserve::with(
+            'medicineReserveHeadquarter:id,name_headquarter',
+            'medicineReserveMedicine:id,user_id,type_exam_id',
+            'medicineReserveMedicine.medicineInitial:id,medicine_id,type_class_id',
+            'medicineReserveMedicine.medicineRenovation:id,medicine_id,type_class_id',
+            'medicineReserveMedicine.medicineRevaluation:id,medicine_id',
+            'medicineReserveMedicine.medicineRevaluation.revaluationMedicineInitial:id,medicine_revaluation_id,type_class_id',
+            'medicineReserveMedicine.medicineRevaluation.revaluationMedicineRenovation:id,medicine_revaluation_id,type_class_id',
+            'medicineReserveFromUser:id,name',
+            'medicineReserveFromUser.UserParticipant:id,user_id,apParental,apMaternal,age,curp'
+        )
             ->where('status', 1)->get();
         return response([
             "status" => 1,
             "message" => "Lista de usuarios",
             "data" => $userList
         ]);
-        // } else {
-        //     return response([
-        //         "status" => 0,
-        //         "message" => "No autorizado",
-        //     ], 401);
-        // }
     }
     public function update(Request $request, $id)
     {
