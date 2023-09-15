@@ -9,14 +9,14 @@
             <div>
                 <div class="pb-4 lg:pb-6">
                     <h4 class="text-2xl lg:text-3xl text-black font-semibold leading-tight inline-block" x-ref="total">
-                        {{ $registradas }}</h4>
+                        {{ $registradas_afac }}</h4>
                 </div>
                 <div class="pb-4 lg:pb-6">
                     <div class="relative pt-1 mx-5">
                         <div class="overflow-hidden h-3 mb-4 text-xs flex rounded bg-gray-500">
-                          <div style="width: {{$porconfir}} %" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-800"></div>
-                          <div style="width: {{$porcanceladas}}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500"></div>
-                          <div style="width: {{$porreagendado}}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-500"></div>
+                          <div style="width: {{$porconfir_afac}} %" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-800"></div>
+                          <div style="width: {{$porcanceladas_afac}}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500"></div>
+                          <div style="width: {{$porreagendado_afac}}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-500"></div>
                         </div>
                     </div>
                 </div>
@@ -28,8 +28,8 @@
                         </div>
 
                         <div class="ml-4">
-                            <h3 class="font-semibold">Pendientes: {{ $pendientes }}</h3>
-                            <p class="mt-2 text-sm text-gray-500">{{ $porpendientes }}%</p>
+                            <h3 class="font-semibold">Pendientes: {{ $pendientes_afac }}</h3>
+                            <p class="mt-2 text-sm text-gray-500">{{ $porpendientes_afac }}%</p>
                         </div>
                     </div>
                     <div class="flex items-start p-2">
@@ -39,8 +39,8 @@
                         </div>
 
                         <div class="ml-4">
-                            <h3 class="font-semibold">Confirmadas: {{ $validado }}</h3>
-                            <p class="mt-2 text-sm text-gray-500">{{ $porconfir }}%</p>
+                            <h3 class="font-semibold">Confirmadas: {{ $validado_afac }}</h3>
+                            <p class="mt-2 text-sm text-gray-500">{{ $porconfir_afac }}%</p>
                         </div>
                     </div>
 
@@ -50,8 +50,8 @@
                             <span href="#blue" class="block w-3 h-3 bg-blue-500 rounded-full"></span>
                         </div>
                         <div class="ml-4">
-                            <h2 class="font-semibold">Reagendadas: {{ $reagendado }}</h2>
-                            <p class="mt-2 text-sm text-gray-500">{{ $porreagendado }}%</p>
+                            <h2 class="font-semibold">Reagendadas: {{ $reagendado_afac }}</h2>
+                            <p class="mt-2 text-sm text-gray-500">{{ $porreagendado_afac }}%</p>
                         </div>
                     </div>
                     <div class="flex items-start p-2">
@@ -61,8 +61,8 @@
                         </div>
 
                         <div class="ml-4">
-                            <h2 class="font-semibold">Canceladas: {{ $canceladas }}</h2>
-                            <p class="mt-2 text-sm text-gray-500">{{ $porcanceladas }}%</p>
+                            <h2 class="font-semibold">Canceladas: {{ $canceladas_afac }}</h2>
+                            <p class="mt-2 text-sm text-gray-500">{{ $porcanceladas_afac }}%</p>
                         </div>
                     </div>
                 </div>
@@ -84,8 +84,8 @@
                                     </svg>
                                 </div>
                                 <div class="ml-4">
-                                    <h2 class="font-semibold">{{ $now }} Citas</h2>
-                                    <p class="mt-2 text-sm text-gray-500">hoy {{ $date2 }}
+                                    <h2 class="font-semibold">{{ $now_afac }} Citas</h2>
+                                    <p class="mt-2 text-sm text-gray-500">hoy {{ $date2_afac }}
                                     </p>
                                 </div>
                             </div>
@@ -118,36 +118,36 @@
                             </thead>
                             {{-- {{$headquarters}} --}}
                             <tbody>
-                                @foreach ($headquarters as $headquarter)
+                                @foreach ($headquarters_afac as $headquarter_afac)
                                     <tr class="text-gray-700 dark:text-gray-100">
                                         <th
                                             class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                            {{ $headquarter->name_headquarter }}
-                                            @unless ($headquarter->is_external == 0)
+                                            {{ $headquarter_afac->name_headquarter }}
+                                            @unless ($headquarter_afac->is_external == 0)
                                                 <span
                                                     class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">TERCEROS</span>
                                             @endunless
                                         </th>
                                         <td
                                             class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            {{ $headquarter->headquarterMedicineReserve->where('dateReserve', $date1)->whereIn('status', ['0', '1', '4'])->count() }}
+                                            {{ $headquarter_afac->headquarterMedicineReserve->where('dateReserve', $date1_afac)->whereIn('status', ['0', '1', '4'])->count() }}
                                         </td>
                                         <td
                                             class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            {{ $headquarter->headquarterMedicineReserve->where('dateReserve', $tomorrow)->whereIn('status', ['0', '1', '4'])->count() }}
+                                            {{ $headquarter_afac->headquarterMedicineReserve->where('dateReserve', $tomorrow_afac)->whereIn('status', ['0', '1', '4'])->count() }}
                                         </td>
                                         <td
                                             class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            {{ $headquarter->headquarterMedicineReserve->count() }}
+                                            {{ $headquarter_afac->headquarterMedicineReserve->count() }}
                                         </td>
                                         <td
                                             class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                                             <div class="flex items-center">
                                                 <span
-                                                    class="mr-2">{{ $headquarter->headquarterMedicineReserve->count() > 0 ? round(($headquarter->headquarterMedicineReserve->count() * 100) / $registradas, 1) : '0' }}%</span>
+                                                    class="mr-2">{{ $headquarter_afac->headquarterMedicineReserve->count() > 0 ? round(($headquarter_afac->headquarterMedicineReserve->count() * 100) / $registradas_afac, 1) : '0' }}%</span>
                                                 <div class="relative w-full">
                                                     <div class="overflow-hidden h-2 text-xs flex rounded bg-blue-200">
-                                                        <div style="width:{{ $headquarter->headquarterMedicineReserve->count() > 0 ? ($headquarter->headquarterMedicineReserve->count() * 100) / $registradas : '0' }}%"
+                                                        <div style="width:{{ $headquarter_afac->headquarterMedicineReserve->count() > 0 ? ($headquarter_afac->headquarterMedicineReserve->count() * 100) / $registradas_afac : '0' }}%"
                                                             class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-600">
                                                         </div>
                                                     </div>

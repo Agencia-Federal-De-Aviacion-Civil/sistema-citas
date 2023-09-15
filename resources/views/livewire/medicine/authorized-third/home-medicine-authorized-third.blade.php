@@ -2,20 +2,20 @@
     <div class="bg-gray-100 text-gray-500 rounded shadow-xl py-5 px-5 w-full sm:w-full md:w-full lg:w-full">
         <div class="flex w-full">
             <h3 class="text-lg font-semibold leading-tight flex-1">TOTAL DE CITAS MEDICINA DE
-                AVIACIÓN {{$nameHeadquarter }}</h3>
+                AVIACIÓN {{$nameHeadquarter_third }}</h3>
         </div>
         <div class="relative overflow-hidden transition-all duration-500">
             <div>
                 <div class="pb-4 lg:pb-6">
                     <h4 class="text-2xl lg:text-3xl text-black font-semibold leading-tight inline-block" x-ref="totalext">
-                        {{ $registradas }}</h4>
+                        {{ $registradas_third }}</h4>
                 </div>
                 <div class="pb-4 lg:pb-6">
                     <div class="relative pt-1 mx-5">
                         <div class="overflow-hidden h-3 mb-4 text-xs flex rounded bg-gray-500">
-                          <div style="width: {{$porconfir}} %" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-800"></div>
-                          <div style="width: {{$porcanceladas}}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500"></div>
-                          <div style="width: {{$porreagendado}}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-500"></div>
+                          <div style="width: {{$porconfir_third}} %" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-800"></div>
+                          <div style="width: {{$porcanceladas_third}}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500"></div>
+                          <div style="width: {{$porreagendado_third}}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-500"></div>
                         </div>
                     </div>
                 </div>
@@ -27,8 +27,8 @@
                         </div>
 
                         <div class="ml-4">
-                            <h3 class="font-semibold">Pendientes: {{ $pendientes }}</h3>
-                            <p class="mt-2 text-sm text-gray-500">{{ $porpendientes }}%</p>
+                            <h3 class="font-semibold">Pendientes: {{ $pendientes_third }}</h3>
+                            <p class="mt-2 text-sm text-gray-500">{{ $porpendientes_third }}%</p>
                         </div>
                     </div>
                     <div class="flex items-start p-2">
@@ -38,8 +38,8 @@
                         </div>
 
                         <div class="ml-4">
-                            <h3 class="font-semibold">Confirmadas: {{ $validado }}</h3>
-                            <p class="mt-2 text-sm text-gray-500">{{ $porconfir }}%</p>
+                            <h3 class="font-semibold">Confirmadas: {{ $validado_third }}</h3>
+                            <p class="mt-2 text-sm text-gray-500">{{ $porconfir_third }}%</p>
                         </div>
                     </div>
 
@@ -49,8 +49,8 @@
                             <span href="#blue" class="block w-3 h-3 bg-blue-500 rounded-full"></span>
                         </div>
                         <div class="ml-4">
-                            <h2 class="font-semibold">Reagendadas: {{ $reagendado }}</h2>
-                            <p class="mt-2 text-sm text-gray-500">{{ $porreagendado }}%</p>
+                            <h2 class="font-semibold">Reagendadas: {{ $reagendado_third }}</h2>
+                            <p class="mt-2 text-sm text-gray-500">{{ $porreagendado_third }}%</p>
                         </div>
                     </div>
                     <div class="flex items-start p-2">
@@ -60,8 +60,8 @@
                         </div>
 
                         <div class="ml-4">
-                            <h2 class="font-semibold">Canceladas: {{ $canceladas }}</h2>
-                            <p class="mt-2 text-sm text-gray-500">{{ $porcanceladas }}%</p>
+                            <h2 class="font-semibold">Canceladas: {{ $canceladas_third }}</h2>
+                            <p class="mt-2 text-sm text-gray-500">{{ $porcanceladas_third }}%</p>
                         </div>
                     </div>
                 </div>
@@ -83,8 +83,8 @@
                                     </svg>
                                 </div>
                                 <div class="ml-4">
-                                    <h2 class="font-semibold">{{ $now }} Citas</h2>
-                                    <p class="mt-2 text-sm text-gray-500">hoy {{ $date2 }}
+                                    <h2 class="font-semibold">{{ $now_third }} Citas</h2>
+                                    <p class="mt-2 text-sm text-gray-500">hoy {{ $date2_third }}
                                     </p>
                                 </div>
                             </div>
@@ -117,36 +117,36 @@
                             </thead>
                             {{-- {{$headquarters}} --}}
                             <tbody>
-                                @foreach ($headquarters as $headquarter)
+                                @foreach ($headquarters_third as $headquarter_third)
                                     <tr class="text-gray-700 dark:text-gray-100">
                                         <th
                                             class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                            {{ $headquarter->name_headquarter }}
-                                            @unless ($headquarter->is_external == 0)
+                                            {{ $headquarter_third->name_headquarter }}
+                                            @unless ($headquarter_third->is_external == 0)
                                                 <span
                                                     class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">TERCEROS</span>
                                             @endunless
                                         </th>
                                         <td
                                             class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            {{ $headquarter->headquarterMedicineReserve->where('dateReserve', $date1)->whereIn('status', ['0', '1', '4'])->count() }}
+                                            {{ $headquarter_third->headquarterMedicineReserve->where('dateReserve', $date1_third)->whereIn('status', ['0', '1', '4'])->count() }}
                                         </td>
                                         <td
                                             class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            {{ $headquarter->headquarterMedicineReserve->where('dateReserve', $tomorrow)->whereIn('status', ['0', '1', '4'])->count() }}
+                                            {{ $headquarter_third->headquarterMedicineReserve->where('dateReserve', $tomorrow_third)->whereIn('status', ['0', '1', '4'])->count() }}
                                         </td>
                                         <td
                                             class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            {{ $headquarter->headquarterMedicineReserve->count() }}
+                                            {{ $headquarter_third->headquarterMedicineReserve->count() }}
                                         </td>
                                         <td
                                             class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                                             <div class="flex items-center">
                                                 <span
-                                                    class="mr-2">{{  $headquarter->headquarterMedicineReserve->count() > 0 ? round(($headquarter->headquarterMedicineReserve->count() * 100) / $registradas, 1) : '0'  }}%</span>
+                                                    class="mr-2">{{ $headquarter_third->headquarterMedicineReserve->count() > 0 ? round(($headquarter_third->headquarterMedicineReserve->count() * 100) / $registradas_third, 1) : '0'  }}%</span>
                                                 <div class="relative w-full">
                                                     <div class="overflow-hidden h-2 text-xs flex rounded bg-blue-200">
-                                                        <div style="width:{{ $headquarter->headquarterMedicineReserve->count() > 0 ? ($headquarter->headquarterMedicineReserve->count() * 100) / $registradas : '0'  }}%"
+                                                        <div style="width:{{ $headquarter_third->headquarterMedicineReserve->count() > 0 ? ($headquarter_third->headquarterMedicineReserve->count() * 100) / $registradas_third : '0'  }}%"
                                                             class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-600">
                                                         </div>
                                                     </div>
