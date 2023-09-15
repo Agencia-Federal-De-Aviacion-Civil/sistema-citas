@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Livewire\Component;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
+use Illuminate\Support\Facades\Auth;
 
 class DisabledDayTable extends DataTableComponent
 {
@@ -59,6 +60,14 @@ class DisabledDayTable extends DataTableComponent
     }
     public function builder(): Builder
     {
-        return MedicineDisabledDays::query()->with('disabledDaysHeadquarter');
+        if (Auth::user()->can('headquarters_authorized.see.tabs.navigation')) {
+            return (MedicineDisabledDays::query()->with([
+                'disabledDaysHeadquarter','disabledDaysHeadquarter.HeadquarterUserHeadquarter'
+            ])->whereHas('disabledDaysHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q1) {
+                $q1->where('user_id', Auth::user()->id);
+            }));
+        }else{
+            return MedicineDisabledDays::query()->with('disabledDaysHeadquarter');
+        }
     }
 }
