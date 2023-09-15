@@ -345,14 +345,18 @@ class HomeMedicine extends Component
                         });
                 })
                 ->where(function ($queryStop) {
-                    $queryStop->where('status', 0)
-                        ->orWhere('status', 4);
+                    // $queryStop->where('status', 0)
+                    //     ->orWhere('status', 4);
+                    $queryStop->whereIn('status', [0, 4, 9]);
                 })
                 ->get();
-
-            // dd($userMedicines[0]->medicineReserveMedicine->medicineInitial);
             foreach ($userMedicines as $userMedicine) {
                 if ($userMedicine->id) {
+                    if ($userMedicine->status == 9) {
+                        $message = !$this->idTypeAppointment ? 'NO ERES APTO PARA AGENDAR EN ESTA CLASE, CONSIDERA HACER REVALORACIÓN' : 'HAS SIDO NO APTO PARA ESTA CLASE POR PARTE DE LA AUTORIDAD, CONSIDERA REALIZAR UNA REVALORACIÓN';
+                        throw new \Exception($message);
+                        return;
+                    }
                     if ($userMedicine->medicineReserveMedicine->medicineInitial->count() > 0 && $userMedicine->medicineReserveMedicine->medicineInitial[0]->type_class_id == $this->type_class_id) {
                         $this->notification([
                             'title'       => 'CITA NO GENERADA!',
@@ -566,9 +570,9 @@ class HomeMedicine extends Component
             }
         } catch (\Exception $e) {
             $this->dialog([
-                'title' => '¡ERROR!',
+                'title' => '¡ATENCIÓN!',
                 'description' => $e->getMessage(),
-                'icon' => 'error'
+                'icon' => 'info'
             ]);
         }
     }

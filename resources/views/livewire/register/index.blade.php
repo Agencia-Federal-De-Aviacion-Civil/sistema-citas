@@ -382,10 +382,11 @@
                                     </div>
                                 </div>
                                 <div class="text-right">
-                                    <button wire:click.prevent="register"
+                                    {{-- <button wire:click.prevent="register"
                                         class="px-3 py-2 text-sm font-medium text-center text-white bg-sky-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                         Registrar
-                                    </button>
+                                        aa
+                                    </button> --}}
                                     <div wire:loading.delay.shortest wire:target="register">
                                         <div
                                             class="flex justify-center bg-gray-200 z-40 h-full w-full fixed top-0 left-0 items-center opacity-75">

@@ -36,7 +36,7 @@ Route::middleware([
     'verified'
 ])->group(function () {
     Route::get('', [AfacHomeController::class, 'index'])->name('afac.home');
-    Route::middleware(['role:super_admin|user|medicine_admin'])->group(function () {
+    Route::middleware(['role:super_admin|user|medicine_admin|headquarters_authorized'])->group(function () {
         Route::get('/medicine', HomeMedicine::class)->name('afac.medicine');
         Route::get('/linguistics', HomeLinguistics::class)->name('afac.linguistics');
         Route::get('/download', [HomeMedicine::class, 'generatePdf'])->name('download');
