@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\afac\Appointment\DashboardController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 /*
