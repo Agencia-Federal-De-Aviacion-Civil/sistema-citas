@@ -9,12 +9,12 @@
         @include('afac.dashboard.dashboard_medicine')
     @endcan
     @can('super_admin.see.dashboard')
-        @include('afac.dashboard.dashboard_superadmin')
+        {{-- @include('afac.dashboard.dashboard_superadmin') --}}
     @endcan
     @can('user.see.navigation')
         @livewire('dashboard')
     @endcan
     @can('headquarters_authorized.see.dashboard')
-        {{-- @include('afac.dashboard.dashboard_headquarters_third') --}}
+        @include('afac.dashboard.dashboard_headquarters_third')
     @endcan
 </x-app-layout>
