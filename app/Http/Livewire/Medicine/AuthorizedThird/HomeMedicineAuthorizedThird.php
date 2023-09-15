@@ -1,22 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\afac;
+namespace App\Http\Livewire\Medicine\AuthorizedThird;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Medicine\MedicineReserve;
 use App\Models\Catalogue\Headquarter;
+use App\Models\Medicine\MedicineReserve;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Jenssegers\Date\Date;
+use Livewire\Component;
 
-class homeController extends Controller
+class HomeMedicineAuthorizedThird extends Component
 {
-    public $headquarters, $dateNow;
-    public function index()
+
+    public function render()
     {
-        Date::setLocale('es');
-        $dateNow = Date::now()->format('l j F Y');
         $date = Date::now()->format('l j F Y');
         $date1 = Date::now()->format('Y-m-d');
         $date2 = Date::now()->format('d-m-Y');
@@ -51,14 +48,32 @@ class homeController extends Controller
             ])->whereHas('HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q2) {
                 $q2->where('user_id', Auth::user()->id);
             })->get();
-        } else {
-            $appointment = MedicineReserve::query()
+        } else if (Auth::user()->can('headquarters_authorized.see.dashboard')) {
+            $appointment = MedicineReserve::with('medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant')
+                ->whereHas('medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q1) {
+                    $q1->where('user_id', Auth::user()->id);
+                })
                 ->select('status', DB::raw('count(*) as count'), 'dateReserve')
                 ->groupBy('status', 'dateReserve')
                 ->get();
             $headquarters = Headquarter::with([
+                'HeadquarterUserHeadquarter.userHeadquarterUserParticipant','headquarterMedicineReserve'
+            ])->whereHas('HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q2) {
+                $q2->where('user_id', Auth::user()->id);
+            })->where('is_external', true)->get();
+            $nameHeadquarter = '"'. $headquarters->pluck('name_headquarter')->first().'"';
+        } else {
+            $appointment = MedicineReserve::query()
+                ->select('status', DB::raw('count(*) as count'), 'dateReserve')
+                ->groupBy('status', 'dateReserve')
+                ->where('is_external', true)
+                ->get();
+            $headquarters = Headquarter::with([
                 'headquarterMedicineReserve'
-            ])->get();
+            ])
+                ->where('is_external', true)
+                ->get();
+            $nameHeadquarter = 'TERCEROS';
         }
 
         $appointmentNow = $appointment->where('dateReserve', $date1);
@@ -73,6 +88,6 @@ class homeController extends Controller
         $porreagendado = $registradas != 0 ? round($appointment->where('status', '4')->sum('count') * 100 / $registradas) : 0;
         $porcanceladas = $registradas != 0 ? round($appointment->whereIn('status', ['2', '3', '5'])->sum('count') * 100 / $registradas, 0) : 0;
         $medicine =  round($registradas ? $registradas * 100 / $registradas : '0');
-        return view('afac.dashboard.index', compact('headquarters', 'nameHeadquarter', 'registradas', 'pendientes', 'validado', 'canceladas', 'reagendado', 'porconfir', 'porpendientes', 'porreagendado', 'porcanceladas', 'now', 'date', 'date2', 'medicine', 'date1', 'tomorrow', 'dateNow'));
+        return view('livewire.medicine.authorized-third.home-medicine-authorized-third', compact('headquarters', 'nameHeadquarter', 'registradas', 'pendientes', 'validado', 'canceladas', 'reagendado', 'porconfir', 'porpendientes', 'porreagendado', 'porcanceladas', 'now', 'date', 'date2', 'medicine', 'date1', 'tomorrow'));
     }
 }

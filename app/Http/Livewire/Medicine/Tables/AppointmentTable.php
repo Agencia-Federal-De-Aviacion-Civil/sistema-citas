@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Storage;
 use Jenssegers\Date\Date;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
+use Rappasoft\LaravelLivewireTables\Views\Columns\BooleanColumn;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateFilter;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 use Rappasoft\LaravelLivewireTables\Views\Filters\TextFilter;
@@ -147,7 +148,7 @@ class AppointmentTable extends DataTableComponent
                 Column::make("ACCIÓN")
                     ->label(
                         fn ($row) => view(
-                            'components.schedule-component',
+                            'components.medicine.appointment-actions-component',
                             [
                                 $action = MedicineReserve::where('id', $row->id)->get(),
                                 'status' => $action[0]->status,
@@ -194,13 +195,15 @@ class AppointmentTable extends DataTableComponent
 
                 Column::make("HORA", "reserveSchedule.time_start")
                     ->sortable(),
-
-                Column::make("ACCIÓN")
+                Column::make("ACCIÓNES")
                     ->label(
                         fn ($row) => view(
-                            'components.schedule-component',
+                            'components.medicine.appointment-actions-component',
                             [
                                 $action = MedicineReserve::where('id', $row->id)->get(),
+                                $dateExpire = Carbon::parse($action[0]->dateReserve),
+                                $showExpireButton = Auth::user()->hasRole('user') && Carbon::now()->lt($dateExpire),
+                                'buttonExpire' => $showExpireButton,
                                 'status' => $action[0]->status,
                                 'scheduleId' => $action[0]->id,
                                 'medicineId' => $action[0]->medicine_id
@@ -297,7 +300,7 @@ class AppointmentTable extends DataTableComponent
                 Column::make("ACCIÓN")
                     ->label(
                         fn ($row) => view(
-                            'components.schedule-component',
+                            'components.medicine.appointment-actions-component',
                             [
                                 $action = MedicineReserve::where('id', $row->id)->get(),
                                 'status' => $action[0]->status,
@@ -404,7 +407,7 @@ class AppointmentTable extends DataTableComponent
                 Column::make("ACCIÓN")
                     ->label(
                         fn ($row) => view(
-                            'components.schedule-component',
+                            'components.medicine.appointment-actions-component',
                             [
                                 $action = MedicineReserve::where('id', $row->id)->get(),
                                 'status' => $action[0]->status,
@@ -423,13 +426,13 @@ class AppointmentTable extends DataTableComponent
         if (Auth::user()->can('super_admin.medicine_admin.see.schedule.table')) {
             return MedicineReserve::query()->with([
                 'medicineReserveMedicine', 'medicineReserveFromUser', 'userParticipantUser'
-            ]);
+            ])->where('medicine_reserves.is_external', false);
         } else if (Auth::user()->can('user.see.schedule.table')) {
             return MedicineReserve::query()->with([
                 'medicineReserveMedicine', 'medicineReserveFromUser', 'userParticipantUser'
             ])->whereHas('medicineReserveMedicine', function ($q1) {
                 $q1->where('user_id', Auth::user()->id);
-            });
+            })->where('medicine_reserves.is_external', false);
         } else if (Auth::user()->can('headquarters.see.schedule.table')) {
             return MedicineReserve::query()->with([
                 'medicineReserveMedicine', 'medicineReserveFromUser', 'userParticipantUser', 'medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant'

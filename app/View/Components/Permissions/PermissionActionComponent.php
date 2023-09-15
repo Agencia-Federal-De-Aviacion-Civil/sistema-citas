@@ -1,22 +1,21 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\Permissions;
 
 use Illuminate\View\Component;
 
-class ActionDisabledDaysComponent extends Component
+class PermissionActionComponent extends Component
 {
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public $actionId;
-    public function __construct($actionId)
+    public $permissionId;
+    public function __construct($permissionId)
     {
-        $this->actionId = $actionId;
+        $this->permissionId = $permissionId;
     }
-
     /**
      * Get the view / contents that represent the component.
      *
@@ -24,6 +23,6 @@ class ActionDisabledDaysComponent extends Component
      */
     public function render()
     {
-        return view('components.action-disabled-days-component');
+        return view('components.permissions.permission-action-component');
     }
 }

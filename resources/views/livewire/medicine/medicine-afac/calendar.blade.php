@@ -1,5 +1,4 @@
 <div>
-   
     <style>
         #calendar-container{
             width: 100%;
@@ -11,9 +10,7 @@
         <div id='calendar'></div>
       </div>
     </div>
-    
     @push('scripts')
-        
         <script>
             document.addEventListener('livewire:load', function() {
                 var Calendar = FullCalendar.Calendar;

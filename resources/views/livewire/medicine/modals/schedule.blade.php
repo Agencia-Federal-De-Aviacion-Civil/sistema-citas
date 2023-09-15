@@ -13,7 +13,10 @@
                     CANCELÓ CITA
                     @elseif ($this->status == 4)
                     CITA REAGENDADA
+                    @elseif ($this->status == 7)
+                    CITA APLAZADA
                     @endif
+                    
                 </h3>
                 <div x-data="{ selectedOption: '' }">
                     <div class="grid xl:grid-cols-1 xl:gap-6">
@@ -37,10 +40,12 @@
                     <div class="mt-4 grid xl:grid-cols-1 xl:gap-6">
                         <div class="mt-1 relative w-full group">
                             @if ($status == 0 || $status == 1 || $status == 2 || $status == 3 || $status == 4 || $status
-                            == 5)
+                            == 5 || $status == 7)
+
                             <div x-show="selectedOption == '' || selectedOption == 1 || selectedOption == 2">
                                 <x-input wire:model="sede" label="SEDE" disabled />
                             </div>
+
                             @endif
                             @if ($status == 6)
                             <x-select label="ELIJA LA SEDE" placeholder="Selecciona" wire:model.lazy="headquarter_id">
@@ -67,7 +72,7 @@
                             placeholder="INGRESE..." />
                         @else
                         <div class="mt-1 relative w-full group">
-                            <div x-show="selectedOption == '' || selectedOption == 1 || selectedOption == 2">
+                            <div x-show="selectedOption == '' || selectedOption == 1 || selectedOption == 2 || selectedOption == 7">
                                 <x-datetime-picker label="FECHA" placeholder="Seleccione..." without-time="false"
                                     parse-format="YYYY-MM-DD" display-format="DD-MM-YYYY" wire:model="dateReserve"
                                     disabled />
@@ -97,7 +102,7 @@
                         </div>
                         @else
                         <div class="mt-1 relative w-full group">
-                            <div x-show="selectedOption == '' || selectedOption == 1 || selectedOption == 2">
+                            <div x-show="selectedOption == '' || selectedOption == 1 || selectedOption == 2 || selectedOption == 7">
                                 <x-input wire:model="hoursReserve" label="HORA" disabled />
                             </div>
                             <div x-show="selectedOption == 4">
@@ -119,14 +124,27 @@
                         </div>
                         @endif
                     </div>
-                    @if ($status == 0 || $status == 4)
+
+                    @if ($status == 0 || $status == 4 || $status == 7)
+
+
                     <div class="mt-6 relative w-full group">
                         <select name="my_option" label="SELECIONE OPCIÓN" x-model="selectedOption"
                             wire:model="selectedOption"
                             class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-300 dark:border-gray-300 dark:placeholder-gray-300 dark:text-white">
-                            <option value="">SELECCIONE OPCIÓN</option>
-                            <option value="1">ASISTIÓ A SU CITA</option>
-                            <option value="2">CANCELAR CITA</option>
+
+                        <option value="">SELECCIONE OPCIÓN</option>
+                        @if ($days > 20 AND $status==7)
+                        <option  value="2">CANCELAR CITA</option>
+                        @else
+                        <option value="1">ASISTIÓ A SU CITA</option>
+                        <option value="2">CANCELAR CITA</option>
+                        @endif
+
+                            @if ($status != 7 AND $is_external == 1)
+                            <option value="7">APLAZAR CITA</option>
+                            @endif
+
                             @hasrole('super_admin|medicine_admin|super_admin_medicine|admin_medicine_v2')
                             @if ($status == 0)
                             <option value="4">REAGENDAR CITA</option>
@@ -154,15 +172,20 @@
                         </div>
                     </div>
                     <div x-show="selectedOption != 2">
-                        @if ($this->status == 4)
+                        @if ($this->status == 4 || $this->status == 7)
                         <div class="mt-4">
                             <x-textarea wire:model="observation" label="MOTIVO" placeholder="ESCRIBE..." disabled />
                         </div>
                         @endif
                     </div>
+                    <div x-show="selectedOption == 7">
+                        <div class="mt-4">
+                            <x-textarea wire:model="observation" label="MOTIVO" placeholder="ESCRIBE..." />
+                        </div>
+                    </div>
                 </div>
                 <div class="flex justify-end items-center gap-x-2 p-5 sm:px-7">
-                    @if ($status == 0 || $status == 4 || $status == 6)
+                    @if ($status == 0 || $status == 4 || $status == 6 || $status == 7)
                     <div class="float-right mt-6">
                         <x-button wire:click="reschedules()" label="ACEPTAR" blue right-icon="save-as" />
                     </div>

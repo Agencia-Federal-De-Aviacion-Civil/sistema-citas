@@ -36,16 +36,25 @@ class HomeMedicine extends Component
     public $confirmModal = false, $modal = false;
     public $medicineQueries, $medicineReserves, $medicineInitials, $medicineRenovations, $id_medicineReserve, $idMedicine, $savedMedicineId, $scheduleMedicines, $medicine_schedule_id;
     // MEDICINE INITIAL TABLE
-    public $question, $date, $dateNow;
-    public $document_authorization, $type_exam_revaloration_id;
+    public $question, $date, $idTypeAppointment, $idAppointmentFull;
+    public $document_authorization, $type_exam_revaloration_id, $typeid, $userid, $registeredUserId, $showBannerBoolean;
     protected $listeners = [
         'saveDisabledDays' => '$refresh',
+        'registeredEmit',
+        'showBanner'
     ];
     public function mount()
     {
-        Date::setLocale('es');
-        $this->dateNow = Date::now()->format('l j F Y');
-        $this->typeExams = TypeExam::all();
+        //idType 2 es para cuando la sede de terceros autorizados quiere generer cita
+        $idIsExternal = (session('idType') == 2 ? 1 : session('idType'));
+        $this->idTypeAppointment = $idIsExternal;
+        $boolTypeAppointment = $this->idTypeAppointment;
+        $this->idAppointmentFull = $boolTypeAppointment ? 1 : 0;
+        $this->typeExams = TypeExam::when($this->idTypeAppointment, function ($query) {
+            return $query->whereIn('id', [1, 2]);
+        }, function ($query) {
+            return $query->whereIn('id', [1, 2, 3, 4, 5]);
+        })->get();
         $this->sedes = collect();
         $this->userQuestions = MedicineQuestion::all();
         $this->questionClassess = collect();
@@ -53,15 +62,18 @@ class HomeMedicine extends Component
         $this->typeRenovationExams = collect();
         $this->scheduleMedicines = collect();
         $this->disabledDaysFilter = collect();
-
-        // $this->dateNow = Date::now()->format('Y-m-d');
+    }
+    public function registeredEmit($payload)
+    {
+        $this->registeredUserId = $payload;
+    }
+    public function showBanner($payload)
+    {
+        $this->showBannerBoolean = $payload;
     }
     public function rules()
     {
-        return [
-            'document_pay' => 'required|mimetypes:application/pdf|max:5000',
-            'reference_number' => 'required|unique:medicines',
-            'pay_date' => 'required',
+        $rules = [
             'type_exam_id' => 'required',
             'medicine_question_id' => 'required_if:type_exam_id,1',
             'type_class_id' => 'required',
@@ -72,17 +84,16 @@ class HomeMedicine extends Component
             'dateReserve' => 'required',
             'medicine_schedule_id' => 'required'
         ];
+        if (!$this->idTypeAppointment) {
+            $rules['document_pay'] = 'required|mimetypes:application/pdf|max:5000';
+            $rules['reference_number'] = 'required|unique:medicines';
+            $rules['pay_date'] = 'required';
+        }
+        return $rules;
     }
     public function render()
     {
-        // dump($this->to_user_headquarters);
-        // $disabledDays = MedicineDisabledDays::pluck('disabled_days')->toArray();
-        // TODO ESTE CODIGO FUNCIONA
-        // dd($disabledDaysyes = MedicineDisabledDays::pluck('disabled_days'));
-        // $isDisabled = in_array($this->dateNow, $disabledDays);
-        // TODO NUEVO ALGORITMO
-        return view('livewire.medicine.home-medicine')
-            ->layout('layouts.app');
+        return view('livewire.medicine.home-medicine');
     }
     public function updated($propertyName)
     {
@@ -113,21 +124,41 @@ class HomeMedicine extends Component
 
     public function updatedTypeExamId($type_exam_id)
     {
-        $this->typeRenovationExams = TypeClass::where('type_exam_id', $type_exam_id)->get();
-        $this->sedes = Headquarter::where('system_id', 1)->where('status', false)->get();
-        if ($type_exam_id === '3' || $type_exam_id === '5') {
-            $type_exam_id = '2';
-            $this->typeRenovationExams = TypeClass::where('type_exam_id', $type_exam_id)->get();
-            $this->sedes = Headquarter::where('system_id', 1)->where('status', false)->get();
-        } else if ($type_exam_id === '4') {
-            $type_exam_id = '2';
-            $this->typeRenovationExams = TypeClass::where('type_exam_id', $type_exam_id)->get();
-            //SOLO SEDE CIUDAD DE MÉXICO
+        $type_exam_id_to_use = in_array($type_exam_id, ['3', '4', '5']) ? '2' : $type_exam_id;
+        $this->typeRenovationExams = TypeClass::where('type_exam_id', $type_exam_id_to_use)->get();
+        if ($type_exam_id === '4') {
+            // SOLO SEDE CIUDAD DE MÉXICO
             $this->sedes = Headquarter::where('system_id', 1)->where('status', false)->where('id', 6)->get();
         } else {
-            $this->typeRenovationExams = TypeClass::where('type_exam_id', $type_exam_id)->get();
-            $this->sedes = Headquarter::where('system_id', 1)->where('status', false)->get();
+            $idHeadquarter = session('idHeadquarter');
+            $this->sedes = Headquarter::with('HeadquarterUserHeadquarter.userHeadquarterUserParticipant')
+                ->when($this->idTypeAppointment, function ($query) use ($idHeadquarter) {
+                    return $query->where('id', $idHeadquarter);
+                }, function ($query) use ($idHeadquarter) {
+                    return $query->where('id', $idHeadquarter);
+                })
+                ->orWhere(function ($query) use ($idHeadquarter) {
+                    if (!$idHeadquarter) {
+                        $query->whereHas('HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($subquery) {
+                            $subquery->where('user_id', Auth::user()->id);
+                        });
+                    }
+                })->where('system_id', 1)->where('status', false)->get();
+            // $this->sedes = Headquarter::where('system_id', 1)->where('status', false)->get();
         }
+        // if ($type_exam_id === '3' || $type_exam_id === '5') {
+        //     $type_exam_id = '2';
+        //     $this->typeRenovationExams = TypeClass::where('type_exam_id', $type_exam_id)->get();
+        //     $this->sedes = Headquarter::where('system_id', 1)->where('status', false)->get();
+        // } else if ($type_exam_id === '4') {
+        //     $type_exam_id = '2';
+        //     $this->typeRenovationExams = TypeClass::where('type_exam_id', $type_exam_id)->get();
+        //     //SOLO SEDE CIUDAD DE MÉXICO
+        //     $this->sedes = Headquarter::where('system_id', 1)->where('status', false)->where('id', 6)->get();
+        // } else {
+        //     $this->typeRenovationExams = TypeClass::where('type_exam_id', $type_exam_id)->get();
+        //     $this->sedes = Headquarter::where('system_id', 1)->where('status', false)->get();
+        // }
     }
     public function updatedTypeClassId($type_class_id)
     {
@@ -220,26 +251,10 @@ class HomeMedicine extends Component
             'disabledDaysFilter' => $disabledDaysArray
         ]);
     }
-    // public function updatedDateReserve($value)
-    // {
-    //     $this->scheduleMedicines = MedicineSchedule::where('user_id', $this->to_user_headquarters)
-    //         ->whereNotIn('id', function ($query) use ($value) {
-    //             $query->select('medicine_schedule_id')
-    //                 ->from('medicine_reserves')
-    //                 ->where('to_user_headquarters', $this->to_user_headquarters)
-    //                 ->where('dateReserve', $value);
-    //         })
-    //         ->orderBy('time_start')
-    //         ->get();
-    // }
     public function openModalPdf()
     {
         $this->confirmModal = false;
         $this->modal = true;
-    }
-    public function returnDashboard()
-    {
-        return redirect()->route('afac.home');
     }
     public function downloadpdf()
     {
@@ -294,9 +309,13 @@ class HomeMedicine extends Component
             // }
             // TODO CIERRA ALGORITMO QUE FUNCIONA CON SWITCH CASE
             // $schedule = MedicineSchedule::find($this->medicine_schedule_id);
+            //agendar cita normal
+
+            $this->userid = ($this->registeredUserId != null  ? $this->registeredUserId : Auth::user()->id);
+            // dd($this->userid);
             $userMedicines = MedicineReserve::with(['medicineReserveMedicine'])
                 ->whereHas('medicineReserveMedicine', function ($q1) {
-                    $q1->where('user_id', Auth::user()->id);
+                    $q1->where('user_id', $this->userid);
                     $q1->where('type_exam_id', $this->type_exam_id);
                 })
                 ->where(function ($q) {
@@ -326,13 +345,18 @@ class HomeMedicine extends Component
                         });
                 })
                 ->where(function ($queryStop) {
-                    $queryStop->where('status', 0)
-                        ->orWhere('status', 4);
+                    // $queryStop->where('status', 0)
+                    //     ->orWhere('status', 4);
+                    $queryStop->whereIn('status', [0, 4, 9]);
                 })
                 ->get();
-            // dd($userMedicines[0]->medicineReserveMedicine->medicineInitial);
             foreach ($userMedicines as $userMedicine) {
                 if ($userMedicine->id) {
+                    if ($userMedicine->status == 9) {
+                        $message = !$this->idTypeAppointment ? 'NO ERES APTO PARA AGENDAR EN ESTA CLASE, CONSIDERA HACER REVALORACIÓN' : 'HAS SIDO NO APTO PARA ESTA CLASE POR PARTE DE LA AUTORIDAD, CONSIDERA REALIZAR UNA REVALORACIÓN';
+                        throw new \Exception($message);
+                        return;
+                    }
                     if ($userMedicine->medicineReserveMedicine->medicineInitial->count() > 0 && $userMedicine->medicineReserveMedicine->medicineInitial[0]->type_class_id == $this->type_class_id) {
                         $this->notification([
                             'title'       => 'CITA NO GENERADA!',
@@ -394,18 +418,18 @@ class HomeMedicine extends Component
                     'icon'        => 'error'
                 ]);
             } else {
-                // $extension = $this->document_pay->extension();
-                $extension = $this->document_pay->getClientOriginalExtension();
-                $fileName = $this->reference_number . '-' . $this->pay_date . '.' . $extension;
-                $saveDocument = Document::create([
-                    // 'name_document' => $this->document_pay->storeAs('uploads/citas-app/medicine', $this->reference_number . '-' . $this->pay_date .  '.' . $extension, 'do'),
-                    'name_document' => $this->document_pay->storeAs('documentos/medicina', $fileName, 'public'),
-                ]);
+                if (!$this->idTypeAppointment) {
+                    $extension = $this->document_pay->getClientOriginalExtension();
+                    $fileName = $this->reference_number . '-' . $this->pay_date . '.' . $extension;
+                    $saveDocument = Document::create([
+                        'name_document' => $this->document_pay->storeAs('documentos/medicina', $fileName, 'public'),
+                    ]);
+                }
                 $this->saveMedicine = Medicine::create([
-                    'user_id' => Auth::user()->id,
-                    'reference_number' => $this->reference_number,
-                    'pay_date' => $this->pay_date,
-                    'document_id' => $saveDocument->id,
+                    'user_id' => $this->userid,
+                    'reference_number' => $this->reference_number ?? 'NO APLICA',
+                    'pay_date' => $this->pay_date ?? null,
+                    'document_id' => $saveDocument->id ?? null,
                     'type_exam_id' => $this->type_exam_id
                 ]);
                 if ($this->type_exam_id == 1) {
@@ -529,12 +553,15 @@ class HomeMedicine extends Component
                         }
                     }
                 }
+                // dd($this->userid);
                 $cita = new MedicineReserve();
-                $cita->from_user_appointment = Auth::user()->id;
+
+                $cita->from_user_appointment = $this->userid;
                 $cita->medicine_id = $this->saveMedicine->id;
                 $cita->headquarter_id = $this->headquarter_id;
                 $cita->dateReserve = $this->dateReserve;
                 $cita->medicine_schedule_id = $this->medicine_schedule_id;
+                $cita->is_external = $this->idTypeAppointment;
                 $cita->save();
                 session(['saved_medicine_id' => $this->saveMedicine->id]);
                 $this->generatePdf();
@@ -543,14 +570,15 @@ class HomeMedicine extends Component
             }
         } catch (\Exception $e) {
             $this->dialog([
-                'title' => '¡ERROR!',
+                'title' => '¡ATENCIÓN!',
                 'description' => $e->getMessage(),
-                'icon' => 'error'
+                'icon' => 'info'
             ]);
         }
     }
     public function openConfirm()
     {
+        $this->idAppointmentFull;
         $this->medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'medicineReserveHeadquarter', 'reserveSchedule'])
             ->where('medicine_id', $this->saveMedicine->id)->get();
         $dateConverted = $this->medicineReserves[0]->dateReserve;
@@ -602,6 +630,7 @@ class HomeMedicine extends Component
     public function generatePdf()
     {
         $savedMedicineId = session('saved_medicine_id');
+        $idExternalInternal = session('idType'); //TODO 
         $medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'medicineReserveHeadquarter'])
             ->where('medicine_id', $savedMedicineId)->get();
         $medicineId = $medicineReserves[0]->id;
@@ -609,12 +638,26 @@ class HomeMedicine extends Component
         $dateConvertedFormatted = Date::parse($dateAppointment)->format('l j F Y');
         $curp = $medicineReserves[0]->medicineReserveMedicine->medicineUser->userParticipant->pluck('curp')->first();
         $keyEncrypt =  Crypt::encryptString($medicineId . '*' . $dateAppointment . '*' . $curp);
-        $fileName = $medicineReserves[0]->dateReserve . '-' . $curp . '-' . 'MED-' . $medicineId . '.pdf';
+        if (!$idExternalInternal) {
+            $fileName = $medicineReserves[0]->dateReserve . '-' . $curp . '-' . 'MED-' . $medicineId . '.pdf';
+        } else {
+            $fileName = $medicineReserves[0]->dateReserve . '-' . $curp . '-' . 'MED-EXT-' . $medicineId . '.pdf';
+        }
+        $thirdAppointment = MedicineReserve::where('headquarter_id', $medicineReserves[0]->headquarter_id)
+            ->where('dateReserve', $medicineReserves[0]->dateReserve)
+            ->where(function ($query) {
+                $query->where('status', 0)
+                    ->Orwhere('status', 1);
+            })
+            ->where(function ($query2) {
+                $query2->where('is_external', true);
+            })
+            ->count();
         if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 1) {
-            $pdf = PDF::loadView('livewire.medicine.documents.medicine-initial', compact('medicineReserves', 'keyEncrypt', 'dateConvertedFormatted'));
+            $pdf = PDF::loadView('livewire.medicine.documents.medicine-initial', compact('medicineReserves', 'keyEncrypt', 'dateConvertedFormatted', 'idExternalInternal', 'thirdAppointment'));
             return $pdf->download($fileName);
         } else if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 2) {
-            $pdf = PDF::loadView('livewire.medicine.documents.medicine-renovation', compact('medicineReserves', 'keyEncrypt', 'dateConvertedFormatted'));
+            $pdf = PDF::loadView('livewire.medicine.documents.medicine-renovation', compact('medicineReserves', 'keyEncrypt', 'dateConvertedFormatted', 'idExternalInternal', 'thirdAppointment'));
             return $pdf->download($fileName);
         } else if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 3) {
             $pdf = PDF::loadView('livewire.medicine.documents.medicine-revaluation', compact('medicineReserves', 'keyEncrypt', 'dateConvertedFormatted'));
@@ -626,6 +669,11 @@ class HomeMedicine extends Component
             $pdf = PDF::loadView('livewire.medicine.documents.medicine-flexibility', compact('medicineReserves', 'keyEncrypt', 'dateConvertedFormatted'));
             return $pdf->download($fileName);
         }
+    }
+    public function returnDashboard()
+    {
+        session()->forget('idType');
+        return redirect()->route('afac.home');
     }
     public function messages()
     {

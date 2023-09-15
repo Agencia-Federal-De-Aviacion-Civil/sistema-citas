@@ -38,7 +38,13 @@ class CreateUpdateScheduleModal extends ModalComponent
     }
     public function render()
     {
-        $headquarters = Headquarter::with('HeadquarterUserHeadquarter')->get();
+        $query = Headquarter::with('HeadquarterUserHeadquarter');
+        if (Auth::user()->can('headquarters_authorized.see.tabs.navigation')) {
+            $query->whereHas('HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q) {
+                $q->where('user_id', Auth::user()->id);
+            });
+        }
+        $headquarters = $query->get();
         return view('livewire.headquarters.modals.create-update-schedule-modal', compact('headquarters'));
     }
     /**

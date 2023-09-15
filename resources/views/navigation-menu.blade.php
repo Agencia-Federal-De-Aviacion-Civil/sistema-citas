@@ -36,12 +36,6 @@
                                     class="z-20 bg-white text-gray-700 rounded shadow-lg absolute py-2 mt-1"
                                     style="min-width:15rem">
                                     <li>
-                                        <a href="{{ route('afac.medicine') }}"
-                                            class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
-                                            Generar cita
-                                        </a>
-                                    </li>
-                                    <li>
                                         <a href="{{ route('afac.headquarterMedicine') }}"
                                             class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
                                             Sedes
@@ -147,9 +141,22 @@
                                 {{ __('Administrador de Sedes') }}
                             </x-jet-nav-link>
                             <x-jet-nav-link href="{{ route('validate') }}" :active="request()->routeIs('validate')">
-                                {{ __('Validación de citas') }}
+                                {{ __('Validación de citas') }} 
                             </x-jet-nav-link>
                         @endcan
+
+                        @can('headquarters_authorized.see.tabs.navigation')
+                            <x-jet-nav-link href="{{ route('afac.headquarterMedicine') }}" :active="request()->routeIs('afac.headquarterMedicine')">
+                                {{ __('Administrador de Horarios') }}
+                            </x-jet-nav-link>
+                            <x-jet-nav-link href="{{ route('third.appointments') }}" :active="request()->routeIs('third.appointments')">
+                                {{ __('Generar citas') }}
+                            </x-jet-nav-link>
+                            <x-jet-nav-link href="{{ route('validate') }}" :active="request()->routeIs('validate')">
+                                {{ __('Validación de citas') }} 
+                            </x-jet-nav-link>
+                        @endcan
+
                         @can('super.admin.medicine.two.see.table.users')
                             <x-jet-nav-link href="{{ route('afac.users') }}" :active="request()->routeIs('afac.users')">
                                 {{ __('Usuarios') }}
@@ -264,12 +271,6 @@
                 </button>
                 <ul x-show="open" x-on:click.away="open = false"
                     class="bg-white text-gray-700 rounded shadow-lg absolute py-2 mt-1" style="min-width:15rem">
-                    <li>
-                        <a href="{{ route('afac.medicine') }}"
-                            class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
-                            Generar cita
-                        </a>
-                    </li>
                     <li>
                         <a href="{{ route('afac.appointment') }}"
                             class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">

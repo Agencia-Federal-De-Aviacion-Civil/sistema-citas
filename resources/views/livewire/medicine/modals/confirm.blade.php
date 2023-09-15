@@ -1,11 +1,5 @@
-<div x-data="{ isOpen: true }" class="relative flex justify-center">
-    <div x-show="isOpen" x-transition:enter="transition duration-300 ease-out"
-        x-transition:enter-start="translate-y-4 opacity-0 sm:translate-y-0 sm:scale-95"
-        x-transition:enter-end="translate-y-0 opacity-100 sm:scale-100"
-        x-transition:leave="transition duration-150 ease-in"
-        x-transition:leave-start="translate-y-0 opacity-100 sm:scale-100"
-        x-transition:leave-end="translate-y-4 opacity-0 sm:translate-y-0 sm:scale-95"
-        class="fixed inset-0 z-[60] overflow-y-auto bg-black bg-opacity-70" aria-labelledby="modal-title" role="dialog"
+<div class="relative flex justify-center">
+    <div class="fixed inset-0 z-[60] overflow-y-auto bg-black bg-opacity-70" aria-labelledby="modal-title" role="dialog"
         aria-modal="true">
         <div class="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
             <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
@@ -27,12 +21,6 @@
                             class="py-2  text-lg font-semibold text-center text-gray-800 capitalize xl:text-2xl lg:text-xl dark:text-white">
                             Verifica tus datos de la <span class="text-sky-700 ">Cita</span>
                         </h1>
-                        {{-- <button wire:click="test()">GENERAR</button> --}}
-                        {{-- <div class="flex justify-center mx-auto mt-2">
-                            <span class="inline-block w-40 h-1 bg-sky-600 rounded-full"></span>
-                            <span class="inline-block w-3 h-1 mx-1 bg-sky-600 rounded-full"></span>
-                            <span class="inline-block w-1 h-1 bg-sky-600 rounded-full"></span>
-                        </div> --}}
                         <br>
                         <x-errors
                             title="Se han encontrado {errors} campo(s) vacio(s), por favor completalos para continuar..." />
@@ -66,7 +54,11 @@
                                     </svg>
                                     <p class="text-lg title-font font-normal">Folio:
                                     <p class="text-xl text-sky-800 font-semibold">
-                                        MED-{{ $medicineReserves[0]->id }}
+                                        @if ($idAppointmentFull == 0)
+                                            <p>Folio de cita: <b>MED-{{ $medicineReserves[0]->id }}</b></p>
+                                        @else
+                                            <p>Folio de cita: <b>MED-EXT-{{ $medicineReserves[0]->id }}</b></p>
+                                        @endif
                                     </p>
                                     </p>
                                 </div>
@@ -629,15 +621,15 @@
                                         </svg>
                                         {{-- dependiendo de revaloración --}}
                                         @if ($medicineReserves[0]->medicineReserveMedicine->type_exam_id == 5)
-                                        <p class="text-lg title-font font-normal">
-                                            Revaloración post Flexibilidad
-                                        </p>
+                                            <p class="text-lg title-font font-normal">
+                                                Revaloración post Flexibilidad
+                                            </p>
                                         @else
-                                        <p class="text-lg title-font font-normal">Tipo de revaloración:
+                                            <p class="text-lg title-font font-normal">Tipo de revaloración:
                                             <p class="text-xl font-semibold">
                                                 {{ $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->RevaluationTypeExam->name }}
                                             </p>
-                                        </p>
+                                            </p>
                                         @endif
                                     </div>
                                 </div>
@@ -695,7 +687,7 @@
                                             @else
                                                 @foreach ($medicineReserves[0]->medicineReserveMedicine->medicineRevaluation as $initialEach)
                                                     {{ $initialEach->revaluationMedicineInitial[0]->revaluationInitialClasificationClass->name }}
-                                                @endforeach 
+                                                @endforeach
                                                 {{-- TODO FALTA TERMINAR EL FOREACH DE INICIAL CUANDO EL USUARIO SELEECIONA QUE NO --}}
                                             @endif
                                         @else

@@ -10,6 +10,7 @@ use App\Models\Medicine\MedicineReserve;
 use App\Models\Medicine\MedicineSchedule;
 use App\Models\Medicine\medicine_history_movements;
 use App\Models\Observation;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use LivewireUI\Modal\ModalComponent;
 use Livewire\WithFileUploads;
@@ -21,15 +22,15 @@ class Schedule extends ModalComponent
     use WithFileUploads;
     public $id_appoint, $id_medicine_observation, $scheduleId, $status, $medicineReserves, $name, $type, $class, $typLicense, $sede, $dateReserve, $date, $time, $scheduleMedicines, $sedes,
     $headquarter_id, $medicine_schedule_id, $selectedOption, $observation_reschedule, $observation_cancelate, $hoursReserve, $observation, $medicineId, $accion,
-        $disabledDaysFilter;
+        $disabledDaysFilter,$days,$is_external;
 
     public function rules()
     {
         $rules = [
-            'observation' => 'required_if:selectedOption,2,4',
+            'observation' => 'required_if:selectedOption,2,4,7',
             'headquarter_id' => 'required_if:selectedOption,4|required_if:status,6',
             'medicine_schedule_id' => 'required_if:selectedOption,4|required_if:status,6',
-            'dateReserve' => 'required_if:selectedOption,4|required_if:status,6',
+            'dateReserve' => 'required_if:selectedOption,4|required_if:status,6'
         ];
         $rules['selectedOption'] = 'required_unless:status,6';
         return $rules;
@@ -71,6 +72,11 @@ class Schedule extends ModalComponent
             $this->sede = $medicineReserves[0]->medicineReserveHeadquarter->name_headquarter ?? null;
             $this->hoursReserve = $medicineReserves[0]->reserveSchedule->time_start ?? null;
             $this->dateReserve = $medicineReserves[0]->dateReserve;
+            $fecha = Carbon::now()->timezone('America/Mexico_City');
+            $fechaEspera = new Carbon($medicineReserves[0]->dateReserve,'America/Mexico_City');
+            $this->days = $fecha->diffInDays($fechaEspera);
+            $this->is_external = $medicineReserves[0]->is_external;
+
         } else {
             $this->scheduleId = null;
         }
@@ -213,7 +219,22 @@ class Schedule extends ModalComponent
                 $cita->save();
                 $this->emit('reserveAppointment');
             }
-        } else {
+        } elseif ($this->selectedOption == 7) {
+
+            $medicineObservation = MedicineObservation::updateOrCreate(
+                ['id' => $this->id_medicine_observation],
+                [
+                    'medicine_reserve_id' => $this->scheduleId,
+                    'observation' => $this->observation,
+                    'status' => 7,
+                ]);
+            $postponeReserve = MedicineReserve::find($this->scheduleId);
+            $postponeReserve->update([
+                'status' => $this->selectedOption,
+            ]);
+            $this->emit('postponeReserve');
+            $accion = 'APLAZAR CITA';
+        }else{
             $citas = MedicineReserve::where('headquarter_id', $this->headquarter_id)
                 ->where('dateReserve', $this->dateReserve)
                 ->where(function ($query) {
@@ -284,6 +305,7 @@ class Schedule extends ModalComponent
             'selectedOption.required' => 'Seleccione opción',
             'headquarter_id.required' => 'Seleccione opción',
             'medicine_schedule_id.required' => 'Seleccione opción',
+            'selectedOption.required_unless' => 'El campo de opción seleccionado es obligatorio a menos que el estado esté en 6.'
         ];
     }
 }

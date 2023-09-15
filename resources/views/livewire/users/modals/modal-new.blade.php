@@ -69,7 +69,8 @@
                                 @foreach ($headquarters as $headquarter)
                                     <option value="{{ $headquarter->id }}"
                                         {{ $headquarter_id == $headquarter->id ? 'selected' : '' }}>
-                                        {{ $headquarter->name_headquarter }}</option>
+                                        {{ $headquarter->name_headquarter . ' ' . ($headquarter->is_external == true ? 'TERCEROS' : 'AFAC') }}
+                                    </option>
                                 @endforeach
                             </select>
                             @error('headquarter_id')

@@ -1,7 +1,6 @@
 <?php
 
-use App\Http\Controllers\afac\homeController;
-use App\Http\Livewire\Home\Dashboard;
+use App\Http\Controllers\Afac\Appointment\AfacHomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,5 +23,5 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified'
 ])->group(function () {
-    Route::get('/', [homeController::class, 'index'])->name('afac.login');
+    Route::get('/', [AfacHomeController::class, 'index'])->name('afac.login');
 });
