@@ -327,10 +327,7 @@ class AppointmentThirdTable extends DataTableComponent
                     ->options([
                         '' => 'TODOS',
                         '1' => 'INICIAL',
-                        '2' => 'RENOVACIÓN',
-                        '3' => 'REVALORACIÓN',
-                        '4' => 'REVALORACIÓN POST ACCIDENTE',
-                        '5' => 'FLEXIBILIDAD'
+                        '2' => 'RENOVACIÓN'
                     ])
                     ->filter(function ($query, $value) {
                         $query->where('type_exam_id', $value);
@@ -362,19 +359,11 @@ class AppointmentThirdTable extends DataTableComponent
                 SelectFilter::make('SEDE')
                     ->options([
                         '' => 'TODOS',
-                        '1' => 'CANCUN QUINTANA ROO',
-                        '2' => 'TIJUANA BC',
-                        '3' => 'TOLUCA AEROPUERTO',
-                        '4' => 'MONTERREY AEROPUERTO',
-                        '5' => 'GUADALAJARA AEROPUERTO',
-                        '6' => 'CIUDAD DE MÉXICO AEROPUERTO BJ',
-                        '7' => 'MAZATLAN SINALOA',
-                        '8' => 'TUXTLA GTZ. CHIAPAS',
-                        '9' => 'VERACRUZ VERACRUZ',
-                        '10' => 'HERMOSILLO SONORA',
-                        '11' => 'QUERETARO QRO',
-                        '12' => 'MERIDA YUCATAN',
-                        '13' => 'SINALOA CULIACAN'
+                        '1' => 'MEA LILIA MARIBEL DEL VALLE MARTíNEZ',
+                        '2' => 'MEA KATYA DEYANIRA MAGAÑA MUÑOZ',
+                        '3' => 'MEA CÉSAR ULISES BLAS TORRES',
+                        '4' => 'MEA JOSÉ MANUEL CÓRDOVA CERVANTES',
+                        '5' => 'MEA ROSEMBERG CASTILLEJOS VARGAS'
                     ])
                     ->filter(function ($query, $value) {
                         $query->where('headquarter_id', $value);
@@ -418,7 +407,6 @@ class AppointmentThirdTable extends DataTableComponent
                         '3' => 'CANCELÓ',
                         '4' => 'REAGENDADA',
                         '5' => 'LIBERADA'
-
                     ])
                     ->filter(function ($query, $value) {
                         $query->where('medicine_reserves.status', $value);
