@@ -359,11 +359,11 @@ class AppointmentThirdTable extends DataTableComponent
                 SelectFilter::make('SEDE')
                     ->options([
                         '' => 'TODOS',
-                        '1' => 'MEA LILIA MARIBEL DEL VALLE MARTíNEZ',
-                        '2' => 'MEA KATYA DEYANIRA MAGAÑA MUÑOZ',
-                        '3' => 'MEA CÉSAR ULISES BLAS TORRES',
-                        '4' => 'MEA JOSÉ MANUEL CÓRDOVA CERVANTES',
-                        '5' => 'MEA ROSEMBERG CASTILLEJOS VARGAS'
+                        '14' => 'MEA LILIA MARIBEL DEL VALLE MARTíNEZ',
+                        '15' => 'MEA KATYA DEYANIRA MAGAÑA MUÑOZ',
+                        '16' => 'MEA CÉSAR ULISES BLAS TORRES',
+                        '17' => 'MEA JOSÉ MANUEL CÓRDOVA CERVANTES',
+                        '18' => 'MEA ROSEMBERG CASTILLEJOS VARGAS'
                     ])
                     ->filter(function ($query, $value) {
                         $query->where('headquarter_id', $value);
