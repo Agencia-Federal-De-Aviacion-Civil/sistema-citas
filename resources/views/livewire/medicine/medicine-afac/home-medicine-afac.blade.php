@@ -74,7 +74,7 @@
                 </div>
             </div>
         </div>
-        {{-- <div class="grid grid-cols-1 lg:grid-cols-1 p-2 gap-4">
+        <div class="grid grid-cols-1 lg:grid-cols-1 p-2 gap-4">
             <div
                 class="relative flex flex-col min-w-0 mb-4 lg:mb-0 break-words bg-gray-50 dark:bg-gray-800 w-full shadow-lg rounded">
                 <div class="rounded-t mb-0 px-0 border-0">
@@ -97,7 +97,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="block w-full overflow-x-auto">
+                    {{-- <div class="block w-full overflow-x-auto">
                         <table class="items-center w-full bg-transparent border-collapse">
                             <thead>
                                 <tr>
@@ -162,10 +162,10 @@
                                 @endforeach
                             </tbody>
                         </table>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
-        </div> --}}
+        </div>
         <div class="py-12">
             <div class="container mx-auto px-4 py-4 bg-white sm:rounded-lg">
                 <div class="mt-12 md:max-w-8xl  xs:max-w-4xl  mx-auto sm:px-6 lg:px-8">
