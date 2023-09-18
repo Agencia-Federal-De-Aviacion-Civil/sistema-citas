@@ -11,7 +11,8 @@ use Jenssegers\Date\Date;
 
 class DashboardController extends Controller
 {
-    public $headquarters, $dateNow;
+    public $headquarters, $dateNow, $typeappoiment;
+    
     public function index()
     {
         Date::setLocale('es');
@@ -31,11 +32,8 @@ class DashboardController extends Controller
         ])
             ->where('is_external', false)
             ->get();
-
-
         //$appointmentNow = $appointment->where('dateReserve', $date1);
         //$now = $appointmentNow->whereIn('status', ['0', '1', '4'])->sum('count');
-        $registradas = $appointment->sum('count');
         //$porconfir = $registradas != 0 ? round($appointment->where('status', '1')->sum('count') * 100 / $registradas, 0) : 0;
         //$validado = $appointment->where('status', '1')->sum('count');
         //$pendientes = $appointment->where('status', '0')->sum('count');
@@ -44,7 +42,9 @@ class DashboardController extends Controller
         //$reagendado = round($appointment->where('status', '4')->sum('count'));
         //$porreagendado = $registradas != 0 ? round($appointment->where('status', '4')->sum('count') * 100 / $registradas) : 0;
         //$porcanceladas = $registradas != 0 ? round($appointment->whereIn('status', ['2', '3', '5'])->sum('count') * 100 / $registradas, 0) : 0;
+        $registradas = $appointment->sum('count');
+        $typeappoiment=2;
         $medicine =  round($registradas ? $registradas * 100 / $registradas : '0');
-        return view('afac.dashboard.index', compact('headquarters', 'nameHeadquarter', 'registradas','dateNow','medicine'));
+        return view('afac.dashboard.index', compact('headquarters', 'nameHeadquarter', 'registradas','dateNow','medicine','typeappoiment'));
     }
 }

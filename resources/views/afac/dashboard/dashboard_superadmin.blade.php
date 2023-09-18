@@ -96,14 +96,14 @@
                 <ul class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 ">
                     <li class="mr-2">
                         <a href="#" class="inline-block p-4 bg-white rounded-t-lg active"
-                            x-on:click.prevent="activeTab = 'headquarters'"
+                            x-on:click.prevent="activeTab = 'headquarters'" wire:click.prevent="{{$appoimnethird=1}}"
                             :class="{ 'text-blue-600 border-b-2 border-blue-500': activeTab === 'headquarters' }">
                             CITAS AFAC
                         </a>
                     </li>
                     <li class="mr-2">
                         <a href="#" class="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50"
-                            x-on:click.prevent="activeTab = 'schedules'"
+                            x-on:click.prevent="activeTab = 'schedules'" wire:click.lazy="{{$appoimnethird=2}}"
                             :class="{ 'text-blue-600 border-b-2 border-blue-500': activeTab === 'schedules' }">
                             TERCEROS AUTORIZADOS
                         </a>
@@ -111,13 +111,16 @@
                 </ul>
                 <div class="mt-6">
                     <div x-show="activeTab === 'headquarters'">
-                        {{-- @livewire('medicine.medicine-afac.home-medicine-afac') --}}
+                        @if ($typeappoiment === 1)
+                            @livewire('medicine.medicine-afac.home-medicine-afac')
+                        @endif
                     </div>
                     <div x-show="activeTab === 'schedules'">
-                        @livewire('medicine.authorized-third.home-medicine-authorized-third')
+                        @if ($typeappoiment === 2)
+                            @livewire('medicine.authorized-third.home-medicine-authorized-third')
+                        @endif
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    
