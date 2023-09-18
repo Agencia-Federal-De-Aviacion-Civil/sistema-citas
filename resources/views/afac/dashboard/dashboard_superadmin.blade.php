@@ -111,10 +111,14 @@
                 </ul>
                 <div class="mt-6">
                     <div x-show="activeTab === 'headquarters'">
-                        {{-- @livewire('medicine.medicine-afac.home-medicine-afac') --}}
+                        <template x-if="activeTab === 'headquarters'">
+                            @livewire('medicine.medicine-afac.home-medicine-afac')
+                        </template>                        
                     </div>
                     <div x-show="activeTab === 'schedules'">
-                        @livewire('medicine.authorized-third.home-medicine-authorized-third')
+                        <template x-if="activeTab === 'schedules'">
+                            @livewire('medicine.authorized-third.home-medicine-authorized-third')
+                        </template>
                     </div>
                 </div>
             </div>
