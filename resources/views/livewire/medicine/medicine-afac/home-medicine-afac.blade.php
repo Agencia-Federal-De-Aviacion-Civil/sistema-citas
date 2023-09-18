@@ -4,7 +4,7 @@
             <h3 class="text-lg font-semibold leading-tight flex-1">TOTAL DE CITAS MEDICINA DE
                 AVIACIÓN AFAC</h3>
         </div>
-        {{-- <div class="relative overflow-hidden transition-all duration-500" x-ref="card"
+        <div class="relative overflow-hidden transition-all duration-500" x-ref="card"
             x-bind:style="`max-height:${cardOpen?$refs.card.scrollHeight:0}px; opacity:${cardOpen?1:0}`">
             <div>
                 <div class="pb-4 lg:pb-6">
@@ -15,7 +15,7 @@
                     <div class="relative pt-1 mx-5">
                         <div class="overflow-hidden h-3 mb-4 text-xs flex rounded bg-gray-500">
                           <div style="width: {{$porconfir_afac}} %" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-800"></div>
-                          <div style="width: {{$porcanceladas_afac}}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500"></div>
+                          {{-- <div style="width: {{$porcanceladas_afac}}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500"></div> --}}
                           <div style="width: {{$porreagendado_afac}}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-500"></div>
                         </div>
                     </div>
@@ -61,13 +61,13 @@
                         </div>
 
                         <div class="ml-4">
-                            <h2 class="font-semibold">Canceladas: {{ $canceladas_afac }}</h2>
-                            <p class="mt-2 text-sm text-gray-500">{{ $porcanceladas_afac }}%</p>
+                            {{-- <h2 class="font-semibold">Canceladas: {{ $canceladas_afac }}</h2>
+                            <p class="mt-2 text-sm text-gray-500">{{ $porcanceladas_afac }}%</p> --}}
                         </div>
                     </div>
                 </div>
             </div>
-        </div> --}}
+        </div>
         {{-- <div class="grid grid-cols-1 lg:grid-cols-1 p-2 gap-4">
             <div
                 class="relative flex flex-col min-w-0 mb-4 lg:mb-0 break-words bg-gray-50 dark:bg-gray-800 w-full shadow-lg rounded">
