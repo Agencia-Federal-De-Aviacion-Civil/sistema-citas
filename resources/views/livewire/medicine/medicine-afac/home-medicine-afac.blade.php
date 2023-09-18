@@ -14,9 +14,15 @@
                 <div class="pb-4 lg:pb-6">
                     <div class="relative pt-1 mx-5">
                         <div class="overflow-hidden h-3 mb-4 text-xs flex rounded bg-gray-500">
-                          <div style="width: {{$porconfir_afac}} %" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-800"></div>
-                          {{-- <div style="width: {{$porcanceladas_afac}}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500"></div> --}}
-                          <div style="width: {{$porreagendado_afac}}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-500"></div>
+                            <div style="width: {{ $porconfir_afac }} %"
+                                class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-800">
+                            </div>
+                            <div style="width: {{ $porcanceladas_afac }}%"
+                                class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500">
+                            </div>
+                            <div style="width: {{ $porreagendado_afac }}%"
+                                class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-500">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -61,8 +67,8 @@
                         </div>
 
                         <div class="ml-4">
-                            {{-- <h2 class="font-semibold">Canceladas: {{ $canceladas_afac }}</h2>
-                            <p class="mt-2 text-sm text-gray-500">{{ $porcanceladas_afac }}%</p> --}}
+                            <h2 class="font-semibold">Canceladas: {{ $canceladas_afac }}</h2>
+                            <p class="mt-2 text-sm text-gray-500">{{ $porcanceladas_afac }}%</p>
                         </div>
                     </div>
                 </div>
