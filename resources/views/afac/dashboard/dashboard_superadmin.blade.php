@@ -96,14 +96,14 @@
                 <ul class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 ">
                     <li class="mr-2">
                         <a href="#" class="inline-block p-4 bg-white rounded-t-lg active"
-                            x-on:click.prevent="activeTab = 'headquarters'" wire:click.prevent="{{$appoimnethird=1}}"
+                            x-on:click.prevent="activeTab = 'headquarters'"
                             :class="{ 'text-blue-600 border-b-2 border-blue-500': activeTab === 'headquarters' }">
                             CITAS AFAC
                         </a>
                     </li>
                     <li class="mr-2">
                         <a href="#" class="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50"
-                            x-on:click.prevent="activeTab = 'schedules'" wire:click.lazy="{{$appoimnethird=2}}"
+                            x-on:click.prevent="activeTab = 'schedules'"
                             :class="{ 'text-blue-600 border-b-2 border-blue-500': activeTab === 'schedules' }">
                             TERCEROS AUTORIZADOS
                         </a>
