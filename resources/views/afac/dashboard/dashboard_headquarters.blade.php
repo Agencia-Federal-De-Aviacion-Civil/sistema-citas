@@ -177,7 +177,7 @@
                                                 class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                                                 <div class="flex items-center">
                                                     <span
-                                                        class="mr-2">{{ $headquarter->headquarterMedicineReserve ? 'ACTIVO' : 'INACTIVO' round(($headquarter->headquarterMedicineReserve->count() * 100) / $registradas, 1) }}%</span>
+                                                        class="mr-2">{{ $headquarter->headquarterMedicineReserve ? 'ACTIVO' : 'INACTIVO', round(($headquarter->headquarterMedicineReserve->count() * 100) / $registradas, 1) }}%</span>
                                                     <div class="relative w-full">
                                                         <div
                                                             class="overflow-hidden h-2 text-xs flex rounded bg-blue-200">
