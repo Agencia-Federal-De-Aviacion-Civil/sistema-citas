@@ -166,7 +166,7 @@
             <div class="container mx-auto px-4 py-4 bg-white sm:rounded-lg">
                 <div class="mt-12 md:max-w-8xl  xs:max-w-4xl  mx-auto sm:px-6 lg:px-8">
                     <div class="ml-4 py-6 mr-4 uppercase md:text-sm xs:text-xs">
-                        @livewire('medicine.authorized-third.calendar', key('medicine.authorized-third.calendar-'))
+                        {{-- @livewire('medicine.authorized-third.calendar', key('medicine.authorized-third.calendar-')) --}}
                     </div>
                 </div>
             </div>
