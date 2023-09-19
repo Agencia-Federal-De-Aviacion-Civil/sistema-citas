@@ -122,15 +122,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {{-- @foreach ($headquarters_afac as $headquarter_afac)
+                                @foreach ($headquarters_afac as $headquarter_afac)
                                     <tr class="text-gray-700 dark:text-gray-100">
-                                        <th
+                                        {{-- <th
                                             class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                                             {{ $headquarter_afac->name_headquarter }}
-                                            @unless ($headquarter_afac->is_external == 0)
-                                                <span
-                                                    class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">TERCEROS</span>
-                                            @endunless
+
                                         </th>
                                         <td
                                             class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
@@ -157,9 +154,9 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </td>
+                                        </td> --}}
                                     </tr>
-                                @endforeach --}}
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
