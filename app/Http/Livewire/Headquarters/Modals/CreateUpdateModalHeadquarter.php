@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Headquarters\Modals;
 
 use App\Models\Catalogue\Headquarter;
 use App\Models\Catalogue\TypeExam;
+use App\Models\Catalogue\State;
 use App\Models\System;
 use App\Models\User;
 use App\Models\Medicine\medicine_history_movements;
@@ -20,7 +21,7 @@ class CreateUpdateModalHeadquarter extends ModalComponent
     use Actions;
     public $id_user, $id_edit, $id_schedule, $id_exception, $userId, $id_headquarter, $time_start, $type_exam_id,
         $max_schedules_exception, $max_schedules, $name_headquarter, $direction, $system_id, $url, $status;
-    public $sedes, $typeExams, $questionException = '0', $schedulesExceptions, $is_external;
+    public $sedes, $typeExams, $questionException = '0', $schedulesExceptions, $is_external,$price,$localizations,$state;
     public function rules()
     {
         $rules = [
@@ -43,6 +44,7 @@ class CreateUpdateModalHeadquarter extends ModalComponent
     public function mount($userId = null)
     {
         $this->typeExams = TypeExam::all();
+        $this->localizations= State::all();
         if (isset($userId)) {
             $this->userId = $userId;
             $this->sedes = Headquarter::with(['headquarterUserParticipant', 'headquarterSchedule'])->where('id', $userId)->get();
@@ -58,6 +60,9 @@ class CreateUpdateModalHeadquarter extends ModalComponent
             // $this->type_exam_id = isset($this->sedes[0]->headquarterSchedule->schedulesMedicineException[0]->type_exam_id) ? $this->sedes[0]->headquarterSchedule->schedulesMedicineException[0]->type_exam_id : '';
             $this->id_headquarter = $this->sedes[0]->id;
             $this->id_schedule = $this->sedes[0]->headquarterSchedule->id;
+            $this->is_external=$this->sedes[0]->is_external;
+            $this->price = $this->sedes[0]->price;
+            $this->state=$this->sedes[0]->state;
             // $this->id_exception = isset($this->sedes[0]->headquarterSchedule->schedulesMedicineException[0]->id) ? $this->sedes[0]->headquarterSchedule->schedulesMedicineException[0]->id : '';
         } else {
             $this->userId = null; // o cualquier otro valor predeterminado que desees
@@ -145,6 +150,8 @@ class CreateUpdateModalHeadquarter extends ModalComponent
                     'direction' => $this->direction,
                     'url' => $this->url,
                     'is_external' => $this->is_external,
+                    'price' => $this->price,
+                    'state' => $this->state,
                     'status' => $this->status
                 ]
             );
@@ -155,6 +162,9 @@ class CreateUpdateModalHeadquarter extends ModalComponent
                     'system_id' => 1,
                     'direction' => $this->direction,
                     'url' => $this->url,
+                    'is_external' => $this->is_external,
+                    'price' => $this->price,
+                    'state' => $this->state,
                     'status' => $this->status
                 ]
             );

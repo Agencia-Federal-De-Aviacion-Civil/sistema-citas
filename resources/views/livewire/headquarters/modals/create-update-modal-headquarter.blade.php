@@ -10,7 +10,21 @@
                 </div>
             </div>
             <div class="grid xl:grid-cols-2 xl:gap-6">
-                @hasrole(['super_admin','super_admin_medicine'])
+                @hasrole(['super_admin', 'super_admin_medicine'])
+                    <div class="mt-4 relative w-full group">
+                        <label for="systems"
+                            class="block text-sm font-medium text-gray-900 dark:text-white">ESTADO</label>
+                        <select wire:model.lazy="state"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            @foreach ($localizations as $localization)
+                                <option label="{{ $localization->name }}" value="{{ $localization->name }}" />
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="mt-4 relative w-full group">
+                        <x-input icon="currency-dollar" label="CUOTA" placeholder="Ingresa la cuota"
+                            wire:model.lazy="price" />
+                    </div>
                     <div class="mt-4 relative w-full group">
                         <label for="systems"
                             class="block text-sm font-medium text-gray-900 dark:text-white">SISTEMA</label>
@@ -127,7 +141,8 @@
             @endhasrole
             <div class="grid xl:grid-cols-1 xl:gap-6">
                 <div class="mt-4 relative w-full group">
-                    <x-textarea wire:model.lazy="url" label="URL" placeholder="INGRESA URL DE GOOGLE MAPS..." />
+                    <x-textarea wire:model.lazy="url" label="URL"
+                        placeholder="INGRESA URL DE GOOGLE MAPS..." />
                 </div>
             </div>
             <div class="mt-4">
