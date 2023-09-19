@@ -11,6 +11,9 @@
                 <div class="mt-1 relative w-full group">
                     <x-input wire:model.lazy="description" label="DESCRIPCIÓN" placeholder="ESCRIBE..." />
                 </div>
+                <div class="mt-1 relative w-full group">
+                    <x-input wire:model.lazy="guard_name" label="GUARD NAME" placeholder="web" />
+                </div>
             </div>
             <div class="mt-6 mb-6">
                 <x-button wire:click.prevent="save()" label="GUARDAR" blue right-icon="save-as" />

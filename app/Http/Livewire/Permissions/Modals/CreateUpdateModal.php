@@ -8,7 +8,7 @@ use Spatie\Permission\Models\Permission;
 
 class CreateUpdateModal extends ModalComponent
 {
-    public $permissionId, $id_permission, $name, $description, $permissionQuery;
+    public $permissionId, $id_permission, $name, $description, $permissionQuery,$guard_name;
     public function rules()
     {
         return [
@@ -24,6 +24,7 @@ class CreateUpdateModal extends ModalComponent
             $this->name = $this->permissionQuery->name;
             $this->description = $this->permissionQuery->description;
             $this->id_permission = $this->permissionQuery->id;
+            $this->guard_name = $this->permissionQuery->guard_name;
         } else {
             $this->permissionId = null; // o cualquier otro valor predeterminado que desees
         }
@@ -41,6 +42,7 @@ class CreateUpdateModal extends ModalComponent
             [
                 'name' => $this->name,
                 'description' => $this->description,
+                'guard_name' => $this->guard_name,
             ]
         );
         $this->closeModal();

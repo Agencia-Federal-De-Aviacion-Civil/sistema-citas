@@ -40,7 +40,7 @@ class UserRolesTable extends DataTableComponent
     }
     public function columns(): array
     {
-        if (Auth::user()->can('super_admin.see.tabs.navigation')) {
+        if (Auth::user()->canany(['super_admin.see.tabs.navigation','see.accion.user.table'])) {
             return [
                 Column::make("Id", "id")
                     ->sortable(),

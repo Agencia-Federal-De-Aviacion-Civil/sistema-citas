@@ -41,6 +41,7 @@
                             </div>
                         </div>
                     @endempty
+                    @canany(['super_admin.see.tabs.navigation'])
                     <div x-data="{ roleuser: @entangle('privileges') }">
                         <div class="mt-4 relative w-full group">
                             <label for="systems"
@@ -79,6 +80,7 @@
                             @enderror
                         </div>
                     </div>
+                    @endcanany
                     <div x-data="{ open: false }">
 
                         <div class="mt-6">

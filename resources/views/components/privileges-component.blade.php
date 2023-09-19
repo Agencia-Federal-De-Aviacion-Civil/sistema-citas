@@ -7,9 +7,12 @@
         <x-button
             wire:click="$emit('openModal', 'users.modals.modal-new', {{ json_encode(['privilegesId' => $privilegesId]) }})"
             label="EDITAR" right-icon="pencil" xs warning />
-        <x-button
-            wire:click="$emit('openModal', 'users.modals.modal-delete', {{ json_encode(['privilegesId' => $privilegesId]) }})"
-            label="ELIMINAR" right-icon="trash" xs red />
+
+        @canany(['super_admin.see.tabs.navigation'])
+            <x-button
+                wire:click="$emit('openModal', 'users.modals.modal-delete', {{ json_encode(['privilegesId' => $privilegesId]) }})"
+                label="ELIMINAR" right-icon="trash" xs red />
+        @endcanany
     @endempty
 
 </div>
