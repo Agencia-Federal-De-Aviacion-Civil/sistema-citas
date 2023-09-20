@@ -51,13 +51,17 @@
         <x-button
             wire:click="$emit('openModal', 'medicine.modals.schedule', {{ json_encode(['scheduleId' => $scheduleId, 'medicineId' => $medicineId]) }})"
             label="LLAVE LIBERADA" icon="key" xs cyan />
-         @else
+        @else
         <x-badge flat negative label="CANCELADA" />
         @endhasrole
     @elseif($status == 6)
+        @hasrole('super_admin|medicine_admin|super_admin_medicine|admin_medicine_v2|headquarters')
         <x-button
             wire:click="$emit('openModal', 'medicine.modals.schedule', {{ json_encode(['scheduleId' => $scheduleId, 'medicineId' => $medicineId]) }})"
             label="COMPLETAR DATOS" icon="status-offline" xs red />
+        @else
+        <x-badge flat info label="PENDIENTE" />
+        @endhasrole
     @elseif($status == 7)
         @hasrole('sub_headquarters|super_admin|medicine_admin|super_admin_medicine|headquarters|admin_medicine_v2|headquarters_authorized')
             @if ($days > 20 && $this->date > $wait_date)
