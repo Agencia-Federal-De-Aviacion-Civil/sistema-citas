@@ -51,16 +51,29 @@ class HomeMedicineAfac extends Component
         //         $q2->where('user_id', Auth::user()->id);
         //     })->get();
         // } else {
-            $appointment_afac = MedicineReserve::query()
+
+            // $appointment_afac = MedicineReserve::query()
+            //     ->select('status', DB::raw('count(*) as count'), 'dateReserve')
+            //     ->groupBy('status', 'dateReserve')
+            //     ->where('is_external', false)
+            //     ->get();
+            // $headquarters_afac = Headquarter::with([
+            //     'headquarterMedicineReserve'
+            // ])
+            //     ->where('is_external', false)
+            //     ->get();
+
+            $appointment_afac = MedicineReserve::with('medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant')
                 ->select('status', DB::raw('count(*) as count'), 'dateReserve')
                 ->groupBy('status', 'dateReserve')
                 ->where('is_external', false)
                 ->get();
             $headquarters_afac = Headquarter::with([
-                'headquarterMedicineReserve'
-            ])
-                ->where('is_external', false)
-                ->get();
+                'HeadquarterUserHeadquarter.userHeadquarterUserParticipant','headquarterMedicineReserve'])
+            ->where('is_external', false)->get();
+ 
+
+
         // }
         $appointmentNow_afac = $appointment_afac->where('dateReserve', $date1_afac);
         $now_afac = $appointmentNow_afac->whereIn('status', ['0', '1', '4'])->sum('count');
@@ -75,6 +88,6 @@ class HomeMedicineAfac extends Component
         $porcanceladas_afac = $registradas_afac != 0 ? round($appointment_afac->whereIn('status', ['2', '3', '5'])->sum('count') * 100 / $registradas_afac, 0) : 0;
         // $medicine_afac =  round($registradas_afac ? $registradas_afac * 100 / $registradas_afac : '0');
         // return view('livewire.medicine.medicine-afac.home-medicine-afac', compact('headquarters_afac', 'nameHeadquarter_afac', 'registradas_afac', 'pendientes_afac', 'validado_afac', 'canceladas_afac', 'reagendado_afac', 'porconfir_afac', 'porpendientes_afac', 'porreagendado_afac', 'porcanceladas_afac', 'now_afac', 'date_afac', 'date2_afac', 'medicine_afac', 'date1_afac', 'tomorrow_afac', 'dateNow_afac'));
-        return view('livewire.medicine.medicine-afac.home-medicine-afac', compact('now_afac', 'registradas_afac', 'porconfir_afac', 'validado_afac', 'pendientes_afac', 'porpendientes_afac', 'canceladas_afac', 'reagendado_afac', 'porreagendado_afac', 'porcanceladas_afac','date2_afac'));
+        return view('livewire.medicine.medicine-afac.home-medicine-afac', compact('now_afac', 'registradas_afac', 'porconfir_afac', 'validado_afac', 'pendientes_afac', 'porpendientes_afac', 'canceladas_afac', 'reagendado_afac', 'porreagendado_afac', 'porcanceladas_afac','date2_afac','headquarters_afac','date1_afac','tomorrow_afac'));
     }
 }
