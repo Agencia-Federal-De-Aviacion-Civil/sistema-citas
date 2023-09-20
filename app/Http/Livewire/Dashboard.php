@@ -11,7 +11,7 @@ class Dashboard extends Component
     public function mount()
     {
        
-        $this->headquartersAfac = Headquarter::all();
+        $this->headquartersAfac = Headquarter::where('status', 0)->get();
         $stategrup = $this->headquartersAfac ->groupBy('state');
         $this->stategrup =$stategrup->all();
     }
