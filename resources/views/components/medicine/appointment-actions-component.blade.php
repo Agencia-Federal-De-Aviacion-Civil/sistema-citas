@@ -38,16 +38,22 @@
             <x-badge flat negative label="CANCELADA" />
         @endhasrole
     @elseif($status == 4)
+        @hasrole('sub_headquarters|super_admin|medicine_admin|super_admin_medicine|admin_medicine_v2')    
         <x-button
             wire:click="$emit('openModal', 'medicine.modals.schedule', {{ json_encode(['scheduleId' => $scheduleId, 'medicineId' => $medicineId]) }})"
             label="REAGENDADA" xs warning />
-        @hasrole('sub_headquarters|super_admin|medicine_admin|super_admin_medicine|user|admin_medicine_v2')
-            <x-button xs positive href="{{ route('afac.downloadFile', $scheduleId) }}" label="DESCARGAR" />
+        @else
+        <x-badge flat warning label="REAGENDADA" />
         @endhasrole
+        <x-button xs positive href="{{ route('afac.downloadFile', $scheduleId) }}" label="DESCARGAR" />
     @elseif($status == 5)
+        @hasrole('sub_headquarters|super_admin|medicine_admin|super_admin_medicine|admin_medicine_v2')
         <x-button
             wire:click="$emit('openModal', 'medicine.modals.schedule', {{ json_encode(['scheduleId' => $scheduleId, 'medicineId' => $medicineId]) }})"
             label="LLAVE LIBERADA" icon="key" xs cyan />
+         @else
+        <x-badge flat negative label="CANCELADA" />
+        @endhasrole
     @elseif($status == 6)
         <x-button
             wire:click="$emit('openModal', 'medicine.modals.schedule', {{ json_encode(['scheduleId' => $scheduleId, 'medicineId' => $medicineId]) }})"
