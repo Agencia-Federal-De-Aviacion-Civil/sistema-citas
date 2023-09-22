@@ -169,9 +169,7 @@ class HomeMedicine extends Component
         // dd($this->medicine_question_ex_id);
         $baseQuery = TypeClass::where('medicine_question_id', $type_exam_id_extension);
         if ($this->type_exam_id == 1 && $this->medicine_question_id == 1) {
-            // dd('AQUI ENTRA PARA EXAMEN INICIAL Y SI SIGUE ESTUDIANDO');
             if ($type_exam_id_extension == 1) {
-                // dd('AQUI ENTRA PARA EXAMEN INICIAL Y SI SIGUE ESTUDIANDO Y QUIERE UNA EXTENSIÓN INICIAL');
                 if ($this->medicine_question_ex_id == 1) {
                     if ($this->type_class_id == 1) {
                         $this->questionClassessExtension = $baseQuery->get();
@@ -214,29 +212,30 @@ class HomeMedicine extends Component
                     }
                 }
             }
-        } else if ($this->type_exam_id == 2) {
-            if ($type_exam_id_extension == 1) {
-                if ($this->medicine_question_ex_id == 1) {
-                    if ($this->type_class_id == 4) {
-                        $this->questionClassessExtension = $baseQuery->get();
-                    } else if ($this->type_class_id == 5) {
-                        $this->questionClassessExtension = $baseQuery->whereIn('id', [2, 3])->get();
-                    } else if ($this->type_class_id == 6) {
-                        $this->questionClassessExtension = $baseQuery->whereIn('id', [3])->get();
-                    }
-                }
-            } else if ($type_exam_id_extension == 2) {
-                if ($this->medicine_question_ex_id == 2) {
-                    if ($this->type_class_id == 4) {
-                        $this->questionClassessExtension = $baseQuery->whereIn('id', [4, 5, 6])->get();
-                    } else if ($this->type_class_id == 5) {
-                        $this->questionClassessExtension = $baseQuery->whereIn('id', [5, 6])->get();
-                    } else if ($this->type_class_id == 6) {
-                        $this->questionClassessExtension = $baseQuery->whereIn('id', [6])->get();
-                    }
-                }
-            }
         }
+        // else if ($this->type_exam_id == 2) {
+        //     if ($type_exam_id_extension == 1) {
+        //         if ($this->medicine_question_ex_id == 1) {
+        //             if ($this->type_class_id == 4) {
+        //                 $this->questionClassessExtension = $baseQuery->get();
+        //             } else if ($this->type_class_id == 5) {
+        //                 $this->questionClassessExtension = $baseQuery->whereIn('id', [2, 3])->get();
+        //             } else if ($this->type_class_id == 6) {
+        //                 $this->questionClassessExtension = $baseQuery->whereIn('id', [3])->get();
+        //             }
+        //         }
+        //     } else if ($type_exam_id_extension == 2) {
+        //         if ($this->medicine_question_ex_id == 2) {
+        //             if ($this->type_class_id == 4) {
+        //                 $this->questionClassessExtension = $baseQuery->whereIn('id', [4, 5, 6])->get();
+        //             } else if ($this->type_class_id == 5) {
+        //                 $this->questionClassessExtension = $baseQuery->whereIn('id', [5, 6])->get();
+        //             } else if ($this->type_class_id == 6) {
+        //                 $this->questionClassessExtension = $baseQuery->whereIn('id', [6])->get();
+        //             }
+        //         }
+        //     }
+        // }
         // else if ($type_exam_id_extension == 2) {
         //     if ($this->type_class_id == 1) {
         //         $this->questionClassessExtension = $baseQuery->get();
@@ -286,6 +285,20 @@ class HomeMedicine extends Component
         //     return null;
         // }
     }
+    public function updatedTypeExamIdExtension($type_exam_id_extension)
+    {
+        if ($type_exam_id_extension == 2) {
+            $typeClassIds = [
+                4 => [4, 5, 6],
+                5 => [5, 6],
+                6 => [6],
+            ];
+            if (array_key_exists($this->type_class_id, $typeClassIds)) {
+                $baseQuery = TypeClass::where('medicine_question_id', $type_exam_id_extension);
+                $this->questionClassessExtension = $baseQuery->whereIn('id', $typeClassIds[$this->type_class_id])->get();
+            }
+        }
+    }
     public function updatedTypeClassId($type_class_id)
     {
         $this->typeClassId = $type_class_id;
@@ -307,7 +320,7 @@ class HomeMedicine extends Component
     }
     public function resetClasificationClass()
     {
-        $this->clasificationClass = [];
+        $this->reset(['type_class_id', 'clasification_class_id', 'extensionClassId', 'type_exam_id_extension']);
     }
     public function resetQuestionExtension()
     {

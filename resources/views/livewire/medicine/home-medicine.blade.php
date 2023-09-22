@@ -341,7 +341,7 @@
                                                         <div class="mt-4 relative z-auto w-full group">
                                                             <x-select label="TIPO DE LICENCIA"
                                                                 x-model.lazy="typelicens"
-                                                                placeholder="Seleccione uno o más..." :options="$clasificationClass"
+                                                                placeholder="Seleccione..." :options="$clasificationClass"
                                                                 option-label="name" option-value="id"
                                                                 wire:model.lazy="clasification_class_id" />
                                                             {{-- todo se comenta el multiselect --}}
@@ -485,7 +485,7 @@
                                         </div>
                                     </div>
                                     {{-- QUESTION --}}
-                                    <div x-show="tipoExamenExtension > '0'" class="flex relative pb-6">
+                                    <div x-show="tipoExamenExtension === '1'" class="flex relative pb-6">
                                         <div class="h-full w-10 absolute inset-0 flex items-center justify-center">
                                             <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
                                         </div>
@@ -522,7 +522,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div x-show="questionException > '0' && extensionClass === '1'"
+                                    <div x-show="questionException > '0' && extensionClass === '1' || tipoExamenExtension === '2'"
                                         class="flex relative pb-6">
                                         <div class="h-full w-10 absolute inset-0 flex items-center justify-center">
                                             <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
