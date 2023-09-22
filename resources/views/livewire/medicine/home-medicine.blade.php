@@ -402,8 +402,9 @@
                                             </div>
                                         </div>
                                         {{-- paso5 --}}
-                                        {{-- TODO INICIA EXC --}}
-                                        <div x-cloak x-show="typelicens > '0' && tipoExamen != '3'"
+                                        {{-- TODO INICIA EXT --}}
+                                        <div x-cloak
+                                            x-show="typelicens > '0' && tipoExamen != '3' && tipoExamen != '4' && tipoExamen != '5'"
                                             class="flex relative pb-6">
                                             <div class="h-full w-10 absolute inset-0 flex items-center justify-center">
                                                 <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
@@ -585,72 +586,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    {{-- TODO AQUI TERMINA --}}
-                                    {{-- PARA RENOVACIÓN --}}
-                                    {{-- <div x-show="tipoExamenExtension === '2' && extensionClass === '1'"
-                                        class="flex relative pb-6">
-                                        <div class="h-full w-10 absolute inset-0 flex items-center justify-center">
-                                            <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
-                                        </div>
-                                        <div
-                                            class="flex-shrink-0 w-10 h-10 rounded-full bg-sky-700 inline-flex items-center justify-center text-white relative z-10">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                class="w-6 h-6">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M12 10.5v6m3-3H9m4.06-7.19l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
-                                            </svg>
-                                        </div>
-                                        <div class="flex-grow pl-4">
-                                            <div class="grid xl:grid-cols-2 xl:gap-6">
-                                                <div class="mt-1 relative z-0 w-full group">
-                                                    @if (!is_null($questionClassessExtension))
-                                                        <label for="small"
-                                                            class="block mb-2 text-base font-medium text-gray-900 dark:text-white">EXTENSIÓN
-                                                            TIPO DE CLASE</label>
-                                                        <select id="extensionTypeClass" placeholder="seleccione..."
-                                                            wire:model.lazy="type_class_extension_id"
-                                                            class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                            <option value="">Seleccione...</option>
-                                                            @foreach ($questionClassessExtension as $questionClassExtension)
-                                                                <option value="{{ $questionClassExtension->id }}">
-                                                                    {{ $questionClassExtension->name }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                        @error('')
-                                                            <span
-                                                                class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
-                                                        @enderror
-                                                    @endif
-                                                </div>
-                                                <div class="mt-1 relative z-0 w-full group">
-                                                    @if (!is_null($clasificationClassExtension))
-                                                        <label for="small"
-                                                            class="block mb-2 text-base font-medium text-gray-900 dark:text-white">EXTENSIÓN
-                                                            TIPO
-                                                            DE
-                                                            LICENCIA</label>
-                                                        <select wire:model.lazy="clas_class_extension_id"
-                                                            x-ref="clasificationExtension"
-                                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                            <option value="">Seleccione...
-                                                            </option>
-                                                            @foreach ($clasificationClassExtension as $clasificationClassExt)
-                                                                <option value="{{ $clasificationClassExt->id }}">
-                                                                    {{ $clasificationClassExt->name }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                        @error('')
-                                                            <span
-                                                                class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
-                                                        @enderror
-                                                    @endif
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> --}}
-                                    <div x-show="clasificationExtension > '0' || extensionClass === '0' || tipoExamen === '3' && typelicens > '0'"
+                                    <div x-show="(clasificationExtension > '0' || extensionClass === '0' || ((tipoExamen === '3' || tipoExamen === '4' || tipoExamen === '5') && typelicens > '0'))"
                                         class="flex relative pb-6">
                                         <div class="h-full w-10 absolute inset-0 flex items-center justify-center">
                                             <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
