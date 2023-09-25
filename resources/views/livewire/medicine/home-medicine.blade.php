@@ -10,6 +10,7 @@
     @if ($idTypeAppointment === false)
         @livewire('medicine.modals.modal-index')
     @endif
+    {{-- arreglar --}}
     @unless ($showBannerBoolean)
         <x-banner-component :title="$idTypeAppointment === false
             ? 'Generación de citas medicina de Aviación AFAC'
