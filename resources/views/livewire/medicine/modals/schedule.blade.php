@@ -45,13 +45,14 @@
                             <div x-show="selectedOption == '' || selectedOption == 1 || selectedOption == 2 || selectedOption == 7">
                                 <x-input wire:model="sede" label="SEDE" disabled />
                             </div>
-
                             @endif
                             @if ($status == 6)
                             <x-select label="ELIJA LA SEDE" placeholder="Selecciona" wire:model.lazy="headquarter_id">
                                 <x-select.option label="Seleccione opción" value="" />
                                 @foreach ($sedes as $sede)
+                                @if($sede->id==$this->medicine_schedule_id)
                                 <x-select.option label="{{ $sede->name_headquarter }}" value="{{ $sede->id }}" />
+                                @endif
                                 @endforeach
                             </x-select>
                             @endif
@@ -141,15 +142,12 @@
                         <option value="2">CANCELAR CITA</option>
                         @endif
 
-                            @if ($status != 7)
                             <option value="7">APLAZAR CITA</option>
-                            @endif
 
-                            @hasrole('super_admin|medicine_admin|super_admin_medicine|admin_medicine_v2')
                             @if ($status == 0)
                             <option value="4">REAGENDAR CITA</option>
                             @endif
-                            @endhasrole
+
                         </select>
                         @error('selectedOption')
                         <span class="mt-2 text-sm text-negative-600">{{ $message }}</span>
@@ -166,6 +164,15 @@
                         <x-textarea wire:model="observation" label="MOTIVO" placeholder="ESCRIBE..." disabled />
                     </div>
                     @endif
+
+                    @hasrole('user')
+                    @if ($status == 6)
+                    <div class="mt-4">
+                        <x-textarea wire:model="observation" label="MOTIVO" placeholder="ESCRIBE..." />
+                    </div>
+                    @endif
+                    @endhasrole
+
                     <div x-show="selectedOption == 4">
                         <div class="mt-4">
                             <x-textarea wire:model="observation" label="MOTIVO" placeholder="ESCRIBE..." />
@@ -185,11 +192,20 @@
                     </div>
                 </div>
                 <div class="flex justify-end items-center gap-x-2 p-5 sm:px-7">
+                    @hasrole('super_admin|medicine_admin|super_admin_medicine|admin_medicine_v2|headquarters_authorized')
                     @if ($status == 0 || $status == 4 || $status == 6 || $status == 7)
                     <div class="float-right mt-6">
                         <x-button wire:click="reschedules()" label="ACEPTAR" blue right-icon="save-as" />
                     </div>
                     @endif
+                    @endhasrole
+                    @hasrole('user')
+                    @if ($status == 6)
+                    <div class="float-right mt-6">
+                    <x-button wire:click="reschedules()" label="ACEPTAR" blue right-icon="save-as" />
+                    </div>
+                    @endif
+                    @endhasrole
                     @hasrole('super_admin|super_admin_medicine')
                     @if ($this->status == 3 || $this->status == 2)
                     <div class="float-right mt-6">
