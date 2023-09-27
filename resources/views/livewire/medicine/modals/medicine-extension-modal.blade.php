@@ -5,6 +5,7 @@
                 <h3 class="text-xl font-semibold leading-6 text-gray-800 capitalize dark:text-white" id="modal-title">
                     {{-- {{ $reference_number_ext ? 'EXTENSIÓN DE CITA PARA EL USUARIO' . '' . $extensionCurp : 'AÑADIR EXTENSIÓN' }} --}}
                 </h3>
+                <x-errors></x-errors>
                 @if (count($medicineReservesExtension[0]->medicineReserveMedicineExtension) > 0)
                     @if ($medicineReservesExtension[0]->medicineReserveMedicineExtension[0]->reference_number_ext)
                         <div class="mt-6 grid xl:grid-cols-2 xl:gap-6">
@@ -64,7 +65,7 @@
                         <div class="mt-6 grid xl:grid-cols-1 xl:gap-6">
                             <div class="mt-1 relative w-full group">
                                 <label for="file-input" class="text-sm text-left">ADJUNTA COMPROBANTE</label>
-                                <input type="file" wire:model="document_ext_id" accept=".pdf"
+                                <input type="file" wire:model="document_ext_id"
                                     class="block w-full border border-gray-200 shadow-sm rounded-md text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 file:bg-transparent file:border-0 file:bg-gray-100 file:mr-4 file:py-2.5 file:px-4 dark:file:bg-gray-700 dark:file:text-gray-400">
                                 <div class="float-left">
                                     <div wire:loading wire:target="document_ext_id">
@@ -76,6 +77,9 @@
                                         </div>
                                     </div>
                                 </div>
+                                @error('document_ext_id')
+                                    {{ $message }}
+                                @enderror
                             </div>
                         </div>
                     @endif
@@ -192,7 +196,7 @@
                             <div class="mt-6 grid xl:grid-cols-1 xl:gap-6">
                                 <div class="mt-1 relative w-full group">
                                     <label for="file-input" class="text-sm text-left">ADJUNTA COMPROBANTE</label>
-                                    <input type="file" wire:model="document_ext_id" accept=".pdf"
+                                    <input type="file" wire:model="document_ext_id"
                                         class="block w-full border border-gray-200 shadow-sm rounded-md text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 file:bg-transparent file:border-0 file:bg-gray-100 file:mr-4 file:py-2.5 file:px-4 dark:file:bg-gray-700 dark:file:text-gray-400">
                                     <div class="float-left">
                                         <div wire:loading wire:target="document_ext_id">
@@ -204,6 +208,9 @@
                                             </div>
                                         </div>
                                     </div>
+                                    @error('document_ext_id')
+                                        {{ $message }}
+                                    @enderror
                                 </div>
                             </div>
                         </div>

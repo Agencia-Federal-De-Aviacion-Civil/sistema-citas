@@ -42,7 +42,7 @@ class MedicineExtensionModal extends ModalComponent
     {
         return [
             'reference_number_ext' => 'required',
-            'document_ext_id' => 'required|mimetypes:application/pdf|max:5000',
+            'document_ext_id' => 'required|mimetypes:application/pdf,image/jpeg,image/jpg,image/png',
             'date_reserve_ext' => 'required'
         ];
     }
@@ -53,7 +53,9 @@ class MedicineExtensionModal extends ModalComponent
     public function viewPdf()
     {
         $filePath = storage_path("app/public/" . $this->medicineReservesExtension[0]->medicineReserveMedicineExtension[0]->extensionDocument->name_document);
-        return response()->download($filePath, 'hola.pdf');
+        $filePathName = explode('/', $filePath);
+        $filePathNameDownload = $filePathName[5];
+        return response()->download($filePath, $filePathNameDownload);
     }
     public function updatedMedicineQuestionExId($type_exam_id_extension)
     {
