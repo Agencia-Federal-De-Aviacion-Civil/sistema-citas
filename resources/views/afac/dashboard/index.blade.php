@@ -9,7 +9,7 @@
         @include('afac.dashboard.dashboard_medicine')
     @endcan
     @can('super_admin.see.dashboard')
-        @include('afac.dashboard.dashboard_superadmin')
+        @livewire('dashboard.dashboard-controller')
     @endcan
     @can('user.see.navigation')
         @livewire('dashboard')
