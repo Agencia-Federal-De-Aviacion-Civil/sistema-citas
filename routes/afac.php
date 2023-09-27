@@ -35,7 +35,8 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified'
 ])->group(function () {
-    Route::get('',DashboardDashboardController::class)->name('afac.home');
+    // Route::get('',DashboardDashboardController::class)->name('afac.home');
+    Route::get('',[DashboardController::class, 'index'])->name('afac.home');
     Route::middleware(['role:super_admin|user|medicine_admin|headquarters_authorized'])->group(function () {
         Route::get('/medicine', HomeMedicine::class)->name('afac.medicine');
         Route::get('/linguistics', HomeLinguistics::class)->name('afac.linguistics');
