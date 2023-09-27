@@ -21,6 +21,10 @@ return new class extends Migration
             $table->foreign('type_class_extension_id')->references('id')->on('type_classes')->onDelete('cascade');
             $table->unsignedBigInteger('clas_class_extension_id')->nullable();
             $table->foreign('clas_class_extension_id')->references('id')->on('clasification_classes')->onDelete('cascade');
+            $table->unsignedBigInteger('document_ext_id')->nullable();
+            $table->foreign('document_ext_id')->references('id')->on('documents')->onDelete('cascade');
+            $table->string('reference_number_ext')->nullable();
+            $table->date('date_reserve_ext')->nullable();
             $table->timestamps();
         });
     }

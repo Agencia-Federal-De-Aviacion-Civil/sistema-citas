@@ -35,6 +35,7 @@ class AppointmentTable extends DataTableComponent
                 'cancelReserve' => '$refresh',
                 'attendeReserve' => '$refresh',
                 'reserveAppointment' => '$refresh',
+                'addExtension' => '$refresh'
             ]
         );
     }
@@ -156,10 +157,12 @@ class AppointmentTable extends DataTableComponent
                         fn ($row) => view(
                             'components.medicine.appointment-actions-component',
                             [
-                                $action = MedicineReserve::where('id', $row->id)->get(),
+                                $action = MedicineReserve::with('medicineReserveMedicineExtension')->where('id', $row->id)->get(),
                                 'status' => $action[0]->status,
                                 'scheduleId' => $action[0]->id,
                                 'medicineId' => $action[0]->medicine_id,
+                                'medicineExtensionExist' => $action[0]->medicineReserveMedicineExtension[0]->reference_number_ext ?? null,
+                                'medicineExtensionNothing' => $action[0]->medicineReserveMedicineExtension,
                                 $wait_date = new Carbon($action[0]->dateReserve, 'America/Mexico_City'),
                                 $days_wait = $this->date->diffInDays($wait_date),
                                 'days' => $days_wait,

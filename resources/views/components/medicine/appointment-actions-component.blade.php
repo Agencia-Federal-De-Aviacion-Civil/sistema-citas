@@ -1,6 +1,21 @@
 <div>
     @if ($status == 0)
         @hasrole('sub_headquarters|super_admin|medicine_admin|super_admin_medicine|headquarters|admin_medicine_v2|headquarters_authorized')
+            @if (count($medicineExtensionNothing) > 0)
+                @if (is_null($medicineExtensionExist))
+                    <x-button
+                        wire:click="$emit('openModal', 'medicine.modals.medicine-extension-modal',{{ json_encode(['scheduleId' => $scheduleId]) }})"
+                        label="COMPLETAR EXT." xs blue right-icon="cash" />
+                @else
+                    <x-button
+                        wire:click="$emit('openModal', 'medicine.modals.medicine-extension-modal',{{ json_encode(['scheduleId' => $scheduleId]) }})"
+                        label="EXT. CONCLUÍDA" xs lime right-icon="cash" />
+                @endif
+            @else
+                <x-button
+                    wire:click="$emit('openModal', 'medicine.modals.medicine-extension-modal',{{ json_encode(['scheduleId' => $scheduleId]) }})"
+                    label="AÑADIR EXT." xs blue right-icon="cash" />
+            @endif
             <x-button
                 wire:click="$emit('openModal', 'medicine.modals.schedule', {{ json_encode(['scheduleId' => $scheduleId, 'medicineId' => $medicineId]) }})"
                 label="PENDIENTE" xs silver />
@@ -66,14 +81,11 @@
                 <x-button xs positive href="{{ route('afac.downloadFile', $scheduleId) }}" label="DESCARGAR" />
             @endif
         @else
-
-
-        @if ($days > 20 && $this->date > $wait_date)
-        <x-badge flat red label="CITA APLAZADA EXPIRO" />
-        @else
-        <x-badge flat default label="CITA APLAZADA" />
-        @endif
-
+            @if ($days > 20 && $this->date > $wait_date)
+                <x-badge flat red label="CITA APLAZADA EXPIRO" />
+            @else
+                <x-badge flat default label="CITA APLAZADA" />
+            @endif
         @endhasrole
     @endif
     @if ($status == 0)
@@ -85,5 +97,5 @@
         <x-badge flat positive label="CONCLUYÓ APTO" />
     @elseif($status == 9)
         <x-badge flat negative label="CONCLUYÓ NO APTO />
-    @endif
+ @endif
 </div>

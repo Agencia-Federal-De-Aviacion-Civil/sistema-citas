@@ -4,6 +4,7 @@ namespace App\Models\Medicine;
 
 use App\Models\Catalogue\ClasificationClass;
 use App\Models\Catalogue\TypeClass;
+use App\Models\Document;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -22,5 +23,9 @@ class MedicineReservesExtension extends Model
     public function extensionClasificationClass()
     {
         return $this->belongsTo(ClasificationClass::class, 'clas_class_extension_id');
+    }
+    public function extensionDocument()
+    {
+        return $this->belongsTo(Document::class, 'document_ext_id');
     }
 }
