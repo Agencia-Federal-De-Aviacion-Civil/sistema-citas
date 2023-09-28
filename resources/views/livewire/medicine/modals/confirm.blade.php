@@ -127,7 +127,7 @@
                                 </div>
                             </div>
                         </div>
-                        {{-- AQUI VAN LAS EXCEPCIONES --}}
+                        {{-- AQUI VAN LAS EXTEPCIONES --}}
                         @if ($medicineReserves[0]->medicineReserveMedicineExtension->count() > 0)
                             <div class="flex flex-wrap sm:mx-auto sm:mb-4 -mx-2">
                                 <div class="grid xl:grid-cols-2 xl:gap-6">
@@ -139,7 +139,7 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round"
                                                     d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                             </svg>
-                                            <p class="text-lg title-font font-normal">EXC TIPO DE EXAMEN:
+                                            <p class="text-lg title-font font-normal">EXT TIPO DE EXAMEN:
                                             <p class="text-xl font-semibold">
                                                 {{ $medicineReserves[0]->medicineReserveMedicineExtension[0]->extensionTypeClass->typeClassTypeExam->name }}
                                             </p>
@@ -154,7 +154,7 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round"
                                                     d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                             </svg>
-                                            <p class="text-lg title-font font-normal">EXC TIPO DE CLASE:
+                                            <p class="text-lg title-font font-normal">EXT TIPO DE CLASE:
                                             <p class="text-xl font-semibold">
                                             {{ $medicineReserves[0]->medicineReserveMedicineExtension[0]->extensionTypeClass->name }}
                                             </p>
@@ -172,7 +172,7 @@
                                             <path stroke-linecap="round" stroke-linejoin="round"
                                                 d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
                                         </svg>
-                                        <p class="text-lg title-font font-normal">EXC TIPO DE LICENCIA:
+                                        <p class="text-lg title-font font-normal">EXT TIPO DE LICENCIA:
                                         <p class="text-lg font-semibold">
                                             {{ $medicineReserves[0]->medicineReserveMedicineExtension[0]->extensionClasificationClass->name }}
                                         </p>
@@ -365,7 +365,7 @@
                                             <path stroke-linecap="round" stroke-linejoin="round"
                                                 d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
-                                        <p class="text-lg title-font font-normal">EXC TIPO DE EXAMEN:
+                                        <p class="text-lg title-font font-normal">EXT TIPO DE EXAMEN:
                                         <p class="text-xl font-semibold">
                                             {{ $medicineReserves[0]->medicineReserveMedicineExtension[0]->extensionTypeClass->typeClassTypeExam->name }}
                                         </p>
@@ -380,7 +380,7 @@
                                             <path stroke-linecap="round" stroke-linejoin="round"
                                                 d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
-                                        <p class="text-lg title-font font-normal">EXC TIPO CLASE:
+                                        <p class="text-lg title-font font-normal">EXT TIPO CLASE:
                                         <p class="text-xl font-semibold">
                                         {{ $medicineReserves[0]->medicineReserveMedicineExtension[0]->extensionTypeClass->name }}
                                         </p>
@@ -398,7 +398,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round"
                                             d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
                                     </svg>
-                                    <p class="text-lg title-font font-normal">EXC TIPO DE LICENCIA:
+                                    <p class="text-lg title-font font-normal">EXT TIPO DE LICENCIA:
                                     <p class="text-lg font-semibold">
                                         {{ $medicineReserves[0]->medicineReserveMedicineExtension[0]->extensionClasificationClass->name }}
                                     </p>

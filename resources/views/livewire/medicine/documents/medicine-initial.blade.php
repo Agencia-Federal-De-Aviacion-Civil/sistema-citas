@@ -151,19 +151,19 @@
             </tr>
             @if ($medicineReserves[0]->medicineReserveMedicineExtension->count() > 0)
                 <tr>
-                    <td>EXC.TIPO DE EXAMEN:</td>
+                    <td>EXT.TIPO DE EXAMEN:</td>
                     <td>
                         {{ $medicineReserves[0]->medicineReserveMedicineExtension[0]->extensionTypeClass->typeClassTypeExam->name }}
                     </td>
                 </tr>
                 <tr>
-                    <td>EXC.TIPO DE CLASE:</td>
+                    <td>EXT.TIPO DE CLASE:</td>
                     <td>
                         {{ $medicineReserves[0]->medicineReserveMedicineExtension[0]->extensionTypeClass->name }}
                     </td>
                 </tr>
                 <tr>
-                    <td>EXC.TIPO DE LICENCIA:</td>
+                    <td>EXT.TIPO DE LICENCIA:</td>
                     <td>
                         {{ $medicineReserves[0]->medicineReserveMedicineExtension[0]->extensionClasificationClass->name }}
                     </td>
