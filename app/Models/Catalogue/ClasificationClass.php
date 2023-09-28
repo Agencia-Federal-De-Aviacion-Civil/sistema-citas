@@ -4,6 +4,7 @@ namespace App\Models\Catalogue;
 
 use App\Models\Medicine\MedicineInitial;
 use App\Models\Medicine\MedicineRenovation;
+use App\Models\Medicine\MedicineReservesExtension;
 use App\Models\Medicine\MedicineRevaluationInitial;
 use App\Models\Medicine\MedicineRevaluationRenovation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -32,5 +33,9 @@ class ClasificationClass extends Model
     public function clasificationClassRevaluationRenovation()
     {
         return $this->hasMany(MedicineRevaluationRenovation::class);
+    }
+    public function clasificationClassMedicineExtension()
+    {
+        return $this->hasMany(MedicineReservesExtension::class, 'clas_class_extension_id');
     }
 }

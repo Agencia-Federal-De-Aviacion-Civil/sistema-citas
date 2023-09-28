@@ -13,6 +13,7 @@ use App\Models\Medicine\MedicineInitial;
 use App\Models\Medicine\MedicineQuestion;
 use App\Models\Medicine\MedicineRenovation;
 use App\Models\Medicine\MedicineReserve;
+use App\Models\Medicine\MedicineReservesExtension;
 use App\Models\Medicine\MedicineRevaluation;
 use App\Models\Medicine\MedicineRevaluationInitial;
 use App\Models\Medicine\MedicineRevaluationRenovation;
@@ -36,8 +37,9 @@ class HomeMedicine extends Component
     public $confirmModal = false, $modal = false;
     public $medicineQueries, $medicineReserves, $medicineInitials, $medicineRenovations, $id_medicineReserve, $idMedicine, $savedMedicineId, $scheduleMedicines, $medicine_schedule_id;
     // MEDICINE INITIAL TABLE
-    public $question, $date, $idTypeAppointment, $idAppointmentFull;
-    public $document_authorization, $type_exam_revaloration_id, $typeid, $userid, $registeredUserId, $showBannerBoolean;
+    public $question, $date, $idTypeAppointment, $idAppointmentFull, $extensionTypeOptions;
+    public $document_authorization, $type_exam_revaloration_id, $typeid, $userid, $registeredUserId, $showBannerBoolean, $extensionClassId, $type_exam_id_extension, $questionClassessExtension,
+        $type_class_extension_id, $typeClassId, $selectedTypeClassIds, $clasificationClassExtension, $clas_class_extension_id, $medicine_question_ex_id;
     protected $listeners = [
         'saveDisabledDays' => '$refresh',
         'registeredEmit',
@@ -82,7 +84,8 @@ class HomeMedicine extends Component
             'clasification_class_id' => 'required',
             'headquarter_id' => 'required',
             'dateReserve' => 'required',
-            'medicine_schedule_id' => 'required'
+            'medicine_schedule_id' => 'required',
+            'extensionClassId' => ''
         ];
         if (!$this->idTypeAppointment) {
             $rules['document_pay'] = 'required|mimetypes:application/pdf|max:5000';
@@ -121,7 +124,6 @@ class HomeMedicine extends Component
     {
         $this->questionClassess = TypeClass::where('medicine_question_id', $medicine_question_id)->get();
     }
-
     public function updatedTypeExamId($type_exam_id)
     {
         $type_exam_id_to_use = in_array($type_exam_id, ['3', '4', '5']) ? '2' : $type_exam_id;
@@ -146,28 +148,249 @@ class HomeMedicine extends Component
                 })->where('system_id', 1)->where('status', false)->get();
             // $this->sedes = Headquarter::where('system_id', 1)->where('status', false)->get();
         }
-        // if ($type_exam_id === '3' || $type_exam_id === '5') {
-        //     $type_exam_id = '2';
-        //     $this->typeRenovationExams = TypeClass::where('type_exam_id', $type_exam_id)->get();
-        //     $this->sedes = Headquarter::where('system_id', 1)->where('status', false)->get();
-        // } else if ($type_exam_id === '4') {
-        //     $type_exam_id = '2';
-        //     $this->typeRenovationExams = TypeClass::where('type_exam_id', $type_exam_id)->get();
-        //     //SOLO SEDE CIUDAD DE MÉXICO
-        //     $this->sedes = Headquarter::where('system_id', 1)->where('status', false)->where('id', 6)->get();
-        // } else {
-        //     $this->typeRenovationExams = TypeClass::where('type_exam_id', $type_exam_id)->get();
-        //     $this->sedes = Headquarter::where('system_id', 1)->where('status', false)->get();
+    }
+    // TODO ES NECESARIO REFACTORIZAR EL CODIGO
+    public function updatedMedicineQuestionExId($type_exam_id_extension)
+    {
+        $baseQuery = TypeClass::where('medicine_question_id', $type_exam_id_extension);
+        if ($this->type_exam_id == 1 && $this->medicine_question_id == 1) {
+            if ($type_exam_id_extension == 1) {
+                if ($this->medicine_question_ex_id == 1) {
+                    if ($this->type_class_id == 1) {
+                        $this->questionClassessExtension = $baseQuery->get();
+                    } else if ($this->type_class_id == 2) {
+                        $this->questionClassessExtension = $baseQuery->whereIn('id', [2, 3])->get();
+                    } else if ($this->type_class_id == 3) {
+                        $this->questionClassessExtension = $baseQuery->whereIn('id', [3])->get();
+                    }
+                }
+            } else if ($type_exam_id_extension == 2) {
+                if ($this->medicine_question_ex_id == 2) {
+                    if ($this->type_class_id == 1) {
+                        $this->questionClassessExtension = $baseQuery->whereIn('id', [5, 6])->get();
+                    } else if ($this->type_class_id == 2) {
+                        $this->questionClassessExtension = $baseQuery->whereIn('id', [4, 5, 6])->get();
+                    } else if ($this->type_class_id == 3) {
+                        $this->questionClassessExtension = $baseQuery->whereIn('id', [6])->get();
+                    }
+                }
+            }
+        } else if ($this->type_exam_id == 1 && $this->medicine_question_id == 2) {
+            if ($type_exam_id_extension == 1) {
+                if ($this->medicine_question_ex_id == 1) {
+                    if ($this->type_class_id == 4) {
+                        $this->questionClassessExtension = $baseQuery->get();
+                    } else if ($this->type_class_id == 5) {
+                        $this->questionClassessExtension = $baseQuery->whereIn('id', [2, 3])->get();
+                    } else if ($this->type_class_id == 6) {
+                        $this->questionClassessExtension = $baseQuery->whereIn('id', [3])->get();
+                    }
+                }
+            } else if ($type_exam_id_extension == 2) {
+                if ($this->medicine_question_ex_id == 2) {
+                    if ($this->type_class_id == 4) {
+                        $this->questionClassessExtension = $baseQuery->whereIn('id', [5, 6])->get();
+                    } else if ($this->type_class_id == 5) {
+                        $this->questionClassessExtension = $baseQuery->whereIn('id', [5, 6])->get();
+                    } else if ($this->type_class_id == 6) {
+                        $this->questionClassessExtension = $baseQuery->whereIn('id', [6])->get();
+                    }
+                }
+            }
+        } else if ($this->type_exam_id == 2) {
+            if ($type_exam_id_extension == 1) {
+                if ($this->medicine_question_ex_id == 1) {
+                    if ($this->type_class_id == 4) {
+                        $this->questionClassessExtension = $baseQuery->get();
+                    } else if ($this->type_class_id == 5) {
+                        $this->questionClassessExtension = $baseQuery->whereIn('id', [2, 3])->get();
+                    } else if ($this->type_class_id == 6) {
+                        $this->questionClassessExtension = $baseQuery->whereIn('id', [3])->get();
+                    }
+                }
+            } else if ($type_exam_id_extension == 2) {
+                if ($this->medicine_question_ex_id == 2) {
+                    if ($this->type_class_id == 4) {
+                        $this->questionClassessExtension = $baseQuery->whereIn('id', [4, 5, 6])->get();
+                    } else if ($this->type_class_id == 5) {
+                        $this->questionClassessExtension = $baseQuery->whereIn('id', [5, 6])->get();
+                    } else if ($this->type_class_id == 6) {
+                        $this->questionClassessExtension = $baseQuery->whereIn('id', [6])->get();
+                    }
+                }
+            }
+        }
+        // TODO REFACTORIZACION DE CODIGO, AUN EN PRUEBAS PARA EVITAR IF ANIDADOS
+    //     $conditions = [
+    //         1 => [
+    //             1 => [
+    //                 1 => [1, 2, 3],
+    //                 2 => [2, 3],
+    //                 3 => [3]
+    //             ],
+    //             2 => [
+    //                 1 => [5, 6],
+    //                 2 => [4, 5, 6],
+    //                 3 => [6]
+    //             ]
+    //         ],
+    //         2 => [
+    //             1 => [
+    //                 4 => [1, 2, 3],
+    //                 5 => [2, 3],
+    //                 6 => [3]
+    //             ],
+    //             2 => [
+    //                 4 => [4, 5, 6],
+    //                 5 => [5, 6],
+    //                 6 => [6]
+    //             ]
+    //         ]
+    //     ];
+        
+    //     if (isset($conditions[$this->type_exam_id])
+    //     && isset($conditions[$this->type_exam_id][$this->medicine_question_id])
+    //     && isset($conditions[$this->type_exam_id][$this->medicine_question_id][$this->medicine_question_ex_id])
+    //     && isset($conditions[$this->type_exam_id][$this->medicine_question_id][$this->medicine_question_ex_id][$this->type_class_id])) {
+    
+    //     // Obtener el resultado según las condiciones
+    //    $result = $conditions[$this->type_exam_id][$this->medicine_question_id][$this->medicine_question_ex_id][$this->type_class_id];
+    
+    //     // Consultar la base de datos
+    //     $this->questionClassessExtension = $baseQuery->whereIn('id', $result)->get();
+    // } else {
+    //     // Manejar el caso en el que alguna de las claves no existe en el array
+    //     // Puedes lanzar una excepción o realizar alguna otra acción adecuada
+    //     // Aquí, simplemente se imprimiría un mensaje de error:
+    //     dd("Alguna clave no existe en el array de condiciones.");
+    // }
+        // $typeClassMappings = [
+        //     1 => [
+        //         1 => [
+        //             1 => [
+        //                 1 => [
+        //                     1 => [1, 2, 3],
+        //                     2 => [2, 3],
+        //                     3 => [3]
+        //                 ],
+        //                 2 => [
+        //                     1 => [5, 6],
+        //                     2 => [4, 5, 6],
+        //                     3 => [6]
+        //                 ],
+        //             ],
+        //         ],
+        //         2 => [
+        //             1 => [
+        //                 1 => [
+        //                     4 => [1, 2, 3],
+        //                     5 => [2, 3],
+        //                     6 => [3]
+        //                 ],
+        //             ],
+        //             2 => [
+        //                 2 => [
+        //                     4 => [5, 6],
+        //                     5 => [5, 6],
+        //                     6 => [6]
+        //                 ]
+        //             ]
+        //         ]
+        //     ],
+        //     2 => [ // Nueva sección para $this->type_exam_id == 2
+        //         1 => [ // Nueva sección para $type_exam_id_extension == 1
+        //             1 => [ // Nueva sección para $this->medicine_question_ex_id == 1
+        //                 4 => [1, 2, 3],
+        //                 5 => [2, 3],
+        //                 6 => [3]
+        //             ],
+        //         ],
+        //         2 => [
+        //             2 => [ // Nueva sección para $this->medicine_question_ex_id == 2
+        //                 4 => [4, 5, 6],
+        //                 5 => [5, 6],
+        //                 6 => [6]
+        //             ],
+        //         ]
+        //     ]
+        // ];
+        // function flattenArray($array)
+        // {
+        //     $result = [];
+        //     foreach ($array as $value) {
+        //         if (is_array($value)) {
+        //             $result = array_merge($result, flattenArray($value));
+        //         } else {
+        //             $result[] = $value;
+        //         }
+        //     }
+        //     return $result;
         // }
+        // dd($classIds = $typeClassMappings[$this->type_exam_id][$this->medicine_question_id][$this->medicine_question_ex_id] ?? []);
+        // dd($flattenedClassIds = flattenArray($classIds));
+
+        // $baseQuery = TypeClass::where('medicine_question_id', $type_exam_id_extension);
+        // $this->questionClassessExtension = $baseQuery->whereIn('id', $flattenedClassIds)->get();
+    }
+    public function updatedTypeExamIdExtension($type_exam_id_extension)
+    {
+        if ($type_exam_id_extension == 2) {
+            $typeClassIds = [
+                4 => [4, 5, 6],
+                5 => [5, 6],
+                6 => [6],
+            ];
+            if (array_key_exists($this->type_class_id, $typeClassIds)) {
+                $baseQuery = TypeClass::where('medicine_question_id', $type_exam_id_extension);
+                $this->questionClassessExtension = $baseQuery->whereIn('id', $typeClassIds[$this->type_class_id])->get();
+            }
+        }
     }
     public function updatedTypeClassId($type_class_id)
     {
+        $this->typeClassId = $type_class_id;
+        $this->selectedTypeClassIds;
         $this->clasificationClass = ClasificationClass::where('type_class_id', $type_class_id)->get();
+    }
+    public function updatedClasificationClassId($selectedClasificationClassId)
+    {
+        $this->selectedTypeClassIds = $selectedClasificationClassId;
+    }
+    public function updatedTypeClassExtensionId()
+    {
+        if ($this->type_class_extension_id) {
+            $selectedTypeClassId = $this->selectedTypeClassIds;
+            $this->clasificationClassExtension = ClasificationClass::where('type_class_id', $this->type_class_extension_id)
+                ->whereNotIn('id', is_array($selectedTypeClassId) ? $selectedTypeClassId : [$selectedTypeClassId])
+                ->get();
+        }
     }
     public function resetClasificationClass()
     {
-        $this->clasificationClass = [];
+        $this->reset(['type_class_id', 'clasification_class_id', 'extensionClassId', 'type_exam_id_extension']);
     }
+    public function resetQuestionExtension()
+    {
+        $this->type_exam_id_extension = [];
+    }
+    public function resetQuestionSelectionExtension()
+    {
+        $this->reset(['medicine_question_ex_id', 'extensionClassId', 'type_exam_id_extension', 'clas_class_extension_id', 'clasification_class_id']);
+    }
+    public function resetClasificationExtension()
+    {
+        $this->type_class_extension_id = [];
+        $this->clas_class_extension_id = [];
+    }
+    public function resetClassQuestion()
+    {
+        $this->reset(['type_class_extension_id', 'clas_class_extension_id', 'headquarter_id', 'dateReserve', 'medicine_schedule_id']);
+    }
+    public function resetClassExtensionId()
+    {
+        $this->reset(['medicine_question_ex_id', 'type_class_extension_id', 'clas_class_extension_id', 'headquarter_id', 'dateReserve', 'medicine_schedule_id']);
+    }
+    // TODO AQUI TERMINA LA REFACTORIZACIÓN
     public function resetQuestions()
     {
         $this->medicine_question_id = [];
@@ -181,7 +404,13 @@ class HomeMedicine extends Component
             'dateReserve',
             'medicine_schedule_id',
             'type_exam_revaloration_id',
-            'document_authorization'
+            'document_authorization',
+            'type_exam_id_extension',
+            'clasification_class_id',
+            'type_class_extension_id',
+            'clas_class_extension_id',
+            'extensionClassId',
+            'medicine_question_ex_id'
         ]);
     }
     public function openModal()
@@ -452,13 +681,14 @@ class HomeMedicine extends Component
                         ]);
                     }
                 } else if ($this->type_exam_id == 2) {
-                    foreach ($this->clasification_class_id as $clasifications) {
-                        MedicineRenovation::create([
-                            'medicine_id' => $this->saveMedicine->id,
-                            'type_class_id' => $this->type_class_id,
-                            'clasification_class_id' => $clasifications
-                        ]);
-                    }
+                    // foreach ($this->clasification_class_id as $clasifications) {
+                    //TODO REVISAR FOREACH
+                    MedicineRenovation::create([
+                        'medicine_id' => $this->saveMedicine->id,
+                        'type_class_id' => $this->type_class_id,
+                        'clasification_class_id' => $this->clasification_class_id
+                    ]);
+                    // }
                 } else if ($this->type_exam_id == 4) {
                     foreach ($this->clasification_class_id as $clasifications) {
                         MedicineRenovation::create([
@@ -563,6 +793,14 @@ class HomeMedicine extends Component
                 $cita->medicine_schedule_id = $this->medicine_schedule_id;
                 $cita->is_external = $this->idTypeAppointment;
                 $cita->save();
+
+                if ($this->extensionClassId == 1) {
+                    $citaExtension = new MedicineReservesExtension();
+                    $citaExtension->medicine_reserve_id = $cita->id;
+                    $citaExtension->type_class_extension_id = $this->type_class_extension_id;
+                    $citaExtension->clas_class_extension_id = $this->clas_class_extension_id;
+                    $citaExtension->save();
+                }
                 session(['saved_medicine_id' => $this->saveMedicine->id]);
                 $this->generatePdf();
                 $this->clean();
@@ -585,7 +823,7 @@ class HomeMedicine extends Component
     public function openConfirm()
     {
         $this->idAppointmentFull;
-        $this->medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'medicineReserveHeadquarter', 'reserveSchedule'])
+        $this->medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'medicineReserveHeadquarter', 'reserveSchedule', 'medicineReserveMedicineExtension'])
             ->where('medicine_id', $this->saveMedicine->id)->get();
         $dateConverted = $this->medicineReserves[0]->dateReserve;
         $this->dateConvertedFormatted = Date::parse($dateConverted)->format('l j F Y');
@@ -637,7 +875,7 @@ class HomeMedicine extends Component
     {
         $savedMedicineId = session('saved_medicine_id');
         $idExternalInternal = session('idType'); //TODO 
-        $medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'medicineReserveHeadquarter'])
+        $medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'medicineReserveHeadquarter', 'medicineReserveMedicineExtension'])
             ->where('medicine_id', $savedMedicineId)->get();
         $medicineId = $medicineReserves[0]->id;
         $dateAppointment = $medicineReserves[0]->dateReserve;

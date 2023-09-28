@@ -45,9 +45,13 @@
                     @endif
                     <div x-cloak x-data="{
                         tipoExamen: @entangle('type_exam_id'),
+                        tipoExamenExtension: @entangle('type_exam_id_extension'),
                         question: @entangle('medicine_question_id'),
+                        questionException: @entangle('medicine_question_ex_id'),
                         clasification: @entangle('type_class_id'),
                         typelicens: @entangle('clasification_class_id'),
+                        extensionClass: @entangle('extensionClassId'),
+                        clasificationExtension: @entangle('clas_class_extension_id'),
                         reservedate: @entangle('dateReserve'),
                         reserschedule: @entangle('medicine_schedule_id'),
                         fileName: '',
@@ -295,6 +299,7 @@
                                                             <select id="small" x-ref="clasification"
                                                                 placeholder="seleccione..."
                                                                 wire:model.lazy="type_class_id"
+                                                                wire:change="resetQuestionSelectionExtension()"
                                                                 class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                                                 <option value="">Seleccione...</option>
                                                                 @foreach ($questionClassess as $questionClass)
@@ -315,8 +320,10 @@
                                                                 class="block mb-2 text-base font-medium text-gray-900 dark:text-white">TIPO
                                                                 DE
                                                                 LICENCIA</label>
+                                                            {{-- TODO --}}
                                                             <select wire:model.lazy="clasification_class_id"
                                                                 x-ref="typelicens"
+                                                                wire:change='resetClasificationExtension()'
                                                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                                                 <option value="">Seleccione...
                                                                 </option>
@@ -335,9 +342,10 @@
                                                         <div class="mt-4 relative z-auto w-full group">
                                                             <x-select label="TIPO DE LICENCIA"
                                                                 x-model.lazy="typelicens"
-                                                                placeholder="Seleccione uno o más..." :options="$clasificationClass"
+                                                                placeholder="Seleccione..." :options="$clasificationClass"
                                                                 option-label="name" option-value="id"
-                                                                wire:model.lazy="clasification_class_id" multiselect />
+                                                                wire:model.lazy="clasification_class_id" />
+                                                            {{-- todo se comenta el multiselect --}}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -387,14 +395,18 @@
                                                                 x-model.lazy="typelicens" :options="$clasificationClass"
                                                                 placeholder="Seleccione uno o más..."
                                                                 option-label="name" option-value="id"
-                                                                wire:model.lazy="clasification_class_id" multiselect />
+                                                                wire:model.lazy="clasification_class_id" />
+                                                            {{-- TODO SE OMITE EL MULTISELECT --}}
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         {{-- paso5 --}}
-                                        <div x-show="typelicens > '0'" class="flex relative pb-6">
+                                        {{-- TODO INICIA EXT --}}
+                                        <div x-cloak
+                                            x-show="typelicens > '0' && tipoExamen != '3' && tipoExamen != '4' && tipoExamen != '5'"
+                                            class="flex relative pb-6">
                                             <div class="h-full w-10 absolute inset-0 flex items-center justify-center">
                                                 <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
                                             </div>
@@ -404,36 +416,223 @@
                                                     viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                                     class="w-6 h-6">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
+                                                        d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
                                                 </svg>
                                             </div>
                                             <div class="flex-grow pl-4">
-                                                <div class="grid xl:grid-cols-3 xl:gap-6">
-                                                    <div class="text-base relative z-auto w-full mb-2 group">
+                                                <div class="grid xl:grid-cols-1 xl:gap-6">
+                                                    <div class="mt-1 relative z-0 w-full group">
                                                         <label for="small"
-                                                            class="block mb-2 text-base font-medium text-gray-900 dark:text-white">CONFIRMA SEDE</label>
-                                                        <select id="small" x-ref="selec_sede"
-                                                            wire:model.lazy="headquarter_id"
-                                                            wire:change="searchDisabledDays()"
-                                                            placeholder="seleccione..."
+                                                            class="block mb-2 text-base font-medium text-gray-900 dark:text-white">¿DESEAS
+                                                            AÑADIR UNA EXTENSION O CATEGORIA ADICIONAL?</label>
+                                                        <select x-ref="extensionClass"
+                                                            wire:model.lazy="extensionClassId"
+                                                            wire:change="resetQuestionExtension()"
                                                             class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                                             <option value="" selected>Seleccione...</option>
-                                                            @foreach ($sedes as $sede)
-                                                                <option value="{{ $sede->id }}">
-                                                                    {{ $sede->name_headquarter }}
-                                                                </option>
-                                                            @endforeach
+                                                            <option value="1">SI</option>
+                                                            <option value="0">NO</option>
                                                         </select>
-                                                        @error('headquarter_id')
+                                                        @error('')
                                                             <span
                                                                 class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
                                                         @enderror
                                                     </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {{-- EXTENSION SI --}}
+                                        <div x-show="extensionClass === '1'" class="flex relative pb-6">
+                                            <div class="h-full w-10 absolute inset-0 flex items-center justify-center">
+                                                <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
+                                            </div>
+                                            <div
+                                                class="flex-shrink-0 w-10 h-10 rounded-full bg-sky-700 inline-flex items-center justify-center text-white relative z-10">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                    class="w-6 h-6">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184" />
+                                                </svg>
+                                            </div>
+                                            <div class="flex-grow pl-4">
+                                                <div class="grid xl:grid-cols-1 xl:gap-6">
+                                                    <div class="mt-1 relative z-0 w-full group">
+                                                        <label for="selectExtension"
+                                                            class="block mb-2 text-base font-medium text-gray-900 dark:text-white">¿QUE
+                                                            TIPO DE EXTENSIÓN DESEAS REALIZAR?</label>
+                                                        <select id="selectExtension"
+                                                            wire:model.lazy="type_exam_id_extension"
+                                                            x-ref="tipoExamenExtension" placeholder="seleccione..."
+                                                            wire:change="resetClassExtensionId"
+                                                            class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                            <option selected>Seleccione...</option>
+                                                            @foreach ($typeExams as $typeExam)
+                                                                @if ($loop->index < 2)
+                                                                    <option value="{{ $typeExam->id }}">
+                                                                        {{ $typeExam->name }}
+                                                                    </option>
+                                                                @else
+                                                                @break
+                                                            @endif
+                                                        @endforeach
+                                                    </select>
+                                                    @error('type_exam_id_extension')
+                                                        <span
+                                                            class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{-- QUESTION --}}
+                                    <div x-show="tipoExamenExtension === '1'" class="flex relative pb-6">
+                                        <div class="h-full w-10 absolute inset-0 flex items-center justify-center">
+                                            <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
+                                        </div>
+                                        <div
+                                            class="flex-shrink-0 w-10 h-10 rounded-full bg-sky-700 inline-flex items-center justify-center text-white relative z-10">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                class="w-5 h-5">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" />
+                                            </svg>
+                                        </div>
+                                        <div class="flex-grow pl-4">
+                                            <div class="grid xl:grid-cols-1 xl:gap-6">
+                                                <div class="mt-1 relative z-0 w-full group">
+                                                    <label for="selectExtension"
+                                                        class="block mb-2 text-base font-medium text-gray-900 dark:text-white">¿SIGUES
+                                                        ESTUDIANDO O VAS A ESTUDIAR?</label>
+                                                    <select id="questionExtension"
+                                                        wire:model.lazy="medicine_question_ex_id"
+                                                        placeholder="seleccione..." x-ref="questionException"
+                                                        wire:change="resetClassQuestion()"
+                                                        class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                        <option value="" selected>Seleccione...</option>
+                                                        @foreach ($userQuestions as $userQuestion)
+                                                            <option value="{{ $userQuestion->id }}">
+                                                                {{ $userQuestion->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    @error('')
+                                                        <span
+                                                            class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div x-show="questionException > '0' && extensionClass === '1' || tipoExamenExtension === '2'"
+                                        class="flex relative pb-6">
+                                        <div class="h-full w-10 absolute inset-0 flex items-center justify-center">
+                                            <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
+                                        </div>
+                                        <div
+                                            class="flex-shrink-0 w-10 h-10 rounded-full bg-sky-700 inline-flex items-center justify-center text-white relative z-10">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                class="w-6 h-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M12 10.5v6m3-3H9m4.06-7.19l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
+                                            </svg>
+                                        </div>
+                                        <div class="flex-grow pl-4">
+                                            <div class="grid xl:grid-cols-2 xl:gap-6">
+                                                <div class="mt-1 relative z-0 w-full group">
+                                                    @if (!is_null($questionClassessExtension))
+                                                        <label for="small"
+                                                            class="block mb-2 text-base font-medium text-gray-900 dark:text-white">EXTENSIÓN
+                                                            TIPO DE CLASE</label>
+                                                        <select id="extensionTypeClassFirst"
+                                                            placeholder="seleccione..."
+                                                            wire:model.lazy="type_class_extension_id"
+                                                            class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                            <option value="">Seleccione...</option>
+                                                            @foreach ($questionClassessExtension as $questionClassExtension)
+                                                                <option value="{{ $questionClassExtension->id }}">
+                                                                    {{ $questionClassExtension->name }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                        @error('')
+                                                            <span
+                                                                class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
+                                                        @enderror
+                                                    @endif
+                                                </div>
+                                                <div class="mt-1 relative z-0 w-full group">
+                                                    @if (!is_null($clasificationClassExtension))
+                                                        <label for="small"
+                                                            class="block mb-2 text-base font-medium text-gray-900 dark:text-white">EXTENSIÓN
+                                                            TIPO
+                                                            DE
+                                                            LICENCIA</label>
+                                                        <select wire:model.lazy="clas_class_extension_id"
+                                                            x-ref="clasificationExtension"
+                                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                            <option value="">Seleccione...
+                                                            </option>
+                                                            @foreach ($clasificationClassExtension as $clasificationClassExt)
+                                                                <option value="{{ $clasificationClassExt->id }}">
+                                                                    {{ $clasificationClassExt->name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                        @error('')
+                                                            <span
+                                                                class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
+                                                        @enderror
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div x-show="(clasificationExtension > '0' || extensionClass === '0' || ((tipoExamen === '3' || tipoExamen === '4' || tipoExamen === '5') && typelicens > '0'))"
+                                        class="flex relative pb-6">
+                                        <div class="h-full w-10 absolute inset-0 flex items-center justify-center">
+                                            <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
+                                        </div>
+                                        <div
+                                            class="flex-shrink-0 w-10 h-10 rounded-full bg-sky-700 inline-flex items-center justify-center text-white relative z-10">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                class="w-6 h-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
+                                            </svg>
+                                        </div>
+                                        <div class="flex-grow pl-4">
+                                            <div class="grid xl:grid-cols-3 xl:gap-6">
+                                                <div class="mt-1 relative z-0 w-full group">
+                                                    <label for="small"
+                                                        class="block mb-2 text-base font-medium text-gray-900 dark:text-white">CONFIRMA
+                                                        SEDE</label>
+                                                    <select id="small" x-ref="selec_sede"
+                                                        wire:model.lazy="headquarter_id"
+                                                        wire:change="searchDisabledDays()"
+                                                        placeholder="seleccione..."
+                                                        class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                        <option value="" selected>Seleccione...</option>
+                                                        @foreach ($sedes as $sede)
+                                                            <option value="{{ $sede->id }}">
+                                                                {{ $sede->name_headquarter }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                    @error('headquarter_id')
+                                                        <span
+                                                            class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                                <div class="mt-1 relative z-0 w-full group">
                                                     <div class="text-base relative z-auto w-full mt-2 group">
                                                         <x-input x-ref="reservedate" wire:model.lazy="dateReserve"
                                                             id="fecha-appointment" label="SELECCIONE FECHA"
                                                             placeholder="INGRESE..." readonly />
                                                     </div>
+                                                </div>
+                                                <div class="mt-1 relative z-0 w-full group">
                                                     <div class="text-base relative z-auto w-full mt-2 group">
                                                         <label for="small"
                                                             class="block text-base font-medium text-gray-900 dark:text-white">SELECCIONE
@@ -456,38 +655,41 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        {{-- paso6 --}}
-                                        <div x-show="reserschedule > 0 && reservedate != 0" class="flex relative">
-                                            {{-- <div class="flex relative">  $date --}}
-                                            <div
-                                                class="flex-shrink-0 w-10 h-10 rounded-full bg-green-500 inline-flex items-center justify-center text-white relative z-10">
-                                                <svg fill="none" stroke="currentColor" stroke-linecap="round"
-                                                    stroke-linejoin="round" stroke-width="2" class="w-5 h-5"
-                                                    viewBox="0 0 24 24">
-                                                    <path d="M22 11.08V12a10 10 0 11-5.93-9.14"></path>
-                                                    <path d="M22 4L12 14.01l-3-3"></path>
-                                                </svg>
-                                            </div>
-                                            <div class="flex-grow pl-4">
-                                                <div>
-                                                    <button
-                                                        class="px-3 py-2 text-sm font-medium text-center text-white bg-sky-700 rounded-lg hover:bg-sky-800 focus:ring-4 focus:outline-none focus:ring-sky-300 dark:bg-sky-600 dark:hover:bg-sky-700 dark:focus:ring-sky-800">
-                                                        GENERAR CITA
-                                                    </button>
-                                                    <div wire:loading.delay.shortest wire:target="save">
-                                                        <div
-                                                            class="flex justify-center bg-gray-200 z-40 h-full w-full fixed top-0 left-0 items-center opacity-75">
-                                                            <div style="color: #0061cf"
-                                                                class="la-line-spin-clockwise-fade-rotating la-3x">
-                                                                <div></div>
-                                                                <div></div>
-                                                                <div></div>
-                                                                <div></div>
-                                                                <div></div>
-                                                                <div></div>
-                                                                <div></div>
-                                                                <div></div>
-                                                            </div>
+                                        {{-- <div class="text-base relative z-auto w-full mt-2 group">
+                                          
+                                        </div> --}}
+                                    </div>
+                                    {{-- paso6 --}}
+                                    <div x-show="reserschedule > 0 && reservedate != 0" class="flex relative">
+                                        {{-- <div class="flex relative">  $date --}}
+                                        <div
+                                            class="flex-shrink-0 w-10 h-10 rounded-full bg-green-500 inline-flex items-center justify-center text-white relative z-10">
+                                            <svg fill="none" stroke="currentColor" stroke-linecap="round"
+                                                stroke-linejoin="round" stroke-width="2" class="w-5 h-5"
+                                                viewBox="0 0 24 24">
+                                                <path d="M22 11.08V12a10 10 0 11-5.93-9.14"></path>
+                                                <path d="M22 4L12 14.01l-3-3"></path>
+                                            </svg>
+                                        </div>
+                                        <div class="flex-grow pl-4">
+                                            <div>
+                                                <button
+                                                    class="px-3 py-2 text-sm font-medium text-center text-white bg-sky-700 rounded-lg hover:bg-sky-800 focus:ring-4 focus:outline-none focus:ring-sky-300 dark:bg-sky-600 dark:hover:bg-sky-700 dark:focus:ring-sky-800">
+                                                    GENERAR CITA
+                                                </button>
+                                                <div wire:loading.delay.shortest wire:target="save">
+                                                    <div
+                                                        class="flex justify-center bg-gray-200 z-40 h-full w-full fixed top-0 left-0 items-center opacity-75">
+                                                        <div style="color: #0061cf"
+                                                            class="la-line-spin-clockwise-fade-rotating la-3x">
+                                                            <div></div>
+                                                            <div></div>
+                                                            <div></div>
+                                                            <div></div>
+                                                            <div></div>
+                                                            <div></div>
+                                                            <div></div>
+                                                            <div></div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -496,104 +698,105 @@
                                     </div>
                                 </div>
                             </div>
-                        </section>
-                    </div>
-                </form>
-            </div>
+                        </div>
+                    </section>
+                </div>
+            </form>
         </div>
     </div>
-    <script>
-        function showTooltip(flag) {
-            switch (flag) {
-                case 1:
-                    document.getElementById("tooltip1").classList.remove("hidden");
-                    break;
-            }
+</div>
+<script>
+    function showTooltip(flag) {
+        switch (flag) {
+            case 1:
+                document.getElementById("tooltip1").classList.remove("hidden");
+                break;
         }
+    }
 
-        function hideTooltip(flag) {
-            switch (flag) {
-                case 1:
-                    document.getElementById("tooltip1").classList.add("hidden");
-                    break;
-            }
+    function hideTooltip(flag) {
+        switch (flag) {
+            case 1:
+                document.getElementById("tooltip1").classList.add("hidden");
+                break;
         }
-        document.addEventListener("DOMContentLoaded", function() {
-            flatpickr("#fecha-pago", {
+    }
+    document.addEventListener("DOMContentLoaded", function() {
+        flatpickr("#fecha-pago", {
+            dateFormat: "Y-m-d",
+            disableMobile: "true",
+            locale: {
+                weekdays: {
+                    shorthand: ['Dom', 'Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab'],
+                    longhand: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes',
+                        'Sábado'
+                    ],
+                },
+                months: {
+                    shorthand: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct',
+                        'Nov', 'Dic'
+                    ],
+                    longhand: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto',
+                        'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+                    ],
+                },
+            },
+        });
+        // CITAS MEDICAS
+        window.addEventListener('headquartersUpdated', event => {
+            flatpickr("#fecha-appointment", {
+                // enableTime: true,
+                // time_24hr: true,
                 dateFormat: "Y-m-d",
+                // minTime: "07:00",
+                // maxTime: "10:59",
                 disableMobile: "true",
+                // minuteIncrement: 10,
+                minDate: "today",
+                //minDate: new Date(new Date().getFullYear(), 0, 1),
+                maxDate: new Date(new Date().getFullYear(), 11, 31),
+                disable: event.detail.disabledDaysFilter,
+                onDayCreate: function(dObj, dStr, fp, dayElem) {
+                    /* if (dayElem.dateObj.getDay() === 0 || dayElem.dateObj.getDay() === 6 || dayElem
+                         .dateObj <= new Date()) {
+                         dayElem.className += " flatpickr-disabled nextMonthDayflatpickr-disabled";
+                     }*/
+                    if (dayElem.dateObj.getDay() === 0 || dayElem.dateObj.getDay() === 6) {
+                        dayElem.className +=
+                            " flatpickr-disabled nextMonthDayflatpickr-disabled";
+                    }
+                },
                 locale: {
                     weekdays: {
                         shorthand: ['Dom', 'Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab'],
-                        longhand: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes',
+                        longhand: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves',
+                            'Viernes',
                             'Sábado'
                         ],
                     },
                     months: {
-                        shorthand: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct',
+                        shorthand: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago',
+                            'Sep', 'Oct',
                             'Nov', 'Dic'
                         ],
-                        longhand: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto',
+                        longhand: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+                            'Julio', 'Agosto',
                             'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
                         ],
                     },
                 },
             });
-            // CITAS MEDICAS
-            window.addEventListener('headquartersUpdated', event => {
-                flatpickr("#fecha-appointment", {
-                    // enableTime: true,
-                    // time_24hr: true,
-                    dateFormat: "Y-m-d",
-                    // minTime: "07:00",
-                    // maxTime: "10:59",
-                    disableMobile: "true",
-                    // minuteIncrement: 10,
-                    minDate: "today",
-                    //minDate: new Date(new Date().getFullYear(), 0, 1),
-                    maxDate: new Date(new Date().getFullYear(), 11, 31),
-                    disable: event.detail.disabledDaysFilter,
-                    onDayCreate: function(dObj, dStr, fp, dayElem) {
-                        /* if (dayElem.dateObj.getDay() === 0 || dayElem.dateObj.getDay() === 6 || dayElem
-                             .dateObj <= new Date()) {
-                             dayElem.className += " flatpickr-disabled nextMonthDayflatpickr-disabled";
-                         }*/
-                        if (dayElem.dateObj.getDay() === 0 || dayElem.dateObj.getDay() === 6) {
-                            dayElem.className +=
-                                " flatpickr-disabled nextMonthDayflatpickr-disabled";
-                        }
-                    },
-                    locale: {
-                        weekdays: {
-                            shorthand: ['Dom', 'Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab'],
-                            longhand: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves',
-                                'Viernes',
-                                'Sábado'
-                            ],
-                        },
-                        months: {
-                            shorthand: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago',
-                                'Sep', 'Oct',
-                                'Nov', 'Dic'
-                            ],
-                            longhand: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-                                'Julio', 'Agosto',
-                                'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
-                            ],
-                        },
-                    },
-                });
-            });
         });
+    });
 
-        // function checkConnectionStatus() {
-        //     if (!navigator.onLine) {
-        //         document.getElementById('connection-status').innerText = 'Conexión lenta o inactiva';
-        //     }
-        // }
+    // function checkConnectionStatus() {
+    //     if (!navigator.onLine) {
+    //         document.getElementById('connection-status').innerText = 'Conexión lenta o inactiva';
+    //     }
+    // }
 
-        // window.addEventListener('load', checkConnectionStatus);
-        // window.addEventListener('online', checkConnectionStatus);
-        // window.addEventListener('offline', checkConnectionStatus);
-    </script>
+    // window.addEventListener('load', checkConnectionStatus);
+    // window.addEventListener('online', checkConnectionStatus);
+    // window.addEventListener('offline', checkConnectionStatus);
+</script>
 </div>

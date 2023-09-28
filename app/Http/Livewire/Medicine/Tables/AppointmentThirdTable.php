@@ -51,6 +51,7 @@ class AppointmentThirdTable extends DataTableComponent
                 'cancelReserve' => '$refresh',
                 'attendeReserve' => '$refresh',
                 'reserveAppointment' => '$refresh',
+                'addExtension' => '$refresh'
             ]
         );
     }
@@ -134,9 +135,14 @@ class AppointmentThirdTable extends DataTableComponent
                             'components.medicine.appointment-actions-component',
                             [
                                 $action = MedicineReserve::where('id', $row->id)->get(),
+                                $dateExpire = Carbon::parse($action[0]->dateReserve),
+                                $showExpireButton = Carbon::now()->isSameDay($dateExpire),
                                 'status' => $action[0]->status,
                                 'scheduleId' => $action[0]->id,
                                 'medicineId' => $action[0]->medicine_id,
+                                'medicineExtensionExist' => $action[0]->medicineReserveMedicineExtension[0]->reference_number_ext ?? null,
+                                'medicineExtensionNothing' => $action[0]->medicineReserveMedicineExtension,
+                                'showExpireButton' => $showExpireButton,
                                 $wait_date = new Carbon($action[0]->dateReserve, 'America/Mexico_City'),
                                 $days_wait = $this->date->diffInDays($wait_date),
                                 'days' => $days_wait,
@@ -306,9 +312,14 @@ class AppointmentThirdTable extends DataTableComponent
                             'components.medicine.appointment-actions-component',
                             [
                                 $action = MedicineReserve::where('id', $row->id)->get(),
+                                $dateExpire = Carbon::parse($action[0]->dateReserve),
+                                $showExpireButton = Carbon::now()->isSameDay($dateExpire),
                                 'status' => $action[0]->status,
                                 'scheduleId' => $action[0]->id,
                                 'medicineId' => $action[0]->medicine_id,
+                                'medicineExtensionExist' => $action[0]->medicineReserveMedicineExtension[0]->reference_number_ext ?? null,
+                                'medicineExtensionNothing' => $action[0]->medicineReserveMedicineExtension,
+                                'showExpireButton' => $showExpireButton,
                                 $wait_date = new Carbon($action[0]->dateReserve, 'America/Mexico_City'),
                                 $days_wait = $this->date->diffInDays($wait_date),
                                 'days' => $days_wait,
