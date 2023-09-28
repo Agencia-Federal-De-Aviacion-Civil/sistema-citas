@@ -1,6 +1,6 @@
     <div>
         <div
-            class="relative inline-block px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl dark:bg-gray-0 sm:my-0 sm:align-middle sm:max-w-4xl sm:w-full sm:p-6">
+            class="px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform rounded-lg  sm:my-0 sm:align-middle sm:max-w-full sm:w-full sm:p-6">
             <div>
                 <div class="mt-4 text-center">
                     <h3 class="text-xl font-semibold leading-6 text-gray-800 capitalize dark:text-white" id="modal-title">
@@ -60,7 +60,7 @@
                                     class="text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5">{{ $message }}</span>
                             @enderror
                         </div>
-                        <div class="mt-4" x-show="roleuser === 'headquarters' || roleuser === 'sub_headquarters'">
+                        <div class="mt-4" x-show="roleuser === 'headquarters' || roleuser === 'sub_headquarters'||roleuser === 'headquarters_authorized'">
                             <label for="systems"
                                 class="block text-sm font-medium text-gray-900 dark:text-white">RESPONSABLE DE LA
                                 SEDE:</label>

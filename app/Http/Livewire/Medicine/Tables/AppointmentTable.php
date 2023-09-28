@@ -519,9 +519,14 @@ class AppointmentTable extends DataTableComponent
                         '0' => 'PENDIENTE',
                         '1' => 'ASISTIÓ',
                         '2' => 'CANCELADO',
-                        '3' => 'CANCELÓ',
+                        '3' => 'CANCELO',
                         '4' => 'REAGENDADA',
-                        '5' => 'LIBERADA'
+                        '5' => 'LIBERADA',
+                        '6' => 'INCOMPLETAS',
+                        '7' => 'EXPIRO',
+                        '8' => 'CONCLUYÓ APTO',
+                        '9' => 'CONCLUYÓ NO APTO',
+                        '10' => 'REAGENDÓ'
 
                     ])
                     ->filter(function ($query, $value) {

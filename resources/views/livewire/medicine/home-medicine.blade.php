@@ -10,11 +10,12 @@
     @if ($idTypeAppointment === false)
         @livewire('medicine.modals.modal-index')
     @endif
-    @unless ($showBannerBoolean)
+    {{-- arreglar --}}
+    {{-- @unless ($showBannerBoolean) --}}
         <x-banner-component :title="$idTypeAppointment === false
             ? 'Generación de citas medicina de Aviación AFAC'
             : 'Generación de citas medicina de Aviación Terceros'" />
-    @endunless
+    {{-- @endunless --}}
     <div class="py-12">
         <div class="container mx-auto px-4 py-4 bg-white shadow-xl sm:rounded-lg">
             <div class="mt-12 max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -656,7 +657,7 @@
                                             </div>
                                         </div>
                                         {{-- <div class="text-base relative z-auto w-full mt-2 group">
-                                          
+
                                         </div> --}}
                                     </div>
                                     {{-- paso6 --}}

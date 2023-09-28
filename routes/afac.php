@@ -11,6 +11,7 @@ use App\Http\Livewire\Medicine\HomeMedicine;
 use App\Http\Livewire\Medicine\HistoryMedicieMovements;
 use App\Http\Livewire\Linguistics\HistoryLinguisticsMovements;
 use App\Http\Livewire\Catalogue\HomeCatalogs;
+use App\Http\Livewire\Dashboard\DashboardController as DashboardDashboardController;
 use App\Http\Livewire\Medicine\External\HomeMedicineExternal;
 use App\Http\Livewire\Medicine\AuthorizedThird\Appointments\ScheduleAppointments;
 use Illuminate\Support\Facades\Route;
@@ -34,7 +35,8 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified'
 ])->group(function () {
-    Route::get('', [DashboardController::class, 'index'])->name('afac.home');
+    // Route::get('',DashboardDashboardController::class)->name('afac.home');
+    Route::get('',[DashboardController::class, 'index'])->name('afac.home');
     Route::middleware(['role:super_admin|user|medicine_admin|headquarters_authorized'])->group(function () {
         Route::get('/medicine', HomeMedicine::class)->name('afac.medicine');
         Route::get('/linguistics', HomeLinguistics::class)->name('afac.linguistics');

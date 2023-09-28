@@ -814,6 +814,12 @@ class HomeMedicine extends Component
             ]);
         }
     }
+    public function cleanclass()
+    {
+        $this->reset([
+            'clasification_class_id',
+        ]);
+    }
     public function openConfirm()
     {
         $this->idAppointmentFull;
