@@ -51,6 +51,7 @@ class AppointmentThirdTable extends DataTableComponent
                 'cancelReserve' => '$refresh',
                 'attendeReserve' => '$refresh',
                 'reserveAppointment' => '$refresh',
+                'addExtension' => '$refresh'
             ]
         );
     }
