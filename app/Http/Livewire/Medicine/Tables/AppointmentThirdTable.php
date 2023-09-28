@@ -374,7 +374,11 @@ class AppointmentThirdTable extends DataTableComponent
                         '15' => 'MEA KATYA DEYANIRA MAGAÑA MUÑOZ',
                         '16' => 'MEA CÉSAR ULISES BLAS TORRES',
                         '17' => 'MEA JOSÉ MANUEL CÓRDOVA CERVANTES',
-                        '18' => 'MEA ROSEMBERG CASTILLEJOS VARGAS'
+                        '18' => 'MEA ROSEMBERG CASTILLEJOS VARGAS',
+                        '19' => 'MEA MARILIN MELISSA GUERRERO MATEO',
+                        '20' => 'MEA ITZEL MONSERRAT GÓNZALEZ MARTINEZ',
+                        '21' => 'MEA JAHAZIEL ROBLES MORENO'
+
                     ])
                     ->filter(function ($query, $value) {
                         $query->where('headquarter_id', $value);
