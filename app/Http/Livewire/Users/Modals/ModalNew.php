@@ -101,6 +101,17 @@ class ModalNew extends ModalComponent
         $this->select = 0;
         $this->municipals = Municipal::with('municipalState')->where('state_id', $id)->get();
     }
+
+    public function updatedprivileges($name)
+    {
+        if ($name == 'headquarters_authorized'){
+            $this->headquarters = Headquarter::where('is_external', true)
+            ->where('system_id', 1)->get();
+        }else{
+            $this->headquarters = Headquarter::where('is_external', false)
+            ->where('system_id', 1)->get();
+        }
+    }
     public static function modalMaxWidth(): string
     {
         return '3xl';
@@ -152,7 +163,7 @@ class ModalNew extends ModalComponent
                     'curp' => $this->curp,
                 ]
             );
-            if ($this->privileges === 'headquarters' || $this->privileges === 'sub_headquarters') {
+            if ($this->privileges === 'headquarters' || $this->privileges === 'sub_headquarters'|| $this->privileges === 'headquarters_authorized') {
                 UserHeadquarter::updateOrCreate(
                     ['id' => $this->user_headquarter_id],
                     [

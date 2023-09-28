@@ -10,11 +10,12 @@
     @if ($idTypeAppointment === false)
         @livewire('medicine.modals.modal-index')
     @endif
-    @unless ($showBannerBoolean)
+    {{-- arreglar --}}
+    {{-- @unless ($showBannerBoolean) --}}
         <x-banner-component :title="$idTypeAppointment === false
             ? 'Generación de citas medicina de Aviación AFAC'
             : 'Generación de citas medicina de Aviación Terceros'" />
-    @endunless
+    {{-- @endunless --}}
     <div class="py-12">
         <div class="container mx-auto px-4 py-4 bg-white shadow-xl sm:rounded-lg">
             <div class="mt-12 max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -373,8 +374,7 @@
                                                                 DE CLASE</label>
                                                             <select id="small" x-ref="clasification"
                                                                 placeholder="seleccione..."
-                                                                wire:model.lazy="type_class_id"
-                                                                wire:change="resetQuestionSelectionExtension()"
+                                                                wire:model.lazy="type_class_id" wire:change.prevent="cleanclass"
                                                                 class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                                                 <option value="">Seleccione...</option>
                                                                 @foreach ($typeRenovationExams as $typeRenovationExam)

@@ -112,7 +112,7 @@
                 <div class="mt-6">
                     <div x-show="activeTab === 'headquarters'">
                         {{-- @if ($typeappoiment === 1) --}}
-                            @livewire('medicine.medicine-afac.home-medicine-afac')
+                            {{-- @livewire('medicine.medicine-afac.home-medicine-afac') --}}
                         {{-- @endif --}}
                     </div>
                     <div x-show="activeTab === 'schedules'">
