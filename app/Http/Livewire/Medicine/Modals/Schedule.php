@@ -114,7 +114,7 @@ class Schedule extends ModalComponent
             ->pluck('disabled_days')
             ->toArray();
         $occupiedDays = MedicineReserve::where('headquarter_id', $value)
-            ->whereIn('status', [0, 1, 4])
+            ->whereIn('status', [0, 1, 4,10])
             ->pluck('dateReserve')
             ->toArray();
         $disabledDaysArray = [];
@@ -130,7 +130,7 @@ class Schedule extends ModalComponent
                 ->value('max_schedules');
             $datesExceedingLimit = MedicineReserve::select('dateReserve')
                 ->where('headquarter_id', $this->headquarter_id)
-                ->whereIn('status', [0, 1, 4])
+                ->whereIn('status', [0, 1, 4,10])
                 ->groupBy('dateReserve')
                 ->havingRaw('COUNT(*) >= ?', [$maxCitas])
                 ->pluck('dateReserve')

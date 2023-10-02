@@ -462,7 +462,7 @@ class HomeMedicine extends Component
             // dd($maxCitas);
             $datesExceedingLimit = MedicineReserve::select('dateReserve')
                 ->where('headquarter_id', $this->headquarter_id)
-                ->whereIn('status', [0, 1, 4])
+                ->whereIn('status', [0, 1, 4, 10])
                 ->groupBy('dateReserve')
                 ->havingRaw('COUNT(*) >= ?', [$maxCitas])
                 ->pluck('dateReserve')
