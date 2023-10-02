@@ -122,7 +122,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($headquarters_afac1 as $headquarter_afac)
+                                @foreach ($this->headquarters_afac1 as $headquarter_afac)
                                     <tr class="text-gray-700 dark:text-gray-100">
                                         <th
                                             class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
