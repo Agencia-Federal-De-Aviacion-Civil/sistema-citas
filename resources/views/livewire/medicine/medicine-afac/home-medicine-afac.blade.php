@@ -12,19 +12,19 @@
                         {{ $registradas_afac1 }}</h4>
                 </div>
                 <div class="pb-4 lg:pb-6">
-                    {{-- <div class="relative pt-1 mx-5">
+                    <div class="relative pt-1 mx-5">
                         <div class="overflow-hidden h-3 mb-4 text-xs flex rounded bg-gray-500">
-                            <div style="width: {{ $porconfir_afac }} %"
+                            <div style="width: {{ $porconfir_afac1 }} %"
                                 class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-800">
                             </div>
-                            <div style="width: {{ $porcanceladas_afac }}%"
+                            <div style="width: {{ $porcanceladas_afac1 }}%"
                                 class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500">
                             </div>
-                            <div style="width: {{ $porreagendado_afac }}%"
+                            <div style="width: {{ $porreagendado_afac1 }}%"
                                 class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-500">
                             </div>
                         </div>
-                    </div> --}}
+                    </div>
                 </div>
                 <div class="-mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                     <div class="flex items-start p-2">
@@ -33,10 +33,10 @@
                             <span href="#blue" class="block w-3 h-3 bg-gray-500 rounded-full"></span>
                         </div>
 
-                        {{-- <div class="ml-4">
-                            <h3 class="font-semibold">Pendientes: {{ $pendientes_afac }}</h3>
-                            <p class="mt-2 text-sm text-gray-500">{{ $porpendientes_afac }}%</p>
-                        </div> --}}
+                        <div class="ml-4">
+                            <h3 class="font-semibold">Pendientes: {{ $pendientes_afac1 }}</h3>
+                            <p class="mt-2 text-sm text-gray-500">{{ $porpendientes_afac1 }}%</p>
+                        </div>
                     </div>
                     <div class="flex items-start p-2">
                         <div
@@ -60,17 +60,17 @@
                             <p class="mt-2 text-sm text-gray-500">{{ $porreagendado_afac }}%</p>
                         </div>
                     </div> --}}
-                    {{-- <div class="flex items-start p-2">
+                    <div class="flex items-start p-2">
                         <div
                             class="flex h-12 w-12 items-center justify-center rounded-full border border-red-100 bg-red-50">
                             <span href="#blue" class="block w-3 h-3 bg-red-500 rounded-full"></span>
                         </div>
 
                         <div class="ml-4">
-                            <h2 class="font-semibold">Canceladas: {{ $canceladas_afac }}</h2>
-                            <p class="mt-2 text-sm text-gray-500">{{ $porcanceladas_afac }}%</p>
+                            <h2 class="font-semibold">Canceladas: {{ $canceladas_afac1 }}</h2>
+                            <p class="mt-2 text-sm text-gray-500">{{ $porcanceladas_afac1 }}%</p>
                         </div>
-                    </div> --}}
+                    </div>
                 </div>
             </div>
         </div>
