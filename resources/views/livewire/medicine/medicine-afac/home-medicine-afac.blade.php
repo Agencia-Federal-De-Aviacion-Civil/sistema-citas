@@ -122,7 +122,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {{ $headquarters_afac1 }}
+
                                 {{-- @foreach ($headquarters_afac as $headquarter_afac)
                                     <tr class="text-gray-700 dark:text-gray-100">
                                         <th
