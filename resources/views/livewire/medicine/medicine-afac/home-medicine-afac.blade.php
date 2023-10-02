@@ -4,9 +4,6 @@
             <h3 class="text-lg font-semibold leading-tight flex-1">TOTAL DE CITAS MEDICINA DE
                 AVIACIÓN AFAC</h3>
         </div>
-
-
-
         <div class="relative overflow-hidden transition-all duration-500" x-ref="card"
             x-bind:style="`max-height:${cardOpen?$refs.card.scrollHeight:0}px; opacity:${cardOpen?1:0}`">
             <div>
@@ -77,9 +74,6 @@
                 </div>
             </div>
         </div>
-
-
-
         <div class="grid grid-cols-1 lg:grid-cols-1 p-2 gap-4">
             <div
                 class="relative flex flex-col min-w-0 mb-4 lg:mb-0 break-words bg-gray-50 dark:bg-gray-800 w-full shadow-lg rounded">
@@ -176,7 +170,7 @@
             <div class="container mx-auto px-4 py-4 bg-white sm:rounded-lg">
                 <div class="mt-12 md:max-w-8xl  xs:max-w-4xl  mx-auto sm:px-6 lg:px-8">
                     <div class="ml-4 py-6 mr-4 uppercase md:text-sm xs:text-xs">
-                        {{-- @livewire('medicine.medicine-afac.calendar') --}}
+                        @livewire('medicine.medicine-afac.calendar')
                     </div>
                 </div>
             </div>
