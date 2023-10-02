@@ -91,7 +91,7 @@
                                 </div>
                                 <div class="ml-4">
                                     {{-- <h2 class="font-semibold">{{ $now_afac }} Citas</h2> --}}
-                                    {{-- <p class="mt-2 text-sm text-gray-500">hoy {{ $date2_afac }} --}}
+                                    <p class="mt-2 text-sm text-gray-500">hoy {{ $date2_afac1 }}
                                     </p>
                                 </div>
                             </div>
