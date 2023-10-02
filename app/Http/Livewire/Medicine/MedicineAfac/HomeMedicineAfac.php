@@ -65,7 +65,7 @@ class HomeMedicineAfac extends Component
         //         ->get();
 
 
-        }
+        // }
 
 
         // $appointmentNow_afac = $appointment_afac1->where('dateReserve', $date1_afac1);
