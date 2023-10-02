@@ -9,7 +9,7 @@
             <div>
                 <div class="pb-4 lg:pb-6">
                     <h4 class="text-2xl lg:text-3xl text-black font-semibold leading-tight inline-block" x-ref="total">
-                        {{-- {{ $registradas_afac }}</h4> --}}
+                        {{ $registradas_afac1 }}</h4>
                 </div>
                 <div class="pb-4 lg:pb-6">
                     {{-- <div class="relative pt-1 mx-5">
@@ -38,17 +38,17 @@
                             <p class="mt-2 text-sm text-gray-500">{{ $porpendientes_afac }}%</p>
                         </div> --}}
                     </div>
-                    {{-- <div class="flex items-start p-2">
+                    <div class="flex items-start p-2">
                         <div
                             class="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50">
                             <span href="#blue" class="block w-3 h-3 bg-blue-800 rounded-full"></span>
                         </div>
 
                         <div class="ml-4">
-                            <h3 class="font-semibold">Confirmadas: {{ $validado_afac }}</h3>
-                            <p class="mt-2 text-sm text-gray-500">{{ $porconfir_afac }}%</p>
+                            <h3 class="font-semibold">Confirmadas: {{ $validado_afac1 }}</h3>
+                            <p class="mt-2 text-sm text-gray-500">{{ $porconfir_afac1 }}%</p>
                         </div>
-                    </div> --}}
+                    </div>
 
                     {{-- <div class="flex items-start p-2">
                         <div
