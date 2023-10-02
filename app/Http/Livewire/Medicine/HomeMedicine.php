@@ -433,7 +433,7 @@ class HomeMedicine extends Component
             ->pluck('disabled_days')
             ->toArray();
         $occupiedDays = MedicineReserve::where('headquarter_id', $value)
-            ->whereIn('status', [0, 1, 4])
+            ->whereIn('status', [0, 1, 4,10])
             ->pluck('dateReserve')
             ->toArray();
         $disabledDaysArray = [];
