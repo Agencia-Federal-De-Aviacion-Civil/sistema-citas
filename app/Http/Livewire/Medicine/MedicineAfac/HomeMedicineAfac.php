@@ -22,49 +22,47 @@ class HomeMedicineAfac extends Component
         $date2_afac1 = Date::now()->format('d-m-Y');
         // $tomorrow_afac1 = Date::tomorrow()->format('Y-m-d');
 
-        // $nameHeadquarter_afac1 = '';
-        // if (Auth::user()->can('headquarters.see.dashboard')) {
-        //     $appointment_afac1 = MedicineReserve::with('medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant')
-        //         ->whereHas('medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q1) {
-        //             $q1->where('user_id', Auth::user()->id);
-        //         })
-        //         ->select('status', DB::raw('count(*) as count'), 'dateReserve')
-        //         ->groupBy('status', 'dateReserve')
-        //         ->get();
-        //     $headquarters_afac1 = Headquarter::with([
-        //         'HeadquarterUserHeadquarter.userHeadquarterUserParticipant'
-        //     ])->whereHas('HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q2) {
-        //         $q2->where('user_id', Auth::user()->id);
-        //     })->get();
-        //     $nameHeadquarter_afac1 = $headquarters_afac1->pluck('name_headquarter')->first();
-        // } else if (Auth::user()->can('sub_headquarters.see.dashboard')) {
-        //     $appointment_afac1 = MedicineReserve::with('medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant')
-        //         ->whereHas('medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q3) {
-        //             $q3->where('user_id', Auth::user()->id);
-        //         })
-        //         ->select('status', DB::raw('count(*) as count'), 'dateReserve')
-        //         ->groupBy('status', 'dateReserve')
-        //         ->where('headquarter_id', 6)
-        //         ->where('dateReserve', $date1_afac1)
-        //         ->get();
-        //     $headquarters_afac1 = Headquarter::with([
-        //         'HeadquarterUserHeadquarter.userHeadquarterUserParticipant'
-        //     ])->whereHas('HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q2) {
-        //         $q2->where('user_id', Auth::user()->id);
-        //     })->get();
-        // } else {
+        $nameHeadquarter_afac1 = '';
+        if (Auth::user()->can('headquarters.see.dashboard')) {
+            $appointment_afac1 = MedicineReserve::with('medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant')
+                ->whereHas('medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q1) {
+                    $q1->where('user_id', Auth::user()->id);
+                })
+                ->select('status', DB::raw('count(*) as count'), 'dateReserve')
+                ->groupBy('status', 'dateReserve')
+                ->get();
+            $headquarters_afac1 = Headquarter::with([
+                'HeadquarterUserHeadquarter.userHeadquarterUserParticipant'
+            ])->whereHas('HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q2) {
+                $q2->where('user_id', Auth::user()->id);
+            })->get();
+            $nameHeadquarter_afac1 = $headquarters_afac1->pluck('name_headquarter')->first();
+        } else if (Auth::user()->can('sub_headquarters.see.dashboard')) {
+            $appointment_afac1 = MedicineReserve::with('medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant')
+                ->whereHas('medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q3) {
+                    $q3->where('user_id', Auth::user()->id);
+                })
+                ->select('status', DB::raw('count(*) as count'), 'dateReserve')
+                ->groupBy('status', 'dateReserve')
+                ->where('headquarter_id', 6)
+                ->where('dateReserve', $date1_afac1)
+                ->get();
+            $headquarters_afac1 = Headquarter::with([
+                'HeadquarterUserHeadquarter.userHeadquarterUserParticipant'
+            ])->whereHas('HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q2) {
+                $q2->where('user_id', Auth::user()->id);
+            })->get();
+        } else {
 
             $appointment_afac1 = MedicineReserve::query()
                 ->select('status', DB::raw('count(*) as count'), 'dateReserve')
                 ->groupBy('status', 'dateReserve')
                 ->where('is_external', false)
                 ->get();
-            $headquarters_afac1 = Headquarter::with([
-                'headquarterMedicineReserve'
-            ])->where('is_external', false)->get();
-
-
-        // }
+            // $headquarters_afac1 = Headquarter::with([
+            //     'headquarterMedicineReserve'
+            // ])->where('is_external', false)->get();
+        }
 
 
         $appointmentNow_afac1 = $appointment_afac1->where('dateReserve', $date1_afac1);
