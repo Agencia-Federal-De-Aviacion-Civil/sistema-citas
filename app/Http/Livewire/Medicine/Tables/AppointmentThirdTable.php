@@ -351,7 +351,12 @@ class AppointmentThirdTable extends DataTableComponent
                         '2' => 'CANCELADO',
                         '3' => 'CANCELÓ',
                         '4' => 'REAGENDADA',
-                        '5' => 'LIBERADA'
+                        '5' => 'LIBERADA',
+                        '6' => 'INCOMPLETAS',
+                        '7' => 'EXPIRO',
+                        '8' => 'CONCLUYÓ APTO',
+                        '9' => 'CONCLUYÓ NO APTO',
+                        '10' => 'REAGENDO'
 
                     ])
                     ->filter(function ($query, $value) {
@@ -377,7 +382,13 @@ class AppointmentThirdTable extends DataTableComponent
                         '18' => 'MEA ROSEMBERG CASTILLEJOS VARGAS',
                         '19' => 'MEA MARILIN MELISSA GUERRERO MATEO',
                         '20' => 'MEA ITZEL MONSERRAT GÓNZALEZ MARTINEZ',
-                        '21' => 'MEA JAHAZIEL ROBLES MORENO'
+                        '21' => 'MEA JAHAZIEL ROBLES MORENO',
+                        '22' => 'MEA MARÍA FERNANDA CEJA ESQUIVEZ',
+                        '23' => 'MEA ANABEL BAILÓN BECERRA',
+                        '24' => 'MEA FRANCISCO JAVIER ANTIGA LÓPEZ',
+                        '25' => 'MEA MANUEL ALEJANDRO RODRÍGUEZ GÓMEZ',
+                        '26' => 'MEA LUIS ALBERTO MENA SEPÚLVEDA',
+                        '27' => 'MEA JOSE RAÚL MÉNDEZ COLÍN'
 
                     ])
                     ->filter(function ($query, $value) {
