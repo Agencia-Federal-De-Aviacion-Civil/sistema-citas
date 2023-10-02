@@ -7,7 +7,7 @@
 
 
 
-        {{-- <div class="relative overflow-hidden transition-all duration-500" x-ref="card"
+        <div class="relative overflow-hidden transition-all duration-500" x-ref="card"
             x-bind:style="`max-height:${cardOpen?$refs.card.scrollHeight:0}px; opacity:${cardOpen?1:0}`">
             <div>
                 <div class="pb-4 lg:pb-6">
@@ -76,7 +76,7 @@
                     </div>
                 </div>
             </div>
-        </div> --}}
+        </div>
 
 
 
