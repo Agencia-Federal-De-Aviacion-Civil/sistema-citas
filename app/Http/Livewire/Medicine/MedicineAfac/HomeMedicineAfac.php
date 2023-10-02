@@ -61,7 +61,7 @@ class HomeMedicineAfac extends Component
                 ->get();
             $headquarters_afac1 = Headquarter::with([
                 'headquarterMedicineReserve'
-            ])->where('is_external', 0)->get();
+            ])->where('is_external', false)->get();
 
 
         // }
