@@ -5,7 +5,7 @@
                 AVIACIÓN AFAC</h3>
         </div>
         <div class="relative overflow-hidden transition-all duration-500" x-ref="card"
-            x-bind:style="max-height:${cardOpen?$refs.card.scrollHeight:0}px; opacity:${cardOpen?1:0}">
+            x-bind:style="`max-height:${cardOpen?$refs.card.scrollHeight:0}px; opacity:${cardOpen?1:0}`">
             <div>
                 <div class="pb-4 lg:pb-6">
                     <h4 class="text-2xl lg:text-3xl text-black font-semibold leading-tight inline-block" x-ref="total">
