@@ -26,7 +26,7 @@ class UsersController extends Controller
             'medicineReserveFromUser:id,name',
             'medicineReserveFromUser.UserParticipant:id,user_id,apParental,apMaternal,age,curp'
         )
-            ->where('status', 1)->get();
+            ->whereIn('status', [1,8])->get();
         return response([
             "status" => 1,
             "message" => "Lista de usuarios",
