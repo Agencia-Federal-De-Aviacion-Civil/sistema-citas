@@ -4,7 +4,7 @@
             <h3 class="text-lg font-semibold leading-tight flex-1">TOTAL DE CITAS MEDICINA DE
                 AVIACIÓN AFAC</h3>
         </div>
-        {{-- <div class="relative overflow-hidden transition-all duration-500" x-ref="card"
+        <div class="relative overflow-hidden transition-all duration-500" x-ref="card"
             x-bind:style="`max-height:${cardOpen?$refs.card.scrollHeight:0}px; opacity:${cardOpen?1:0}`">
             <div>
                 <div class="pb-4 lg:pb-6">
@@ -73,14 +73,12 @@
                     </div>
                 </div>
             </div>
-        </div> --}}
-
-
+        </div>
         <div class="grid grid-cols-1 lg:grid-cols-1 p-2 gap-4">
             <div
                 class="relative flex flex-col min-w-0 mb-4 lg:mb-0 break-words bg-gray-50 dark:bg-gray-800 w-full shadow-lg rounded">
                 <div class="rounded-t mb-0 px-0 border-0">
-                    {{-- <div class="flex flex-wrap items-center px-4 py-2">
+                    <div class="flex flex-wrap items-center px-4 py-2">
                         <div class="relative w-full max-w-full flex-grow flex-1">
                             <div class="flex items-start rounded-xl p-4">
                                 <div
@@ -98,7 +96,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div> --}}
+                    </div>
                     <div class="block w-full overflow-x-auto">
                         <table class="items-center w-full bg-transparent border-collapse">
                             <thead>
@@ -169,5 +167,15 @@
                 </div>
             </div>
         </div>
+<div class="py-12">
+    <div class="container mx-auto px-4 py-4 bg-white sm:rounded-lg">
+        <div class="mt-12 md:max-w-8xl  xs:max-w-4xl  mx-auto sm:px-6 lg:px-8">
+            <div class="ml-4 py-6 mr-4 uppercase md:text-sm xs:text-xs">
+                @livewire('medicine.medicine-afac.calendar')
+            </div>
+        </div>
     </div>
 </div>
+</div>
+</div>
+
