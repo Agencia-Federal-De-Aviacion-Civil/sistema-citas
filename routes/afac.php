@@ -14,6 +14,7 @@ use App\Http\Livewire\Catalogue\HomeCatalogs;
 use App\Http\Livewire\Dashboard\DashboardController as DashboardDashboardController;
 use App\Http\Livewire\Medicine\External\HomeMedicineExternal;
 use App\Http\Livewire\Medicine\AuthorizedThird\Appointments\ScheduleAppointments;
+use App\Http\Livewire\Prueba\Prueba;
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Validate\Qr as ValidateQr;
 use App\Http\Livewire\Validate\UrlHome;
@@ -59,4 +60,6 @@ Route::middleware([
         Route::get('/historylinguistics', HistoryLinguisticsMovements::class)->name('afac.linguisticsMovements');
         Route::get('/homecatalogs', HomeCatalogs::class)->name('afac.catalogappointment');
     });
+
+    Route::get('/prueba', Prueba::class)->name('prueba');
 });
