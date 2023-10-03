@@ -61,6 +61,12 @@ class Prueba extends Component
             $headquarters_afac = Headquarter::with([
                 'headquarterMedicineReserve'
             ])->where('is_external', false)->get();
+
+            $headquarters_third = Headquarter::with([
+                'headquarterMedicineReserve'
+            ])
+                ->where('is_external', true)
+                ->get();
         }
 
 
@@ -76,6 +82,6 @@ class Prueba extends Component
         $porreagendado_afac1 = $registradas_afac1 != 0 ? round($appointment_afac1->where('status', '4')->sum('count') * 100 / $registradas_afac1) : 0;
         $porcanceladas_afac1 = $registradas_afac1 != 0 ? round($appointment_afac1->whereIn('status', ['2', '3', '5'])->sum('count') * 100 / $registradas_afac1, 0) : 0;
 
-        return view('livewire.prueba.prueba' ,compact('date2_afac1','now_afac1','registradas_afac1','porconfir_afac1','validado_afac1','pendientes_afac1','porpendientes_afac1','canceladas_afac1','reagendado_afac1','porcanceladas_afac1','porreagendado_afac1','headquarters_afac'));
+        return view('livewire.prueba.prueba' ,compact('date2_afac1','now_afac1','registradas_afac1','porconfir_afac1','validado_afac1','pendientes_afac1','porpendientes_afac1','canceladas_afac1','reagendado_afac1','porcanceladas_afac1','porreagendado_afac1','headquarters_afac','headquarters_third'));
     }
 }

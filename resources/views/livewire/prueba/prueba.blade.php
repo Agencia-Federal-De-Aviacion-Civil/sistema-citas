@@ -161,6 +161,51 @@
                                         </td>
                                     </tr>
                                 @endforeach
+
+
+
+
+                                @foreach ($headquarters_third as $headquarter_third)
+                                    <tr class="text-gray-700 dark:text-gray-100">
+                                        <th
+                                            class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                            {{ $headquarter_third->name_headquarter }}
+                                            @unless ($headquarter_third->is_external == 0)
+                                                <span
+                                                    class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">TERCEROS</span>
+                                            @endunless
+                                        </th>
+                                        <td
+                                            class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                                            {{ $headquarter_third->headquarterMedicineReserve->where('dateReserve', $date1_afac1)->whereIn('status', ['0', '1', '4'])->count() }}
+                                        </td>
+                                        <td
+                                            class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                                            {{ $headquarter_third->headquarterMedicineReserve->where('dateReserve', $tomorrow_afac1)->whereIn('status', ['0', '1', '4'])->count() }}
+                                        </td>
+                                        <td
+                                            class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                                            {{ $headquarter_third->headquarterMedicineReserve->count() }}
+                                        </td>
+                                        <td
+                                            class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                                            <div class="flex items-center">
+                                                <span
+                                                    class="mr-2">{{ $headquarter_third->headquarterMedicineReserve->count() > 0 ? round(($headquarter_third->headquarterMedicineReserve->count() * 100) / $registradas_afac1, 1) : '0'  }}%</span>
+                                                <div class="relative w-full">
+                                                    <div class="overflow-hidden h-2 text-xs flex rounded bg-blue-200">
+                                                        <div style="width:{{ $headquarter_third->headquarterMedicineReserve->count() > 0 ? ($headquarter_third->headquarterMedicineReserve->count() * 100) / $registradas_afac1 : '0'  }}%"
+                                                            class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-600">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+
+
+
                             </tbody>
                         </table>
                     </div>
