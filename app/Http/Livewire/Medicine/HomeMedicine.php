@@ -221,49 +221,49 @@ class HomeMedicine extends Component
             }
         }
         // TODO REFACTORIZACION DE CODIGO, AUN EN PRUEBAS PARA EVITAR IF ANIDADOS
-    //     $conditions = [
-    //         1 => [
-    //             1 => [
-    //                 1 => [1, 2, 3],
-    //                 2 => [2, 3],
-    //                 3 => [3]
-    //             ],
-    //             2 => [
-    //                 1 => [5, 6],
-    //                 2 => [4, 5, 6],
-    //                 3 => [6]
-    //             ]
-    //         ],
-    //         2 => [
-    //             1 => [
-    //                 4 => [1, 2, 3],
-    //                 5 => [2, 3],
-    //                 6 => [3]
-    //             ],
-    //             2 => [
-    //                 4 => [4, 5, 6],
-    //                 5 => [5, 6],
-    //                 6 => [6]
-    //             ]
-    //         ]
-    //     ];
-        
-    //     if (isset($conditions[$this->type_exam_id])
-    //     && isset($conditions[$this->type_exam_id][$this->medicine_question_id])
-    //     && isset($conditions[$this->type_exam_id][$this->medicine_question_id][$this->medicine_question_ex_id])
-    //     && isset($conditions[$this->type_exam_id][$this->medicine_question_id][$this->medicine_question_ex_id][$this->type_class_id])) {
-    
-    //     // Obtener el resultado según las condiciones
-    //    $result = $conditions[$this->type_exam_id][$this->medicine_question_id][$this->medicine_question_ex_id][$this->type_class_id];
-    
-    //     // Consultar la base de datos
-    //     $this->questionClassessExtension = $baseQuery->whereIn('id', $result)->get();
-    // } else {
-    //     // Manejar el caso en el que alguna de las claves no existe en el array
-    //     // Puedes lanzar una excepción o realizar alguna otra acción adecuada
-    //     // Aquí, simplemente se imprimiría un mensaje de error:
-    //     dd("Alguna clave no existe en el array de condiciones.");
-    // }
+        //     $conditions = [
+        //         1 => [
+        //             1 => [
+        //                 1 => [1, 2, 3],
+        //                 2 => [2, 3],
+        //                 3 => [3]
+        //             ],
+        //             2 => [
+        //                 1 => [5, 6],
+        //                 2 => [4, 5, 6],
+        //                 3 => [6]
+        //             ]
+        //         ],
+        //         2 => [
+        //             1 => [
+        //                 4 => [1, 2, 3],
+        //                 5 => [2, 3],
+        //                 6 => [3]
+        //             ],
+        //             2 => [
+        //                 4 => [4, 5, 6],
+        //                 5 => [5, 6],
+        //                 6 => [6]
+        //             ]
+        //         ]
+        //     ];
+
+        //     if (isset($conditions[$this->type_exam_id])
+        //     && isset($conditions[$this->type_exam_id][$this->medicine_question_id])
+        //     && isset($conditions[$this->type_exam_id][$this->medicine_question_id][$this->medicine_question_ex_id])
+        //     && isset($conditions[$this->type_exam_id][$this->medicine_question_id][$this->medicine_question_ex_id][$this->type_class_id])) {
+
+        //     // Obtener el resultado según las condiciones
+        //    $result = $conditions[$this->type_exam_id][$this->medicine_question_id][$this->medicine_question_ex_id][$this->type_class_id];
+
+        //     // Consultar la base de datos
+        //     $this->questionClassessExtension = $baseQuery->whereIn('id', $result)->get();
+        // } else {
+        //     // Manejar el caso en el que alguna de las claves no existe en el array
+        //     // Puedes lanzar una excepción o realizar alguna otra acción adecuada
+        //     // Aquí, simplemente se imprimiría un mensaje de error:
+        //     dd("Alguna clave no existe en el array de condiciones.");
+        // }
         // $typeClassMappings = [
         //     1 => [
         //         1 => [
@@ -433,7 +433,7 @@ class HomeMedicine extends Component
             ->pluck('disabled_days')
             ->toArray();
         $occupiedDays = MedicineReserve::where('headquarter_id', $value)
-            ->whereIn('status', [0, 1, 4,10])
+            ->whereIn('status', [0, 1, 4, 10])
             ->pluck('dateReserve')
             ->toArray();
         $disabledDaysArray = [];
@@ -690,14 +690,15 @@ class HomeMedicine extends Component
                     ]);
                     // }
                 } else if ($this->type_exam_id == 4) {
-                    foreach ($this->clasification_class_id as $clasifications) {
-                        MedicineRenovation::create([
-                            'medicine_id' => $this->saveMedicine->id,
-                            'type_class_id' => $this->type_class_id,
-                            'clasification_class_id' => $clasifications
-                        ]);
-                    }
+                    // foreach ($this->clasification_class_id as $clasifications) {
+                    MedicineRenovation::create([
+                        'medicine_id' => $this->saveMedicine->id,
+                        'type_class_id' => $this->type_class_id,
+                        'clasification_class_id' => $this->clasification_class_id
+                    ]);
+                    // }
                 } else if ($this->type_exam_id == 3 || $this->type_exam_id == 5) {
+                    // TODO SE NECESITA REVISAR EL CODIGO
                     // REGLAS FLEXIBILIDAD Y REVALORACIÓN
                     $extension = $this->document_pay->getClientOriginalExtension();
                     $fileName = $this->reference_number . '-' . $this->pay_date . '.' . $extension;
@@ -713,32 +714,33 @@ class HomeMedicine extends Component
                         'type_exam_id' => $this->type_exam_revaloration_id
                     ]);
                     if ($this->type_exam_revaloration_id == 1) {
-                        $clasification_class_ids = $this->clasification_class_id;
-                        if (is_array($clasification_class_ids)) {
-                            foreach ($clasification_class_ids as $clasifications) {
-                                MedicineRevaluationInitial::create([
-                                    'medicine_revaluation_id' => $medicineReId->id,
-                                    'medicine_question_id' => $this->medicine_question_id,
-                                    'type_class_id' => $this->type_class_id,
-                                    'clasification_class_id' => $clasifications
-                                ]);
-                            }
-                        } else {
-                            MedicineRevaluationInitial::create([
-                                'medicine_revaluation_id' => $medicineReId->id,
-                                'medicine_question_id' => $this->medicine_question_id,
-                                'type_class_id' => $this->type_class_id,
-                                'clasification_class_id' => $clasification_class_ids
-                            ]);
-                        }
+                        // $clasification_class_ids = $this->clasification_class_id;
+                        // if (is_array($clasification_class_ids)) {
+                        //     foreach ($clasification_class_ids as $clasifications) {
+                        //         MedicineRevaluationInitial::create([
+                        //             'medicine_revaluation_id' => $medicineReId->id,
+                        //             'medicine_question_id' => $this->medicine_question_id,
+                        //             'type_class_id' => $this->type_class_id,
+                        //             'clasification_class_id' => $clasifications
+                        //         ]);
+                        //     }
+                        // } else 
+                        // {
+                        MedicineRevaluationInitial::create([
+                            'medicine_revaluation_id' => $medicineReId->id,
+                            'medicine_question_id' => $this->medicine_question_id,
+                            'type_class_id' => $this->type_class_id,
+                            'clasification_class_id' => $this->clasification_class_id
+                        ]);
+                        // }
                     } else if ($this->type_exam_revaloration_id == 2) {
-                        foreach ($this->clasification_class_id as $clasifications) {
-                            MedicineRevaluationRenovation::create([
-                                'medicine_revaluation_id' => $medicineReId->id,
-                                'type_class_id' => $this->type_class_id,
-                                'clasification_class_id' => $clasifications
-                            ]);
-                        }
+                        // foreach ($this->clasification_class_id as $clasifications) {
+                        MedicineRevaluationRenovation::create([
+                            'medicine_revaluation_id' => $medicineReId->id,
+                            'type_class_id' => $this->type_class_id,
+                            'clasification_class_id' => $this->clasification_class_id
+                        ]);
+                        // }
                     }
                 } else if ($this->type_exam_id == 3 || $this->type_exam_id == 5) {
                     // $extension = $this->document_authorization->extension();
