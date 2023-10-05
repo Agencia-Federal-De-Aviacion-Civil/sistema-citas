@@ -9,6 +9,8 @@ use App\Models\Document;
 use App\Models\Medicine\MedicineQuestion;
 use App\Models\Medicine\MedicineReserve;
 use App\Models\Medicine\MedicineReservesExtension;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -19,7 +21,7 @@ class MedicineExtensionModal extends ModalComponent
     use WithFileUploads;
     public $scheduleId, $medicineReservesExtension, $extensionCurp, $type_exam, $type_class, $clasification_class, $inicialId,
         $id_extension, $reference_number_ext, $document_ext_id, $date_reserve_ext, $type_exam_id_extension, $medicine_question_ex_id, $clas_class_extension_id;
-    public $typeExams, $userQuestions, $questionClassessExtension, $type_class_extension_id, $clasificationClassExtension, $selectedTypeClassIds, $typeClassId;
+    public $typeExams, $userQuestions, $questionClassessExtension, $type_class_extension_id, $clasificationClassExtension, $selectedTypeClassIds, $typeClassId,$is_external,$id_type_class_extension,$ext_reference_number;
     public function mount($scheduleId = null)
     {
         if (isset($scheduleId)) {
@@ -34,18 +36,25 @@ class MedicineExtensionModal extends ModalComponent
             $this->reference_number_ext = $this->medicineReservesExtension[0]->medicineReserveMedicineExtension[0]->reference_number_ext ?? null;
             $this->date_reserve_ext = $this->medicineReservesExtension[0]->medicineReserveMedicineExtension[0]->date_reserve_ext ?? null;
             $this->id_extension = $this->medicineReservesExtension[0]->medicineReserveMedicineExtension[0]->id ?? null;
+            $this->is_external = $this->medicineReservesExtension[0]->is_external;
+
+            $this->id_type_class_extension = $this->medicineReservesExtension[0]->medicineReserveMedicineExtension[0]->type_class_extension_id ?? '0';
+            $this->ext_reference_number = $this->medicineReservesExtension[0]->medicineReserveMedicineExtension[0]->reference_number_ext ?? null;
+
         } else {
             $this->scheduleId = null;
         }
     }
     public function rules()
     {
-        return [
-            'reference_number_ext' => 'required',
-            'document_ext_id' => 'required|mimetypes:application/pdf,image/jpeg,image/jpg,image/png',
-            'date_reserve_ext' => 'required'
-        ];
+        return [];
     }
+
+    // public function updated($propertyName)
+    // {
+    //     $this->validateOnly($propertyName);
+    // }
+
     public function render()
     {
         return view('livewire.medicine.modals.medicine-extension-modal');
@@ -136,36 +145,69 @@ class MedicineExtensionModal extends ModalComponent
     }
     public function saveExtension()
     {
-        $this->validate();
-        $extension = $this->document_ext_id->getClientOriginalExtension();
-        $fileName = $this->reference_number_ext . '.' . $extension;
-        $saveDocument = Document::create([
-            'name_document' => $this->document_ext_id->storeAs('documentos/medicina/extension', $fileName, 'public'),
-        ]);
-        if (!is_null($this->type_class_extension_id) && !is_null($this->clas_class_extension_id)) {
+        if($this->is_external==1){
+
             MedicineReservesExtension::updateOrCreate(
                 ['id' => $this->id_extension],
                 [
                     'medicine_reserve_id' => $this->medicineReservesExtension[0]->id,
                     'type_class_extension_id' => $this->type_class_extension_id,
                     'clas_class_extension_id' => $this->clas_class_extension_id,
-                    'document_ext_id' => $saveDocument->id,
-                    'reference_number_ext' => $this->reference_number_ext,
-                    'date_reserve_ext' => $this->date_reserve_ext
+                    'document_ext_id' => null,
+                    'reference_number_ext' => null,
+                    'date_reserve_ext' => null
                 ]
             );
         } else {
-            MedicineReservesExtension::updateOrCreate(
-                ['id' => $this->id_extension],
-                [
-                    'medicine_reserve_id' => $this->medicineReservesExtension[0]->id,
-                    'document_ext_id' => $saveDocument->id,
-                    'reference_number_ext' => $this->reference_number_ext,
-                    'date_reserve_ext' => $this->date_reserve_ext
-                ]
-            );
+
+            $this->validate([
+                'reference_number_ext' => 'required',
+                'document_ext_id' => 'required|mimetypes:application/pdf,image/jpeg,image/jpg,image/png',
+                'date_reserve_ext' => 'required'
+            ]);
+
+            $extension = $this->document_ext_id->getClientOriginalExtension();
+            $fileName = $this->reference_number_ext . '.' . $extension;
+            $saveDocument = Document::create([
+                'name_document' => $this->document_ext_id->storeAs('documentos/medicina/extension', $fileName, 'public'),
+            ]);
+            if (!is_null($this->type_class_extension_id) && !is_null($this->clas_class_extension_id)) {
+                MedicineReservesExtension::updateOrCreate(
+                    ['id' => $this->id_extension],
+                    [
+                        'medicine_reserve_id' => $this->medicineReservesExtension[0]->id,
+                        'type_class_extension_id' => $this->type_class_extension_id,
+                        'clas_class_extension_id' => $this->clas_class_extension_id,
+                        'document_ext_id' => $saveDocument->id,
+                        'reference_number_ext' => $this->reference_number_ext,
+                        'date_reserve_ext' => $this->date_reserve_ext
+                    ]
+                );
+            } else {
+                MedicineReservesExtension::updateOrCreate(
+                    ['id' => $this->id_extension],
+                    [
+                        'medicine_reserve_id' => $this->medicineReservesExtension[0]->id,
+                        'document_ext_id' => $saveDocument->id,
+                        'reference_number_ext' => $this->reference_number_ext,
+                        'date_reserve_ext' => $this->date_reserve_ext
+                    ]
+                );
+            }
         }
         $this->closeModal();
         $this->emit('addExtension');
+    }
+
+    public function messages()
+    {
+        return [
+            // 'type_exam_id_extension.required' => 'Seleccione opción',
+            // 'type_class_extension_id.required' => 'Seleccione opción',
+            // 'clas_class_extension_id.required' => 'Seleccione opción',
+            'reference_number_ext.required' => 'Campo obligatorio',
+            'document_ext_id.required' => 'Campo obligatorio',
+            'date_reserve_ext.required' => 'Campo obligatorio'
+        ];
     }
 }

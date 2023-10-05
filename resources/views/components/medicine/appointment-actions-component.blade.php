@@ -1,12 +1,11 @@
 <div>
+
     @if ($status == 0)
         @hasrole('sub_headquarters|super_admin|medicine_admin|super_admin_medicine|headquarters|admin_medicine_v2|headquarters_authorized')
             @if ($showExpireButton)
-                <button type="button"
-                    class="text-white {{ count($medicineExtensionNothing) > 0 ? (is_null($medicineExtensionExist) ? 'bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300' : 'bg-lime-500 hover:bg-lime-600 focus:ring-4 focus:ring-lime-300') : 'bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300' }} px-3 py-2 text-xs font-medium text-center text-white rounded-lg:{{ count($medicineExtensionNothing) > 0 ? (is_null($medicineExtensionExist) ? 'bg-blue-600 hover:bg-blue-700 focus:ring-blue-800' : 'bg-lime-600 hover:bg-lime-700 focus:ring-lime-800') : 'bg-blue-600 hover:bg-blue-700 focus:ring-blue-800' }} focus:outline-none dark:focus:{{ count($medicineExtensionNothing) > 0 ? (is_null($medicineExtensionExist) ? 'ring-blue-800' : 'ring-lime-800') : 'ring-blue-800' }}"
-                    wire:click="$emit('openModal', 'medicine.modals.medicine-extension-modal', {{ json_encode(['scheduleId' => $scheduleId]) }})">
-                    {{ count($medicineExtensionNothing) > 0 ? (is_null($medicineExtensionExist) ? 'COMPLETAR EXT.' : 'EXT. CONCLUÍDA') : 'AÑADIR EXT.' }}
-                </button>
+            <button type="button" class="text-white {{ count($medicineExtensionNothing) > 0 ? (is_null($medicineExtensionExist) && $is_external ==0 ? 'bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300':'bg-lime-500 hover:bg-lime-600 focus:ring-4 focus:ring-lime-300'):'bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300'}} px-3 py-2 text-xs font-medium text-center text-white rounded-lg:{{ count($medicineExtensionNothing) > 0 ? (is_null($medicineExtensionExist) && $is_external ==0 ? 'bg-blue-600 hover:bg-blue-700 focus:ring-blue-800':'bg-lime-600 hover:bg-lime-700 focus:ring-lime-800'):'bg-blue-600 hover:bg-blue-700 focus:ring-blue-800'}} focus:outline-none dark:focus:{{ count($medicineExtensionNothing) > 0 ? (is_null($medicineExtensionExist) && $is_external ==0 ? 'ring-blue-800':'ring-lime-800') : 'ring-blue-800'}}" wire:click="$emit('openModal', 'medicine.modals.medicine-extension-modal', {{ json_encode(['scheduleId' => $scheduleId]) }})">
+                {{ count($medicineExtensionNothing) > 0 ? (is_null($medicineExtensionExist) && $is_external == 0 ? 'COMPLETAR EXT.' : 'EXT. CONCLUÍDA') : 'AÑADIR EXT.' }}
+            </button>
             @endif
             <x-button
                 wire:click="$emit('openModal', 'medicine.modals.schedule', {{ json_encode(['scheduleId' => $scheduleId, 'medicineId' => $medicineId]) }})"

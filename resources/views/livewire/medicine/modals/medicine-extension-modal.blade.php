@@ -51,6 +51,9 @@
                                     placeholder="ESCRIBE..." readonly />
                             </div>
                         </div>
+
+                        @if($this->is_external==0)
+
                         <div class="mt-6 grid xl:grid-cols-2 xl:gap-6">
                             <div class="mt-1 relative w-full group">
                                 <x-input wire:model.lazy="reference_number_ext" label="INGRESA LA LLAVE DE PAGO"
@@ -81,6 +84,8 @@
                                 @enderror
                             </div>
                         </div>
+                        @endif
+
                     @endif
                 @else
                     <div x-data="{
@@ -104,6 +109,7 @@
                                         </option>
                                     @endforeach
                                 </select>
+                                {{-- type_exam_id_extension --}}
                                 @error('')
                                     <span
                                         class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
@@ -173,6 +179,7 @@
                                                     {{ $clasificationClassExt->name }}</option>
                                             @endforeach
                                         </select>
+                                </div>
                                         @error('')
                                             <span
                                                 class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
@@ -181,6 +188,8 @@
                                 </div>
                             </div>
                         </div>
+
+                        @if($this->is_external==0)
                         <div x-show="clasificationExtension > '0'">
                             <div class="mt-6 grid xl:grid-cols-2 xl:gap-6">
                                 <div class="mt-1 relative w-full group">
@@ -213,13 +222,21 @@
                                 </div>
                             </div>
                         </div>
+                        @endif
+
                     </div>
                 @endif
+
+
                 <div class="flex items-center justify-between w-full gap-4 mt-6">
+
+                    @if($this->id_type_class_extension != 0 &&  $this->ext_reference_number==0 && $this->is_external==1 || $this->ext_reference_number !=0 && $this->is_external==0 || $document_ext_id=='')
+                    @else
                     <button wire:click.prevent="saveExtension()"
                         class="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
                         ACEPTAR
                     </button>
+                    @endif
                     <button wire:click="$emit('closeModal')"
                         class="py-2 px-4  bg-white hover:bg-gray-100 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-indigo-500 w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
                         CERRAR
