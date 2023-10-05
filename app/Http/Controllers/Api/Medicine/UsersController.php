@@ -23,10 +23,11 @@ class UsersController extends Controller
             'medicineReserveMedicine.medicineRevaluation:id,medicine_id',
             'medicineReserveMedicine.medicineRevaluation.revaluationMedicineInitial:id,medicine_revaluation_id,type_class_id',
             'medicineReserveMedicine.medicineRevaluation.revaluationMedicineRenovation:id,medicine_revaluation_id,type_class_id',
+            'medicineReserveMedicineExtension:id,medicine_reserve_id,type_class_extension_id',
             'medicineReserveFromUser:id,name',
             'medicineReserveFromUser.UserParticipant:id,user_id,apParental,apMaternal,age,curp'
         )
-            ->whereIn('status', [1,8])->get();
+            ->whereIn('status', [1, 8])->get();
         return response([
             "status" => 1,
             "message" => "Lista de usuarios",
