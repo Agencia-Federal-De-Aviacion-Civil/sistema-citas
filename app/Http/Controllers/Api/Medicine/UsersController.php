@@ -15,6 +15,31 @@ class UsersController extends Controller
     public function list(Request $request)
     {
         // TODO FALTA COLOCAR SEGURIDAD Y PROTECCION
+        // $userList = MedicineReserve::with(
+        //     'medicineReserveHeadquarter:id,name_headquarter',
+        //     'medicineReserveMedicine:id,user_id,type_exam_id',
+        //     'medicineReserveMedicine.medicineInitial:id,medicine_id,type_class_id',
+        //     'medicineReserveMedicine.medicineRenovation:id,medicine_id,type_class_id',
+        //     'medicineReserveMedicine.medicineRevaluation:id,medicine_id',
+        //     'medicineReserveMedicine.medicineRevaluation.revaluationMedicineInitial:id,medicine_revaluation_id,type_class_id',
+        //     'medicineReserveMedicine.medicineRevaluation.revaluationMedicineRenovation:id,medicine_revaluation_id,type_class_id',
+        //     'medicineReserveMedicineExtension:id,medicine_reserve_id,type_class_extension_id,status',
+        //     'medicineReserveFromUser:id,name',
+        //     'medicineReserveFromUser.UserParticipant:id,user_id,apParental,apMaternal,age,curp'
+        // )
+        //     ->whereIn('status', [1, 8])->get();
+        // return response([
+        //     "status" => 1,
+        //     "message" => "Lista de usuarios",
+        //     "data" => $userList
+        // ]);
+        $curp = $request->input('curp');
+        if (!$curp) {
+            return response([
+                "status" => 0,
+                "message" => "El CURP no se proporcionó en la solicitud.",
+            ], 400);
+        }
         $userList = MedicineReserve::with(
             'medicineReserveHeadquarter:id,name_headquarter',
             'medicineReserveMedicine:id,user_id,type_exam_id',
@@ -27,7 +52,11 @@ class UsersController extends Controller
             'medicineReserveFromUser:id,name',
             'medicineReserveFromUser.UserParticipant:id,user_id,apParental,apMaternal,age,curp'
         )
-            ->whereIn('status', [1, 8])->get();
+            ->whereIn('status', [1, 8])
+            ->whereHas('medicineReserveFromUser.UserParticipant', function ($query) use ($curp) {
+                $query->where('curp', $curp);
+            })
+            ->get();
         return response([
             "status" => 1,
             "message" => "Lista de usuarios",
