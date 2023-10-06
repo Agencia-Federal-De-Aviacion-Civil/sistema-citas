@@ -23,7 +23,7 @@ class UsersController extends Controller
             'medicineReserveMedicine.medicineRevaluation:id,medicine_id',
             'medicineReserveMedicine.medicineRevaluation.revaluationMedicineInitial:id,medicine_revaluation_id,type_class_id',
             'medicineReserveMedicine.medicineRevaluation.revaluationMedicineRenovation:id,medicine_revaluation_id,type_class_id',
-            'medicineReserveMedicineExtension:id,medicine_reserve_id,type_class_extension_id',
+            'medicineReserveMedicineExtension:id,medicine_reserve_id,type_class_extension_id,status',
             'medicineReserveFromUser:id,name',
             'medicineReserveFromUser.UserParticipant:id,user_id,apParental,apMaternal,age,curp'
         )
