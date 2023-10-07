@@ -23,5 +23,6 @@ Route::middleware([
 ])->group(function () {
     //API ROUTES TEST
     Route::get('/list-users', [UsersController::class, 'list']);
+    Route::get('/users-curp', [UsersController::class, 'listCurp']);
     Route::put('/update-reserves/{id}', [UsersController::class, 'update']);
 });
