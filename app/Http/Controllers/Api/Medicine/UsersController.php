@@ -38,13 +38,21 @@ class UsersController extends Controller
     // TODO BUSQUEDA DE USUARIOS POR ID
     public function listUserId(Request $request)
     {
-        $id = $request->input('id');
-        if (!$id) {
+        // $ids = $request->input('ids'); // Cambiar 'id' a 'ids' para recibir una lista de IDs
+        // if (!$ids || !is_array($ids)) {
+        //     return response([
+        //         "status" => 0,
+        //         "message" => "Los IDs de usuario no se proporcionaron correctamente en la solicitud.",
+        //     ], 400);
+        // }
+        $ids = $request->input('ids'); // Obtener la cadena de IDs separada por comas
+        if (!$ids) {
             return response([
                 "status" => 0,
-                "message" => "El id de usuario no se proporcionó en la solicitud.",
+                "message" => "Los IDs de usuario no se proporcionaron correctamente en la solicitud.",
             ], 400);
         }
+        $idsArray = explode(',', $ids);
         $userList = MedicineReserve::with(
             'medicineReserveHeadquarter:id,name_headquarter',
             'medicineReserveMedicine:id,user_id,type_exam_id',
@@ -58,7 +66,7 @@ class UsersController extends Controller
             'medicineReserveFromUser.UserParticipant:id,user_id,apParental,apMaternal,age,curp'
         )
             ->whereIn('status', [1, 8])
-            ->where('id', $id)
+            ->whereIn('id', $idsArray) // Usar la matriz de IDs
             ->get();
         return response([
             "status" => 1,
