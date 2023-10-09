@@ -47,17 +47,14 @@ class UsersController extends Controller
         //     ], 400);
         // }
         // END TODO
-        $ids = $request->input('ids'); // Obtener la cadena de IDs separada por comas
+        $ids = $request->input('ids'); // Obtener la cadena de IDs separada por comas desde el cuerpo de la solicitud
         if (!$ids) {
             return response([
                 "status" => 0,
                 "message" => "Los IDs de usuario no se proporcionaron correctamente en la solicitud.",
             ], 400);
         }
-        $page = $request->input('page', 1); // Página por defecto: 1
-        $perPage = $request->input('per_page', 10); // Registros por página por defecto: 10
         $idsArray = explode(',', $ids);
-        $startIndex = ($page - 1) * $perPage;
         $userList = MedicineReserve::with(
             'medicineReserveHeadquarter:id,name_headquarter',
             'medicineReserveMedicine:id,user_id,type_exam_id',
@@ -72,8 +69,6 @@ class UsersController extends Controller
         )
             ->whereIn('status', [1, 8])
             ->whereIn('id', $idsArray) // Usar la matriz de IDs
-            ->skip($startIndex)
-            ->take($perPage)
             ->get();
         return response([
             "status" => 1,
