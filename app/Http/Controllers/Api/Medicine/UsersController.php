@@ -67,7 +67,7 @@ class UsersController extends Controller
             'medicineReserveFromUser:id,name',
             'medicineReserveFromUser.UserParticipant:id,user_id,apParental,apMaternal,age,curp'
         )
-            ->whereIn('status', [1, 8, 9])
+            ->whereIn('status', [1, 8])
             ->whereIn('id', $idsArray) // Usar la matriz de IDs
             ->get();
         return response([
@@ -97,7 +97,7 @@ class UsersController extends Controller
             'medicineReserveFromUser:id,name',
             'medicineReserveFromUser.UserParticipant:id,user_id,apParental,apMaternal,age,curp'
         )
-            ->whereIn('status', [1, 8])
+            ->whereIn('status', [1, 8, 9])
             ->whereHas('medicineReserveFromUser.UserParticipant', function ($query) use ($curp) {
                 $query->where('curp', $curp);
             })
