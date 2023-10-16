@@ -15,7 +15,7 @@ class Calendar extends Component
         if (Auth::user()->can('headquarters_authorized.see.dashboard')) {
 
             $queryEvents = MedicineReserve::with('medicineReserveHeadquarter')
-                ->whereIn('status', [0, 1, 4,10,9,8])
+                ->whereIn('status', [0, 1, 4,10])
                 ->where('is_external', true)
                 ->whereHas('medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q1) {
                     $q1->where('user_id', Auth::user()->id);
@@ -36,7 +36,7 @@ class Calendar extends Component
             $this->events = json_encode($events);
         } else {
             $queryEvents = MedicineReserve::with('medicineReserveHeadquarter')
-                ->whereIn('status', [0, 1, 4,10,9,8])
+                ->whereIn('status', [0, 1, 4,10])
                 ->where('is_external', true)
                 ->get();
             $groupedEvents = $queryEvents->groupBy(function ($event) {
