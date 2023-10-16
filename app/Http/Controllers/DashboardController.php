@@ -60,12 +60,10 @@ class DashboardController extends Controller
             ])
                 ->where('is_external', false)
                 ->get();
-
-
         }
 
         $appointmentNow = $appointment->where('dateReserve', $date1);
-        $now = $appointmentNow->whereIn('status', ['0', '1', '4'])->sum('count');
+        $now = $appointmentNow->whereIn('status', ['0', '1', '4', '10'])->sum('count');
         $registradas = $appointment->sum('count');
         $porconfir = $registradas != 0 ? round($appointment->where('status', '1')->sum('count') * 100 / $registradas, 0) : 0;
         $validado = $appointment->where('status', '1')->sum('count');
