@@ -72,11 +72,15 @@ class DashboardController extends Controller
         $pendientes = $appointment->where('status', '0')->sum('count');
         $porpendientes = $registradas != 0 ? round($appointment->where('status', '0')->sum('count') * 100 / $registradas, 0) : 0;
         $canceladas = $appointment->whereIn('status', ['2', '3', '5'])->sum('count');
-        $reagendado = round($appointment->where('status', '4')->sum('count'));
-        $porreagendado = $registradas != 0 ? round($appointment->where('status', '4')->sum('count') * 100 / $registradas) : 0;
+        $reagendado = round($appointment->where('status', ['4','10'])->sum('count'));
+        $porreagendado = $registradas != 0 ? round($appointment->where('status', ['4','10'])->sum('count') * 100 / $registradas) : 0;
         $porcanceladas = $registradas != 0 ? round($appointment->whereIn('status', ['2', '3', '5'])->sum('count') * 100 / $registradas, 0) : 0;
+        $apto = $appointment->where('status', '8')->sum('count');
+        $porapto = $registradas != 0 ? round($appointment->where('status', '8')->sum('count') * 100 / $registradas, 0) : 0;
+        $noapto = $appointment->where('status', '9')->sum('count');
+        $pornoapto = $registradas != 0 ? round($appointment->where('status', '9')->sum('count') * 100 / $registradas, 0) : 0;
         $medicine =  round($registradas ? $registradas * 100 / $registradas : '0');
         $typeappoiment=2;
-        return view('afac.dashboard.index', compact('headquarters', 'nameHeadquarter', 'registradas', 'pendientes', 'validado', 'canceladas', 'reagendado', 'porconfir', 'porpendientes', 'porreagendado', 'porcanceladas', 'now', 'date', 'date2', 'medicine', 'date1', 'tomorrow', 'dateNow','typeappoiment'));
+        return view('afac.dashboard.index', compact('headquarters', 'nameHeadquarter', 'registradas', 'pendientes', 'validado', 'canceladas', 'reagendado', 'porconfir', 'porpendientes', 'porreagendado', 'porcanceladas', 'now', 'date', 'date2', 'medicine', 'date1', 'tomorrow', 'dateNow','typeappoiment','apto','porapto','noapto','pornoapto'));
     }
 }
