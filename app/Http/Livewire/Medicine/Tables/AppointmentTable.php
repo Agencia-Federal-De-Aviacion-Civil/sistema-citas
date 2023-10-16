@@ -125,7 +125,7 @@ class AppointmentTable extends DataTableComponent
                             )->where('id', $row->id)->get(),
                             'medicine' => $medicine,
                             'tipo' => $medicine[0]->medicineReserveMedicine->medicineTypeExam->id,
-                            'pago' => $medicine[0]->medicineReserveMedicine->medicineDocument->name_document,
+                            'pago' => Storage::url($medicine[0]->medicineReserveMedicine->medicineDocument->name_document),
                             'id' => $medicine[0]->medicineReserveMedicine->type_exam_id == 3 
                                 ? Storage::url($medicine[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationDocument->name_document)
                                 : Storage::url($medicine[0]->medicineReserveMedicine->medicineDocument->name_document),
