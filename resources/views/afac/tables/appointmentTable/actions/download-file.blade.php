@@ -1,5 +1,5 @@
 <div>
-    @if ($tipo == 3)
+    @if ($tipo == 3 || $tipo == 5 || $tipo == 4 )
         <div class="grid grid-cols-2 gap-2">
             <a title="FORMATO DE PAGO" class="underline hover:no-underline" target='_blank' href='{{ $id }}'>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
