@@ -277,11 +277,11 @@
                     "color": "blue-500"
                 }, {
                     "label": "Apto",
-                    "size": @json($apto),
+                    "size": @json($porapto),
                     "color": "green-500"
                 },{
                     "label": "No apto",
-                    "size": @json($porcanceladas),
+                    "size": @json($pornoapto),
                     "color": "red-500"
                 },{
                     "label": "Cancelado",
