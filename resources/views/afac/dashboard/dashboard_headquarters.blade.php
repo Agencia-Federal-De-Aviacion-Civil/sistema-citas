@@ -60,7 +60,7 @@
                             </div>
 
                             <div class="ml-4">
-                                <h3 class="font-semibold">Pendientes: {{ $pendientes }}</h3>
+                                <h3 class="font-semibold text-sm">Pendientes: {{ $pendientes }}</h3>
                                 <p class="mt-2 text-sm text-gray-500">{{ $porpendientes }}%</p>
                             </div>
                         </div>
@@ -116,7 +116,7 @@
                             </div>
 
                             <div class="ml-4">
-                                <h2 class="font-semibold">Canceladas: {{ $canceladas }}</h2>
+                                <h2 class="font-semibold text-sm">Canceladas: {{ $canceladas }}</h2>
                                 <p class="mt-2 text-sm text-gray-500">{{ $porcanceladas }}%</p>
                             </div>
                         </div>

@@ -72,8 +72,8 @@ class DashboardController extends Controller
         $pendientes = $appointment->where('status', '0')->sum('count');
         $porpendientes = $registradas != 0 ? round($appointment->where('status', '0')->sum('count') * 100 / $registradas, 0) : 0;
         $canceladas = $appointment->whereIn('status', ['2', '3', '5'])->sum('count');
-        $reagendado = round($appointment->where('status', ['4','10'])->sum('count'));
-        $porreagendado = $registradas != 0 ? round($appointment->where('status', ['4','10'])->sum('count') * 100 / $registradas) : 0;
+        $reagendado = round($appointment->whereIn('status', ['4','10'])->sum('count'));
+        $porreagendado = $registradas != 0 ? round($appointment->whereIn('status', ['4','10'])->sum('count') * 100 / $registradas) : 0;
         $porcanceladas = $registradas != 0 ? round($appointment->whereIn('status', ['2', '3', '5'])->sum('count') * 100 / $registradas, 0) : 0;
         $apto = $appointment->where('status', '8')->sum('count');
         $porapto = $registradas != 0 ? round($appointment->where('status', '8')->sum('count') * 100 / $registradas, 0) : 0;
