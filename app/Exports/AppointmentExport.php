@@ -60,6 +60,18 @@ class AppointmentExport extends DefaultValueBinder implements FromCollection, Wi
             $status = 'CANCELO USUARIO';
         } else if ($results->status == 4) {
             $status = 'REAGENDO';
+        } else if ($results->status == 5) {
+            $status = 'LIBERADA';
+        } else if ($results->status == 6) {
+            $status = 'INCOMPLETAS';
+        } else if ($results->status == 7) {
+            $status = 'EXPIRO';
+        } else if ($results->status == 8) {
+            $status = 'CONCLUYÓ APTO';
+        } else if ($results->status == 9) {
+            $status = 'CONCLUYÓ NO APTO';
+        } else if ($results->status == 10) {
+            $status = 'REAGENDÓ';
         }else {
             $status = 'PENDIENTE';
         }

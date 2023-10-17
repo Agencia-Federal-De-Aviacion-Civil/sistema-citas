@@ -172,9 +172,9 @@
                                             class="px-4 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-100 align-middle border border-solid border-gray-200 dark:border-gray-500 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                                             total de citas
                                         </th>
-                                        <th
+                                        {{-- <th
                                             class="px-4 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-100 align-middle border border-solid border-gray-200 dark:border-gray-500 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left min-w-140-px">
-                                        </th>
+                                        </th> --}}
                                     </tr>
                                 </thead>
                                 {{-- {{$headquarters}} --}}
@@ -196,7 +196,7 @@
                                                 class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                                                 {{ $headquarter->headquarterMedicineReserve->count() }}
                                             </td>
-                                            <td
+                                            {{-- <td
                                                 class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                                                 <div class="flex items-center">
                                                     <span
@@ -210,7 +210,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </td>
+                                            </td> --}}
                                         </tr>
                                     @endforeach
                                 </tbody>
