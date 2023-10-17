@@ -77,7 +77,7 @@ class HomeMedicineAuthorizedThird extends Component
         }
 
         $appointmentNow_third = $appointment_third->where('dateReserve', $date1_third);
-        $now_third = $appointmentNow_third->whereIn('status', ['0', '1', '4', '10'])->sum('count');
+        $now_third = $appointmentNow_third->whereIn('status', ['0', '1', '4', '10','7','8','9'])->sum('count');
         $registradas_third = $appointment_third->sum('count');
         $porconfir_third = $registradas_third != 0 ? round($appointment_third->where('status', '1')->sum('count') * 100 / $registradas_third, 0) : 0;
         $validado_third = $appointment_third->where('status', '1')->sum('count');
