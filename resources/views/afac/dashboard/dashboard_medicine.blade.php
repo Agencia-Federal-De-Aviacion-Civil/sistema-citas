@@ -51,7 +51,7 @@
                             </template>
                         </div>
                     </div>
-                    <div class="-mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                    <div class="-mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-6 xl:grid-cols-6">
                         <div class="flex items-start p-2">
                             <div
                                 class="flex h-12 w-12 items-center justify-center rounded-full border border-gray-100 bg-gray-50">
@@ -59,7 +59,7 @@
                             </div>
 
                             <div class="ml-4">
-                                <h3 class="font-semibold">Pendientes: {{ $pendientes }}</h3>
+                                <h3 class="font-semibold text-sm">Pendientes: {{ $pendientes }}</h3>
                                 <p class="mt-2 text-sm text-gray-500">{{ $porpendientes }}%</p>
                             </div>
                         </div>
@@ -70,7 +70,7 @@
                             </div>
 
                             <div class="ml-4">
-                                <h3 class="font-semibold">Confirmadas: {{ $validado }}</h3>
+                                <h3 class="font-semibold">Asistió: {{ $validado }}</h3>
                                 <p class="mt-2 text-sm text-gray-500">{{ $porconfir }}%</p>
                             </div>
                         </div>
@@ -81,8 +81,20 @@
                                 <span href="#blue" class="block w-3 h-3 bg-blue-500 rounded-full"></span>
                             </div>
                             <div class="ml-4">
-                                <h2 class="font-semibold">Reagendadas: {{ $reagendado }}</h2>
+                                <h2 class="font-semibold text-sm">Reagendadas: {{ $reagendado }}</h2>
                                 <p class="mt-2 text-sm text-gray-500">{{ $porreagendado }}%</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start p-2">
+                            <div
+                                class="flex h-12 w-12 items-center justify-center rounded-full border border-green-100 bg-green-50">
+                                <span href="#blue" class="block w-3 h-3 bg-green-500 rounded-full"></span>
+                            </div>
+
+                            <div class="ml-4">
+                                <h2 class="font-semibold text-sm">Apto: {{ $apto }}</h2>
+                                <p class="mt-2 text-sm text-gray-500">{{ $porapto }}%</p>
                             </div>
                         </div>
                         <div class="flex items-start p-2">
@@ -92,7 +104,18 @@
                             </div>
 
                             <div class="ml-4">
-                                <h2 class="font-semibold">Canceladas: {{ $canceladas }}</h2>
+                                <h2 class="font-semibold text-sm">No Apto: {{ $noapto }}</h2>
+                                <p class="mt-2 text-sm text-gray-500">{{ $pornoapto }}%</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start p-2">
+                            <div
+                                class="flex h-12 w-12 items-center justify-center rounded-full border border-orange-100 bg-orange-50">
+                                <span href="#blue" class="block w-3 h-3 bg-orange-500 rounded-full"></span>
+                            </div>
+
+                            <div class="ml-4">
+                                <h2 class="font-semibold text-sm">Canceladas: {{ $canceladas }}</h2>
                                 <p class="mt-2 text-sm text-gray-500">{{ $porcanceladas }}%</p>
                             </div>
                         </div>
@@ -160,11 +183,11 @@
                                                 {{ $headquarter->name_headquarter }}</th>
                                             <td
                                                 class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                                {{ $headquarter->headquarterMedicineReserve->where('dateReserve', $date1)->whereIn('status', ['0', '1', '4'])->count() }}
+                                                {{ $headquarter->headquarterMedicineReserve->where('dateReserve', $date1)->whereIn('status', ['0', '1', '4', '10', '8', '9'])->count() }}
                                             </td>
                                             <td
                                                 class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                                {{ $headquarter->headquarterMedicineReserve->where('dateReserve', $tomorrow)->whereIn('status', ['0', '1', '4'])->count() }}
+                                                {{ $headquarter->headquarterMedicineReserve->where('dateReserve', $tomorrow)->whereIn('status', ['0', '1', '4', '10', '8', '9'])->count() }}
                                             </td>
                                             <td
                                                 class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
@@ -258,10 +281,18 @@
                     "size": @json($porreagendado),
                     "color": "blue-500"
                 }, {
+                    "label": "Apto",
+                    "size": @json($porapto),
+                    "color": "green-500"
+                },{
+                    "label": "No apto",
+                    "size": @json($pornoapto),
+                    "color": "red-500"
+                },{
                     "label": "Cancelado",
                     "size": @json($porcanceladas),
-                    "color": "red-500"
-                }, ]
+                    "color": "orange-500"
+                },]
             }
         }
     </script>
