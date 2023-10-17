@@ -154,11 +154,11 @@
                                         </th>
                                         <td
                                             class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            {{ $headquarter_third->headquarterMedicineReserve->where('dateReserve', $date1_third)->whereIn('status', ['0', '1', '4', '10', '8', '9'])->count() }}
+                                            {{ $headquarter_third->headquarterMedicineReserve->where('dateReserve', $date1_third)->whereIn('status', ['0', '1', '4', '10', '8', '9', '7'])->count() }}
                                         </td>
                                         <td
                                             class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            {{ $headquarter_third->headquarterMedicineReserve->where('dateReserve', $tomorrow_third)->whereIn('status', ['0', '1', '4', '10', '8', '9'])->count() }}
+                                            {{ $headquarter_third->headquarterMedicineReserve->where('dateReserve', $tomorrow_third)->whereIn('status', ['0', '1', '4', '10', '8', '9', '7'])->count() }}
                                         </td>
                                         <td
                                             class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
