@@ -9,6 +9,7 @@ use App\Models\Medicine\CertificateQr\MedicineCertificateQr;
 use App\Models\Medicine\MedicineReserve;
 use App\Models\User;
 use Illuminate\Http\Request;
+use PhpParser\Node\Stmt\TryCatch;
 
 class UsersController extends Controller
 {
@@ -126,5 +127,28 @@ class UsersController extends Controller
             "status" => 1,
             "message" => "Registro actualizado exitosamente"
         ]);
+    }
+    public function updateStatus(Request $request, $ids)
+    {
+        try {
+            $idsArray = explode(',', $ids);
+            foreach ($idsArray as $id) {
+                $medicineReserve = MedicineReserve::find($id);
+                if (!$medicineReserve) {
+                    throw new \Exception('NO SE ENCONTRÓ NINGUN REGISTRO CON ESE ID, NO SE PUEDE ACTUALIZAR');
+                }
+                $medicineReserve->status = $request->status;
+                $medicineReserve->save();
+            }
+            return response([
+                "status" => 1,
+                "message" => "REGISTROS ACTUALIZADOS EXITOSAMENTE"
+            ]);
+        } catch (\Exception $e) {
+            return response([
+                "status" => 0,
+                "message" => $e->getMessage()
+            ]);
+        }
     }
 }
