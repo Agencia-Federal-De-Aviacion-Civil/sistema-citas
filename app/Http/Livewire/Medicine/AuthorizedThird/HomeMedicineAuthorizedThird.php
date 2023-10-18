@@ -77,17 +77,22 @@ class HomeMedicineAuthorizedThird extends Component
         }
 
         $appointmentNow_third = $appointment_third->where('dateReserve', $date1_third);
-        $now_third = $appointmentNow_third->whereIn('status', ['0', '1', '4'])->sum('count');
+        $now_third = $appointmentNow_third->whereIn('status', ['0', '1', '4', '10','7','8','9'])->sum('count');
         $registradas_third = $appointment_third->sum('count');
         $porconfir_third = $registradas_third != 0 ? round($appointment_third->where('status', '1')->sum('count') * 100 / $registradas_third, 0) : 0;
         $validado_third = $appointment_third->where('status', '1')->sum('count');
-        $pendientes_third = $appointment_third->where('status', '0')->sum('count');
+        $pendientes_third = $appointment_third->whereIn('status', ['0','7'])->sum('count');
         $porpendientes_third = $registradas_third != 0 ? round($appointment_third->where('status', '0')->sum('count') * 100 / $registradas_third, 0) : 0;
         $canceladas_third = $appointment_third->whereIn('status', ['2', '3', '5'])->sum('count');
-        $reagendado_third = round($appointment_third->where('status', '4')->sum('count'));
-        $porreagendado_third = $registradas_third != 0 ? round($appointment_third->where('status', '4')->sum('count') * 100 / $registradas_third) : 0;
+        $reagendado_third = round($appointment_third->whereIn('status', ['4','10'])->sum('count'));
+        $porreagendado_third = $registradas_third != 0 ? round($appointment_third->whereIn('status', ['4','10'])->sum('count') * 100 / $registradas_third) : 0;
         $porcanceladas_third = $registradas_third != 0 ? round($appointment_third->whereIn('status', ['2', '3', '5'])->sum('count') * 100 / $registradas_third, 0) : 0;
+        $apto_third = $appointment_third->where('status', '8')->sum('count');
+        $porapto_third = $registradas_third != 0 ? round($appointment_third->where('status', '8')->sum('count') * 100 / $registradas_third, 0) : 0;
+        $noapto_third = $appointment_third->where('status', '9')->sum('count');
+        $pornoapto_third = $registradas_third != 0 ? round($appointment_third->where('status', '9')->sum('count') * 100 / $registradas_third, 0) : 0;
+
         $medicine_third =  round($registradas_third ? $registradas_third * 100 / $registradas_third : '0');
-        return view('livewire.medicine.authorized-third.home-medicine-authorized-third', compact('headquarters_third', 'nameHeadquarter_third', 'registradas_third', 'pendientes_third', 'validado_third', 'canceladas_third', 'reagendado_third', 'porconfir_third', 'porpendientes_third', 'porreagendado_third', 'porcanceladas_third', 'now_third', 'date_third', 'date2_third', 'medicine_third', 'date1_third', 'tomorrow_third'));
+        return view('livewire.medicine.authorized-third.home-medicine-authorized-third', compact('headquarters_third', 'nameHeadquarter_third', 'registradas_third', 'pendientes_third', 'validado_third', 'canceladas_third', 'reagendado_third', 'porconfir_third', 'porpendientes_third', 'porreagendado_third', 'porcanceladas_third', 'now_third', 'date_third', 'date2_third', 'medicine_third', 'date1_third', 'tomorrow_third','apto_third','porapto_third','noapto_third','pornoapto_third'));
     }
 }

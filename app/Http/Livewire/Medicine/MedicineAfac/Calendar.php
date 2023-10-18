@@ -12,7 +12,7 @@ class Calendar extends Component
     {
 
         $queryEvents = MedicineReserve::with('medicineReserveHeadquarter')
-            ->whereIn('status', [0, 1, 4,10])
+            ->whereIn('status', [0, 1, 4, 10])
             ->where('is_external', false)
             ->get();
         $groupedEvents = $queryEvents->groupBy(function ($event) {

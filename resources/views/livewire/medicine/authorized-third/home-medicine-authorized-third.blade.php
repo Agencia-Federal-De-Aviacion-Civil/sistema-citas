@@ -13,13 +13,15 @@
                 <div class="pb-4 lg:pb-6">
                     <div class="relative pt-1 mx-5">
                         <div class="overflow-hidden h-3 mb-4 text-xs flex rounded bg-gray-500">
-                          <div style="width: {{$porconfir_third}} %" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-800"></div>
-                          <div style="width: {{$porcanceladas_third}}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500"></div>
+                          <div style="width: {{$porconfir_third}}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-800"></div>
+                          <div style="width: {{$porcanceladas_third}}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-orange-500"></div>
                           <div style="width: {{$porreagendado_third}}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-500"></div>
+                          <div style="width: {{$porapto_third}}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-green-500"></div>
+                          <div style="width: {{$pornoapto_third}}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500"></div>
                         </div>
-                    </div>
+                      </div>
                 </div>
-                <div class="-mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                <div class="-mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-6 xl:grid-cols-6">
                     <div class="flex items-start p-2">
                         <div
                             class="flex h-12 w-12 items-center justify-center rounded-full border border-gray-100 bg-gray-50">
@@ -27,7 +29,7 @@
                         </div>
 
                         <div class="ml-4">
-                            <h3 class="font-semibold">Pendientes: {{ $pendientes_third }}</h3>
+                            <h3 class="font-semibold text-sm">Pendientes: {{ $pendientes_third }}</h3>
                             <p class="mt-2 text-sm text-gray-500">{{ $porpendientes_third }}%</p>
                         </div>
                     </div>
@@ -38,7 +40,7 @@
                         </div>
 
                         <div class="ml-4">
-                            <h3 class="font-semibold">Confirmadas: {{ $validado_third }}</h3>
+                            <h3 class="font-semibold">Asistió: {{ $validado_third }}</h3>
                             <p class="mt-2 text-sm text-gray-500">{{ $porconfir_third }}%</p>
                         </div>
                     </div>
@@ -49,8 +51,20 @@
                             <span href="#blue" class="block w-3 h-3 bg-blue-500 rounded-full"></span>
                         </div>
                         <div class="ml-4">
-                            <h2 class="font-semibold">Reagendadas: {{ $reagendado_third }}</h2>
+                            <h2 class="font-semibold text-sm">Reagendadas: {{ $reagendado_third }}</h2>
                             <p class="mt-2 text-sm text-gray-500">{{ $porreagendado_third }}%</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start p-2">
+                        <div
+                            class="flex h-12 w-12 items-center justify-center rounded-full border border-green-100 bg-green-50">
+                            <span href="#blue" class="block w-3 h-3 bg-green-500 rounded-full"></span>
+                        </div>
+
+                        <div class="ml-4">
+                            <h2 class="font-semibold text-sm">Apto: {{ $apto_third}}</h2>
+                            <p class="mt-2 text-sm text-gray-500">{{ $porapto_third }}%</p>
                         </div>
                     </div>
                     <div class="flex items-start p-2">
@@ -60,7 +74,18 @@
                         </div>
 
                         <div class="ml-4">
-                            <h2 class="font-semibold">Canceladas: {{ $canceladas_third }}</h2>
+                            <h2 class="font-semibold text-sm">No Apto: {{ $noapto_third }}</h2>
+                            <p class="mt-2 text-sm text-gray-500">{{ $pornoapto_third }}%</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start p-2">
+                        <div
+                            class="flex h-12 w-12 items-center justify-center rounded-full border border-orange-100 bg-orange-50">
+                            <span href="#blue" class="block w-3 h-3 bg-orange-500 rounded-full"></span>
+                        </div>
+
+                        <div class="ml-4">
+                            <h2 class="font-semibold text-sm">Canceladas: {{ $canceladas_third }}</h2>
                             <p class="mt-2 text-sm text-gray-500">{{ $porcanceladas_third }}%</p>
                         </div>
                     </div>
@@ -129,11 +154,11 @@
                                         </th>
                                         <td
                                             class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            {{ $headquarter_third->headquarterMedicineReserve->where('dateReserve', $date1_third)->whereIn('status', ['0', '1', '4'])->count() }}
+                                            {{ $headquarter_third->headquarterMedicineReserve->where('dateReserve', $date1_third)->whereIn('status', ['0', '1', '4', '10', '8', '9', '7'])->count() }}
                                         </td>
                                         <td
                                             class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            {{ $headquarter_third->headquarterMedicineReserve->where('dateReserve', $tomorrow_third)->whereIn('status', ['0', '1', '4'])->count() }}
+                                            {{ $headquarter_third->headquarterMedicineReserve->where('dateReserve', $tomorrow_third)->whereIn('status', ['0', '1', '4', '10', '8', '9', '7'])->count() }}
                                         </td>
                                         <td
                                             class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
