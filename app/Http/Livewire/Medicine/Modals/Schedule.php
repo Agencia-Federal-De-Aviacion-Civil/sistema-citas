@@ -9,6 +9,7 @@ use App\Models\Medicine\MedicineObservation;
 use App\Models\Medicine\MedicineReserve;
 use App\Models\Medicine\MedicineSchedule;
 use App\Models\Medicine\medicine_history_movements;
+use App\Models\Medicine\MedicineReservesExtension;
 use App\Models\Observation;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -22,7 +23,7 @@ class Schedule extends ModalComponent
     use WithFileUploads;
     public $id_appoint, $id_medicine_observation, $scheduleId, $status, $medicineReserves, $name, $type, $class, $typLicense, $sede, $dateReserve, $date, $time, $scheduleMedicines, $sedes,
         $headquarter_id, $medicine_schedule_id, $selectedOption, $observation_reschedule, $observation_cancelate, $hoursReserve, $observation, $medicineId, $accion,
-        $disabledDaysFilter, $days, $is_external;
+        $disabledDaysFilter, $days, $is_external,$medicineRextension,$typextension,$classxtension,$typLicensextension;
 
     public function rules()
     {
@@ -81,6 +82,12 @@ class Schedule extends ModalComponent
             if (Auth::user()->can('user.see.schedule.table')) {
                 $this->sedes = Headquarter::where('system_id', 1)->where('id', $medicineReserves[0]->headquarter_id)->get();
                 $this->selectedOption = '';
+            }
+            $this->medicineRextension = MedicineReservesExtension::with(['extensionTypeClass','extensionClasificationClass'])->where('medicine_reserve_id',$this->id_appoint)->get();
+            if(isset($this->medicineRextension[0]->id)){
+                $this->typextension = $this->medicineRextension[0]->extensionTypeClass->typeClassTypeExam->name;
+                $this->classxtension = $this->medicineRextension[0]->extensionTypeClass->name;
+                $this->typLicensextension = $this->medicineRextension[0]->extensionClasificationClass->name;
             }
         } else {
             $this->scheduleId = null;
