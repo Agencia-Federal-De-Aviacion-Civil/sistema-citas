@@ -154,18 +154,22 @@ class UsersController extends Controller
     }
     public function updateStatusExtension(Request $request, $id)
     {
-        $medicineReserveExtension = MedicineReservesExtension::find($id);
-        if (!$medicineReserveExtension) {
+        try {
+            $medicineReserveExtension = MedicineReservesExtension::where('medicine_reserve_id', $id)->get();
+            if (!$medicineReserveExtension) {
+                throw new \Exception('REGISTRO NO ENCONTRADO');
+            }
+            $medicineReserveExtension->status = $request->status;
+            $medicineReserveExtension->save();
+            return response([
+                "status" => 1,
+                "message" => "REGISTRO ACTUALIZADO EXITOSAMENTE"
+            ]);
+        } catch (\Exception $e) {
             return response([
                 "status" => 0,
-                "message" => "Registro no encontrado"
+                "message" => $e->getMessage()
             ], 404);
         }
-        $medicineReserveExtension->status = $request->status;
-        $medicineReserveExtension->save();
-        return response([
-            "status" => 1,
-            "message" => "Registro actualizado exitosamente"
-        ]);
     }
 }
