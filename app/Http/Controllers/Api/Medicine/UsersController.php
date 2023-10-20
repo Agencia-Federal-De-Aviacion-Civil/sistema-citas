@@ -155,7 +155,7 @@ class UsersController extends Controller
     public function updateStatusExtension(Request $request, $id)
     {
         try {
-            $medicineReserveExtension = MedicineReservesExtension::where('medicine_reserve_id', $id)->get();
+            $medicineReserveExtension = MedicineReservesExtension::where('medicine_reserve_id', $id)->first();
             if (!$medicineReserveExtension) {
                 throw new \Exception('REGISTRO NO ENCONTRADO');
             }
