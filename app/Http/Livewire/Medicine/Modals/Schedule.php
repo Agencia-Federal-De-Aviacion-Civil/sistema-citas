@@ -66,8 +66,12 @@ class Schedule extends ModalComponent
                 }
             } else if ($medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->id == 4) {
                 $this->class = $medicineReserves[0]->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name;
-                $this->typLicense = $medicineReserves[0]->medicineReserveMedicine->medicineRenovation[0]->renovationClasificationClass->name;
+                $this->typLicense = $medicineReserves[0]->medicineReserveMedicine->medicineRenovation[0]->renovationClasificationClass->name;          
+            } else if ($medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->id == 5) {
+                $this->class = $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->revaluationRenovationTypeClass->name;
+                $this->typLicense = $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->revaluationRenovationClasificationClass->name;
             }
+
             $this->id_medicine_observation = $medicineReserves[0]->reserveObserv[0]->id ?? null;
             $this->observation = $medicineReserves[0]->reserveObserv[0]->observation ?? null;
             $this->status = $medicineReserves[0]->status;
@@ -88,6 +92,7 @@ class Schedule extends ModalComponent
                 $this->typextension = $this->medicineRextension[0]->extensionTypeClass->typeClassTypeExam->name;
                 $this->classxtension = $this->medicineRextension[0]->extensionTypeClass->name;
                 $this->typLicensextension = $this->medicineRextension[0]->extensionClasificationClass->name;
+                $this->status = $this->medicineRextension[0]->status;
             }
         } else {
             $this->scheduleId = null;

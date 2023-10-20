@@ -40,7 +40,13 @@
                         </div>
                     </div>
                     @isset($this->medicineRextension[0]->id)
+                        @if ($status == 8)
+                        <label class="mt-4 grid xl:grid-cols-6">EXTENSION: <x-badge class="ml-2" flat positive label="CONCLUYÓ APTO" /></label>
+                        @elseif($status == 9)
+                        <label class="mt-4 grid xl:grid-cols-6">EXTENSION: <x-badge class="ml-2" flat negative label="CONCLUYÓ NO APTO" /></label>
+                        @else
                         <label class="mt-4 grid xl:grid-cols-6">EXTENSION </label>
+                        @endif
                         <div class="mt-0 grid xl:grid-cols-2 xl:gap-6">
                             <div class="mt-1 relative w-full group">
                                 <x-input wire:model="typextension" label="TIPO" placeholder="ESCRIBE..." disabled />
