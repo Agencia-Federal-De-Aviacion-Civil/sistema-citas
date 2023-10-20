@@ -39,6 +39,28 @@
                             <x-input wire:model="typLicense" label="TIPO DE LICENCIA" disabled />
                         </div>
                     </div>
+                    @isset($this->medicineRextension[0]->id)
+                        @if ($status == 8)
+                        <label class="mt-4 grid xl:grid-cols-6">EXTENSION: <x-badge class="ml-2" flat positive label="CONCLUYÓ APTO" /></label>
+                        @elseif($status == 9)
+                        <label class="mt-4 grid xl:grid-cols-6">EXTENSION: <x-badge class="ml-2" flat negative label="CONCLUYÓ NO APTO" /></label>
+                        @else
+                        <label class="mt-4 grid xl:grid-cols-6">EXTENSION </label>
+                        @endif
+                        <div class="mt-0 grid xl:grid-cols-2 xl:gap-6">
+                            <div class="mt-1 relative w-full group">
+                                <x-input wire:model="typextension" label="TIPO" placeholder="ESCRIBE..." disabled />
+                            </div>
+                            <div class="mt-1 relative w-full group">
+                                <x-input wire:model="classxtension" label="CLASE" placeholder="ESCRIBE..." disabled />
+                            </div>
+                        </div>
+                        <div class="mt-4 grid xl:grid-cols-1 xl:gap-6">
+                            <div class="mt-1 relative w-full group">
+                                <x-input wire:model="typLicensextension" label="TIPO DE LICENCIA" disabled />
+                            </div>
+                        </div>
+                    @endisset
                     <div class="mt-4 grid xl:grid-cols-1 xl:gap-6">
                         <div class="mt-1 relative w-full group">
                             @if (
@@ -162,14 +184,14 @@
                                     </div>
                                 </div>
                                 <div class="mt-2">
-                                <select name="my_option" label="SELECIONE OPCIÓN" x-model="selectedOption"
-                                    wire:model="selectedOption"
-                                    class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-300 dark:border-gray-300 dark:placeholder-gray-300 dark:text-white">
-                                    <option value="">SELECCIONE LA ACCIÓN</option>
-                                    <option value="3">CANCELAR CITA</option>
-                                    <option value="10">REAGENDAR CITA</option>
-                                </select>
-                            </div>
+                                    <select name="my_option" label="SELECIONE OPCIÓN" x-model="selectedOption"
+                                        wire:model="selectedOption"
+                                        class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-300 dark:border-gray-300 dark:placeholder-gray-300 dark:text-white">
+                                        <option value="">SELECCIONE LA ACCIÓN</option>
+                                        <option value="3">CANCELAR CITA</option>
+                                        <option value="10">REAGENDAR CITA</option>
+                                    </select>
+                                </div>
                             @else
                                 <select name="my_option" label="SELECIONE OPCIÓN" x-model="selectedOption"
                                     wire:model="selectedOption"
