@@ -27,4 +27,5 @@ Route::middleware([
     Route::post('/list-usersId', [UsersController::class, 'listUserId']);
     Route::put('/update-reserves/{id}', [UsersController::class, 'update']);
     Route::put('/update-status/{ids}', [UsersController::class, 'updateStatus']);
+    Route::put('/update-status-extension/{id}', [UsersController::class, 'updateStatusExtension']);
 });

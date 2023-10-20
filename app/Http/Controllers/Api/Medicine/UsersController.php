@@ -7,6 +7,7 @@ use App\Models\Catalogue\TypeExam;
 use App\Models\Linguistic\Reserve;
 use App\Models\Medicine\CertificateQr\MedicineCertificateQr;
 use App\Models\Medicine\MedicineReserve;
+use App\Models\Medicine\MedicineReservesExtension;
 use App\Models\User;
 use Illuminate\Http\Request;
 use PhpParser\Node\Stmt\TryCatch;
@@ -150,5 +151,21 @@ class UsersController extends Controller
                 "message" => $e->getMessage()
             ]);
         }
+    }
+    public function updateStatusExtension(Request $request, $id)
+    {
+        $medicineReserveExtension = MedicineReservesExtension::find($id);
+        if (!$medicineReserveExtension) {
+            return response([
+                "status" => 0,
+                "message" => "Registro no encontrado"
+            ], 404);
+        }
+        $medicineReserveExtension->status = $request->status;
+        $medicineReserveExtension->save();
+        return response([
+            "status" => 1,
+            "message" => "Registro actualizado exitosamente"
+        ]);
     }
 }
