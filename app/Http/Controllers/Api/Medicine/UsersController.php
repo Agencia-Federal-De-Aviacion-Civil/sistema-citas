@@ -69,7 +69,7 @@ class UsersController extends Controller
             'medicineReserveFromUser:id,name',
             'medicineReserveFromUser.UserParticipant:id,user_id,apParental,apMaternal,age,curp'
         )
-            ->whereIn('status', [1, 8])
+            ->whereIn('status', [1, 8, 9])
             ->whereIn('id', $idsArray) // Usar la matriz de IDs
             ->get();
         return response([
