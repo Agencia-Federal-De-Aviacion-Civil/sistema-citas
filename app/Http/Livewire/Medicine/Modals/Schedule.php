@@ -66,7 +66,7 @@ class Schedule extends ModalComponent
                 }
             } else if ($medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->id == 4) {
                 $this->class = $medicineReserves[0]->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name;
-                $this->typLicense = $medicineReserves[0]->medicineReserveMedicine->medicineRenovation[0]->renovationClasificationClass->name;          
+                $this->typLicense = $medicineReserves[0]->medicineReserveMedicine->medicineRenovation[0]->renovationClasificationClass->name;
             } else if ($medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->id == 5) {
                 $this->class = $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->revaluationRenovationTypeClass->name;
                 $this->typLicense = $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->revaluationRenovationClasificationClass->name;
@@ -89,10 +89,10 @@ class Schedule extends ModalComponent
             }
             $this->medicineRextension = MedicineReservesExtension::with(['extensionTypeClass','extensionClasificationClass'])->where('medicine_reserve_id',$this->id_appoint)->get();
             if(isset($this->medicineRextension[0]->id)){
-                $this->typextension = $this->medicineRextension[0]->extensionTypeClass->typeClassTypeExam->name;
-                $this->classxtension = $this->medicineRextension[0]->extensionTypeClass->name;
-                $this->typLicensextension = $this->medicineRextension[0]->extensionClasificationClass->name;
-                $this->status = $this->medicineRextension[0]->status;
+                $this->typextension = isset($this->medicineRextension[0]->extensionTypeClass->typeClassTypeExam->name) ? $this->medicineRextension[0]->extensionTypeClass->typeClassTypeExam->name : 'SIN DATOS';
+                $this->classxtension = isset($this->medicineRextension[0]->extensionTypeClass->name) ? $this->medicineRextension[0]->extensionTypeClass->name : 'SIN DATOS';
+                $this->typLicensextension = isset($this->medicineRextension[0]->extensionClasificationClass->name) ? $this->medicineRextension[0]->extensionClasificationClass->name : 'SIN DATOS';
+                $this->status = isset($this->medicineRextension[0]->status) ? $this->medicineRextension[0]->status : 'SIN DATOS';
             }
         } else {
             $this->scheduleId = null;
