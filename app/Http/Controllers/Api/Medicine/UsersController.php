@@ -70,7 +70,7 @@ class UsersController extends Controller
         ]);
     }
     // TODO API PARA LA LIBERACIÓN DE CODIGO QR
-    public function listUserIdQr(Request $request)
+    public function listHeadquarter(Request $request)
     {
         $ids = $request->input('ids'); // Obtener la cadena de IDs separada por comas desde el cuerpo de la solicitud
         if (!$ids) {

@@ -25,7 +25,7 @@ Route::middleware([
     Route::get('/list-users', [UsersController::class, 'list']);
     Route::get('/users-curp', [UsersController::class, 'listCurp']);
     Route::post('/list-usersId', [UsersController::class, 'listUserId']);
-    Route::post('/list-usersIdQr', [UsersController::class, 'listUserIdQr']);
+    Route::post('/list-headquarters', [UsersController::class, 'listHeadquarter']);
     Route::put('/update-reserves/{id}', [UsersController::class, 'update']);
     Route::put('/update-status/{ids}', [UsersController::class, 'updateStatus']);
     Route::put('/update-status-extension/{id}', [UsersController::class, 'updateStatusExtension']);
