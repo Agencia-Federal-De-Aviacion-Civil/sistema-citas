@@ -72,28 +72,24 @@ class UsersController extends Controller
     // TODO API PARA LA LIBERACIÓN DE CODIGO QR
     public function listHeadquarter(Request $request)
     {
-        $ids = $request->input('ids'); // Obtener la cadena de IDs separada por comas desde el cuerpo de la solicitud
-        if (!$ids) {
+        $id = $request->input('id');
+        if (!$id) {
             return response([
                 "status" => 0,
                 "message" => "Los IDs de usuario no se proporcionaron correctamente en la solicitud.",
             ], 400);
         }
-        $idsArray = explode(',', $ids);
         $userList = MedicineReserve::with(
             'medicineReserveHeadquarter:id,name_headquarter',
             'medicineReserveMedicine:id,user_id,type_exam_id',
-            'medicineReserveMedicine.medicineInitial:id,medicine_id,type_class_id',
-            'medicineReserveMedicine.medicineRenovation:id,medicine_id,type_class_id',
-            'medicineReserveMedicine.medicineRevaluation:id,medicine_id',
-            'medicineReserveMedicine.medicineRevaluation.revaluationMedicineInitial:id,medicine_revaluation_id,type_class_id',
-            'medicineReserveMedicine.medicineRevaluation.revaluationMedicineRenovation:id,medicine_revaluation_id,type_class_id',
-            'medicineReserveMedicineExtension:id,medicine_reserve_id,type_class_extension_id,status',
             'medicineReserveFromUser:id,name',
             'medicineReserveFromUser.UserParticipant:id,user_id,apParental,apMaternal,age,curp'
         )
+            ->whereHas('medicineReserveHeadquarter', function ($q) use ($id) {
+                $q->where('id', $id);
+            })
             ->whereIn('status', [1, 7])
-            ->whereIn('id', $idsArray) // Usar la matriz de IDs
+            ->where('is_external', 1)
             ->get();
         return response([
             "status" => 1,
