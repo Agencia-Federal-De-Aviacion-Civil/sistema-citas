@@ -83,12 +83,13 @@ class UsersController extends Controller
             'medicineReserveHeadquarter:id,name_headquarter',
             'medicineReserveMedicine:id,user_id,type_exam_id',
             'medicineReserveFromUser:id,name',
-            'medicineReserveFromUser.UserParticipant:id,user_id,apParental,apMaternal,age,curp'
+            'medicineReserveFromUser.UserParticipant:id,user_id,apParental,apMaternal,age,curp',
+            'reserveObserv'
         )
             ->whereHas('medicineReserveHeadquarter', function ($q) use ($id) {
                 $q->where('id', $id);
             })
-            ->whereIn('status', [1, 7])
+            ->whereIn('status', [1])
             ->where('is_external', 1)
             ->get();
         return response([
