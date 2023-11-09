@@ -4,21 +4,24 @@ namespace App\Http\Livewire;
 
 use App\Models\Catalogue\Headquarter;
 use Livewire\Component;
+use WireUi\Traits\Actions;
 
 class Dashboard extends Component
 {
-    public $selectedHeadquarter, $headquartersAfac, $stategrup,$headquartersAfac1;
+    use Actions;
+    public $selectedHeadquarter, $headquartersAfac, $stategrup, $headquartersAfac1, $headquartersAfacFilter, $estados;
     public function mount()
     {
-       
+
         $this->headquartersAfac = Headquarter::where('status', 0)->get();
-        $stategrup = $this->headquartersAfac ->groupBy('state');
-        $this->stategrup =$stategrup->all();
+        $this->stategrup = $this->headquartersAfac->groupBy('state')->all();
+        $this->estados = array_keys($this->stategrup);
+        $this->headquartersAfac->whereIn('state', $this->estados); //AQUI VA EL VALOR DEL ESTADOS
     }
     public function rules()
     {
         return [
-            'selectedHeadquarter' => 'required',
+            // 'selectedHeadquarter' => 'required',
         ];
     }
     public function render()
@@ -27,27 +30,17 @@ class Dashboard extends Component
     }
     public function selected()
     {
-        $this->validate();
-        $selectedValues = explode('-', $this->selectedHeadquarter);
-        $id = $selectedValues[0];
-        $idTypeAppointment = boolval($selectedValues[1]);
-        session(['idType' => $idTypeAppointment, 'idHeadquarter' => $id]);
-        redirect()->route('afac.medicine');
-    }
-    
-    public function goAfac($idTypeAppointment)
-    {
-        // $currentIdType = session('idType');
-        // dd($currentIdType);
-        // if ($currentIdType !== $idTypeAppointment) {
-        //     session()->forget('idType');
-        // }
-        // session(['idType' => $idTypeAppointment]);
+        // $this->validate();
+        // $selectedValues = explode('-', $this->selectedHeadquarter);
+        // $id = $selectedValues[0];
+        // $idTypeAppointment = boolval($selectedValues[1]);
+        // session(['idType' => $idTypeAppointment, 'idHeadquarter' => $id]);
+        // redirect()->route('afac.medicine');
     }
     public function messages()
     {
         return [
-            'selectedHeadquarter.required' => 'Campo obligatorio'
+            'selectedHeadquarter.required' => 'EL CAMPO SEDE ES OBLIGATORIO'
         ];
     }
 }

@@ -1,4 +1,5 @@
 <div>
+    <x-dialog z-index="z-50" blur="md" align="center" />
     <x-banner-component :title="'Bienvenido al Sistema de citas AFAC'" />
     <div class="py-2">
         <div x-data="{ 'showModal': false }" @keydown.escape="showModal = false">
@@ -118,7 +119,7 @@
                                         <div class="w-full mt-2 p-0 bg-gray-50 shadow rounded" id="dropdown">
                                             <div class="bg-white max-w-full mx-auto border border-gray-200">
                                                 <ul class="shadow-box">
-                                                    @foreach ($stategrup as $stategrups)
+                                                    @foreach ($estados as $estado)
                                                         <li class="relative border-b border-gray-200"
                                                             x-data="{ selected: null }">
 
@@ -126,7 +127,7 @@
                                                                 @click="selected !== 1 ? selected = 1 : selected = null">
                                                                 <div class="flex items-center justify-between">
                                                                     <span>
-                                                                        {{ $stategrups[0]->state }} </span>
+                                                                        {{ $estado }} </span>
                                                                     <span class="text-white bg-blue-500 rounded-full">
                                                                         <svg xmlns="http://www.w3.org/2000/svg"
                                                                             class="w-6 h-6" fill="none"
@@ -138,19 +139,12 @@
                                                                     </span>
                                                                 </div>
                                                             </button>
-
                                                             <div class="relative overflow-hidden transition-all max-h-0 duration-700"
                                                                 style="" x-ref="container1"
                                                                 x-bind:style="selected == 1 ? 'max-height: ' + $refs.container1
                                                                     .scrollHeight + 'px' : ''">
                                                                 <div class="p-6">
                                                                     <section class="container px-4 mx-auto">
-                                                                        {{-- <div class="flex items-center gap-x-3">
-                                                                        <h2 class="text-lg font-medium text-gray-800 dark:text-white">Team members</h2>
-                                                                
-                                                                        <span class="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-400">100 users</span>
-                                                                    </div> --}}
-
                                                                         <div class="flex flex-col">
                                                                             <div
                                                                                 class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -204,44 +198,45 @@
                                                                                             </thead>
                                                                                             <tbody
                                                                                                 class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-                                                                                                @foreach ($headquartersAfac->where('state', $stategrups[0]->state) as $headquarterAfac)
+                                                                                                @foreach ($stategrup[$estado] as $headquarterAfac)
+                                                                                                    {{ isset($headquarterAfac->id) ? $headquarterAfac->id : 'YA SE FUE' }}
                                                                                                     <tr>
                                                                                                         <td
                                                                                                             class="px-4 py-4 text-sm font-medium text-gray-700">
                                                                                                             <div
                                                                                                                 class="inline-flex gap-x-3">
-                                                                                                                <input x-model="option"
+                                                                                                                <input
                                                                                                                     type="radio"
                                                                                                                     name="sede"
                                                                                                                     wire:model.defer="selectedHeadquarter"
-                                                                                                                    value="{{ $headquarterAfac->id . '-' . $headquarterAfac->is_external }}"
-                                                                                                                    class="text-blue-500 border-gray-300 rounded dark:bg-gray-900 dark:ring-offset-gray-900 dark:border-gray-700">
+                                                                                                                    value="{{ isset($headquarterAfac->id) ? $headquarterAfac->id . '-' . (isset($headquarterAfac->is_external) ? $headquarterAfac->is_external : 'null') : 'null' }}"
+                                                                                                                    class="text-blue-500 border-gray-300 rounded dark:bg-gray-900 dark:ring-offset-gray-900 dark:border-gray-700"
+                                                                                                                    required>
 
                                                                                                                 <div
                                                                                                                     class="flex gap-x-2">
                                                                                                                     <img class="object-cover w-10 h-10 rounded-full"
-                                                                                                                        src="{{ $headquarterAfac->is_external == 1 ? asset('images/external.png') : asset('images/internal.png') }}"
+                                                                                                                        src="{{ isset($headquarterAfac->is_external) && $headquarterAfac->is_external == 1 ? asset('images/external.png') : asset('images/internal.png') }}"
                                                                                                                         alt="">
                                                                                                                     <div>
                                                                                                                         <h2
                                                                                                                             class="font-medium text-gray-800 dark:text-white ">
-                                                                                                                            {{ $headquarterAfac->name_headquarter }}
+                                                                                                                            {{ !empty($headquarterAfac->name_headquarter) ? $headquarterAfac->name_headquarter : null }}
                                                                                                                         </h2>
-                                                                                                                        {{-- <p class="text-sm font-normal text-gray-600 dark:text-gray-400">@authurmelo</p> --}}
                                                                                                                     </div>
                                                                                                                 </div>
                                                                                                             </div>
                                                                                                         </td>
                                                                                                         <td
                                                                                                             class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300">
-                                                                                                            {{ $headquarterAfac->direction }}
+                                                                                                            {{ !empty($headquarterAfac->direction) ? $headquarterAfac->direction : '' }}
                                                                                                         </td>
                                                                                                         <td
                                                                                                             class="px-12 py-4 text-sm font-medium text-gray-700">
 
                                                                                                             <p
                                                                                                                 class="px-3 py-1 text-xs text-indigo-500 rounded-full dark:bg-gray-800 bg-indigo-100/60">
-                                                                                                                {{ $headquarterAfac->price }}
+                                                                                                                {{ isset($headquarterAfac->price) ? $headquarterAfac->price : 'VALOR PREDETEMINADO' }}
                                                                                                             </p>
 
                                                                                                         </td>
@@ -249,7 +244,6 @@
                                                                                                 @endforeach
                                                                                             </tbody>
                                                                                         </table>
-
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -263,33 +257,42 @@
                                                 </ul>
                                             </div>
                                         </div>
+                                        <div class="mt-3">
+                                            @error('selectedHeadquarter')
+                                                <span
+                                                    class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
+                                            @enderror
+                                        </div>
                                         <div class="mt-5 sm:flex sm:items-center sm:justify-between">
-                                            <a href="#" class="text-sm text-blue-500 hover:underline">Mayor información</a>
+                                            <a href="#" class="text-sm text-blue-500 hover:underline">Mayor
+                                                información</a>
 
                                             <div class="sm:flex sm:items-center ">
-                                                <a href="#" @click="showModal = false" 
+                                                <a href="#" @click="showModal = false"
                                                     class="w-full px-4 py-2 mt-2 text-sm font-medium tracking-wide text-gray-700 capitalize transition-colors duration-300 transform border border-gray-200 rounded-md sm:mt-0 sm:w-auto sm:mx-2 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800 hover:bg-gray-100 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-40">
                                                     Cancel
-                                            </a>
+                                                </a>
 
-                                                <x-button wire:click.prevent="selected"
+                                                {{-- <x-button wire:click.prevent="selected"
+                                                    right-icon="arrow-circle-right" primary label="CONTINUAR" /> --}}
+                                                    <x-button wire:click.prevent="selected"
                                                     right-icon="arrow-circle-right" primary label="CONTINUAR" />
-                                                    <div wire:loading.delay.shortest wire:target="selected">
-                                                        <div
-                                                            class="flex justify-center bg-gray-200 z-40 h-full w-full fixed top-0 left-0 items-center opacity-75">
-                                                            <div style="color: #0061cf"
-                                                                class="la-line-spin-clockwise-fade-rotating la-3x">
-                                                                <div></div>
-                                                                <div></div>
-                                                                <div></div>
-                                                                <div></div>
-                                                                <div></div>
-                                                                <div></div>
-                                                                <div></div>
-                                                                <div></div>
-                                                            </div>
+                                                <div wire:loading.delay.shortest wire:target="">
+                                                    <div
+                                                        class="flex justify-center bg-gray-200 z-40 h-full w-full fixed top-0 left-0 items-center opacity-75">
+                                                        <div style="color: #0061cf"
+                                                            class="la-line-spin-clockwise-fade-rotating la-3x">
+                                                            <div></div>
+                                                            <div></div>
+                                                            <div></div>
+                                                            <div></div>
+                                                            <div></div>
+                                                            <div></div>
+                                                            <div></div>
+                                                            <div></div>
                                                         </div>
                                                     </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -304,25 +307,25 @@
 </div>
 
 <script>
-    let dropdown = document.getElementById("dropdown");
-    let open1 = document.getElementById("open");
-    let close1 = document.getElementById("close");
-    let flag = false;
-    dropdown.classList.add("hidden");
-    open1.classList.add("hidden");
-    close1.classList.remove("hidden");
-    flag = true;
-    const dropdownHandler = () => {
-        if (!flag) {
-            dropdown.classList.add("hidden");
-            open1.classList.add("hidden");
-            close1.classList.remove("hidden");
-            flag = true;
-        } else {
-            dropdown.classList.remove("hidden");
-            close1.classList.add("hidden");
-            open1.classList.remove("hidden");
-            flag = false;
-        }
-    };
+    // let dropdown = document.getElementById("dropdown");
+    // let open1 = document.getElementById("open");
+    // let close1 = document.getElementById("close");
+    // let flag = false;
+    // dropdown.classList.add("hidden");
+    // open1.classList.add("hidden");
+    // close1.classList.remove("hidden");
+    // flag = true;
+    // const dropdownHandler = () => {
+    //     if (!flag) {
+    //         dropdown.classList.add("hidden");
+    //         open1.classList.add("hidden");
+    //         close1.classList.remove("hidden");
+    //         flag = true;
+    //     } else {
+    //         dropdown.classList.remove("hidden");
+    //         close1.classList.add("hidden");
+    //         open1.classList.remove("hidden");
+    //         flag = false;
+    //     }
+    // };
 </script>
