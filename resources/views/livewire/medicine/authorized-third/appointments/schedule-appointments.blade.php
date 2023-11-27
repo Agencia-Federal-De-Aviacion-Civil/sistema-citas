@@ -214,7 +214,7 @@
                                                                 <x-datetime-picker label="Fecha de nacimiento"
                                                                     placeholder="SELECCIONE FECHA..."
                                                                     parse-format="YYYY-MM-DD" without-time="false"
-                                                                    wire:model.defer="birth" />
+                                                                    wire:model.defer="birth" readonly/>
                                                             </div>
                                                             <div class="relative mb-6 w-full group">
                                                                 <x-inputs.maskable label="EDAD" mask="##"

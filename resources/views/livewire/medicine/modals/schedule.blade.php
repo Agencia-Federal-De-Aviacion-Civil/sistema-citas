@@ -107,7 +107,7 @@
                     <div class="mt-4 grid xl:grid-cols-2 xl:gap-6">
                         @if ($status == 6)
                             <x-input wire:model.lazy="dateReserve" id="fecha-appointment-restored"
-                                label="SELECCIONE FECHA" placeholder="INGRESE..." />
+                                label="SELECCIONE FECHA" placeholder="INGRESE..." readonly />
                         @else
                             <div class="mt-1 relative w-full group">
                                 <div
@@ -118,7 +118,7 @@
                                 </div>
                                 <div x-show="selectedOption == 4||selectedOption == 10">
                                     <x-input wire:model.lazy="dateReserve" id="fecha-appointment"
-                                        label="SELECCIONE FECHA" placeholder="INGRESE..." />
+                                        label="SELECCIONE FECHA" placeholder="INGRESE..." readonly />
                                 </div>
                             </div>
                         @endif
