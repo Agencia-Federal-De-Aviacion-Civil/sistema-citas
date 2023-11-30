@@ -264,7 +264,7 @@
                                             </div>
                                         </div>
                                         <div class="mt-5 sm:flex sm:items-center sm:justify-between">
-                                            <a href="#" class="text-sm text-blue-500 hover:underline">Mayor información</a>
+                                            <a href="https://www.gob.mx/afac/acciones-y-programas/citas-para-la-evaluacion-medica" class="text-sm text-blue-500 hover:underline">Mayor información</a>
 
                                             <div class="sm:flex sm:items-center ">
                                                 <a href="#" @click="showModal = false" 

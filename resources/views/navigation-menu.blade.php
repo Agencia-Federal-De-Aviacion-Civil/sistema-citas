@@ -209,11 +209,11 @@
                                 {{ __('Perfil') }}
                             </x-jet-dropdown-link>
 
-                            @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
+                            {{-- @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
                                 <x-jet-dropdown-link href="{{ route('api-tokens.index') }}">
                                     {{ __('API Tokens') }}
                                 </x-jet-dropdown-link>
-                            @endif
+                            @endif --}}
 
                             <div class="border-t border-gray-100"></div>
 
@@ -431,11 +431,11 @@
                     {{ __('Cuenta') }}
                 </x-jet-responsive-nav-link>
 
-                @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
+                {{-- @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
                     <x-jet-responsive-nav-link href="{{ route('api-tokens.index') }}" :active="request()->routeIs('api-tokens.index')">
                         {{ __('API Tokens') }}
                     </x-jet-responsive-nav-link>
-                @endif
+                @endif --}}
 
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}" x-data>
