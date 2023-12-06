@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Medicine\Modals;
 
 use App\Models\Catalogue\Headquarter;
+use App\Models\Document;
 use App\Models\Medicine\Medicine;
 use App\Models\Medicine\MedicineDisabledDays;
 use App\Models\Medicine\MedicineObservation;
@@ -23,15 +24,18 @@ class Schedule extends ModalComponent
     use WithFileUploads;
     public $id_appoint, $id_medicine_observation, $scheduleId, $status, $medicineReserves, $name, $type, $class, $typLicense, $sede, $dateReserve, $date, $time, $scheduleMedicines, $sedes,
         $headquarter_id, $medicine_schedule_id, $selectedOption, $observation_reschedule, $observation_cancelate, $hoursReserve, $observation, $medicineId, $accion,
-        $disabledDaysFilter, $days, $is_external,$medicineRextension,$typextension,$classxtension,$typLicensextension;
-
+        $disabledDaysFilter, $days, $is_external, $medicineRextension, $typextension, $classxtension, $typLicensextension;
+    public $reference_number, $pay_date, $document_pay, $januaryAppointment;
     public function rules()
     {
         $rules = [
             'observation' => 'required_if:selectedOption,2,4,7,3',
             'headquarter_id' => 'required_if:selectedOption,4,10|required_if:status,6',
             'medicine_schedule_id' => 'required_if:selectedOption,4,10|required_if:status,6',
-            'dateReserve' => 'required_if:selectedOption,4,10|required_if:status,6'
+            'dateReserve' => 'required_if:selectedOption,4,10|required_if:status,6',
+            'reference_number' => 'required',
+            'pay_date' => 'required',
+            'document_pay' => 'required|mimetypes:application/pdf|max:5000',
         ];
         $rules['selectedOption'] = 'required_unless:status,6';
         return $rules;
@@ -47,6 +51,7 @@ class Schedule extends ModalComponent
             $this->sedes = Headquarter::where('system_id', 1)->where('status', false)->get();
             $medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'medicineReserveHeadquarter'])
                 ->where('id', $this->scheduleId)->get();
+            $this->januaryAppointment = $medicineReserves[0]->medicineReserveMedicine;
             $this->name = $medicineReserves[0]->medicineReserveMedicine->medicineUser->name . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant[0]->apParental . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant[0]->apMaternal;
             $this->type = $medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->name;
             $this->id_appoint = $medicineReserves[0]->id;
@@ -87,8 +92,8 @@ class Schedule extends ModalComponent
                 $this->sedes = Headquarter::where('system_id', 1)->where('id', $medicineReserves[0]->headquarter_id)->get();
                 $this->selectedOption = '';
             }
-            $this->medicineRextension = MedicineReservesExtension::with(['extensionTypeClass','extensionClasificationClass'])->where('medicine_reserve_id',$this->id_appoint)->get();
-            if(isset($this->medicineRextension[0]->id)){
+            $this->medicineRextension = MedicineReservesExtension::with(['extensionTypeClass', 'extensionClasificationClass'])->where('medicine_reserve_id', $this->id_appoint)->get();
+            if (isset($this->medicineRextension[0]->id)) {
                 $this->typextension = isset($this->medicineRextension[0]->extensionTypeClass->typeClassTypeExam->name) ? $this->medicineRextension[0]->extensionTypeClass->typeClassTypeExam->name : 'SIN DATOS';
                 $this->classxtension = isset($this->medicineRextension[0]->extensionTypeClass->name) ? $this->medicineRextension[0]->extensionTypeClass->name : 'SIN DATOS';
                 $this->typLicensextension = isset($this->medicineRextension[0]->extensionClasificationClass->name) ? $this->medicineRextension[0]->extensionClasificationClass->name : 'SIN DATOS';
@@ -126,7 +131,7 @@ class Schedule extends ModalComponent
             ->pluck('disabled_days')
             ->toArray();
         $occupiedDays = MedicineReserve::where('headquarter_id', $value)
-            ->whereIn('status', [0, 1, 4,10])
+            ->whereIn('status', [0, 1, 4, 10])
             ->pluck('dateReserve')
             ->toArray();
         $disabledDaysArray = [];
@@ -142,7 +147,7 @@ class Schedule extends ModalComponent
                 ->value('max_schedules');
             $datesExceedingLimit = MedicineReserve::select('dateReserve')
                 ->where('headquarter_id', $this->headquarter_id)
-                ->whereIn('status', [0, 1, 4,10])
+                ->whereIn('status', [0, 1, 4, 10])
                 ->groupBy('dateReserve')
                 ->havingRaw('COUNT(*) >= ?', [$maxCitas])
                 ->pluck('dateReserve')
@@ -173,11 +178,21 @@ class Schedule extends ModalComponent
     }
     public function reschedules()
     {
-
-        //ASISTIÓ
         $this->validate();
+        // TODO IMPLEMENT APPOITNMENT JANUARY
+        $completedJanuaryReserve = Medicine::find($this->medicineId);
+        $completedJanuaryReserve->update([
+            'reference_number' => $this->reference_number,
+            'pay_date' => $this->pay_date,
+        ]);
+        $updateJanuaryDocument = Document::find($completedJanuaryReserve->document_id);
+        $extension = $this->document_pay->getClientOriginalExtension();
+        $fileName = $this->reference_number . '-' . $this->pay_date . '.' . $extension;
+        $updateJanuaryDocument->update([
+            'name_document' => $this->document_pay->storeAs('documentos/medicina', $fileName, 'public'),
+        ]);
+        // TODO END
         if ($this->selectedOption == 1) {
-
             $attendeReserve = MedicineReserve::find($this->scheduleId);
             $attendeReserve->update([
                 'status' => $this->selectedOption,

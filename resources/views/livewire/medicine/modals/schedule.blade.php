@@ -2,6 +2,7 @@
     <div class="p-4 sm:p-7">
         <div>
             <div class="mt-4 text-center">
+                <x-errors></x-errors>
                 <h3 class="text-xl font-semibold leading-6 text-gray-800 capitalize dark:text-white" id="modal-title">
                     @if ($this->status == 0)
                         CITA
@@ -20,6 +21,42 @@
                     @endif
 
                 </h3>
+                @unless (
+                    $januaryAppointment->reference_number === 'NO APLICA' &&
+                        empty($januaryAppointment->pay_date) &&
+                        $januaryAppointment->medicineDocument->name_document === 'JANUARY-APPOINTMENT')
+                @else
+                    <div class="grid xl:grid-cols-2 xl:gap-6">
+                        <div class="mt-1 relative w-full group">
+                            <x-input x-ref="payment" wire:model.lazy="reference_number" label="INGRESA LA LLAVE DE PAGO"
+                                placeholder="INGRESE..." />
+                        </div>
+                        <div class="mt-1 relative w-full group">
+                            <x-input wire:model.lazy="pay_date" id="date_pay" label="FECHA DE PAGO"
+                                placeholder="INGRESE..." readonly />
+                        </div>
+                    </div>
+                    <div class="grid xl:grid-cols-1 xl:gap-6">
+                        <label for="small" class="block text-sm text-gray-900 dark:text-white">ADJUNTA
+                            EL COMPROBANTE DE PAGO</label>
+                        <input type="file" wire:model="document_pay" x-ref="file" accept=".pdf"
+                            class="block w-full border border-gray-200 shadow-sm rounded-md text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 file:bg-transparent file:border-0 file:bg-gray-100 file:mr-4 file:py-2.5 file:px-4 dark:file:bg-gray-700 dark:file:text-gray-400">
+                        <div class="float-left">
+                            <div wire:loading wire:target="document_pay">
+                                Subiendo...
+                                <div style="color: #0404059a" class="la-ball-fall">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        @error('document_pay')
+                            <span
+                                class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
+                        @enderror
+                    </div>
+                @endunless
                 <div x-data="{ selectedOption: @entangle('selectedOption') }">
                     <div class="grid xl:grid-cols-1 xl:gap-6">
                         <div class="mt-1 relative w-full group">
@@ -41,29 +78,31 @@
                     </div>
                     @isset($this->medicineRextension[0]->id)
                         @if ($status == 8)
-                        <label class="mt-4 grid xl:grid-cols-6">EXTENSION: <x-badge class="ml-2" flat positive label="CONCLUYÓ APTO" /></label>
+                            <label class="mt-4 grid xl:grid-cols-6">EXTENSION: <x-badge class="ml-2" flat positive
+                                    label="CONCLUYÓ APTO" /></label>
                         @elseif($status == 9)
-                        <label class="mt-4 grid xl:grid-cols-6">EXTENSION: <x-badge class="ml-2" flat negative label="CONCLUYÓ NO APTO" /></label>
-                        @elseif($this->typextension=='SIN DATOS' && $this->status == 0)
+                            <label class="mt-4 grid xl:grid-cols-6">EXTENSION: <x-badge class="ml-2" flat negative
+                                    label="CONCLUYÓ NO APTO" /></label>
+                        @elseif($this->typextension == 'SIN DATOS' && $this->status == 0)
                         @else
-                        <label class="mt-4 grid xl:grid-cols-6">EXTENSION </label>
+                            <label class="mt-4 grid xl:grid-cols-6">EXTENSION </label>
                         @endif
 
-                        @if($this->typextension=='SIN DATOS' && $this->status == 0)
+                        @if ($this->typextension == 'SIN DATOS' && $this->status == 0)
                         @else
-                        <div class="mt-0 grid xl:grid-cols-2 xl:gap-6">
-                            <div class="mt-1 relative w-full group">
-                                <x-input wire:model="typextension" label="TIPO" placeholder="ESCRIBE..." disabled />
+                            <div class="mt-0 grid xl:grid-cols-2 xl:gap-6">
+                                <div class="mt-1 relative w-full group">
+                                    <x-input wire:model="typextension" label="TIPO" placeholder="ESCRIBE..." disabled />
+                                </div>
+                                <div class="mt-1 relative w-full group">
+                                    <x-input wire:model="classxtension" label="CLASE" placeholder="ESCRIBE..." disabled />
+                                </div>
                             </div>
-                            <div class="mt-1 relative w-full group">
-                                <x-input wire:model="classxtension" label="CLASE" placeholder="ESCRIBE..." disabled />
+                            <div class="mt-4 grid xl:grid-cols-1 xl:gap-6">
+                                <div class="mt-1 relative w-full group">
+                                    <x-input wire:model="typLicensextension" label="TIPO DE LICENCIA" disabled />
+                                </div>
                             </div>
-                        </div>
-                        <div class="mt-4 grid xl:grid-cols-1 xl:gap-6">
-                            <div class="mt-1 relative w-full group">
-                                <x-input wire:model="typLicensextension" label="TIPO DE LICENCIA" disabled />
-                            </div>
-                        </div>
                         @endif
                     @endisset
                     <div class="mt-4 grid xl:grid-cols-1 xl:gap-6">
@@ -335,6 +374,27 @@
                     },
                 },
             });
+        });
+        //TODO JANUARY APPOINTMENT
+        flatpickr("#date_pay", {
+            dateFormat: "Y-m-d",
+            disableMobile: "true",
+            locale: {
+                weekdays: {
+                    shorthand: ['Dom', 'Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab'],
+                    longhand: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes',
+                        'Sábado'
+                    ],
+                },
+                months: {
+                    shorthand: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct',
+                        'Nov', 'Dic'
+                    ],
+                    longhand: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto',
+                        'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+                    ],
+                },
+            },
         });
     </script>
 </div>
