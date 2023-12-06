@@ -26,7 +26,7 @@
                         empty($januaryAppointment->pay_date) &&
                         $januaryAppointment->medicineDocument->name_document === 'JANUARY-APPOINTMENT')
                 @else
-                    <div class="grid xl:grid-cols-2 xl:gap-6">
+                    <div class="mt-6 grid xl:grid-cols-2 xl:gap-6">
                         <div class="mt-1 relative w-full group">
                             <x-input x-ref="payment" wire:model.lazy="reference_number" label="INGRESA LA LLAVE DE PAGO"
                                 placeholder="INGRESE..." />
@@ -36,7 +36,7 @@
                                 placeholder="INGRESE..." readonly />
                         </div>
                     </div>
-                    <div class="grid xl:grid-cols-1 xl:gap-6">
+                    <div class="mt-6 mb-6">
                         <label for="small" class="block text-sm text-gray-900 dark:text-white">ADJUNTA
                             EL COMPROBANTE DE PAGO</label>
                         <input type="file" wire:model="document_pay" x-ref="file" accept=".pdf"
@@ -379,6 +379,8 @@
         flatpickr("#date_pay", {
             dateFormat: "Y-m-d",
             disableMobile: "true",
+            minDate: "2024-01-01",
+            maxDate: "2024-01-31",
             locale: {
                 weekdays: {
                     shorthand: ['Dom', 'Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab'],
