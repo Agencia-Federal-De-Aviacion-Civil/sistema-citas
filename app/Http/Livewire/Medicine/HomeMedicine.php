@@ -653,7 +653,7 @@ class HomeMedicine extends Component
                 if (!$this->idTypeAppointment) {
                     if (empty($this->document_pay && $this->reference_number && $this->pay_date)) {
                         $saveDocument = Document::create([
-                            'name_document' => 'N/A-JANUARY-APPOINTMENT',
+                            'name_document' => 'JANUARY-APPOINTMENT',
                         ]);
                     } else {
                         $extension = $this->document_pay->getClientOriginalExtension();

@@ -35,7 +35,8 @@ class AppointmentTable extends DataTableComponent
                 'cancelReserve' => '$refresh',
                 'attendeReserve' => '$refresh',
                 'reserveAppointment' => '$refresh',
-                'addExtension' => '$refresh'
+                'addExtension' => '$refresh',
+                'updatePayJanuary' => '$refresh',
             ]
         );
     }
@@ -125,7 +126,7 @@ class AppointmentTable extends DataTableComponent
                             )->where('id', $row->id)->get(),
                             'medicine' => $medicine,
                             'tipo' => $medicine[0]->medicineReserveMedicine->medicineTypeExam->id,
-                            'id' => $medicine[0]->medicineReserveMedicine->type_exam_id == 3 
+                            'id' => $medicine[0]->medicineReserveMedicine->type_exam_id == 3
                                 ? Storage::url($medicine[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationDocument->name_document)
                                 : Storage::url($medicine[0]->medicineReserveMedicine->medicineDocument->name_document),
                         ]
@@ -160,6 +161,8 @@ class AppointmentTable extends DataTableComponent
                                 $action = MedicineReserve::with('medicineReserveMedicineExtension')->where('id', $row->id)->get(),
                                 $dateExpire = Carbon::parse($action[0]->dateReserve),
                                 $showExpireButton = Carbon::now()->isSameDay($dateExpire),
+                                $januaryAppointment = $action[0]->medicineReserveMedicine,
+                                'januaryTemp' => $januaryAppointment,
                                 'status' => $action[0]->status,
                                 'scheduleId' => $action[0]->id,
                                 'medicineId' => $action[0]->medicine_id,
@@ -327,6 +330,8 @@ class AppointmentTable extends DataTableComponent
                                 $action = MedicineReserve::where('id', $row->id)->get(),
                                 $dateExpire = Carbon::parse($action[0]->dateReserve),
                                 $showExpireButton = Carbon::now()->isSameDay($dateExpire),
+                                $januaryAppointment = $action[0]->medicineReserveMedicine,
+                                'januaryTemp' => $januaryAppointment,
                                 'medicineExtensionExist' => $action[0]->medicineReserveMedicineExtension[0]->reference_number_ext ?? null,
                                 'medicineExtensionNothing' => $action[0]->medicineReserveMedicineExtension,
                                 'showExpireButton' => $showExpireButton,
@@ -444,6 +449,8 @@ class AppointmentTable extends DataTableComponent
                                 $action = MedicineReserve::where('id', $row->id)->get(),
                                 $dateExpire = Carbon::parse($action[0]->dateReserve),
                                 $showExpireButton = Carbon::now()->isSameDay($dateExpire),
+                                $januaryAppointment = $action[0]->medicineReserveMedicine,
+                                'januaryTemp' => $januaryAppointment,
                                 'status' => $action[0]->status,
                                 'scheduleId' => $action[0]->id,
                                 'medicineId' => $action[0]->medicine_id,

@@ -11,10 +11,11 @@ class AppointmentActionsComponent extends Component
      *
      * @return void
      */
-    public $scheduleId, $medicineId, $status;
+    public $januaryTemp, $scheduleId, $medicineId, $status;
     public $modal;
-    public function __construct($scheduleId, $medicineId, $status)
+    public function __construct($januaryTemp, $scheduleId, $medicineId, $status)
     {
+        $this->januaryTemp = $januaryTemp;
         $this->scheduleId = $scheduleId;
         $this->medicineId = $medicineId;
         $this->status = $status;

@@ -25,7 +25,7 @@ class Schedule extends ModalComponent
     public $id_appoint, $id_medicine_observation, $scheduleId, $status, $medicineReserves, $name, $type, $class, $typLicense, $sede, $dateReserve, $date, $time, $scheduleMedicines, $sedes,
         $headquarter_id, $medicine_schedule_id, $selectedOption, $observation_reschedule, $observation_cancelate, $hoursReserve, $observation, $medicineId, $accion,
         $disabledDaysFilter, $days, $is_external, $medicineRextension, $typextension, $classxtension, $typLicensextension;
-    public $reference_number, $pay_date, $document_pay, $januaryAppointment;
+    public $reference_number, $pay_date, $document_pay;
     public function mount($scheduleId = null, $medicineId)
     {
         $this->medicineId = $medicineId;
@@ -36,7 +36,6 @@ class Schedule extends ModalComponent
             $this->sedes = Headquarter::where('system_id', 1)->where('status', false)->get();
             $medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'medicineReserveHeadquarter'])
                 ->where('id', $this->scheduleId)->get();
-            $this->januaryAppointment = $medicineReserves[0]->medicineReserveMedicine;
             $this->name = $medicineReserves[0]->medicineReserveMedicine->medicineUser->name . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant[0]->apParental . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant[0]->apMaternal;
             $this->type = $medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->name;
             $this->id_appoint = $medicineReserves[0]->id;
@@ -96,11 +95,6 @@ class Schedule extends ModalComponent
             'medicine_schedule_id' => 'required_if:selectedOption,4,10|required_if:status,6',
             'dateReserve' => 'required_if:selectedOption,4,10|required_if:status,6',
         ];
-        if ($this->januaryAppointment->reference_number === 'NO APLICA' && empty($this->januaryAppointment->pay_date) && $this->januaryAppointment->medicineDocument->name_document === 'JANUARY-APPOINTMENT') {
-            $rules['reference_number'] = 'required';
-            $rules['pay_date'] = 'required';
-            $rules['document_pay'] = 'required|mimetypes:application/pdf|max:5000';
-        }
         $rules['selectedOption'] = 'required_unless:status,6';
         return $rules;
     }
@@ -180,21 +174,6 @@ class Schedule extends ModalComponent
     public function reschedules()
     {
         $this->validate();
-        // TODO IMPLEMENT APPOITNMENT JANUARY
-        if ($this->januaryAppointment->reference_number === 'NO APLICA' && empty($this->januaryAppointment->pay_date) && $this->januaryAppointment->medicineDocument->name_document === 'JANUARY-APPOINTMENT') {
-            $completedJanuaryReserve = Medicine::find($this->medicineId);
-            $completedJanuaryReserve->update([
-                'reference_number' => $this->reference_number,
-                'pay_date' => $this->pay_date,
-            ]);
-            $updateJanuaryDocument = Document::find($completedJanuaryReserve->document_id);
-            $extension = $this->document_pay->getClientOriginalExtension();
-            $fileName = $this->reference_number . '-' . $this->pay_date . '.' . $extension;
-            $updateJanuaryDocument->update([
-                'name_document' => $this->document_pay->storeAs('documentos/medicina', $fileName, 'public'),
-            ]);
-        }
-        // TODO END
         if ($this->selectedOption == 1) {
             $attendeReserve = MedicineReserve::find($this->scheduleId);
             $attendeReserve->update([

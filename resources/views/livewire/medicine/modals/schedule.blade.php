@@ -21,42 +21,6 @@
                     @endif
 
                 </h3>
-                @unless (
-                    $januaryAppointment->reference_number === 'NO APLICA' &&
-                        empty($januaryAppointment->pay_date) &&
-                        $januaryAppointment->medicineDocument->name_document === 'JANUARY-APPOINTMENT')
-                @else
-                    <div class="mt-6 grid xl:grid-cols-2 xl:gap-6">
-                        <div class="mt-1 relative w-full group">
-                            <x-input x-ref="payment" wire:model.lazy="reference_number" label="INGRESA LA LLAVE DE PAGO"
-                                placeholder="INGRESE..." />
-                        </div>
-                        <div class="mt-1 relative w-full group">
-                            <x-input wire:model.lazy="pay_date" id="date_pay" label="FECHA DE PAGO"
-                                placeholder="INGRESE..." readonly />
-                        </div>
-                    </div>
-                    <div class="mt-6 mb-6">
-                        <label for="small" class="block text-sm text-gray-900 dark:text-white">ADJUNTA
-                            EL COMPROBANTE DE PAGO</label>
-                        <input type="file" wire:model="document_pay" x-ref="file" accept=".pdf"
-                            class="block w-full border border-gray-200 shadow-sm rounded-md text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 file:bg-transparent file:border-0 file:bg-gray-100 file:mr-4 file:py-2.5 file:px-4 dark:file:bg-gray-700 dark:file:text-gray-400">
-                        <div class="float-left">
-                            <div wire:loading wire:target="document_pay">
-                                Subiendo...
-                                <div style="color: #0404059a" class="la-ball-fall">
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
-                                </div>
-                            </div>
-                        </div>
-                        @error('document_pay')
-                            <span
-                                class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
-                        @enderror
-                    </div>
-                @endunless
                 <div x-data="{ selectedOption: @entangle('selectedOption') }">
                     <div class="grid xl:grid-cols-1 xl:gap-6">
                         <div class="mt-1 relative w-full group">
