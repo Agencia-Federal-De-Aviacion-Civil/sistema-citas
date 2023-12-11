@@ -29,7 +29,7 @@
                         </h3>
 
                         <p class="mt-2 text-lg text-gray-700 dark:text-gray-400">
-                            NO OLVIDES PAGAR TU CITA 24 HORAS ANTES DE LA FECHA DE TU CITA
+                            NO OLVIDES PAGAR TU CITA UN DIA ANTES DE LA FECHA DE LA MISMA
                         </p>
                     </div>
                 </div>
