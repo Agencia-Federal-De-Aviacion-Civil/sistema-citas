@@ -24,7 +24,8 @@
             @if (
                 $januaryTemp->reference_number === 'NO APLICA' &&
                     empty($januaryTemp->pay_date) &&
-                    $januaryTemp->medicineDocument->name_document === 'JANUARY-APPOINTMENT')
+                    (optional($januaryTemp->medicineDocument)->name_document === 'JANUARY-APPOINTMENT' ||
+                        is_null($januaryTemp->medicineDocument)))
                 <x-button
                     wire:click="$emit('openModal', 'medicine.modals.january-temp', {{ json_encode(['scheduleId' => $scheduleId, 'medicineId' => $medicineId]) }})"
                     label="AÑADIR PAGO" xs warning />
