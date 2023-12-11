@@ -25,12 +25,11 @@
                     <div class="mt-4 text-center">
                         <h3 class="text-xl font-semibold leading-6 text-gray-800 capitalize dark:text-white"
                             id="modal-title">
-                            Toma en cuenta lo siguiente
+                            AVISO IMPORTANTE
                         </h3>
 
                         <p class="mt-2 text-lg text-gray-700 dark:text-gray-400">
-                            Antes de realizar tu cita se debe de generar el pago, en caso contrario no se podra
-                            agendar su cita
+                            NO OLVIDES PAGAR TU CITA UN DIA ANTES DE LA FECHA DE LA MISMA
                         </p>
                     </div>
                 </div>

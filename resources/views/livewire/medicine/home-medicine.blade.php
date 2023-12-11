@@ -12,9 +12,9 @@
     @endif
     {{-- arreglar --}}
     {{-- @unless ($showBannerBoolean) --}}
-        <x-banner-component :title="$idTypeAppointment === false
-            ? 'Generación de citas medicina de Aviación AFAC'
-            : 'Generación de citas medicina de Aviación Terceros'" />
+    <x-banner-component :title="$idTypeAppointment === false
+        ? 'Generación de citas medicina de Aviación AFAC'
+        : 'Generación de citas medicina de Aviación Terceros'" />
     {{-- @endunless --}}
     <div class="py-12">
         <div class="container mx-auto px-4 py-4 bg-white shadow-xl sm:rounded-lg">
@@ -66,7 +66,7 @@
                                 <div class="flex flex-wrap w-full">
                                     <div class="lg:w-full md:w-full md:pr-10 md:py-6">
                                         @if ($idTypeAppointment == 0)
-                                            <div class="flex relative pb-6">
+                                            {{-- <div class="flex relative pb-6">
                                                 <div
                                                     class="h-full w-10 absolute inset-0 flex items-center justify-center">
                                                     <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
@@ -92,7 +92,6 @@
                                                                 label="FECHA DE PAGO" placeholder="INGRESE..."
                                                                 readonly />
                                                         </div>
-                                                        {{-- comprobante de pago --}}
                                                         <div class="mt-1 relative w-full group xl:col-span-2">
                                                             <label for="small"
                                                                 class="block text-sm font-medium text-gray-900 dark:text-white">ADJUNTA
@@ -120,10 +119,12 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                         @endif
                                         {{-- paso1 --}}
-                                        <div x-show="fileName != '' && typeappointment==0||typeappointment==1||typeappointment==2"
+                                        {{-- <div x-show="fileName != '' && typeappointment==0||typeappointment==1||typeappointment==2"
+                                            class="flex relative pb-6"> --}}
+                                        <div x-show="typeappointment==0||typeappointment==1||typeappointment==2"
                                             class="flex relative pb-6">
                                             <div class="h-full w-10 absolute inset-0 flex items-center justify-center">
                                                 <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
@@ -186,9 +187,8 @@
                                                 </div>
                                                 <label for="file-input" class="sr-only">Adjunta el
                                                     documento</label>
-                                                <input type="file" wire:model="document_authorization"
-                                                    x-ref="file2" accept=".pdf"
-                                                    @change="filereval = $refs.file2.files[0].name"
+                                                <input type="file" wire:model="document_authorization" x-ref="file2"
+                                                    accept=".pdf" @change="filereval = $refs.file2.files[0].name"
                                                     class="block w-full border border-gray-200 shadow-sm rounded-md text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 file:bg-transparent file:border-0 file:bg-gray-100 file:mr-4 file:py-2.5 file:px-4 dark:file:bg-gray-700 dark:file:text-gray-400">
                                                 <div class="float-left">
                                                     <div wire:loading wire:target="document_authorization">
@@ -207,8 +207,7 @@
                                             </div>
                                         </div>
                                         {{-- paso revaloración y flexibilidad --}}
-                                        <div x-show="tipoExamen === '3'  && filereval != ''"
-                                            class="flex relative pb-6">
+                                        <div x-show="tipoExamen === '3'  && filereval != ''" class="flex relative pb-6">
                                             <div class="h-full w-10 absolute inset-0 flex items-center justify-center">
                                                 <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
                                             </div>
@@ -341,9 +340,9 @@
                                                     <div x-show="question === '2'">
                                                         <div class="mt-4 relative z-auto w-full group">
                                                             <x-select label="TIPO DE LICENCIA"
-                                                                x-model.lazy="typelicens"
-                                                                placeholder="Seleccione..." :options="$clasificationClass"
-                                                                option-label="name" option-value="id"
+                                                                x-model.lazy="typelicens" placeholder="Seleccione..."
+                                                                :options="$clasificationClass" option-label="name"
+                                                                option-value="id"
                                                                 wire:model.lazy="clasification_class_id" />
                                                             {{-- todo se comenta el multiselect --}}
                                                         </div>
@@ -374,7 +373,8 @@
                                                                 DE CLASE</label>
                                                             <select id="small" x-ref="clasification"
                                                                 placeholder="seleccione..."
-                                                                wire:model.lazy="type_class_id" wire:change.prevent="cleanclass"
+                                                                wire:model.lazy="type_class_id"
+                                                                wire:change.prevent="cleanclass"
                                                                 class="block w-full p-2 mb-2 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                                                 <option value="">Seleccione...</option>
                                                                 @foreach ($typeRenovationExams as $typeRenovationExam)
@@ -752,9 +752,10 @@
                 // maxTime: "10:59",
                 disableMobile: "true",
                 // minuteIncrement: 10,
-                minDate: "today",
-                //minDate: new Date(new Date().getFullYear(), 0, 1),
-                maxDate: new Date(new Date().getFullYear(), 11, 31),
+                //minDate: "today",
+                //maxDate: new Date(new Date().getFullYear(), 11, 31),
+                minDate: "2024-01-01",
+                maxDate: "2024-01-31",
                 disable: event.detail.disabledDaysFilter,
                 onDayCreate: function(dObj, dStr, fp, dayElem) {
                     /* if (dayElem.dateObj.getDay() === 0 || dayElem.dateObj.getDay() === 6 || dayElem

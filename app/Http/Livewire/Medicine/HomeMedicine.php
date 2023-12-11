@@ -88,9 +88,12 @@ class HomeMedicine extends Component
             'extensionClassId' => ''
         ];
         if (!$this->idTypeAppointment) {
-            $rules['document_pay'] = 'required|mimetypes:application/pdf|max:5000';
-            $rules['reference_number'] = 'required|unique:medicines';
-            $rules['pay_date'] = 'required';
+            // $rules['document_pay'] = 'required|mimetypes:application/pdf|max:5000';
+            // $rules['reference_number'] = 'required|unique:medicines';
+            // $rules['pay_date'] = 'required';
+            $rules['document_pay'] = '';
+            $rules['reference_number'] = '';
+            $rules['pay_date'] = '';
         }
         return $rules;
     }
@@ -648,11 +651,17 @@ class HomeMedicine extends Component
                 ]);
             } else {
                 if (!$this->idTypeAppointment) {
-                    $extension = $this->document_pay->getClientOriginalExtension();
-                    $fileName = $this->reference_number . '-' . $this->pay_date . '.' . $extension;
-                    $saveDocument = Document::create([
-                        'name_document' => $this->document_pay->storeAs('documentos/medicina', $fileName, 'public'),
-                    ]);
+                    if (empty($this->document_pay && $this->reference_number && $this->pay_date)) {
+                        $saveDocument = Document::create([
+                            'name_document' => 'JANUARY-APPOINTMENT',
+                        ]);
+                    } else {
+                        $extension = $this->document_pay->getClientOriginalExtension();
+                        $fileName = $this->reference_number . '-' . $this->pay_date . '.' . $extension;
+                        $saveDocument = Document::create([
+                            'name_document' => $this->document_pay->storeAs('documentos/medicina', $fileName, 'public'),
+                        ]);
+                    }
                 }
                 $this->saveMedicine = Medicine::create([
                     'user_id' => $this->userid,

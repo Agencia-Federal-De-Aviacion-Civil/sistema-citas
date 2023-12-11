@@ -20,6 +20,16 @@
                 <x-badge flat info label="PENDIENTE" />
             @endif
         @endhasrole
+        @hasrole('sub_headquarters|super_admin|medicine_admin|super_admin_medicine|headquarters|admin_medicine_v2')
+            @if (
+                $januaryTemp->reference_number === 'NO APLICA' &&
+                    empty($januaryTemp->pay_date) &&
+                    $januaryTemp->medicineDocument->name_document === 'JANUARY-APPOINTMENT')
+                <x-button
+                    wire:click="$emit('openModal', 'medicine.modals.january-temp', {{ json_encode(['scheduleId' => $scheduleId, 'medicineId' => $medicineId]) }})"
+                    label="AÑADIR PAGO" xs warning />
+            @endif
+        @endhasrole
     @elseif($status == 1)
         @hasrole('super_admin|medicine_admin|super_admin_medicine|admin_medicine_v2|headquarters|headquarters_authorized')
             <x-button
@@ -108,5 +118,5 @@
         <x-badge flat positive label="CONCLUYÓ APTO" />
     @elseif($status == 9)
         <x-badge flat negative label="CONCLUYÓ NO APTO" />
- @endif
+    @endif
 </div>

@@ -2,6 +2,7 @@
     <div class="p-4 sm:p-7">
         <div>
             <div class="mt-4 text-center">
+                <x-errors></x-errors>
                 <h3 class="text-xl font-semibold leading-6 text-gray-800 capitalize dark:text-white" id="modal-title">
                     @if ($this->status == 0)
                         CITA
@@ -41,29 +42,31 @@
                     </div>
                     @isset($this->medicineRextension[0]->id)
                         @if ($status == 8)
-                        <label class="mt-4 grid xl:grid-cols-6">EXTENSION: <x-badge class="ml-2" flat positive label="CONCLUYÓ APTO" /></label>
+                            <label class="mt-4 grid xl:grid-cols-6">EXTENSION: <x-badge class="ml-2" flat positive
+                                    label="CONCLUYÓ APTO" /></label>
                         @elseif($status == 9)
-                        <label class="mt-4 grid xl:grid-cols-6">EXTENSION: <x-badge class="ml-2" flat negative label="CONCLUYÓ NO APTO" /></label>
-                        @elseif($this->typextension=='SIN DATOS' && $this->status == 0)
+                            <label class="mt-4 grid xl:grid-cols-6">EXTENSION: <x-badge class="ml-2" flat negative
+                                    label="CONCLUYÓ NO APTO" /></label>
+                        @elseif($this->typextension == 'SIN DATOS' && $this->status == 0)
                         @else
-                        <label class="mt-4 grid xl:grid-cols-6">EXTENSION </label>
+                            <label class="mt-4 grid xl:grid-cols-6">EXTENSION </label>
                         @endif
 
-                        @if($this->typextension=='SIN DATOS' && $this->status == 0)
+                        @if ($this->typextension == 'SIN DATOS' && $this->status == 0)
                         @else
-                        <div class="mt-0 grid xl:grid-cols-2 xl:gap-6">
-                            <div class="mt-1 relative w-full group">
-                                <x-input wire:model="typextension" label="TIPO" placeholder="ESCRIBE..." disabled />
+                            <div class="mt-0 grid xl:grid-cols-2 xl:gap-6">
+                                <div class="mt-1 relative w-full group">
+                                    <x-input wire:model="typextension" label="TIPO" placeholder="ESCRIBE..." disabled />
+                                </div>
+                                <div class="mt-1 relative w-full group">
+                                    <x-input wire:model="classxtension" label="CLASE" placeholder="ESCRIBE..." disabled />
+                                </div>
                             </div>
-                            <div class="mt-1 relative w-full group">
-                                <x-input wire:model="classxtension" label="CLASE" placeholder="ESCRIBE..." disabled />
+                            <div class="mt-4 grid xl:grid-cols-1 xl:gap-6">
+                                <div class="mt-1 relative w-full group">
+                                    <x-input wire:model="typLicensextension" label="TIPO DE LICENCIA" disabled />
+                                </div>
                             </div>
-                        </div>
-                        <div class="mt-4 grid xl:grid-cols-1 xl:gap-6">
-                            <div class="mt-1 relative w-full group">
-                                <x-input wire:model="typLicensextension" label="TIPO DE LICENCIA" disabled />
-                            </div>
-                        </div>
                         @endif
                     @endisset
                     <div class="mt-4 grid xl:grid-cols-1 xl:gap-6">
@@ -335,6 +338,29 @@
                     },
                 },
             });
+        });
+        //TODO JANUARY APPOINTMENT
+        flatpickr("#date_pay", {
+            dateFormat: "Y-m-d",
+            disableMobile: "true",
+            minDate: "2024-01-01",
+            maxDate: "2024-01-31",
+            locale: {
+                weekdays: {
+                    shorthand: ['Dom', 'Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab'],
+                    longhand: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes',
+                        'Sábado'
+                    ],
+                },
+                months: {
+                    shorthand: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct',
+                        'Nov', 'Dic'
+                    ],
+                    longhand: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto',
+                        'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+                    ],
+                },
+            },
         });
     </script>
 </div>
