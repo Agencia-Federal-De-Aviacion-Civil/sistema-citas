@@ -137,6 +137,8 @@ class AppointmentThirdTable extends DataTableComponent
                                 $action = MedicineReserve::where('id', $row->id)->get(),
                                 $dateExpire = Carbon::parse($action[0]->dateReserve),
                                 $showExpireButton = Carbon::now()->isSameDay($dateExpire),
+                                $januaryAppointment = $action[0]->medicineReserveMedicine,
+                                'januaryTemp' => $januaryAppointment,
                                 'status' => $action[0]->status,
                                 'scheduleId' => $action[0]->id,
                                 'medicineId' => $action[0]->medicine_id,

@@ -218,8 +218,7 @@
                                                             </div>
                                                             <div class="relative mb-6 w-full group">
                                                                 <x-inputs.maskable label="EDAD" mask="##"
-                                                                    placeholder="ESCRIBE..."
-                                                                    wire:model.defer="age" />
+                                                                    placeholder="ESCRIBE..." wire:model.defer="age" />
                                                             </div>
                                                             <div class="relative mb-6 w-full group">
                                                                 <x-select label="ESTADO" placeholder="SELECCIONE..."
@@ -388,6 +387,8 @@
         });
         // CITAS MEDICAS
         window.addEventListener('headquartersUpdated', event => {
+            dateMin = event.detail.dateMin;
+            dateMax = event.detail.dateMax;
             flatpickr("#fecha-appointment", {
                 // enableTime: true,
                 // time_24hr: true,
@@ -396,9 +397,8 @@
                 // maxTime: "10:59",
                 disableMobile: "true",
                 // minuteIncrement: 10,
-                minDate: "today",
-                //minDate: new Date(new Date().getFullYear(), 0, 1),
-                maxDate: new Date(new Date().getFullYear(), 11, 31),
+                minDate: dateMin,
+                maxDate: dateMax,
                 disable: event.detail.disabledDaysFilter,
                 onDayCreate: function(dObj, dStr, fp, dayElem) {
                     /* if (dayElem.dateObj.getDay() === 0 || dayElem.dateObj.getDay() === 6 || dayElem

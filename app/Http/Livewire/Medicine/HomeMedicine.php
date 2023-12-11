@@ -481,11 +481,10 @@ class HomeMedicine extends Component
 
         $this->disabledDaysFilter = $disabledDaysArray;
         // TODO TEMPORALY
-        $dateFilterAppointment = $this->idTypeAppointment;
-        if ($dateFilterAppointment === false) {
+        if ($this->idAppointmentFull === 0) {
             $dateMin = Carbon::create(2024, 1, 1)->format('Y-m-d');
             $dateMax = Carbon::create(2024, 1, 31)->format('Y-m-d');
-        } else {
+        } elseif ($this->idAppointmentFull === 1) {
             $dateMin = Carbon::now()->format('Y-m-d');
             $dateMax = Carbon::create(2024, 12, 31)->format('Y-m-d');
         }
