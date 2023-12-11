@@ -19,6 +19,7 @@ use App\Models\Medicine\MedicineRevaluationInitial;
 use App\Models\Medicine\MedicineRevaluationRenovation;
 use App\Models\Medicine\MedicineSchedule;
 use App\Models\Medicine\MedicineScheduleException;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Jenssegers\Date\Date;
@@ -479,8 +480,19 @@ class HomeMedicine extends Component
         }
 
         $this->disabledDaysFilter = $disabledDaysArray;
+        // TODO TEMPORALY
+        $dateFilterAppointment = $this->idTypeAppointment;
+        if ($dateFilterAppointment === false) {
+            $dateMin = Carbon::create(2024, 1, 1)->format('Y-m-d');
+            $dateMax = Carbon::create(2024, 1, 31)->format('Y-m-d');
+        } else {
+            $dateMin = Carbon::now()->format('Y-m-d');
+            $dateMax = Carbon::create(2024, 12, 31)->format('Y-m-d');
+        }
         $this->dispatchBrowserEvent('headquartersUpdated', [
-            'disabledDaysFilter' => $disabledDaysArray
+            'disabledDaysFilter' => $disabledDaysArray,
+            'dateMin' => $dateMin,
+            'dateMax' => $dateMax
         ]);
     }
     public function openModalPdf()

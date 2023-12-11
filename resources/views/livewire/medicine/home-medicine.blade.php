@@ -744,6 +744,8 @@
         });
         // CITAS MEDICAS
         window.addEventListener('headquartersUpdated', event => {
+            dateMin = event.detail.dateMin;
+            dateMax = event.detail.dateMax;
             flatpickr("#fecha-appointment", {
                 // enableTime: true,
                 // time_24hr: true,
@@ -754,8 +756,8 @@
                 // minuteIncrement: 10,
                 //minDate: "today",
                 //maxDate: new Date(new Date().getFullYear(), 11, 31),
-                minDate: "2024-01-01",
-                maxDate: "2024-01-31",
+                minDate: dateMin,
+                maxDate: dateMax,
                 disable: event.detail.disabledDaysFilter,
                 onDayCreate: function(dObj, dStr, fp, dayElem) {
                     /* if (dayElem.dateObj.getDay() === 0 || dayElem.dateObj.getDay() === 6 || dayElem
@@ -789,15 +791,5 @@
             });
         });
     });
-
-    // function checkConnectionStatus() {
-    //     if (!navigator.onLine) {
-    //         document.getElementById('connection-status').innerText = 'Conexión lenta o inactiva';
-    //     }
-    // }
-
-    // window.addEventListener('load', checkConnectionStatus);
-    // window.addEventListener('online', checkConnectionStatus);
-    // window.addEventListener('offline', checkConnectionStatus);
 </script>
 </div>
