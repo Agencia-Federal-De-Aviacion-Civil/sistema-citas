@@ -709,11 +709,22 @@ class HomeMedicine extends Component
                 } else if ($this->type_exam_id == 3 || $this->type_exam_id == 5) {
                     // TODO SE NECESITA REVISAR EL CODIGO
                     // REGLAS FLEXIBILIDAD Y REVALORACIÓN
-                    $extension = $this->document_pay->getClientOriginalExtension();
-                    $fileName = $this->reference_number . '-' . $this->pay_date . '.' . $extension;
-                    $saveDocumentRevaloration = Document::create([
-                        'name_document' => $this->document_authorization->storeAs('documentos/medicina', $fileName, 'public'),
-                    ]);
+                    // $extension = $this->document_pay->getClientOriginalExtension();
+                    // $fileName = $this->reference_number . '-' . $this->pay_date . '.' . $extension;
+                    // $saveDocumentRevaloration = Document::create([
+                    //     'name_document' => $this->document_authorization->storeAs('documentos/medicina', $fileName, 'public'),
+                    // ]);
+                    if (empty($this->document_pay && $this->reference_number && $this->pay_date)) {
+                        $saveDocumentRevaloration = Document::create([
+                            'name_document' => 'JANUARY-APPOINTMENT',
+                        ]);
+                    } else {
+                        $extension = $this->document_pay->getClientOriginalExtension();
+                        $fileName = $this->reference_number . '-' . $this->pay_date . '.' . $extension;
+                        $saveDocumentRevaloration = Document::create([
+                            'name_document' => $this->document_pay->storeAs('documentos/medicina', $fileName, 'public'),
+                        ]);
+                    }
                     if ($this->type_exam_id == 5) {
                         $this->type_exam_revaloration_id = 2;
                     }
