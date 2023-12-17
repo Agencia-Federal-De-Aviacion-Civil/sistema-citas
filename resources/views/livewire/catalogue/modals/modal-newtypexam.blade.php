@@ -3,8 +3,8 @@
         <x-banner-modal-icon :title="'TIPO DE EXÁMEN'" :size="'w-16 h-16'" :icon="'file-clone'" :titlesize="'xl'" />
         <div class="grid xl:grid-cols-1 xl:gap-9 py-2">
             <div class="mt-1 relative w-full group">
-                <x-input class="uppercase" wire:model="name" label="NOMBRE DEL EXAMEN" placeholder="ESCRIBE..."
-                    class="bg-gray-50" />
+                <x-input wire:model="name" label="NOMBRE DEL EXAMEN" placeholder="ESCRIBE..."
+                    class="bg-gray-50 uppercase" />
             </div>
         </div>
 

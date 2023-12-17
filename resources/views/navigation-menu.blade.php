@@ -116,7 +116,7 @@
                                     <li>
                                         <a href="{{ route('afac.catalogappointment') }}"
                                             class="block hover:bg-gray-100 whitespace-no-wrap py-2 px-4">
-                                            Catalogos
+                                            Catálogos
                                         </a>
                                     </li>
                                 </ul>

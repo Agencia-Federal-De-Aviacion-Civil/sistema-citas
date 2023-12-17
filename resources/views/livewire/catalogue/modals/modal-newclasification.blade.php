@@ -3,8 +3,8 @@
         <x-banner-modal-icon :title="'CLASIFICACIÓN DE LAS CLASES'" :size="'w-16 h-16'" :icon="'node'" :titlesize="'xl'" />
         <div class="grid xl:grid-cols-1 xl:gap-9 py-2">
             <div class="mt-1 relative w-full group">
-                <x-input class="uppercase" wire:model="name" label="NOMBRE DE LA CLASIFICACIÓN" placeholder="ESCRIBE..."
-                    class="bg-gray-50" />
+                <x-input wire:model="name" label="NOMBRE DE LA CLASIFICACIÓN" placeholder="ESCRIBE..."
+                    class="bg-gray-50 uppercase" />
             </div>
             <div class="mt-1 relative w-full group">
                 <label for="systems" class="block text-sm font-medium text-gray-900 dark:text-white">CLASE</label>
