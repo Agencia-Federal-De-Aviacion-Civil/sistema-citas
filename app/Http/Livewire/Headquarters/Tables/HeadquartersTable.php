@@ -87,7 +87,7 @@ class HeadquartersTable extends DataTableComponent
             SelectFilter::make('TIPO')
                 ->options([
                     '' => 'TODOS',
-                    '0' => 'AFA',
+                    '0' => 'AFAC',
                     '1' => 'TERCEROS'
                 ])
                 ->filter(function ($query, $value) {

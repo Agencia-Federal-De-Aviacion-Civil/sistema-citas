@@ -5,9 +5,12 @@
                 <x-errors></x-errors>
                 <h3 class="text-xl font-semibold leading-6 text-gray-800 capitalize dark:text-white" id="modal-title">
                     @if ($this->status == 0)
-                        CITA
+                        <x-banner-modal-icon :title="'CITA PENDIENTE'" :size="'w-16 h-16'" :icon="'calendar-edit'" :titlesize="'xl'" />
+                        {{-- CITA --}}
                     @elseif ($this->status == 1)
-                        CITA VALIDADA
+                    <x-banner-modal-icon :title="'CITA VALIDADA'" :size="'w-16 h-16'" :icon="'calendar-check'" :titlesize="'xl'" />
+                    
+                        {{-- CITA VALIDADA --}}
                     @elseif ($this->status == 2)
                         CITA CANCELADA
                     @elseif ($this->status == 3)
