@@ -40,7 +40,7 @@
                 </div>
                 <div class="flex items-center justify-between w-full gap-4 mt-12">
                     <button wire:click="$emit('closeModal')"
-                        class="py-2 px-4  bg-white hover:bg-gray-100 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-indigo-500 w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
+                        class="py-2 px-4  bg-gray-50 hover:bg-gray-100 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-indigo-500 w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
                         CERRAR
                     </button>
                 </div>

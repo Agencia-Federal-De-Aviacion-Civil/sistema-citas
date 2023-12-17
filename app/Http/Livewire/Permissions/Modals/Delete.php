@@ -10,10 +10,12 @@ use WireUi\Traits\Actions;
 class Delete extends ModalComponent
 {
     use Actions;
-    public $permissionId;
+    public $permissionId,$permission,$namePermission;
     public function mount($permissionId)
     {
         $this->permissionId = $permissionId;
+        $this->permission = Permission::where('id', $permissionId)->get();
+        $this->namePermission = $this->permission[0]->name;
     }
     public function render()
     {

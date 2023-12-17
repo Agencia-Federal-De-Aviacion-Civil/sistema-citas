@@ -1,5 +1,5 @@
 <div>
-    <div class="container mx-auto px-4 py-4 bg-white shadow-xl sm:rounded-lg">
+    <div class="container mx-auto px-1.5 py-4 sm:py-1.5 bg-white shadow-xl sm:rounded-lg">
         <div class="p-2 sm:p-4 overflow-y-auto">
             <div class="flex gap-x-4 md:gap-x-7">
               <!-- Icon -->
@@ -15,7 +15,7 @@
                   Eliminación de Permiso
                 </h3>
                 <p class="text-gray-500">
-                    ¿Estas seguro de eliminar de forma permanente este permiso?
+                    ¿Estas seguro de eliminar de forma permanente el permiso {{$namePermission}}?
                 </p>
               </div>
             </div>

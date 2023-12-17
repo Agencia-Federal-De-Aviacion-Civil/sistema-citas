@@ -2,16 +2,7 @@
     <div class="mt-2 p-4 sm:p-7">
         <div class="relative bg-white rounded-3xl">
             <div class="w-full mx-auto">
-                <div class="flex items-center">
-                    <div
-                        class="h-14 w-14 bg-blue-200 rounded-full flex flex-shrink-0 justify-center items-center text-blue-500 text-2xl font-mono">
-                        i</div>
-                    <div class="block pl-2 font-semibold text-xl self-start text-gray-700">
-                        <h2 class="leading-relaxed py-1">SEDE</h2>
-                        <p class="text-sm text-gray-500 font-normal leading-relaxed">Verificar la información
-                            antes de modificar o crear un registro.</p>
-                    </div>
-                </div>
+                <x-banner-modal :title="'Sedes'" :information="'Verificar la información antes de modificar o crear una Sede.'" :icon="'map'" />
                 <div class="grid xl:grid-cols-1 xl:gap-6 py-2">
                     <div class="mt-1 relative w-full group">
                         <x-input wire:model.lazy="name_headquarter" label="NOMBRE DE LA SEDE" placeholder="ESCRIBE..." />
@@ -28,6 +19,7 @@
                                 class="block text-sm font-medium text-gray-900 dark:text-white">ESTADO</label>
                             <select wire:model.lazy="state"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option label="SELECCIONAR" value="0" />
                                 @foreach ($localizations as $localization)
                                     <option label="{{ $localization->name }}" value="{{ $localization->name }}" />
                                 @endforeach

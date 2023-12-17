@@ -39,7 +39,7 @@ class ModalNewclass extends ModalComponent
    
     public static function modalMaxWidth(): string
     {
-        return '3xl';
+        return 'xl';
     }
     public function clean()
     {

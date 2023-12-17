@@ -36,7 +36,7 @@ class ModalNewclasification extends ModalComponent
    
     public static function modalMaxWidth(): string
     {
-        return '3xl';
+        return '2xl';
     }
     public function clean()
     {
