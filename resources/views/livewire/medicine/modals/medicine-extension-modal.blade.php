@@ -1,13 +1,15 @@
 <div>
     <div class="p-4 sm:p-7">
         <div>
-            <x-banner-modal-icon :title="'EXTENSIÓN'" :size="'w-16 h-16'" :icon="'grid'" :titlesize="'xl'" />
+
             <div class="mt-4 text-center">
                 <h3 class="text-xl font-semibold leading-6 text-gray-800 capitalize dark:text-white" id="modal-title">
                     {{-- {{ $reference_number_ext ? 'EXTENSIÓN DE CITA PARA EL USUARIO' . '' . $extensionCurp : 'AÑADIR EXTENSIÓN' }} --}}
                 </h3>
                 @if (count($medicineReservesExtension[0]->medicineReserveMedicineExtension) > 0)
+                    <x-banner-modal-icon :title="'EXTENSIÓN'" :size="'w-16 h-16'" :icon="'grid'" :titlesize="'xl'" />
                     @if ($medicineReservesExtension[0]->medicineReserveMedicineExtension[0]->reference_number_ext)
+                        <x-banner-modal-icon :title="'EXTENSIÓN'" :size="'w-16 h-16'" :icon="'grid'" :titlesize="'xl'" />
                         <div class="mt-6 grid xl:grid-cols-2 xl:gap-6">
                             <div class="mt-1 relative w-full group">
                                 <x-input wire:model="type_exam" label="TIPO" placeholder="ESCRIBE..." readonly />
