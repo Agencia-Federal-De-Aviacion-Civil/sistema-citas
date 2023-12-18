@@ -116,6 +116,14 @@ class ModalNew extends ModalComponent
     {
         return '3xl';
     }
+    public static function closeModalOnEscape(): bool
+    {
+        return false;
+    }
+    public static function closeModalOnClickAway(): bool
+    {
+        return false;
+    }
     public function clean()
     {
         $this->reset(['name', 'email', 'password', 'apParental', 'apMaternal']);

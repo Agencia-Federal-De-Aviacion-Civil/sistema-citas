@@ -41,6 +41,14 @@ class ModalNewclass extends ModalComponent
     {
         return 'xl';
     }
+    public static function closeModalOnEscape(): bool
+    {
+        return false;
+    }
+    public static function closeModalOnClickAway(): bool
+    {
+        return false;
+    }
     public function clean()
     {
         $this->reset(['name','type_exam_id']);
