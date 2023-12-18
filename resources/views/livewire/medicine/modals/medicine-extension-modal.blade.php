@@ -1,6 +1,7 @@
 <div>
     <div class="p-4 sm:p-7">
         <div>
+            <x-banner-modal-icon :title="'EXTENSIÓN'" :size="'w-16 h-16'" :icon="'grid'" :titlesize="'xl'" />
             <div class="mt-4 text-center">
                 <h3 class="text-xl font-semibold leading-6 text-gray-800 capitalize dark:text-white" id="modal-title">
                     {{-- {{ $reference_number_ext ? 'EXTENSIÓN DE CITA PARA EL USUARIO' . '' . $extensionCurp : 'AÑADIR EXTENSIÓN' }} --}}
@@ -51,40 +52,41 @@
                                     placeholder="ESCRIBE..." readonly />
                             </div>
                         </div>
-                       @if($this->is_external == 0) 
-                        <div class="mt-6 grid xl:grid-cols-2 xl:gap-6">
-                            <div class="mt-1 relative w-full group">
-                                <x-input wire:model.lazy="reference_number_ext" label="INGRESA LA LLAVE DE PAGO"
-                                    placeholder="INGRESE..." />
+                        @if ($this->is_external == 0)
+                            <div class="mt-6 grid xl:grid-cols-2 xl:gap-6">
+                                <div class="mt-1 relative w-full group">
+                                    <x-input wire:model.lazy="reference_number_ext" label="INGRESA LA LLAVE DE PAGO"
+                                        placeholder="INGRESE..." />
+                                </div>
+                                <div class="mt-1 relative w-full group">
+                                    <x-input wire:model.lazy="date_reserve_ext" id="fecha-pago" label="FECHA DE PAGO"
+                                        placeholder="INGRESE..." />
+                                </div>
                             </div>
-                            <div class="mt-1 relative w-full group">
-                                <x-input wire:model.lazy="date_reserve_ext" id="fecha-pago" label="FECHA DE PAGO"
-                                    placeholder="INGRESE..." />
-                            </div>
-                        </div>
-                        <div class="mt-6 grid xl:grid-cols-1 xl:gap-6">
-                            <div class="mt-1 relative w-full group">
-                                <label for="file-input" class="text-sm text-left">ADJUNTA COMPROBANTE</label>
-                                <input type="file" wire:model="document_ext_id"
-                                    class="block w-full border border-gray-200 shadow-sm rounded-md text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 file:bg-transparent file:border-0 file:bg-gray-100 file:mr-4 file:py-2.5 file:px-4 dark:file:bg-gray-700 dark:file:text-gray-400">
-                                <div class="float-left">
-                                    <div wire:loading wire:target="document_ext_id">
-                                        Subiendo...
-                                        <div style="color: #27559b9a" class="la-ball-fall">
-                                            <div></div>
-                                            <div></div>
-                                            <div></div>
+                            <div class="mt-6 grid xl:grid-cols-1 xl:gap-6">
+                                <div class="mt-1 relative w-full group">
+                                    <label for="file-input" class="text-sm text-left">ADJUNTA COMPROBANTE</label>
+                                    <input type="file" wire:model="document_ext_id"
+                                        class="block w-full border border-gray-200 shadow-sm rounded-md text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 file:bg-transparent file:border-0 file:bg-gray-100 file:mr-4 file:py-2.5 file:px-4 dark:file:bg-gray-700 dark:file:text-gray-400">
+                                    <div class="float-left">
+                                        <div wire:loading wire:target="document_ext_id">
+                                            Subiendo...
+                                            <div style="color: #27559b9a" class="la-ball-fall">
+                                                <div></div>
+                                                <div></div>
+                                                <div></div>
+                                            </div>
                                         </div>
                                     </div>
+                                    @error('document_ext_id')
+                                        {{ $message }}
+                                    @enderror
                                 </div>
-                                @error('document_ext_id')
-                                    {{ $message }}
-                                @enderror
                             </div>
-                        </div>
                         @endif
                     @endif
                 @else
+                    <x-banner-modal-icon :title="'AGREGAR EXTENSIÓN'" :size="'w-16 h-16'" :icon="'plus'" :titlesize="'xl'" />
                     <div x-data="{
                         tipoExamenExtension: @entangle('type_exam_id_extension'),
                         questionException: @entangle('medicine_question_ex_id'),
@@ -183,54 +185,55 @@
                                 </div>
                             </div>
                         </div>
-                        @if($this->is_external == 0) 
-                        <div x-show="clasificationExtension > '0'">
-                            <div class="mt-6 grid xl:grid-cols-2 xl:gap-6">
-                                <div class="mt-1 relative w-full group">
-                                    <x-input wire:model.lazy="reference_number_ext" label="INGRESA LA LLAVE DE PAGO"
-                                        placeholder="INGRESE..." />
+                        @if ($this->is_external == 0)
+                            <div x-show="clasificationExtension > '0'">
+                                <div class="mt-6 grid xl:grid-cols-2 xl:gap-6">
+                                    <div class="mt-1 relative w-full group">
+                                        <x-input wire:model.lazy="reference_number_ext"
+                                            label="INGRESA LA LLAVE DE PAGO" placeholder="INGRESE..." />
+                                    </div>
+                                    <div class="mt-1 relative w-full group">
+                                        <x-input wire:model.lazy="date_reserve_ext" id="fecha-pago"
+                                            label="FECHA DE PAGO" placeholder="INGRESE..." />
+                                    </div>
                                 </div>
-                                <div class="mt-1 relative w-full group">
-                                    <x-input wire:model.lazy="date_reserve_ext" id="fecha-pago" label="FECHA DE PAGO"
-                                        placeholder="INGRESE..." />
-                                </div>
-                            </div>
-                            <div class="mt-6 grid xl:grid-cols-1 xl:gap-6">
-                                <div class="mt-1 relative w-full group">
-                                    <label for="file-input" class="text-sm text-left">ADJUNTA COMPROBANTE</label>
-                                    <input type="file" wire:model="document_ext_id"
-                                        class="block w-full border border-gray-200 shadow-sm rounded-md text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 file:bg-transparent file:border-0 file:bg-gray-100 file:mr-4 file:py-2.5 file:px-4 dark:file:bg-gray-700 dark:file:text-gray-400">
-                                    <div class="float-left">
-                                        <div wire:loading wire:target="document_ext_id">
-                                            Subiendo...
-                                            <div style="color: #27559b9a" class="la-ball-fall">
-                                                <div></div>
-                                                <div></div>
-                                                <div></div>
+                                <div class="mt-6 grid xl:grid-cols-1 xl:gap-6">
+                                    <div class="mt-1 relative w-full group">
+                                        <label for="file-input" class="text-sm text-left">ADJUNTA COMPROBANTE</label>
+                                        <input type="file" wire:model="document_ext_id"
+                                            class="block w-full border border-gray-200 shadow-sm rounded-md text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 file:bg-transparent file:border-0 file:bg-gray-100 file:mr-4 file:py-2.5 file:px-4 dark:file:bg-gray-700 dark:file:text-gray-400">
+                                        <div class="float-left">
+                                            <div wire:loading wire:target="document_ext_id">
+                                                Subiendo...
+                                                <div style="color: #27559b9a" class="la-ball-fall">
+                                                    <div></div>
+                                                    <div></div>
+                                                    <div></div>
+                                                </div>
                                             </div>
                                         </div>
+                                        @error('document_ext_id')
+                                            {{ $message }}
+                                        @enderror
                                     </div>
-                                    @error('document_ext_id')
-                                        {{ $message }}
-                                    @enderror
                                 </div>
                             </div>
-                        </div>
                         @endif
                     </div>
                 @endif
                 <div class="flex items-center justify-between w-full gap-4 mt-6">
 
-                    @if($this->id_type_class_extension != null && $this->ext_reference_number == null && $this->is_external==0 || $clas_class_extension_id!='')
-                    <button wire:click.prevent="saveExtension()"
-                    class="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
-                    ACEPTAR
-                    </button>
-                    @else                    
-                    
+                    @if (
+                        ($this->id_type_class_extension != null && $this->ext_reference_number == null && $this->is_external == 0) ||
+                            $clas_class_extension_id != '')
+                        <button wire:click.prevent="saveExtension()"
+                            class="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
+                            ACEPTAR
+                        </button>
+                    @else
                     @endif
                     <button wire:click="$emit('closeModal')"
-                        class="py-2 px-4  bg-white hover:bg-gray-100 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-indigo-500 w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
+                        class="py-2 px-4  bg-gray-100 hover:bg-gray-200 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-indigo-500 w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
                         CERRAR
                     </button>
                 </div>

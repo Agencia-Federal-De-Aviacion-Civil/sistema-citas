@@ -8,19 +8,53 @@
                         <x-banner-modal-icon :title="'CITA PENDIENTE'" :size="'w-16 h-16'" :icon="'calendar-edit'" :titlesize="'xl'" />
                         {{-- CITA --}}
                     @elseif ($this->status == 1)
-                    <x-banner-modal-icon :title="'CITA VALIDADA'" :size="'w-16 h-16'" :icon="'calendar-check'" :titlesize="'xl'" />
-                    
+                        <x-banner-modal-icon :title="'CITA VALIDADA'" :size="'w-16 h-16'" :icon="'calendar-check'" :titlesize="'xl'" />
                         {{-- CITA VALIDADA --}}
                     @elseif ($this->status == 2)
-                        CITA CANCELADA
+                        <x-banner-modal-icon :title="'CITA CANCELADA'" :size="'w-16 h-16'" :icon="'calendar-cancel'"
+                            :titlesize="'xl'" />
+                        {{-- CITA CANCELADA --}}
                     @elseif ($this->status == 3)
-                        CANCELÓ CITA
+                        <x-banner-modal-icon :title="'CANCELÓ CITA'" :size="'w-16 h-16'" :icon="'calendar-cancel'"
+                            :titlesize="'xl'" />
+                        {{-- CANCELÓ CITA --}}
                     @elseif ($this->status == 4)
-                        CITA REAGENDADA
+                        <x-banner-modal-icon :title="'CITA REAGENDADA'" :size="'w-16 h-16'" :icon="'calendar-edit'"
+                            :titlesize="'xl'" />
+                        {{-- CITA REAGENDADA --}}
+                    @elseif ($this->status == 5)
+                        <x-banner-modal-icon :title="'CITA CON LLAVE LIBERADA'" :size="'w-16 h-16'" :icon="'key'"
+                            :titlesize="'xl'" />
+                        {{-- CITA REAGENDADA --}}
+                    @elseif ($this->status == 6)
+                        <x-banner-modal-icon :title="'CITA INCOMPLETA'" :size="'w-16 h-16'" :icon="'calendar-edit'"
+                            :titlesize="'xl'" />
+                        <div class="bg-blue-50 border border-blue-200 rounded-md p-3" role="alert">
+                            <div class="flex">
+                                <div class="flex-shrink-0">
+                                    <svg class="h-3 w-3 text-blue-600 mt-1" xmlns="http://www.w3.org/2000/svg"
+                                        width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                        <path
+                                            d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
+                                    </svg>
+                                </div>
+                                <div class="ml-4">
+                                    <div class="mt-2 text-sm text-gray-600">
+                                        completar la información de la cita
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        {{-- CITA INCOMPLETA --}}
                     @elseif ($this->status == 7)
-                        CITA APLAZADA
+                        <x-banner-modal-icon :title="'CITA APLAZADA'" :size="'w-16 h-16'" :icon="'calendar-edit'"
+                            :titlesize="'xl'" />
+                        {{-- CITA APLAZADA --}}
                     @elseif ($this->status == 10)
-                        REAGENDO CITA
+                        <x-banner-modal-icon :title="'REAGENDO CITA'" :size="'w-16 h-16'" :icon="'calendar-edit'"
+                            :titlesize="'xl'" />
+                        {{-- REAGENDO CITA --}}
                     @endif
 
                 </h3>
@@ -52,7 +86,10 @@
                                     label="CONCLUYÓ NO APTO" /></label>
                         @elseif($this->typextension == 'SIN DATOS' && $this->status == 0)
                         @else
-                            <label class="mt-4 grid xl:grid-cols-6">EXTENSION </label>
+                            {{-- <label class="mt-4 grid xl:grid-cols-6">EXTENSION </label> --}}
+                            <div class="text-center py-2">
+                                <h1 class="mt-4 text-xl font-bold text-gray-500">EXTENSION</h1>
+                            </div>
                         @endif
 
                         @if ($this->typextension == 'SIN DATOS' && $this->status == 0)
