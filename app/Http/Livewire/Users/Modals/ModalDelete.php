@@ -18,8 +18,9 @@ class ModalDelete extends ModalComponent
     {
         $this->privilegesId = $privilegesId;
         $this->name = $this->privilegesId;
-        $user = User::with('roles')->where('id', $this->privilegesId)->get();
-        $this->title = '¿DESEAS ELIMINAR AL USUARIO ' . $user[0]->name . ' ?';
+        $user = User::with('roles','UserParticipant')->where('id', $this->privilegesId)->get();
+        // $this->title = '¿DESEAS ELIMINAR AL USUARIO ' . $user[0]->name . ' ?';
+        $this->title = $user[0]->name.' '.$user[0]->UserParticipant[0]->apParental.' '.$user[0]->UserParticipant[0]->apMaternal;
     }
 
     public function render()

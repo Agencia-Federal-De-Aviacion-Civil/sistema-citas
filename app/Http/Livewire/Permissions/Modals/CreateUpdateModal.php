@@ -29,6 +29,13 @@ class CreateUpdateModal extends ModalComponent
             $this->permissionId = null; // o cualquier otro valor predeterminado que desees
         }
     }
+    /**
+     * Supported: 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl', '7xl'
+     */
+    public static function modalMaxWidth(): string
+    {
+        return 'xl';
+    }
     public function render()
     {
         return view('livewire.permissions.modals.create-update-modal');

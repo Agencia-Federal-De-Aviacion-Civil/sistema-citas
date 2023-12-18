@@ -33,7 +33,15 @@ class ModalNewtypexam extends ModalComponent
    
     public static function modalMaxWidth(): string
     {
-        return '3xl';
+        return 'xl';
+    }
+    public static function closeModalOnEscape(): bool
+    {
+        return false;
+    }
+    public static function closeModalOnClickAway(): bool
+    {
+        return false;
     }
     public function clean()
     {
