@@ -29,14 +29,15 @@ class Calendar extends Component
 
                 return [
                     'id' => $events->first()->id,
-                    'title' => $events->first()->medicineReserveHeadquarter->name_headquarter . ' (' . $count . ')',
+                    // 'title' => $events->first()->medicineReserveHeadquarter->name_headquarter . ' (' . $count . ')',
+                    'title' => "CITAS" . ' (' . $count . ')',
                     'start' => $events->first()->dateReserve,
                 ];
             })->values();
             $this->events = json_encode($events);
         } else {
             $queryEvents = MedicineReserve::with('medicineReserveHeadquarter')
-                ->whereIn('status', [0, 1, 4,10])
+                ->whereIn('status', [0, 1, 4, 10, 7])
                 ->where('is_external', true)
                 ->get();
             $groupedEvents = $queryEvents->groupBy(function ($event) {
