@@ -16,6 +16,7 @@ class MyVerifyEmail extends VerifyEmail
             return call_user_func(static::$toMailCallback, $notifiable, $verificationUrl);
         }
 
+        // $someHtmlBody="<div align='center'><img src='https://citas.afac-avciv.com/images/logoafac.png'></div>";
         $someHtmlBody="<div align='center'><img src='https://citas-medicina.afac-avciv.com/images/logoafac.png'></div>";
 
         return (new MailMessage)
