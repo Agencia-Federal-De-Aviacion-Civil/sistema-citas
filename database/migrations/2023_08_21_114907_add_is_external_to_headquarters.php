@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('headquarters', function (Blueprint $table) {
-            // $table->boolean('is_external')->default(0)->after('url');
+            $table->boolean('is_external')->default(0)->after('url');
         });
     }
 

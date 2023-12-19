@@ -67,8 +67,8 @@ class DashboardController extends Controller
         $registradas = $appointment->sum('count');
         $porconfir = $registradas != 0 ? round($appointment->where('status', '1')->sum('count') * 100 / $registradas, 0) : 0;
         $validado = $appointment->where('status', '1')->sum('count');
-        $pendientes = $appointment->whereIn('status', ['0','7'])->sum('count');
-        $porpendientes = $registradas != 0 ? round($appointment->whereIn('status', ['0','7'])->sum('count') * 100 / $registradas, 0) : 0;
+        $pendientes = $appointment->whereIn('status', ['0'])->sum('count');
+        $porpendientes = $registradas != 0 ? round($appointment->whereIn('status', ['0'])->sum('count') * 100 / $registradas, 0) : 0;
         $canceladas = $appointment->whereIn('status', ['2', '3', '5'])->sum('count');
         $reagendado = round($appointment->whereIn('status', ['4','10'])->sum('count'));
         $porreagendado = $registradas != 0 ? round($appointment->whereIn('status', ['4','10'])->sum('count') * 100 / $registradas) : 0;
@@ -77,8 +77,10 @@ class DashboardController extends Controller
         $porapto = $registradas != 0 ? round($appointment->where('status', '8')->sum('count') * 100 / $registradas, 0) : 0;
         $noapto = $appointment->where('status', '9')->sum('count');
         $pornoapto = $registradas != 0 ? round($appointment->where('status', '9')->sum('count') * 100 / $registradas, 0) : 0;
+        $aplazado = $appointment->where('status', '7')->sum('count');
+        $poraplazado= $registradas != 0 ? round($appointment->where('status', '7')->sum('count') * 100 / $registradas, 0) : 0;
         $medicine =  round($registradas ? $registradas * 100 / $registradas : '0');
         $typeappoiment=2;
-        return view('afac.dashboard.index', compact('headquarters', 'nameHeadquarter', 'registradas', 'pendientes', 'validado', 'canceladas', 'reagendado', 'porconfir', 'porpendientes', 'porreagendado', 'porcanceladas', 'now', 'date', 'date2', 'medicine', 'date1', 'tomorrow', 'dateNow','typeappoiment','apto','porapto','noapto','pornoapto'));
+        return view('afac.dashboard.index', compact('headquarters', 'nameHeadquarter', 'registradas', 'pendientes', 'validado', 'canceladas', 'reagendado', 'porconfir', 'porpendientes', 'porreagendado', 'porcanceladas', 'now', 'date', 'date2', 'medicine', 'date1', 'tomorrow', 'dateNow','typeappoiment','apto','porapto','noapto','pornoapto','aplazado','poraplazado'));
     }
 }

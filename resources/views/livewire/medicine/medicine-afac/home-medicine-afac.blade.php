@@ -14,7 +14,7 @@
                 <div class="pb-4 lg:pb-6">
                     <div class="relative pt-1 mx-5">
                         <div class="overflow-hidden h-3 mb-4 text-xs flex rounded bg-gray-500">
-                            <div style="width: {{ $porconfir_afac1 }} %"
+                            {{-- <div style="width: {{ $porconfir_afac1 }} %"
                                 class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-800">
                             </div>
                             <div style="width: {{ $porcanceladas_afac1 }}%"
@@ -22,53 +22,92 @@
                             </div>
                             <div style="width: {{ $porreagendado_afac1 }}%"
                                 class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-500">
-                            </div>
+                            </div> --}}
+                          <div style="width: {{$porconfir_afac1}}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-800"></div>
+                          <div style="width: {{$porreagendado_afac1}}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-500"></div>
+                          <div style="width: {{$porapto_afac1}}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-green-500"></div>
+                          <div style="width: {{$pornoapto_afac1}}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500"></div>
+                          <div style="width: {{$poraplazada_afac1}}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-purple-500"></div>
+                          <div style="width: {{$porcanceladas_afac1}}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-orange-500"></div>
                         </div>
                     </div>
                 </div>
-                <div class="-mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                <div class="-mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-7 xl:grid-cols-7">
                     <div class="flex items-start p-2">
                         <div
-                            class="flex h-12 w-12 items-center justify-center rounded-full border border-gray-100 bg-gray-50">
+                            class="flex h-8 w-8 items-center justify-center rounded-full border border-gray-100 bg-gray-50">
                             <span href="#blue" class="block w-3 h-3 bg-gray-500 rounded-full"></span>
                         </div>
 
                         <div class="ml-4">
-                            <h3 class="font-semibold">Pendientes: {{ $pendientes_afac1 }}</h3>
-                            <p class="mt-2 text-sm text-gray-500">{{ $porpendientes_afac1 }}%</p>
+                            <h3 class="font-semibold">Pendientes</h3>
+                            <p class="mt-2 text-sm text-gray-500"><b>{{ $pendientes_afac1 }}</b> / {{ $porpendientes_afac1 }}%</p>
                         </div>
                     </div>
                     <div class="flex items-start p-2">
                         <div
-                            class="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50">
+                            class="flex h-8 w-8 items-center justify-center rounded-full border border-blue-100 bg-blue-50">
                             <span href="#blue" class="block w-3 h-3 bg-blue-800 rounded-full"></span>
                         </div>
 
                         <div class="ml-4">
-                            <h3 class="font-semibold">Confirmadas: {{ $validado_afac1 }}</h3>
-                            <p class="mt-2 text-sm text-gray-500">{{ $porconfir_afac1 }}%</p>
+                            <h3 class="font-semibold">Confirmadas</h3>
+                            <p class="mt-2 text-sm text-gray-500"><b>{{ $validado_afac1 }}</b> / {{ $porconfir_afac1 }}%</p>
                         </div>
                     </div>
 
                      <div class="flex items-start p-2">
                         <div
-                            class="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50">
+                            class="flex h-8 w-8 items-center justify-center rounded-full border border-blue-100 bg-blue-50">
                             <span href="#blue" class="block w-3 h-3 bg-blue-500 rounded-full"></span>
                         </div>
                         <div class="ml-4">
-                            <h2 class="font-semibold">Reagendadas: {{ $reagendado_afac1 }}</h2>
-                            <p class="mt-2 text-sm text-gray-500">{{ $porreagendado_afac1 }}%</p>
+                            <h2 class="font-semibold">Reagendadas</h2>
+                            <p class="mt-2 text-sm text-gray-500"><b>{{ $reagendado_afac1 }}</b> / {{ $porreagendado_afac1 }}%</p>
                         </div>
                     </div>
                     <div class="flex items-start p-2">
                         <div
-                            class="flex h-12 w-12 items-center justify-center rounded-full border border-red-100 bg-red-50">
+                            class="flex h-8 w-8 items-center justify-center rounded-full border border-green-100 bg-green-50">
+                            <span href="#blue" class="block w-3 h-3 bg-green-500 rounded-full"></span>
+                        </div>
+
+                        <div class="ml-4">
+                            <h2 class="font-semibold text-sm">Apto</h2>
+                            <p class="mt-2 text-sm text-gray-500"><b>{{ $apto_afac1}}</b> / {{ $porapto_afac1 }}%</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start p-2">
+                        <div
+                            class="flex h-8 w-8 items-center justify-center rounded-full border border-red-100 bg-red-50">
                             <span href="#blue" class="block w-3 h-3 bg-red-500 rounded-full"></span>
                         </div>
 
                         <div class="ml-4">
-                            <h2 class="font-semibold">Canceladas: {{ $canceladas_afac1 }}</h2>
-                            <p class="mt-2 text-sm text-gray-500">{{ $porcanceladas_afac1 }}%</p>
+                            <h2 class="font-semibold text-sm">No Apto</h2>
+                            <p class="mt-2 text-sm text-gray-500"><b>{{ $noapto_afac1 }}</b> / {{ $pornoapto_afac1 }}%</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start p-2">
+                        <div
+                            class="flex h-8 w-8 items-center justify-center rounded-full border border-purple-100 bg-purple-50">
+                            <span href="#blue" class="block w-3 h-3 bg-purple-500 rounded-full"></span>
+                        </div>
+
+                        <div class="ml-4">
+                            <h2 class="font-semibold text-sm">Aplazadas</h2>
+                            <p class="mt-2 text-sm text-gray-500"> <b>{{ $aplazadas_afac1 }}</b> / {{ $poraplazada_afac1 }}%</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start p-2">
+                        <div
+                            class="flex h-8 w-8 items-center justify-center rounded-full border border-red-100 bg-red-50">
+                            <span href="#blue" class="block w-3 h-3 bg-red-500 rounded-full"></span>
+                        </div>
+
+                        <div class="ml-4">
+                            <h2 class="font-semibold">Canceladas</h2>
+                            <p class="mt-2 text-sm text-gray-500"><b>{{ $canceladas_afac1 }}</b> / {{ $porcanceladas_afac1 }}%</p>
                         </div>
                     </div>
                 </div>
@@ -82,7 +121,7 @@
                         <div class="relative w-full max-w-full flex-grow flex-1">
                             <div class="flex items-start rounded-xl p-4">
                                 <div
-                                    class="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50">
+                                    class="flex h-8 w-8 items-center justify-center rounded-full border border-blue-100 bg-blue-50">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -123,7 +162,7 @@
                             </thead>
                             <tbody>
 
-                                {{-- @foreach ($headquarters_afac as $headquarter_afac)
+                                @foreach ($headquarters_afac as $headquarter_afac)
                                     <tr class="text-gray-700 dark:text-gray-100">
                                         <th
                                             class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
@@ -145,22 +184,22 @@
                                             class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                                             {{ $headquarter_afac->headquarterMedicineReserve->count() }}
                                         </td>
-                                        <td
+                                        {{-- <td
                                             class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                                             <div class="flex items-center">
                                                 <span
-                                                    class="mr-2">{{ $headquarter_afac->headquarterMedicineReserve->count() > 0 ? round(($headquarter_afac->headquarterMedicineReserve->count() * 100) / $registradas_afac, 1) : '0' }}%</span>
+                                                    class="mr-2">%</span>
                                                 <div class="relative w-full">
                                                     <div class="overflow-hidden h-2 text-xs flex rounded bg-blue-200">
-                                                        <div style="width:{{ $headquarter_afac->headquarterMedicineReserve->count() > 0 ? ($headquarter_afac->headquarterMedicineReserve->count() * 100) / $registradas_afac : '0' }}%"
+                                                        <div style="width:%"
                                                             class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-600">
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </td>
+                                        </td> --}}
                                     </tr>
-                                @endforeach --}}
+                                @endforeach
                             </tbody>
                         </table>
                     </div>

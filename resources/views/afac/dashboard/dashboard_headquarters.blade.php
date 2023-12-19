@@ -52,72 +52,83 @@
                             </template>
                         </div>
                     </div>
-                    <div class="-mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-6 xl:grid-cols-6">
+                    <div class="-mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-7 xl:grid-cols-7">
                         <div class="flex items-start p-2">
                             <div
-                                class="flex h-12 w-12 items-center justify-center rounded-full border border-gray-100 bg-gray-50">
+                                class="flex h-8 w-8 items-center justify-center rounded-full border border-gray-100 bg-gray-50">
                                 <span href="#blue" class="block w-3 h-3 bg-gray-500 rounded-full"></span>
                             </div>
 
                             <div class="ml-4">
-                                <h3 class="font-semibold text-sm">Pendientes: {{ $pendientes }}</h3>
-                                <p class="mt-2 text-sm text-gray-500">{{ $porpendientes }}%</p>
+                                <h3 class="font-semibold text-sm">Pendientes</h3>
+                                <p class="mt-2 text-sm text-gray-500"><b>{{ $pendientes }}</b> / {{ $porpendientes }}%</p>
                             </div>
                         </div>
                         <div class="flex items-start p-2">
                             <div
-                                class="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50">
+                                class="flex h-8 w-8 items-center justify-center rounded-full border border-blue-100 bg-blue-50">
                                 <span href="#blue" class="block w-3 h-3 bg-blue-800 rounded-full"></span>
                             </div>
 
                             <div class="ml-4">
-                                <h3 class="font-semibold">Asistió: {{ $validado }}</h3>
-                                <p class="mt-2 text-sm text-gray-500">{{ $porconfir }}%</p>
+                                <h3 class="font-semibold">Asistió</h3>
+                                <p class="mt-2 text-sm text-gray-500"><b>{{ $validado }}</b> / {{ $porconfir }}%</p>
                             </div>
                         </div>
 
                         <div class="flex items-start p-2">
                             <div
-                                class="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50">
+                                class="flex h-8 w-8 items-center justify-center rounded-full border border-blue-100 bg-blue-50">
                                 <span href="#blue" class="block w-3 h-3 bg-blue-500 rounded-full"></span>
                             </div>
                             <div class="ml-4">
-                                <h2 class="font-semibold text-sm">Reagendadas: {{ $reagendado }}</h2>
-                                <p class="mt-2 text-sm text-gray-500">{{ $porreagendado }}%</p>
+                                <h2 class="font-semibold text-sm">Reagendadas</h2>
+                                <p class="mt-2 text-sm text-gray-500"><b>{{ $reagendado }}</b> / {{ $porreagendado }}%</p>
                             </div>
                         </div>
                         
                         <div class="flex items-start p-2">
                             <div
-                                class="flex h-12 w-12 items-center justify-center rounded-full border border-green-100 bg-green-50">
+                                class="flex h-8 w-8 items-center justify-center rounded-full border border-green-100 bg-green-50">
                                 <span href="#blue" class="block w-3 h-3 bg-green-500 rounded-full"></span>
                             </div>
 
                             <div class="ml-4">
-                                <h2 class="font-semibold text-sm">Apto: {{ $apto }}</h2>
-                                <p class="mt-2 text-sm text-gray-500">{{ $porapto }}%</p>
+                                <h2 class="font-semibold text-sm">Apto</h2>
+                                <p class="mt-2 text-sm text-gray-500"><b>{{ $apto }}</b> / {{ $porapto }}%</p>
                             </div>
                         </div>
                         <div class="flex items-start p-2">
                             <div
-                                class="flex h-12 w-12 items-center justify-center rounded-full border border-red-100 bg-red-50">
+                                class="flex h-8 w-8 items-center justify-center rounded-full border border-red-100 bg-red-50">
                                 <span href="#blue" class="block w-3 h-3 bg-red-500 rounded-full"></span>
                             </div>
 
                             <div class="ml-4">
-                                <h2 class="font-semibold text-sm">No Apto: {{ $noapto }}</h2>
-                                <p class="mt-2 text-sm text-gray-500">{{ $pornoapto }}%</p>
+                                <h2 class="font-semibold text-sm">No Apto</h2>
+                                <p class="mt-2 text-sm text-gray-500"><b>{{ $noapto }}</b> / {{ $pornoapto }}%</p>
                             </div>
                         </div>
                         <div class="flex items-start p-2">
                             <div
-                                class="flex h-12 w-12 items-center justify-center rounded-full border border-orange-100 bg-orange-50">
+                                class="flex h-8 w-8 items-center justify-center rounded-full border border-purple-100 bg-purple-50">
+                                <span href="#blue" class="block w-3 h-3 bg-purple-500 rounded-full"></span>
+                            </div>
+    
+                            <div class="ml-4">
+                                <h2 class="font-semibold text-sm">Aplazadas</h2>
+                                <p class="mt-2 text-sm text-gray-500"><b>{{ $aplazado }}</b> / {{ $poraplazado }}%</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start p-2">
+                            <div
+                                class="flex h-8 w-8 items-center justify-center rounded-full border border-orange-100 bg-orange-50">
                                 <span href="#blue" class="block w-3 h-3 bg-orange-500 rounded-full"></span>
                             </div>
 
                             <div class="ml-4">
-                                <h2 class="font-semibold text-sm">Canceladas: {{ $canceladas }}</h2>
-                                <p class="mt-2 text-sm text-gray-500">{{ $porcanceladas }}%</p>
+                                <h2 class="font-semibold text-sm">Canceladas</h2>
+                                <p class="mt-2 text-sm text-gray-500"><b>{{ $canceladas }}</b> / {{ $porcanceladas }}%</p>
                             </div>
                         </div>
                     </div>
@@ -136,7 +147,7 @@
                                 {{-- <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1"> --}}
                                 <div class="flex items-start rounded-xl p-4">
                                     <div
-                                        class="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50">
+                                        class="flex h-8 w-8 items-center justify-center rounded-full border border-blue-100 bg-blue-50">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                             stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -283,6 +294,10 @@
                     "label": "No apto",
                     "size": @json($pornoapto),
                     "color": "red-500"
+                },{
+                    "label": "Aplazado",
+                    "size": @json($poraplazado),
+                    "color": "purple-500"
                 },{
                     "label": "Cancelado",
                     "size": @json($porcanceladas),

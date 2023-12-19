@@ -41,7 +41,7 @@
                         </div>
 
                         <div class="ml-4">
-                            <h3 class="font-semibold">Asistió</h3>
+                            <h3 class="font-semibold">Confirmadas</h3>
                             <p class="mt-2 text-sm text-gray-500"><b>{{ $validado_third }}</b> / {{ $porconfir_third }}%</p>
                         </div>
                     </div>
