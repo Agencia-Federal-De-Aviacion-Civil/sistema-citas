@@ -14,79 +14,91 @@
                     <div class="relative pt-1 mx-5">
                         <div class="overflow-hidden h-3 mb-4 text-xs flex rounded bg-gray-500">
                           <div style="width: {{$porconfir_third}}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-800"></div>
-                          <div style="width: {{$porcanceladas_third}}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-orange-500"></div>
                           <div style="width: {{$porreagendado_third}}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-500"></div>
                           <div style="width: {{$porapto_third}}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-green-500"></div>
                           <div style="width: {{$pornoapto_third}}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500"></div>
+                          <div style="width: {{$poraplazada_third}}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-purple-500"></div>
+                          <div style="width: {{$porcanceladas_third}}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-orange-500"></div>
                         </div>
                       </div>
                 </div>
-                <div class="-mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-6 xl:grid-cols-6">
+                <div class="-mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-7 xl:grid-cols-7">
                     <div class="flex items-start p-2">
                         <div
-                            class="flex h-12 w-12 items-center justify-center rounded-full border border-gray-100 bg-gray-50">
+                            class="flex h-8 w-8 items-center justify-center rounded-full border border-gray-100 bg-gray-50">
                             <span href="#blue" class="block w-3 h-3 bg-gray-500 rounded-full"></span>
                         </div>
 
                         <div class="ml-4">
-                            <h3 class="font-semibold text-sm">Pendientes: {{ $pendientes_third }}</h3>
-                            <p class="mt-2 text-sm text-gray-500">{{ $porpendientes_third }}%</p>
+                            <h3 class="font-semibold text-sm">Pendientes</h3>
+                            <p class="mt-2 text-sm text-gray-500"><b>{{ $pendientes_third }}</b> / {{ $porpendientes_third }}%</p>
                         </div>
                     </div>
                     <div class="flex items-start p-2">
                         <div
-                            class="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50">
+                            class="flex h-8 w-8 items-center justify-center rounded-full border border-blue-100 bg-blue-50">
                             <span href="#blue" class="block w-3 h-3 bg-blue-800 rounded-full"></span>
                         </div>
 
                         <div class="ml-4">
-                            <h3 class="font-semibold">Asistió: {{ $validado_third }}</h3>
-                            <p class="mt-2 text-sm text-gray-500">{{ $porconfir_third }}%</p>
+                            <h3 class="font-semibold">Asistió</h3>
+                            <p class="mt-2 text-sm text-gray-500"><b>{{ $validado_third }}</b> / {{ $porconfir_third }}%</p>
                         </div>
                     </div>
 
                     <div class="flex items-start p-2">
                         <div
-                            class="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50">
+                            class="flex h-8 w-8 items-center justify-center rounded-full border border-blue-100 bg-blue-50">
                             <span href="#blue" class="block w-3 h-3 bg-blue-500 rounded-full"></span>
                         </div>
                         <div class="ml-4">
-                            <h2 class="font-semibold text-sm">Reagendadas: {{ $reagendado_third }}</h2>
-                            <p class="mt-2 text-sm text-gray-500">{{ $porreagendado_third }}%</p>
+                            <h2 class="font-semibold text-sm">Reagendadas</h2>
+                            <p class="mt-2 text-sm text-gray-500"><b>{{ $reagendado_third }}</b> / {{ $porreagendado_third }}%</p>
                         </div>
                     </div>
                     
                     <div class="flex items-start p-2">
                         <div
-                            class="flex h-12 w-12 items-center justify-center rounded-full border border-green-100 bg-green-50">
+                            class="flex h-8 w-8 items-center justify-center rounded-full border border-green-100 bg-green-50">
                             <span href="#blue" class="block w-3 h-3 bg-green-500 rounded-full"></span>
                         </div>
 
                         <div class="ml-4">
-                            <h2 class="font-semibold text-sm">Apto: {{ $apto_third}}</h2>
-                            <p class="mt-2 text-sm text-gray-500">{{ $porapto_third }}%</p>
+                            <h2 class="font-semibold text-sm">Apto</h2>
+                            <p class="mt-2 text-sm text-gray-500"><b>{{ $apto_third}}</b> / {{ $porapto_third }}%</p>
                         </div>
                     </div>
                     <div class="flex items-start p-2">
                         <div
-                            class="flex h-12 w-12 items-center justify-center rounded-full border border-red-100 bg-red-50">
+                            class="flex h-8 w-8 items-center justify-center rounded-full border border-red-100 bg-red-50">
                             <span href="#blue" class="block w-3 h-3 bg-red-500 rounded-full"></span>
                         </div>
 
                         <div class="ml-4">
-                            <h2 class="font-semibold text-sm">No Apto: {{ $noapto_third }}</h2>
-                            <p class="mt-2 text-sm text-gray-500">{{ $pornoapto_third }}%</p>
+                            <h2 class="font-semibold text-sm">No Apto</h2>
+                            <p class="mt-2 text-sm text-gray-500"><b>{{ $noapto_third }}</b> / {{ $pornoapto_third }}%</p>
                         </div>
                     </div>
                     <div class="flex items-start p-2">
                         <div
-                            class="flex h-12 w-12 items-center justify-center rounded-full border border-orange-100 bg-orange-50">
+                            class="flex h-8 w-8 items-center justify-center rounded-full border border-purple-100 bg-purple-50">
+                            <span href="#blue" class="block w-3 h-3 bg-purple-500 rounded-full"></span>
+                        </div>
+
+                        <div class="ml-4">
+                            <h2 class="font-semibold text-sm">Aplazadas</h2>
+                            <p class="mt-2 text-sm text-gray-500"> <b>{{ $aplazadas_third }}</b> / {{ $poraplazada_third }}%</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start p-2">
+                        <div
+                            class="flex h-8 w-8 items-center justify-center rounded-full border border-orange-100 bg-orange-50">
                             <span href="#blue" class="block w-3 h-3 bg-orange-500 rounded-full"></span>
                         </div>
 
                         <div class="ml-4">
-                            <h2 class="font-semibold text-sm">Canceladas: {{ $canceladas_third }}</h2>
-                            <p class="mt-2 text-sm text-gray-500">{{ $porcanceladas_third }}%</p>
+                            <h2 class="font-semibold text-sm">Canceladas</h2>
+                            <p class="mt-2 text-sm text-gray-500"> <b>{{ $canceladas_third }}</b> / {{ $porcanceladas_third }}%</p>
                         </div>
                     </div>
                 </div>
@@ -131,13 +143,13 @@
                                         class="px-4 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-100 align-middle border border-solid border-gray-200 dark:border-gray-500 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                                         Citas para mañana
                                     </th>
-                                    <th
+                                    {{-- <th
                                         class="px-4 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-100 align-middle border border-solid border-gray-200 dark:border-gray-500 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                                         total de citas
                                     </th>
                                     <th
                                         class="px-4 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-100 align-middle border border-solid border-gray-200 dark:border-gray-500 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left min-w-140-px">
-                                    </th>
+                                    </th> --}}
                                 </tr>
                             </thead>
                             {{-- {{$headquarters}} --}}
@@ -160,11 +172,11 @@
                                             class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                                             {{ $headquarter_third->headquarterMedicineReserve->where('dateReserve', $tomorrow_third)->whereIn('status', ['0', '1', '4', '10', '8', '9', '7'])->count() }}
                                         </td>
-                                        <td
+                                        {{-- <td
                                             class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                                             {{ $headquarter_third->headquarterMedicineReserve->count() }}
-                                        </td>
-                                        <td
+                                        </td> --}}
+                                        {{-- <td
                                             class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                                             <div class="flex items-center">
                                                 <span
@@ -177,7 +189,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </td>
+                                        </td> --}}
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -189,7 +201,7 @@
        
         <div class="py-12">
             <div class="container mx-auto px-4 py-4 bg-white sm:rounded-lg">
-                <div class="mt-12 md:max-w-8xl  xs:max-w-4xl  mx-auto sm:px-6 lg:px-8">
+                <div class="mt-12 max-w-full mx-auto sm:px-6 lg:px-8">
                     <div class="ml-4 py-6 mr-4 uppercase md:text-sm xs:text-xs">
                         @livewire('medicine.authorized-third.calendar', key('medicine.authorized-third.calendar-'))
                     </div>
