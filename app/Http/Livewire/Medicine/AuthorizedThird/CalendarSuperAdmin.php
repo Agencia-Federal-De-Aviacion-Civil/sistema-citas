@@ -37,7 +37,7 @@ class CalendarSuperAdmin extends Component
         //     $this->events = json_encode($events);
         // } else {
             $queryEvents = MedicineReserve::with('medicineReserveHeadquarter')
-                ->whereIn('status', [0, 1, 4, 7,10])
+                ->whereIn('status', [0,1,4,7,9,10])
                 ->where('is_external', true)
                 ->get();
             $groupedEvents = $queryEvents->groupBy(function ($event) {
