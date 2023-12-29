@@ -25,7 +25,7 @@ class Schedule extends ModalComponent
     public $id_appoint, $id_medicine_observation, $scheduleId, $status, $medicineReserves, $name, $type, $class, $typLicense, $sede, $dateReserve, $date, $time, $scheduleMedicines, $sedes,
         $headquarter_id, $medicine_schedule_id, $selectedOption, $observation_reschedule, $observation_cancelate, $hoursReserve, $observation, $medicineId, $accion,
         $disabledDaysFilter, $days, $is_external, $medicineRextension, $typextension, $classxtension, $typLicensextension;
-    public $reference_number, $pay_date, $document_pay;
+    public $reference_number, $pay_date, $document_pay,$dateMin,$dateMax;
     public function mount($scheduleId = null, $medicineId)
     {
         $this->medicineId = $medicineId;
@@ -156,8 +156,22 @@ class Schedule extends ModalComponent
         }
 
         $this->disabledDaysFilter = $disabledDaysArray;
+        // $this->dispatchBrowserEvent('headquartersUpdated', [
+        //     'disabledDaysFilter' => $disabledDaysArray,
+        // ]);
+
+        // TODO TEMPORALY
+        if ($this->is_external === 0) {
+            $dateMin = Carbon::create(2024, 1, 1)->format('Y-m-d');
+            $dateMax = Carbon::create(2024, 1, 31)->format('Y-m-d');
+        } elseif ($this->is_external === 1) {
+            $dateMin = Carbon::now()->format('Y-m-d');
+            $dateMax = Carbon::create(2024, 12, 31)->format('Y-m-d');
+        }
         $this->dispatchBrowserEvent('headquartersUpdated', [
             'disabledDaysFilter' => $disabledDaysArray,
+            'dateMin' => $dateMin,
+            'dateMax' => $dateMax
         ]);
     }
     public function updatedToUserHeadquarters($value)

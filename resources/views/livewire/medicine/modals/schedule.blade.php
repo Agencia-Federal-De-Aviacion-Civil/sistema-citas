@@ -320,12 +320,26 @@
         </div>
     </div>
     <script>
-        window.addEventListener('headquartersUpdated', event => {
+         window.addEventListener('headquartersUpdated', event => {
+            // dateMin = event.detail.dateMin;
+            // dateMax = event.detail.dateMax;
             flatpickr("#fecha-appointment", {
+                // dateFormat: "Y-m-d",
+                // disableMobile: "true",
+                // minDate: "today",
+                // maxDate: new Date(new Date().getFullYear(), 11, 31),
+                // disable: event.detail.disabledDaysFilter,
+                // enableTime: true,
+                // time_24hr: true,
                 dateFormat: "Y-m-d",
+                // minTime: "07:00",
+                // maxTime: "10:59",
                 disableMobile: "true",
-                minDate: "today",
-                maxDate: new Date(new Date().getFullYear(), 11, 31),
+                // minuteIncrement: 10,
+                //minDate: "today",
+                //maxDate: new Date(new Date().getFullYear(), 11, 31),
+                minDate: event.detail.dateMin,
+                maxDate: event.detail.dateMax,
                 disable: event.detail.disabledDaysFilter,
                 onDayCreate: function(dObj, dStr, fp, dayElem) {
                     if (dayElem.dateObj.getDay() === 0 || dayElem.dateObj.getDay() === 6) {
