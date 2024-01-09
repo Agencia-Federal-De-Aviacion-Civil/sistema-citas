@@ -26,6 +26,14 @@ use Jenssegers\Date\Date;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use WireUi\Traits\Actions;
+use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelHigh;
+use Endroid\QrCode\Label\Alignment\LabelAlignmentCenter;
+use Endroid\QrCode\Label\Font\OpenSans;
+use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
+use Endroid\QrCode\Writer\PngWriter;
+
 use PDF;
 
 class HomeMedicine extends Component
@@ -755,7 +763,7 @@ class HomeMedicine extends Component
                         //             'clasification_class_id' => $clasifications
                         //         ]);
                         //     }
-                        // } else 
+                        // } else
                         // {
                         MedicineRevaluationInitial::create([
                             'medicine_revaluation_id' => $medicineReId->id,
@@ -907,14 +915,29 @@ class HomeMedicine extends Component
     public function generatePdf()
     {
         $savedMedicineId = session('saved_medicine_id');
-        $idExternalInternal = session('idType'); //TODO 
+        $idExternalInternal = session('idType'); //TODO
         $medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'medicineReserveHeadquarter', 'medicineReserveMedicineExtension'])
             ->where('medicine_id', $savedMedicineId)->get();
         $medicineId = $medicineReserves[0]->id;
         $dateAppointment = $medicineReserves[0]->dateReserve;
         $dateConvertedFormatted = Date::parse($dateAppointment)->format('l j F Y');
         $curp = $medicineReserves[0]->medicineReserveMedicine->medicineUser->userParticipant->pluck('curp')->first();
-        $keyEncrypt =  Crypt::encryptString($medicineId . '*' . $dateAppointment . '*' . $curp);
+        $keyEncrypts =  Crypt::encryptString($medicineId . '*' . $dateAppointment . '*' . $curp);
+
+        $result = Builder::create()
+        ->writer(new PngWriter())
+        ->writerOptions([])
+        ->data($keyEncrypts)
+        ->encoding(new Encoding('UTF-8'))
+        ->errorCorrectionLevel(new ErrorCorrectionLevelHigh())
+        ->size(300)
+        ->margin(10)
+        ->roundBlockSizeMode(new RoundBlockSizeModeMargin())
+        ->validateResult(false)
+        ->build();
+        $keyEncrypt = $result->getDataUri();
+
+
         if (!$idExternalInternal) {
             $fileName = $medicineReserves[0]->dateReserve . '-' . $curp . '-' . 'MED-' . $medicineId . '.pdf';
         } else {

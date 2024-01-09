@@ -213,7 +213,7 @@
             @endif
         </table>
         <div class="codigoqr">
-            <img src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ $keyEncrypt }}"
+            <img src="{{ $keyEncrypt }}"
                 width="120" height="120" />
             {{-- <img
                 src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ route('validateUrl', $keyEncrypt) }}"
@@ -293,9 +293,9 @@
                         caso de hacer cita en la Unidad Médica Aeropuerto, Ciudad de México, no será
                         necesario presentar RX de Tórax)</b>.
                 </p> --}}
-                <p style="padding-left:3%">G) Radiografía de tórax postero-anterior o más conocida como la tele de tórax se 
-                    deberá presentar cada 3 años para cualquier tipo de licencia o antes en caso de 
-                    que su médico examinador lo indique de acuerdo con la condición clínica 
+                <p style="padding-left:3%">G) Radiografía de tórax postero-anterior o más conocida como la tele de tórax se
+                    deberá presentar cada 3 años para cualquier tipo de licencia o antes en caso de
+                    que su médico examinador lo indique de acuerdo con la condición clínica
                     preexistente o a las patologías agregadas.
                 </p>
             </ol>
