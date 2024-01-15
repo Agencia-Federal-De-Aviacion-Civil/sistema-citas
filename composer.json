@@ -8,6 +8,7 @@
         "php": "^8.0.2",
         "ext-gd": "*",
         "barryvdh/laravel-dompdf": "^2.0",
+        "endroid/qr-code": "4.8",
         "guzzlehttp/guzzle": "^7.2",
         "jenssegers/date": "^4.0",
         "laravel/framework": "^9.19",

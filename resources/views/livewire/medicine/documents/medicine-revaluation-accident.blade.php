@@ -71,7 +71,7 @@
         bottom: 30px;
         height: 0px;
         right: -0.2%;
-    }  
+    }
 </style>
 
 <body class="bgsize">
@@ -161,8 +161,11 @@
             </tr>
         </table>
         <div class="codigoqr">
-            <img src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ $keyEncrypt }}"
-                    width="120" height="120" />
+
+            <img src="{{ $keyEncrypt }}"
+            width="120" height="120" />
+            {{-- <img src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ $keyEncrypt }}"
+                    width="120" height="120" /> --}}
         </div>
         <div style="background-color: #e6e6e6;height: 25px; ">
             <h3 class="titulo2">REQUISITOS</h3>
@@ -181,55 +184,55 @@
                 <li>Comprobante de pago (original).</li>
                 <li>Comprobante de cita.</li>
                 <li>Clave Única de Registro de Población (CURP).</li>
-                <li>Deberá presentar en forma impresa los formatos de declaración de salud, 
-                    consentimiento informado (mismos que debe llenar y firmar) así como el vale de 
+                <li>Deberá presentar en forma impresa los formatos de declaración de salud,
+                    consentimiento informado (mismos que debe llenar y firmar) así como el vale de
                     servicios que se incluyen al final de este documento.</li>
                 <li>Una de las siguientes identificaciones con fotografía:</li>
                 <p style="padding-left:2%;">A. Cédula de identidad ciudadana (INE) vigente.</p>
                 <p style="padding-left:2%;margin-top:-2%;">B. Cédula profesional (siempre y cuando cuente con fotografía).</p>
                 <p style="padding-left:2%;margin-top:-2%;">C. Cartilla Militar (personal masculino).</p>
                 <p style="padding-left:2%;margin-top:-2%;">D. Pasaporte.</p>
-                <p style="padding-left:2%;margin-top:-2%;">E. Credencial con fotografía de la Institución Educativa, donde esté realizando 
-                    estudios, exclusivamente para menores de edad, que no cuenten con ninguna 
-                    de las identificaciones anteriores, y en caso de no contar con esta última, se 
+                <p style="padding-left:2%;margin-top:-2%;">E. Credencial con fotografía de la Institución Educativa, donde esté realizando
+                    estudios, exclusivamente para menores de edad, que no cuenten con ninguna
+                    de las identificaciones anteriores, y en caso de no contar con esta última, se
                     podrá utilizar la CURP como identificación oficial.</p>
                 <li>Acudir con ropa cómoda, evitando sea de una sola pieza.</li>
                 <li>Tomar un desayuno ligero, en caso de acudir en ayuno llevar su refrigerio.</li>
                 <li>No suspender medicación prescrita.</li>
                 <li>En caso de haber tenido algún procedimiento dental, esperar mínimo 72 horas posteriores al mismo para agendar su cita.</li>
-                <li>En caso de haber sido diagnosticado con alguna(s) enfermedad(es) crónica(s) 
-                    (enfermedades cardiacas, respiratorias, hipertiroidismo, etc.), presentar un resumen 
-                    clínico expedido por su médico tratante de especialidad acorde a la patología y 
-                    estudios <b> adicionales (Ver Anexo)</b> con vigencia no mayor a 2 meses para acreditar 
+                <li>En caso de haber sido diagnosticado con alguna(s) enfermedad(es) crónica(s)
+                    (enfermedades cardiacas, respiratorias, hipertiroidismo, etc.), presentar un resumen
+                    clínico expedido por su médico tratante de especialidad acorde a la patología y
+                    estudios <b> adicionales (Ver Anexo)</b> con vigencia no mayor a 2 meses para acreditar
                     el estado actual de salud.
                 </li>
                 <li>
-                    En caso de presentar disminución en la agudeza visual, deberá presentarse con 
-lentes de armazón o de contacto con graduación actualizada. Si alterna el uso de 
-ambos, deberá presentarlos. Para el personal de pilotos en caso de usar lentes de 
+                    En caso de presentar disminución en la agudeza visual, deberá presentarse con
+lentes de armazón o de contacto con graduación actualizada. Si alterna el uso de
+ambos, deberá presentarlos. Para el personal de pilotos en caso de usar lentes de
 contacto deberá acudir con sus lentes de armazón de repuesto.
                 </li>
                 <li>En caso de encontrarse embarazada, presentar constancia o expediente de control del mismo actualizada y hacerle saber al servicio de rayos X al acudir a su examen.
                 </li>
                 <li>Acudir con los estudios de laboratorio que a continuación se enlistan, los cuales deberán realizarse en una institución acreditada por la <b> Norma ISO15189-2012</b>, debiendo contener nombre de la institución, dirección, nombre completo
-                    del laboratorista, cédula profesional y número telefónico, así como <b>fecha de emisión no 
+                    del laboratorista, cédula profesional y número telefónico, así como <b>fecha de emisión no
                     mayor a un mes de la cita programada.</b></li>
                 <p style="padding-left:3%">A) Biometría hemática.</p>
                 <p style="padding-left:3%">B) Química sanguínea de 6 elementos (Glucosa, Nitrógeno Ureico en Sangre, Creatinina, Ácido úrico, Colesterol total y Triglicéridos).</p>
                 <p style="padding-left:3%">C) Examen General de Orina.</p>
                 <p style="padding-left:3%">D) Prueba de detección de sustancias psicoactivas en orina, de 5 reactivos (Cocaína, Cannabinoides, Opiaceos, Anfetaminas y Benzodiazepinas). Verificar que la totalidad de sus resultados esten reportados o de lo contrario no podrá ser atendido.</p>
                 <p style="padding-left:3%">E) Hemoglobina glucosilada.</p>
-                <p style="padding-left:3%">F) Radiografía de tórax postero-anterior o más conocida como la tele de tórax, se 
-                    deberá presentar cada 3 años para cualquier tipo de licencia o antes en caso de 
-                    que su médico examinador lo indique de acuerdo con la condición clínica 
+                <p style="padding-left:3%">F) Radiografía de tórax postero-anterior o más conocida como la tele de tórax, se
+                    deberá presentar cada 3 años para cualquier tipo de licencia o antes en caso de
+                    que su médico examinador lo indique de acuerdo con la condición clínica
                     preexistente o a las patologías agregadas <b> (en
                         caso de hacer cita en la Unidad Médica Aeropuerto, Ciudad de México, no será
                         necesario presentar RX de Tórax)</b>.
                 </p>
             </ol>
-            <p><b> Nota:</b> Es importante notar, que, si no ha entregado en los tres años anteriores a 
-                la fecha de su examen, una radiografía de tórax en el sitio de su evaluación 
-                médica, esta se deberá llevar el día de su evaluación y a partir de esa fecha, será 
+            <p><b> Nota:</b> Es importante notar, que, si no ha entregado en los tres años anteriores a
+                la fecha de su examen, una radiografía de tórax en el sitio de su evaluación
+                médica, esta se deberá llevar el día de su evaluación y a partir de esa fecha, será
                 cada 3 años.</p>
         </div>
         <footer>

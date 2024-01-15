@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Jenssegers\Date\Date;
 use Livewire\Component;
 
-class HomeMedicineAuthorizedThird extends Component
+class HomeSuperMedicineAuthorizedThird extends Component
 {
 
     public function render()
@@ -96,6 +96,6 @@ class HomeMedicineAuthorizedThird extends Component
         $poraplazada_third = $registradas_third != 0 ? round($appointment_third->where('status', '7')->sum('count') * 100 / $registradas_third, 0) : 0;
 
         $medicine_third =  round($registradas_third ? $registradas_third * 100 / $registradas_third : '0');
-        return view('livewire.medicine.authorized-third.home-medicine-authorized-third', compact('headquarters_third', 'nameHeadquarter_third', 'registradas_third', 'pendientes_third', 'validado_third', 'canceladas_third', 'reagendado_third', 'porconfir_third', 'porpendientes_third', 'porreagendado_third', 'porcanceladas_third', 'now_third', 'date_third', 'date2_third', 'medicine_third', 'date1_third', 'tomorrow_third','apto_third','porapto_third','noapto_third','pornoapto_third','aplazadas_third','poraplazada_third'));
+        return view('livewire.medicine.authorized-third.home-super-medicine-authorized-third', compact('headquarters_third', 'nameHeadquarter_third', 'registradas_third', 'pendientes_third', 'validado_third', 'canceladas_third', 'reagendado_third', 'porconfir_third', 'porpendientes_third', 'porreagendado_third', 'porcanceladas_third', 'now_third', 'date_third', 'date2_third', 'medicine_third', 'date1_third', 'tomorrow_third','apto_third','porapto_third','noapto_third','pornoapto_third','aplazadas_third','poraplazada_third'));
     }
 }
