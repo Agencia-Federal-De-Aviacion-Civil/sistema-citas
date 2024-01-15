@@ -19,7 +19,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('backup:clean')->daily()->at('08:00');
         $schedule->command('backup:run')->daily()->at('9:00');
         $schedule->command('backup:monitor')->daily()->at('11:00');
-        $schedule->command('update:pending')->everyMinute();
+        $schedule->command('update:pending')->daily();
     }
 
     /**
@@ -29,7 +29,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }

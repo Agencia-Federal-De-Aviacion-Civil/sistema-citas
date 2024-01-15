@@ -30,10 +30,10 @@ class PendingAppointments extends Command
      */
     public function handle()
     {
-        $medicineReserves = MedicineReserve::whereDate('dateReserve', '>=', '2023-12-15')->where('status', 0)->get();
+        $medicineReserves = MedicineReserve::whereDate('dateReserve', '>=', '2024-01-10')->where('status', 0)->get();
         foreach ($medicineReserves as $medicineReserve) {
             $dateParse = Carbon::parse($medicineReserve->dateReserve);
-            $addDaysParse = $dateParse->addDays(3)->format('Y-m-d');
+            $addDaysParse = $dateParse->addWeekdays(3)->format('Y-m-d');
             $dateNowParse = Carbon::now()->format('Y-m-d');
             if ($addDaysParse <= $dateNowParse) {
                 $medicineReserve->update([
