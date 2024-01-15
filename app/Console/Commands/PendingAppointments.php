@@ -30,18 +30,18 @@ class PendingAppointments extends Command
      */
     public function handle()
     {
-        // $medicineReserves = MedicineReserve::whereDate('dateReserve', '>=', '2024-01-10')->where('status', 0)->get();
-        // foreach ($medicineReserves as $medicineReserve) {
-        //     $dateParse = Carbon::parse($medicineReserve->dateReserve);
-        //     $addDaysParse = $dateParse->addWeekdays(3)->format('Y-m-d');
-        //     $dateNowParse = Carbon::now()->format('Y-m-d');
-        //     if ($addDaysParse <= $dateNowParse) {
-        //         $medicineReserve->update([
-        //             'status' => 11
-        //         ]);
-        //     } else {
-        //         Log::channel('update-appointment')->info($medicineReserve . ' - ' . 'AUN ESTA EN PEDIENTE' . 'DIAS AÑADIDOS---' . $addDaysParse);
-        //     }
-        // };
+        $dateNowParse = Carbon::now()->format('Y-m-d');
+        $medicineReserves = MedicineReserve::whereDate('dateReserve', '>=', $dateNowParse)->where('status', 0)->get();
+        foreach ($medicineReserves as $medicineReserve) {
+            $dateParse = Carbon::parse($medicineReserve->dateReserve);
+            $addDaysParse = $dateParse->addWeekdays(3)->format('Y-m-d');
+            if ($addDaysParse <= $dateNowParse) {
+                $medicineReserve->update([
+                    'status' => 11
+                ]);
+            } else {
+                Log::channel('update-appointment')->info($medicineReserve . ' - ' . 'AUN ESTA EN PEDIENTE' . 'DIAS AÑADIDOS---' . $addDaysParse);
+            }
+        };
     }
 }
