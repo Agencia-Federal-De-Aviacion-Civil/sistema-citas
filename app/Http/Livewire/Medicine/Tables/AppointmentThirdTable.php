@@ -50,6 +50,7 @@ class AppointmentThirdTable extends DataTableComponent
                 'postponeReserve' => '$refresh',
                 'cancelReserve' => '$refresh',
                 'attendeReserve' => '$refresh',
+                'updateReleaseShare' => '$refresh',
                 'reserveAppointment' => '$refresh',
                 'addExtension' => '$refresh'
             ]

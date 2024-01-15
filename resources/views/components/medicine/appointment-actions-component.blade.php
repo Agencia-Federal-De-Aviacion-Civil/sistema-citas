@@ -119,5 +119,11 @@
         <x-badge flat positive label="CONCLUYÓ APTO" />
     @elseif($status == 9)
         <x-badge flat negative label="CONCLUYÓ NO APTO" />
+    @elseif($status == 11)
+        @hasrole('super_admin|super_admin_medicine')
+        <x-button wire:click="$emit('openModal', 'medicine.modals.release-share-modal', {{ json_encode(['scheduleId' => $scheduleId, 'medicineId' => $medicineId]) }})" xs sky label="LIBERAR ACCIONES" />
+        @else
+            <x-badge flat negative label="PENDIENTE" />
+        @endhasrole
     @endif
 </div>
