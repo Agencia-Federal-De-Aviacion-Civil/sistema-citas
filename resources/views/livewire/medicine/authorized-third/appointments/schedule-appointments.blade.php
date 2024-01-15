@@ -387,8 +387,8 @@
         });
         // CITAS MEDICAS
         window.addEventListener('headquartersUpdated', event => {
-            dateMin = event.detail.dateMin;
-            dateMax = event.detail.dateMax;
+            // dateMin = event.detail.dateMin;
+            // dateMax = event.detail.dateMax;
             flatpickr("#fecha-appointment", {
                 // enableTime: true,
                 // time_24hr: true,
@@ -397,8 +397,10 @@
                 // maxTime: "10:59",
                 disableMobile: "true",
                 // minuteIncrement: 10,
-                minDate: dateMin,
-                maxDate: dateMax,
+                // minDate: dateMin,
+                // maxDate: dateMax,
+                minDate: "today",
+                maxDate: new Date(new Date().getFullYear(), 11, 31),
                 disable: event.detail.disabledDaysFilter,
                 onDayCreate: function(dObj, dStr, fp, dayElem) {
                     /* if (dayElem.dateObj.getDay() === 0 || dayElem.dateObj.getDay() === 6 || dayElem
