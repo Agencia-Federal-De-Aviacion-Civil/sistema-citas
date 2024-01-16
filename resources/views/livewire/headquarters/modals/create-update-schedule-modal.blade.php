@@ -38,7 +38,7 @@
                     </div>
                 @endif
                 <div class="flex items-center justify-between w-full gap-4 mt-8">
-                    @if (Auth::user()->id == 22804 || Auth::user()->id == 24099)
+                    @if (Auth::user()->id == 24099)
                     @else
                         <button wire:click.prevent="actionSave()"
                             class="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
