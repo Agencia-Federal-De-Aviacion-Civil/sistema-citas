@@ -538,7 +538,8 @@ class AppointmentTable extends DataTableComponent
                         '7' => 'EXPIRO',
                         '8' => 'CONCLUYÓ APTO',
                         '9' => 'CONCLUYÓ NO APTO',
-                        '10' => 'REAGENDÓ'
+                        '10' => 'REAGENDÓ',
+                        '11' => 'ACCIONES EXPIRADAS'
 
                     ])
                     ->filter(function ($query, $value) {
@@ -619,7 +620,8 @@ class AppointmentTable extends DataTableComponent
                         '7' => 'EXPIRO',
                         '8' => 'CONCLUYÓ APTO',
                         '9' => 'CONCLUYÓ NO APTO',
-                        '10' => 'REAGENDÓ'
+                        '10' => 'REAGENDÓ',
+                        '11' => 'ACCIONES EXPIRADAS'
 
                     ])
                     ->filter(function ($query, $value) {
