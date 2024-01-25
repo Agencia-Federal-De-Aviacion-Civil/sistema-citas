@@ -34,6 +34,7 @@ class AppointmentTable extends DataTableComponent
                 'postponeReserve' => '$refresh',
                 'cancelReserve' => '$refresh',
                 'attendeReserve' => '$refresh',
+                'updateReleaseShare' => '$refresh',
                 'reserveAppointment' => '$refresh',
                 'addExtension' => '$refresh',
                 'updatePayJanuary' => '$refresh',
@@ -537,7 +538,8 @@ class AppointmentTable extends DataTableComponent
                         '7' => 'EXPIRO',
                         '8' => 'CONCLUYÓ APTO',
                         '9' => 'CONCLUYÓ NO APTO',
-                        '10' => 'REAGENDÓ'
+                        '10' => 'REAGENDÓ',
+                        '11' => 'ACCIONES EXPIRADAS'
 
                     ])
                     ->filter(function ($query, $value) {
@@ -618,7 +620,8 @@ class AppointmentTable extends DataTableComponent
                         '7' => 'EXPIRO',
                         '8' => 'CONCLUYÓ APTO',
                         '9' => 'CONCLUYÓ NO APTO',
-                        '10' => 'REAGENDÓ'
+                        '10' => 'REAGENDÓ',
+                        '11' => 'ACCIONES EXPIRADAS'
 
                     ])
                     ->filter(function ($query, $value) {

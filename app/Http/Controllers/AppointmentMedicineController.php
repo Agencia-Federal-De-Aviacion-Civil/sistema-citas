@@ -5,6 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Medicine\MedicineReserve;
 use Illuminate\Support\Facades\Crypt;
 use Jenssegers\Date\Date;
+use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelHigh;
+use Endroid\QrCode\Label\Alignment\LabelAlignmentCenter;
+use Endroid\QrCode\Label\Font\OpenSans;
+use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
+use Endroid\QrCode\Writer\PngWriter;
+
 use PDF;
 
 class AppointmentMedicineController extends Controller
@@ -26,7 +34,21 @@ class AppointmentMedicineController extends Controller
         $dateAppointment = $medicineReserves[0]->dateReserve;
         $dateConvertedFormatted = Date::parse($dateAppointment)->format('l j F Y');
         $curp = $medicineReserves[0]->medicineReserveMedicine->medicineUser->userParticipant->pluck('curp')->first();
-        $keyEncrypt = Crypt::encryptString($medicineId . '*' . $dateAppointment . '*' . $curp);
+        $keyEncrypts = Crypt::encryptString($medicineId . '*' . $dateAppointment . '*' . $curp);
+
+        $result = Builder::create()
+        ->writer(new PngWriter())
+        ->writerOptions([])
+        ->data($keyEncrypts)
+        ->encoding(new Encoding('UTF-8'))
+        ->errorCorrectionLevel(new ErrorCorrectionLevelHigh())
+        ->size(300)
+        ->margin(10)
+        ->roundBlockSizeMode(new RoundBlockSizeModeMargin())
+        ->validateResult(false)
+        ->build();
+        $keyEncrypt = $result->getDataUri();
+
         $idExternalInternal = boolval($medicineReserves[0]->is_external);
         if (!$idExternalInternal) {
             $fileName = $medicineReserves[0]->dateReserve . '-' . $curp . '-' . 'MED-' . $medicineId . '.pdf';

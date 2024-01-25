@@ -70,7 +70,7 @@
         bottom: 30px;
         height: 0px;
         right: -0.2%;
-    }  
+    }
 </style>
 
 <body class="bgsize">
@@ -170,16 +170,18 @@
             </tr>
         </table>
         <div class="codigoqr">
-            <img src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ $keyEncrypt }}"
+            <img src="{{ $keyEncrypt }}"
                 width="120" height="120" />
+            {{-- <img src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ $keyEncrypt }}"
+                width="120" height="120" /> --}}
         </div>
         <div style="background-color: #e6e6e6;height: 25px; ">
             <h3 class="titulo2"></h3>
         </div>
         <div>
-            <p><b>NOTA:</b> REVISAR EL DOCUMENTO DE AUTORIZACIÓN EMITIDO POR LA AUTORIDAD PARA VERIFICAR LOS 
+            <p><b>NOTA:</b> REVISAR EL DOCUMENTO DE AUTORIZACIÓN EMITIDO POR LA AUTORIDAD PARA VERIFICAR LOS
                 REQUISITOS QUE DEBE DE PRESENTAR EL DÍA DE SU CITA.</p>
-        </div>        
+        </div>
     </div>
 </body>
 </html>
