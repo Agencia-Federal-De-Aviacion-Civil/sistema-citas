@@ -121,7 +121,7 @@ class UsersController extends Controller
             'medicineReserveFromUser.UserParticipant:id,user_id,apParental,apMaternal,age,curp'
         )
             ->whereIn('status', [1, 8, 9])
-            ->whereYear('created_at', Carbon::now()->year)
+            ->whereYear('dateReserve', Carbon::now()->year)
             ->whereHas('medicineReserveFromUser.UserParticipant', function ($query) use ($curp) {
                 $query->where('curp', $curp);
             })
