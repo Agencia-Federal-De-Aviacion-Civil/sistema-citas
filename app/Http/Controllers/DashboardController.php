@@ -55,9 +55,10 @@ class DashboardController extends Controller
                 ->select('status', DB::raw('count(*) as count'), 'dateReserve')
                 ->groupBy('status', 'dateReserve')
                 ->get();
+
             $headquarters = Headquarter::with([
                 'headquarterMedicineReserve'
-            ])->where('is_external', false)->get();
+            ])->where('is_external', false)->get()->take(1);
         }
 
         $appointmentNow = $appointment->where('dateReserve', $date1);
@@ -77,6 +78,6 @@ class DashboardController extends Controller
         // $pornoapto = $registradas != 0 ? round($appointment->where('status', '9')->sum('count') * 100 / $registradas, 0) : 0;
         // $medicine =  round($registradas ? $registradas * 100 / $registradas : '0');
         // $typeappoiment = 2;
-        return view('afac.dashboard.index', compact('headquarters', 'now'));
+        return view('afac.dashboard.index', compact('headquarters', 'now', 'appointment'));
     }
 }
