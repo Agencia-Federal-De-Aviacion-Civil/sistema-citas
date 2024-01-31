@@ -56,7 +56,7 @@ class DashboardController extends Controller
                 ->select('status', DB::raw('count(*) as count'), 'dateReserve')
                 ->groupBy('status', 'dateReserve')
                 ->get();
-
+            $headquarters = collect();
             $headquarters = Headquarter::with([
                 'headquarterMedicineReserve'
             ])->where('is_external', false)->get();
