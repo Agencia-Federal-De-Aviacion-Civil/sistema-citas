@@ -14,8 +14,7 @@ class Calendar extends Component
             ->whereIn('status', [0, 1, 4, 10])
             ->where('is_external', false)
             ->get(['id', 'headquarter_id', 'medicine_id', 'dateReserve']);
-        $takeQuery = $queryEvents->take(50);
-        $groupedEvents = $takeQuery->groupBy(function ($event) {
+        $groupedEvents = $queryEvents->groupBy(function ($event) {
             return $event->medicineReserveHeadquarter->name_headquarter . '_' . $event->dateReserve;
         });
         $events = $groupedEvents->map(function ($events) {
