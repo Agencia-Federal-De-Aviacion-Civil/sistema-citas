@@ -22,19 +22,19 @@ class DashboardController extends Controller
         $tomorrow = Date::tomorrow()->format('Y-m-d');
         $nameHeadquarter = '';
         if (Auth::user()->can('headquarters.see.dashboard')) {
-            // $appointment = MedicineReserve::with('medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant')
-            //     ->whereHas('medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q1) {
-            //         $q1->where('user_id', Auth::user()->id);
-            //     })
-            //     ->select('status', DB::raw('count(*) as count'), 'dateReserve')
-            //     ->groupBy('status', 'dateReserve')
-            //     ->get();
-            // $headquarters = Headquarter::with([
-            //     'HeadquarterUserHeadquarter.userHeadquarterUserParticipant'
-            // ])->whereHas('HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q2) {
-            //     $q2->where('user_id', Auth::user()->id);
-            // })->get();
-            // $nameHeadquarter = $headquarters->pluck('name_headquarter')->first();
+            $appointment = MedicineReserve::with('medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant')
+                ->whereHas('medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q1) {
+                    $q1->where('user_id', Auth::user()->id);
+                })
+                ->select('status', DB::raw('count(*) as count'), 'dateReserve')
+                ->groupBy('status', 'dateReserve')
+                ->get();
+            $headquarters = Headquarter::with([
+                'HeadquarterUserHeadquarter.userHeadquarterUserParticipant'
+            ])->whereHas('HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q2) {
+                $q2->where('user_id', Auth::user()->id);
+            })->get();
+            $nameHeadquarter = $headquarters->pluck('name_headquarter')->first();
         } else if (Auth::user()->can('sub_headquarters.see.dashboard')) {
             // $appointment = MedicineReserve::with('medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant')
             //     ->whereHas('medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q3) {
@@ -80,6 +80,6 @@ class DashboardController extends Controller
         $pornoapto = $registradas != 0 ? round($appointment->where('status', '9')->sum('count') * 100 / $registradas, 0) : 0;
         $medicine =  round($registradas ? $registradas * 100 / $registradas : '0');
         $typeappoiment = 2;
-        return view('afac.dashboard.index', compact('appointment', 'appointmentNow', 'registradas', 'now', 'porconfir', 'headquarters', 'medicine', 'typeappoiment'));
+        return view('afac.dashboard.index', compact('appointment', 'appointmentNow', 'registradas', 'now', 'porconfir', 'headquarters', 'medicine', 'typeappoiment', 'nameHeadquarter', 'dateNow', 'pendientes', 'porpendientes', 'validado', 'reagendado', 'porreagendado','apto','porapto','noapto','pornoapto','canceladas','porcanceladas','date2','date1','tomorrow'));
     }
 }
