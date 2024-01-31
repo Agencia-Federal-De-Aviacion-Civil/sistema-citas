@@ -64,6 +64,7 @@ class HomeSuperMedicineAuthorizedThird extends Component
             })->where('is_external', true)->get();
             $nameHeadquarter_third = '"'. $headquarters_third->pluck('name_headquarter')->first().'"';
         } else {
+            dd('AQUI TIENE QUE ENTRAR');
             $appointment_third = MedicineReserve::query()
                 ->select('status', DB::raw('count(*) as count'), 'dateReserve')
                 ->groupBy('status', 'dateReserve')
