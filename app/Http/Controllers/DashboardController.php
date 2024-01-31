@@ -51,21 +51,20 @@ class DashboardController extends Controller
             //     $q2->where('user_id', Auth::user()->id);
             // })->get();
         } else {
+            // TODO FUNCIONA
             $appointment = MedicineReserve::query()
                 ->select('status', DB::raw('count(*) as count'), 'dateReserve')
                 ->groupBy('status', 'dateReserve')
                 ->get();
 
-            $headquarters = Headquarter::with([
-                'headquarterMedicineReserve'
-            ])->where('is_external', false)->get()->take(1);
+            $headquarters = Headquarter::all();
         }
 
         $appointmentNow = $appointment->where('dateReserve', $date1);
         $now = $appointmentNow->whereIn('status', ['0', '1', '4', '10'])->sum('count');
-        // $registradas = $appointment->sum('count');
-        // $porconfir = $registradas != 0 ? round($appointment->where('status', '1')->sum('count') * 100 / $registradas, 0) : 0;
-        // $validado = $appointment->where('status', '1')->sum('count');
+        $registradas = $appointment->sum('count');
+        $porconfir = $registradas != 0 ? round($appointment->where('status', '1')->sum('count') * 100 / $registradas, 0) : 0;
+        $validado = $appointment->where('status', '1')->sum('count');
         // $pendientes = $appointment->whereIn('status', ['0', '7'])->sum('count');
         // $porpendientes = $registradas != 0 ? round($appointment->whereIn('status', ['0', '7'])->sum('count') * 100 / $registradas, 0) : 0;
         // $canceladas = $appointment->whereIn('status', ['2', '3', '5'])->sum('count');
@@ -78,6 +77,6 @@ class DashboardController extends Controller
         // $pornoapto = $registradas != 0 ? round($appointment->where('status', '9')->sum('count') * 100 / $registradas, 0) : 0;
         // $medicine =  round($registradas ? $registradas * 100 / $registradas : '0');
         // $typeappoiment = 2;
-        return view('afac.dashboard.index', compact('headquarters', 'now', 'appointment'));
+        return view('afac.dashboard.index', compact('appointment', 'appointmentNow', 'registradas', 'now', 'porconfir', 'headquarters'));
     }
 }
