@@ -79,7 +79,7 @@ class DashboardController extends Controller
         // $noapto = $appointment->where('status', '9')->sum('count');
         // $pornoapto = $registradas != 0 ? round($appointment->where('status', '9')->sum('count') * 100 / $registradas, 0) : 0;
         $medicine =  round($registradas ? $registradas * 100 / $registradas : '0');
-        // $typeappoiment = 2;
-        return view('afac.dashboard.index', compact('appointment', 'appointmentNow', 'registradas', 'now', 'porconfir', 'headquarters', 'medicine'));
+        $typeappoiment = 2;
+        return view('afac.dashboard.index', compact('appointment', 'appointmentNow', 'registradas', 'now', 'porconfir', 'headquarters', 'medicine', 'typeappoiment'));
     }
 }

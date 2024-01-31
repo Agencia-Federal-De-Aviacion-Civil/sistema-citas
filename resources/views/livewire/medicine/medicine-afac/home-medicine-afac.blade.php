@@ -50,7 +50,7 @@
                         </div>
                     </div>
 
-                     <div class="flex items-start p-2">
+                    <div class="flex items-start p-2">
                         <div
                             class="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50">
                             <span href="#blue" class="block w-3 h-3 bg-blue-500 rounded-full"></span>
