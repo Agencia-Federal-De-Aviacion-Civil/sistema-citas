@@ -150,7 +150,7 @@
                                 {{-- </div> --}}
                             </div>
                         </div>
-                        <div class="block w-full overflow-x-auto">
+                        {{-- <div class="block w-full overflow-x-auto">
                             <table class="items-center w-full bg-transparent border-collapse">
                                 <thead>
                                     <tr>
@@ -174,7 +174,6 @@
                                         </th>
                                     </tr>
                                 </thead>
-                                {{-- {{$headquarters}} --}}
                                 <tbody>
                                     @foreach ($headquarters as $headquarter)
                                         <tr class="text-gray-700 dark:text-gray-100">
@@ -212,7 +211,7 @@
                                     @endforeach
                                 </tbody>
                             </table>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
                 <!-- Recent Activities -->
