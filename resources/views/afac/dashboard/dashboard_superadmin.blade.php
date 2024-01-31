@@ -98,9 +98,9 @@
                             @endif
                         </div>
                         <div x-show="activeTab === 'schedules'">
-                            @if ($typeappoiment === 2)
+                            {{-- @if ($typeappoiment === 2)
                             @livewire('medicine.authorized-third.home-super-medicine-authorized-third')
-                            @endif
+                            @endif --}}
                         </div>
                     </div>
                 </div>
