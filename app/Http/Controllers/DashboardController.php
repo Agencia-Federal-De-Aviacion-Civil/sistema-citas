@@ -57,7 +57,7 @@ class DashboardController extends Controller
                 ->groupBy('status', 'dateReserve')
                 ->get();
 
-            $headquarters = collect();
+            // $headquarters = collect();
             $headquarters = Headquarter::with([
                 'headquarterMedicineReserve'
             ])->where('is_external', false)->get();
