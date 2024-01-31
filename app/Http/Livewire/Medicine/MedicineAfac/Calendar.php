@@ -14,8 +14,8 @@ class Calendar extends Component
             ->whereIn('status', [0, 1, 4, 10])
             ->where('is_external', false)
             ->get();
-        dd($queryEvents->take(1));
-        $groupedEvents = $queryEvents->groupBy(function ($event) {
+        $takeQuery = $queryEvents->take(1);
+        $groupedEvents = $takeQuery->groupBy(function ($event) {
             return $event->medicineReserveHeadquarter->name_headquarter . '_' . $event->dateReserve;
         });
         $events = $groupedEvents->map(function ($events) {
