@@ -69,7 +69,7 @@ class HomeSuperMedicineAuthorizedThird extends Component
                 ->groupBy('status', 'dateReserve')
                 ->where('is_external', true)
                 ->get();
-            $headquarters_third = collect();
+            dd($headquarters_third = collect());
             $headquarters_third = Headquarter::with([
                 'headquarterMedicineReserve'
             ])
