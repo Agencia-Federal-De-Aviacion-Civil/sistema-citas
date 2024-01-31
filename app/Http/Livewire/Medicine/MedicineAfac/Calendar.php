@@ -10,11 +10,11 @@ class Calendar extends Component
     public $events = '';
     public function render()
     {
-        dd($queryEvents = collect());
         $queryEvents = MedicineReserve::with('medicineReserveHeadquarter')
             ->whereIn('status', [0, 1, 4, 10])
             ->where('is_external', false)
             ->get();
+        dd($queryEvents->take(1));
         $groupedEvents = $queryEvents->groupBy(function ($event) {
             return $event->medicineReserveHeadquarter->name_headquarter . '_' . $event->dateReserve;
         });
