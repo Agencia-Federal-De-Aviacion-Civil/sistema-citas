@@ -58,11 +58,10 @@ class DashboardController extends Controller
             $headquarters = Headquarter::with([
                 'headquarterMedicineReserve'
             ])->where('is_external', false)->get();
-            dd($headquarters);
         }
 
-        // $appointmentNow = $appointment->where('dateReserve', $date1);
-        // $now = $appointmentNow->whereIn('status', ['0', '1', '4', '10'])->sum('count');
+        $appointmentNow = $appointment->where('dateReserve', $date1);
+        $now = $appointmentNow->whereIn('status', ['0', '1', '4', '10'])->sum('count');
         // $registradas = $appointment->sum('count');
         // $porconfir = $registradas != 0 ? round($appointment->where('status', '1')->sum('count') * 100 / $registradas, 0) : 0;
         // $validado = $appointment->where('status', '1')->sum('count');
@@ -78,6 +77,6 @@ class DashboardController extends Controller
         // $pornoapto = $registradas != 0 ? round($appointment->where('status', '9')->sum('count') * 100 / $registradas, 0) : 0;
         // $medicine =  round($registradas ? $registradas * 100 / $registradas : '0');
         // $typeappoiment = 2;
-        return view('afac.dashboard.index', compact('headquarters', 'nameHeadquarter', 'registradas', 'pendientes', 'validado', 'canceladas', 'reagendado', 'porconfir', 'porpendientes', 'porreagendado', 'porcanceladas', 'now', 'date', 'date2', 'medicine', 'date1', 'tomorrow', 'dateNow', 'typeappoiment', 'apto', 'porapto', 'noapto', 'pornoapto'));
+        return view('afac.dashboard.index', compact('headquarters', 'now'));
     }
 }

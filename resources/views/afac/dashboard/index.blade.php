@@ -9,7 +9,8 @@
         @include('afac.dashboard.dashboard_medicine')
     @endcan
     @can('super_admin.see.dashboard')
-        @include('afac.dashboard.dashboard_superadmin')
+        {{ $headquarters }}
+        {{-- @include('afac.dashboard.dashboard_superadmin') --}}
     @endcan
     @can('user.see.navigation')
         @livewire('dashboard')
