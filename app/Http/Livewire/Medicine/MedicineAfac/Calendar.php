@@ -10,7 +10,7 @@ class Calendar extends Component
     public $events = '';
     public function render()
     {
-        $queryEvents = collect();
+        dd($queryEvents = collect());
         $queryEvents = MedicineReserve::with('medicineReserveHeadquarter')
             ->whereIn('status', [0, 1, 4, 10])
             ->where('is_external', false)
