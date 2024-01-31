@@ -71,11 +71,11 @@ class HomeSuperMedicineAuthorizedThird extends Component
                 ->get();
             $headquarters_third = collect();
             $headquarters_third = Headquarter::with([
-                'headquarterMedicineReserve:id,headquarter_id,headquarter_id'
+                'headquarterMedicineReserve:id,headquarter_id,medicine_id,dateReserve'
             ])
                 ->where('is_external', true)
                 ->get(['id', 'name_headquarter', 'is_external']);
-            dd($headquarters_third->take(1));
+            $headquarters_third->take(1);
             $nameHeadquarter_third = 'TERCEROS';
         }
 
