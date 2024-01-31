@@ -61,7 +61,6 @@ class DashboardController extends Controller
             $headquarters = Headquarter::with([
                 'headquarterMedicineReserve'
             ])->where('is_external', false)->get();
-            dd($headquarters);
         }
 
         $appointmentNow = $appointment->where('dateReserve', $date1);
@@ -79,8 +78,8 @@ class DashboardController extends Controller
         // $porapto = $registradas != 0 ? round($appointment->where('status', '8')->sum('count') * 100 / $registradas, 0) : 0;
         // $noapto = $appointment->where('status', '9')->sum('count');
         // $pornoapto = $registradas != 0 ? round($appointment->where('status', '9')->sum('count') * 100 / $registradas, 0) : 0;
-        // $medicine =  round($registradas ? $registradas * 100 / $registradas : '0');
+        $medicine =  round($registradas ? $registradas * 100 / $registradas : '0');
         // $typeappoiment = 2;
-        return view('afac.dashboard.index', compact('appointment', 'appointmentNow', 'registradas', 'now', 'porconfir', 'headquarters'));
+        return view('afac.dashboard.index', compact('appointment', 'appointmentNow', 'registradas', 'now', 'porconfir', 'headquarters', 'medicine'));
     }
 }
