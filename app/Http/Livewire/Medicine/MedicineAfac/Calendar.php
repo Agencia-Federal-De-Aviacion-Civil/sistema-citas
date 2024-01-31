@@ -13,8 +13,8 @@ class Calendar extends Component
         $queryEvents = MedicineReserve::with('medicineReserveHeadquarter')
             ->whereIn('status', [0, 1, 4, 10])
             ->where('is_external', false)
-            ->get();
-        $takeQuery = $queryEvents->take(1);
+            ->get(['id', 'headquarter_id', 'medicine_id', 'dateReserve']);
+        $takeQuery = $queryEvents->take(50);
         $groupedEvents = $takeQuery->groupBy(function ($event) {
             return $event->medicineReserveHeadquarter->name_headquarter . '_' . $event->dateReserve;
         });
