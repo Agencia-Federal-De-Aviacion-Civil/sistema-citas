@@ -96,7 +96,7 @@
                             @livewire('medicine.medicine-afac.home-medicine-afac')
                         </div>
                         <div x-show="activeTab === 'schedules'">
-                            @livewire('medicine.authorized-third.home-super-medicine-authorized-third')
+                            {{-- @livewire('medicine.authorized-third.home-super-medicine-authorized-third') --}}
                         </div>
                     </div>
                 </div>
