@@ -12,7 +12,7 @@ use Livewire\Component;
 class HomeMedicineAfac extends Component
 {
 
-    public $headquarters_afac1,$date1_afac1,$tomorrow_afac1;
+    public $headquarters_afac1, $date1_afac1, $tomorrow_afac1;
     public function render()
     {
         Date::setLocale('es');
@@ -53,7 +53,7 @@ class HomeMedicineAfac extends Component
             //     $q2->where('user_id', Auth::user()->id);
             // })->get();
         } else {
-
+            dd('TESTING');
             $appointment_afac1 = MedicineReserve::query()
                 ->select('status', DB::raw('count(*) as count'), 'dateReserve')
                 ->groupBy('status', 'dateReserve')
@@ -78,6 +78,6 @@ class HomeMedicineAfac extends Component
         $porcanceladas_afac1 = $registradas_afac1 != 0 ? round($appointment_afac1->whereIn('status', ['2', '3', '5'])->sum('count') * 100 / $registradas_afac1, 0) : 0;
         // $medicine_afac =  round($registradas_afac ? $registradas_afac * 100 / $registradas_afac : '0');
         // return view('livewire.medicine.medicine-afac.home-medicine-afac', compact('headquarters_afac', 'nameHeadquarter_afac', 'registradas_afac', 'pendientes_afac', 'validado_afac', 'canceladas_afac', 'reagendado_afac', 'porconfir_afac', 'porpendientes_afac', 'porreagendado_afac', 'porcanceladas_afac', 'now_afac1', 'date_afac', 'date2_afac', 'medicine_afac', 'date1_afac1', 'tomorrow_afac', 'dateNow_afac1'));
-        return view('livewire.medicine.medicine-afac.home-medicine-afac' ,compact('date2_afac1','now_afac1','registradas_afac1','porconfir_afac1','validado_afac1','pendientes_afac1','porpendientes_afac1','canceladas_afac1','reagendado_afac1','porcanceladas_afac1','porreagendado_afac1'));
+        return view('livewire.medicine.medicine-afac.home-medicine-afac', compact('date2_afac1', 'now_afac1', 'registradas_afac1', 'porconfir_afac1', 'validado_afac1', 'pendientes_afac1', 'porpendientes_afac1', 'canceladas_afac1', 'reagendado_afac1', 'porcanceladas_afac1', 'porreagendado_afac1'));
     }
 }
