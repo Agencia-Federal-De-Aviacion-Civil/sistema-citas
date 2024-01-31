@@ -70,12 +70,12 @@ class HomeSuperMedicineAuthorizedThird extends Component
                 ->where('is_external', true)
                 ->get();
             $headquarters_third = collect();
-            $headquarters_third = Headquarter::with([
-                'headquarterMedicineReserve:id,headquarter_id,medicine_id,dateReserve'
-            ])
-                ->where('is_external', true)
-                ->get(['id', 'name_headquarter', 'is_external']);
-            $headquarters_third->take(1);
+            // $headquarters_third = Headquarter::with([
+            //     'headquarterMedicineReserve:id,headquarter_id,medicine_id,dateReserve'
+            // ])
+            //     ->where('is_external', true)
+            //     ->get(['id', 'name_headquarter', 'is_external']);
+            // $headquarters_third->take(1);
             $nameHeadquarter_third = 'TERCEROS';
         }
 
