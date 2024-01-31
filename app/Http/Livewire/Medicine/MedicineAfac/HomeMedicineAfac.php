@@ -58,7 +58,6 @@ class HomeMedicineAfac extends Component
                 ->groupBy('status', 'dateReserve')
                 ->where('is_external', false)
                 ->get();
-            dd($appointment_afac1);
             // $headquarters_afac1 = Headquarter::with([
             //     'headquarterMedicineReserve'
             // ])->where('is_external', false)->get();
