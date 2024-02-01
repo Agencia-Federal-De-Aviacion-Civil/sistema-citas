@@ -2,40 +2,65 @@
     <div class="bg-gray-100 text-gray-500 rounded shadow-xl py-5 px-5 w-full sm:w-full md:w-full lg:w-full">
         <div class="flex w-full">
             <h3 class="text-lg font-semibold leading-tight flex-1">TOTAL DE CITAS MEDICINA DE
-                AVIACIÓN AFAC</h3>
+                AVIACIÓN {{ $id_dashboard == 0 ? 'AFAC' : 'TERCEROS' }}</h3>
         </div>
         <div class="relative overflow-hidden transition-all duration-500" x-ref="card"
             x-bind:style="`max-height:${cardOpen?$refs.card.scrollHeight:0}px; opacity:${cardOpen?1:0}`">
             <div>
                 <div class="pb-4 lg:pb-6">
                     <h4 class="text-2xl lg:text-3xl text-black font-semibold leading-tight inline-block" x-ref="total">
-                        {{ $registradas_afac1 }}</h4>
+                        {{ $registerCount }}</h4>
                 </div>
                 <div class="pb-4 lg:pb-6">
                     <div class="relative pt-1 mx-5">
                         <div class="overflow-hidden h-3 mb-4 text-xs flex rounded bg-gray-500">
-                            <div style="width: {{ $porconfir_afac1 }} %"
-                                class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-800">
-                            </div>
-                            <div style="width: {{ $porcanceladas_afac1 }}%"
-                                class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500">
-                            </div>
-                            <div style="width: {{ $porreagendado_afac1 }}%"
-                                class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-500">
-                            </div>
+                            @unless ($id_dashboard == 0)
+                                <div style="width: {{ $porConfirDashboard }} %"
+                                    class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-800">
+                                </div>
+                                <div style="width: {{ $porReagDashboard }}%"
+                                    class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-500">
+                                </div>
+                                <div style="width: {{ $porApto }}%"
+                                    class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-green-500">
+                                </div>
+                                <div style="width: {{ $porNoApto }}%"
+                                    class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500">
+                                </div>
+                                <div style="width: {{ $porAplazada }}%"
+                                    class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-purple-500">
+                                </div>
+                                <div style="width: {{ $porCancelDashboard }}%"
+                                    class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-orange-500">
+                                </div>
+                            @else
+                                <div style="width: {{ $porConfirDashboard }} %"
+                                    class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-800">
+                                </div>
+                                <div style="width: {{ $porReagDashboard }}%"
+                                    class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-500">
+                                </div>
+                                <div style="width: {{ $porCancelDashboard }}%"
+                                    class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500">
+                                </div>
+                            @endunless
                         </div>
                     </div>
                 </div>
-                <div class="-mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                <div
+                    class="{{ $id_dashboard === 0 ? '-mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4' : '-mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-7 xl:grid-cols-7' }}">
                     <div class="flex items-start p-2">
                         <div
                             class="flex h-12 w-12 items-center justify-center rounded-full border border-gray-100 bg-gray-50">
                             <span href="#blue" class="block w-3 h-3 bg-gray-500 rounded-full"></span>
                         </div>
-
                         <div class="ml-4">
-                            <h3 class="font-semibold">Pendientes: {{ $pendientes_afac1 }}</h3>
-                            <p class="mt-2 text-sm text-gray-500">{{ $porpendientes_afac1 }}%</p>
+                            <h3 class="{{ $id_dashboard === 0 ? 'font-semibold' : 'font-semibold text-sm' }}">
+                                Pendientes:
+                                {{ $penDashboard }}</h3>
+                            <p class="mt-2 text-sm text-gray-500">
+                                {!! $id_dashboard === 0 ? $porPenDashboard . '%' : '<b>{{ $penDashboard }}</b>/' . $porPenDashboard . '%' !!}
+                            </p>
                         </div>
                     </div>
                     <div class="flex items-start p-2">
@@ -45,8 +70,8 @@
                         </div>
 
                         <div class="ml-4">
-                            <h3 class="font-semibold">Confirmadas: {{ $validado_afac1 }}</h3>
-                            <p class="mt-2 text-sm text-gray-500">{{ $porconfir_afac1 }}%</p>
+                            <h3 class="font-semibold">Asistió: {{ $validateDashboard }}</h3>
+                            <p class="mt-2 text-sm text-gray-500">{{ $porConfirDashboard }}%</p>
                         </div>
                     </div>
 
@@ -56,19 +81,59 @@
                             <span href="#blue" class="block w-3 h-3 bg-blue-500 rounded-full"></span>
                         </div>
                         <div class="ml-4">
-                            <h2 class="font-semibold">Reagendadas: {{ $reagendado_afac1 }}</h2>
-                            <p class="mt-2 text-sm text-gray-500">{{ $porreagendado_afac1 }}%</p>
+                            <h2 class="font-semibold">Reagendadas: {{ $reagDashboard }}</h2>
+                            <p class="mt-2 text-sm text-gray-500">{{ $porReagDashboard }}%</p>
                         </div>
                     </div>
+                    @unless ($id_dashboard == 0)
+                        <div class="flex items-start p-2">
+                            <div
+                                class="flex h-8 w-8 items-center justify-center rounded-full border border-green-100 bg-green-50">
+                                <span href="#blue" class="block w-3 h-3 bg-green-500 rounded-full"></span>
+                            </div>
+                            <div class="ml-4">
+                                <h2 class="font-semibold text-sm">Apto</h2>
+                                <p class="mt-2 text-sm text-gray-500"><b>{{ $apto }}</b> /
+                                    {{ $porApto }}%
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex items-start p-2">
+                            <div
+                                class="flex h-8 w-8 items-center justify-center rounded-full border border-red-100 bg-red-50">
+                                <span href="#blue" class="block w-3 h-3 bg-red-500 rounded-full"></span>
+                            </div>
+
+                            <div class="ml-4">
+                                <h2 class="font-semibold text-sm">No Apto</h2>
+                                <p class="mt-2 text-sm text-gray-500"><b>{{ $noApto }}</b> /
+                                    {{ $porNoApto }}%
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex items-start p-2">
+                            <div
+                                class="flex h-8 w-8 items-center justify-center rounded-full border border-purple-100 bg-purple-50">
+                                <span href="#blue" class="block w-3 h-3 bg-purple-500 rounded-full"></span>
+                            </div>
+
+                            <div class="ml-4">
+                                <h2 class="font-semibold text-sm">Aplazadas</h2>
+                                <p class="mt-2 text-sm text-gray-500"> <b>{{ $aplazadas }}</b> /
+                                    {{ $porAplazada }}%</p>
+                            </div>
+                        </div>
+                    @endunless
                     <div class="flex items-start p-2">
                         <div
-                            class="flex h-12 w-12 items-center justify-center rounded-full border border-red-100 bg-red-50">
-                            <span href="#blue" class="block w-3 h-3 bg-red-500 rounded-full"></span>
+                            class="{{ $id_dashboard === 0 ? 'flex h-12 w-12 items-center justify-center rounded-full border border-red-100 bg-red-50' : 'flex h-12 w-12 items-center justify-center rounded-full border border-orange-100 bg-orange-50' }}">
+                            <span href="#blue"
+                                class="{{ $id_dashboard === 0 ? 'block w-3 h-3 bg-red-500 rounded-full' : 'block w-3 h-3 bg-orange-500 rounded-full' }}"></span>
                         </div>
 
                         <div class="ml-4">
-                            <h2 class="font-semibold">Canceladas: {{ $canceladas_afac1 }}</h2>
-                            <p class="mt-2 text-sm text-gray-500">{{ $porcanceladas_afac1 }}%</p>
+                            <h2 class="font-semibold">Canceladas: {{ $cancelDashboard }}</h2>
+                            <p class="mt-2 text-sm text-gray-500">{{ $porCancelDashboard }}%</p>
                         </div>
                     </div>
                 </div>
@@ -90,8 +155,8 @@
                                     </svg>
                                 </div>
                                 <div class="ml-4">
-                                    <h2 class="font-semibold">{{ $now_afac1 }} Citas</h2>
-                                    <p class="mt-2 text-sm text-gray-500">hoy {{ $date2_afac1 }}
+                                    <h2 class="font-semibold">{{ $nowDate }} Citas</h2>
+                                    <p class="mt-2 text-sm text-gray-500">hoy {{ $date2 }}
                                     </p>
                                 </div>
                             </div>

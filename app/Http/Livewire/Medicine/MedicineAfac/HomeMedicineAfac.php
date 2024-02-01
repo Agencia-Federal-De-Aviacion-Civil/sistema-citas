@@ -11,12 +11,45 @@ use Livewire\Component;
 
 class HomeMedicineAfac extends Component
 {
-
-    public $headquarters_afac1, $date1_afac1, $tomorrow_afac1;
+    public $id_dashboard, $date1, $date2;
+    public $appointmentNow, $nowDate, $registerCount, $porConfirDashboard, $penDashboard, $porPenDashboard, $cancelDashboard, $reagDashboard,
+        $porReagDashboard, $porCancelDashboard, $validateDashboard, $apto, $porApto, $noApto, $porNoApto, $aplazadas, $porAplazada;
+    public function mount($id_dashboard, $date1, $date2)
+    {
+        $this->date1 = $date1;
+        $this->date2 = $date2;
+        $appointmentDashboard = MedicineReserve::query()
+            ->select('status', DB::raw('count(*) as count'), 'dateReserve')
+            ->groupBy('status', 'dateReserve')
+            ->when($id_dashboard == 0, function ($appointmentDashboard) {
+                $appointmentDashboard->where('is_external', false);
+            })
+            ->when($id_dashboard == 1, function ($appointmentDashboard) {
+                $appointmentDashboard->where('is_external', true);
+            })
+            ->get();
+        $this->appointmentNow = $appointmentDashboard->where('dateReserve', $date1);
+        $this->nowDate = $id_dashboard == 0 ? $this->appointmentNow->whereIn('status', ['0', '1', '4'])->sum('count') : $this->appointmentNow->whereIn('status', ['0', '1', '4', '10', '7', '8', '9'])->sum('count');
+        $this->registerCount =  $appointmentDashboard->sum('count');
+        $this->porConfirDashboard = $this->registerCount != 0 ? round($appointmentDashboard->where('status', '1')->sum('count') * 100 / $this->registerCount, 0) : 0;
+        $this->validateDashboard = $appointmentDashboard->where('status', '1')->sum('count');
+        $this->penDashboard = $appointmentDashboard->where('status', '0')->sum('count');
+        $this->porPenDashboard = $this->registerCount != 0 ? round($appointmentDashboard->where('status', '0')->sum('count') * 100 / $this->registerCount, 0) : 0;
+        $this->cancelDashboard = $appointmentDashboard->whereIn('status', ['2', '3', '5'])->sum('count');
+        $this->reagDashboard = $id_dashboard == 0 ? round($appointmentDashboard->where('status', '4')->sum('count')) :  round($appointmentDashboard->whereIn('status', ['4', '10'])->sum('count'));
+        $this->porReagDashboard = $id_dashboard == 0 ? ($this->registerCount != 0 ? round($appointmentDashboard->where('status', '4')->sum('count') * 100 / $this->registerCount) : 0) : ($this->registerCount != 0 ? round($appointmentDashboard->whereIn('status', ['4', '10'])->sum('count') * 100 / $this->registerCount) : 0);
+        $this->porCancelDashboard = $this->registerCount != 0 ? round($appointmentDashboard->whereIn('status', ['2', '3', '5'])->sum('count') * 100 / $this->registerCount, 0) : 0;
+        $this->apto = $appointmentDashboard->where('status', '8')->sum('count');
+        $this->porApto = $this->registerCount != 0 ? round($appointmentDashboard->where('status', '8')->sum('count') * 100 / $this->registerCount, 0) : 0;
+        $this->noApto = $appointmentDashboard->where('status', '9')->sum('count');
+        $this->porNoApto = $this->registerCount != 0 ? round($appointmentDashboard->where('status', '9')->sum('count') * 100 / $this->registerCount, 0) : 0;
+        $this->aplazadas = $appointmentDashboard->where('status', '7')->sum('count');
+        $this->porAplazada = $this->registerCount != 0 ? round($appointmentDashboard->where('status', '7')->sum('count') * 100 / $this->registerCount, 0) : 0;
+    }
     public function render()
     {
         Date::setLocale('es');
-        // $dateNow_afac1 = Date::now()->format('l j F Y');
+        // $datenowDate = Date::now()->format('l j F Y');
         // $date_afac1 = Date::now()->format('l j F Y');
         $date1_afac1 = Date::now()->format('Y-m-d');
         $date2_afac1 = Date::now()->format('d-m-Y');
@@ -24,7 +57,7 @@ class HomeMedicineAfac extends Component
 
         $nameHeadquarter_afac1 = '';
         if (Auth::user()->can('headquarters.see.dashboard')) {
-            $appointment_afac1 = MedicineReserve::with('medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant')
+            $appointmentDashboard = MedicineReserve::with('medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant')
                 ->whereHas('medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q1) {
                     $q1->where('user_id', Auth::user()->id);
                 })
@@ -38,7 +71,7 @@ class HomeMedicineAfac extends Component
             // })->get();
             // $nameHeadquarter_afac1 = $headquarters_afac1->pluck('name_headquarter')->first();
         } else if (Auth::user()->can('sub_headquarters.see.dashboard')) {
-            $appointment_afac1 = MedicineReserve::with('medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant')
+            $appointmentDashboard = MedicineReserve::with('medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant')
                 ->whereHas('medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q3) {
                     $q3->where('user_id', Auth::user()->id);
                 })
@@ -53,30 +86,10 @@ class HomeMedicineAfac extends Component
             //     $q2->where('user_id', Auth::user()->id);
             // })->get();
         } else {
-            $appointment_afac1 = MedicineReserve::query()
-                ->select('status', DB::raw('count(*) as count'), 'dateReserve')
-                ->groupBy('status', 'dateReserve')
-                ->where('is_external', false)
-                ->get();
             // $headquarters_afac1 = Headquarter::with([
             //     'headquarterMedicineReserve'
             // ])->where('is_external', false)->get();
         }
-
-
-        $appointmentNow_afac1 = $appointment_afac1->where('dateReserve', $date1_afac1);
-        $now_afac1 = $appointmentNow_afac1->whereIn('status', ['0', '1', '4'])->sum('count');
-        $registradas_afac1 = $appointment_afac1->sum('count');
-        $porconfir_afac1 = $registradas_afac1 != 0 ? round($appointment_afac1->where('status', '1')->sum('count') * 100 / $registradas_afac1, 0) : 0;
-        $validado_afac1 = $appointment_afac1->where('status', '1')->sum('count');
-        $pendientes_afac1 = $appointment_afac1->where('status', '0')->sum('count');
-        $porpendientes_afac1 = $registradas_afac1 != 0 ? round($appointment_afac1->where('status', '0')->sum('count') * 100 / $registradas_afac1, 0) : 0;
-        $canceladas_afac1 = $appointment_afac1->whereIn('status', ['2', '3', '5'])->sum('count');
-        $reagendado_afac1 = round($appointment_afac1->where('status', '4')->sum('count'));
-        $porreagendado_afac1 = $registradas_afac1 != 0 ? round($appointment_afac1->where('status', '4')->sum('count') * 100 / $registradas_afac1) : 0;
-        $porcanceladas_afac1 = $registradas_afac1 != 0 ? round($appointment_afac1->whereIn('status', ['2', '3', '5'])->sum('count') * 100 / $registradas_afac1, 0) : 0;
-        // $medicine_afac =  round($registradas_afac ? $registradas_afac * 100 / $registradas_afac : '0');
-        // return view('livewire.medicine.medicine-afac.home-medicine-afac', compact('headquarters_afac', 'nameHeadquarter_afac', 'registradas_afac', 'pendientes_afac', 'validado_afac', 'canceladas_afac', 'reagendado_afac', 'porconfir_afac', 'porpendientes_afac', 'porreagendado_afac', 'porcanceladas_afac', 'now_afac1', 'date_afac', 'date2_afac', 'medicine_afac', 'date1_afac1', 'tomorrow_afac', 'dateNow_afac1'));
-        return view('livewire.medicine.medicine-afac.home-medicine-afac', compact('date2_afac1', 'now_afac1', 'registradas_afac1', 'porconfir_afac1', 'validado_afac1', 'pendientes_afac1', 'porpendientes_afac1', 'canceladas_afac1', 'reagendado_afac1', 'porcanceladas_afac1', 'porreagendado_afac1'));
+        return view('livewire.medicine.medicine-afac.home-medicine-afac');
     }
 }

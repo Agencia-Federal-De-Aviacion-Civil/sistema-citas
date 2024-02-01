@@ -1,6 +1,9 @@
 <div>
     <script src="https://cdn.jsdelivr.net/npm/countup@1.8.2/dist/countUp.min.js"></script>
     <x-banner-component :title="'Dashboard'" />
+
+
+    
     <div>
         <div class="py-12">
             <div class="container mx-auto px-4 py-4 bg-white shadow-xl sm:rounded-lg">
@@ -93,10 +96,19 @@
                     </ul>
                     <div class="mt-6">
                         <div x-show="activeTab === 'headquarters'">
-                            @livewire('medicine.medicine-afac.home-medicine-afac')
+                            @livewire('medicine.medicine-afac.home-medicine-afac', [
+                                'id_dashboard' => 0,
+                                'date1' => $date1,
+                                'date2' => $date2,
+                            ])
                         </div>
                         <div x-show="activeTab === 'schedules'">
-                            @livewire('medicine.authorized-third.home-super-medicine-authorized-third')
+                            @livewire('medicine.medicine-afac.home-medicine-afac', [
+                                'id_dashboard' => 1,
+                                'date1' => $date1,
+                                'date2' => $date2,
+                            ])
+                            {{-- @livewire('medicine.authorized-third.home-super-medicine-authorized-third', ['id_dashboard' => 1]) --}}
                         </div>
                     </div>
                 </div>
