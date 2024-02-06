@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Medicine\MedicineAfac;
 
 use App\Models\Catalogue\Headquarter;
 use App\Models\Medicine\MedicineReserve;
+use App\Models\UserParticipant;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Jenssegers\Date\Date;
@@ -46,23 +47,38 @@ class HomeMedicineAfac extends Component
             ->get();
 
         // HEADQUARTERS QUERY OPTIMIZED
-        $headquarters = Headquarter::with(['headquarterUserParticipant' => function ($query) {
-            $query->select('user_participants.id', 'user_participants.user_id');
-        }])
+        // $headquarters = Headquarter::with(['headquarterMedicineReserve', 'HeadquarterUserHeadquarter.userHeadquarterUserParticipant'])
+        //     ->when(Auth::user()->canany(['headquarters.see.dashboard', 'sub_headquarters.see.dashboard', 'headquarters_authorized.see.dashboard']), function ($headquarters) {
+        //         $headquarters->whereHas('HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q2) {
+        //             $q2->where('user_id', Auth::user()->id);
+        //         });
+        //     })
+        //     ->when($id_dashboard === 0 || Auth::user()->can('medicine_admin.see.dashboard'), function ($headquarters) {
+        //         $headquarters->where('is_external', 0);
+        //     })
+        //     ->when($id_dashboard === 1, function ($headquarters) {
+        //         $headquarters->where('is_external', 1);
+        //     })
+        //     ->get(['id', 'name_headquarter', 'direction', 'is_external']);
+        // $this->headquarterQueries = $headquarters;
+        $headquarters = UserParticipant::with(['userParticipantUserHeadquarter.userHeadquarterHeadquarter'])
             ->when(Auth::user()->canany(['headquarters.see.dashboard', 'sub_headquarters.see.dashboard', 'headquarters_authorized.see.dashboard']), function ($headquarters) {
-                $headquarters->whereHas('headquarterUserParticipant', function ($q2) {
+                $headquarters->whereHas('userParticipantUserHeadquarter.userHeadquarterHeadquarter', function ($q2) {
                     $q2->where('user_id', Auth::user()->id);
                 });
             })
             ->when($id_dashboard === 0 || Auth::user()->can('medicine_admin.see.dashboard'), function ($headquarters) {
-                $headquarters->where('is_external', 0);
+                $headquarters->whereHas('userParticipantUserHeadquarter.userHeadquarterHeadquarter', function ($q2) {
+                    $q2->where('is_external', 0);
+                });
             })
             ->when($id_dashboard === 1, function ($headquarters) {
-                $headquarters->where('is_external', 1);
+                $headquarters->whereHas('userParticipantUserHeadquarter.userHeadquarterHeadquarter', function ($q2) {
+                    $q2->where('is_external', 1);
+                });
             })
             ->get();
-
-        $this->headquarterQueries = $headquarters->take(5);
+        $this->headquarterQueries = $headquarters;
 
         $this->appointmentNow = $appointmentDashboard->where('dateReserve', $date1);
         $this->nowDate = ($id_dashboard === 0 || Auth::user()->canany(['headquarters.see.dashboard', 'sub_headquarters.see.dashboard', 'medicine_admin.see.dashboard'])) ? $this->appointmentNow->whereIn('status', ['0', '1', '4', '10'])->sum('count') : ($id_dashboard === 1 || Auth::user()->can('headquarters_authorized.see.dashboard') ? $this->appointmentNow->whereIn('status', ['0', '1', '4', '10', '7', '8', '9'])->sum('count') : null);
