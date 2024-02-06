@@ -28,8 +28,8 @@ class DashboardController extends Controller
                 });
             })
             ->get();
-        dd($headquarters);
-        $nameHeadquarter = (Auth::user()->canany(['headquarters.see.dashboard', 'sub_headquarters.see.dashboard']) ? $headquarters->first()->name_headquarter : 'DASHBOARD');
+        dd($nameHeadquarter = (Auth::user()->canany(['headquarters.see.dashboard', 'sub_headquarters.see.dashboard']) ? $headquarters->first()->name_headquarter : 'DASHBOARD'));
+        
         $appointmentReserves = MedicineReserve::query()
             ->select('status', DB::raw('count(*) as count'), 'dateReserve')
             ->groupBy('status', 'dateReserve')
