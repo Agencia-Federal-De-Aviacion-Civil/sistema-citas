@@ -70,7 +70,7 @@
 
     footer {
         position: fixed;
-        bottom: 30px;
+        bottom: 35px;
         height: 0px;
         right: -0.2%;
     }
@@ -78,8 +78,13 @@
 
 <body class="bgsize">
     <footer>
-        <center><img src="{{ public_path('images/fooderafac2023.png') }}" width="112%" height=80" alt="">
-        </center>
+        @if ($medicineReserves[0]->dateReserve > '2023-12-31')
+            <center><img src="{{ public_path('images/fooderafac2024.png') }}" width="112%" height=80" alt="">
+            </center>
+        @else
+            <center><img src="{{ public_path('images/fooderafac2023.png') }}" width="112%" height=80" alt="">
+            </center>
+        @endif
     </footer>
     <div>
         <img src="{{ public_path('images/banner2023afac.png') }}" width="450" height="45" alt="">

@@ -69,7 +69,7 @@
 
     footer {
         position: fixed;
-        bottom: 30px;
+        bottom: 35px;
         height: 0px;
         right: -0.2%;
     }
@@ -77,8 +77,13 @@
 
 <body class="bgsize">
     <footer>
-        <center><img src="{{ public_path('images/fooderafac2023.png') }}" width="112%" height=80" alt="">
-        </center>
+        @if ($medicineReserves[0]->dateReserve > '2023-12-31')
+            <center><img src="{{ public_path('images/fooderafac2024.png') }}" width="112%" height=80" alt="">
+            </center>
+        @else
+            <center><img src="{{ public_path('images/fooderafac2023.png') }}" width="112%" height=80" alt="">
+            </center>
+        @endif
     </footer>
     <div>
         {{-- <img src="{{ public_path('images/AFAC1.png') }}" width="130" height="100" alt=""> --}}
@@ -204,8 +209,7 @@
             @endif
         </table>
         <div class="codigoqr">
-            <img src="{{ $keyEncrypt }}"
-            width="120" height="120" />
+            <img src="{{ $keyEncrypt }}" width="120" height="120" />
             {{-- <img src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ $keyEncrypt }}"
                 width="120" height="120" /> --}}
         </div>
@@ -295,10 +299,10 @@
                 cada 3 años.</p>
         </div>
         <footer>
-            <div class="codigoqr">
+            {{-- <div class="codigoqr">
                 <img src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ $keyEncrypt }}"
                     width="120" height="120" />
-            </div>
+            </div> --}}
         </footer>
         {{-- PAGINA 2 --}} {{--
         <div style='page-break-before:always;'></div>
