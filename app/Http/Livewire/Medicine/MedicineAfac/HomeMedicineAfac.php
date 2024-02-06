@@ -46,9 +46,9 @@ class HomeMedicineAfac extends Component
             ->get();
 
         // HEADQUARTERS QUERY OPTIMIZED
-        $headquarters = Headquarter::with(['headquarterMedicineReserve', 'HeadquarterUserHeadquarter.userHeadquarterUserParticipant'])
+        $headquarters = Headquarter::with('HeadquarterUserHeadquarter.userHeadquarterUserParticipant:id,user_id')
             ->when(Auth::user()->canany(['headquarters.see.dashboard', 'sub_headquarters.see.dashboard', 'headquarters_authorized.see.dashboard']), function ($headquarters) {
-                $headquarters->whereHas('HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q2) {
+                $headquarters->whereHas('HeadquarterUserHeadquarter.userHeadquarterUserParticipant:id,user_id', function ($q2) {
                     $q2->where('user_id', Auth::user()->id);
                 });
             })
@@ -58,7 +58,7 @@ class HomeMedicineAfac extends Component
             ->when($id_dashboard === 1, function ($headquarters) {
                 $headquarters->where('is_external', 1);
             })
-            ->get(['id', 'name_headquarter', 'direction', 'is_external']);
+            ->get(['id', 'name_headquarter', 'is_external']);
         $this->headquarterQueries = $headquarters;
 
         $this->appointmentNow = $appointmentDashboard->where('dateReserve', $date1);
