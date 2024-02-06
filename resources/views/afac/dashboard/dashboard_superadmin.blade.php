@@ -1,9 +1,6 @@
 <div>
     <script src="https://cdn.jsdelivr.net/npm/countup@1.8.2/dist/countUp.min.js"></script>
     <x-banner-component :title="'Dashboard'" />
-
-
-    
     <div>
         <div class="py-12">
             <div class="container mx-auto px-4 py-4 bg-white shadow-xl sm:rounded-lg">

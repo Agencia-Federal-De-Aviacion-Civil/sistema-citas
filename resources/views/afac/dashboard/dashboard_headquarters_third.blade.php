@@ -1,9 +1,13 @@
-<x-banner-component :title="'Dashboard'" />
 <div>
+    <x-banner-component :title="$nameHeadquarter" />
     <div class="py-12">
-        <div class="max-w-full mx-auto sm:px-6 lg:px-8">
-            <div class="bg-gray-50 overflow-hidden shadow-xl sm:rounded-lg px-8 py-8 uppercase">
-                @livewire('medicine.authorized-third.home-medicine-authorized-third')
+        <div class="container mx-auto px-4 py-4 bg-white shadow-xl sm:rounded-lg">
+            <div class="bg-gray-100 text-gray-500 py-5 px-4 w-full sm:w-full md:w-full lg:w-full">
+                @livewire('medicine.medicine-afac.home-medicine-afac', [
+                'id_dashboard' => '',
+                'date1' => $date1,
+                'date2' => $date2,
+                ])
             </div>
         </div>
     </div>
