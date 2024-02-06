@@ -19,7 +19,7 @@ class HomeMedicineAfac extends Component
     {
         $this->date1 = $date1;
         $this->date2 = $date2;
-        dd($this->tomorrow = Date::tomorrow()->format('Y-m-d'));
+        $this->tomorrow = Date::tomorrow()->format('Y-m-d');
 
         $appointmentDashboard = MedicineReserve::query()
             ->when($id_dashboard === 0 || Auth::user()->can('medicine_admin.see.dashboard'), function ($appointmentDashboard) {
@@ -44,6 +44,7 @@ class HomeMedicineAfac extends Component
             ->select('status', DB::raw('count(*) as count'), 'dateReserve')
             ->groupBy('status', 'dateReserve')
             ->get();
+        dd($appointmentDashboard);
 
         // HEADQUARTERS QUERY OPTIMIZED
         $headquarters = Headquarter::with(['headquarterMedicineReserve', 'HeadquarterUserHeadquarter.userHeadquarterUserParticipant'])
