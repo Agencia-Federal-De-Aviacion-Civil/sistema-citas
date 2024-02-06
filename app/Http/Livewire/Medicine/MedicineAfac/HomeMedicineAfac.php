@@ -79,7 +79,6 @@ class HomeMedicineAfac extends Component
         $this->porNoApto = $this->registerCount != 0 ? round($appointmentDashboard->where('status', '9')->sum('count') * 100 / $this->registerCount, 0) : 0;
         $this->aplazadas = $appointmentDashboard->where('status', '7')->sum('count');
         $this->porAplazada = $this->registerCount != 0 ? round($appointmentDashboard->where('status', '7')->sum('count') * 100 / $this->registerCount, 0) : 0;
-        dd('LOADING...');
     }
     public function render()
     {
