@@ -46,9 +46,9 @@ class HomeMedicineAfac extends Component
             ->get();
 
         // HEADQUARTERS QUERY OPTIMIZED
-        $headquarters = Headquarter::with('HeadquarterUserHeadquarter.userHeadquarterUserParticipant:id,user_id')
+        $headquarters = Headquarter::with('headquarterUserParticipant:id,user_id')
             ->when(Auth::user()->canany(['headquarters.see.dashboard', 'sub_headquarters.see.dashboard', 'headquarters_authorized.see.dashboard']), function ($headquarters) {
-                $headquarters->whereHas('HeadquarterUserHeadquarter.userHeadquarterUserParticipant:id,user_id', function ($q2) {
+                $headquarters->whereHas('headquarterUserParticipant:id,user_id', function ($q2) {
                     $q2->where('user_id', Auth::user()->id);
                 });
             })
