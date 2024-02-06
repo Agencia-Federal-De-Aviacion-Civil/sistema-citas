@@ -60,7 +60,6 @@ class HomeMedicineAfac extends Component
             })
             ->get(['id', 'name_headquarter', 'direction', 'is_external']);
         $this->headquarterQueries = $headquarters;
-        dd($headquarters);
 
         $this->appointmentNow = $appointmentDashboard->where('dateReserve', $date1);
         $this->nowDate = ($id_dashboard === 0 || Auth::user()->canany(['headquarters.see.dashboard', 'sub_headquarters.see.dashboard', 'medicine_admin.see.dashboard'])) ? $this->appointmentNow->whereIn('status', ['0', '1', '4', '10'])->sum('count') : ($id_dashboard === 1 || Auth::user()->can('headquarters_authorized.see.dashboard') ? $this->appointmentNow->whereIn('status', ['0', '1', '4', '10', '7', '8', '9'])->sum('count') : null);
@@ -80,6 +79,7 @@ class HomeMedicineAfac extends Component
         $this->porNoApto = $this->registerCount != 0 ? round($appointmentDashboard->where('status', '9')->sum('count') * 100 / $this->registerCount, 0) : 0;
         $this->aplazadas = $appointmentDashboard->where('status', '7')->sum('count');
         $this->porAplazada = $this->registerCount != 0 ? round($appointmentDashboard->where('status', '7')->sum('count') * 100 / $this->registerCount, 0) : 0;
+        dd('LOADING...');
     }
     public function render()
     {
