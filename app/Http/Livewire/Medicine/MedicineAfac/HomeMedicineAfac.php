@@ -19,7 +19,7 @@ class HomeMedicineAfac extends Component
     {
         $this->date1 = $date1;
         $this->date2 = $date2;
-        $this->tomorrow = Date::tomorrow()->format('Y-m-d');
+        dd($this->tomorrow = Date::tomorrow()->format('Y-m-d'));
 
         $appointmentDashboard = MedicineReserve::query()
             ->when($id_dashboard === 0 || Auth::user()->can('medicine_admin.see.dashboard'), function ($appointmentDashboard) {

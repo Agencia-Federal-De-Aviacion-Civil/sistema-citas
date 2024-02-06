@@ -38,7 +38,6 @@ class DashboardController extends Controller
         $appointmentReservesNow = $appointmentReserves ? $appointmentReserves->where('dateReserve', $date1) : '';
         $registradas = $appointmentReserves ? $appointmentReserves->sum('count') : '';
         $medicine =  round($registradas ? $registradas * 100 / $registradas : '0');
-        dd('LOADING...');
         return view('afac.dashboard.index', compact('date1', 'date2', 'registradas', 'medicine', 'nameHeadquarter'));
     }
 }
