@@ -28,15 +28,17 @@ class DashboardController extends Controller
                 });
             })
             ->get();
-        dd($nameHeadquarter = (Auth::user()->canany(['headquarters.see.dashboard', 'sub_headquarters.see.dashboard']) ? $headquarters->first()->name_headquarter : 'DASHBOARD'));
-        
+        $nameHeadquarter = (Auth::user()->canany(['headquarters.see.dashboard', 'sub_headquarters.see.dashboard']) ? $headquarters->first()->name_headquarter : 'DASHBOARD');
+
         $appointmentReserves = MedicineReserve::query()
             ->select('status', DB::raw('count(*) as count'), 'dateReserve')
             ->groupBy('status', 'dateReserve')
             ->get();
+
         $appointmentReservesNow = $appointmentReserves ? $appointmentReserves->where('dateReserve', $date1) : '';
         $registradas = $appointmentReserves ? $appointmentReserves->sum('count') : '';
         $medicine =  round($registradas ? $registradas * 100 / $registradas : '0');
+        dd('LOADING...');
         return view('afac.dashboard.index', compact('date1', 'date2', 'registradas', 'medicine', 'nameHeadquarter'));
     }
 }
