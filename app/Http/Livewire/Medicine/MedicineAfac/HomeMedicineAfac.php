@@ -46,9 +46,11 @@ class HomeMedicineAfac extends Component
             ->get();
 
         // HEADQUARTERS QUERY OPTIMIZED
-        $headquarters = Headquarter::with('headquarterUserParticipant:id,user_id')
+        $headquarters = Headquarter::with(['headquarterUserParticipant' => function ($query) {
+            $query->select('user_participants.id', 'user_participants.user_id');
+        }])
             ->when(Auth::user()->canany(['headquarters.see.dashboard', 'sub_headquarters.see.dashboard', 'headquarters_authorized.see.dashboard']), function ($headquarters) {
-                $headquarters->whereHas('headquarterUserParticipant:id,user_id', function ($q2) {
+                $headquarters->whereHas('headquarterUserParticipant', function ($q2) {
                     $q2->where('user_id', Auth::user()->id);
                 });
             })
@@ -58,8 +60,9 @@ class HomeMedicineAfac extends Component
             ->when($id_dashboard === 1, function ($headquarters) {
                 $headquarters->where('is_external', 1);
             })
-            ->get(['id', 'name_headquarter', 'is_external']);
-        $this->headquarterQueries = $headquarters->take(14);
+            ->get();
+
+        $this->headquarterQueries = $headquarters->take(5);
 
         $this->appointmentNow = $appointmentDashboard->where('dateReserve', $date1);
         $this->nowDate = ($id_dashboard === 0 || Auth::user()->canany(['headquarters.see.dashboard', 'sub_headquarters.see.dashboard', 'medicine_admin.see.dashboard'])) ? $this->appointmentNow->whereIn('status', ['0', '1', '4', '10'])->sum('count') : ($id_dashboard === 1 || Auth::user()->can('headquarters_authorized.see.dashboard') ? $this->appointmentNow->whereIn('status', ['0', '1', '4', '10', '7', '8', '9'])->sum('count') : null);
