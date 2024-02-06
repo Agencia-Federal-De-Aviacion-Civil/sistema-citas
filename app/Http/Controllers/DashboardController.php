@@ -11,75 +11,31 @@ use Jenssegers\Date\Date;
 
 class DashboardController extends Controller
 {
-    public $headquarters, $dateNow;
+    public $headquarters;
     public function index()
     {
         Date::setLocale('es');
-        $dateNow = Date::now()->format('l j F Y');
-        $date = Date::now()->format('l j F Y');
         $date1 = Date::now()->format('Y-m-d');
         $date2 = Date::now()->format('d-m-Y');
-        $tomorrow = Date::tomorrow()->format('Y-m-d');
         $nameHeadquarter = '';
-        if (Auth::user()->can('headquarters.see.dashboard')) {
-            $appointment = MedicineReserve::with('medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant')
-                ->whereHas('medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q1) {
+        $appointmentReserves = '';
+        $headquarters = Headquarter::with([
+            'HeadquarterUserHeadquarter.userHeadquarterUserParticipant'
+        ])
+            ->when(Auth::user()->canany(['headquarters.see.dashboard', 'sub_headquarters.see.dashboard']), function ($headquarters) {
+                $headquarters->whereHas('HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q1) {
                     $q1->where('user_id', Auth::user()->id);
-                })
-                ->select('status', DB::raw('count(*) as count'), 'dateReserve')
-                ->groupBy('status', 'dateReserve')
-                ->get();
-            $headquarters = Headquarter::with([
-                'HeadquarterUserHeadquarter.userHeadquarterUserParticipant'
-            ])->whereHas('HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q2) {
-                $q2->where('user_id', Auth::user()->id);
-            })->get();
-            $nameHeadquarter = $headquarters->pluck('name_headquarter')->first();
-        } else if (Auth::user()->can('sub_headquarters.see.dashboard')) {
-            $appointment = MedicineReserve::with('medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant')
-                ->whereHas('medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q3) {
-                    $q3->where('user_id', Auth::user()->id);
-                })
-                ->select('status', DB::raw('count(*) as count'), 'dateReserve')
-                ->groupBy('status', 'dateReserve')
-                ->where('headquarter_id', 6)
-                ->where('dateReserve', $date1)
-                ->get();
-            $headquarters = Headquarter::with([
-                'HeadquarterUserHeadquarter.userHeadquarterUserParticipant'
-            ])->whereHas('HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q2) {
-                $q2->where('user_id', Auth::user()->id);
-            })->get();
-        } else {
-            // TODO FUNCIONA
-            $appointment = MedicineReserve::query()
-                ->select('status', DB::raw('count(*) as count'), 'dateReserve')
-                ->groupBy('status', 'dateReserve')
-                ->get();
-
-            $headquarters = collect();
-            $headquarters = Headquarter::with([
-                'headquarterMedicineReserve'
-            ])->where('is_external', false)->get();
-        }
-
-        $appointmentNow = $appointment->where('dateReserve', $date1);
-        $now = $appointmentNow->whereIn('status', ['0', '1', '4', '10'])->sum('count');
-        $registradas = $appointment->sum('count');
-        $porconfir = $registradas != 0 ? round($appointment->where('status', '1')->sum('count') * 100 / $registradas, 0) : 0;
-        $validado = $appointment->where('status', '1')->sum('count');
-        $pendientes = $appointment->whereIn('status', ['0', '7'])->sum('count');
-        $porpendientes = $registradas != 0 ? round($appointment->whereIn('status', ['0', '7'])->sum('count') * 100 / $registradas, 0) : 0;
-        $canceladas = $appointment->whereIn('status', ['2', '3', '5'])->sum('count');
-        $reagendado = round($appointment->whereIn('status', ['4', '10'])->sum('count'));
-        $porreagendado = $registradas != 0 ? round($appointment->whereIn('status', ['4', '10'])->sum('count') * 100 / $registradas) : 0;
-        $porcanceladas = $registradas != 0 ? round($appointment->whereIn('status', ['2', '3', '5'])->sum('count') * 100 / $registradas, 0) : 0;
-        $apto = $appointment->where('status', '8')->sum('count');
-        $porapto = $registradas != 0 ? round($appointment->where('status', '8')->sum('count') * 100 / $registradas, 0) : 0;
-        $noapto = $appointment->where('status', '9')->sum('count');
-        $pornoapto = $registradas != 0 ? round($appointment->where('status', '9')->sum('count') * 100 / $registradas, 0) : 0;
+                });
+            })
+            ->get();
+        $nameHeadquarter = (Auth::user()->canany(['headquarters.see.dashboard', 'sub_headquarters.see.dashboard']) ? $headquarters->first()->name_headquarter : 'DASHBOARD');
+        $appointmentReserves = MedicineReserve::query()
+            ->select('status', DB::raw('count(*) as count'), 'dateReserve')
+            ->groupBy('status', 'dateReserve')
+            ->get();
+        $appointmentReservesNow = $appointmentReserves ? $appointmentReserves->where('dateReserve', $date1) : '';
+        $registradas = $appointmentReserves ? $appointmentReserves->sum('count') : '';
         $medicine =  round($registradas ? $registradas * 100 / $registradas : '0');
-        $typeappoiment = 2;
-        return view('afac.dashboard.index', compact('appointment', 'appointmentNow', 'registradas', 'now', 'porconfir', 'headquarters', 'medicine', 'typeappoiment', 'nameHeadquarter', 'dateNow', 'pendientes', 'porpendientes', 'validado', 'reagendado', 'porreagendado', 'apto', 'porapto', 'noapto', 'pornoapto', 'canceladas', 'porcanceladas', 'date2', 'date1', 'tomorrow'));
+        return view('afac.dashboard.index', compact('date1', 'date2', 'registradas', 'medicine', 'nameHeadquarter'));
     }
 }

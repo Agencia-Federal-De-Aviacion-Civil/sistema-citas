@@ -93,10 +93,19 @@
                     </ul>
                     <div class="mt-6">
                         <div x-show="activeTab === 'headquarters'">
-                            @livewire('medicine.medicine-afac.home-medicine-afac')
+                            @livewire('medicine.medicine-afac.home-medicine-afac', [
+                                'id_dashboard' => 0,
+                                'date1' => $date1,
+                                'date2' => $date2,
+                            ])
                         </div>
                         <div x-show="activeTab === 'schedules'">
-                            @livewire('medicine.authorized-third.home-super-medicine-authorized-third')
+                            @livewire('medicine.medicine-afac.home-medicine-afac', [
+                                'id_dashboard' => 1,
+                                'date1' => $date1,
+                                'date2' => $date2,
+                            ])
+                            {{-- @livewire('medicine.authorized-third.home-super-medicine-authorized-third', ['id_dashboard' => 1]) --}}
                         </div>
                     </div>
                 </div>
