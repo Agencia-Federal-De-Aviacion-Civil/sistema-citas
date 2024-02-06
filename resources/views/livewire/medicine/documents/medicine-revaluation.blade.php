@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -65,9 +66,10 @@
         text-align: right;
         margin-top: -7%;
     }
+
     footer {
         position: fixed;
-        bottom: 30px;
+        bottom: 35px;
         height: 0px;
         right: -0.2%;
     }
@@ -75,7 +77,13 @@
 
 <body class="bgsize">
     <footer>
-        <center><img src="{{ public_path('images/fooderafac2023.png') }}" width="112%" height=80" alt=""></center>
+        @if ($medicineReserves[0]->dateReserve > '2023-12-31')
+            <center><img src="{{ public_path('images/fooderafac2024.png') }}" width="112%" height=80" alt="">
+            </center>
+        @else
+            <center><img src="{{ public_path('images/fooderafac2023.png') }}" width="112%" height=80" alt="">
+            </center>
+        @endif
     </footer>
     <div>
         {{-- <img src="{{ public_path('images/AFAC1.png') }}" width="130" height="100" alt=""> --}}
@@ -105,39 +113,40 @@
             <tr>
                 <td>TIPO DE EXAMEN:</td>
                 <td> <b> <u>{{ $medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->name }}</u> </b>
-                    </td>
+                </td>
             </tr>
             <tr>
                 <td>TIPO DE REVALORACIÓN:</td>
                 <td>
-                    {{ $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->RevaluationTypeExam->name }}</td>
-            </tr>
-            @if ($medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->RevaluationTypeExam->id ===1 )
-            <tr>
-                <td>TIPO DE CLASE:</td>
-                <td>
-                    {{ $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->revaluationInitialTypeClass->name }}
+                    {{ $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->RevaluationTypeExam->name }}
                 </td>
             </tr>
-            <tr>
-                <td>TIPO DE LICENCIA:</td>
-                <td>
-                    {{ $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->revaluationInitialClasificationClass->name }}
-                </td>
-            </tr>
+            @if ($medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->RevaluationTypeExam->id === 1)
+                <tr>
+                    <td>TIPO DE CLASE:</td>
+                    <td>
+                        {{ $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->revaluationInitialTypeClass->name }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>TIPO DE LICENCIA:</td>
+                    <td>
+                        {{ $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->revaluationInitialClasificationClass->name }}
+                    </td>
+                </tr>
             @else
-            <tr>
-                <td>TIPO DE CLASE:</td>
-                <td>
-                    {{ $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->revaluationRenovationTypeClass->name }}
-                </td>
-            </tr>
-            <tr>
-                <td>TIPO DE LICENCIA:</td>
-                <td>
-                    {{ $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->revaluationRenovationClasificationClass->name }}
-                </td>
-            </tr>
+                <tr>
+                    <td>TIPO DE CLASE:</td>
+                    <td>
+                        {{ $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->revaluationRenovationTypeClass->name }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>TIPO DE LICENCIA:</td>
+                    <td>
+                        {{ $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->revaluationRenovationClasificationClass->name }}
+                    </td>
+                </tr>
             @endif
             <tr>
                 <td>TRAMITE:</td>
@@ -170,8 +179,7 @@
             </tr>
         </table>
         <div class="codigoqr">
-            <img src="{{ $keyEncrypt }}"
-                width="120" height="120" />
+            <img src="{{ $keyEncrypt }}" width="120" height="120" />
             {{-- <img src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ $keyEncrypt }}"
                 width="120" height="120" /> --}}
         </div>
@@ -184,4 +192,5 @@
         </div>
     </div>
 </body>
+
 </html>
