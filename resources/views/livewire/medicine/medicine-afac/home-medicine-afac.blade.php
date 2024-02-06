@@ -189,7 +189,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($headquarterQueries as $headquarterQuery)
+                                {{-- @foreach ($headquarterQueries as $headquarterQuery)
                                 <tr class="text-gray-700 dark:text-gray-100">
                                     <th
                                         class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
@@ -208,23 +208,8 @@
                                         class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                                         {{number_format($headquarterQuery->headquarterMedicineReserve->count())}}
                                     </td>
-                                    {{-- <td
-                                        class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                        <div class="flex items-center">
-                                            <span class="mr-2">{{ $headquarter->headquarterMedicineReserve ?
-                                                round(($headquarter->headquarterMedicineReserve->count() * 100) /
-                                                $registradas, 1):'' }}%</span>
-                                            <div class="relative w-full">
-                                                <div class="overflow-hidden h-2 text-xs flex rounded bg-blue-200">
-                                                    <div style="width:{{ ($headquarter->headquarterMedicineReserve->count() * 100) / $registradas }}%"
-                                                        class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-600">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td> --}}
                                 </tr>
-                                @endforeach
+                                @endforeach --}}
                             </tbody>
                         </table>
                     </div>
