@@ -15,7 +15,7 @@ class HomeMedicineAfac extends Component
     public $id_dashboard, $date1, $date2;
     public $appointmentNow, $nowDate, $registerCount, $porConfirDashboard, $penDashboard, $porPenDashboard, $cancelDashboard, $reagDashboard,
         $porReagDashboard, $porCancelDashboard, $validateDashboard, $apto, $porApto, $noApto, $porNoApto, $aplazadas, $porAplazada, $headquarterQueries,
-        $tomorrow;
+        $tomorrow, $countNow;
     public function mount($id_dashboard, $date1, $date2)
     {
         $this->date1 = $date1;
@@ -58,17 +58,16 @@ class HomeMedicineAfac extends Component
             ->when($id_dashboard === 1, function ($headquarters) {
                 $headquarters->where('is_external', 1)->where('status', 0);
             })
+            ->withCount(['headquarterMedicineReserve as countNow' => function ($query) use ($date1) {
+                $query->where('dateReserve', $date1)->whereIn('status', ['0', '1', '4', '10', '8', '9']);
+            }])
             ->get(['id', 'name_headquarter', 'direction', 'is_external']);
 
-        // $headquarters->each(function ($headquarter) use ($date1) {
-        //     $countToday = $headquarter->headquarterMedicineReserve->where('dateReserve', $date1)->whereIn('status', ['0', '1', '4', '10', '8', '9'])->count();
-        //     $headquarter->countToday = $countToday;
-        // });
-        $count = $headquarters[0]->headquarterMedicineReserve
-            ->filter(function ($reserve) use ($date1) {
-                return $reserve->dateReserve == $date1 && in_array($reserve->status, ['0', '1', '4', '10', '8', '9']);
-            })
-            ->count();
+        // $this->countNow = $headquarters[0]->headquarterMedicineReserve
+        //     ->filter(function ($reserve) use ($date1) {
+        //         return $reserve->dateReserve == $date1 && in_array($reserve->status, ['0', '1', '4', '10', '8', '9']);
+        //     })
+        //     ->count();
         $this->headquarterQueries = $headquarters;
 
         $this->appointmentNow = $appointmentDashboard->where('dateReserve', $date1);
