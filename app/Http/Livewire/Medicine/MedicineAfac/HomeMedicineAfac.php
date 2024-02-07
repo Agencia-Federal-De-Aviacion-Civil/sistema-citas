@@ -47,27 +47,19 @@ class HomeMedicineAfac extends Component
             ->get();
 
         // HEADQUARTERS QUERY OPTIMIZED
-        $headquarters = Headquarter::with(['headquarterMedicineReserve', 'HeadquarterUserHeadquarter.userHeadquarterUserParticipant'])
-            // ->when(Auth::user()->canany(['headquarters.see.dashboard', 'sub_headquarters.see.dashboard', 'headquarters_authorized.see.dashboard']), function ($headquarters) {
-            //     $headquarters->whereHas('HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q2) {
-            //         $q2->where('user_id', Auth::user()->id);
-            //     });
-            // })
+        $headquarters = Headquarter::with('headquarterMedicineReserve')
+            ->when(Auth::user()->canany(['headquarters.see.dashboard', 'sub_headquarters.see.dashboard', 'headquarters_authorized.see.dashboard']), function ($headquarters) {
+                $headquarters->with(['HeadquarterUserHeadquarter.userHeadquarterUserParticipant' => function ($q2) {
+                    $q2->where('user_id', Auth::user()->id);
+                }]);
+            })
             ->when($id_dashboard === 0 || Auth::user()->can('medicine_admin.see.dashboard'), function ($headquarters) {
                 $headquarters->where('is_external', 0);
             })
             ->when($id_dashboard === 1, function ($headquarters) {
                 $headquarters->where('is_external', 1);
             })
-            ->select('id', 'name_headquarter', 'direction', 'is_external')
-            ->withCount([
-                'HeadquarterUserHeadquarter as grouped_user_headquarter_count' => function ($query) {
-                    $query->select('headquarter_id', DB::raw('count(*) as count'))
-                        ->groupBy('headquarter_id');
-                }
-            ])
-            ->get();
-
+            ->get(['id', 'name_headquarter', 'direction', 'is_external']);
         $this->headquarterQueries = $headquarters;
 
         $this->appointmentNow = $appointmentDashboard->where('dateReserve', $date1);
