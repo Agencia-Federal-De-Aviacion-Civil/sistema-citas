@@ -189,7 +189,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($headquarterQueries as $headquarterQuery)
+                                {{-- @foreach ($headquarterQueries as $headquarterQuery)
                                 <tr class="text-gray-700 dark:text-gray-100">
                                     <th
                                         class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
@@ -209,7 +209,7 @@
                                         {{number_format($headquarterQuery->headquarterMedicineReserve->count())}}
                                     </td>
                                 </tr>
-                                @endforeach
+                                @endforeach --}}
                             </tbody>
                         </table>
                     </div>
