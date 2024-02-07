@@ -18,10 +18,10 @@ class Calendar extends Component
         $queryEvents = MedicineReserve::with('medicineReserveHeadquarter:id,name_headquarter')
             ->whereIn('status', [0, 1, 4, 10])
             ->when($this->id_dashboard === 0 || Auth::user()->can('medicine_admin.see.dashboard'), function ($queryEvents) {
-                $queryEvents->where('is_external', true);
+                $queryEvents->where('is_external', false);
             })
             ->when($this->id_dashboard === 1, function ($queryEvents) {
-                $queryEvents->where('is_external', false);
+                $queryEvents->where('is_external', true);
             })
             ->when(Auth::user()->canany(['headquarters.see.dashboard', 'headquarters_authorized.see.dashboard']), function ($queryEvents) {
                 $queryEvents->with('medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant')
