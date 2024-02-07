@@ -59,6 +59,12 @@ class HomeMedicineAfac extends Component
                 $headquarters->where('is_external', 1)->where('status', 0);
             })
             ->get(['id', 'name_headquarter', 'direction', 'is_external']);
+
+        $headquarters->each(function ($headquarter) use ($date1) {
+            $countToday = $headquarter->headquarterMedicineReserve->where('dateReserve', $date1)->whereIn('status', ['0', '1', '4', '10', '8', '9'])->count();
+            dd($headquarter->countToday = $countToday);
+        });
+
         $this->headquarterQueries = $headquarters;
 
         $this->appointmentNow = $appointmentDashboard->where('dateReserve', $date1);
