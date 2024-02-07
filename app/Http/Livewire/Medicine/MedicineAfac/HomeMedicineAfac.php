@@ -14,13 +14,12 @@ class HomeMedicineAfac extends Component
 {
     public $id_dashboard, $date1, $date2;
     public $appointmentNow, $nowDate, $registerCount, $porConfirDashboard, $penDashboard, $porPenDashboard, $cancelDashboard, $reagDashboard,
-        $porReagDashboard, $porCancelDashboard, $validateDashboard, $apto, $porApto, $noApto, $porNoApto, $aplazadas, $porAplazada, $headquarterQueries,
-        $tomorrow, $countNow;
+        $porReagDashboard, $porCancelDashboard, $validateDashboard, $apto, $porApto, $noApto, $porNoApto, $aplazadas, $porAplazada, $headquarterQueries;
     public function mount($id_dashboard, $date1, $date2)
     {
         $this->date1 = $date1;
         $this->date2 = $date2;
-        $this->tomorrow = Date::tomorrow()->format('Y-m-d');
+        $tomorrow = Date::tomorrow()->format('Y-m-d');
 
         $appointmentDashboard = MedicineReserve::query()
             ->when($id_dashboard === 0 || Auth::user()->can('medicine_admin.see.dashboard'), function ($appointmentDashboard) {
@@ -58,8 +57,11 @@ class HomeMedicineAfac extends Component
             ->when($id_dashboard === 1, function ($headquarters) {
                 $headquarters->where('is_external', 1)->where('status', 0);
             })
-            ->withCount(['headquarterMedicineReserve as countNow' => function ($query) use ($date1) {
-                $query->where('dateReserve', $date1)->whereIn('status', ['0', '1', '4', '10', '8', '9']);
+            ->withCount(['headquarterMedicineReserve as countNow' => function ($query1) use ($date1) {
+                $query1->where('dateReserve', $date1)->whereIn('status', ['0', '1', '4', '10', '8', '9']);
+            }])
+            ->withCount(['headquarterMedicineReserve as countTomorrow' => function ($query2) use ($tomorrow) {
+                $query2->where('dateReserve', $tomorrow)->whereIn('status', ['0', '1', '4', '10', '8', '9']);
             }])
             ->get(['id', 'name_headquarter', 'direction', 'is_external']);
 
