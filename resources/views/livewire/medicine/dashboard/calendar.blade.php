@@ -1,21 +1,21 @@
 <div>
     <style>
-        #calendar-container{
+        #calendar-container {
             width: 100%;
         }
     </style>
-    
+
     <div>
-      <div id='calendar-container' wire:ignore>
-        <div id='calendar'></div>
-      </div>
+        <div id='calendar-container' wire:ignore>
+            <div id={{$id_dashboard===0 ? 'calendar-afac' : 'calendar-third' }}></div>
+        </div>
     </div>
     @push('scripts')
-        <script>
-            document.addEventListener('livewire:load', function() {
+    <script>
+        document.addEventListener('livewire:load', function() {
                 var Calendar = FullCalendar.Calendar;
                 var Draggable = FullCalendar.Draggable;
-                var calendarEl = document.getElementById('calendar');
+                var calendarEl = document.getElementById('calendar-afac') ? document.getElementById('calendar-afac') : document.getElementById('calendar-third')
                 var checkbox = document.getElementById('drop-remove');
                 var data =   @this.events;
                 var calendar = new Calendar(calendarEl, {
@@ -56,7 +56,7 @@
                 });
             });
             
-        </script>
-        <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.3.1/main.min.css' rel='stylesheet' />
+    </script>
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.3.1/main.min.css' rel='stylesheet' />
     @endpush
 </div>

@@ -1,22 +1,22 @@
 <?php
 
-namespace App\Http\Livewire\Medicine\MedicineAfac;
+namespace App\Http\Livewire\Medicine\Dashboard;
 
 use App\Models\Catalogue\Headquarter;
 use App\Models\Medicine\MedicineReserve;
-use App\Models\UserParticipant;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Jenssegers\Date\Date;
 use Livewire\Component;
 
-class HomeMedicineAfac extends Component
+class DashboardMain extends Component
 {
     public $id_dashboard, $date1, $date2;
     public $appointmentNow, $nowDate, $registerCount, $porConfirDashboard, $penDashboard, $porPenDashboard, $cancelDashboard, $reagDashboard,
         $porReagDashboard, $porCancelDashboard, $validateDashboard, $apto, $porApto, $noApto, $porNoApto, $aplazadas, $porAplazada, $headquarterQueries;
     public function mount($id_dashboard, $date1, $date2)
     {
+        $this->id_dashboard = $id_dashboard;
         $this->date1 = $date1;
         $this->date2 = $date2;
         $tomorrow = Date::tomorrow()->format('Y-m-d');
@@ -46,11 +46,13 @@ class HomeMedicineAfac extends Component
             ->get();
 
         // HEADQUARTERS QUERY OPTIMIZED
-        $headquarters = Headquarter::when(Auth::user()->canany(['headquarters.see.dashboard', 'sub_headquarters.see.dashboard', 'headquarters_authorized.see.dashboard']), function ($headquarters) {
-            $headquarters->with(['HeadquarterUserHeadquarter.userHeadquarterUserParticipant' => function ($q2) {
-                $q2->where('user_id', Auth::user()->id);
-            }]);
-        })
+        $headquarters = Headquarter::query()
+            ->when(Auth::user()->canany(['headquarters.see.dashboard', 'sub_headquarters.see.dashboard', 'headquarters_authorized.see.dashboard']), function ($headquarters) {
+                $headquarters->with(['HeadquarterUserHeadquarter.userHeadquarterUserParticipant'])
+                    ->whereHas('HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q3) {
+                        $q3->where('user_id', Auth::user()->id);
+                    });
+            })
             ->when($id_dashboard === 0 || Auth::user()->can('medicine_admin.see.dashboard'), function ($headquarters) {
                 $headquarters->where('is_external', 0)->where('status', 0);
             })
@@ -88,6 +90,6 @@ class HomeMedicineAfac extends Component
     }
     public function render()
     {
-        return view('livewire.medicine.medicine-afac.home-medicine-afac');
+        return view('livewire.medicine.dashboard.dashboard-main');
     }
 }
