@@ -63,13 +63,8 @@ class HomeMedicineAfac extends Component
             ->withCount(['headquarterMedicineReserve as countTomorrow' => function ($query2) use ($tomorrow) {
                 $query2->where('dateReserve', $tomorrow)->whereIn('status', ['0', '1', '4', '10', '8', '9']);
             }])
+            ->withCount(['headquarterMedicineReserve as countTotal'])
             ->get(['id', 'name_headquarter', 'direction', 'is_external']);
-
-        // $this->countNow = $headquarters[0]->headquarterMedicineReserve
-        //     ->filter(function ($reserve) use ($date1) {
-        //         return $reserve->dateReserve == $date1 && in_array($reserve->status, ['0', '1', '4', '10', '8', '9']);
-        //     })
-        //     ->count();
         $this->headquarterQueries = $headquarters;
 
         $this->appointmentNow = $appointmentDashboard->where('dateReserve', $date1);
