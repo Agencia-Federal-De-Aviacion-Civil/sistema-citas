@@ -54,10 +54,10 @@ class HomeMedicineAfac extends Component
             //     }]);
             // })
             when($id_dashboard === 0 || Auth::user()->can('medicine_admin.see.dashboard'), function ($headquarters) {
-                $headquarters->where('is_external', 0);
+                $headquarters->where('is_external', 0)->take(8);
             })
             ->when($id_dashboard === 1, function ($headquarters) {
-                $headquarters->where('is_external', 1);
+                $headquarters->where('is_external', 1)->take(2);
             })
             ->get(['id', 'name_headquarter', 'direction', 'is_external']);
         $this->headquarterQueries = $headquarters;
