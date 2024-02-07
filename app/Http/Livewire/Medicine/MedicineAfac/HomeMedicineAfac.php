@@ -47,37 +47,18 @@ class HomeMedicineAfac extends Component
             ->get();
 
         // HEADQUARTERS QUERY OPTIMIZED
-        // $headquarters = Headquarter::when(Auth::user()->canany(['headquarters.see.dashboard', 'sub_headquarters.see.dashboard', 'headquarters_authorized.see.dashboard']), function ($headquarters) {
-        //     $headquarters->with(['HeadquarterUserHeadquarter.userHeadquarterUserParticipant' => function ($q2) {
-        //         $q2->where('user_id', Auth::user()->id);
-        //     }]);
-        // })
-        //     ->when($id_dashboard === 0 || Auth::user()->can('medicine_admin.see.dashboard'), function ($headquarters) {
-        //         $headquarters->where('is_external', 0)->take(14)->where('status', 0);
-        //     })
-        //     ->when($id_dashboard === 1, function ($headquarters) {
-        //         $headquarters->where('is_external', 1)->take(14)->where('status', 0);
-        //     })
-        //     ->get(['id', 'name_headquarter', 'direction', 'is_external']);
-        // $this->headquarterQueries = $headquarters;
-        $headquartersQuery = Headquarter::query();
-        $headquartersQuery->when(
-            Auth::user()->canany(['headquarters.see.dashboard', 'sub_headquarters.see.dashboard', 'headquarters_authorized.see.dashboard']),
-            function ($query) {
-                $query->with(['HeadquarterUserHeadquarter.userHeadquarterUserParticipant' => function ($q2) {
-                    $q2->where('user_id', Auth::user()->id);
-                }]);
-            }
-        );
-        if ($id_dashboard === 0 || Auth::user()->can('medicine_admin.see.dashboard')) {
-            $headquartersQuery->where('is_external', 0)
-                ->where('status', 0);
-        } elseif ($id_dashboard === 1) {
-            $headquartersQuery->where('is_external', 1)
-                ->where('status', 0);
-        }
-        $headquarters = $headquartersQuery->get(['id', 'name_headquarter', 'direction', 'is_external']);
-
+        $headquarters = Headquarter::when(Auth::user()->canany(['headquarters.see.dashboard', 'sub_headquarters.see.dashboard', 'headquarters_authorized.see.dashboard']), function ($headquarters) {
+            $headquarters->with(['HeadquarterUserHeadquarter.userHeadquarterUserParticipant' => function ($q2) {
+                $q2->where('user_id', Auth::user()->id);
+            }]);
+        })
+            ->when($id_dashboard === 0 || Auth::user()->can('medicine_admin.see.dashboard'), function ($headquarters) {
+                $headquarters->where('is_external', 0)->where('status', 0);
+            })
+            // ->when($id_dashboard === 1, function ($headquarters) {
+            //     $headquarters->where('is_external', 1)->take(14)->where('status', 0);
+            // })
+            ->get(['id', 'name_headquarter', 'direction', 'is_external']);
         $this->headquarterQueries = $headquarters;
 
         $this->appointmentNow = $appointmentDashboard->where('dateReserve', $date1);
