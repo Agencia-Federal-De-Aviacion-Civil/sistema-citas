@@ -196,7 +196,7 @@
                                         {{ $headquarterQuery->name_headquarter}}</th>
                                     <td
                                         class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                        {{ $headquarterQuery->countToday }}
+                                        {{-- {{ $headquarterQuery->countToday }} --}}
                                     </td>
                                     <td
                                         class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
