@@ -59,19 +59,14 @@ class HomeMedicineAfac extends Component
             ->when($id_dashboard === 1, function ($headquarters) {
                 $headquarters->where('is_external', 1);
             })
-            ->get(['id', 'name_headquarter', 'direction', 'is_external']);
-        $allRelations = collect();
-
-        // Iterar sobre todos los cuarteles para obtener todas las relaciones HeadquarterUserHeadquarter
-        $headquarters->each(function ($headquarter) use (&$allRelations) {
-            $allRelations = $allRelations->merge($headquarter->HeadquarterUserHeadquarter);
-        });
-        $groupedRelations = $allRelations->groupBy('headquarter_id');
-
-        // Iterar sobre cada cuartel y asignar las relaciones agrupadas correspondientes
-        $headquarters->each(function ($headquarter) use ($groupedRelations) {
-            $headquarter->HeadquarterUserHeadquarter = $groupedRelations->get($headquarter->id, collect());
-        });
+            ->select('id', 'name_headquarter', 'direction', 'is_external')
+            ->withCount([
+                'HeadquarterUserHeadquarter as grouped_user_headquarter_count' => function ($query) {
+                    $query->select('headquarter_id', DB::raw('count(*) as count'))
+                        ->groupBy('headquarter_id');
+                }
+            ])
+            ->get();
 
         $this->headquarterQueries = $headquarters;
 
