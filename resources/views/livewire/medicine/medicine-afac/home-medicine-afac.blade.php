@@ -189,27 +189,27 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {{-- @foreach ($headquarterQueries as $headquarterQuery)
+                                @foreach ($headquarterQueries as $headquarterQuery)
                                 <tr class="text-gray-700 dark:text-gray-100">
                                     <th
                                         class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                                         {{ $headquarterQuery->name_headquarter}}</th>
                                     <td
                                         class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                        {{$headquarterQuery->headquarterMedicineReserve->where('dateReserve',$date1)
-                                        ->whereIn('status', ['0', '1', '4', '10', '8', '9'])->count()}}
+                                        {{-- {{$headquarterQuery->headquarterMedicineReserve->where('dateReserve',$date1)
+                                        ->whereIn('status', ['0', '1', '4', '10', '8', '9'])->count()}} --}}
                                     </td>
                                     <td
                                         class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                        {{$headquarterQuery->headquarterMedicineReserve->where('dateReserve',$tomorrow)->whereIn('status',
-                                        ['0', '1', '4', '10', '8', '9'])->count()}}
+                                        {{-- {{$headquarterQuery->headquarterMedicineReserve->where('dateReserve',$tomorrow)->whereIn('status',
+                                        ['0', '1', '4', '10', '8', '9'])->count()}} --}}
                                     </td>
                                     <td
                                         class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                        {{number_format($headquarterQuery->headquarterMedicineReserve->count())}}
+                                        {{-- {{number_format($headquarterQuery->headquarterMedicineReserve->count())}} --}}
                                     </td>
                                 </tr>
-                                @endforeach --}}
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
