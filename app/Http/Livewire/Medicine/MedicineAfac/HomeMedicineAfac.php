@@ -60,7 +60,7 @@ class HomeMedicineAfac extends Component
                 $headquarters->where('is_external', 1);
             })
             ->get(['id', 'name_headquarter', 'direction', 'is_external']);
-        $this->headquarterQueries = $headquarters;
+        dd($this->headquarterQueries = $headquarters);
 
         $this->appointmentNow = $appointmentDashboard->where('dateReserve', $date1);
         $this->nowDate = ($id_dashboard === 0 || Auth::user()->canany(['headquarters.see.dashboard', 'sub_headquarters.see.dashboard', 'medicine_admin.see.dashboard'])) ? $this->appointmentNow->whereIn('status', ['0', '1', '4', '10'])->sum('count') : ($id_dashboard === 1 || Auth::user()->can('headquarters_authorized.see.dashboard') ? $this->appointmentNow->whereIn('status', ['0', '1', '4', '10', '7', '8', '9'])->sum('count') : null);
