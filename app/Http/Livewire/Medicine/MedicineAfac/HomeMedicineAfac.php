@@ -62,7 +62,7 @@ class HomeMedicineAfac extends Component
 
         $headquarters->each(function ($headquarter) use ($date1) {
             $countToday = $headquarter->headquarterMedicineReserve->where('dateReserve', $date1)->whereIn('status', ['0', '1', '4', '10', '8', '9'])->count();
-            dd($headquarter->countToday = $countToday);
+            $headquarter->countToday = $countToday;
         });
 
         $this->headquarterQueries = $headquarters;
