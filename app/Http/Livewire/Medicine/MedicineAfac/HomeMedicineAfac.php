@@ -47,12 +47,13 @@ class HomeMedicineAfac extends Component
             ->get();
 
         // HEADQUARTERS QUERY OPTIMIZED
-        $headquarters = Headquarter::when(Auth::user()->canany(['headquarters.see.dashboard', 'sub_headquarters.see.dashboard', 'headquarters_authorized.see.dashboard']), function ($headquarters) {
-            $headquarters->with(['HeadquarterUserHeadquarter.userHeadquarterUserParticipant' => function ($q2) {
-                $q2->where('user_id', Auth::user()->id);
-            }]);
-        })
-            ->when($id_dashboard === 0 || Auth::user()->can('medicine_admin.see.dashboard'), function ($headquarters) {
+        $headquarters = Headquarter::
+            // when(Auth::user()->canany(['headquarters.see.dashboard', 'sub_headquarters.see.dashboard', 'headquarters_authorized.see.dashboard']), function ($headquarters) {
+            //     $headquarters->with(['HeadquarterUserHeadquarter.userHeadquarterUserParticipant' => function ($q2) {
+            //         $q2->where('user_id', Auth::user()->id);
+            //     }]);
+            // })
+            when($id_dashboard === 0 || Auth::user()->can('medicine_admin.see.dashboard'), function ($headquarters) {
                 $headquarters->where('is_external', 0);
             })
             ->when($id_dashboard === 1, function ($headquarters) {
