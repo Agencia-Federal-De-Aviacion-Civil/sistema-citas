@@ -2,38 +2,24 @@
 
 namespace App\Http\Livewire\Medicine\Dashboard;
 
-use Livewire\Component;
 use App\Models\Medicine\MedicineReserve;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
 
-class Calendar extends Component
+class CalendarThird extends Component
 {
-    public $events = '', $id_dashboard;
-    public function mount($id_dashboard)
-    {
-        $this->id_dashboard = $id_dashboard;
-    }
+    public $events = '';
+
     public function render()
     {
         $queryEvents = MedicineReserve::with('medicineReserveHeadquarter:id,name_headquarter')
-            ->when($this->id_dashboard === 1 || Auth::user()->can('medicine_admin.see.dashboard'), function ($queryEvents) {
-                $queryEvents->where('is_external', false);
-            })
-            ->when($this->id_dashboard === 0, function ($queryEvents) {
-                $queryEvents->where('is_external', true);
-            })
-            ->when(Auth::user()->canany(['headquarters.see.dashboard', 'headquarters_authorized.see.dashboard']), function ($queryEvents) {
+            ->when(Auth::user()->canany(['headquarters.see.dashboard', 'headquarters_authorized.see.dashboard', 'sub_headquarters.see.dashboard']), function ($queryEvents) {
                 $queryEvents->with('medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant')
                     ->whereHas('medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q1) {
                         $q1->where('user_id', Auth::user()->id);
                     });
             })
-            ->when(Auth::user()->can('sub_headquarters.see.dashboard'), function ($queryEvents) {
-                $queryEvents->with('medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant')
-                    ->whereHas('medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q1) {
-                        $q1->where('user_id', Auth::user()->id);
-                    });
-            })
+            ->where('is_external', true)
             ->whereIn('status', [0, 1, 4, 10])
             ->get(['id', 'headquarter_id', 'medicine_id', 'dateReserve']);
         $groupedEvents = $queryEvents->groupBy(function ($event) {
@@ -49,6 +35,6 @@ class Calendar extends Component
             ];
         })->values();
         $this->events = json_encode($events);
-        return view('livewire.medicine.dashboard.calendar');
+        return view('livewire.medicine.dashboard.calendar-third');
     }
 }

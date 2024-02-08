@@ -201,7 +201,12 @@
             <div class="container mx-auto px-4 py-4 bg-white sm:rounded-lg">
                 <div class="mt-12 md:max-w-8xl  xs:max-w-4xl  mx-auto sm:px-6 lg:px-8">
                     <div class="ml-4 py-6 mr-4 uppercase md:text-sm xs:text-xs">
-                        @livewire('medicine.dashboard.calendar',['id_dashboard'=> $id_dashboard])
+                        @if ($id_dashboard === 0 ||
+                        Auth::user()->canany(['medicine_admin.see.dashboard','headquarters.see.dashboard','sub_headquarters.see.dashboard']))
+                        @livewire('medicine.dashboard.calendar-afac')
+                        @else
+                        @livewire('medicine.dashboard.calendar-third')
+                        @endif
                     </div>
                 </div>
             </div>
