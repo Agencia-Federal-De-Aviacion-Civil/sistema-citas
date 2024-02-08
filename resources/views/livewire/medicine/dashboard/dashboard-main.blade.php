@@ -15,7 +15,6 @@
                 <div class="pb-4 lg:pb-6">
                     <div class="relative pt-1 mx-5">
                         <div class="overflow-hidden h-3 mb-4 text-xs flex rounded bg-gray-500">
-                            @unless ($id_dashboard == 0)
                             <div style="width: {{ $porConfirDashboard }} %"
                                 class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-800">
                             </div>
@@ -34,60 +33,45 @@
                             <div style="width: {{ $porCancelDashboard }}%"
                                 class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-orange-500">
                             </div>
-                            @else
-                            <div style="width: {{ $porConfirDashboard }} %"
-                                class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-800">
-                            </div>
-                            <div style="width: {{ $porReagDashboard }}%"
-                                class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-500">
-                            </div>
-                            <div style="width: {{ $porCancelDashboard }}%"
-                                class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500">
-                            </div>
-                            @endunless
                         </div>
                     </div>
                 </div>
-                <div
-                    class="{{ $id_dashboard === 0 ? '-mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4' : '-mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-7 xl:grid-cols-7' }}">
+                <div class="-mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-7 xl:grid-cols-7">
                     <div class="flex items-start p-2">
                         <div
-                            class="flex h-12 w-12 items-center justify-center rounded-full border border-gray-100 bg-gray-50">
+                            class="flex h-8 w-8 items-center justify-center rounded-full border border-gray-100 bg-gray-50">
                             <span href="#blue" class="block w-3 h-3 bg-gray-500 rounded-full"></span>
                         </div>
                         <div class="ml-4">
-                            <h3 class="{{ $id_dashboard === 0 ? 'font-semibold' : 'font-semibold text-sm' }}">
-                                Pendientes:
-                                {{ $penDashboard }}</h3>
-                            <p class="mt-2 text-sm text-gray-500">
-                                {!! $id_dashboard === 0 ? $porPenDashboard . '%' : '<b>{{ $penDashboard }}</b>/' .
-                                $porPenDashboard . '%' !!}
+                            <h2 class="font-semibold text-sm">Pendientes</h2>
+                            <p class="mt-2 text-sm text-gray-500"><b>{{ $penDashboard }}</b> /
+                                {{ $porPenDashboard }}%
                             </p>
                         </div>
                     </div>
                     <div class="flex items-start p-2">
                         <div
-                            class="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50">
+                            class="flex h-8 w-8 items-center justify-center rounded-full border border-blue-100 bg-blue-50">
                             <span href="#blue" class="block w-3 h-3 bg-blue-800 rounded-full"></span>
                         </div>
-
                         <div class="ml-4">
-                            <h3 class="font-semibold">Asistió: {{ $validateDashboard }}</h3>
+                            <h3 class="font-semibold text-sm">Asistió {{ $validateDashboard }}</h3>
                             <p class="mt-2 text-sm text-gray-500">{{ $porConfirDashboard }}%</p>
                         </div>
                     </div>
 
                     <div class="flex items-start p-2">
                         <div
-                            class="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50">
+                            class="flex h-8 w-8 items-center justify-center rounded-full border border-blue-100 bg-blue-50">
                             <span href="#blue" class="block w-3 h-3 bg-blue-500 rounded-full"></span>
                         </div>
                         <div class="ml-4">
-                            <h2 class="font-semibold">Reagendadas: {{ $reagDashboard }}</h2>
-                            <p class="mt-2 text-sm text-gray-500">{{ $porReagDashboard }}%</p>
+                            <h2 class="font-semibold text-sm">Reagendadas</h2>
+                            <p class="mt-2 text-sm text-gray-500"><b>{{ $reagDashboard }}</b> /
+                                {{ $porReagDashboard }}%
+                            </p>
                         </div>
                     </div>
-                    @unless ($id_dashboard == 0)
                     <div class="flex items-start p-2">
                         <div
                             class="flex h-8 w-8 items-center justify-center rounded-full border border-green-100 bg-green-50">
@@ -125,17 +109,15 @@
                                 {{ $porAplazada }}%</p>
                         </div>
                     </div>
-                    @endunless
                     <div class="flex items-start p-2">
                         <div
-                            class="{{ $id_dashboard === 0 ? 'flex h-12 w-12 items-center justify-center rounded-full border border-red-100 bg-red-50' : 'flex h-12 w-12 items-center justify-center rounded-full border border-orange-100 bg-orange-50' }}">
-                            <span href="#blue"
-                                class="{{ $id_dashboard === 0 ? 'block w-3 h-3 bg-red-500 rounded-full' : 'block w-3 h-3 bg-orange-500 rounded-full' }}"></span>
+                            class="flex h-8 w-8 items-center justify-center rounded-full border border-orange-100 bg-orange-50">
+                            <span href="#blue" class="block w-3 h-3 bg-orange-500 rounded-full"></span>
                         </div>
-
                         <div class="ml-4">
-                            <h2 class="font-semibold">Canceladas: {{ $cancelDashboard }}</h2>
-                            <p class="mt-2 text-sm text-gray-500">{{ $porCancelDashboard }}%</p>
+                            <h2 class="font-semibold text-sm">Canceladas</h2>
+                            <p class="mt-2 text-sm text-gray-500"> <b>{{ $cancelDashboard }}</b> /
+                                {{ $porCancelDashboard }}%</p>
                         </div>
                     </div>
                 </div>
@@ -219,9 +201,7 @@
             <div class="container mx-auto px-4 py-4 bg-white sm:rounded-lg">
                 <div class="mt-12 md:max-w-8xl  xs:max-w-4xl  mx-auto sm:px-6 lg:px-8">
                     <div class="ml-4 py-6 mr-4 uppercase md:text-sm xs:text-xs">
-                        @livewire('medicine.dashboard.calendar',[
-                        'id_dashboard'=>$id_dashboard,
-                        ])
+                        @livewire('medicine.dashboard.calendar',['id_dashboard'=> $id_dashboard])
                     </div>
                 </div>
             </div>

@@ -1,7 +1,7 @@
 <x-app-layout>
-    @can('super_admin.see.dashboard')
+    @canany('super_admin.see.dashboard')
     @include('afac.dashboard.dashboard_superadmin')
-    @endcan
+    @endcanany
     @can('user.see.navigation')
     @livewire('dashboard')
     @endcan

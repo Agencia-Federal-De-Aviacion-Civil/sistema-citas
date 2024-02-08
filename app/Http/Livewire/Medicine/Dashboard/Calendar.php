@@ -16,11 +16,10 @@ class Calendar extends Component
     public function render()
     {
         $queryEvents = MedicineReserve::with('medicineReserveHeadquarter:id,name_headquarter')
-            ->whereIn('status', [0, 1, 4, 10])
-            ->when($this->id_dashboard === 0 || Auth::user()->can('medicine_admin.see.dashboard'), function ($queryEvents) {
+            ->when($this->id_dashboard === 1 || Auth::user()->can('medicine_admin.see.dashboard'), function ($queryEvents) {
                 $queryEvents->where('is_external', false);
             })
-            ->when($this->id_dashboard === 1, function ($queryEvents) {
+            ->when($this->id_dashboard === 0, function ($queryEvents) {
                 $queryEvents->where('is_external', true);
             })
             ->when(Auth::user()->canany(['headquarters.see.dashboard', 'headquarters_authorized.see.dashboard']), function ($queryEvents) {
@@ -35,6 +34,7 @@ class Calendar extends Component
                         $q1->where('user_id', Auth::user()->id);
                     });
             })
+            ->whereIn('status', [0, 1, 4, 10])
             ->get(['id', 'headquarter_id', 'medicine_id', 'dateReserve']);
         $groupedEvents = $queryEvents->groupBy(function ($event) {
             return $event->medicineReserveHeadquarter->name_headquarter . '_' . $event->dateReserve;
