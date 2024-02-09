@@ -97,12 +97,12 @@ class HomeMedicine extends Component
             'extensionClassId' => ''
         ];
         if (!$this->idTypeAppointment) {
-            // $rules['document_pay'] = 'required|mimetypes:application/pdf|max:5000';
-            // $rules['reference_number'] = 'required|unique:medicines';
-            // $rules['pay_date'] = 'required';
-            $rules['document_pay'] = '';
-            $rules['reference_number'] = '';
-            $rules['pay_date'] = '';
+            $rules['document_pay'] = 'required|mimetypes:application/pdf|max:5000';
+            $rules['reference_number'] = 'required|unique:medicines';
+            $rules['pay_date'] = 'required';
+            // $rules['document_pay'] = '';
+            // $rules['reference_number'] = '';
+            // $rules['pay_date'] = '';
         }
         return $rules;
     }
