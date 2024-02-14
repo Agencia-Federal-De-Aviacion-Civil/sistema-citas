@@ -29,7 +29,8 @@ class HistoryMedicieTable extends DataTableComponent
     {
         return [
             Column::make("Id", "id")
-                ->sortable(),
+                ->sortable()
+                ->searchable(),
 
             Column::make("Nombre", "historyUser.name")
                 ->sortable()
@@ -42,10 +43,12 @@ class HistoryMedicieTable extends DataTableComponent
                 ->sortable(),
 
             Column::make("Acción", "action")
-                ->sortable(),
+                ->sortable()
+                ->searchable(),
 
             Column::make("Proceso", "process")
-                ->sortable(),
+                ->sortable()
+                ->searchable(),
             Column::make("Creo", "created_at")
                 ->sortable(),
             Column::make("Actualizo", "updated_at")
