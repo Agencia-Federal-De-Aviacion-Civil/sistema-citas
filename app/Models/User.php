@@ -23,8 +23,9 @@ use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use App\Notifications\MyResetPassword;
 use App\Notifications\MyVerifyEmail;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail, JWTSubject
 {
     use HasApiTokens;
     use HasFactory;
@@ -117,4 +118,12 @@ class User extends Authenticatable implements MustVerifyEmail
     // {
     //     return $this->hasMany(UserHeadquarter::class);
     // }
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
 }
