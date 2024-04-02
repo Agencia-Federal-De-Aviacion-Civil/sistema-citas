@@ -118,6 +118,7 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
     // {
     //     return $this->hasMany(UserHeadquarter::class);
     // }
+    // TODO Funciones para Generar y Retornar el Token Generado
     public function getJWTIdentifier()
     {
         return $this->getKey();

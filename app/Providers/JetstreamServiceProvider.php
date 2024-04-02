@@ -45,7 +45,7 @@ class JetstreamServiceProvider extends ServiceProvider
             }
         });
 
-        // TODO Se Compara la Contraseña Ingresada con la del Usuario
+        // TODO Se Compara la Contraseña Ingresada con la del Usuario (Habilita 2FA)
 
         Fortify::confirmPasswordsUsing(function (User $user, string $password) {
             return Hash::check($password, $user->password);

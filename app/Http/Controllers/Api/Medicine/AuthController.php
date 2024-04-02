@@ -8,10 +8,12 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 
 class AuthController extends Controller
 {
+    // TODO Constructor del JWT
     public function __construct()
     {
         $this->middleware('auth:api', ['except' => ['afac.login', 'login']]);
     }
+    // TODO Funcion para Generar un Token con las Credenciales Ingresadas
     public function login (Request $request)
     {
         $this->validate($request, [

@@ -32,8 +32,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     Route::put('/update-status-extension/{id}', [UsersController::class, 'updateStatusExtension']);
 // });
 
+// TODO EndPoint para Iniciar Sesion (Lo Usa QR)
 Route::post('/login-api', [AuthController::class, 'login']);
 
+// TODO Protección de las Rutas con los Tokens
 Route::middleware('jwt.verify')->group(function () {
     Route::get('/list-users', [UsersController::class, 'list']);
     Route::get('/users-curp', [UsersController::class, 'listCurp']);

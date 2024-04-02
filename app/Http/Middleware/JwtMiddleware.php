@@ -19,6 +19,7 @@ class JwtMiddleware
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
+    // TODO Se Valida el Token Ingresado en la Petición
     public function handle(Request $request, Closure $next): Response
     {
         try {
