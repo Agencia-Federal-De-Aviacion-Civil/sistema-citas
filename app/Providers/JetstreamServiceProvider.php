@@ -44,6 +44,12 @@ class JetstreamServiceProvider extends ServiceProvider
                 return $user;
             }
         });
+
+        // TODO Se Compara la Contraseña Ingresada con la del Usuario
+
+        Fortify::confirmPasswordsUsing(function (User $user, string $password) {
+            return Hash::check($password, $user->password);
+        });
     }
 
     /**
