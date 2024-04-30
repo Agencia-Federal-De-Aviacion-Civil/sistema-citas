@@ -255,7 +255,7 @@
                                                         d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" />
                                                 </svg>
                                             </div>
-                                            <div class="flex-grow pl-4">
+                                            {{-- <div class="flex-grow pl-4">
                                                 <label for="small"
                                                     class="block mb-2 text-base font-medium text-gray-900 dark:text-white">¿SIGUES
                                                     ESTUDIANDO O VAS A ESTUDIAR?</label>
@@ -273,7 +273,7 @@
                                                     <span
                                                         class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
                                                 @enderror
-                                            </div>
+                                            </div> --}}
                                         </div>
                                         {{-- paso3 --}}
                                         <div x-show="tipoExamen === '1' && question === '1' || tipoExamen === '1' && question === '2' || typerevalora==='1'  && question > '0'"
@@ -295,8 +295,8 @@
                                                     <div class="mt-1 relative z-0 w-full group">
                                                         @if (!is_null($questionClassess))
                                                             <label for="small"
-                                                                class="block mb-2 text-base font-medium text-gray-900 dark:text-white">TIPO
-                                                                DE CLASE</label>
+                                                                class="block mb-2 text-base font-medium text-gray-900 dark:text-white">SELECCIONA
+                                                                LA CATEGORIA</label>
                                                             <select id="small" x-ref="clasification"
                                                                 placeholder="seleccione..."
                                                                 wire:model.lazy="type_class_id"
@@ -318,9 +318,8 @@
                                                     <div x-show="question === '1'">
                                                         <div class="mt-1 relative z-0 w-full group">
                                                             <label for="small"
-                                                                class="block mb-2 text-base font-medium text-gray-900 dark:text-white">TIPO
-                                                                DE
-                                                                LICENCIA</label>
+                                                                class="block mb-2 text-base font-medium text-gray-900 dark:text-white">SELECCIONA
+                                                                EL PUESTO</label>
                                                             {{-- TODO --}}
                                                             <select wire:model.lazy="clasification_class_id"
                                                                 x-ref="typelicens"
@@ -341,7 +340,7 @@
                                                     </div>
                                                     <div x-show="question === '2'">
                                                         <div class="mt-4 relative z-auto w-full group">
-                                                            <x-select label="TIPO DE LICENCIA"
+                                                            <x-select label="SELECCIONA EL PUESTO"
                                                                 x-model.lazy="typelicens" placeholder="Seleccione..."
                                                                 :options="$clasificationClass" option-label="name"
                                                                 option-value="id"
@@ -371,8 +370,8 @@
                                                     <div class="mt-1 relative z-0 w-full group">
                                                         @if (!is_null($questionClassess))
                                                             <label for="small"
-                                                                class="block mb-2 text-base font-medium text-gray-900 dark:text-white">TIPO
-                                                                DE CLASE</label>
+                                                                class="block mb-2 text-base font-medium text-gray-900 dark:text-white">SELECCIONE
+                                                                LA CATEGORIA</label>
                                                             <select id="small" x-ref="clasification"
                                                                 placeholder="seleccione..."
                                                                 wire:model.lazy="type_class_id"
@@ -393,7 +392,7 @@
                                                     </div>
                                                     <div>
                                                         <div class="mt-4 relative z-auto w-full group">
-                                                            <x-select label="TIPO DE LICENCIA"
+                                                            <x-select label="SELECCIONE EL PUESTO"
                                                                 x-model.lazy="typelicens" :options="$clasificationClass"
                                                                 placeholder="Seleccione uno o más..."
                                                                 option-label="name" option-value="id"
@@ -540,7 +539,7 @@
                                                     d="M12 10.5v6m3-3H9m4.06-7.19l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
                                             </svg>
                                         </div>
-                                        <div class="flex-grow pl-4">
+                                        {{-- <div class="flex-grow pl-4">
                                             <div class="grid xl:grid-cols-2 xl:gap-6">
                                                 <div class="mt-1 relative z-0 w-full group">
                                                     @if (!is_null($questionClassessExtension))
@@ -588,9 +587,11 @@
                                                     @endif
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                     </div>
-                                    <div x-show="(clasificationExtension > '0' || extensionClass === '0' || ((tipoExamen === '3' || tipoExamen === '4' || tipoExamen === '5') && typelicens > '0'))"
+                                    {{-- <div x-show="(clasificationExtension > '0' || extensionClass === '0' || ((tipoExamen === '3' || tipoExamen === '4' || tipoExamen === '5') && typelicens > '0'))"
+                                        class="flex relative pb-6"> --}}
+                                    <div x-show="(typelicens > 0 )"
                                         class="flex relative pb-6">
                                         <div class="h-full w-10 absolute inset-0 flex items-center justify-center">
                                             <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
