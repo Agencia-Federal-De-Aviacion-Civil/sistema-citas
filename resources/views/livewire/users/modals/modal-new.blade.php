@@ -75,8 +75,38 @@
                 </div>
             </div>
         @endcanany
-        <div x-data="{ open: false }">
+        <div class="grid xl:grid-cols-3 xl:gap-6">
+            <div class="mt-4 relative w-full group">
+                <label class="font-semibold text-blue-800">Status</label>
+                <select wire:model.lazy="userstatus"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <option selected value="">Selecciona...</option>
+                    <option selected value="0">ACTIVO</option>
+                    <option selected value="2">SUSPENDIDO</option>
+                </select>
+            </div>
+        </div>
 
+        @if ($userstatus === '2'||$userstatus === 2)
+            <div class="grid xl:grid-cols-2 xl:gap-4 grid-cols-1 py-2 space-x-4">
+                <div class="flex flex-col">
+                    <div class="mt-1 relative z-auto w-full group">
+                        <x-datetime-picker wire:model.lazy="start_date" label="FECHA DE INICIAL" without-time="false"
+                            placeholder="INGRESAR..." display-format="DD-MM-YYYY" />
+                    </div>
+                </div>
+
+                <div class="flex flex-col">
+                    <x-datetime-picker wire:model.lazy="end_date"  label="FECHA DE FINAL" without-time="false"
+                        placeholder="INGRESAR..." display-format="DD-MM-YYYY" />
+                </div>
+            </div>
+            <div class="py-4">
+                <x-textarea wire:model="reason" label="MOTIVO" placeholder="ESCRIBE..." class="uppercase" />
+            </div>
+        @endif
+        {{-- </div> --}}
+        <div x-data="{ open: false }">
             <div class="mt-6 text-center">
                 <x-button x-on:click="open = ! open" label="DATOS" silver icon="document" />
             </div>

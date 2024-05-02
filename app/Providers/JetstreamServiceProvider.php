@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Validation\ValidationException;
 use Laravel\Fortify\Fortify;
 use Laravel\Jetstream\Jetstream;
 
@@ -36,12 +37,15 @@ class JetstreamServiceProvider extends ServiceProvider
             $user = User::with('userParticipant')->where('email', $request->login)
                 ->OrwhereHas('userParticipant', function ($q) use ($request) {
                     $q->where('curp', $request->login);
-                })->first();
-            if (
-                $user &&
-                Hash::check($request->password, $user->password)
-            ) {
-                return $user;
+                })->where('status', 0)->first();
+            if ($user && $user->status === 0) {
+                if (Hash::check($request->password, $user->password)) {
+                    return $user;
+                }
+            } else {
+                throw ValidationException::withMessages([
+                    Fortify::username() => "Cuenta inactiva.",
+                ]);
             }
         });
     }
