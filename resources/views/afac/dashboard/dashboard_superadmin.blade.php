@@ -28,6 +28,7 @@
                                         <p class="font-semibold text-base mb-2">Total de citas</p>
                                         <div class="flex space-x-2">
                                             <p>{{ $registradas }}</p>
+
                                         </div>
                                     </div>
                                     <div class="my-2">
@@ -92,14 +93,18 @@
                     </ul>
                     <div class="mt-6">
                         <div x-show="activeTab === 'headquarters'">
-                            {{-- @if ($typeappoiment === 1) --}}
-                            @livewire('medicine.medicine-afac.home-medicine-afac')
-                            {{-- @endif --}}
+                            @livewire('medicine.dashboard.dashboard-main', [
+                            'id_dashboard' => 0,
+                            'date1' => $date1,
+                            'date2' => $date2,
+                            ])
                         </div>
                         <div x-show="activeTab === 'schedules'">
-                            {{-- @if ($typeappoiment === 2) --}}
-                            {{-- @livewire('medicine.authorized-third.home-super-medicine-authorized-third') --}}
-                            {{-- @endif --}}
+                            @livewire('medicine.dashboard.dashboard-main', [
+                            'id_dashboard' => 1,
+                            'date1' => $date1,
+                            'date2' => $date2,
+                            ])
                         </div>
                     </div>
                 </div>

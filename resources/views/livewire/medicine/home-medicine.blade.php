@@ -66,7 +66,7 @@
                                 <div class="flex flex-wrap w-full">
                                     <div class="lg:w-full md:w-full md:pr-10 md:py-6">
                                         @if ($idTypeAppointment == 0)
-                                            {{-- <div class="flex relative pb-6">
+                                            <div class="flex relative pb-6">
                                                 <div
                                                     class="h-full w-10 absolute inset-0 flex items-center justify-center">
                                                     <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
@@ -119,12 +119,12 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div> --}}
+                                            </div>
                                         @endif
                                         {{-- paso1 --}}
                                         {{-- <div x-show="fileName != '' && typeappointment==0||typeappointment==1||typeappointment==2"
                                             class="flex relative pb-6"> --}}
-                                        <div x-show="typeappointment==0||typeappointment==1||typeappointment==2"
+                                        <div x-show="fileName != '' && typeappointment==0||typeappointment==1||typeappointment==2"
                                             class="flex relative pb-6">
                                             <div class="h-full w-10 absolute inset-0 flex items-center justify-center">
                                                 <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
@@ -187,8 +187,9 @@
                                                 </div>
                                                 <label for="file-input" class="sr-only">Adjunta el
                                                     documento</label>
-                                                <input type="file" wire:model="document_authorization" x-ref="file2"
-                                                    accept=".pdf" @change="filereval = $refs.file2.files[0].name"
+                                                <input type="file" wire:model="document_authorization"
+                                                    x-ref="file2" accept=".pdf"
+                                                    @change="filereval = $refs.file2.files[0].name"
                                                     class="block w-full border border-gray-200 shadow-sm rounded-md text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 file:bg-transparent file:border-0 file:bg-gray-100 file:mr-4 file:py-2.5 file:px-4 dark:file:bg-gray-700 dark:file:text-gray-400">
                                                 <div class="float-left">
                                                     <div wire:loading wire:target="document_authorization">
@@ -207,7 +208,8 @@
                                             </div>
                                         </div>
                                         {{-- paso revaloración y flexibilidad --}}
-                                        <div x-show="tipoExamen === '3'  && filereval != ''" class="flex relative pb-6">
+                                        <div x-show="tipoExamen === '3'  && filereval != ''"
+                                            class="flex relative pb-6">
                                             <div class="h-full w-10 absolute inset-0 flex items-center justify-center">
                                                 <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
                                             </div>
@@ -744,8 +746,8 @@
         });
         // CITAS MEDICAS
         window.addEventListener('headquartersUpdated', event => {
-            dateMin = event.detail.dateMin;
-            dateMax = event.detail.dateMax;
+            // dateMin = event.detail.dateMin;
+            // dateMax = event.detail.dateMax;
             flatpickr("#fecha-appointment", {
                 // enableTime: true,
                 // time_24hr: true,
@@ -754,10 +756,10 @@
                 // maxTime: "10:59",
                 disableMobile: "true",
                 // minuteIncrement: 10,
-                //minDate: "today",
-                //maxDate: new Date(new Date().getFullYear(), 11, 31),
-                minDate: dateMin,
-                maxDate: dateMax,
+                minDate: "today",
+                maxDate: new Date(new Date().getFullYear(), 11, 31),
+                //minDate: dateMin,
+                //maxDate: dateMax,
                 disable: event.detail.disabledDaysFilter,
                 onDayCreate: function(dObj, dStr, fp, dayElem) {
                     /* if (dayElem.dateObj.getDay() === 0 || dayElem.dateObj.getDay() === 6 || dayElem

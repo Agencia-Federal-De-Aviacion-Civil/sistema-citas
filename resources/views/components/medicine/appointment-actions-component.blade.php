@@ -56,7 +56,7 @@
             <x-badge flat negative label="CANCELADA" />
         @endhasrole
     @elseif($status == 4)
-        @hasrole('sub_headquarters|super_admin|medicine_admin|super_admin_medicine|admin_medicine_v2|headquarters')
+        @hasrole('sub_headquarters|super_admin|medicine_admin|super_admin_medicine|admin_medicine_v2|headquarters|headquarters_authorized')
             <x-button
                 wire:click="$emit('openModal', 'medicine.modals.schedule', {{ json_encode(['scheduleId' => $scheduleId, 'medicineId' => $medicineId]) }})"
                 label="REAGENDADA" xs warning />
@@ -101,7 +101,7 @@
             @endif
         @endhasrole
     @elseif($status == 10)
-        @hasrole('sub_headquarters|super_admin|medicine_admin|super_admin_medicine|admin_medicine_v2')
+        @hasrole('sub_headquarters|super_admin|medicine_admin|super_admin_medicine|admin_medicine_v2|headquarters_authorized')
             <x-button
                 wire:click="$emit('openModal', 'medicine.modals.schedule', {{ json_encode(['scheduleId' => $scheduleId, 'medicineId' => $medicineId]) }})"
                 label="USUARIO REAGENDO" xs warning />
@@ -119,5 +119,11 @@
         <x-badge flat positive label="CONCLUYÓ APTO" />
     @elseif($status == 9)
         <x-badge flat negative label="CONCLUYÓ NO APTO" />
+    @elseif($status == 11)
+        @hasrole('super_admin|super_admin_medicine')
+        <x-button wire:click="$emit('openModal', 'medicine.modals.release-share-modal', {{ json_encode(['scheduleId' => $scheduleId, 'medicineId' => $medicineId]) }})" xs sky label="LIBERAR ACCIONES" />
+        @else
+            <x-badge flat negative label="PENDIENTE" />
+        @endhasrole
     @endif
 </div>

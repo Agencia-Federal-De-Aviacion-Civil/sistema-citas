@@ -2,25 +2,39 @@
     <div class="bg-gray-100 text-gray-500 rounded shadow-xl py-5 px-5 w-full sm:w-full md:w-full lg:w-full">
         <div class="flex w-full">
             <h3 class="text-lg font-semibold leading-tight flex-1">TOTAL DE CITAS MEDICINA DE
-                AVIACIÓN {{$nameHeadquarter_third }}</h3>
+                AVIACIÓN {{ $id_dashboard == 0 ? 'AFAC' : ($id_dashboard == 1 ||
+                Auth::user()->can('headquarters_authorized.see.dashboard') ? 'TERCEROS' : '') }}</h3>
         </div>
-        <div class="relative overflow-hidden transition-all duration-500">
+        <div class="relative overflow-hidden transition-all duration-500" x-ref="card"
+            x-bind:style="`max-height:${cardOpen?$refs.card.scrollHeight:0}px; opacity:${cardOpen?1:0}`">
             <div>
                 <div class="pb-4 lg:pb-6">
-                    <h4 class="text-2xl lg:text-3xl text-black font-semibold leading-tight inline-block" x-ref="totalext">
-                        {{ $registradas_third }}</h4>
+                    <h4 class="text-2xl lg:text-3xl text-black font-semibold leading-tight inline-block" x-ref="total">
+                        {{number_format($registerCount) }}</h4>
                 </div>
                 <div class="pb-4 lg:pb-6">
                     <div class="relative pt-1 mx-5">
                         <div class="overflow-hidden h-3 mb-4 text-xs flex rounded bg-gray-500">
-                          <div style="width: {{$porconfir_third}}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-800"></div>
-                          <div style="width: {{$porreagendado_third}}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-500"></div>
-                          <div style="width: {{$porapto_third}}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-green-500"></div>
-                          <div style="width: {{$pornoapto_third}}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500"></div>
-                          <div style="width: {{$poraplazada_third}}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-purple-500"></div>
-                          <div style="width: {{$porcanceladas_third}}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-orange-500"></div>
+                            <div style="width: {{ $porConfirDashboard }} %"
+                                class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-800">
+                            </div>
+                            <div style="width: {{ $porReagDashboard }}%"
+                                class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-500">
+                            </div>
+                            <div style="width: {{ $porApto }}%"
+                                class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-green-500">
+                            </div>
+                            <div style="width: {{ $porNoApto }}%"
+                                class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500">
+                            </div>
+                            <div style="width: {{ $porAplazada }}%"
+                                class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-purple-500">
+                            </div>
+                            <div style="width: {{ $porCancelDashboard }}%"
+                                class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-orange-500">
+                            </div>
                         </div>
-                      </div>
+                    </div>
                 </div>
                 <div class="-mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-7 xl:grid-cols-7">
                     <div class="flex items-start p-2">
@@ -28,10 +42,11 @@
                             class="flex h-8 w-8 items-center justify-center rounded-full border border-gray-100 bg-gray-50">
                             <span href="#blue" class="block w-3 h-3 bg-gray-500 rounded-full"></span>
                         </div>
-
                         <div class="ml-4">
-                            <h3 class="font-semibold text-sm">Pendientes</h3>
-                            <p class="mt-2 text-sm text-gray-500"><b>{{ $pendientes_third }}</b> / {{ $porpendientes_third }}%</p>
+                            <h2 class="font-semibold text-sm">Pendientes</h2>
+                            <p class="mt-2 text-sm text-gray-500"><b>{{ $penDashboard }}</b> /
+                                {{ $porPenDashboard }}%
+                            </p>
                         </div>
                     </div>
                     <div class="flex items-start p-2">
@@ -39,10 +54,9 @@
                             class="flex h-8 w-8 items-center justify-center rounded-full border border-blue-100 bg-blue-50">
                             <span href="#blue" class="block w-3 h-3 bg-blue-800 rounded-full"></span>
                         </div>
-
                         <div class="ml-4">
-                            <h3 class="font-semibold">Asistió</h3>
-                            <p class="mt-2 text-sm text-gray-500"><b>{{ $validado_third }}</b> / {{ $porconfir_third }}%</p>
+                            <h3 class="font-semibold text-sm">Asistió {{ $validateDashboard }}</h3>
+                            <p class="mt-2 text-sm text-gray-500">{{ $porConfirDashboard }}%</p>
                         </div>
                     </div>
 
@@ -53,19 +67,21 @@
                         </div>
                         <div class="ml-4">
                             <h2 class="font-semibold text-sm">Reagendadas</h2>
-                            <p class="mt-2 text-sm text-gray-500"><b>{{ $reagendado_third }}</b> / {{ $porreagendado_third }}%</p>
+                            <p class="mt-2 text-sm text-gray-500"><b>{{ $reagDashboard }}</b> /
+                                {{ $porReagDashboard }}%
+                            </p>
                         </div>
                     </div>
-                    
                     <div class="flex items-start p-2">
                         <div
                             class="flex h-8 w-8 items-center justify-center rounded-full border border-green-100 bg-green-50">
                             <span href="#blue" class="block w-3 h-3 bg-green-500 rounded-full"></span>
                         </div>
-
                         <div class="ml-4">
                             <h2 class="font-semibold text-sm">Apto</h2>
-                            <p class="mt-2 text-sm text-gray-500"><b>{{ $apto_third}}</b> / {{ $porapto_third }}%</p>
+                            <p class="mt-2 text-sm text-gray-500"><b>{{ $apto }}</b> /
+                                {{ $porApto }}%
+                            </p>
                         </div>
                     </div>
                     <div class="flex items-start p-2">
@@ -76,7 +92,9 @@
 
                         <div class="ml-4">
                             <h2 class="font-semibold text-sm">No Apto</h2>
-                            <p class="mt-2 text-sm text-gray-500"><b>{{ $noapto_third }}</b> / {{ $pornoapto_third }}%</p>
+                            <p class="mt-2 text-sm text-gray-500"><b>{{ $noApto }}</b> /
+                                {{ $porNoApto }}%
+                            </p>
                         </div>
                     </div>
                     <div class="flex items-start p-2">
@@ -87,7 +105,8 @@
 
                         <div class="ml-4">
                             <h2 class="font-semibold text-sm">Aplazadas</h2>
-                            <p class="mt-2 text-sm text-gray-500"> <b>{{ $aplazadas_third }}</b> / {{ $poraplazada_third }}%</p>
+                            <p class="mt-2 text-sm text-gray-500"> <b>{{ $aplazadas }}</b> /
+                                {{ $porAplazada }}%</p>
                         </div>
                     </div>
                     <div class="flex items-start p-2">
@@ -95,10 +114,10 @@
                             class="flex h-8 w-8 items-center justify-center rounded-full border border-orange-100 bg-orange-50">
                             <span href="#blue" class="block w-3 h-3 bg-orange-500 rounded-full"></span>
                         </div>
-
                         <div class="ml-4">
                             <h2 class="font-semibold text-sm">Canceladas</h2>
-                            <p class="mt-2 text-sm text-gray-500"> <b>{{ $canceladas_third }}</b> / {{ $porcanceladas_third }}%</p>
+                            <p class="mt-2 text-sm text-gray-500"> <b>{{ $cancelDashboard }}</b> /
+                                {{ $porCancelDashboard }}%</p>
                         </div>
                     </div>
                 </div>
@@ -120,12 +139,11 @@
                                     </svg>
                                 </div>
                                 <div class="ml-4">
-                                    <h2 class="font-semibold">{{ $now_third }} Citas</h2>
-                                    <p class="mt-2 text-sm text-gray-500">hoy {{ $date2_third }}
+                                    <h2 class="font-semibold">{{ $nowDate }} Citas</h2>
+                                    <p class="mt-2 text-sm text-gray-500">hoy {{ $date2 }}
                                     </p>
                                 </div>
                             </div>
-                            {{-- </div> --}}
                         </div>
                     </div>
                     <div class="block w-full overflow-x-auto">
@@ -143,54 +161,35 @@
                                         class="px-4 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-100 align-middle border border-solid border-gray-200 dark:border-gray-500 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                                         Citas para mañana
                                     </th>
-                                    {{-- <th
+                                    <th
                                         class="px-4 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-100 align-middle border border-solid border-gray-200 dark:border-gray-500 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                                         total de citas
                                     </th>
                                     <th
                                         class="px-4 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-100 align-middle border border-solid border-gray-200 dark:border-gray-500 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left min-w-140-px">
-                                    </th> --}}
+                                    </th>
                                 </tr>
                             </thead>
-                            {{-- {{$headquarters}} --}}
                             <tbody>
-                                @foreach ($headquarters_third as $headquarter_third)
-                                    <tr class="text-gray-700 dark:text-gray-100">
-                                        <th
-                                            class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                            {{ $headquarter_third->name_headquarter }}
-                                            @unless ($headquarter_third->is_external == 0)
-                                                <span
-                                                    class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">TERCEROS</span>
-                                            @endunless
-                                        </th>
-                                        <td
-                                            class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            {{ $headquarter_third->headquarterMedicineReserve->where('dateReserve', $date1_third)->whereIn('status', ['0', '1', '4', '10', '8', '9', '7'])->count() }}
-                                        </td>
-                                        <td
-                                            class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            {{ $headquarter_third->headquarterMedicineReserve->where('dateReserve', $tomorrow_third)->whereIn('status', ['0', '1', '4', '10', '8', '9', '7'])->count() }}
-                                        </td>
-                                        {{-- <td
-                                            class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            {{ $headquarter_third->headquarterMedicineReserve->count() }}
-                                        </td> --}}
-                                        {{-- <td
-                                            class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            <div class="flex items-center">
-                                                <span
-                                                    class="mr-2">{{ $headquarter_third->headquarterMedicineReserve->count() > 0 ? round(($headquarter_third->headquarterMedicineReserve->count() * 100) / $registradas_third, 1) : '0'  }}%</span>
-                                                <div class="relative w-full">
-                                                    <div class="overflow-hidden h-2 text-xs flex rounded bg-blue-200">
-                                                        <div style="width:{{ $headquarter_third->headquarterMedicineReserve->count() > 0 ? ($headquarter_third->headquarterMedicineReserve->count() * 100) / $registradas_third : '0'  }}%"
-                                                            class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-600">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td> --}}
-                                    </tr>
+                                @foreach ($headquarterQueries as $headquarterQuery)
+                                <tr class="text-gray-700 dark:text-gray-100">
+                                    <th
+                                        class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                        {{ $headquarterQuery->name_headquarter}}</th>
+                                    <td
+                                        class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                                        {{ $headquarterQuery->countNow }}
+                                    </td>
+                                    <td
+                                        class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                                        {{ $headquarterQuery->countTomorrow }}
+                                    </td>
+                                    <td
+                                        class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                                        {{number_format($headquarterQuery->countTotal)}}
+
+                                    </td>
+                                </tr>
                                 @endforeach
                             </tbody>
                         </table>
@@ -198,12 +197,16 @@
                 </div>
             </div>
         </div>
-       
         <div class="py-12">
             <div class="container mx-auto px-4 py-4 bg-white sm:rounded-lg">
-                <div class="mt-12 max-w-full mx-auto sm:px-6 lg:px-8">
+                <div class="mt-12 md:max-w-8xl  xs:max-w-4xl  mx-auto sm:px-6 lg:px-8">
                     <div class="ml-4 py-6 mr-4 uppercase md:text-sm xs:text-xs">
-                        @livewire('medicine.authorized-third.calendar', key('medicine.authorized-third.calendar-'))
+                        @if ($id_dashboard === 0 ||
+                        Auth::user()->canany(['medicine_admin.see.dashboard','headquarters.see.dashboard','sub_headquarters.see.dashboard']))
+                        @livewire('medicine.dashboard.calendar-afac')
+                        @else
+                        @livewire('medicine.dashboard.calendar-third')
+                        @endif
                     </div>
                 </div>
             </div>

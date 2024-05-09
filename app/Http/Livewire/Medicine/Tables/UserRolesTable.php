@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Medicine\Tables;
 use App\Exports\UserExport;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
+use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 use App\Models\Medicine\MedicineReserve;
 use App\Models\User;
 use Carbon\Carbon;
@@ -40,7 +41,7 @@ class UserRolesTable extends DataTableComponent
     }
     public function columns(): array
     {
-        if (Auth::user()->canany(['super_admin.see.tabs.navigation','see.accion.user.table'])) {
+        if (Auth::user()->canany(['super_admin.see.tabs.navigation', 'see.accion.user.table'])) {
             return [
                 Column::make("Id", "id")
                     ->sortable(),
@@ -125,17 +126,15 @@ class UserRolesTable extends DataTableComponent
                     ->sortable()
                     ->searchable(),
 
-                Column::make('ROL')
-                    ->sortable()
-                    ->label(fn ($row) => view(
-                        'afac.tables.appointmentTable.actions.user-roles',
-                        [
-                            $rol = User::with(
-                                'roles'
-                            )->where('id', $row->id)->get(),
-                            'rol' => $rol,
-                        ]
-                    )),
+                Column::make('ESTATUS', 'status')
+                    ->format(
+                        fn ($status) => view(
+                            'components.user.action-user',
+                            [
+                                'status' => $status
+                            ]
+                        )
+                    ),
 
                 Column::make('CREADO', 'UserPart.created_at')
                     ->sortable()
@@ -148,7 +147,7 @@ class UserRolesTable extends DataTableComponent
                     ->searchable()
                     ->format(fn ($value) => Carbon::parse($value)->format('d/m/Y H:i:s')),
 
-                Column::make("ACCIÓN",'id')
+                Column::make("ACCIÓN", 'id')
                     ->format(
                         fn ($value) => view(
                             'components.privileges-component',
@@ -249,7 +248,7 @@ class UserRolesTable extends DataTableComponent
     {
         return
             User::query()->with(['roles', 'UserPart'])
-            ->where('status', 0)
+            ->whereIn('status', [0, 2])
             ->where('users.id', '<>', 1);
     }
     public function exportSelected()
@@ -261,5 +260,19 @@ class UserRolesTable extends DataTableComponent
 
             return Excel::download(new UserExport($result), 'useroles.xlsx');
         }
+    }
+    public function filters(): array
+    {
+        return [
+            SelectFilter::make('STATUS')
+                ->options([
+                    '' => 'TODOS',
+                    '0' => 'ACTIVO',
+                    '2' => 'SUSPENDIDO'
+                ])
+                ->filter(function ($query, $value) {
+                    $query->where('status', $value);
+                }),
+        ];
     }
 }

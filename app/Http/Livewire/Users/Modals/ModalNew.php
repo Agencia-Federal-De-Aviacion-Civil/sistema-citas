@@ -11,6 +11,7 @@ use App\Models\Medicine\medicine_history_movements;
 use App\Models\UserHeadquarter;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Hash;
+use App\Models\InactiveUser;
 use Illuminate\Validation\Rule;
 use Livewire\WithFileUploads;
 use LivewireUI\Modal\ModalComponent;
@@ -25,7 +26,7 @@ class ModalNew extends ModalComponent
     public $roles, $modal, $id_save, $id_update, $name, $email, $apParental, $apMaternal, $state_id, $municipal_id, $password, $passwordConfirmation, $privileges, $privilegesId, $title, $email_verified, $dateNow,
         $genre, $birth, $age, $street, $nInterior, $nExterior, $suburb, $postalCode, $federalEntity, $delegation, $mobilePhone, $officePhone, $extension, $curp, $states, $municipals, $municipio, $select, $user_headquarter_id,
         $headquarter_id;
-    public $headquarters, $userPrivileges, $isVerified;
+    public $headquarters, $userPrivileges, $isVerified, $userstatus, $reason,$inactiveusers,$start_date,$end_date,$updatestatus;
     public function rules()
     {
         $rules =  [
@@ -48,6 +49,7 @@ class ModalNew extends ModalComponent
         if (isset($privilegesId)) {
             $this->privilegesId = $privilegesId;
             $this->userPrivileges = User::with('roles', 'UserParticipant.userParticipantUserHeadquarter')->where('id', $this->privilegesId)->get();
+            $this->inactiveusers = InactiveUser::where('user_id', $this->userPrivileges[0]->id)->get();
             $this->isVerified = $this->userPrivileges[0]->email_verified_at !== null;
             $this->id_save = $this->userPrivileges[0]->id;
             $this->id_update = isset($this->userPrivileges[0]->UserParticipant[0]->id) ? $this->userPrivileges[0]->UserParticipant[0]->id : '';
@@ -75,6 +77,11 @@ class ModalNew extends ModalComponent
             $this->mobilePhone = isset($this->userPrivileges[0]->UserParticipant[0]->mobilePhone) ? $this->userPrivileges[0]->UserParticipant[0]->mobilePhone : '';
             $this->officePhone = isset($this->userPrivileges[0]->UserParticipant[0]->officePhone) ? $this->userPrivileges[0]->UserParticipant[0]->officePhone : '';
             $this->extension = isset($this->userPrivileges[0]->UserParticipant[0]->extension) ? $this->userPrivileges[0]->UserParticipant[0]->extension : '';
+            $this->userstatus = $this->userPrivileges[0]->status;
+            $this->updatestatus = isset($this->inactiveusers[0]->id) ? $this->inactiveusers[0]->id:'' ;
+            $this->start_date = isset($this->inactiveusers[0]->start_date) ? $this->inactiveusers[0]->start_date:'';
+            $this->end_date = isset($this->inactiveusers[0]->end_date) ? $this->inactiveusers[0]->end_date:'' ;
+            $this->reason = isset($this->inactiveusers[0]->observation) ? $this->inactiveusers[0]->observation:'';
         } else {
             $this->privilegesId = null;
         }
@@ -104,12 +111,12 @@ class ModalNew extends ModalComponent
 
     public function updatedprivileges($name)
     {
-        if ($name == 'headquarters_authorized'){
+        if ($name == 'headquarters_authorized') {
             $this->headquarters = Headquarter::where('is_external', true)
-            ->where('system_id', 1)->get();
-        }else{
+                ->where('system_id', 1)->get();
+        } else {
             $this->headquarters = Headquarter::where('is_external', false)
-            ->where('system_id', 1)->get();
+                ->where('system_id', 1)->get();
         }
     }
     public static function modalMaxWidth(): string
@@ -139,6 +146,7 @@ class ModalNew extends ModalComponent
             $userData = [
                 'name' => $this->name,
                 'email' => $this->email,
+                'status' => $this->userstatus,
             ];
             if (!$this->privilegesId || $this->password != '') {
                 $userData['password'] = Hash::make($this->password);
@@ -171,12 +179,30 @@ class ModalNew extends ModalComponent
                     'curp' => $this->curp,
                 ]
             );
-            if ($this->privileges === 'headquarters' || $this->privileges === 'sub_headquarters'|| $this->privileges === 'headquarters_authorized') {
+            if ($this->privileges === 'headquarters' || $this->privileges === 'sub_headquarters' || $this->privileges === 'headquarters_authorized') {
                 UserHeadquarter::updateOrCreate(
                     ['id' => $this->user_headquarter_id],
                     [
                         'headquarter_id' => $this->headquarter_id,
                         'user_participant_id' => $user_participants->id
+                    ]
+                );
+            }
+            //función para inhabilitar
+            if ($this->userstatus == '2') {
+                //dd('entra');
+                $validatedData = $this->validate([
+                    'start_date' => 'required',
+                    'end_date' => 'required',
+                    'reason' => 'required',
+                ]);
+                InactiveUser::updateOrCreate(
+                    ['id' => $this->updatestatus],
+                    [
+                        'user_id' => $this->id_save,
+                        'start_date' => $this->start_date,
+                        'end_date' => $this->end_date,
+                        'observation' => $this->reason,
                     ]
                 );
             }
@@ -186,6 +212,7 @@ class ModalNew extends ModalComponent
                 'timeout' => '3100'
             ]);
             $this->emit('privilegesUser');
+            
         } catch (\Exception $e) {
             $this->dialog([
                 'title'       => $e->getMessage(),
@@ -208,6 +235,9 @@ class ModalNew extends ModalComponent
             'password.required' => 'Campo obligatorio',
             'password.min' => 'Minímo 8 carácteres',
             'password.same' => 'Las contraseñas no coinciden',
+            'start_date.required' => 'Campo obligatorio',
+            'end_date.required' => 'Campo obligatorio',
+            'reason.required' => 'Campo obligatorio',
         ];
     }
 }

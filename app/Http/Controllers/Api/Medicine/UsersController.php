@@ -9,6 +9,7 @@ use App\Models\Medicine\CertificateQr\MedicineCertificateQr;
 use App\Models\Medicine\MedicineReserve;
 use App\Models\Medicine\MedicineReservesExtension;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use PhpParser\Node\Stmt\TryCatch;
 
@@ -120,6 +121,7 @@ class UsersController extends Controller
             'medicineReserveFromUser.UserParticipant:id,user_id,apParental,apMaternal,age,curp'
         )
             ->whereIn('status', [1, 8, 9])
+            ->whereYear('dateReserve', Carbon::now()->year)
             ->whereHas('medicineReserveFromUser.UserParticipant', function ($query) use ($curp) {
                 $query->where('curp', $curp);
             })

@@ -50,6 +50,7 @@ class AppointmentThirdTable extends DataTableComponent
                 'postponeReserve' => '$refresh',
                 'cancelReserve' => '$refresh',
                 'attendeReserve' => '$refresh',
+                'updateReleaseShare' => '$refresh',
                 'reserveAppointment' => '$refresh',
                 'addExtension' => '$refresh'
             ]
@@ -361,7 +362,8 @@ class AppointmentThirdTable extends DataTableComponent
                         '7' => 'EXPIRO',
                         '8' => 'CONCLUYÓ APTO',
                         '9' => 'CONCLUYÓ NO APTO',
-                        '10' => 'REAGENDO'
+                        '10' => 'REAGENDO',
+                        '11' => 'ACCIONES EXPIRADAS'
 
                     ])
                     ->filter(function ($query, $value) {
@@ -442,7 +444,8 @@ class AppointmentThirdTable extends DataTableComponent
                         '7' => 'EXPIRO',
                         '8' => 'CONCLUYÓ APTO',
                         '9' => 'CONCLUYÓ NO APTO',
-                        '10' => 'REAGENDO'
+                        '10' => 'REAGENDO',
+                        '11' => 'ACCIONES EXPIRADAS'
                     ])
                     ->filter(function ($query, $value) {
                         $query->where('medicine_reserves.status', $value);
