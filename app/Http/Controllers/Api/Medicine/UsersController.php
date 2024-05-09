@@ -88,7 +88,7 @@ class UsersController extends Controller
             'reserveObserv'
         )
             ->whereHas('medicineReserveHeadquarter', function ($q) use ($id) {
-                $q->where('name', $id);
+                $q->where('id', $id);
             })
             ->whereIn('status', [1])
             ->where('is_external', 1)
