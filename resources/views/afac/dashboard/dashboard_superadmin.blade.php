@@ -4,7 +4,7 @@
     <div>
         <div class="py-12">
             <div class="container mx-auto px-4 py-4 bg-white shadow-xl sm:rounded-lg">
-                @hasrole(['super_admin_medicine'])
+                @hasrole('super_admin')
                     <div class="bg-gray-100 text-gray-500 rounded shadow-xl py-5 px-4 w-full sm:w-full md:w-full lg:w-full">
                         <h2 class="mb-4 text-2xl font-bold">TOTAL DE CITAS {{ $registradas }}</h2>
                         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4">
