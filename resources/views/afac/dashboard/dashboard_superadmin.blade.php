@@ -4,76 +4,78 @@
     <div>
         <div class="py-12">
             <div class="container mx-auto px-4 py-4 bg-white shadow-xl sm:rounded-lg">
-                <div class="bg-gray-100 text-gray-500 rounded shadow-xl py-5 px-4 w-full sm:w-full md:w-full lg:w-full">
-                    <h2 class="mb-4 text-2xl font-bold">TOTAL DE CITAS {{ $registradas }}</h2>
-                    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4">
-                        <!-- 1 card -->
-                        <div class="relative bg-white py-6 px-6 rounded-3xl w-64 my-4 shadow-xl">
-                            <div
-                                class=" text-white flex items-center absolute rounded-full py-4 px-4 shadow-xl bg-blue-500 left-4 -top-6">
-                                <!-- svg  -->
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
-                                </svg>
-                            </div>
-                            <div class="mt-8">
-                                <p class="text-xl font-semibold my-2">Citas Medicina</p>
+                @hasrole(['super_admin_medicine'])
+                    <div class="bg-gray-100 text-gray-500 rounded shadow-xl py-5 px-4 w-full sm:w-full md:w-full lg:w-full">
+                        <h2 class="mb-4 text-2xl font-bold">TOTAL DE CITAS {{ $registradas }}</h2>
+                        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4">
+                            <!-- 1 card -->
+                            <div class="relative bg-white py-6 px-6 rounded-3xl w-64 my-4 shadow-xl">
+                                <div
+                                    class=" text-white flex items-center absolute rounded-full py-4 px-4 shadow-xl bg-blue-500 left-4 -top-6">
+                                    <!-- svg  -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
+                                    </svg>
+                                </div>
+                                <div class="mt-8">
+                                    <p class="text-xl font-semibold my-2">Citas Medicina</p>
 
-                                <div class="border-t-2"></div>
+                                    <div class="border-t-2"></div>
 
-                                <div class="flex justify-between">
-                                    <div class="my-2">
-                                        <p class="font-semibold text-base mb-2">Total de citas</p>
-                                        <div class="flex space-x-2">
-                                            <p>{{ $registradas }}</p>
+                                    <div class="flex justify-between">
+                                        <div class="my-2">
+                                            <p class="font-semibold text-base mb-2">Total de citas</p>
+                                            <div class="flex space-x-2">
+                                                <p>{{ $registradas }}</p>
 
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="my-2">
-                                        <p class="font-semibold text-base mb-2">Progress</p>
-                                        <div class="text-base text-gray-400 font-semibold">
-                                            <p>{{ $medicine }}%</p>
+                                        <div class="my-2">
+                                            <p class="font-semibold text-base mb-2">Progress</p>
+                                            <div class="text-base text-gray-400 font-semibold">
+                                                <p>{{ $medicine }}%</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- 2 card -->
-                        <div class="relative bg-white py-6 px-6 rounded-3xl w-64 my-4 shadow-xl">
-                            <div
-                                class=" text-white flex items-center absolute rounded-full py-4 px-4 shadow-xl bg-sky-600 left-4 -top-6">
-                                <!-- svg  -->
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
-                                </svg>
-                            </div>
-                            <div class="mt-8">
-                                <p class="text-xl font-semibold my-2">Citas Lingüistica</p>
-                                <div class="border-t-2 "></div>
+                            <!-- 2 card -->
+                            <div class="relative bg-white py-6 px-6 rounded-3xl w-64 my-4 shadow-xl">
+                                <div
+                                    class=" text-white flex items-center absolute rounded-full py-4 px-4 shadow-xl bg-sky-600 left-4 -top-6">
+                                    <!-- svg  -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
+                                    </svg>
+                                </div>
+                                <div class="mt-8">
+                                    <p class="text-xl font-semibold my-2">Citas Lingüistica</p>
+                                    <div class="border-t-2 "></div>
 
-                                <div class="flex justify-between">
-                                    <div class="my-2">
-                                        <p class="font-semibold text-base mb-2">Total de citas</p>
+                                    <div class="flex justify-between">
+                                        <div class="my-2">
+                                            <p class="font-semibold text-base mb-2">Total de citas</p>
 
-                                        <p>0</p>
+                                            <p>0</p>
 
-                                    </div>
-                                    <div class="my-2">
-                                        <p class="font-semibold text-base mb-2">Progress</p>
-                                        <div class="text-base text-gray-400 font-semibold">
-                                            <p>0%</p>
+                                        </div>
+                                        <div class="my-2">
+                                            <p class="font-semibold text-base mb-2">Progress</p>
+                                            <div class="text-base text-gray-400 font-semibold">
+                                                <p>0%</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                @endhasrole
                 <div class="py-6" x-data="{ activeTab: 'headquarters' }">
                     <ul class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 ">
                         <li class="mr-2">
@@ -94,16 +96,16 @@
                     <div class="mt-6">
                         <div x-show="activeTab === 'headquarters'">
                             @livewire('medicine.dashboard.dashboard-main', [
-                            'id_dashboard' => 0,
-                            'date1' => $date1,
-                            'date2' => $date2,
+                                'id_dashboard' => 0,
+                                'date1' => $date1,
+                                'date2' => $date2,
                             ])
                         </div>
                         <div x-show="activeTab === 'schedules'">
                             @livewire('medicine.dashboard.dashboard-main', [
-                            'id_dashboard' => 1,
-                            'date1' => $date1,
-                            'date2' => $date2,
+                                'id_dashboard' => 1,
+                                'date1' => $date1,
+                                'date2' => $date2,
                             ])
                         </div>
                     </div>
