@@ -3,12 +3,12 @@
     <div class="py-12">
         <div class="container mx-auto px-4 py-4 bg-white shadow-xl sm:rounded-lg">
             <div class="bg-gray-100 text-gray-500 py-5 px-4 w-full sm:w-full md:w-full lg:w-full">
-                @livewire('medicine.dashboard.dashboard-main', [
+                {{-- @livewire('medicine.dashboard.dashboard-main', [
                 'id_dashboard' => '',
                 'date1' => $date1,
                 'date2' => $date2,
-                ])
-                {{-- @hasrole(['super_admin', 'super_admin_medicine', 'admin_medicine_v2'])
+                ]) --}}
+                @hasrole(['super_admin', 'super_admin_medicine', 'admin_medicine_v2'])
                     <div class="py-6" x-data="{ activeTab: 'headquarters' }">
                         <ul class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 ">
                             <li class="mr-2">
@@ -49,7 +49,7 @@
                         'date1' => $date1,
                         'date2' => $date2,
                     ])
-                @endhasrole --}}
+                @endhasrole
             </div>
         </div>
     </div>
