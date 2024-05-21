@@ -8,7 +8,7 @@
                 'date1' => $date1,
                 'date2' => $date2,
                 ]) --}}
-                @hasrole(['super_admin', 'super_admin_medicine', 'admin_medicine_v2'])
+                @hasrole(['super_admin_medicine', 'admin_medicine_v2'])
                     <div class="py-6" x-data="{ activeTab: 'headquarters' }">
                         <ul class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 ">
                             <li class="mr-2">
