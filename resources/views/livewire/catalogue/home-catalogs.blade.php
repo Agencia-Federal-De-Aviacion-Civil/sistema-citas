@@ -29,7 +29,7 @@
                                 <div x-show="content=='system'">
                                     <div class="flex items-center focus:outline-none">
                                         <svg class="flex-shrink-0 w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path></svg>
-                                        <h1 class="mx-4 text-2xl text-gray-700 dark:text-white">Sistemas</h1>          
+                                        <h1 class="mx-4 text-2xl text-gray-700 dark:text-white">Sistemas</h1>
                                     </div>
                                     <x-button class="my-4"
                                     onclick="Livewire.emit('openModal', 'catalogue.modals.modal-new', {{ json_encode(['catalogsId' => 0]) }})"
@@ -42,7 +42,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>  
+                                    </div>
                                 </div>
                                 <div x-show="content=='typelicens'">
                                     <div class="flex items-center focus:outline-none">
@@ -52,7 +52,7 @@
                                 </div>
                                 <div x-show="content=='typeclases'">
                                     <div class="flex items-center focus:outline-none">
-                                        <svg class="flex-shrink-0 w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path></svg>                
+                                        <svg class="flex-shrink-0 w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path></svg>
                                         <h1 class="mx-4 text-2xl text-gray-700 dark:text-white">Tipo de clases</h1>
                                     </div>
                                     <x-button class="my-4"
@@ -70,7 +70,7 @@
                                 </div>
                                 <div x-show="content=='classeclasif'">
                                     <div class="flex items-center focus:outline-none">
-                                        <svg class="flex-shrink-0 w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path></svg>                
+                                        <svg class="flex-shrink-0 w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path></svg>
                                         <h1 class="mx-4 text-2xl text-gray-700 dark:text-white">Clasificación de clases</h1>
                                     </div>
                                     <x-button class="my-4"
