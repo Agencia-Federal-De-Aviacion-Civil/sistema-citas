@@ -141,7 +141,12 @@
                                 {{ __('Administrador de Sedes') }}
                             </x-jet-nav-link>
                             <x-jet-nav-link href="{{ route('validate') }}" :active="request()->routeIs('validate')">
-                                {{ __('Validación de citas') }} 
+                                {{ __('Validación de citas') }}
+                            </x-jet-nav-link>
+                        @endcan
+                        @can('medicine_admin_v3.see.tabs.navigation')
+                            <x-jet-nav-link href="{{ route('validate') }}" :active="request()->routeIs('validate')">
+                                {{ __('Validación de citas') }}
                             </x-jet-nav-link>
                         @endcan
 
@@ -153,7 +158,7 @@
                                 {{ __('Generar citas') }}
                             </x-jet-nav-link>
                             <x-jet-nav-link href="{{ route('validate') }}" :active="request()->routeIs('validate')">
-                                {{ __('Validación de citas') }} 
+                                {{ __('Validación de citas') }}
                             </x-jet-nav-link>
                         @endcan
 

@@ -43,8 +43,15 @@ Route::middleware([
         Route::get('/linguistics', HomeLinguistics::class)->name('afac.linguistics');
         Route::get('/download', [HomeMedicine::class, 'generatePdf'])->name('download');
     });
+    // Route::middleware(['role:super_admin|medicine_admin|super_admin_medicine|admin_medicine_v2|sub_headquarters|headquarters|headquarters_authorized|admin_medicine_v3'])->group(function () {
+    //     Route::get('/headquarters', HomeHeadquarter::class)->name('afac.headquarterMedicine');
+    //     Route::get('/validate', ValidateQr::class)->name('validate');
+    //     Route::get('/link/{keyEncrypt}', UrlHome::class)->name('validateUrl')->middleware('validate.encrypted.url');
+    // });
     Route::middleware(['role:super_admin|medicine_admin|super_admin_medicine|admin_medicine_v2|sub_headquarters|headquarters|headquarters_authorized'])->group(function () {
         Route::get('/headquarters', HomeHeadquarter::class)->name('afac.headquarterMedicine');
+    });
+    Route::middleware(['role:super_admin|medicine_admin|super_admin_medicine|admin_medicine_v2|sub_headquarters|headquarters|headquarters_authorized|admin_medicine_v3'])->group(function () {
         Route::get('/validate', ValidateQr::class)->name('validate');
         Route::get('/link/{keyEncrypt}', UrlHome::class)->name('validateUrl')->middleware('validate.encrypted.url');
     });

@@ -82,7 +82,7 @@
                                 </div>
                         @endif
                     </div>
-                    @hasrole('sub_headquarters|super_admin|medicine_admin|super_admin_medicine|headquarters|admin_medicine_v2|user')
+                    @hasrole('sub_headquarters|super_admin|medicine_admin|super_admin_medicine|headquarters|admin_medicine_v2|user|admin_medicine_v3')
                         <div x-data="{ activeTab: 'afacAppointment' }">
                             <ul
                                 class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 ">
