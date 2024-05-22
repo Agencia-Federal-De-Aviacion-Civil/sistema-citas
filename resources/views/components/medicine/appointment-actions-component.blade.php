@@ -12,14 +12,20 @@
                 wire:click="$emit('openModal', 'medicine.modals.schedule', {{ json_encode(['scheduleId' => $scheduleId, 'medicineId' => $medicineId]) }})"
                 label="PENDIENTE" xs silver />
         @else
-            @if ($buttonExpire)
-                <x-button
-                    wire:click="$emit('openModal', 'medicine.modals.schedule', {{ json_encode(['scheduleId' => $scheduleId, 'medicineId' => $medicineId]) }})"
-                    label="ACCIONES" xs warning />
+            @hasrole('admin_medicine_v4')
+                <x-badge flat info label="SIN ACCIONES" />
             @else
-                <x-badge flat info label="PENDIENTE" />
-            @endif
+                @if ($buttonExpire)
+                    <x-button
+                        wire:click="$emit('openModal', 'medicine.modals.schedule', {{ json_encode(['scheduleId' => $scheduleId, 'medicineId' => $medicineId]) }})"
+                        label="ACCIONES" xs warning />
+                @else
+                    <x-badge flat info label="PENDIENTE" />
+                @endif
+            @endhasrole
+
         @endhasrole
+
         @hasrole('sub_headquarters|super_admin|medicine_admin|super_admin_medicine|headquarters|admin_medicine_v2|admin_medicine_v3')
             @if (
                 $januaryTemp->reference_number === 'NO APLICA' &&
@@ -121,7 +127,9 @@
         <x-badge flat negative label="CONCLUYÓ NO APTO" />
     @elseif($status == 11)
         @hasrole('super_admin|super_admin_medicine')
-        <x-button wire:click="$emit('openModal', 'medicine.modals.release-share-modal', {{ json_encode(['scheduleId' => $scheduleId, 'medicineId' => $medicineId]) }})" xs sky label="LIBERAR ACCIONES" />
+            <x-button
+                wire:click="$emit('openModal', 'medicine.modals.release-share-modal', {{ json_encode(['scheduleId' => $scheduleId, 'medicineId' => $medicineId]) }})"
+                xs sky label="LIBERAR ACCIONES" />
         @else
             <x-badge flat negative label="PENDIENTE" />
         @endhasrole
