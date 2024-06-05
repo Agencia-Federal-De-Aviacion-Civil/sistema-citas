@@ -579,21 +579,21 @@ class HomeMedicine extends Component
                             $q2->whereHas('medicineReserveMedicine.medicineRenovation', function ($q3) {
                                 $q3->where('type_class_id', $this->type_class_id);
                             });
-                        })
-                        ->orWhere(function ($q2) {
-                            $q2->whereHas('medicineReserveMedicine.medicineRevaluation', function ($q3) {
-                                $q3->whereHas('revaluationMedicineInitial', function ($q4) {
-                                    $q4->where('type_class_id', $this->type_class_id);
-                                });
-                            });
-                        })
-                        ->orWhere(function ($q2) {
-                            $q2->whereHas('medicineReserveMedicine.medicineRevaluation', function ($q3) {
-                                $q3->whereHas('revaluationMedicineRenovation', function ($q4) {
-                                    $q4->where('type_class_id', $this->type_class_id);
-                                });
-                            });
                         });
+                        // ->orWhere(function ($q2) {
+                        //     $q2->whereHas('medicineReserveMedicine.medicineRevaluation', function ($q3) {
+                        //         $q3->whereHas('revaluationMedicineInitial', function ($q4) {
+                        //             $q4->where('type_class_id', $this->type_class_id);
+                        //         });
+                        //     });
+                        // })
+                        // ->orWhere(function ($q2) {
+                        //     $q2->whereHas('medicineReserveMedicine.medicineRevaluation', function ($q3) {
+                        //         $q3->whereHas('revaluationMedicineRenovation', function ($q4) {
+                        //             $q4->where('type_class_id', $this->type_class_id);
+                        //         });
+                        //     });
+                        // });
                 })
                 ->where(function ($queryStop) {
                     // $queryStop->where('status', 0)
