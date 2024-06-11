@@ -70,6 +70,38 @@ class UsersController extends Controller
             "data" => $userList
         ]);
     }
+    // USER SEARCH BY CURP FILTER
+    public function listUserCurp(Request $request)
+    {
+        $searchCurp = $request->input('curp'); // Obtener la cadena de IDs separada por comas desde el cuerpo de la solicitud
+        if (!$searchCurp) {
+            return response([
+                "status" => 0,
+                "message" => "NO SE HA PROPORCIONADO NINGUN CURP",
+            ], 400);
+        }
+        $userList = MedicineReserve::with(
+            'medicineReserveHeadquarter:id,name_headquarter',
+            'medicineReserveMedicine:id,user_id,type_exam_id',
+            'medicineReserveMedicine.medicineInitial:id,medicine_id,type_class_id',
+            'medicineReserveMedicine.medicineRenovation:id,medicine_id,type_class_id',
+            'medicineReserveMedicine.medicineRevaluation:id,medicine_id',
+            'medicineReserveMedicine.medicineRevaluation.revaluationMedicineInitial:id,medicine_revaluation_id,type_class_id',
+            'medicineReserveMedicine.medicineRevaluation.revaluationMedicineRenovation:id,medicine_revaluation_id,type_class_id',
+            'medicineReserveMedicineExtension:id,medicine_reserve_id,type_class_extension_id,status',
+            'medicineReserveFromUser:id,name',
+            'medicineReserveFromUser.UserParticipant:id,user_id,apParental,apMaternal,age,curp'
+        )->withWhereHas('medicineReserveFromUser.UserParticipant', function ($q1) use ($searchCurp) {
+            $q1->where('curp', $searchCurp);
+        })
+            ->whereIn('status', [1, 8, 9])
+            ->get();
+        return response([
+            "status" => 1,
+            "message" => "Lista de usuarios",
+            "data" => $userList
+        ]);
+    }
     // TODO API PARA LA LIBERACIÓN DE CODIGO QR
     public function listHeadquarter(Request $request)
     {
