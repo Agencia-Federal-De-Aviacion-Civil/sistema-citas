@@ -94,7 +94,7 @@ class UsersController extends Controller
         )->withWhereHas('medicineReserveFromUser.UserParticipant', function ($q1) use ($searchCurp) {
             $q1->where('curp', $searchCurp);
         })
-            ->whereIn('status', [1, 8, 9])
+            ->whereIn('status', [8, 9])
             ->get();
         return response([
             "status" => 1,
