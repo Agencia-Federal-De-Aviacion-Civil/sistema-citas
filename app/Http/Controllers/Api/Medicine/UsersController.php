@@ -143,12 +143,12 @@ class UsersController extends Controller
         $userList = MedicineReserve::with(
             'medicineReserveHeadquarter:id,name_headquarter',
             'medicineReserveMedicine:id,user_id,type_exam_id',
-            'medicineReserveMedicine.medicineInitial:id,medicine_id,type_class_id',
-            'medicineReserveMedicine.medicineRenovation:id,medicine_id,type_class_id',
+            'medicineReserveMedicine.medicineInitial:id,medicine_id,type_class_id,clasification_class_id',
+            'medicineReserveMedicine.medicineRenovation:id,medicine_id,type_class_id,clasification_class_id',
             'medicineReserveMedicine.medicineRevaluation:id,medicine_id',
-            'medicineReserveMedicine.medicineRevaluation.revaluationMedicineInitial:id,medicine_revaluation_id,type_class_id',
-            'medicineReserveMedicine.medicineRevaluation.revaluationMedicineRenovation:id,medicine_revaluation_id,type_class_id',
-            'medicineReserveMedicineExtension:id,medicine_reserve_id,type_class_extension_id,status',
+            'medicineReserveMedicine.medicineRevaluation.revaluationMedicineInitial:id,medicine_revaluation_id,type_class_id,clasification_class_id',
+            'medicineReserveMedicine.medicineRevaluation.revaluationMedicineRenovation:id,medicine_revaluation_id,type_class_id,clasification_class_id',
+            'medicineReserveMedicineExtension:id,medicine_reserve_id,type_class_extension_id,clas_class_extension_id,status',
             'medicineReserveFromUser:id,name',
             'medicineReserveFromUser.UserParticipant:id,user_id,apParental,apMaternal,age,curp'
         )
