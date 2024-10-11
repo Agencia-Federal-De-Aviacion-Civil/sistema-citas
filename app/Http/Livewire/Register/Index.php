@@ -5,10 +5,16 @@ namespace App\Http\Livewire\Register;
 use App\Models\Catalogue\Municipal;
 use App\Models\Catalogue\State;
 use Livewire\Component;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Models\User;
 use WireUi\Traits\Actions;
+use App\Models\catalogue\Sex;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use Illuminate\Support\Facades\Http;
+use Livewire\Attributes\Validate;
+use Illuminate\Support\Str;
+use Carbon\Carbon;
+
 
 class Index extends Component
 {
@@ -39,6 +45,7 @@ class Index extends Component
             'password' => 'required|min:6|same:passwordConfirmation'
         ];
     }
+    public $birth_prfle, $rfc_prfle, $enabled, $sex_api, $formattedBirthDate, $age_prfle, $rfc_prfle_api, $curp_api, $sexes, $country_birth_prfle,$state_birth_prfle, $nationality_prfle, $countries;
     public $user_id, $id_register, $name, $apParental, $apMaternal, $genre, $birth, $state_id, $municipal_id, $age, $street, $nInterior, $nExterior, $suburb, $postalCode, $federalEntity,
         $delegation, $mobilePhone, $officePhone, $extension, $curp, $email, $password = '', $passwordConfirmation = '';
     public $states, $municipals;
@@ -49,6 +56,67 @@ class Index extends Component
         $this->municipals = collect();
     }
 
+    public function searchRenapo()
+    {
+        $this->validate([
+            'curp' => 'required|unique:user_participants', // 'curp' => 'required|unique:user_profiles|max:18|min:18',
+        ]);
+        if (checkdnsrr('crp.sct.gob.mx', 'A')) {
+            $curp = Str::upper($this->curp);
+            $response = Http::connectTimeout(10)->get('https://crp.sct.gob.mx/RenapoSct/consulta/porCurp?curp=' . $curp);
+            if ($response->successful() && $response->json()['resultado']['data']['statusOper'] === 'EXITOSO') {
+                $response->json()['resultado'];
+                $this->enabled = true;
+                $this->name = $response->json()['resultado']['data']['nombres'];
+                $this->apParental = $response->json()['resultado']['data']['apPaterno'];
+                $this->apMaternal = $response->json()['resultado']['data']['apMaterno'];
+                $this->birth_prfle = $response->json()['resultado']['data']['fechNac'];
+                $this->curp_api = $response->json()['resultado']['data']['curp'];
+                $this->rfc_prfle_api = Str::upper(substr($this->curp_api, 0, 10));
+                $this->rfc_prfle = $this->rfc_prfle_api;
+                $this->sex_api = $response->json()['resultado']['data']['sexo'];
+                $this->genre = $this->sex_api == 'H' ? 1 : ($this->sex_api === 'M' ? 2 : ($this->sex_api === 'X' ? 3 : ''));
+
+                $this->state_birth_prfle = $response->json()['resultado']['data']['cveEntidadNac'];
+                $codeCountry = $response->json()['resultado']['data']['nacionalidad'];
+                // foreach ($this->countries as $country) {
+                //     if ($country->code_country === $codeCountry) {
+                //         $this->country_birth_prfle = $country->name_country;
+                //         $this->nationality_prfle = $country->nacionality_country;
+                //         break;
+                //     }
+                // }
+
+                $birthDate = Carbon::createFromFormat('d/m/Y', $this->birth_prfle);
+                $this->formattedBirthDate = $birthDate->format('Y-m-d');
+                $currentDate = Carbon::now();
+                $age = $currentDate->diff($birthDate)->format('%y');
+                $this->age_prfle = intval($age);
+
+                // $this->notification()->send([
+                //     'icon' => 'success',
+                //     'title' => 'Búsqueda éxitosa!',
+                //     'description' => 'Usuario localizado con éxito.',
+                //     'timeout' => '2100'
+                // ]);
+            } elseif ($response->successful() && $response->json()['resultado']['data']['statusOper'] === 'NO EXITOSO') {
+                $this->clean();
+                // $this->notification()->send([
+                //     'icon' => 'error',
+                //     'title' => 'Búsqueda no éxitosa!',
+                //     'description' => 'Usuario no localizado.',
+                // ]);
+            } else {
+                // $this->dispatch('openModal', 'tools.exception-modal', (['codeError' => $response->status()]));
+            }
+        } else {
+            // $this->notification()->send([
+            //     'icon' => 'info',
+            //     'title' => 'Sin conexión!',
+            //     'description' => 'No hay conexión, vuelve a intentarlo.',
+            // ]);
+        }
+    }
     public function render()
     {
         return view('livewire.register.index');
@@ -62,10 +130,10 @@ class Index extends Component
     {
         $this->validate(['email' => 'unique:users']);
     }
-    public function updatedCurp()
-    {
-        $this->validate(['curp' => 'unique:user_participants']);
-    }
+    // public function updatedCurp()
+    // {
+    //     $this->validate(['curp' => 'unique:user_participants']);
+    // }
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
