@@ -155,6 +155,14 @@ class Index extends Component
                 $age = $currentDate->diff($birthDate)->format('%y');
                 $this->age = intval($age);
 
+
+                // $this->notification([
+                //     'title'       => 'PAGO VERIFICADO',
+                //     'description' => 'EL PAGO SE HA VERIFICADO CORRECTAMENTE',
+                //     'icon'        => 'success',
+                //     'timeout' => '2500'
+                // ]);
+
                 // $this->notification()->send([
                 //     'icon' => 'success',
                 //     'title' => 'Búsqueda éxitosa!',
@@ -338,9 +346,9 @@ class Index extends Component
             'country_birth_participant.required' => 'Campo obligatorio',
             'nationality_participant.required' => 'Campo obligatorio',
             'state_birth_participant.required' => 'Campo obligatorio',
-            'rfc_participant.required' => 'HOMOCLAVE DE RFC CAMPO OBLIGATORIO',
-            'rfc_participant.unique' => 'EL RFC YA SE ENCUENTRA REGISTRADO',
-            'rfc_participant.min' => 'MINIMO 10 CARACTERES EN EL RFC',
+            'rfc_participant.required' => 'Homoclave de RFC campo obligatorio',
+            'rfc_participant.unique' => 'El RFC ya se encuentra registrado',
+            'rfc_participant.min' => 'Mínimo 10 caracteres en el RFC',
             'name.required' => 'Campo obligatorio',
             'apParental.required' => 'Campo obligatorio',
             'apMaternal.required' => 'Campo obligatorio',
