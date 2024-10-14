@@ -53,7 +53,10 @@ class AppointmentTable extends DataTableComponent
             'exportSelected' => 'EXPORTAR'
         ]);
         $this->setPerPageAccepted([
-            10, 20, 50, 100
+            10,
+            20,
+            50,
+            100
         ]);
         $this->setOfflineIndicatorEnabled();
         $this->setEagerLoadAllRelationsEnabled();
@@ -66,37 +69,41 @@ class AppointmentTable extends DataTableComponent
 
                 Column::make("Id", "id")
                     ->sortable()
-                    ->searchable(fn ($query, $searchTerm) => $query->orWhere('medicine_reserves.id', 'like', '%' . $searchTerm . '%')),
+                    ->searchable(fn($query, $searchTerm) => $query->orWhere('medicine_reserves.id', 'like', '%' . $searchTerm . '%')),
                 Column::make("Nombre", "medicineReserveFromUser.name")
                     ->sortable()
-                    ->searchable(fn ($query, $searchTerm) => $query->orWhere('users.name', 'like', '%' . $searchTerm . '%')),
+                    ->searchable(fn($query, $searchTerm) => $query->orWhere('users.name', 'like', '%' . $searchTerm . '%')),
                 Column::make("Apellido Paterno", "userParticipantUser.apParental")
                     ->sortable()
-                    ->searchable(fn ($query, $searchTerm) => $query->orWhere('apParental', 'like', '%' . $searchTerm . '%')),
+                    ->searchable(fn($query, $searchTerm) => $query->orWhere('apParental', 'like', '%' . $searchTerm . '%')),
                 Column::make("Apellido Materno", "userParticipantUser.apMaternal")
                     ->sortable()
-                    ->searchable(fn ($query, $searchTerm) => $query->orWhere('apMaternal', 'like', '%' . $searchTerm . '%')),
+                    ->searchable(fn($query, $searchTerm) => $query->orWhere('apMaternal', 'like', '%' . $searchTerm . '%')),
                 Column::make("SEDE", "medicineReserveHeadquarter.name_headquarter")
                     ->sortable(),
                 Column::make("Tipo", "medicineReserveMedicine.medicineTypeExam.name")
                     ->sortable(),
                 Column::make("CLASE", "class")
-                    ->label(fn ($row) => view(
+                    ->label(fn($row) => view(
                         'afac.tables.appointmentTable.actions.type-classes',
                         [
                             $class = MedicineReserve::with([
-                                'medicineReserveMedicine', 'medicineReserveFromUser', 'userParticipantUser'
+                                'medicineReserveMedicine',
+                                'medicineReserveFromUser',
+                                'userParticipantUser'
                             ])->where('id', $row->id)->get(),
                             'class' => $class
                         ]
                     )),
 
                 Column::make("TIPO DE LICENCIA", "licencia")
-                    ->label(fn ($row) => view(
+                    ->label(fn($row) => view(
                         'afac.tables.appointmentTable.actions.classification-classes',
                         [
                             $licencia = MedicineReserve::with([
-                                'medicineReserveMedicine', 'medicineReserveFromUser', 'userParticipantUser'
+                                'medicineReserveMedicine',
+                                'medicineReserveFromUser',
+                                'userParticipantUser'
                             ])->where('id', $row->id)->get(),
                             'licencias' => $licencia
                         ]
@@ -104,22 +111,22 @@ class AppointmentTable extends DataTableComponent
                 Column::make("FECHA", "dateReserve")
                     ->sortable()
                     ->searchable()
-                    ->format(fn ($value) => Carbon::parse($value)->format('d/m/Y')),
+                    ->format(fn($value) => Carbon::parse($value)->format('d/m/Y')),
 
                 Column::make("HORA", "reserveSchedule.time_start")
                     ->sortable(),
 
                 Column::make("CURP", "userParticipantUser.curp")
                     ->sortable()
-                    ->searchable(fn ($query, $searchTerm) => $query->orWhere('curp', 'like', '%' . $searchTerm . '%')),
+                    ->searchable(fn($query, $searchTerm) => $query->orWhere('curp', 'like', '%' . $searchTerm . '%')),
 
                 Column::make("LLAVE DE PAGO", "medicineReserveMedicine.reference_number")
                     ->sortable()
-                    ->searchable(fn ($query, $searchTerm) => $query->orWhere('reference_number', 'like', '%' . $searchTerm . '%')),
+                    ->searchable(fn($query, $searchTerm) => $query->orWhere('reference_number', 'like', '%' . $searchTerm . '%')),
 
                 Column::make('FORMATOS')
                     ->sortable()
-                    ->label(fn ($row) => view(
+                    ->label(fn($row) => view(
                         'afac.tables.appointmentTable.actions.download-file',
                         [
                             $medicine = MedicineReserve::with(
@@ -156,7 +163,7 @@ class AppointmentTable extends DataTableComponent
 
                 Column::make("ACCIÓN")
                     ->label(
-                        fn ($row) => view(
+                        fn($row) => view(
                             'components.medicine.appointment-actions-component',
                             [
                                 $action = MedicineReserve::with('medicineReserveMedicineExtension')->where('id', $row->id)->get(),
@@ -190,21 +197,25 @@ class AppointmentTable extends DataTableComponent
                 Column::make("SEDE", "medicineReserveHeadquarter.name_headquarter")
                     ->sortable(),
                 Column::make("CLASE", "class")
-                    ->label(fn ($row) => view(
+                    ->label(fn($row) => view(
                         'afac.tables.appointmentTable.actions.type-classes',
                         [
                             $class = MedicineReserve::with([
-                                'medicineReserveMedicine', 'medicineReserveFromUser', 'userParticipantUser'
+                                'medicineReserveMedicine',
+                                'medicineReserveFromUser',
+                                'userParticipantUser'
                             ])->where('id', $row->id)->get(),
                             'class' => $class
                         ]
                     )),
                 Column::make("TIPO DE LICENCIA", "licencia")
-                    ->label(fn ($row) => view(
+                    ->label(fn($row) => view(
                         'afac.tables.appointmentTable.actions.classification-classes',
                         [
                             $licencia = MedicineReserve::with([
-                                'medicineReserveMedicine', 'medicineReserveFromUser', 'userParticipantUser'
+                                'medicineReserveMedicine',
+                                'medicineReserveFromUser',
+                                'userParticipantUser'
                             ])->where('id', $row->id)->get(),
                             'licencias' => $licencia
                         ]
@@ -212,13 +223,13 @@ class AppointmentTable extends DataTableComponent
                 Column::make("FECHA", "dateReserve")
                     ->sortable()
                     ->searchable()
-                    ->format(fn ($value) => Carbon::parse($value)->format('d/m/Y')),
+                    ->format(fn($value) => Carbon::parse($value)->format('d/m/Y')),
 
                 Column::make("HORA", "reserveSchedule.time_start")
                     ->sortable(),
                 Column::make("ACCIÓNES")
                     ->label(
-                        fn ($row) => view(
+                        fn($row) => view(
                             'components.medicine.appointment-actions-component',
                             [
                                 $action = MedicineReserve::where('id', $row->id)->get(),
@@ -243,33 +254,37 @@ class AppointmentTable extends DataTableComponent
                     ->sortable(),
                 Column::make("Nombre", "medicineReserveFromUser.name")
                     ->sortable()
-                    ->searchable(fn ($query, $searchTerm) => $query->orWhere('users.name', 'like', '%' . $searchTerm . '%')),
+                    ->searchable(fn($query, $searchTerm) => $query->orWhere('users.name', 'like', '%' . $searchTerm . '%')),
                 Column::make("Apellido Paterno", "userParticipantUser.apParental")
                     ->sortable()
-                    ->searchable(fn ($query, $searchTerm) => $query->orWhere('apParental', 'like', '%' . $searchTerm . '%')),
+                    ->searchable(fn($query, $searchTerm) => $query->orWhere('apParental', 'like', '%' . $searchTerm . '%')),
                 Column::make("Apellido Materno", "userParticipantUser.apMaternal")
                     ->sortable()
-                    ->searchable(fn ($query, $searchTerm) => $query->orWhere('apMaternal', 'like', '%' . $searchTerm . '%')),
+                    ->searchable(fn($query, $searchTerm) => $query->orWhere('apMaternal', 'like', '%' . $searchTerm . '%')),
                 Column::make("Tipo", "medicineReserveMedicine.medicineTypeExam.name")
                     ->sortable(),
                 Column::make("SEDE", "medicineReserveHeadquarter.name_headquarter")
                     ->sortable(),
                 Column::make("CLASE", "class")
-                    ->label(fn ($row) => view(
+                    ->label(fn($row) => view(
                         'afac.tables.appointmentTable.actions.type-classes',
                         [
                             $class = MedicineReserve::with([
-                                'medicineReserveMedicine', 'medicineReserveFromUser', 'userParticipantUser'
+                                'medicineReserveMedicine',
+                                'medicineReserveFromUser',
+                                'userParticipantUser'
                             ])->where('id', $row->id)->get(),
                             'class' => $class
                         ]
                     )),
                 Column::make("TIPO DE LICENCIA", "licencia")
-                    ->label(fn ($row) => view(
+                    ->label(fn($row) => view(
                         'afac.tables.appointmentTable.actions.classification-classes',
                         [
                             $licencia = MedicineReserve::with([
-                                'medicineReserveMedicine', 'medicineReserveFromUser', 'userParticipantUser'
+                                'medicineReserveMedicine',
+                                'medicineReserveFromUser',
+                                'userParticipantUser'
                             ])->where('id', $row->id)->get(),
                             'licencias' => $licencia
                         ]
@@ -277,19 +292,19 @@ class AppointmentTable extends DataTableComponent
                 Column::make("FECHA", "dateReserve")
                     ->sortable()
                     ->searchable()
-                    ->format(fn ($value) => Carbon::parse($value)->format('d/m/Y')),
+                    ->format(fn($value) => Carbon::parse($value)->format('d/m/Y')),
 
                 Column::make("HORA", "reserveSchedule.time_start")
                     ->sortable(),
                 Column::make("CURP", "userParticipantUser.curp")
                     ->sortable()
-                    ->searchable(fn ($query, $searchTerm) => $query->orWhere('curp', 'like', '%' . $searchTerm . '%')),
+                    ->searchable(fn($query, $searchTerm) => $query->orWhere('curp', 'like', '%' . $searchTerm . '%')),
                 Column::make("LLAVE DE PAGO", "medicineReserveMedicine.reference_number")
                     ->sortable()
-                    ->searchable(fn ($query, $searchTerm) => $query->orWhere('reference_number', 'like', '%' . $searchTerm . '%')),
+                    ->searchable(fn($query, $searchTerm) => $query->orWhere('reference_number', 'like', '%' . $searchTerm . '%')),
                 Column::make('FORMATOS')
                     ->sortable()
-                    ->label(fn ($row) => view(
+                    ->label(fn($row) => view(
                         'afac.tables.appointmentTable.actions.download-file',
                         [
                             $medicine = MedicineReserve::with(
@@ -325,7 +340,7 @@ class AppointmentTable extends DataTableComponent
 
                 Column::make("ACCIÓN")
                     ->label(
-                        fn ($row) => view(
+                        fn($row) => view(
                             'components.medicine.appointment-actions-component',
                             [
                                 $action = MedicineReserve::where('id', $row->id)->get(),
@@ -355,36 +370,40 @@ class AppointmentTable extends DataTableComponent
                     ->sortable(),
                 Column::make("Nombre", "medicineReserveFromUser.name")
                     ->sortable()
-                    ->searchable(fn ($query, $searchTerm) => $query->orWhere('users.name', 'like', '%' . $searchTerm . '%')),
+                    ->searchable(fn($query, $searchTerm) => $query->orWhere('users.name', 'like', '%' . $searchTerm . '%')),
 
                 Column::make("Apellido Paterno", "userParticipantUser.apParental")
                     ->sortable()
-                    ->searchable(fn ($query, $searchTerm) => $query->orWhere('apParental', 'like', '%' . $searchTerm . '%')),
+                    ->searchable(fn($query, $searchTerm) => $query->orWhere('apParental', 'like', '%' . $searchTerm . '%')),
 
                 Column::make("Apellido Materno", "userParticipantUser.apMaternal")
                     ->sortable()
-                    ->searchable(fn ($query, $searchTerm) => $query->orWhere('apMaternal', 'like', '%' . $searchTerm . '%')),
+                    ->searchable(fn($query, $searchTerm) => $query->orWhere('apMaternal', 'like', '%' . $searchTerm . '%')),
 
                 Column::make("Tipo", "medicineReserveMedicine.medicineTypeExam.name")
                     ->sortable(),
 
                 Column::make("CLASE", "class")
-                    ->label(fn ($row) => view(
+                    ->label(fn($row) => view(
                         'afac.tables.appointmentTable.actions.type-classes',
                         [
                             $class = MedicineReserve::with([
-                                'medicineReserveMedicine', 'medicineReserveFromUser', 'userParticipantUser'
+                                'medicineReserveMedicine',
+                                'medicineReserveFromUser',
+                                'userParticipantUser'
                             ])->where('id', $row->id)->get(),
                             'class' => $class
                         ]
                     )),
 
                 Column::make("TIPO DE LICENCIA", "licencia")
-                    ->label(fn ($row) => view(
+                    ->label(fn($row) => view(
                         'afac.tables.appointmentTable.actions.classification-classes',
                         [
                             $licencia = MedicineReserve::with([
-                                'medicineReserveMedicine', 'medicineReserveFromUser', 'userParticipantUser'
+                                'medicineReserveMedicine',
+                                'medicineReserveFromUser',
+                                'userParticipantUser'
                             ])->where('id', $row->id)->get(),
                             'licencias' => $licencia
                         ]
@@ -392,22 +411,22 @@ class AppointmentTable extends DataTableComponent
                 Column::make("FECHA", "dateReserve")
                     ->sortable()
                     ->searchable()
-                    ->format(fn ($value) => Carbon::parse($value)->format('d/m/Y')),
+                    ->format(fn($value) => Carbon::parse($value)->format('d/m/Y')),
 
                 Column::make("HORA", "reserveSchedule.time_start")
                     ->sortable(),
 
                 Column::make("CURP", "userParticipantUser.curp")
                     ->sortable()
-                    ->searchable(fn ($query, $searchTerm) => $query->orWhere('curp', 'like', '%' . $searchTerm . '%')),
+                    ->searchable(fn($query, $searchTerm) => $query->orWhere('curp', 'like', '%' . $searchTerm . '%')),
 
                 Column::make("LLAVE DE PAGO", "medicineReserveMedicine.reference_number")
                     ->sortable()
-                    ->searchable(fn ($query, $searchTerm) => $query->orWhere('reference_number', 'like', '%' . $searchTerm . '%')),
+                    ->searchable(fn($query, $searchTerm) => $query->orWhere('reference_number', 'like', '%' . $searchTerm . '%')),
 
                 Column::make('FORMATOS')
                     ->sortable()
-                    ->label(fn ($row) => view(
+                    ->label(fn($row) => view(
                         'afac.tables.appointmentTable.actions.download-file',
                         [
                             $medicine = MedicineReserve::with(
@@ -444,7 +463,7 @@ class AppointmentTable extends DataTableComponent
 
                 Column::make("ACCIÓN")
                     ->label(
-                        fn ($row) => view(
+                        fn($row) => view(
                             'components.medicine.appointment-actions-component',
                             [
                                 $action = MedicineReserve::where('id', $row->id)->get(),
@@ -476,17 +495,24 @@ class AppointmentTable extends DataTableComponent
         //     ->where('users.name', '!=', 'admin');
         if (Auth::user()->can('super_admin.medicine_admin.see.schedule.table')) {
             return MedicineReserve::query()->with([
-                'medicineReserveMedicine', 'medicineReserveFromUser', 'userParticipantUser'
+                'medicineReserveMedicine',
+                'medicineReserveFromUser',
+                'userParticipantUser'
             ])->where('medicine_reserves.is_external', false);
         } else if (Auth::user()->can('user.see.schedule.table')) {
             return MedicineReserve::query()->with([
-                'medicineReserveMedicine', 'medicineReserveFromUser', 'userParticipantUser'
+                'medicineReserveMedicine',
+                'medicineReserveFromUser',
+                'userParticipantUser'
             ])->whereHas('medicineReserveMedicine', function ($q1) {
                 $q1->where('user_id', Auth::user()->id);
             })->where('medicine_reserves.is_external', false);
         } else if (Auth::user()->can('headquarters.see.schedule.table')) {
             return MedicineReserve::query()->with([
-                'medicineReserveMedicine', 'medicineReserveFromUser', 'userParticipantUser', 'medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant'
+                'medicineReserveMedicine',
+                'medicineReserveFromUser',
+                'userParticipantUser',
+                'medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant'
             ])->whereHas('medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q1) {
                 $q1->where('user_id', Auth::user()->id);
             });
@@ -494,7 +520,10 @@ class AppointmentTable extends DataTableComponent
             Date::setLocale('es');
             $day = Date::now()->format('Y-m-d');
             return MedicineReserve::query()->with([
-                'medicineReserveMedicine', 'medicineReserveFromUser', 'userParticipantUser', 'medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant'
+                'medicineReserveMedicine',
+                'medicineReserveFromUser',
+                'userParticipantUser',
+                'medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant'
             ])->where('headquarter_id', 6)->where('dateReserve', $day);
         }
     }
@@ -570,7 +599,8 @@ class AppointmentTable extends DataTableComponent
                         '10' => 'HERMOSILLO SONORA',
                         '11' => 'QUERETARO QRO',
                         '12' => 'MERIDA YUCATAN',
-                        '13' => 'SINALOA CULIACAN'
+                        '13' => 'SINALOA CULIACAN',
+                        '28' => 'CD. DEL CARMEN AEROPUERTO	'
                     ])
                     ->filter(function ($query, $value) {
                         $query->where('headquarter_id', $value);
@@ -657,11 +687,13 @@ class AppointmentTable extends DataTableComponent
             try {
                 $query = MedicineReserve::with([
                     'medicineReserveHeadquarter:id,name_headquarter',
-                    'medicineReserveMedicine:id,reference_number,type_exam_id', 'medicineReserveFromUser:id,name',
+                    'medicineReserveMedicine:id,reference_number,type_exam_id',
+                    'medicineReserveFromUser:id,name',
                     'medicineReserveMedicine.medicineRevaluation:id,type_exam_id',
                     'medicineReserveMedicine.medicineTypeExam:name',
                     'userParticipantUser:id,apParental,apMaternal,curp,genre,birth,age,mobilePhone,officePhone,extension',
-                    'userParticipantUser.participantState:id,name', 'reserveSchedule:id,time_start'
+                    'userParticipantUser.participantState:id,name',
+                    'reserveSchedule:id,time_start'
                 ])->whereIn('id', $this->getSelected());
                 $results = $query->get();
                 $this->exporting = true;
