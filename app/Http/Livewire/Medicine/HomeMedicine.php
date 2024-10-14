@@ -19,6 +19,7 @@ use App\Models\Medicine\MedicineRevaluationInitial;
 use App\Models\Medicine\MedicineRevaluationRenovation;
 use App\Models\Medicine\MedicineSchedule;
 use App\Models\Medicine\MedicineScheduleException;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -33,7 +34,11 @@ use Endroid\QrCode\Label\Alignment\LabelAlignmentCenter;
 use Endroid\QrCode\Label\Font\OpenSans;
 use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
 use Endroid\QrCode\Writer\PngWriter;
-
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Session;
 use PDF;
 
 class HomeMedicine extends Component
@@ -43,12 +48,13 @@ class HomeMedicine extends Component
     public $medicine_question_id, $type_class_id, $clasificationClass, $clasification_class_id, $type_exception_id;
     public $document_pay, $reference_number, $pay_date, $type_exam_id, $typeRenovationExams, $dateConvertedFormatted;
     public $questionClassess, $typeExams, $sedes, $userQuestions, $headquarter_id, $dateReserve, $saveMedicine, $disabledDaysFilter;
-    public $confirmModal = false, $modal = false;
+    public $confirmModal = false, $modal = false, $openValidateModal = false;
     public $medicineQueries, $medicineReserves, $medicineInitials, $medicineRenovations, $id_medicineReserve, $idMedicine, $savedMedicineId, $scheduleMedicines, $medicine_schedule_id;
     // MEDICINE INITIAL TABLE
     public $question, $date, $idTypeAppointment, $idAppointmentFull, $extensionTypeOptions;
     public $document_authorization, $type_exam_revaloration_id, $typeid, $userid, $registeredUserId, $showBannerBoolean, $extensionClassId, $type_exam_id_extension, $questionClassessExtension,
         $type_class_extension_id, $typeClassId, $selectedTypeClassIds, $clasificationClassExtension, $clas_class_extension_id, $medicine_question_ex_id;
+    public $name, $apParental, $apMaternal, $userId, $yearExercise, $reference_key, $operation_number, $dependency_chain, $total_paid;
     protected $listeners = [
         'saveDisabledDays' => '$refresh',
         'registeredEmit',
@@ -73,6 +79,20 @@ class HomeMedicine extends Component
         $this->typeRenovationExams = collect();
         $this->scheduleMedicines = collect();
         $this->disabledDaysFilter = collect();
+
+        $this->yearExercise = Carbon::now()->year;
+        $this->reference_key = '126000812';
+        $authUser =  is_null($this->userId) ? Auth::user()->load('UserParticipant')->UserParticipant : User::with([
+            'UserParticipant:id,user_id,apParental,apMaternal'
+        ])->find($this->userId);
+
+
+        $this->name = Auth::user()->name;
+        $this->apParental = Auth::user()->UserParticipant->first()->apParental;
+        $this->apMaternal = Auth::user()->UserParticipant->first()->apMaternal;
+
+        // $this->apMaternal = $authUser->UserParticipant->lst_mat_prfle ?? $authUser->lst_mat_prfle;
+
     }
     public function registeredEmit($payload)
     {
@@ -114,6 +134,90 @@ class HomeMedicine extends Component
     {
         $this->validateOnly($propertyName);
     }
+
+
+    public function searchKey()
+    {
+        $this->validate([
+            'name' => 'required',
+            'apParental' => 'required',
+            'apMaternal' => 'nullable',
+            'pay_date' => 'required',
+            // 'own_name' => 'required',
+            // 'business_name' => 'required',
+            'yearExercise' => 'required',
+            'operation_number' => 'required',
+            'total_paid' => 'required',
+            'dependency_chain' => 'required',
+            'reference_key' => 'required',
+            'reference_number' => [
+                'required',
+                Rule::unique('medicines', 'reference_number'),
+                // Rule::unique('medical_history_pays', 'paymentkey')->whereNull('deleted_at'),
+            ],
+        ]);
+        $pay_date = $this->pay_date;
+        // dump($payDate);
+        $payDate = Carbon::parse($pay_date)->format('dmY');
+        if (checkdnsrr('pagos.sct.gob.mx', 'A')) {
+            // $pay_for = $this->kind_person_id == 1 ? 'PA=' . Str::upper($this->apParental) . '&MA=' . Str::upper($this->apMaternal) .
+            //     '&NOM=' . Str::upper($this->name) : 'RZ=' . Str::upper($this->business_name);
+            $pay_for = 'PA=' . Str::upper($this->apParental) . '&MA=' . Str::upper($this->apMaternal) . '&NOM=' . Str::upper($this->name);
+            $response = Http::withHeaders([
+                'api-key' =>
+                // env('API_KEY_PAY'),
+                '7e4eb982-5854-43c2-9583-3af45c2e2620',
+                'Accept' => 'application/json'
+            ])->connectTimeout(30)->get('http://pagos.sct.gob.mx/api/valida/pago?' . $pay_for . '&NUMOP=' . $this->operation_number . '&FECHA=' . $payDate . '&TOTAL=' . $this->total_paid . '&LLAVE=' .
+                Str::upper($this->reference_number) . '&CADENA=' . $this->dependency_chain . '&CLAVE=126000812' . '&EJERCICIO=' . $this->yearExercise);
+            if ($response->successful()) {
+                $this->notification([
+                    'title'       => 'PAGO VERIFICADO',
+                    'description' => 'EL PAGO SE HA VERIFICADO CORRECTAMENTE',
+                    'icon'        => 'success',
+                    'timeout' => '2500'
+                ]);
+
+                // Notification::make()
+                //     ->title('PAGO VERIFICADO')
+                //     ->body('EL PAGO SE HA VERIFICADO CORRECTAMENTE')
+                //     ->success()
+                //     ->send();
+                $this->openValidateModal = true;
+                Session::put(['referenceNumber' => $this->reference_number]);
+            } else {
+
+
+                $this->notification([
+                    'title'       => 'SOLICITUD NO PROCESADA',
+                    'description' => 'LA SOLICITUD NO FUE PROCESADA',
+                    'icon'        => 'error',
+                    'timeout' => '2500'
+                ]);
+
+                // Notification::make()
+                //     ->title('SOLICITUD NO PROCESADA')
+                //     ->body($response->json()['error_msg'])
+                //     ->danger()
+                //     ->send();
+            }
+        } else {
+
+            $this->notification([
+                'title'       => 'ERROR DE CONEXIÓN',
+                'description' => 'VERIFICA TU CONEXIÓN A INTERNET',
+                'icon'        => 'error',
+                'timeout' => '2500'
+            ]);
+
+            // Notification::make()
+            //     ->title('ERROR DE CONEXIÓN')
+            //     ->body('VERIFICA TU CONEXIÓN A INTERNET')
+            //     ->warning()
+            //     ->send();
+        }
+    }
+
 
     public function clean()
     {
@@ -580,20 +684,20 @@ class HomeMedicine extends Component
                                 $q3->where('type_class_id', $this->type_class_id);
                             });
                         });
-                        // ->orWhere(function ($q2) {
-                        //     $q2->whereHas('medicineReserveMedicine.medicineRevaluation', function ($q3) {
-                        //         $q3->whereHas('revaluationMedicineInitial', function ($q4) {
-                        //             $q4->where('type_class_id', $this->type_class_id);
-                        //         });
-                        //     });
-                        // })
-                        // ->orWhere(function ($q2) {
-                        //     $q2->whereHas('medicineReserveMedicine.medicineRevaluation', function ($q3) {
-                        //         $q3->whereHas('revaluationMedicineRenovation', function ($q4) {
-                        //             $q4->where('type_class_id', $this->type_class_id);
-                        //         });
-                        //     });
-                        // });
+                    // ->orWhere(function ($q2) {
+                    //     $q2->whereHas('medicineReserveMedicine.medicineRevaluation', function ($q3) {
+                    //         $q3->whereHas('revaluationMedicineInitial', function ($q4) {
+                    //             $q4->where('type_class_id', $this->type_class_id);
+                    //         });
+                    //     });
+                    // })
+                    // ->orWhere(function ($q2) {
+                    //     $q2->whereHas('medicineReserveMedicine.medicineRevaluation', function ($q3) {
+                    //         $q3->whereHas('revaluationMedicineRenovation', function ($q4) {
+                    //             $q4->where('type_class_id', $this->type_class_id);
+                    //         });
+                    //     });
+                    // });
                 })
                 ->where(function ($queryStop) {
                     // $queryStop->where('status', 0)
@@ -925,16 +1029,16 @@ class HomeMedicine extends Component
         $keyEncrypts =  Crypt::encryptString($medicineId . '*' . $dateAppointment . '*' . $curp);
 
         $result = Builder::create()
-        ->writer(new PngWriter())
-        ->writerOptions([])
-        ->data($keyEncrypts)
-        ->encoding(new Encoding('UTF-8'))
-        ->errorCorrectionLevel(new ErrorCorrectionLevelHigh())
-        ->size(300)
-        ->margin(10)
-        ->roundBlockSizeMode(new RoundBlockSizeModeMargin())
-        ->validateResult(false)
-        ->build();
+            ->writer(new PngWriter())
+            ->writerOptions([])
+            ->data($keyEncrypts)
+            ->encoding(new Encoding('UTF-8'))
+            ->errorCorrectionLevel(new ErrorCorrectionLevelHigh())
+            ->size(300)
+            ->margin(10)
+            ->roundBlockSizeMode(new RoundBlockSizeModeMargin())
+            ->validateResult(false)
+            ->build();
         $keyEncrypt = $result->getDataUri();
 
 

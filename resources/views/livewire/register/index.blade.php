@@ -19,13 +19,14 @@
                                 Regresar
                             </a>
                         </div>
+
+
+
                         <div class="mt-8 lg:w-9/12 lg:mx-6">
                             <div
                                 class="w-full px-8 py-10 mx-auto bg-white shadow-2xl rounded-xl dark:bg-gray-900 lg:max-w-6xl">
                                 <h1 class="text-2xl font-medium text-gray-700 dark:text-gray-200">Ingresar la
                                     información</h1>
-
-
                                 <div x-data="{ enabled: @entangle('enabled'), }">
 
                                     <div class="mt-8 grid md:grid-cols-2 md:gap-6">
@@ -65,7 +66,7 @@
                                         <div class="mt-8 grid md:grid-cols-3 md:gap-6">
                                             <div class="relative mb-6 w-full group">
                                                 <x-input class="uppercase" wire:model.lazy="name" label="NOMBRE (S)"
-                                                    placeholder="ESCRIBE..." />
+                                                    placeholder="ESCRIBE..." readonly />
                                                 {{-- <input wire:model.lazy="name" type="text" name="floating_first_name"
                                             id="floating_first_name"
                                             class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
@@ -79,7 +80,7 @@
                                             </div>
                                             <div class="relative mb-6 w-full group">
                                                 <x-input class="uppercase" wire:model.lazy="apParental"
-                                                    label="APELLIDO PATERNO" placeholder="ESCRIBE..." />
+                                                    label="APELLIDO PATERNO" placeholder="ESCRIBE..." readonly />
                                                 {{-- <input type="text" name="floating_last_name" id="floating_last_name"
                                             wire:model.lazy="apParental"
                                             class="uppercase block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
@@ -94,7 +95,7 @@
                                             </div>
                                             <div class="relative mb-6 w-full group">
                                                 <x-input class="uppercase" wire:model.lazy="apMaternal"
-                                                    label="APELLIDO MATERNO" placeholder="ESCRIBE..." />
+                                                    label="APELLIDO MATERNO" placeholder="ESCRIBE..." readonly />
                                                 {{-- <input type="text" name="floating_last_name2" id="floating_last_name2"
                                             wire:model.lazy="apMaternal"
                                             class="uppercase block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
@@ -108,14 +109,16 @@
                                         @enderror --}}
                                             </div>
                                         </div>
+
                                         <div class="grid md:grid-cols-2 md:gap-6">
+
                                             <ul
                                                 class="items-center w-full text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                                                 <li
                                                     class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
                                                     <div class="flex items-center pl-3">
                                                         <x-radio id="right-labelF" label="FEMENINO" value="Femenino"
-                                                            wire:model.defer="genre" />
+                                                            wire:model.defer="genre" readonly />
                                                         {{-- <input id="horizontal-list-radio-license" type="radio"
                                                     value="Femenino" wire:model.lazy="genre" name="list-radio"
                                                     class="uppercase w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
@@ -127,7 +130,7 @@
                                                     class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
                                                     <div class="flex items-center pl-3">
                                                         <x-radio id="right-labelM" label="MASCULINO" value="Masculino"
-                                                            wire:model.defer="genre" />
+                                                            wire:model.defer="genre" readonly />
                                                         {{-- <input id="horizontal-list-radio-id" type="radio" value="Masculino"
                                                     wire:model.lazy="genre" name="list-radio"
                                                     class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
@@ -136,71 +139,83 @@
                                                     </div>
                                                 </li>
                                             </ul>
-                                            {{-- @error('genre')
-                                        <span
-                                            class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
-                                         @enderror --}}
                                             <div class="relative mb-6 w-full group">
-                                                {{-- <x-inputs.maskable class="uppercase" wire:model.defer="curp"
-                                            mask="AAAA######AAAAAA##" label="CURP" placeholder="INGRESE..." /> --}}
-                                                <x-input class="uppercase" wire:model.lazy="curp" label="CURP"
-                                                    placeholder="INGRESE..." />
-                                                {{-- <input type="text" name="floating_curp" id="floating_curp"
-                                            wire:model.lazy="curp"
-                                            class="uppercase block py-2.5 px-0 w-full text-regular text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                            placeholder=" " required />
-                                        <label for="floating_curp"
-                                            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">CURP</label>
-                                        @error('curp')
-                                            <span
-                                                class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
-                                        @enderror --}}
+                                                <x-input class="uppercase" wire:model.lazy="country_birth_participant"
+                                                    label="PAÍS DE NACIMIENTO" placeholder="INGRESE..." />
                                             </div>
                                         </div>
+
+
                                         <div class="mt-6 grid md:grid-cols-3 md:gap-6">
+                                            <div class="relative w-full mb-3 group">
+                                                <x-input wire:model.live="nationality_participant" label="NACIONALIDAD"
+                                                    placeholder="INGRESE..." readonly />
+                                            </div>
+                                            <div class="relative w-full mb-3 group">
+                                                <x-input wire:model.live="state_birth_participant"
+                                                    label="ESTADO DE NACIMIENTO" placeholder="INGRESE..." readonly />
+                                            </div>
                                             <div class="relative mb-6 w-full group">
                                                 <x-datetime-picker label="Fecha de nacimiento"
                                                     placeholder="SELECCIONE FECHA..." parse-format="YYYY-MM-DD"
                                                     without-time="false" wire:model.defer="birth" />
                                             </div>
+                                        </div>
+
+                                        <div class="mt-2 grid md:grid-cols-3 md:gap-6">
                                             <div class="relative mb-6 w-full group">
                                                 <x-inputs.maskable label="EDAD" mask="##"
                                                     placeholder="ESCRIBE..." wire:model.defer="age" />
-                                                {{-- <input type="number" name="floating_age" id="floating_age"
-                                            wire:model.lazy="age"
-                                            class="uppercase block py-2.5 px-0 w-full text-regular text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                            placeholder=" " required />
-                                        <label for="floating_age"
-                                            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Edad</label>
-                                        @error('age')
-                                            <span
-                                                class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
-                                        @enderror --}}
+                                            </div>
+                                            <div class="relative w-full mb-2 group">
+                                                <x-input class="uppercase" wire:model.blur="rfc_participant" label="RFC"
+                                                    hint="INGRESA HOMOCLAVE" x-mask="*************" />
+                                            </div>
+                                        </div>
+                                        <h1 class="text-xl text-sky-900 font-semibold tracking-wider capitalize">
+                                            DOMICILIO ACTUAL
+                                        </h1>
+                                        <div class="h-1 bg-gray-200 rounded overflow-hidden">
+                                        </div>
+
+                                        <div class="mt-6 grid md:grid-cols-3 md:gap-6">
+                                            <div class="relative mb-6 w-full group">
+                                                <x-select id="selectCountry" wire:model.change="country_id"
+                                                    x-bind:disabled="!enabled" placeholder="SELECCIONE..."
+                                                    label="PAÍS">
+                                                    @foreach ($countries as $country)
+                                                        <x-select.option label="{{ $country->name_country }}"
+                                                            value="{{ $country->id }}" />
+                                                    @endforeach
+                                                </x-select>
+                                                @error('country_id')
+                                                    <span
+                                                        class="text-red-600 text-sm mr-1 px-2.5 py-0.5">{{ $message }}</span>
+                                                @enderror
                                             </div>
                                             <div class="relative mb-6 w-full group">
                                                 <x-select label="ESTADO" placeholder="SELECCIONE..."
                                                     wire:model.lazy="state_id">
-                                                    @foreach ($states as $state)
-                                                        <x-select.option label="{{ $state->name }}"
-                                                            value="{{ $state->id }}" />
+                                                    @foreach($this->apiStates as $apiState)
+                                                      <x-select.option label="{{ $apiState['name_state'] }}"
+                                                            value="{{ $apiState['id'] }}" />
                                                     @endforeach
                                                 </x-select>
-                                                {{-- <label for="state" class="sr-only">Estado</label>
-                                        <select id="state" wire:model.lazy="state_id"
-                                            class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-blue-600 peer">
-                                            <option selected>Elige el estado</option>
-                                            @foreach ($states as $state)
-                                                <option value="{{ $state->id }}">{{ $state->name }}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('state_id')
-                                            <span
-                                                class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
-                                        @enderror --}}
                                             </div>
-                                        </div>
-                                        <div class="mt-2 grid md:grid-cols-3 md:gap-6">
                                             <div class="relative mb-6 w-full group">
+                                                <x-select label="MUNICIPIO" placeholder="SELECCIONE..."
+                                                    wire:model.lazy="municipal_id">
+                                                    @foreach($this->apiMunicipals as $apiMunicipal)
+                                                      <x-select.option label="{{ $apiMunicipal['name_municipal'] }}"
+                                                            value="{{ $apiMunicipal['id'] }}" />
+                                                    @endforeach
+                                                </x-select>
+                                            </div>
+
+                                            {{--  --}}
+
+
+                                            {{-- <div class="relative mb-6 w-full group">
                                                 <x-select label="MUNICIPIO" placeholder="SELECCIONE..."
                                                     wire:model.defer="municipal_id">
                                                     <x-select.option label="SELECCIONE..." value="" />
@@ -209,218 +224,129 @@
                                                             value="{{ $municipal->id }}" />
                                                     @endforeach
                                                 </x-select>
-                                                {{-- <label for="municipio" class="sr-only">Municipio</label>
-                                        <select id="municipio" wire:model.lazy="municipal_id"
-                                            class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-blue-600 peer">
-                                            <option selected>Elige el municipio</option>
-                                            @foreach ($municipals as $municipal)
-                                                <option value="{{ $municipal->id }}">{{ $municipal->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        @error('municipal_id')
-                                            <span
-                                                class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
-                                        @enderror --}}
-                                            </div>
+                                            </div> --}}
+                                        </div>
+
+
+                                        <div class="mt-2 grid md:grid-cols-3 md:gap-6">
                                             <div class="relative mb-6 w-full group">
                                                 <x-input class="uppercase" wire:model.lazy="street"
                                                     label="INGRESE LA CALLE" placeholder="ESCRIBE..." />
-                                                {{-- <input type="text" name="floating_street" id="floating_street"
-                                            wire:model.lazy="street"
-                                            class="uppercase block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                            placeholder=" " required />
-                                        <label for="floating_street"
-                                            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Ingrese
-                                            la Calle</label>
-                                        @error('street')
-                                            <span
-                                                class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
-                                        @enderror --}}
                                             </div>
                                             <div class="relative mb-6 w-full group">
                                                 <x-input class="uppercase" wire:model.lazy="nInterior"
                                                     label="NÚMERO INTERIOR" placeholder="ESCRIBE..." />
-                                                {{-- <input type="text" name="floating_ninter" id="floating_ninter"
-                                            wire:model.lazy="nInterior"
-                                            class="uppercase block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                            placeholder=" " required />
-                                        <label for="floating_ninter"
-                                            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">#
-                                            Interior</label>
-                                        @error('nInterior')
-                                            <span
-                                                class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
-                                        @enderror --}}
                                             </div>
-                                        </div>
-                                        <div class="mt-2 grid md:grid-cols-2 md:gap-6">
                                             <div class="relative mb-6 w-full group">
                                                 <x-input class="uppercase" wire:model.lazy="nExterior"
                                                     label="NÚMERO EXTERIOR" placeholder="ESCRIBE..." />
-                                                {{-- <input type="text" name="floating_nexterior" id="floating_nexterior"
-                                            wire:model.lazy="nExterior"
-                                            class="uppercase block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                            placeholder=" " required />
-                                        <label for="floating_nexterior"
-                                            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">#
-                                            Exterior</label> --}}
-                                            </div>
-                                            <div class="relative mb-6 w-full group">
-                                                <x-input class="uppercase" wire:model.lazy="suburb" label="COLONIA"
-                                                    placeholder="ESCRIBE..." />
-                                                {{-- <input type="text" name="floating_colonia" id="floating_colonia"
-                                            wire:model.lazy="suburb"
-                                            class="uppercase block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                            placeholder=" " required />
-                                        <label for="floating_colonia"
-                                            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Colonia</label>
-                                        @error('suburb')
-                                            <span
-                                                class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
-                                        @enderror --}}
                                             </div>
                                         </div>
-                                        <div class="mt-2 grid md:grid-cols-3 md:gap-6">
+                                        <div class="mt-6 grid md:grid-cols-3 md:gap-6">
                                             <div class="relative mb-6 w-full group">
                                                 <x-inputs.maskable mask="#####" class="uppercase"
                                                     wire:model.lazy="postalCode" label="CÓDIGO POSTAL"
                                                     placeholder="ESCRIBE..." />
-                                                {{-- <input type="text" name="floating_cp" id="floating_cp"
-                                            wire:model.lazy="postalCode"
-                                            class="uppercase block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                            placeholder=" " required />
-                                        <label for="floating_cp"
-                                            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Código
-                                            postal
-                                        </label>
-                                        @error('postalCode')
-                                            <span
-                                                class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
-                                        @enderror --}}
                                             </div>
                                             <div class="relative mb-6 w-full group">
-                                                <x-input class="uppercase" wire:model.lazy="federalEntity"
-                                                    label="ENTIDAD FEDERATIVA" placeholder="ESCRIBE..." />
-                                                {{-- <input type="text" name="floating_entity" id="floating_entity"
-                                            wire:model.lazy="federalEntity"
-                                            class="uppercase block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                            placeholder=" " required />
-                                        <label for="floating_entity"
-                                            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Entidad
-                                            Federativa</label>
-                                        @error('federalEntity')
-                                            <span
-                                                class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
-                                        @enderror --}}
+                                                <x-input class="uppercase" wire:model.lazy="suburb" label="COLONIA"
+                                                    placeholder="ESCRIBE..." />
                                             </div>
                                             <div class="relative mb-6 w-full group">
                                                 <x-input class="uppercase" wire:model.lazy="delegation"
-                                                    label="DELEGACIÓN" placeholder="ESCRIBE..." />
-                                                {{-- <input type="text" name="floating_delegacion" id="floating_delegacion"
-                                            wire:model.lazy="delegation"
-                                            class="uppercase block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                            placeholder=" " required />
-                                        <label for="floating_ninter"
-                                            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Delegacion
-                                        </label>
-                                        @error('delegation')
-                                            <span
-                                                class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
-                                        @enderror --}}
+                                                    label="LOCALIDAD" placeholder="ESCRIBE..." />
                                             </div>
                                         </div>
-                                        <div class="grid md:grid-cols-2 md:gap-6">
+
+                                        {{-- <div class="mt-2 grid md:grid-cols-3 md:gap-6">
+                                            <div class="relative mb-6 w-full group">
+                                                <x-input class="uppercase" wire:model.lazy="federalEntity"
+                                                    label="ENTIDAD FEDERATIVA" placeholder="ESCRIBE..." />
+                                            </div>
+                                        </div> --}}
+                                        <h1 class="text-xl text-sky-900 font-semibold tracking-wider capitalize">
+                                            DATOS DE CONTACTO
+                                        </h1>
+                                        <div class="h-1 bg-gray-200 rounded overflow-hidden">
+                                        </div>
+                                        <div class="mt-6 grid md:grid-cols-3 md:gap-6">
                                             <div class="relative mb-6 w-full group">
                                                 <x-inputs.maskable label="TELÉFONO MOVIL"
                                                     wire:model.lazy="mobilePhone" mask="(##)####-####"
                                                     placeholder="INGRESE..." />
-                                                {{-- <input type="text" name="floating_phone" id="floating_phone"
-                                            wire:model.lazy="mobilePhone"
-                                            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                            placeholder=" " required />
-                                        <label for="floating_phone"
-                                            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Telefono
-                                            movil
-                                        </label>
-                                        @error('mobilePhone')
-                                            <span
-                                                class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
-                                        @enderror --}}
                                             </div>
                                             <div class="relative mb-6 w-full group">
                                                 <x-inputs.maskable label="TELÉFONO DE OFICINA"
                                                     wire:model.lazy="officePhone" mask="(##)####-####"
                                                     placeholder="INGRESE..." />
-                                                {{-- <input type="text" name="floating_officePhone" id="floating_officePhone"
-                                            wire:model.lazy="officePhone"
-                                            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                            placeholder=" " required />
-                                        <label for="floating_officePhone"
-                                            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Telefono
-                                            oficina
-                                        </label>
-                                        @error('officePhone')
-                                            <span
-                                                class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
-                                        @enderror --}}
                                             </div>
-                                        </div>
-                                        <div class="grid md:grid-cols-2 md:gap-6">
                                             <div class="relative mb-6 w-full group">
                                                 <x-inputs.maskable label="EXTENSIÓN" wire:model.lazy="extension"
                                                     mask="####" placeholder="INGRESE..." />
-                                                {{-- <input type="text" name="floating_ext" id="floating_ext"
-                                            wire:model.lazy="extension"
-                                            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                            placeholder=" " required />
-                                        <label for="floating_ext"
-                                            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                                            Ext.
-                                        </label> --}}
                                             </div>
+                                        </div>
+
+                                        <div class="grid md:grid-cols-2 md:gap-6">
                                             <div class="relative z-0 mb-6 w-full group">
                                                 <x-input class="pr-28" label="CORREO ELECTRÓNICO"
                                                     wire:model.lazy="email" placeholder="INGRESE..." />
-                                                {{-- <input type="text" name="floating_email" id="floating_email"
-                                            wire:model.lazy="email"
-                                            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                            placeholder=" " required />
-                                        <label for="floating_email"
-                                            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                                            Correo electrónico
-                                        </label>
-                                        @error('email')
-                                            <span
-                                                class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
-                                        @enderror --}}
                                             </div>
                                         </div>
+
+
+                                        <h1 class="text-xl text-sky-900 font-semibold tracking-wider capitalize">
+                                            DATOS LABORALES
+                                        </h1>
+                                        <div class="h-1 bg-gray-200 rounded overflow-hidden">
+                                        </div>
+                                        <div class="mt-4 grid md:grid-cols-2 md:gap-6">
+                                            <div class="relative w-full mb-3 group">
+                                                <x-input class="uppercase" wire:model.live="rfc_company_participant"
+                                                    x-mask="*************" x-bind:disabled="!enabled"
+                                                    label="RFC DE LA EMPRESA" placeholder="INGRESE..." />
+                                            </div>
+                                            <div class="relative w-full mb-3 group">
+                                                <x-input class="uppercase" wire:model.live="name_company_participant"
+                                                    x-bind:disabled="!enabled" label="NOMBRE DE LA EMPRESA"
+                                                    placeholder="INGRESE..." />
+                                            </div>
+                                        </div>
+
+                                        <h1 class="text-xl text-sky-900 font-semibold tracking-wider capitalize">
+                                            GENERA DATOS DE ACCESO
+                                        </h1>
+                                        <div class="h-1 bg-gray-200 rounded overflow-hidden">
+                                        </div>
+                                        <div class="flex p-4 mb-4 mt-2 text-sm text-sky-900 rounded-lg bg-sky-50"
+                                            role="alert">
+                                            <svg aria-hidden="true" class="flex-shrink-0 inline w-5 h-5 mr-3"
+                                                fill="currentColor" viewBox="0 0 20 20"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd"
+                                                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                                                    clip-rule="evenodd"></path>
+                                            </svg>
+                                            <span class="sr-only">Info</span>
+                                            <div>
+                                                <span class="font-medium uppercase">INTRODUCE UNA CONTRASEÑA PARA ESTE
+                                                    SISTEMA.
+                                                    RECUERDA QUE DEBE TENER AL MENOS 8 CARACTERES, INCLUYENDO AL MENOS
+                                                    UNA
+                                                    MAYÚSCULA, UNA MINÚSCULA, UN NÚMERO Y UN CARÁCTER ESPECIAL (/, +, -,
+                                                    ?, ¿, #, *,
+                                                    !, ¡, <,>, ~, &, $, %)</span>
+                                            </div>
+                                        </div>
+
+
                                         <div class="grid md:grid-cols-2 md:gap-6">
                                             <div class="relative mb-6 w-full group">
                                                 <x-input class="pr-28" type="password" label="CONTRASEÑA"
                                                     wire:model.lazy="passwordConfirmation" placeholder="INGRESE..." />
-                                                {{-- <input type="password" name="floating_password" id="floating_password"
-                                            wire:model="passwordConfirmation"
-                                            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                            placeholder=" " required />
-                                        <label for="floating_password"
-                                            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Contraseña</label>
-                                        @error('password')
-                                            <span
-                                                class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
-                                        @enderror --}}
                                             </div>
                                             <div class="relative mb-6 w-full group">
                                                 <x-input class="pr-28" type="password" label="CONFIRMAR CONTRASEÑA"
                                                     wire:model.lazy="password" placeholder="INGRESE..." />
-                                                {{-- <input type="password" name="repeat_password" id="floating_repeat_password"
-                                            wire:model="password"
-                                            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                            placeholder=" " required />
-                                        <label for="floating_repeat_password"
-                                            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Confirmar
-                                            contraseña</label> --}}
                                             </div>
                                         </div>
                                         <div class="text-right">

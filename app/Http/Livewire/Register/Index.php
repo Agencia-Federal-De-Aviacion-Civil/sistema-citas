@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Register;
 
+use App\Models\Catalogue\Country;
 use App\Models\Catalogue\Municipal;
 use App\Models\Catalogue\State;
 use Livewire\Component;
@@ -14,46 +15,102 @@ use Illuminate\Support\Facades\Http;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
 
+use function Deployer\Support\array_all;
 
 class Index extends Component
 {
     use Actions;
+    public $rfc_participant, $enabled, $sex_api, $formattedBirthDate, $age_participant, $rfc_participant_api, $curp_api, $sexes, $country_birth, $state_birth_participant, $nationality_participant, $countries;
+    public $user_id, $id_register, $name, $apParental, $apMaternal, $genre, $birth, $state_id, $municipal_id, $age, $street, $nInterior, $nExterior, $suburb, $postalCode, $federalEntity,
+        $delegation, $mobilePhone, $officePhone, $extension, $curp, $email, $password = '', $passwordConfirmation = '';
+    public $states, $municipals, $country_birth_participant, $rfc_company_participant, $apiStates = [], $country_id, $apiMunicipals = [];
+
     public function rules()
     {
         return [
+            // datos pesonales
+            'curp' => 'required|unique:user_participants|max:18|min:18',
             'name' => 'required',
             'apParental' => 'required',
             'apMaternal' => 'required',
             'genre' => 'required',
+            'country_birth_participant' => 'required',
+            'nationality_participant' => 'required',
+            'state_birth_participant' => 'required',
             'birth' => 'required',
+            'age' => 'required|max:2',
+            'rfc_participant' => 'required|unique:user_participants|min:10',
+            //domicilio
+            'country_id' => 'required',
             'state_id' => 'required',
             'municipal_id' => 'required',
-            'age' => 'required|max:2',
             'street' => 'required',
             'nInterior' => '',
             'nExterior' => '',
-            'suburb' => 'required',
             'postalCode' => 'required',
-            'federalEntity' => 'required',
-            'delegation' => 'required',
+            'suburb' => 'required',
+            'delegation' => 'required', // LOCALIAD
+            // 'federalEntity' => 'required', // NO APLICA
+            //datos de contacto
             'mobilePhone' => 'required|max:10',
             'officePhone' => 'max:10',
             'extension' => '',
-            'curp' => 'required|unique:user_participants|max:18|min:18',
             'email' => 'required|email|unique:users',
-            'password' => 'required|min:6|same:passwordConfirmation'
+            //datos de empresa
+            // 'rfc_company_participant'
+            // name_company_participant
+            //datos de acceso
+            'password' => 'required|min:6|same:passwordConfirmation',
+
         ];
     }
-    public $birth_prfle, $rfc_prfle, $enabled, $sex_api, $formattedBirthDate, $age_prfle, $rfc_prfle_api, $curp_api, $sexes, $country_birth_prfle,$state_birth_prfle, $nationality_prfle, $countries;
-    public $user_id, $id_register, $name, $apParental, $apMaternal, $genre, $birth, $state_id, $municipal_id, $age, $street, $nInterior, $nExterior, $suburb, $postalCode, $federalEntity,
-        $delegation, $mobilePhone, $officePhone, $extension, $curp, $email, $password = '', $passwordConfirmation = '';
-    public $states, $municipals;
 
     public function mount()
     {
         $this->states = State::all();
         $this->municipals = collect();
+        $response = Http::withHeaders([
+            'api-key' => '0kKvNnbwrzoNoXnHl2dgIt1rm',
+            // env('API_KEY'),
+            'Accept' => 'application/json'
+        ])->connectTimeout(30)->get('https://cit.sct.gob.mx/sict/catalogs/getEstados/' . 1);
+        if ($response->successful()) {
+            $statesSuccess = $response->json()['data'];
+            $this->apiStates = collect($statesSuccess)->map(function ($apiStateSuccess) {
+                return [
+                    'id' => $apiStateSuccess['estadoIdDTO'],
+                    'name_state' => $apiStateSuccess['nombreEstadoDTO']
+                ];
+            });
+        }
+
+        $response = Http::withHeaders([
+            'api-key' => '0kKvNnbwrzoNoXnHl2dgIt1rm',
+            // env('API_KEY'),
+            'Accept' => 'application/json'
+        ])->connectTimeout(30)->get('https://cit.sct.gob.mx/sict/catalogs/getMunicipios/' . 1);
+        if ($response->successful()) {
+            $municipalSuccess = $response->json()['data'];
+            $this->apiMunicipals = collect($municipalSuccess)->map(function ($apiStateSuccess) {
+                return [
+                    'id' => $apiStateSuccess['municipioIdDTO'],
+                    'name_municipal' => $apiStateSuccess['nombreMunicipioDTO']
+                ];
+            });
+        }
+        // collect();
+
+        if (Cache::has('country_query')) {
+            $this->countries = Cache::get('country_query');
+        } else {
+            $this->countries = Cache::remember('country_query', now()->addMonths(1), function () {
+                return Country::orderByRaw("CASE WHEN id = 165 THEN 0 ELSE 1 END")
+                    ->orderBy('id')
+                    ->get();
+            });
+        }
     }
 
     public function searchRenapo()
@@ -70,28 +127,33 @@ class Index extends Component
                 $this->name = $response->json()['resultado']['data']['nombres'];
                 $this->apParental = $response->json()['resultado']['data']['apPaterno'];
                 $this->apMaternal = $response->json()['resultado']['data']['apMaterno'];
-                $this->birth_prfle = $response->json()['resultado']['data']['fechNac'];
+                $this->birth = $response->json()['resultado']['data']['fechNac'];
+
+                // dump($this->birth);
+
                 $this->curp_api = $response->json()['resultado']['data']['curp'];
-                $this->rfc_prfle_api = Str::upper(substr($this->curp_api, 0, 10));
-                $this->rfc_prfle = $this->rfc_prfle_api;
+                $this->rfc_participant_api = Str::upper(substr($this->curp_api, 0, 10));
+                $this->rfc_participant = $this->rfc_participant_api;
                 $this->sex_api = $response->json()['resultado']['data']['sexo'];
-                $this->genre = $this->sex_api == 'H' ? 1 : ($this->sex_api === 'M' ? 2 : ($this->sex_api === 'X' ? 3 : ''));
+                $this->genre = $this->sex_api == 'H' ? 'Masculino' : ($this->sex_api === 'M' ? 'Femenino' : ($this->sex_api === 'X' ? 3 : ''));
 
-                $this->state_birth_prfle = $response->json()['resultado']['data']['cveEntidadNac'];
+                // dump($this->genre);
+
+                $this->state_birth_participant = $response->json()['resultado']['data']['cveEntidadNac'];
                 $codeCountry = $response->json()['resultado']['data']['nacionalidad'];
-                // foreach ($this->countries as $country) {
-                //     if ($country->code_country === $codeCountry) {
-                //         $this->country_birth_prfle = $country->name_country;
-                //         $this->nationality_prfle = $country->nacionality_country;
-                //         break;
-                //     }
-                // }
+                foreach ($this->countries as $country) {
+                    if ($country->code_country === $codeCountry) {
+                        $this->country_birth_participant = $country->name_country;
+                        $this->nationality_participant = $country->nacionality_country;
+                        break;
+                    }
+                }
 
-                $birthDate = Carbon::createFromFormat('d/m/Y', $this->birth_prfle);
+                $birthDate = Carbon::createFromFormat('d/m/Y', $this->birth);
                 $this->formattedBirthDate = $birthDate->format('Y-m-d');
                 $currentDate = Carbon::now();
                 $age = $currentDate->diff($birthDate)->format('%y');
-                $this->age_prfle = intval($age);
+                $this->age = intval($age);
 
                 // $this->notification()->send([
                 //     'icon' => 'success',
@@ -117,15 +179,106 @@ class Index extends Component
             // ]);
         }
     }
+
+    public function updatedCountryId($country_id)
+    {
+        // dump($country_id);
+        // $statesQuery = $this->states->where('country_id', $country_id);
+        // $this->states_query = $statesQuery->map(function ($statesArray) {
+        //     return [
+        //         'id' => $statesArray->id,
+        //         'name_state' => $statesArray->name_state
+        //     ];
+        // })->values()->toArray();
+        // $this->dispatch(
+        //     'updated-state',
+        //     $this->states_query
+        // );
+        $response = Http::withHeaders([
+            'api-key' => '0kKvNnbwrzoNoXnHl2dgIt1rm',
+            // env('API_KEY'),
+            'Accept' => 'application/json'
+        ])->connectTimeout(30)->get('https://cit.sct.gob.mx/sict/catalogs/getEstados/' . $country_id);
+        if ($response->successful()) {
+            $statesSuccess = $response->json()['data'];
+
+            $this->apiStates = collect($statesSuccess)->map(function ($apiStateSuccess) {
+                return [
+                    'id' => $apiStateSuccess['estadoIdDTO'],
+                    'name_state' => $apiStateSuccess['nombreEstadoDTO']
+                ];
+            });
+
+            // dump($this->apiStates['id']);
+
+            // dump($this->);
+            // foreach($this->apiStates as $apiState){
+
+            //     dump($apiState['id']);
+            // }
+
+            // dump($this->apiStates);
+            // $this->dispatch(
+            //     'updated-state',
+            // $this->apiStates;
+            // );
+        } elseif ($response->failed()) {
+            $this->dispatch('openModal', 'tools.exception-modal', (['codeError' => 'OCURRIO UN ERROR AL CONSULTAR LOS ESTADOS, VUELVE A INTENTARLO. ERROR ' . $response->status()]));
+        }
+    }
+
+    public function updatedStateId($state_id)
+    {
+
+        // $state_participant_separated = explode(',', $state_prfile);
+        // $state_participant_id = reset($state_participant_separated);
+        // $municipalityQuery = $this->municipalities->where('state_id', $state_participant_id);
+        // $this->municipalities_query = $municipalityQuery->map(function ($municipalitiesArray) {
+        //     return [
+        //         'id' => $municipalitiesArray->id,
+        //         'municipality_name' => $municipalitiesArray->municipality_name
+        //     ];
+        // })->values()->toArray();
+        // $this->dispatch(
+        //     'updated-municipal',
+        //     $this->municipalities_query
+        // );
+
+        // $state_prfile_separated = explode(',', $state_id);
+        // $state_prfile_id = reset($state_id);
+        if (is_numeric($state_id)) {
+            $response = Http::withHeaders([
+                'api-key' => '0kKvNnbwrzoNoXnHl2dgIt1rm',
+                // env('API_KEY'),
+                'Accept' => 'application/json'
+            ])->connectTimeout(30)->get('https://cit.sct.gob.mx/sict/catalogs/getMunicipios/' . $state_id);
+            if ($response->successful()) {
+                $municipalSuccess = $response->json()['data'];
+                $this->apiMunicipals = collect($municipalSuccess)->map(function ($apiStateSuccess) {
+                    return [
+                        'id' => $apiStateSuccess['municipioIdDTO'],
+                        'name_municipal' => $apiStateSuccess['nombreMunicipioDTO']
+                    ];
+                });
+                // $this->dispatch(
+                //     'updated-municipal',
+                //     $this->apiMunicipals
+                // );
+            } elseif ($response->failed()) {
+                $this->dispatch('openModal', 'tools.exception-modal', (['codeError' => 'OCURRIO UN ERROR AL CONSULTAR LOS MUNICIPIOS, VUELVE A INTENTARLO. ERROR ' . $response->status()]));
+            }
+        }
+    }
+
     public function render()
     {
         return view('livewire.register.index');
     }
 
-    public function updatedStateId($id)
-    {
-        $this->municipals = Municipal::with('municipalState')->where('state_id', $id)->get();
-    }
+    // public function updatedStateId($id)
+    // {
+    //     $this->municipals = Municipal::with('municipalState')->where('state_id', $id)->get();
+    // }
     public function updatedEmail()
     {
         $this->validate(['email' => 'unique:users']);
@@ -153,16 +306,22 @@ class Index extends Component
             'apParental' => $this->apParental,
             'apMaternal' => $this->apMaternal,
             'genre' => $this->genre,
-            'birth' => $this->birth,
-            'state_id' => $this->state_id,
-            'municipal_id' => $this->municipal_id,
+            'country_birth_participant' => $this->country_birth_participant,
+            'nationality_participant' => $this->nationality_participant,
+            'state_birth_participant' => $this->state_birth_participant,
+            'birth' => $this->formattedBirthDate,
+            'state_id' => 1,
+            // $this->state_id,
+            'municipal_id' => 1,
+            // $this->municipal_id,
             'age' => $this->age,
+            'rfc_participant' => $this->rfc_participant,
             'street' => $this->street,
             'nInterior' => $this->nInterior,
             'nExterior' => $this->nExterior,
             'suburb' => $this->suburb,
             'postalCode' => $this->postalCode,
-            'federalEntity' => $this->federalEntity,
+            'federalEntity' => 'NO APLICA',
             'delegation' => $this->delegation,
             'mobilePhone' => $this->mobilePhone,
             'officePhone' => $this->officePhone,
@@ -175,6 +334,13 @@ class Index extends Component
     public function messages()
     {
         return [
+
+            'country_birth_participant.required' => 'Campo obligatorio',
+            'nationality_participant.required' => 'Campo obligatorio',
+            'state_birth_participant.required' => 'Campo obligatorio',
+            'rfc_participant.required' => 'HOMOCLAVE DE RFC CAMPO OBLIGATORIO',
+            'rfc_participant.unique' => 'EL RFC YA SE ENCUENTRA REGISTRADO',
+            'rfc_participant.min' => 'MINIMO 10 CARACTERES EN EL RFC',
             'name.required' => 'Campo obligatorio',
             'apParental.required' => 'Campo obligatorio',
             'apMaternal.required' => 'Campo obligatorio',

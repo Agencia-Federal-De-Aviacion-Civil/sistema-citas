@@ -7,8 +7,12 @@
     @if ($modal)
         @include('livewire.medicine.modals.readyPdf')
     @endif
-    @if ($idTypeAppointment === false)
+    @if ($idTypeAppointment === true)
         @livewire('medicine.modals.modal-index')
+    @endif
+
+    @if ($openValidateModal === false)
+        @include('afac.medicine.validate-pay-modal')
     @endif
     {{-- arreglar --}}
     {{-- @unless ($showBannerBoolean) --}}
@@ -658,7 +662,7 @@
                                             </div>
                                         </div>
                                         {{-- <div class="text-base relative z-auto w-full mt-2 group">
-                                          
+
                                         </div> --}}
                                     </div>
                                     {{-- paso6 --}}

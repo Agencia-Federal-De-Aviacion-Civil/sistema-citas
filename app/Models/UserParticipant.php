@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Models\Catalogue\Country;
 use App\Models\Catalogue\Municipal;
 use App\Models\Catalogue\State;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class UserParticipant extends Model
 {
@@ -36,5 +38,9 @@ class UserParticipant extends Model
     public function userParticipantUserHeadquarter()
     {
         return $this->hasMany(UserHeadquarter::class);
+    }
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
     }
 }
