@@ -195,19 +195,19 @@
                                             </div>
                                             <div class="relative mb-6 w-full group">
                                                 <x-select label="ESTADO" placeholder="SELECCIONE..."
-                                                    wire:model.lazy="state_id">
+                                                    wire:model.lazy="state_id" class="uppercase">
                                                     @foreach($this->apiStates as $apiState)
                                                       <x-select.option label="{{ $apiState['name_state'] }}"
-                                                            value="{{ $apiState['id'] }}" />
+                                                            value="{{ $apiState['id'].','.$apiState['name_state'] }}" />
                                                     @endforeach
                                                 </x-select>
                                             </div>
                                             <div class="relative mb-6 w-full group">
                                                 <x-select label="MUNICIPIO" placeholder="SELECCIONE..."
-                                                    wire:model.lazy="municipal_id">
+                                                    wire:model.lazy="municipal_id" class="uppercase">
                                                     @foreach($this->apiMunicipals as $apiMunicipal)
                                                       <x-select.option label="{{ $apiMunicipal['name_municipal'] }}"
-                                                            value="{{ $apiMunicipal['id'] }}" />
+                                                            value="{{ $apiMunicipal['id'].','.$apiMunicipal['name_municipal'] }}" />
                                                     @endforeach
                                                 </x-select>
                                             </div>

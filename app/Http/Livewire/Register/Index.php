@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use WireUi\Traits\Actions;
 use App\Models\catalogue\Sex;
 use App\Models\Tenant\DataBaseTenant;
+use App\Models\Tenant\DataRoles;
 use App\Models\Tenant\DataUserProfiles;
 use App\Models\Tenant\DataUsers;
 use Illuminate\Support\Facades\Auth;
@@ -32,14 +33,13 @@ class Index extends Component
     public $rfc_participant, $enabled, $sex_api, $formattedBirthDate, $age_participant, $rfc_participant_api, $curp_api, $sexes, $country_birth, $state_birth_participant, $nationality_participant, $countries;
     public $user_id, $id_register, $name, $apParental, $apMaternal, $genre, $birth, $state_id, $municipal_id, $age, $street, $nInterior, $nExterior, $suburb, $postalCode, $federalEntity,
         $delegation, $mobilePhone, $officePhone, $extension, $curp, $email, $password = '', $passwordConfirmation = '';
-    public $states, $municipals, $country_birth_participant, $rfc_company_participant,$name_company_participant, $apiStates = [], $country_id, $apiMunicipals = [], $confirm_privacity;
-
-    public $user, $sex_id;
+    public $states, $municipals, $country_birth_participant, $rfc_company_participant, $name_company_participant, $apiStates = [], $country_id, $apiMunicipals = [], $confirm_privacity;
+    public $user, $sex_id, $state_name_separated, $municipal_name_separated;
     public function rules()
     {
         return [
             // datos pesonales
-            'curp' => 'required|unique:user_participants|max:18|min:18',
+            // 'curp' => 'required|unique:user_participants|max:18|min:18',
             'name' => 'required',
             'apParental' => 'required',
             'apMaternal' => 'required',
@@ -49,7 +49,6 @@ class Index extends Component
             'state_birth_participant' => 'required',
             'birth' => 'required',
             'age' => 'required|max:2',
-            // 'rfc_participant' => 'required|unique:user_participants|min:10',
             //domicilio
             'country_id' => 'required',
             'state_id' => 'required',
@@ -75,11 +74,42 @@ class Index extends Component
         ];
     }
 
+
+    public function clean()
+    {
+        $this->reset([
+            'name',
+            'email',
+            'password',
+            'sex_id',
+            'genre',
+            'country_id',
+            'apParental',
+            'apMaternal',
+            'rfc_participant',
+            'birth',
+            'age',
+            'street',
+            'state_birth_participant',
+            'nationality_participant',
+            'country_birth_participant',
+            'state_id',
+            'municipal_id',
+            'nInterior',
+            'nExterior',
+            'postalCode',
+            'suburb',
+            'mobilePhone',
+            'officePhone',
+            'extension',
+            'delegation', // LOCALIAD
+            'rfc_company_participant',
+            'name_company_participant',
+        ]);
+    }
+
     public function mount()
     {
-        // $personalafacs = DataUsers::with('userProfile')->get();
-
-        // $userr = User::with('UserParticipant')->get();
 
         $this->states = State::all();
         $this->municipals = collect();
@@ -112,7 +142,6 @@ class Index extends Component
                 ];
             });
         }
-        // collect();
 
         if (Cache::has('country_query')) {
             $this->countries = Cache::get('country_query');
@@ -128,7 +157,7 @@ class Index extends Component
     public function searchRenapo()
     {
         $this->validate([
-            'curp' => 'required|unique:user_participants', // 'curp' => 'required|unique:user_profiles|max:18|min:18',
+            'curp' => 'required|unique:user_participants|max:18|min:18', // 'curp' => 'required|unique:user_profiles|max:18|min:18',
         ]);
         if (checkdnsrr('crp.sct.gob.mx', 'A')) {
             $curp = Str::upper($this->curp);
@@ -140,18 +169,12 @@ class Index extends Component
                 $this->apParental = $response->json()['resultado']['data']['apPaterno'];
                 $this->apMaternal = $response->json()['resultado']['data']['apMaterno'];
                 $this->birth = $response->json()['resultado']['data']['fechNac'];
-
-                // dump($this->birth);
-
                 $this->curp_api = $response->json()['resultado']['data']['curp'];
                 $this->rfc_participant_api = Str::upper(substr($this->curp_api, 0, 10));
                 $this->rfc_participant = $this->rfc_participant_api;
                 $this->sex_api = $response->json()['resultado']['data']['sexo'];
                 $this->genre = $this->sex_api == 'H' ? 'Masculino' : ($this->sex_api === 'M' ? 'Femenino' : ($this->sex_api === 'X' ? 3 : ''));
                 $this->sex_id = $this->sex_api == 'H' ? 1 : ($this->sex_api === 'M' ? 2 : ($this->sex_api === 'X' ? 3 : ''));
-
-                // dump($this->genre);
-
                 $this->state_birth_participant = $response->json()['resultado']['data']['cveEntidadNac'];
                 $codeCountry = $response->json()['resultado']['data']['nacionalidad'];
                 foreach ($this->countries as $country) {
@@ -173,45 +196,34 @@ class Index extends Component
                     'icon'        => 'success',
                     'timeout' => '2500'
                 ]);
-                // $this->notification()->send([
-                //     'icon' => 'success',
-                //     'title' => 'Búsqueda éxitosa!',
-                //     'description' => 'Usuario localizado con éxito.',
-                //     'timeout' => '2100'
-                // ]);
             } elseif ($response->successful() && $response->json()['resultado']['data']['statusOper'] === 'NO EXITOSO') {
                 $this->clean();
-                // $this->notification()->send([
-                //     'icon' => 'error',
-                //     'title' => 'Búsqueda no éxitosa!',
-                //     'description' => 'Usuario no localizado.',
-                // ]);
+                $this->notification()->send([
+                    'icon' => 'error',
+                    'title' => 'Búsqueda no éxitosa!',
+                    'description' => 'Usuario no localizado.',
+                ]);
             } else {
                 // $this->dispatch('openModal', 'tools.exception-modal', (['codeError' => $response->status()]));
             }
         } else {
-            // $this->notification()->send([
-            //     'icon' => 'info',
-            //     'title' => 'Sin conexión!',
-            //     'description' => 'No hay conexión, vuelve a intentarlo.',
-            // ]);
+            $this->notification()->send([
+                'icon' => 'info',
+                'title' => 'Sin conexión!',
+                'description' => 'No hay conexión, vuelve a intentarlo.',
+            ]);
         }
+    }
+
+    public function cleanSearch()
+    {
+        $this->enabled = false;
+        $this->reset('curp');
+        $this->clean();
     }
 
     public function updatedCountryId($country_id)
     {
-        // dump($country_id);
-        // $statesQuery = $this->states->where('country_id', $country_id);
-        // $this->states_query = $statesQuery->map(function ($statesArray) {
-        //     return [
-        //         'id' => $statesArray->id,
-        //         'name_state' => $statesArray->name_state
-        //     ];
-        // })->values()->toArray();
-        // $this->dispatch(
-        //     'updated-state',
-        //     $this->states_query
-        // );
         $response = Http::withHeaders([
             'api-key' => '0kKvNnbwrzoNoXnHl2dgIt1rm',
             // env('API_KEY'),
@@ -226,16 +238,6 @@ class Index extends Component
                     'name_state' => $apiStateSuccess['nombreEstadoDTO']
                 ];
             });
-
-            // dump($this->apiStates['id']);
-
-            // dump($this->);
-            // foreach($this->apiStates as $apiState){
-
-            //     dump($apiState['id']);
-            // }
-
-            // dump($this->apiStates);
             // $this->dispatch(
             //     'updated-state',
             // $this->apiStates;
@@ -247,29 +249,16 @@ class Index extends Component
 
     public function updatedStateId($state_id)
     {
+        $state_participants_separated = explode(',', $state_id);
+        $state_participants_id = reset($state_participants_separated);
+        $this->state_name_separated = end($state_participants_separated);
 
-        // $state_participant_separated = explode(',', $state_prfile);
-        // $state_participant_id = reset($state_participant_separated);
-        // $municipalityQuery = $this->municipalities->where('state_id', $state_participant_id);
-        // $this->municipalities_query = $municipalityQuery->map(function ($municipalitiesArray) {
-        //     return [
-        //         'id' => $municipalitiesArray->id,
-        //         'municipality_name' => $municipalitiesArray->municipality_name
-        //     ];
-        // })->values()->toArray();
-        // $this->dispatch(
-        //     'updated-municipal',
-        //     $this->municipalities_query
-        // );
-
-        // $state_prfile_separated = explode(',', $state_id);
-        // $state_prfile_id = reset($state_id);
-        if (is_numeric($state_id)) {
+        if (is_numeric($state_participants_id)) {
             $response = Http::withHeaders([
                 'api-key' => '0kKvNnbwrzoNoXnHl2dgIt1rm',
                 // env('API_KEY'),
                 'Accept' => 'application/json'
-            ])->connectTimeout(30)->get('https://cit.sct.gob.mx/sict/catalogs/getMunicipios/' . $state_id);
+            ])->connectTimeout(30)->get('https://cit.sct.gob.mx/sict/catalogs/getMunicipios/' . $state_participants_id);
             if ($response->successful()) {
                 $municipalSuccess = $response->json()['data'];
                 $this->apiMunicipals = collect($municipalSuccess)->map(function ($apiStateSuccess) {
@@ -286,6 +275,10 @@ class Index extends Component
                 $this->dispatch('openModal', 'tools.exception-modal', (['codeError' => 'OCURRIO UN ERROR AL CONSULTAR LOS MUNICIPIOS, VUELVE A INTENTARLO. ERROR ' . $response->status()]));
             }
         }
+    }
+    public function updatedMunicipalId($municipal_id){
+        $municipal_participants_separated = explode(',', $municipal_id);
+        $this->municipal_name_separated = end($municipal_participants_separated);
     }
 
     public function render()
@@ -311,7 +304,10 @@ class Index extends Component
     }
     public function register()
     {
-        $this->validate();
+        $state_id = State::where('name', Str::upper($this->state_name_separated))->pluck('id')->first();
+        $municipal_id = Municipal::where('name', Str::upper($this->municipal_name_separated))->pluck('id')->first();
+
+            $this->validate();
         $user = User::create(
             [
                 'name' => strtoupper($this->name),
@@ -324,14 +320,10 @@ class Index extends Component
             'apParental' => $this->apParental,
             'apMaternal' => $this->apMaternal,
             'genre' => $this->genre,
-            // 'country_birth_participant' => $this->country_birth_participant,
-            // 'nationality_participant' => $this->nationality_participant,
-            // 'state_birth_participant' => $this->state_birth_participant,
             'birth' => $this->formattedBirthDate,
-            'state_id' => 1,// $this->state_id,
-            'municipal_id' => 1,// $this->municipal_id,
+            'state_id' => $state_id,
+            'municipal_id' => $municipal_id,
             'age' => $this->age,
-            // 'rfc_participant' => $this->rfc_participant,
             'street' => $this->street,
             'nInterior' => $this->nInterior,
             'nExterior' => $this->nExterior,
@@ -359,8 +351,12 @@ class Index extends Component
                 'email' => $user->email,
                 'password' => $user->password,
             ]
-            );
-        // ->assignRole('medical_user');
+        );
+        DataRoles::insert([
+            'role_id' => 1,
+            'model_type' => 'App\Models\User',
+            'model_id' => $dataUser->id
+        ]);
         DataUserProfiles::create([
             'user_id' => $dataUser->id,
             'sex_id' => $this->sex_id,
@@ -373,8 +369,8 @@ class Index extends Component
             'state_birth_prfle' => $this->state_birth_participant,
             'nationality_prfle' => $this->nationality_participant,
             'country_birth_prfle' => $this->country_birth_participant,
-            'state_prfle' => null,
-            'municipality_prfle' => null,
+            'state_prfle' => Str::upper($this->state_name_separated),
+            'municipality_prfle' => Str::upper($this->municipal_name_separated),
             'location_prfle' => $this->delegation,
             'street_prfle' => $this->street,
             'n_int_prfle' => $this->nInterior,
@@ -388,11 +384,7 @@ class Index extends Component
             'name_company_prfle' => $this->name_company_participant,
             'confirm_privacity' => $this->confirm_privacity,
         ]);
-
     }
-
-
-
 
     public function messages()
     {
