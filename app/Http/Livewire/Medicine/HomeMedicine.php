@@ -19,6 +19,9 @@ use App\Models\Medicine\MedicineRevaluationInitial;
 use App\Models\Medicine\MedicineRevaluationRenovation;
 use App\Models\Medicine\MedicineSchedule;
 use App\Models\Medicine\MedicineScheduleException;
+use App\Models\Tenant\DataDocuments;
+use App\Models\Tenant\DataMedReservationExt;
+use App\Models\Tenant\DataMedReservationReass;
 use App\Models\Tenant\DataMedReservations;
 use App\Models\User;
 use Carbon\Carbon;
@@ -63,6 +66,8 @@ class HomeMedicine extends Component
     ];
     public function mount()
     {
+
+
         //idType 2 es para cuando la sede de terceros autorizados quiere generer cita
         $idIsExternal = (session('idType') == 2 ? 1 : session('idType'));
         $this->idTypeAppointment = $idIsExternal;
@@ -73,9 +78,6 @@ class HomeMedicine extends Component
         }, function ($query) {
             return $query->whereIn('id', [1, 2, 3, 4, 5]);
         })->get();
-
-        // dump($this->typeExams);
-
 
         $this->sedes = collect();
         $this->userQuestions = MedicineQuestion::all();
@@ -91,13 +93,10 @@ class HomeMedicine extends Component
             'UserParticipant:id,user_id,apParental,apMaternal'
         ])->find($this->userId);
 
-
         $this->name = Auth::user()->name;
         $this->apParental = Auth::user()->UserParticipant->first()->apParental;
         $this->apMaternal = Auth::user()->UserParticipant->first()->apMaternal;
-
         // $this->apMaternal = $authUser->UserParticipant->lst_mat_prfle ?? $authUser->lst_mat_prfle;
-
     }
     public function registeredEmit($payload)
     {
@@ -182,48 +181,25 @@ class HomeMedicine extends Component
                     'icon'        => 'success',
                     'timeout' => '2500'
                 ]);
-
-                // Notification::make()
-                //     ->title('PAGO VERIFICADO')
-                //     ->body('EL PAGO SE HA VERIFICADO CORRECTAMENTE')
-                //     ->success()
-                //     ->send();
                 $this->openValidateModal = true;
                 Session::put(['referenceNumber' => $this->reference_number]);
             } else {
-
-
                 $this->notification([
                     'title'       => 'SOLICITUD NO PROCESADA',
                     'description' => 'LA SOLICITUD NO FUE PROCESADA',
                     'icon'        => 'error',
                     'timeout' => '2500'
                 ]);
-
-                // Notification::make()
-                //     ->title('SOLICITUD NO PROCESADA')
-                //     ->body($response->json()['error_msg'])
-                //     ->danger()
-                //     ->send();
             }
         } else {
-
             $this->notification([
                 'title'       => 'ERROR DE CONEXIÓN',
                 'description' => 'VERIFICA TU CONEXIÓN A INTERNET',
                 'icon'        => 'error',
                 'timeout' => '2500'
             ]);
-
-            // Notification::make()
-            //     ->title('ERROR DE CONEXIÓN')
-            //     ->body('VERIFICA TU CONEXIÓN A INTERNET')
-            //     ->warning()
-            //     ->send();
         }
     }
-
-
     public function clean()
     {
         $this->reset([
@@ -969,28 +945,55 @@ class HomeMedicine extends Component
         }
     }
 
-    public function DataMedReservations(){
-        $dataUser = DataMedReservations::create(
+    public function DataMedReservations()
+    {
+        $typeClass = ['1' => 1, '2' => 2, '3' => 3, '4' => 1, '5' => 2, '6' => 3][$this->type_class_id];
+        $DataMedReser = DataMedReservations::create(
             [
-                'user_id' => $this->userid,
+                'user_id' => 57,
                 'license_reason_id' => $this->type_exam_id,
-                'type_class_id' => $this->type_class_id,
-                'license_class_id' => null,
+                'type_class_id' => $typeClass,
+                'license_class_id' => $this->clasification_class_id,
                 'headquarter_id' => $this->headquarter_id,
                 'reference_number' => $this->reference_number ?? 'NO APLICA',
                 'pay_date' => $this->pay_date,
                 'reserve_date' => $this->dateReserve,
                 'status_id' => 1,
-                'is_studying' => $this->medicine_question_ex_id ?? 0,
-                'has_extension' => 0
-                // 'has_extension' => empty($this->extensionClassId) ? 0 : (empty($extensionData) ? 0 : $this->extensionClassId),
+                'is_studying' => $this->medicine_question_id ?? 0,
+                'has_extension' => ($this->extensionClassId) ? 2 : 0,
+            ]
+        );
+        $DataMedReser->update([
+            'medical_folio' => 'MED-' . $DataMedReser->id
+        ]);
+
+        // $id_reserve = $DataMedReser->load('documents');
+        // $morph_document = $id_reserve->documents();
+        $extension = $this->document_pay->getClientOriginalExtension();
+        $fileName = Str::uuid() . '.' . $extension;
+        DataDocuments::create([
+            'name_document' => $this->document_pay->storeAs('siafac/documents/directions/medical', $fileName, 'public'),
+            'documentable_type' => 'App\Models\Medical\MedReservation',
+            // DataMedReservations::class,
+            'documentable_id' => $DataMedReser->id
+        ]);
+
+        if ($this->type_exam_id == 3) {
+            DataMedReservationReass::create([
+                'med_reservation_id' => $DataMedReser->id,
+                'license_reval_id' => $this->type_exam_revaloration_id,
             ]);
-            $dataUser->update([
-                'medical_folio' => 'MED-' . $dataUser->id
+        }
+        if ($this->extensionClassId == 1) {
+            DataMedReservationExt::create([
+                'med_reservation_id' => $DataMedReser->id,
+                'license_reason_id' => $this->type_exam_id_extension,
+                'type_class_id' => $this->type_class_extension_id,
+                'license_class_id' => $this->clas_class_extension_id,
+                'is_studying' =>  $this->medicine_question_ex_id ?? 0,
             ]);
+        }
     }
-
-
     public function cleanclass()
     {
         $this->reset([

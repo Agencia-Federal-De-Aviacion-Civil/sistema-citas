@@ -10,7 +10,7 @@ class Dashboard extends Component
     public $selectedHeadquarter, $headquartersAfac, $stategrup,$headquartersAfac1;
     public function mount()
     {
-       
+
         $this->headquartersAfac = Headquarter::where('status', 0)->get();
         $stategrup = $this->headquartersAfac ->groupBy('state');
         $this->stategrup =$stategrup->all();
@@ -34,7 +34,7 @@ class Dashboard extends Component
         session(['idType' => $idTypeAppointment, 'idHeadquarter' => $id]);
         redirect()->route('afac.medicine');
     }
-    
+
     public function goAfac($idTypeAppointment)
     {
         // $currentIdType = session('idType');

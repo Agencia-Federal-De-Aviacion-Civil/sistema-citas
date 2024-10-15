@@ -110,7 +110,6 @@ class Index extends Component
 
     public function mount()
     {
-
         $this->states = State::all();
         $this->municipals = collect();
         $response = Http::withHeaders([
