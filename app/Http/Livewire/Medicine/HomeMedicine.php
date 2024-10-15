@@ -19,6 +19,7 @@ use App\Models\Medicine\MedicineRevaluationInitial;
 use App\Models\Medicine\MedicineRevaluationRenovation;
 use App\Models\Medicine\MedicineSchedule;
 use App\Models\Medicine\MedicineScheduleException;
+use App\Models\Tenant\DataMedReservations;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -773,6 +774,11 @@ class HomeMedicine extends Component
                     'icon'        => 'error'
                 ]);
             } else {
+
+
+
+
+
                 if (!$this->idTypeAppointment) {
                     if (empty($this->document_pay && $this->reference_number && $this->pay_date)) {
                         $saveDocument = Document::create([
@@ -793,6 +799,11 @@ class HomeMedicine extends Component
                     'document_id' => $saveDocument->id ?? null,
                     'type_exam_id' => $this->type_exam_id
                 ]);
+
+
+
+
+
                 if ($this->type_exam_id == 1) {
                     $clasification_class_ids = $this->clasification_class_id;
                     if (is_array($clasification_class_ids)) {
@@ -946,6 +957,7 @@ class HomeMedicine extends Component
                     $citaExtension->clas_class_extension_id = $this->clas_class_extension_id;
                     $citaExtension->save();
                 }
+                $this->DataMedReservations();
                 session(['saved_medicine_id' => $this->saveMedicine->id]);
                 $this->generatePdf();
                 $this->clean();
@@ -1079,6 +1091,63 @@ class HomeMedicine extends Component
         session()->forget('idType');
         return redirect()->route('afac.home');
     }
+
+
+    public function DataMedReservations(){
+
+        $dataUser = DataMedReservations::create(
+            [
+                'user_id' => $this->userid,
+                'license_reason_id' => $this->type_exam_id,
+                'type_class_id' => $this->type_class_id,
+                'license_class_id' => null,
+                'headquarter_id' => $this->headquarter_id,
+                'reference_number' => $this->reference_number ?? 'NO APLICA',
+                'pay_date' => $this->pay_date,
+                'reserve_date' => $this->dateReserve,
+                'status_id' => 1,
+                'is_studying' => $this->medicine_question_ex_id ?? 0,
+                'has_extension' => 0
+                // 'has_extension' => empty($this->extensionClassId) ? 0 : (empty($extensionData) ? 0 : $this->extensionClassId),
+
+            ]);
+
+            $dataUser->update([
+                'medical_folio' => 'MED-' . $dataUser->id
+            ]);
+// <-----------------tenant-------------->
+// `user_id`
+// `license_reason_id`
+// `type_class_id`
+// `license_class_id`
+// `headquarter_id`
+// `medical_folio`
+// `reference_number`
+// `pay_date`
+// `reserve_date`
+// `status_id`
+// `is_studying`
+// `has_extension`
+
+// <----------------citas--------------->
+
+// `user_id`
+// `reference_number`
+// `pay_date`
+// `document_id`
+// `type_exam_id`
+
+// `from_user_appointment`
+// `headquarter_id`
+// `medicine_id`
+// `dateReserve`
+// `medicine_schedule_id`
+// `is_external`
+// `status`
+
+
+    }
+
     public function messages()
     {
         return [

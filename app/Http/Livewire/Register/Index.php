@@ -9,6 +9,9 @@ use Livewire\Component;
 use Illuminate\Support\Facades\Hash;
 use WireUi\Traits\Actions;
 use App\Models\catalogue\Sex;
+use App\Models\Tenant\DataBaseTenant;
+use App\Models\Tenant\DataUserProfiles;
+use App\Models\Tenant\DataUsers;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Http;
@@ -16,17 +19,22 @@ use Livewire\Attributes\Validate;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 use function Deployer\Support\array_all;
 
 class Index extends Component
 {
     use Actions;
+
+
+
     public $rfc_participant, $enabled, $sex_api, $formattedBirthDate, $age_participant, $rfc_participant_api, $curp_api, $sexes, $country_birth, $state_birth_participant, $nationality_participant, $countries;
     public $user_id, $id_register, $name, $apParental, $apMaternal, $genre, $birth, $state_id, $municipal_id, $age, $street, $nInterior, $nExterior, $suburb, $postalCode, $federalEntity,
         $delegation, $mobilePhone, $officePhone, $extension, $curp, $email, $password = '', $passwordConfirmation = '';
-    public $states, $municipals, $country_birth_participant, $rfc_company_participant, $apiStates = [], $country_id, $apiMunicipals = [];
+    public $states, $municipals, $country_birth_participant, $rfc_company_participant,$name_company_participant, $apiStates = [], $country_id, $apiMunicipals = [], $confirm_privacity;
 
+    public $user, $sex_id;
     public function rules()
     {
         return [
@@ -41,7 +49,7 @@ class Index extends Component
             'state_birth_participant' => 'required',
             'birth' => 'required',
             'age' => 'required|max:2',
-            'rfc_participant' => 'required|unique:user_participants|min:10',
+            // 'rfc_participant' => 'required|unique:user_participants|min:10',
             //domicilio
             'country_id' => 'required',
             'state_id' => 'required',
@@ -63,12 +71,16 @@ class Index extends Component
             // name_company_participant
             //datos de acceso
             'password' => 'required|min:6|same:passwordConfirmation',
-
+            'confirm_privacity' => 'required',
         ];
     }
 
     public function mount()
     {
+        // $personalafacs = DataUsers::with('userProfile')->get();
+
+        // $userr = User::with('UserParticipant')->get();
+
         $this->states = State::all();
         $this->municipals = collect();
         $response = Http::withHeaders([
@@ -136,6 +148,7 @@ class Index extends Component
                 $this->rfc_participant = $this->rfc_participant_api;
                 $this->sex_api = $response->json()['resultado']['data']['sexo'];
                 $this->genre = $this->sex_api == 'H' ? 'Masculino' : ($this->sex_api === 'M' ? 'Femenino' : ($this->sex_api === 'X' ? 3 : ''));
+                $this->sex_id = $this->sex_api == 'H' ? 1 : ($this->sex_api === 'M' ? 2 : ($this->sex_api === 'X' ? 3 : ''));
 
                 // dump($this->genre);
 
@@ -154,15 +167,12 @@ class Index extends Component
                 $currentDate = Carbon::now();
                 $age = $currentDate->diff($birthDate)->format('%y');
                 $this->age = intval($age);
-
-
-                // $this->notification([
-                //     'title'       => 'PAGO VERIFICADO',
-                //     'description' => 'EL PAGO SE HA VERIFICADO CORRECTAMENTE',
-                //     'icon'        => 'success',
-                //     'timeout' => '2500'
-                // ]);
-
+                $this->notification([
+                    'title'       => 'Búsqueda éxitosa!',
+                    'description' => 'Usuario localizado con éxito.',
+                    'icon'        => 'success',
+                    'timeout' => '2500'
+                ]);
                 // $this->notification()->send([
                 //     'icon' => 'success',
                 //     'title' => 'Búsqueda éxitosa!',
@@ -314,16 +324,14 @@ class Index extends Component
             'apParental' => $this->apParental,
             'apMaternal' => $this->apMaternal,
             'genre' => $this->genre,
-            'country_birth_participant' => $this->country_birth_participant,
-            'nationality_participant' => $this->nationality_participant,
-            'state_birth_participant' => $this->state_birth_participant,
+            // 'country_birth_participant' => $this->country_birth_participant,
+            // 'nationality_participant' => $this->nationality_participant,
+            // 'state_birth_participant' => $this->state_birth_participant,
             'birth' => $this->formattedBirthDate,
-            'state_id' => 1,
-            // $this->state_id,
-            'municipal_id' => 1,
-            // $this->municipal_id,
+            'state_id' => 1,// $this->state_id,
+            'municipal_id' => 1,// $this->municipal_id,
             'age' => $this->age,
-            'rfc_participant' => $this->rfc_participant,
+            // 'rfc_participant' => $this->rfc_participant,
             'street' => $this->street,
             'nInterior' => $this->nInterior,
             'nExterior' => $this->nExterior,
@@ -337,8 +345,55 @@ class Index extends Component
             'curp' => $this->curp,
         ]);
         auth()->login($user);
+
+        $this->registerTenantUser($user);
+
         return redirect()->route('afac.home');
     }
+
+    public function registerTenantUser($user)
+    {
+        $dataUser = DataUsers::create(
+            [
+                'name' => $user->name,
+                'email' => $user->email,
+                'password' => $user->password,
+            ]
+            );
+        // ->assignRole('medical_user');
+        DataUserProfiles::create([
+            'user_id' => $dataUser->id,
+            'sex_id' => $this->sex_id,
+            'country_id' => $this->country_id,
+            'lst_pat_prfle' => $this->apParental,
+            'lst_mat_prfle' => $this->apMaternal,
+            'curp_prfle' => $this->curp,
+            'rfc_prfle' => $this->rfc_participant,
+            'birth_prfle' =>  $this->formattedBirthDate,
+            'state_birth_prfle' => $this->state_birth_participant,
+            'nationality_prfle' => $this->nationality_participant,
+            'country_birth_prfle' => $this->country_birth_participant,
+            'state_prfle' => null,
+            'municipality_prfle' => null,
+            'location_prfle' => $this->delegation,
+            'street_prfle' => $this->street,
+            'n_int_prfle' => $this->nInterior,
+            'n_ext_prfle' => $this->nExterior,
+            'suburb_prfle' => $this->suburb,
+            'postal_cod_prfle' => $this->postalCode,
+            'mob_phone_prfle' => $this->mobilePhone,
+            'office_phone_prfle' => $this->officePhone,
+            'ext_prfle' => $this->extension,
+            'rfc_company_prfle' => $this->rfc_company_participant,
+            'name_company_prfle' => $this->name_company_participant,
+            'confirm_privacity' => $this->confirm_privacity,
+        ]);
+
+    }
+
+
+
+
     public function messages()
     {
         return [
@@ -375,6 +430,7 @@ class Index extends Component
             'password.required' => 'Campo obligatorio',
             'password.min' => 'Minímo 8 carácteres',
             'password.same' => 'Las contraseñas no coinciden',
+            'confirm_privacity.required' => 'Debes confirmar que has leído el aviso de privacidad.'
         ];
     }
 }
