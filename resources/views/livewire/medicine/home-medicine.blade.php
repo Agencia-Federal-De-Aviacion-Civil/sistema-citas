@@ -10,6 +10,11 @@
     @if ($idTypeAppointment === false)
         @livewire('medicine.modals.modal-index')
     @endif
+
+    @if ($openValidateModal === false)
+        @include('afac.medicine.validate-pay-modal')
+    @endif
+
     {{-- arreglar --}}
     {{-- @unless ($showBannerBoolean) --}}
     <x-banner-component :title="$idTypeAppointment === false

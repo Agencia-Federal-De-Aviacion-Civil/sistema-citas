@@ -33,17 +33,11 @@ use Endroid\QrCode\Label\Alignment\LabelAlignmentCenter;
 use Endroid\QrCode\Label\Font\OpenSans;
 use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
 use Endroid\QrCode\Writer\PngWriter;
-
-use App\Models\Tenant\DataDocuments;
-use App\Models\Tenant\DataMedReservationExt;
-use App\Models\Tenant\DataMedReservationReass;
-use App\Models\Tenant\DataMedReservations;
 use App\Models\Tenantmedicina\Document as TenantmedicinaDocument;
 use App\Models\Tenantmedicina\MedRservation;
 use App\Models\Tenantmedicina\MedRservationExt;
 use App\Models\Tenantmedicina\MedRservationReas;
 use App\Models\User;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
