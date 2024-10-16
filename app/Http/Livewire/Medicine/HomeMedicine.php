@@ -34,12 +34,29 @@ use Endroid\QrCode\Label\Font\OpenSans;
 use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
 use Endroid\QrCode\Writer\PngWriter;
 
+use App\Models\Tenant\DataDocuments;
+use App\Models\Tenant\DataMedReservationExt;
+use App\Models\Tenant\DataMedReservationReass;
+use App\Models\Tenant\DataMedReservations;
+use App\Models\Tenantmedicina\Document as TenantmedicinaDocument;
+use App\Models\Tenantmedicina\MedRservation;
+use App\Models\Tenantmedicina\MedRservationExt;
+use App\Models\Tenantmedicina\MedRservationReas;
+use App\Models\User;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Session;
+
 use PDF;
 
 class HomeMedicine extends Component
 {
     use Actions;
     use WithFileUploads;
+
+    public $name, $apParental, $apMaternal, $userId, $yearExercise, $reference_key, $operation_number, $dependency_chain, $total_paid, $openValidateModal = false;
     public $medicine_question_id, $type_class_id, $clasificationClass, $clasification_class_id, $type_exception_id;
     public $document_pay, $reference_number, $pay_date, $type_exam_id, $typeRenovationExams, $dateConvertedFormatted;
     public $questionClassess, $typeExams, $sedes, $userQuestions, $headquarter_id, $dateReserve, $saveMedicine, $disabledDaysFilter;
@@ -73,6 +90,16 @@ class HomeMedicine extends Component
         $this->typeRenovationExams = collect();
         $this->scheduleMedicines = collect();
         $this->disabledDaysFilter = collect();
+
+        $this->yearExercise = Carbon::now()->year;
+        $this->reference_key = '126000812';
+        $authUser =  is_null($this->userId) ? Auth::user()->load('UserParticipant')->UserParticipant : User::with([
+            'UserParticipant:id,user_id,apParental,apMaternal'
+        ])->find($this->userId);
+
+        $this->name = Auth::user()->name;
+        $this->apParental = Auth::user()->UserParticipant->first()->apParental;
+        $this->apMaternal = Auth::user()->UserParticipant->first()->apMaternal;
     }
     public function registeredEmit($payload)
     {
@@ -113,6 +140,67 @@ class HomeMedicine extends Component
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
+    }
+
+    public function searchKey()
+    {
+        $this->validate([
+            'name' => 'required',
+            'apParental' => 'required',
+            'apMaternal' => 'nullable',
+            'pay_date' => 'required',
+            // 'own_name' => 'required',
+            // 'business_name' => 'required',
+            'yearExercise' => 'required',
+            'operation_number' => 'required',
+            'total_paid' => 'required',
+            'dependency_chain' => 'required',
+            'reference_key' => 'required',
+            'reference_number' => [
+                'required',
+                Rule::unique('medicines', 'reference_number'),
+                // Rule::unique('medical_history_pays', 'paymentkey')->whereNull('deleted_at'),
+            ],
+        ]);
+        $pay_date = $this->pay_date;
+        // dump($payDate);
+        $payDate = Carbon::parse($pay_date)->format('dmY');
+        if (checkdnsrr('pagos.sct.gob.mx', 'A')) {
+            // $pay_for = $this->kind_person_id == 1 ? 'PA=' . Str::upper($this->apParental) . '&MA=' . Str::upper($this->apMaternal) .
+            //     '&NOM=' . Str::upper($this->name) : 'RZ=' . Str::upper($this->business_name);
+            $pay_for = 'PA=' . Str::upper($this->apParental) . '&MA=' . Str::upper($this->apMaternal) . '&NOM=' . Str::upper($this->name);
+            $response = Http::withHeaders([
+                'api-key' =>
+                // env('API_KEY_PAY'),
+                '7e4eb982-5854-43c2-9583-3af45c2e2620',
+                'Accept' => 'application/json'
+            ])->connectTimeout(30)->get('http://pagos.sct.gob.mx/api/valida/pago?' . $pay_for . '&NUMOP=' . $this->operation_number . '&FECHA=' . $payDate . '&TOTAL=' . $this->total_paid . '&LLAVE=' .
+                Str::upper($this->reference_number) . '&CADENA=' . $this->dependency_chain . '&CLAVE=126000812' . '&EJERCICIO=' . $this->yearExercise);
+            if ($response->successful()) {
+                $this->notification([
+                    'title'       => 'PAGO VERIFICADO',
+                    'description' => 'EL PAGO SE HA VERIFICADO CORRECTAMENTE',
+                    'icon'        => 'success',
+                    'timeout' => '2500'
+                ]);
+                $this->openValidateModal = true;
+                Session::put(['referenceNumber' => $this->reference_number]);
+            } else {
+                $this->notification([
+                    'title'       => 'SOLICITUD NO PROCESADA',
+                    'description' => 'LA SOLICITUD NO FUE PROCESADA',
+                    'icon'        => 'error',
+                    'timeout' => '2500'
+                ]);
+            }
+        } else {
+            $this->notification([
+                'title'       => 'ERROR DE CONEXIÓN',
+                'description' => 'VERIFICA TU CONEXIÓN A INTERNET',
+                'icon'        => 'error',
+                'timeout' => '2500'
+            ]);
+        }
     }
 
     public function clean()
@@ -580,20 +668,20 @@ class HomeMedicine extends Component
                                 $q3->where('type_class_id', $this->type_class_id);
                             });
                         });
-                        // ->orWhere(function ($q2) {
-                        //     $q2->whereHas('medicineReserveMedicine.medicineRevaluation', function ($q3) {
-                        //         $q3->whereHas('revaluationMedicineInitial', function ($q4) {
-                        //             $q4->where('type_class_id', $this->type_class_id);
-                        //         });
-                        //     });
-                        // })
-                        // ->orWhere(function ($q2) {
-                        //     $q2->whereHas('medicineReserveMedicine.medicineRevaluation', function ($q3) {
-                        //         $q3->whereHas('revaluationMedicineRenovation', function ($q4) {
-                        //             $q4->where('type_class_id', $this->type_class_id);
-                        //         });
-                        //     });
-                        // });
+                    // ->orWhere(function ($q2) {
+                    //     $q2->whereHas('medicineReserveMedicine.medicineRevaluation', function ($q3) {
+                    //         $q3->whereHas('revaluationMedicineInitial', function ($q4) {
+                    //             $q4->where('type_class_id', $this->type_class_id);
+                    //         });
+                    //     });
+                    // })
+                    // ->orWhere(function ($q2) {
+                    //     $q2->whereHas('medicineReserveMedicine.medicineRevaluation', function ($q3) {
+                    //         $q3->whereHas('revaluationMedicineRenovation', function ($q4) {
+                    //             $q4->where('type_class_id', $this->type_class_id);
+                    //         });
+                    //     });
+                    // });
                 })
                 ->where(function ($queryStop) {
                     // $queryStop->where('status', 0)
@@ -842,6 +930,7 @@ class HomeMedicine extends Component
                     $citaExtension->clas_class_extension_id = $this->clas_class_extension_id;
                     $citaExtension->save();
                 }
+                $this->DataMedReservations();
                 session(['saved_medicine_id' => $this->saveMedicine->id]);
                 $this->generatePdf();
                 $this->clean();
@@ -855,6 +944,57 @@ class HomeMedicine extends Component
             ]);
         }
     }
+
+    public function DataMedReservations()
+    {
+        $typeClass = ($this->type_class_id <= 3) ? $this->type_class_id : ['4' => 1, '5' => 2, '6' => 3][$this->type_class_id];
+        $DataMedReser = MedRservation::create(
+            [
+                'user_id' => 11,
+                'license_reason_id' => $this->type_exam_id,
+                'type_class_id' => $typeClass,
+                'license_class_id' => $this->clasification_class_id,
+                'headquarter_id' => $this->headquarter_id,
+                'reference_number' => $this->reference_number ?? 'NO APLICA',
+                'pay_date' => $this->pay_date,
+                'reserve_date' => $this->dateReserve,
+                'status_id' => 1,
+                'is_studying' => $this->medicine_question_id ?? 0,
+                'has_extension' => ($this->extensionClassId) ? 2 : 0,
+            ]
+        );
+        $DataMedReser->update([
+            'medical_folio' => 'MED-' . $DataMedReser->id
+        ]);
+
+        // $id_reserve = $DataMedReser->load('documents');
+        // $morph_document = $id_reserve->documents();
+        $extension = $this->document_pay->getClientOriginalExtension();
+        $fileName = Str::uuid() . '.' . $extension;
+        TenantmedicinaDocument::create([
+            'name_document' => $this->document_pay->storeAs('siafac/documents/directions/medical', $fileName, 'public'),
+            'documentable_type' => 'App\Models\Medical\MedReservation',
+            // DataMedReservations::class,
+            'documentable_id' => $DataMedReser->id
+        ]);
+
+        if ($this->type_exam_id == 3) {
+            MedRservationReas::create([
+                'med_reservation_id' => $DataMedReser->id,
+                'license_reval_id' => $this->type_exam_revaloration_id,
+            ]);
+        }
+        if ($this->extensionClassId == 1) {
+            MedRservationExt::create([
+                'med_reservation_id' => $DataMedReser->id,
+                'license_reason_id' => $this->type_exam_id_extension,
+                'type_class_id' => $this->type_class_extension_id,
+                'license_class_id' => $this->clas_class_extension_id,
+                'is_studying' =>  $this->medicine_question_ex_id ?? 0,
+            ]);
+        }
+    }
+
     public function cleanclass()
     {
         $this->reset([
@@ -925,16 +1065,16 @@ class HomeMedicine extends Component
         $keyEncrypts =  Crypt::encryptString($medicineId . '*' . $dateAppointment . '*' . $curp);
 
         $result = Builder::create()
-        ->writer(new PngWriter())
-        ->writerOptions([])
-        ->data($keyEncrypts)
-        ->encoding(new Encoding('UTF-8'))
-        ->errorCorrectionLevel(new ErrorCorrectionLevelHigh())
-        ->size(300)
-        ->margin(10)
-        ->roundBlockSizeMode(new RoundBlockSizeModeMargin())
-        ->validateResult(false)
-        ->build();
+            ->writer(new PngWriter())
+            ->writerOptions([])
+            ->data($keyEncrypts)
+            ->encoding(new Encoding('UTF-8'))
+            ->errorCorrectionLevel(new ErrorCorrectionLevelHigh())
+            ->size(300)
+            ->margin(10)
+            ->roundBlockSizeMode(new RoundBlockSizeModeMargin())
+            ->validateResult(false)
+            ->build();
         $keyEncrypt = $result->getDataUri();
 
 
