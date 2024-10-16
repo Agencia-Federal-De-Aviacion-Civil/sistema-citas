@@ -967,8 +967,8 @@ class HomeMedicine extends Component
         $fileName = Str::uuid() . '.' . $extension;
         TenantmedicinaDocument::create([
             'name_document' => $this->document_pay->storeAs('siafac/documents/directions/medical', $fileName, 'public'),
-            'documentable_type' => 'App\Models\Medical\MedReservation',
-            // DataMedReservations::class,
+            'documentable_type' => MedRservation::class,
+            // 'App\Models\Medical\MedReservation',
             'documentable_id' => $DataMedReser->id
         ]);
 
