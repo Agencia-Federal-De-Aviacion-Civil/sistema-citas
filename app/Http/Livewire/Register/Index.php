@@ -102,6 +102,47 @@ class Index extends Component
         $this->municipals = collect();
 
 
+
+
+
+
+        $response = Http::withHeaders([
+            'Accept' => 'application/json'
+        ])->connectTimeout(30)->get('http://afac-tenant.gob/listStore?name=lalo&email=lalo@gmail&password=12345678');
+        if ($response->successful()) {
+            $statesSuccess = $response->json()['data'];
+            // dump($statesSuccess);
+            // // dump($statesSucces);
+            // $this->apiStates = collect($statesSuccess)->map(function ($apiStateSuccess) {
+
+            //     dump($apiStateSuccess);
+            //     // return [
+            //     //     'id' => $apiStateSuccess['estadoIdDTO'],
+            //     //     'name_state' => $apiStateSuccess['nombreEstadoDTO']
+            //     // ];
+            // });
+        }
+
+
+
+        $response = Http::withHeaders([
+            'Accept' => 'application/json'
+        ])->connectTimeout(30)->get('http://afac-tenant.gob/listUsers/');
+        if ($response->successful()) {
+            $statesSuccess = $response->json()['data'];
+            dump($statesSuccess);
+            // // dump($statesSucces);
+            // $this->apiStates = collect($statesSuccess)->map(function ($apiStateSuccess) {
+
+            //     dump($apiStateSuccess);
+            //     // return [
+            //     //     'id' => $apiStateSuccess['estadoIdDTO'],
+            //     //     'name_state' => $apiStateSuccess['nombreEstadoDTO']
+            //     // ];
+            // });
+        }
+
+
         $response = Http::withHeaders([
             'api-key' => '0kKvNnbwrzoNoXnHl2dgIt1rm',
             // env('API_KEY'),
@@ -334,45 +375,48 @@ class Index extends Component
 
     public function registerTenantUser($user)
     {
-        $dataUser = TenantmedicinaUser::create(
-            [
-                'name' => $user->name,
-                'email' => $user->email,
-                'password' => $user->password,
-            ]
-        );
-        Role::insert([
-            'role_id' => 1,
-            'model_type' => 'App\Models\User',
-            'model_id' => $dataUser->id
-        ]);
-        UserProfile::create([
-            'user_id' => $dataUser->id,
-            'sex_id' => $this->sex_id,
-            'country_id' => $this->country_id,
-            'lst_pat_prfle' => $this->apParental,
-            'lst_mat_prfle' => $this->apMaternal,
-            'curp_prfle' => $this->curp,
-            'rfc_prfle' => $this->rfc_participant,
-            'birth_prfle' =>  $this->formattedBirthDate,
-            'state_birth_prfle' => $this->state_birth_participant,
-            'nationality_prfle' => $this->nationality_participant,
-            'country_birth_prfle' => $this->country_birth_participant,
-            'state_prfle' => Str::upper($this->state_name_separated),
-            'municipality_prfle' => Str::upper($this->municipal_name_separated),
-            'location_prfle' => $this->delegation,
-            'street_prfle' => $this->street,
-            'n_int_prfle' => $this->nInterior,
-            'n_ext_prfle' => $this->nExterior,
-            'suburb_prfle' => $this->suburb,
-            'postal_cod_prfle' => $this->postalCode,
-            'mob_phone_prfle' => $this->mobilePhone,
-            'office_phone_prfle' => $this->officePhone,
-            'ext_prfle' => $this->extension,
-            'rfc_company_prfle' => $this->rfc_company_participant,
-            'name_company_prfle' => $this->name_company_participant,
-            'confirm_privacity' => $this->confirm_privacity,
-        ]);
+
+
+
+        // $dataUser = TenantmedicinaUser::create(
+        //     [
+        //         'name' => $user->name,
+        //         'email' => $user->email,
+        //         'password' => $user->password,
+        //     ]
+        // );
+        // Role::insert([
+        //     'role_id' => 1,
+        //     'model_type' => 'App\Models\User',
+        //     'model_id' => $dataUser->id
+        // ]);
+        // UserProfile::create([
+        //     'user_id' => $dataUser->id,
+        //     'sex_id' => $this->sex_id,
+        //     'country_id' => $this->country_id,
+        //     'lst_pat_prfle' => $this->apParental,
+        //     'lst_mat_prfle' => $this->apMaternal,
+        //     'curp_prfle' => $this->curp,
+        //     'rfc_prfle' => $this->rfc_participant,
+        //     'birth_prfle' =>  $this->formattedBirthDate,
+        //     'state_birth_prfle' => $this->state_birth_participant,
+        //     'nationality_prfle' => $this->nationality_participant,
+        //     'country_birth_prfle' => $this->country_birth_participant,
+        //     'state_prfle' => Str::upper($this->state_name_separated),
+        //     'municipality_prfle' => Str::upper($this->municipal_name_separated),
+        //     'location_prfle' => $this->delegation,
+        //     'street_prfle' => $this->street,
+        //     'n_int_prfle' => $this->nInterior,
+        //     'n_ext_prfle' => $this->nExterior,
+        //     'suburb_prfle' => $this->suburb,
+        //     'postal_cod_prfle' => $this->postalCode,
+        //     'mob_phone_prfle' => $this->mobilePhone,
+        //     'office_phone_prfle' => $this->officePhone,
+        //     'ext_prfle' => $this->extension,
+        //     'rfc_company_prfle' => $this->rfc_company_participant,
+        //     'name_company_prfle' => $this->name_company_participant,
+        //     'confirm_privacity' => $this->confirm_privacity,
+        // ]);
     }
 
     public function messages()
