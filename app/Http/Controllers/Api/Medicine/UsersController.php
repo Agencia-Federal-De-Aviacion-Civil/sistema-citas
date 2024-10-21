@@ -226,4 +226,18 @@ class UsersController extends Controller
             ], 404);
         }
     }
+    public function status(Request $request)
+    {
+
+        $status = ['2' => 8, '3' => 9][$request->status_id];
+        $DataMedReser = MedicineReserve::find($request->id);
+        $DataMedReser->status = $status;
+        $DataMedReser->save();
+        $data = [
+            'data' => $DataMedReser,
+            // 'data' => $res
+        ];
+        return response()->json($data, 201);
+
+    }
 }

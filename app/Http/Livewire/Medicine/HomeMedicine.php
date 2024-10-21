@@ -67,6 +67,25 @@ class HomeMedicine extends Component
     ];
     public function mount()
     {
+
+        // 'user_id' => 11,
+        // 'license_reason_id' => $this->type_exam_id,
+        // 'type_class_id' => $typeClass,
+        // 'license_class_id' => $this->clasification_class_id,
+        // 'headquarter_id' => $this->headquarter_id,
+        // 'reference_number' => $this->reference_number ?? 'NO APLICA',
+        // 'pay_date' => $this->pay_date,
+        // 'reserve_date' => $this->dateReserve,
+        // 'is_studying' => $this->medicine_question_id ?? 0,
+        // 'has_extension' => ($this->extensionClassId) ? 2 : 0,
+
+
+        // $response = Http::withHeaders([
+        //     'Accept' => 'application/json'
+        // ])->connectTimeout(30)->get('http://afac-tenant.gob/createCita?user_id=3&license_reason_id=1&type_class_id=1&license_class_id=15&headquarter_id=43&reference_number=1235&pay_date=2024-07-02&reserve_date=1&is_studying=0&has_extension=0');
+        // if ($response->successful()) {
+        //     $statesSuccess = $response->json()['data'];
+        // }
         //idType 2 es para cuando la sede de terceros autorizados quiere generer cita
         $idIsExternal = (session('idType') == 2 ? 1 : session('idType'));
         $this->idTypeAppointment = $idIsExternal;
@@ -94,6 +113,18 @@ class HomeMedicine extends Component
         $this->name = Auth::user()->name;
         $this->apParental = Auth::user()->UserParticipant->first()->apParental;
         $this->apMaternal = Auth::user()->UserParticipant->first()->apMaternal;
+
+        if($this->name == 'YONI GUADALUPE'){
+            $this->name ='YONI GUADALUPE';
+            $this->apParental = 'CRUZ';
+            $this->apMaternal = 'BALLESTEROS';
+            $this->pay_date = '2024-07-02';
+            $this->operation_number = '800642';
+            $this->dependency_chain = '00442510033177';
+            $this->total_paid = '2104';
+            $this->reference_number = 'A82ADDB476';
+        }
+
     }
     public function registeredEmit($payload)
     {
@@ -941,52 +972,36 @@ class HomeMedicine extends Component
 
     public function DataMedReservations()
     {
+
+        $reference_number = $this->reference_number ?? 'NO APLICA';
+        $is_studying =  $this->medicine_question_id ?? 0;
+        $has_extension = ($this->extensionClassId) ? 2 : 0;
         $typeClass = ($this->type_class_id <= 3) ? $this->type_class_id : ['4' => 1, '5' => 2, '6' => 3][$this->type_class_id];
-        $DataMedReser = MedRservation::create(
-            [
-                'user_id' => 11,
-                'license_reason_id' => $this->type_exam_id,
-                'type_class_id' => $typeClass,
-                'license_class_id' => $this->clasification_class_id,
-                'headquarter_id' => $this->headquarter_id,
-                'reference_number' => $this->reference_number ?? 'NO APLICA',
-                'pay_date' => $this->pay_date,
-                'reserve_date' => $this->dateReserve,
-                'status_id' => 1,
-                'is_studying' => $this->medicine_question_id ?? 0,
-                'has_extension' => ($this->extensionClassId) ? 2 : 0,
-            ]
-        );
-        $DataMedReser->update([
-            'medical_folio' => 'MED-' . $DataMedReser->id
-        ]);
+        $medicine_question_ex_id = $this->medicine_question_ex_id ?? 0;
 
-        // $id_reserve = $DataMedReser->load('documents');
-        // $morph_document = $id_reserve->documents();
-        $extension = $this->document_pay->getClientOriginalExtension();
-        $fileName = Str::uuid() . '.' . $extension;
-        TenantmedicinaDocument::create([
-            'name_document' => $this->document_pay->storeAs('siafac/documents/directions/medical', $fileName, 'public'),
-            'documentable_type' => MedRservation::class,
-            // 'App\Models\Medical\MedReservation',
-            'documentable_id' => $DataMedReser->id
-        ]);
+        if ($has_extension == 2) {
+            $citas = 'user_id=' . $this->userid . '&license_reason_id=' . $this->type_exam_id . '&type_class_id=' . $typeClass . '&license_class_id=' . $this->clasification_class_id . '&headquarter_id=' . $this->headquarter_id . '&reference_number=' . $reference_number . '&pay_date=' . $this->pay_date . '&reserve_date=' . $this->dateReserve . '&is_studying=' . $is_studying . '&has_extension=' . $has_extension . '&license_reval_id=' . $this->type_exam_revaloration_id .'&type_exam_id_extension=' . $this->type_exam_id_extension . '&type_class_extension_id=' . $this->type_class_extension_id . '&clas_class_extension_id=' . $this->clas_class_extension_id . '&medicine_question_ex_id=' . $medicine_question_ex_id . '';
+        } else {
+            $citas = 'user_id=' . $this->userid . '&license_reason_id=' . $this->type_exam_id . '&type_class_id=' . $typeClass . '&license_class_id=' . $this->clasification_class_id . '&headquarter_id=' . $this->headquarter_id . '&reference_number=' . $reference_number . '&pay_date=' . $this->pay_date . '&reserve_date=' . $this->dateReserve . '&is_studying=' . $is_studying . '&has_extension=' . $has_extension . '&license_reval_id=' . $this->type_exam_revaloration_id .'document_pay'.$this->document_pay. '';
+        }
 
-        if ($this->type_exam_id == 3) {
-            MedRservationReas::create([
-                'med_reservation_id' => $DataMedReser->id,
-                'license_reval_id' => $this->type_exam_revaloration_id,
-            ]);
+        $response = Http::withHeaders([
+            'Accept' => 'application/json'
+        ])->connectTimeout(30)->get('http://afac-tenant.gob/createCita?' . $citas .'');
+        if ($response->successful()) {
+            $statesSuccess = $response->json()['data'];
         }
-        if ($this->extensionClassId == 1) {
-            MedRservationExt::create([
-                'med_reservation_id' => $DataMedReser->id,
-                'license_reason_id' => $this->type_exam_id_extension,
-                'type_class_id' => $this->type_class_extension_id,
-                'license_class_id' => $this->clas_class_extension_id,
-                'is_studying' =>  $this->medicine_question_ex_id ?? 0,
-            ]);
-        }
+
+        // // $id_reserve = $DataMedReser->load('documents');
+        // // $morph_document = $id_reserve->documents();
+        // $extension = $this->document_pay->getClientOriginalExtension();
+        // $fileName = Str::uuid() . '.' . $extension;
+        // TenantmedicinaDocument::create([
+        //     'name_document' => $this->document_pay->storeAs('siafac/documents/directions/medical', $fileName, 'public'),
+        //     'documentable_type' => MedRservation::class,
+        //     // 'App\Models\Medical\MedReservation',
+        //     'documentable_id' => $DataMedReser->id
+        // ]);
     }
 
     public function cleanclass()
@@ -1045,7 +1060,20 @@ class HomeMedicine extends Component
             'icon'        => 'error',
             'timeout' => '3100'
         ]);
+
+        $this->confirmDeleteApi();
     }
+
+    public function confirmDeleteApi()
+    {
+        $response = Http::withHeaders([
+            'Accept' => 'application/json'
+        ])->connectTimeout(30)->get('http://afac-tenant.gob/statusCita?id='.$this->id_medicineReserve.'&status_id=8');
+        if ($response->successful()) {
+            $statesSuccess = $response->json()['data'];
+        }
+    }
+
     public function generatePdf()
     {
         $savedMedicineId = session('saved_medicine_id');

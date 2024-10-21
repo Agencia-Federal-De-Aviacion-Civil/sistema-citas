@@ -152,10 +152,11 @@
                                                 <x-input wire:model.live="state_birth_participant"
                                                     label="ESTADO DE NACIMIENTO" placeholder="INGRESE..." readonly />
                                             </div>
+
                                             <div class="relative mb-6 w-full group">
-                                                <x-datetime-picker label="Fecha de nacimiento"
-                                                    placeholder="SELECCIONE FECHA..." parse-format="YYYY-MM-DD"
-                                                    without-time="false" wire:model.defer="birth" />
+                                                <x-input label="Fecha de nacimiento"
+                                                    placeholder="SELECCIONE FECHA..."
+                                                    without-time="false" wire:model.live="birth" />
                                             </div>
                                         </div>
 
@@ -180,6 +181,18 @@
                                                 <x-select id="selectCountry" wire:model.change="country_id"
                                                     x-bind:disabled="!enabled" placeholder="SELECCIONE..."
                                                     label="PAÍS">
+                                                    <x-select.option label="MÉXICO" value="165" />
+                                                </x-select>
+                                                @error('country_id')
+                                                    <span
+                                                        class="text-red-600 text-sm mr-1 px-2.5 py-0.5">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+
+                                            {{-- <div class="relative mb-6 w-full group">
+                                                <x-select id="selectCountry" wire:model.change="country_id"
+                                                    x-bind:disabled="!enabled" placeholder="SELECCIONE..."
+                                                    label="PAÍS">
                                                     @foreach ($countries as $country)
                                                         <x-select.option label="{{ $country->name_country }}"
                                                             value="{{ $country->id }}" />
@@ -189,7 +202,7 @@
                                                     <span
                                                         class="text-red-600 text-sm mr-1 px-2.5 py-0.5">{{ $message }}</span>
                                                 @enderror
-                                            </div>
+                                            </div> --}}
                                             <div class="relative mb-6 w-full group">
                                                 <x-select label="ESTADO" placeholder="SELECCIONE..."
                                                     wire:model.lazy="state_id" class="uppercase">

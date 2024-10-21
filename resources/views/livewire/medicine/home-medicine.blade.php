@@ -7,9 +7,9 @@
     @if ($modal)
         @include('livewire.medicine.modals.readyPdf')
     @endif
-    @if ($idTypeAppointment === false)
+    {{-- @if ($idTypeAppointment === false)
         @livewire('medicine.modals.modal-index')
-    @endif
+    @endif --}}
 
     @if ($openValidateModal === false)
         @include('afac.medicine.validate-pay-modal')
