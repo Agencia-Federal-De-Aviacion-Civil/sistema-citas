@@ -101,9 +101,9 @@ class AppointmentTable extends DataTableComponent
                         'afac.tables.appointmentTable.actions.classification-classes',
                         [
                             $licencia = MedicineReserve::with([
-                                'medicineReserveMedicine',
+                                'medicineReserveMedicine' => ['medicineRenovation' => ['renovationClasificationClass']],
                                 'medicineReserveFromUser',
-                                'userParticipantUser'
+                                'userParticipantUser',
                             ])->where('id', $row->id)->get(),
                             'licencias' => $licencia
                         ]
@@ -215,7 +215,8 @@ class AppointmentTable extends DataTableComponent
                             $licencia = MedicineReserve::with([
                                 'medicineReserveMedicine',
                                 'medicineReserveFromUser',
-                                'userParticipantUser'
+                                'userParticipantUser',
+
                             ])->where('id', $row->id)->get(),
                             'licencias' => $licencia
                         ]

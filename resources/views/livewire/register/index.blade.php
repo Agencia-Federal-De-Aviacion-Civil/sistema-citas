@@ -1,4 +1,5 @@
 <div>
+    <x-notifications position="top-right" />
     <x-dialog z-index="z-50" blur="md" align="center" />
     <section class="lg:flex justify-center min-h-screen">
         <div
@@ -37,7 +38,7 @@
                 <div x-data="{ enabled: @entangle('enabled'), }">
                     <div class="mt-8 grid md:grid-cols-2 md:gap-6">
                         <div class="relative mb-3 w-full group">
-                            <x-input wire:model.blur="curp" label="INGRESA TU CURP" x-mask="******************"
+                            <x-input wire:model.blur="curp" label="INGRESA TU CURP" x-mask="##################"
                                 x-bind:disabled="enabled" placeholder="ESCRIBE..." class="uppercase" />
                         </div>
                     </div>
@@ -193,9 +194,9 @@
                                     placeholder="SELECCIONE..." label="PAÍS">
                                     <x-select.option label="MÉXICO" value="165" />
                                 </x-select>
-                                @error('country_id')
+                                {{-- @error('country_id')
                                 <span class="text-red-600 text-sm mr-1 px-2.5 py-0.5">{{ $message }}</span>
-                                @enderror
+                                @enderror --}}
                             </div>
 
                             {{-- <div class="relative mb-6 w-full group">

@@ -195,14 +195,19 @@ class Index extends Component
                     'title'       => 'Búsqueda éxitosa!',
                     'description' => 'Usuario localizado con éxito.',
                     'icon'        => 'success',
-                    'timeout' => '2500'
+                    'timeout' => '3100'
                 ]);
+
+
+                // $this->emit('BatchDispatch', [$this->batchId, $this->exporting, $this->exportFinished]);
+
             } elseif ($response->successful() && $response->json()['resultado']['data']['statusOper'] === 'NO EXITOSO') {
                 $this->clean();
                 $this->notification()->send([
-                    'icon' => 'error',
-                    'title' => 'Búsqueda no éxitosa!',
+                    'title'       => 'Búsqueda no éxitosa!',
                     'description' => 'Usuario no localizado.',
+                    'icon'        => 'error',
+                    'timeout' => '3100'
                 ]);
             } else {
                 // $this->dispatch('openModal', 'tools.exception-modal', (['codeError' => $response->status()]));
@@ -212,6 +217,7 @@ class Index extends Component
                 'icon' => 'info',
                 'title' => 'Sin conexión!',
                 'description' => 'No hay conexión, vuelve a intentarlo.',
+                'timeout' => '3100'
             ]);
         }
     }
@@ -245,7 +251,7 @@ class Index extends Component
             // $this->apiStates;
             // );
         } elseif ($response->failed()) {
-            $this->dispatch('openModal', 'tools.exception-modal', (['codeError' => 'OCURRIO UN ERROR AL CONSULTAR LOS ESTADOS, VUELVE A INTENTARLO. ERROR ' . $response->status()]));
+            // $this->dispatch('openModal', 'tools.exception-modal', (['codeError' => 'OCURRIO UN ERROR AL CONSULTAR LOS ESTADOS, VUELVE A INTENTARLO. ERROR ' . $response->status()]));
         }
     }
 
@@ -274,7 +280,7 @@ class Index extends Component
                 //     $this->apiMunicipals
                 // );
             } elseif ($response->failed()) {
-                $this->dispatch('openModal', 'tools.exception-modal', (['codeError' => 'OCURRIO UN ERROR AL CONSULTAR LOS MUNICIPIOS, VUELVE A INTENTARLO. ERROR ' . $response->status()]));
+                // $this->dispatch('openModal', 'tools.exception-modal', (['codeError' => 'OCURRIO UN ERROR AL CONSULTAR LOS MUNICIPIOS, VUELVE A INTENTARLO. ERROR ' . $response->status()]));
             }
         }
     }
@@ -361,6 +367,7 @@ class Index extends Component
     {
         return [
 
+            'country_id' => 'Campo obligatorio',
             'country_birth_participant.required' => 'Campo obligatorio',
             'nationality_participant.required' => 'Campo obligatorio',
             'state_birth_participant.required' => 'Campo obligatorio',
