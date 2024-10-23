@@ -190,8 +190,8 @@
 
                         <div class="mt-6 grid md:grid-cols-3 md:gap-6">
                             <div class="relative mb-6 w-full group">
-                                <x-select id="selectCountry" wire:model.change="country_id" x-bind:disabled="!enabled"
-                                    placeholder="SELECCIONE..." label="PAÍS">
+                                <x-select id="selectCountry" wire:model.change="country_id"
+                                    x-bind:disabled="!enabled" placeholder="SELECCIONE..." label="PAÍS">
                                     <x-select.option label="MÉXICO" value="165" />
                                 </x-select>
                                 {{-- @error('country_id')
@@ -199,47 +199,36 @@
                                 @enderror --}}
                             </div>
 
-                            {{-- <div class="relative mb-6 w-full group">
-                                <x-select id="selectCountry" wire:model.change="country_id" x-bind:disabled="!enabled"
-                                    placeholder="SELECCIONE..." label="PAÍS">
-                                    @foreach ($countries as $country)
-                                    <x-select.option label="{{ $country->name_country }}" value="{{ $country->id }}" />
-                                    @endforeach
-                                </x-select>
-                                @error('country_id')
+
+
+                            <div class="relative mb-3 w-full group">
+                                <div wire:ignore>
+                                    <div class="relative w-full mb-3 group">
+                                        <label class="leading-7 text-sm text-gray-600">ESTADO*</label>
+                                        <select id="selectState" wire:model.change="state_id"
+                                            x-bind:disabled="!enabled">
+                                            <option data-placeholder="true">SELECCIONE...
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                @error('state_id')
+                                    <span class="text-red-600 text-sm mr-1 px-2.5 py-0.5">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <div class="relative w-full mb-3 group">
+                                <div wire:ignore>
+                                    <label class="leading-7 text-sm text-gray-600">MUNICIPIO*</label>
+                                    <select id="selectMunicipality" wire:model.live="municipal_id"
+                                        x-bind:disabled="!enabled">
+                                        <option data-placeholder="true">SELECCIONE...</option>
+                                    </select>
+                                </div>
+                                @error('municipal_id')
                                 <span class="text-red-600 text-sm mr-1 px-2.5 py-0.5">{{ $message }}</span>
                                 @enderror
-                            </div> --}}
-                            <div class="relative mb-6 w-full group">
-                                <x-select label="ESTADO" placeholder="SELECCIONE..." wire:model.lazy="state_id"
-                                    class="uppercase">
-                                    @foreach ($this->apiStates as $apiState)
-                                    <x-select.option label="{{ $apiState['name_state'] }}"
-                                        value="{{ $apiState['id'] . ',' . $apiState['name_state'] }}" />
-                                    @endforeach
-                                </x-select>
                             </div>
-                            <div class="relative mb-6 w-full group">
-                                <x-select label="MUNICIPIO" placeholder="SELECCIONE..." wire:model.lazy="municipal_id"
-                                    class="uppercase">
-                                    @foreach ($this->apiMunicipals as $apiMunicipal)
-                                    <x-select.option label="{{ $apiMunicipal['name_municipal'] }}"
-                                        value="{{ $apiMunicipal['id'] . ',' . $apiMunicipal['name_municipal'] }}" />
-                                    @endforeach
-                                </x-select>
-                            </div>
-
-                            {{-- --}}
-
-
-                            {{-- <div class="relative mb-6 w-full group">
-                                <x-select label="MUNICIPIO" placeholder="SELECCIONE..." wire:model.defer="municipal_id">
-                                    <x-select.option label="SELECCIONE..." value="" />
-                                    @foreach ($municipals as $municipal)
-                                    <x-select.option label="{{ $municipal->name }}" value="{{ $municipal->id }}" />
-                                    @endforeach
-                                </x-select>
-                            </div> --}}
                         </div>
 
 
@@ -319,7 +308,8 @@
                             </div>
                             <div class="relative w-full mb-3 group">
                                 <x-input class="uppercase" wire:model.live="name_company_participant"
-                                    x-bind:disabled="!enabled" label="NOMBRE DE LA EMPRESA" placeholder="INGRESE..." />
+                                    x-bind:disabled="!enabled" label="NOMBRE DE LA EMPRESA"
+                                    placeholder="INGRESE..." />
                             </div>
                         </div>
 
@@ -359,10 +349,6 @@
                             </div>
                         </div>
 
-
-
-
-
                         <div class="flex items-center">
                             <div class="flex items-center mb-4">
                                 <input type="checkbox" wire:model.blur="confirm_privacity"
@@ -375,9 +361,8 @@
                                         Acepto el aviso de privacidad
                                     </label>
                                     @error('confirm_privacity')
-                                    <span
-                                        class="text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{
-                                        $message }}</span>
+                                        <span
+                                            class="text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{{ $message }}</span>
                                     @enderror
                                 </a>
                             </div>
@@ -410,4 +395,60 @@
             </div>
         </div>
     </section>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+
+            // SELECT STATES
+            const slimSelectState = new SlimSelect({
+                select: '#selectState',
+                settings: {
+                    allowDeselect: true,
+                    hideSelected: true,
+                    searchHighlight: true,
+                    openPosition: 'up', // 'auto', 'up' or 'down'
+                    placeholderText: 'SELECCIONE...',
+                    searchText: 'SIN RESULTADOS...',
+                },
+            });
+            Livewire.on('updated-state', (options) => {
+                const defaultSelect = [{
+                    'placeholder': true,
+                    'text': 'SELECCIONE...'
+                }];
+                const formattedOptions = options.map(option => ({
+                    text: option.name_state,
+                    value: option.id + ',' + option.name_state
+                }));
+                const formattedConcatOptions = defaultSelect.concat(formattedOptions);
+                slimSelectState.setData(formattedConcatOptions);
+            });
+
+            // SELECT MUNICIPALITIES
+            const slimSelectMunicipality = new SlimSelect({
+                select: '#selectMunicipality',
+                settings: {
+                    allowDeselect: true,
+                    hideSelected: true,
+                    searchHighlight: true,
+                    openPosition: 'up', // 'auto', 'up' or 'down'
+                    placeholderText: 'SELECCIONE...',
+                    searchText: 'SIN RESULTADOS...',
+                },
+            });
+            Livewire.on('updated-municipal', (options) => {
+                const defaultSelect = [{
+                    'placeholder': true,
+                    'text': ''
+                }];
+                const formattedOptions = options.map(option => ({
+                    text: option.name_municipal,
+                    value: option.id + ',' + option.name_municipal
+                }));
+                const formattedConcatOptions = defaultSelect.concat(formattedOptions);
+                slimSelectMunicipality.setData(formattedConcatOptions);
+            });
+
+        });
+    </script>
 </div>

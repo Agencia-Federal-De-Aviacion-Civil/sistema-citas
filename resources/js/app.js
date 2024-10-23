@@ -6,4 +6,6 @@ import "flatpickr/dist/flatpickr.min.css";
 window.Alpine = Alpine;
 import "./../../vendor/power-components/livewire-powergrid/dist/powergrid";
 import "./../../vendor/power-components/livewire-powergrid/dist/powergrid.css";
+import SlimSelect from 'slim-select';
+window.SlimSelect = SlimSelect;
 Alpine.start();

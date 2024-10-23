@@ -11,9 +11,9 @@
         @livewire('medicine.modals.modal-index')
     @endif --}}
 
-    @if ($openValidateModal === false)
+    {{-- @if ($openValidateModal === false)
         @include('afac.medicine.validate-pay-modal')
-    @endif
+    @endif --}}
 
     {{-- arreglar --}}
     {{-- @unless ($showBannerBoolean) --}}

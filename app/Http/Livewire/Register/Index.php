@@ -112,36 +112,6 @@ class Index extends Component
         //     dump($statesSuccess);
         // }
 
-        $response = Http::withHeaders([
-            'api-key' => '0kKvNnbwrzoNoXnHl2dgIt1rm',
-            // env('API_KEY'),
-            'Accept' => 'application/json'
-        ])->connectTimeout(30)->get('https://cit.sct.gob.mx/sict/catalogs/getEstados/' . 1);
-        if ($response->successful()) {
-            $statesSuccess = $response->json()['data'];
-            $this->apiStates = collect($statesSuccess)->map(function ($apiStateSuccess) {
-                return [
-                    'id' => $apiStateSuccess['estadoIdDTO'],
-                    'name_state' => $apiStateSuccess['nombreEstadoDTO']
-                ];
-            });
-        }
-
-        $response = Http::withHeaders([
-            'api-key' => '0kKvNnbwrzoNoXnHl2dgIt1rm',
-            // env('API_KEY'),
-            'Accept' => 'application/json'
-        ])->connectTimeout(30)->get('https://cit.sct.gob.mx/sict/catalogs/getMunicipios/' . 1);
-        if ($response->successful()) {
-            $municipalSuccess = $response->json()['data'];
-            $this->apiMunicipals = collect($municipalSuccess)->map(function ($apiStateSuccess) {
-                return [
-                    'id' => $apiStateSuccess['municipioIdDTO'],
-                    'name_municipal' => $apiStateSuccess['nombreMunicipioDTO']
-                ];
-            });
-        }
-
         if (Cache::has('country_query')) {
             $this->countries = Cache::get('country_query');
         } else {
@@ -177,13 +147,13 @@ class Index extends Component
                 $this->state_birth_participant = $response->json()['resultado']['data']['cveEntidadNac'];
                 $codeCountry = $response->json()['resultado']['data']['nacionalidad'];
                 // foreach ($this->countries as $country) {
-                    // if ($country->code_country === $codeCountry) {
-                        // $this->country_birth_participant = $country->name_country;
-                        // $this->nationality_participant = $country->nacionality_country;
-                        $this->country_birth_participant = 'MEX';
-                        $this->nationality_participant = 'MEXICANA';
-                    //     break;
-                    // }
+                // if ($country->code_country === $codeCountry) {
+                // $this->country_birth_participant = $country->name_country;
+                // $this->nationality_participant = $country->nacionality_country;
+                $this->country_birth_participant = 'MEX';
+                $this->nationality_participant = 'MEXICANA';
+                //     break;
+                // }
                 // }
 
                 $birthDate = Carbon::createFromFormat('d/m/Y', $this->birth);
@@ -222,7 +192,6 @@ class Index extends Component
         }
     }
 
-
     public function cleanSearch()
     {
         $this->enabled = false;
@@ -233,23 +202,22 @@ class Index extends Component
     public function updatedCountryId($country_id)
     {
         $response = Http::withHeaders([
+            // 'api-key' => env('API_KEY'),
             'api-key' => '0kKvNnbwrzoNoXnHl2dgIt1rm',
-            // env('API_KEY'),
             'Accept' => 'application/json'
         ])->connectTimeout(30)->get('https://cit.sct.gob.mx/sict/catalogs/getEstados/' . $country_id);
         if ($response->successful()) {
             $statesSuccess = $response->json()['data'];
-
             $this->apiStates = collect($statesSuccess)->map(function ($apiStateSuccess) {
                 return [
                     'id' => $apiStateSuccess['estadoIdDTO'],
-                    'name_state' => $apiStateSuccess['nombreEstadoDTO']
+                    'name_state' => Str::upper($apiStateSuccess['nombreEstadoDTO'])
                 ];
             });
-            // $this->dispatch(
-            //     'updated-state',
-            // $this->apiStates;
-            // );
+            $this->emit(
+                'updated-state',
+                $this->apiStates
+            );
         } elseif ($response->failed()) {
             // $this->dispatch('openModal', 'tools.exception-modal', (['codeError' => 'OCURRIO UN ERROR AL CONSULTAR LOS ESTADOS, VUELVE A INTENTARLO. ERROR ' . $response->status()]));
         }
@@ -272,13 +240,13 @@ class Index extends Component
                 $this->apiMunicipals = collect($municipalSuccess)->map(function ($apiStateSuccess) {
                     return [
                         'id' => $apiStateSuccess['municipioIdDTO'],
-                        'name_municipal' => $apiStateSuccess['nombreMunicipioDTO']
+                        'name_municipal' => Str::upper($apiStateSuccess['nombreMunicipioDTO'])
                     ];
                 });
-                // $this->dispatch(
-                //     'updated-municipal',
-                //     $this->apiMunicipals
-                // );
+                $this->emit(
+                    'updated-municipal',
+                    $this->apiMunicipals
+                );
             } elseif ($response->failed()) {
                 // $this->dispatch('openModal', 'tools.exception-modal', (['codeError' => 'OCURRIO UN ERROR AL CONSULTAR LOS MUNICIPIOS, VUELVE A INTENTARLO. ERROR ' . $response->status()]));
             }
