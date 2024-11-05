@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Medicine\Tables;
 use App\Jobs\ExportSelectedJob;
 use App\Models\Medicine\MedicineExportHistory;
 use App\Models\Medicine\MedicineReserve;
+use App\Models\UserParticipant;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -615,6 +616,22 @@ class AppointmentTable extends DataTableComponent
                     ->filter(function ($query, $value) {
                         $query->where('genre', $value);
                     }),
+
+
+                    SelectFilter::make('EDAD')
+
+
+                    ->options([
+                        '' => 'TODOS',
+                         UserParticipant::pluck('age')->groupBy('age'),
+                        // '26' => '26',
+                    ])
+                    ->filter(function ($query, $value) {
+                        $query->where('age', $value);
+                    }),
+
+
+
 
                 TextFilter::make('ID CITA')
                     ->config([
