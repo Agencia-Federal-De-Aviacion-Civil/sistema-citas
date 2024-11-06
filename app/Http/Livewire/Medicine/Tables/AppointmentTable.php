@@ -647,13 +647,13 @@ class AppointmentTable extends DataTableComponent
                     ->options([
                         '' => 'TODOS',
                         'min' => 'MENOR A 40',
-                        'max' => 'MAYOR A 40',
+                        'max' => 'MAYOR E IGUAL A 40',
                     ])
                     ->filter(function (Builder $builder, string $value) {
                         if ($value === 'min') {
                             $builder->where('age', '<', 40);
                         } elseif ($value === 'max') {
-                            $builder->where('age', '>', 40);
+                            $builder->where('age', '>=', 40);
                         }
                     }),
                 TextFilter::make('ID CITA')
