@@ -18,6 +18,7 @@ use LivewireUI\Modal\ModalComponent;
 use Spatie\Permission\Models\Role;
 use WireUi\Traits\Actions;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 
 class ModalNew extends ModalComponent
 {
@@ -26,7 +27,7 @@ class ModalNew extends ModalComponent
     public $roles, $modal, $id_save, $id_update, $name, $email, $apParental, $apMaternal, $state_id, $municipal_id, $password, $passwordConfirmation, $privileges, $privilegesId, $title, $email_verified, $dateNow,
         $genre, $birth, $age, $street, $nInterior, $nExterior, $suburb, $postalCode, $federalEntity, $delegation, $mobilePhone, $officePhone, $extension, $curp, $states, $municipals, $municipio, $select, $user_headquarter_id,
         $headquarter_id;
-    public $headquarters, $userPrivileges, $isVerified, $userstatus, $reason,$inactiveusers,$start_date,$end_date,$updatestatus;
+    public $headquarters, $userPrivileges, $isVerified, $userstatus, $reason, $inactiveusers, $start_date, $end_date, $updatestatus;
     public function rules()
     {
         $rules =  [
@@ -42,6 +43,7 @@ class ModalNew extends ModalComponent
     }
     public function mount($privilegesId = null)
     {
+
         $this->headquarters = Headquarter::all();
         $this->roles = Role::all();
         $this->states = State::all();
@@ -78,10 +80,10 @@ class ModalNew extends ModalComponent
             $this->officePhone = isset($this->userPrivileges[0]->UserParticipant[0]->officePhone) ? $this->userPrivileges[0]->UserParticipant[0]->officePhone : '';
             $this->extension = isset($this->userPrivileges[0]->UserParticipant[0]->extension) ? $this->userPrivileges[0]->UserParticipant[0]->extension : '';
             $this->userstatus = $this->userPrivileges[0]->status;
-            $this->updatestatus = isset($this->inactiveusers[0]->id) ? $this->inactiveusers[0]->id:'' ;
-            $this->start_date = isset($this->inactiveusers[0]->start_date) ? $this->inactiveusers[0]->start_date:'';
-            $this->end_date = isset($this->inactiveusers[0]->end_date) ? $this->inactiveusers[0]->end_date:'' ;
-            $this->reason = isset($this->inactiveusers[0]->observation) ? $this->inactiveusers[0]->observation:'';
+            $this->updatestatus = isset($this->inactiveusers[0]->id) ? $this->inactiveusers[0]->id : '';
+            $this->start_date = isset($this->inactiveusers[0]->start_date) ? $this->inactiveusers[0]->start_date : '';
+            $this->end_date = isset($this->inactiveusers[0]->end_date) ? $this->inactiveusers[0]->end_date : '';
+            $this->reason = isset($this->inactiveusers[0]->observation) ? $this->inactiveusers[0]->observation : '';
         } else {
             $this->privilegesId = null;
         }
@@ -141,6 +143,16 @@ class ModalNew extends ModalComponent
     }
     public function save()
     {
+
+        // $id_state = $this->state_id ?: '7';
+        // $id_munis = $this->municipal_id ?: '218';
+        // $stateid = State::where('id', $id_state)->pluck('name')->first();
+        // $municipal = Municipal::where('id', $id_munis)->pluck('name')->first();
+        // $sex_id = $this->genre == 'MASCULINO' ? 1 : 2 ;
+        // $password = Hash::make($this->password);
+
+        // dump('idstado: '.$id_state.' idmunicipio: '.$id_munis.' nombre estado: '.$stateid.' nombremunicipio: '.$municipal.' sexo: '.$sex_id.' contraseña: '.$password);
+
         $this->validate();
         try {
             $userData = [
@@ -179,6 +191,8 @@ class ModalNew extends ModalComponent
                     'curp' => $this->curp,
                 ]
             );
+
+
             if ($this->privileges === 'headquarters' || $this->privileges === 'sub_headquarters' || $this->privileges === 'headquarters_authorized') {
                 UserHeadquarter::updateOrCreate(
                     ['id' => $this->user_headquarter_id],
@@ -212,15 +226,38 @@ class ModalNew extends ModalComponent
                 'timeout' => '3100'
             ]);
             $this->emit('privilegesUser');
-            
         } catch (\Exception $e) {
             $this->dialog([
                 'title'       => $e->getMessage(),
                 'icon'        => 'error',
             ]);
         }
+        $this->registerTenantUser();
         $this->closeModal();
     }
+
+
+    public function registerTenantUser()
+    {
+
+        $id_state = $this->state_id ?: '7';
+        $id_munis = $this->municipal_id ?: '218';
+        $stateid = State::where('id', $id_state)->pluck('name')->first();
+        $municipal = Municipal::where('id', $id_munis)->pluck('name')->first();
+        $sex_id = $this->genre == 'MASCULINO' ? 1 : 2;
+        $password = Hash::make($this->password);
+        $rfc = substr($this->curp, 0, 10);
+
+        $response = Http::withHeaders([
+            'Accept' => 'application/json'
+            // http://afac-tenant.gob/login
+        ])->connectTimeout(30)->get('http://afac-tenant.gob/listStore?name=' . $this->name . '&email=' . $this->email . '&password=' . $password . '&sex_id=' . $sex_id . '&country_id=' . '165' . '&lst_pat_prfle=' . $this->apParental . '&lst_mat_prfle=' . $this->apMaternal . '&curp_prfle=' . $this->curp . '&rfc_prfle=' . $rfc . '&birth_prfle=' . $this->birth . '&state_birth_prfle=' . NULL . '&nationality_prfle=MEXICANA' . '&country_birth_prfle=MÉXICO' . '&state_prfle=' . $stateid . '&municipality_prfle=' . $municipal . '&location_prfle=' . $this->delegation . '&street_prfle=' . $this->street . '&n_int_prfle=' . $this->nInterior . '&n_ext_prfle=' . $this->nExterior . '&suburb_prfle=' . $this->suburb . '&postal_cod_prfle=' . $this->postalCode . '&mob_phone_prfle=' . $this->mobilePhone . '&office_phone_prfle=' . $this->officePhone . '&ext_prfle=' . $this->extension . '&rfc_company_prfle=' . NULL . '&name_company_prfle=' . NULL . '&confirm_privacity=' . 1 . '&privileges=' . $this->privileges . '');
+        if ($response->successful()) {
+            $statesSuccess = $response->json()['data'];
+        }
+    }
+
+
     public function messages()
     {
         return [
