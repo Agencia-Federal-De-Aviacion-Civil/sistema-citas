@@ -12,12 +12,14 @@ use App\Models\UserHeadquarter;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Hash;
 use App\Models\InactiveUser;
+use Carbon\Carbon;
 use Illuminate\Validation\Rule;
 use Livewire\WithFileUploads;
 use LivewireUI\Modal\ModalComponent;
 use Spatie\Permission\Models\Role;
 use WireUi\Traits\Actions;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
 
 class ModalNew extends ModalComponent
@@ -28,6 +30,12 @@ class ModalNew extends ModalComponent
         $genre, $birth, $age, $street, $nInterior, $nExterior, $suburb, $postalCode, $federalEntity, $delegation, $mobilePhone, $officePhone, $extension, $curp, $states, $municipals, $municipio, $select, $user_headquarter_id,
         $headquarter_id;
     public $headquarters, $userPrivileges, $isVerified, $userstatus, $reason, $inactiveusers, $start_date, $end_date, $updatestatus;
+
+    public $rfc_participant, $enabled, $sex_api, $formattedBirthDate, $age_participant, $rfc_participant_api, $curp_api, $sexes, $country_birth, $state_birth_participant, $nationality_participant, $countries;
+    public $country_birth_participant, $rfc_company_participant, $name_company_participant, $apiStates = [], $country_id, $apiMunicipals = [], $confirm_privacity;
+    public $user, $sex_id, $state_name_separated, $municipal_name_separated, $birth_years, $buttonHIden;
+
+
     public function rules()
     {
         $rules =  [
@@ -43,7 +51,6 @@ class ModalNew extends ModalComponent
     }
     public function mount($privilegesId = null)
     {
-
         $this->headquarters = Headquarter::all();
         $this->roles = Role::all();
         $this->states = State::all();
@@ -84,8 +91,12 @@ class ModalNew extends ModalComponent
             $this->start_date = isset($this->inactiveusers[0]->start_date) ? $this->inactiveusers[0]->start_date : '';
             $this->end_date = isset($this->inactiveusers[0]->end_date) ? $this->inactiveusers[0]->end_date : '';
             $this->reason = isset($this->inactiveusers[0]->observation) ? $this->inactiveusers[0]->observation : '';
+
+            $this->enabled = true;
+            $this->buttonHIden = true;
         } else {
             $this->privilegesId = null;
+            $buttonHIden = null;
         }
     }
     public function verified()
@@ -101,10 +112,87 @@ class ModalNew extends ModalComponent
             'process' => 'USUARIO: ' . $this->name . ' ' . $this->apParental . ' ' . $this->apMaternal . ' ID:' . $idVerify
         ]);
     }
+
+    public function searchRenapo()
+    {
+        $this->validate([
+            'curp' => 'required|unique:user_participants|max:18|min:18', // 'curp' => 'required|unique:user_profiles|max:18|min:18',
+        ]);
+        if (checkdnsrr('crp.sct.gob.mx', 'A')) {
+            $curp = Str::upper($this->curp);
+            $response = Http::connectTimeout(10)->get('https://crp.sct.gob.mx/RenapoSct/consulta/porCurp?curp=' . $curp);
+            if ($response->successful() && $response->json()['resultado']['data']['statusOper'] === 'EXITOSO') {
+                $response->json()['resultado'];
+                $this->enabled = true;
+                $this->name = $response->json()['resultado']['data']['nombres'];
+                $this->apParental = $response->json()['resultado']['data']['apPaterno'];
+                $this->apMaternal = $response->json()['resultado']['data']['apMaterno'];
+                $this->birth = $response->json()['resultado']['data']['fechNac'];
+                $this->curp_api = $response->json()['resultado']['data']['curp'];
+                $this->rfc_participant_api = Str::upper(substr($this->curp_api, 0, 10));
+                $this->rfc_participant = $this->rfc_participant_api;
+                $this->sex_api = $response->json()['resultado']['data']['sexo'];
+
+                $this->genre = $this->sex_api == 'H' ? 'MASCULINO' : ($this->sex_api === 'M' ? 'FEMENINO' : ($this->sex_api === 'X' ? 3 : ''));
+                $this->sex_id = $this->sex_api == 'H' ? 1 : ($this->sex_api === 'M' ? 2 : ($this->sex_api === 'X' ? 3 : ''));
+                $this->state_birth_participant = $response->json()['resultado']['data']['cveEntidadNac'];
+                $codeCountry = $response->json()['resultado']['data']['nacionalidad'];
+                // foreach ($this->countries as $country) {
+                // if ($country->code_country === $codeCountry) {
+                // $this->country_birth_participant = $country->name_country;
+                // $this->nationality_participant = $country->nacionality_country;
+                $this->country_birth_participant = 'MEX';
+                $this->nationality_participant = 'MEXICANA';
+                //     break;
+                // }
+                // }
+
+                $birthDate = Carbon::createFromFormat('d/m/Y', $this->birth);
+                $this->formattedBirthDate = $birthDate->format('Y-m-d');
+                $currentDate = Carbon::now();
+                $age = $currentDate->diff($birthDate)->format('%y');
+                $this->age = intval($age);
+                $this->notification([
+                    'title'       => 'Búsqueda éxitosa!',
+                    'description' => 'Usuario localizado con éxito.',
+                    'icon'        => 'success',
+                    'timeout' => '3100'
+                ]);
+                // $this->emit('BatchDispatch', [$this->batchId, $this->exporting, $this->exportFinished]);
+            } elseif ($response->successful() && $response->json()['resultado']['data']['statusOper'] === 'NO EXITOSO') {
+                $this->clean();
+                $this->notification()->send([
+                    'title'       => 'Búsqueda no éxitosa!',
+                    'description' => 'Usuario no localizado.',
+                    'icon'        => 'error',
+                    'timeout' => '3100'
+                ]);
+            } else {
+                // $this->dispatch('openModal', 'tools.exception-modal', (['codeError' => $response->status()]));
+            }
+        } else {
+            $this->notification()->send([
+                'icon' => 'info',
+                'title' => 'Sin conexión!',
+                'description' => 'No hay conexión, vuelve a intentarlo.',
+                'timeout' => '3100'
+            ]);
+        }
+    }
+
     public function render()
     {
         return view('livewire.users.modals.modal-new', ['isVerified' => $this->isVerified]);
     }
+
+
+    public function cleanSearch()
+    {
+        $this->enabled = false;
+        $this->reset('curp');
+        $this->clean();
+    }
+
     public function updatedStateId($id)
     {
         $this->select = 0;
@@ -143,16 +231,6 @@ class ModalNew extends ModalComponent
     }
     public function save()
     {
-
-        // $id_state = $this->state_id ?: '7';
-        // $id_munis = $this->municipal_id ?: '218';
-        // $stateid = State::where('id', $id_state)->pluck('name')->first();
-        // $municipal = Municipal::where('id', $id_munis)->pluck('name')->first();
-        // $sex_id = $this->genre == 'MASCULINO' ? 1 : 2 ;
-        // $password = Hash::make($this->password);
-
-        // dump('idstado: '.$id_state.' idmunicipio: '.$id_munis.' nombre estado: '.$stateid.' nombremunicipio: '.$municipal.' sexo: '.$sex_id.' contraseña: '.$password);
-
         $this->validate();
         try {
             $userData = [
@@ -191,7 +269,6 @@ class ModalNew extends ModalComponent
                     'curp' => $this->curp,
                 ]
             );
-
 
             if ($this->privileges === 'headquarters' || $this->privileges === 'sub_headquarters' || $this->privileges === 'headquarters_authorized') {
                 UserHeadquarter::updateOrCreate(
@@ -239,7 +316,6 @@ class ModalNew extends ModalComponent
 
     public function registerTenantUser()
     {
-
         $id_state = $this->state_id ?: '7';
         $id_munis = $this->municipal_id ?: '218';
         $stateid = State::where('id', $id_state)->pluck('name')->first();
@@ -247,11 +323,20 @@ class ModalNew extends ModalComponent
         $sex_id = $this->genre == 'MASCULINO' ? 1 : 2;
         $password = Hash::make($this->password);
         $rfc = substr($this->curp, 0, 10);
+        $birthDate = Carbon::createFromFormat('d/m/Y', $this->birth);
+        $formattedBirthDate = $birthDate->format('Y-m-d');
+        $privileges = [
+            'user' => 'medical_user',
+            'headquarters' => 'medical.headquarters',
+            'super_admin_medicine' => 'medical.super_admin_medicine',
+            'sub_headquarters' => 'medical.sub_headquarters',
+            'headquarters_authorized' => 'medical.headquarters_authorized'
+        ][$this->privileges];
 
         $response = Http::withHeaders([
             'Accept' => 'application/json'
             // http://afac-tenant.gob/login
-        ])->connectTimeout(30)->get('http://afac-tenant.gob/listStore?name=' . $this->name . '&email=' . $this->email . '&password=' . $password . '&sex_id=' . $sex_id . '&country_id=' . '165' . '&lst_pat_prfle=' . $this->apParental . '&lst_mat_prfle=' . $this->apMaternal . '&curp_prfle=' . $this->curp . '&rfc_prfle=' . $rfc . '&birth_prfle=' . $this->birth . '&state_birth_prfle=' . NULL . '&nationality_prfle=MEXICANA' . '&country_birth_prfle=MÉXICO' . '&state_prfle=' . $stateid . '&municipality_prfle=' . $municipal . '&location_prfle=' . $this->delegation . '&street_prfle=' . $this->street . '&n_int_prfle=' . $this->nInterior . '&n_ext_prfle=' . $this->nExterior . '&suburb_prfle=' . $this->suburb . '&postal_cod_prfle=' . $this->postalCode . '&mob_phone_prfle=' . $this->mobilePhone . '&office_phone_prfle=' . $this->officePhone . '&ext_prfle=' . $this->extension . '&rfc_company_prfle=' . NULL . '&name_company_prfle=' . NULL . '&confirm_privacity=' . 1 . '&privileges=' . $this->privileges . '');
+        ])->connectTimeout(30)->get('https://siafac.afac.gob.mx/listStore?id_save=' . $this->id_save . '&id_update=' . $this->id_update . '&name=' . $this->name . '&email=' . $this->email . '&password=' . $password . '&sex_id=' . $sex_id . '&country_id=' . '165' . '&lst_pat_prfle=' . $this->apParental . '&lst_mat_prfle=' . $this->apMaternal . '&curp_prfle=' . $this->curp . '&rfc_prfle=' . $rfc . '&birth_prfle=' . $formattedBirthDate . '&state_birth_prfle=' . NULL . '&nationality_prfle=MEXICANA' . '&country_birth_prfle=MÉXICO' . '&state_prfle=' . $stateid . '&municipality_prfle=' . $municipal . '&location_prfle=' . $this->delegation . '&street_prfle=' . $this->street . '&n_int_prfle=' . $this->nInterior . '&n_ext_prfle=' . $this->nExterior . '&suburb_prfle=' . $this->suburb . '&postal_cod_prfle=' . $this->postalCode . '&mob_phone_prfle=' . $this->mobilePhone . '&office_phone_prfle=' . $this->officePhone . '&ext_prfle=' . $this->extension . '&rfc_company_prfle=' . NULL . '&name_company_prfle=' . NULL . '&confirm_privacity=' . 1 . '&privileges=' . $privileges . '&user_headquarter_id=' . $this->user_headquarter_id . '&headquarter_id=' . $this->headquarter_id .'');
         if ($response->successful()) {
             $statesSuccess = $response->json()['data'];
         }
@@ -275,6 +360,12 @@ class ModalNew extends ModalComponent
             'start_date.required' => 'Campo obligatorio',
             'end_date.required' => 'Campo obligatorio',
             'reason.required' => 'Campo obligatorio',
+
+            'curp.required' => 'Campo obligatorio',
+            'curp.unique' => 'El curp ingresado ya se ha registrado',
+            'curp.max' => 'Máximo 18 caracteres',
+            'curp.min' => 'Mínimo 18 caracteres',
+
         ];
     }
 }

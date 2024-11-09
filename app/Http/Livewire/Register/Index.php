@@ -100,19 +100,7 @@ class Index extends Component
     {
         $this->states = State::all();
         $this->municipals = collect();
-
-
-        // $response = Http::withHeaders([
-        //     'Accept' => 'application/json'
-        // // ])->connectTimeout(30)->get('https://siafac.afac.gob.mx/listUsers/');
-        // ])->connectTimeout(30)->get('http://afac-tenant.gob/listUsers/');
-        // if ($response->successful()) {
-        //     $statesSuccess = $response->json()['data'];
-
-        //     dump($statesSuccess);
-        // }
-
-        if (Cache::has('country_query')) {
+          if (Cache::has('country_query')) {
             $this->countries = Cache::get('country_query');
         } else {
             $this->countries = Cache::remember('country_query', now()->addMonths(1), function () {
@@ -331,7 +319,6 @@ class Index extends Component
         } else {
 
         }
-
     }
 
     public function messages()
