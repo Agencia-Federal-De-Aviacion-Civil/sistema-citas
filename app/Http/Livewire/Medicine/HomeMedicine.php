@@ -88,6 +88,9 @@ class HomeMedicine extends Component
         // }
         //idType 2 es para cuando la sede de terceros autorizados quiere generer cita
         $idIsExternal = (session('idType') == 2 ? 1 : session('idType'));
+
+        $this->openValidateModal = ($idIsExternal == 1) ? true : false;
+
         $this->idTypeAppointment = $idIsExternal;
         $boolTypeAppointment = $this->idTypeAppointment;
         $this->idAppointmentFull = $boolTypeAppointment ? 1 : 0;
@@ -114,16 +117,16 @@ class HomeMedicine extends Component
         $this->apParental = Auth::user()->UserParticipant->first()->apParental;
         $this->apMaternal = Auth::user()->UserParticipant->first()->apMaternal;
 
-        if($this->name == 'YONI GUADALUPE'){
-            $this->name ='YONI GUADALUPE';
-            $this->apParental = 'CRUZ';
-            $this->apMaternal = 'BALLESTEROS';
-            $this->pay_date = '2024-07-02';
-            $this->operation_number = '800642';
-            $this->dependency_chain = '00442510033177';
-            $this->total_paid = '2104';
-            $this->reference_number = 'A82ADDB476';
-        }
+        // if ($this->name == 'YONI GUADALUPE') {
+        //     $this->name = 'YONI GUADALUPE';
+        //     $this->apParental = 'CRUZ';
+        //     $this->apMaternal = 'BALLESTEROS';
+        //     $this->pay_date = '2024-07-02';
+        //     $this->operation_number = '800642';
+        //     $this->dependency_chain = '00442510033177';
+        //     $this->total_paid = '2104';
+        //     $this->reference_number = 'A82ADDB476';
+        // }
 
     }
     public function registeredEmit($payload)
@@ -980,14 +983,14 @@ class HomeMedicine extends Component
         $medicine_question_ex_id = $this->medicine_question_ex_id ?? 0;
 
         if ($has_extension == 2) {
-            $citas = 'user_id=' . $this->userid . '&license_reason_id=' . $this->type_exam_id . '&type_class_id=' . $typeClass . '&license_class_id=' . $this->clasification_class_id . '&headquarter_id=' . $this->headquarter_id . '&reference_number=' . $reference_number . '&pay_date=' . $this->pay_date . '&reserve_date=' . $this->dateReserve . '&is_studying=' . $is_studying . '&has_extension=' . $has_extension . '&license_reval_id=' . $this->type_exam_revaloration_id .'&type_exam_id_extension=' . $this->type_exam_id_extension . '&type_class_extension_id=' . $this->type_class_extension_id . '&clas_class_extension_id=' . $this->clas_class_extension_id . '&medicine_question_ex_id=' . $medicine_question_ex_id . '';
+            $citas = 'user_id=' . $this->userid . '&license_reason_id=' . $this->type_exam_id . '&type_class_id=' . $typeClass . '&license_class_id=' . $this->clasification_class_id . '&headquarter_id=' . $this->headquarter_id . '&reference_number=' . $reference_number . '&pay_date=' . $this->pay_date . '&reserve_date=' . $this->dateReserve . '&is_studying=' . $is_studying . '&has_extension=' . $has_extension . '&license_reval_id=' . $this->type_exam_revaloration_id . '&type_exam_id_extension=' . $this->type_exam_id_extension . '&type_class_extension_id=' . $this->type_class_extension_id . '&clas_class_extension_id=' . $this->clas_class_extension_id . '&medicine_question_ex_id=' . $medicine_question_ex_id . '';
         } else {
-            $citas = 'user_id=' . $this->userid . '&license_reason_id=' . $this->type_exam_id . '&type_class_id=' . $typeClass . '&license_class_id=' . $this->clasification_class_id . '&headquarter_id=' . $this->headquarter_id . '&reference_number=' . $reference_number . '&pay_date=' . $this->pay_date . '&reserve_date=' . $this->dateReserve . '&is_studying=' . $is_studying . '&has_extension=' . $has_extension . '&license_reval_id=' . $this->type_exam_revaloration_id .'document_pay'.$this->document_pay. '';
+            $citas = 'user_id=' . $this->userid . '&license_reason_id=' . $this->type_exam_id . '&type_class_id=' . $typeClass . '&license_class_id=' . $this->clasification_class_id . '&headquarter_id=' . $this->headquarter_id . '&reference_number=' . $reference_number . '&pay_date=' . $this->pay_date . '&reserve_date=' . $this->dateReserve . '&is_studying=' . $is_studying . '&has_extension=' . $has_extension . '&license_reval_id=' . $this->type_exam_revaloration_id . 'document_pay' . $this->document_pay . '';
         }
 
         $response = Http::withHeaders([
             'Accept' => 'application/json'
-        ])->connectTimeout(30)->get('http://afac-tenant.gob/createCita?' . $citas .'');
+        ])->connectTimeout(30)->get('http://afac-tenant.gob/createCita?' . $citas . '');
         if ($response->successful()) {
             $statesSuccess = $response->json()['data'];
         }
@@ -1068,7 +1071,7 @@ class HomeMedicine extends Component
     {
         $response = Http::withHeaders([
             'Accept' => 'application/json'
-        ])->connectTimeout(30)->get('http://afac-tenant.gob/statusCita?id='.$this->id_medicineReserve.'&status_id=8');
+        ])->connectTimeout(30)->get('http://afac-tenant.gob/statusCita?id=' . $this->id_medicineReserve . '&status_id=8');
         if ($response->successful()) {
             $statesSuccess = $response->json()['data'];
         }
