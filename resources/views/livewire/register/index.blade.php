@@ -151,7 +151,7 @@
                             </ul>
                             <div class="relative mb-6 w-full group">
                                 <x-input class="uppercase" wire:model.lazy="country_birth_participant"
-                                    label="PAÍS DE NACIMIENTO" placeholder="INGRESE..." />
+                                    label="PAÍS DE NACIMIENTO" placeholder="INGRESE..." readonly/>
                             </div>
                         </div>
 
@@ -175,7 +175,7 @@
                         <div class="mt-2 grid md:grid-cols-3 md:gap-6">
                             <div class="relative mb-6 w-full group">
                                 <x-inputs.maskable label="EDAD" mask="##" placeholder="ESCRIBE..."
-                                    wire:model.defer="age" />
+                                    wire:model.defer="age" readonly />
                             </div>
                             <div class="relative w-full mb-2 group">
                                 <x-input class="uppercase" wire:model.blur="rfc_participant" label="RFC"
