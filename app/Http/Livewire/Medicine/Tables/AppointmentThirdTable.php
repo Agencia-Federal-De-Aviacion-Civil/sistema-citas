@@ -364,6 +364,35 @@ class AppointmentThirdTable extends DataTableComponent
                     ->filter(function ($query, $value) {
                         $query->where('type_exam_id', $value);
                     }),
+                SelectFilter::make('CLASE')
+                    ->options([
+                        '' => 'TODOS',
+                        '1' => 'CLASE I',
+                        '2' => 'CLASE II',
+                        '3' => 'CLASE III',
+                    ])
+                    ->filter(function ($query, $value) {
+                        if ($value === '1') {
+                            $query->whereHas('medicineReserveMedicine.medicineInitial', function ($query) {
+                                $query->whereIn('type_class_id', [1, 4]);
+                            })->orWhereHas('medicineReserveMedicine.medicineRenovation', function ($query) {
+                                $query->whereIn('type_class_id', [1, 4]);
+                            });
+                        } elseif ($value === '2') {
+                            $query->whereHas('medicineReserveMedicine.medicineInitial', function ($query) {
+                                $query->whereIn('type_class_id', [2, 5]);
+                            })->orWhereHas('medicineReserveMedicine.medicineRenovation', function ($query) {
+                                $query->whereIn('type_class_id', [2, 5]);
+                            });
+                        } elseif ($value === '3') {
+                            $query->whereHas('medicineReserveMedicine.medicineInitial', function ($query) {
+                                $query->whereIn('type_class_id', [3, 6]);
+                            })->orWhereHas('medicineReserveMedicine.medicineRenovation', function ($query) {
+                                $query->whereIn('type_class_id', [3, 6]);
+                            });
+                        }
+                        return $query;
+                    }),
                 SelectFilter::make('STATUS')
                     ->options([
                         '' => 'TODOS',
@@ -429,7 +458,19 @@ class AppointmentThirdTable extends DataTableComponent
                     ->filter(function ($query, $value) {
                         $query->where('genre', $value);
                     }),
-
+                SelectFilter::make('EDAD')
+                    ->options([
+                        '' => 'TODOS',
+                        'min' => 'MENOR A 40',
+                        'max' => 'MAYOR E IGUAL A 40',
+                    ])
+                    ->filter(function (Builder $builder, string $value) {
+                        if ($value === 'min') {
+                            $builder->where('age', '<', 40);
+                        } elseif ($value === 'max') {
+                            $builder->where('age', '>=', 40);
+                        }
+                    }),
                 TextFilter::make('ID CITA')
                     ->config([
                         'placeholder' => 'Buscar cita',

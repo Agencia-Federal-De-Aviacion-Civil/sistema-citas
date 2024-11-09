@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Medicine\Tables;
 use App\Jobs\ExportSelectedJob;
 use App\Models\Medicine\MedicineExportHistory;
 use App\Models\Medicine\MedicineReserve;
+use App\Models\UserParticipant;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -94,7 +95,7 @@ class AppointmentTable extends DataTableComponent
                             ])->where('id', $row->id)->get(),
                             'class' => $class
                         ]
-                    )),
+                    ))->sortable(),
 
                 Column::make("TIPO DE LICENCIA", "licencia")
                     ->label(fn($row) => view(
@@ -544,17 +545,47 @@ class AppointmentTable extends DataTableComponent
                     ->filter(function ($query, $value) {
                         $query->where('type_exam_id', $value);
                     }),
-                // SelectFilter::make('CLASE')
-                //     ->options([
-                //         '' => 'TODOS',
-                //         '1' => 'CLASE I',
-                //         '2' => 'CLASE II',
-                //         '3' => 'CLASE III',
-                //     ])
-                //     ->filter(function ($query, $value) {
-                //         $query->where('type_exam_id', $value);
-                //     }),
-
+                SelectFilter::make('CLASE')
+                    ->options([
+                        '' => 'TODOS',
+                        '1' => 'CLASE I',
+                        '2' => 'CLASE II',
+                        '3' => 'CLASE III',
+                    ])
+                    ->filter(function ($query, $value) {
+                        if ($value === '1') {
+                            $query->whereHas('medicineReserveMedicine.medicineInitial', function ($query) {
+                                $query->whereIn('type_class_id', [1, 4]);
+                            })->orWhereHas('medicineReserveMedicine.medicineRenovation', function ($query) {
+                                $query->whereIn('type_class_id', [1, 4]);
+                            })->orWhereHas('medicineReserveMedicine.medicineRevaluation.revaluationMedicineInitial', function ($query) {
+                                $query->whereIn('type_class_id', [1, 4]);
+                            })->orWhereHas('medicineReserveMedicine.medicineRevaluation.revaluationMedicineRenovation', function ($query) {
+                                $query->whereIn('type_class_id', [1, 4]);
+                            });
+                        } elseif ($value === '2') {
+                            $query->whereHas('medicineReserveMedicine.medicineInitial', function ($query) {
+                                $query->whereIn('type_class_id', [2, 5]);
+                            })->orWhereHas('medicineReserveMedicine.medicineRenovation', function ($query) {
+                                $query->whereIn('type_class_id', [2, 5]);
+                            })->orWhereHas('medicineReserveMedicine.medicineRevaluation.revaluationMedicineInitial', function ($query) {
+                                $query->whereIn('type_class_id', [2, 5]);
+                            })->orWhereHas('medicineReserveMedicine.medicineRevaluation.revaluationMedicineRenovation', function ($query) {
+                                $query->whereIn('type_class_id', [2, 5]);
+                            });
+                        } elseif ($value === '3') {
+                            $query->whereHas('medicineReserveMedicine.medicineInitial', function ($query) {
+                                $query->whereIn('type_class_id', [3, 6]);
+                            })->orWhereHas('medicineReserveMedicine.medicineRenovation', function ($query) {
+                                $query->whereIn('type_class_id', [3, 6]);
+                            })->orWhereHas('medicineReserveMedicine.medicineRevaluation.revaluationMedicineInitial', function ($query) {
+                                $query->whereIn('type_class_id', [3, 6]);
+                            })->orWhereHas('medicineReserveMedicine.medicineRevaluation.revaluationMedicineRenovation', function ($query) {
+                                $query->whereIn('type_class_id', [3, 6]);
+                            });
+                        }
+                        return $query;
+                    }),
                 SelectFilter::make('STATUS')
                     ->options([
                         '' => 'TODOS',
@@ -575,12 +606,10 @@ class AppointmentTable extends DataTableComponent
                     ->filter(function ($query, $value) {
                         $query->where('medicine_reserves.status', $value);
                     }),
-
                 DateFilter::make('Desde')
                     ->filter(function ($query, $value) {
                         $query->whereDate('dateReserve', '>=', $value);
                     }),
-
                 DateFilter::make('Hasta')
                     ->filter(function ($query, $value) {
                         $query->whereDate('dateReserve', '<=', $value);
@@ -601,12 +630,12 @@ class AppointmentTable extends DataTableComponent
                         '11' => 'QUERETARO QRO',
                         '12' => 'MERIDA YUCATAN',
                         '13' => 'SINALOA CULIACAN',
-                        '28' => 'CD. DEL CARMEN AEROPUERTO	'
+                        '28' => 'CD. DEL CARMEN AEROPUERTO',
+                        '33' => 'TULUM AEROPUERTO'
                     ])
                     ->filter(function ($query, $value) {
                         $query->where('headquarter_id', $value);
                     }),
-
                 SelectFilter::make('GENERO')
                     ->options([
                         '' => 'TODOS',
@@ -616,7 +645,19 @@ class AppointmentTable extends DataTableComponent
                     ->filter(function ($query, $value) {
                         $query->where('genre', $value);
                     }),
-
+                SelectFilter::make('EDAD')
+                    ->options([
+                        '' => 'TODOS',
+                        'min' => 'MENOR A 40',
+                        'max' => 'MAYOR E IGUAL A 40',
+                    ])
+                    ->filter(function (Builder $builder, string $value) {
+                        if ($value === 'min') {
+                            $builder->where('age', '<', 40);
+                        } elseif ($value === 'max') {
+                            $builder->where('age', '>=', 40);
+                        }
+                    }),
                 TextFilter::make('ID CITA')
                     ->config([
                         'placeholder' => 'Buscar cita',
@@ -637,7 +678,6 @@ class AppointmentTable extends DataTableComponent
                     ->filter(function ($query, $value) {
                         $query->where('type_exam_id', $value);
                     }),
-
                 SelectFilter::make('STATUS')
                     ->options([
                         '' => 'TODOS',
@@ -653,12 +693,10 @@ class AppointmentTable extends DataTableComponent
                         '9' => 'CONCLUYÓ NO APTO',
                         '10' => 'REAGENDÓ',
                         '11' => 'ACCIONES EXPIRADAS'
-
                     ])
                     ->filter(function ($query, $value) {
                         $query->where('medicine_reserves.status', $value);
                     }),
-
                 SelectFilter::make('GENERO')
                     ->options([
                         '' => 'TODOS',
@@ -668,7 +706,19 @@ class AppointmentTable extends DataTableComponent
                     ->filter(function ($query, $value) {
                         $query->where('genre', $value);
                     }),
-
+                SelectFilter::make('EDAD')
+                    ->options([
+                        '' => 'TODOS',
+                        'min' => 'MENOR A 40',
+                        'max' => 'MAYOR A 40',
+                    ])
+                    ->filter(function (Builder $builder, string $value) {
+                        if ($value === 'min') {
+                            $builder->where('age', '<', 40);
+                        } elseif ($value === 'max') {
+                            $builder->where('age', '>', 40);
+                        }
+                    }),
                 TextFilter::make('ID CITA')
                     ->config([
                         'placeholder' => 'Buscar cita',
