@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Register;
 
 use App\Models\catalogue\Countrie;
+use App\Models\Catalogue\LogsApi;
 use App\Models\Catalogue\Municipal;
 use App\Models\Catalogue\State;
 use Livewire\Component;
@@ -100,17 +101,16 @@ class Index extends Component
     {
         $this->states = State::all();
         $this->municipals = collect();
-          if (Cache::has('country_query')) {
-            $this->countries = Cache::get('country_query');
-        } else {
-            $this->countries = Cache::remember('country_query', now()->addMonths(1), function () {
-                return Countrie::orderByRaw("CASE WHEN id = 165 THEN 0 ELSE 1 END")
-                    ->orderBy('id')
-                    ->get();
-            });
-        }
+        //   if (Cache::has('country_query')) {
+        //     $this->countries = Cache::get('country_query');
+        // } else {
+        //     $this->countries = Cache::remember('country_query', now()->addMonths(1), function () {
+        //         return Countrie::orderByRaw("CASE WHEN id = 165 THEN 0 ELSE 1 END")
+        //             ->orderBy('id')
+        //             ->get();
+        //     });
+        // }
     }
-
     public function searchRenapo()
     {
         $this->validate([
@@ -309,16 +309,53 @@ class Index extends Component
 
     public function registerTenantUser($user)
     {
-        $password = Hash::make($user->password);
-        $response = Http::withHeaders([
-            'Accept' => 'application/json'
-            // http://afac-tenant.gob/login
-        ])->connectTimeout(30)->get('http://afac-tenant.gob/listStore?name=' . $user->name . '&email=' . $user->email . '&password=' . $password . '&sex_id=' . $this->sex_id . '&country_id=' . $this->country_id . '&lst_pat_prfle=' . $this->apParental . '&lst_mat_prfle=' . $this->apMaternal . '&curp_prfle=' . $this->curp . '&rfc_prfle=' . $this->rfc_participant . '&birth_prfle=' . $this->formattedBirthDate . '&state_birth_prfle=' . $this->state_birth_participant . '&nationality_prfle=' . $this->nationality_participant . '&country_birth_prfle=' . $this->country_birth_participant . '&state_prfle=' . $this->state_name_separated . '&municipality_prfle=' . $this->municipal_name_separated . '&location_prfle=' . $this->delegation . '&street_prfle=' . $this->street . '&n_int_prfle=' . $this->nInterior . '&n_ext_prfle=' . $this->nExterior . '&suburb_prfle=' . $this->suburb . '&postal_cod_prfle=' . $this->postalCode . '&mob_phone_prfle=' . $this->mobilePhone . '&office_phone_prfle=' . $this->officePhone . '&ext_prfle=' . $this->extension . '&rfc_company_prfle=' . $this->rfc_company_participant . '&name_company_prfle=' . $this->name_company_participant . '&confirm_privacity=' . $this->confirm_privacity . '&privileges=medical_user');
-        if ($response->successful()) {
-            $statesSuccess = $response->json()['data'];
+        if (checkdnsrr('crp.sct.gob.mx', 'A')) {
+            $password = Hash::make($user->password);
+            $response = Http::withHeaders([
+                'Accept' => 'application/json'
+                // https://siafac.afac.gob.mx/listStore?
+            ])->connectTimeout(30)->get('https://siafac.afac.gob.mx/listStore?name=' . $user->name . '&email=' . $user->email . '&password=' . $password . '&sex_id=' . $this->sex_id . '&country_id=' . $this->country_id . '&lst_pat_prfle=' . $this->apParental . '&lst_mat_prfle=' . $this->apMaternal . '&curp_prfle=' . $this->curp . '&rfc_prfle=' . $this->rfc_participant . '&birth_prfle=' . $this->formattedBirthDate . '&state_birth_prfle=' . $this->state_birth_participant . '&nationality_prfle=' . $this->nationality_participant . '&country_birth_prfle=' . $this->country_birth_participant . '&state_prfle=' . $this->state_name_separated . '&municipality_prfle=' . $this->municipal_name_separated . '&location_prfle=' . $this->delegation . '&street_prfle=' . $this->street . '&n_int_prfle=' . $this->nInterior . '&n_ext_prfle=' . $this->nExterior . '&suburb_prfle=' . $this->suburb . '&postal_cod_prfle=' . $this->postalCode . '&mob_phone_prfle=' . $this->mobilePhone . '&office_phone_prfle=' . $this->officePhone . '&ext_prfle=' . $this->extension . '&rfc_company_prfle=' . $this->rfc_company_participant . '&name_company_prfle=' . $this->name_company_participant . '&confirm_privacity=' . $this->confirm_privacity . '&privileges=medical_user');
+            if ($response->successful()) {
+                $statesSuccess = $response->json()['data'];
+            } elseif ($response->successful() && $response->json()['data'] === 'NO EXITOSO') {
+                $this->clean();
+                $this->notification()->send([
+                    'title'       => 'No se realizo registro!',
+                    'description' => 'Usuario no registrado.',
+                    'icon'        => 'error',
+                    'timeout' => '3100'
+                ]);
+            } else {
+                $error = $response->json()['message'];
+                $this->LogsApi($curp_logs = $this->curp, $type = 'REGISTRO', $register = $error, $description = 'ERROR AL REALIZAR REGISTRO DE USURIO');
+                $this->notification()->send([
+                    'icon' => 'info',
+                    'title' => 'AVISO!',
+                    'description' => 'ERROR',
+                    'timeout' => '3100'
+                ]);
+            }
         } else {
+            $this->notification()->send([
+                'icon' => 'info',
+                'title' => 'Sin conexión!',
+                'description' => 'No hay conexión, vuelve a intentarlo.',
+                'timeout' => '3100'
+            ]);
+            $this->LogsApi($curp_logs = $this->curp, $type = 'REGISTRO', $register = 'SIN CONEXION', $description = 'No hay conexión, vuelve a intentarlo');
 
         }
+    }
+    public function LogsApi($curp_logs, $type, $register, $description)
+    {
+        $url = url()->previous();
+        $logs =  LogsApi::create([
+            'curp_logs' => $curp_logs,
+            'url' => $url,
+            'type' => $type,
+            'register' => $register,
+            'description' => $description
+        ]);
     }
 
     public function messages()

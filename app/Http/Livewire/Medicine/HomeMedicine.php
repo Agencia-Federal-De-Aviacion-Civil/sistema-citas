@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Medicine;
 
 use App\Models\Catalogue\ClasificationClass;
 use App\Models\Catalogue\Headquarter;
+use App\Models\Catalogue\LogsApi;
 use App\Models\Catalogue\TypeClass;
 use App\Models\Catalogue\TypeExam;
 use App\Models\Document;
@@ -67,25 +68,6 @@ class HomeMedicine extends Component
     ];
     public function mount()
     {
-
-        // 'user_id' => 11,
-        // 'license_reason_id' => $this->type_exam_id,
-        // 'type_class_id' => $typeClass,
-        // 'license_class_id' => $this->clasification_class_id,
-        // 'headquarter_id' => $this->headquarter_id,
-        // 'reference_number' => $this->reference_number ?? 'NO APLICA',
-        // 'pay_date' => $this->pay_date,
-        // 'reserve_date' => $this->dateReserve,
-        // 'is_studying' => $this->medicine_question_id ?? 0,
-        // 'has_extension' => ($this->extensionClassId) ? 2 : 0,
-
-
-        // $response = Http::withHeaders([
-        //     'Accept' => 'application/json'
-        // ])->connectTimeout(30)->get('http://afac-tenant.gob/createCita?user_id=3&license_reason_id=1&type_class_id=1&license_class_id=15&headquarter_id=43&reference_number=1235&pay_date=2024-07-02&reserve_date=1&is_studying=0&has_extension=0');
-        // if ($response->successful()) {
-        //     $statesSuccess = $response->json()['data'];
-        // }
         //idType 2 es para cuando la sede de terceros autorizados quiere generer cita
         $idIsExternal = (session('idType') == 2 ? 1 : session('idType'));
 
@@ -117,7 +99,7 @@ class HomeMedicine extends Component
         $this->apParental = Auth::user()->UserParticipant->first()->apParental;
         $this->apMaternal = Auth::user()->UserParticipant->first()->apMaternal;
 
-        // if ($this->name == 'YONI GUADALUPE') {
+        // if ($this->name != 'YONI GUADALUPE') {
         //     $this->name = 'YONI GUADALUPE';
         //     $this->apParental = 'CRUZ';
         //     $this->apMaternal = 'BALLESTEROS';
@@ -975,7 +957,6 @@ class HomeMedicine extends Component
 
     public function DataMedReservations()
     {
-
         $reference_number = $this->reference_number ?? 'NO APLICA';
         $is_studying =  $this->medicine_question_id ?? 0;
         $has_extension = ($this->extensionClassId) ? 2 : 0;
@@ -988,25 +969,54 @@ class HomeMedicine extends Component
             $citas = 'user_id=' . $this->userid . '&license_reason_id=' . $this->type_exam_id . '&type_class_id=' . $typeClass . '&license_class_id=' . $this->clasification_class_id . '&headquarter_id=' . $this->headquarter_id . '&reference_number=' . $reference_number . '&pay_date=' . $this->pay_date . '&reserve_date=' . $this->dateReserve . '&is_studying=' . $is_studying . '&has_extension=' . $has_extension . '&license_reval_id=' . $this->type_exam_revaloration_id . 'document_pay' . $this->document_pay . '';
         }
 
-        $response = Http::withHeaders([
-            'Accept' => 'application/json'
-        ])->connectTimeout(30)->get('http://afac-tenant.gob/createCita?' . $citas . '');
-        if ($response->successful()) {
-            $statesSuccess = $response->json()['data'];
+        if (checkdnsrr('crp.sct.gob.mx', 'A')) {
+            $response = Http::withHeaders([
+                'Accept' => 'application/json'
+            ])->connectTimeout(30)->get('https://siafac.afac.gob.mx/createCita?' . $citas .'');
+            // ])->connectTimeout(30)->get('http://afac-tenant.gob/createCita?' . $citas . '');
+            if ($response->successful()) {
+                $statesSuccess = $response->json()['data'];
+
+            } elseif ($response->successful() && $response->json()['data'] === 'NO EXITOSO') {
+                $this->clean();
+                $this->notification()->send([
+                    'title'       => 'No se realizo registro!',
+                    'description' => 'Cita no registrada.',
+                    'icon'        => 'error',
+                    'timeout' => '3100'
+                ]);
+            } else {
+                $error = $response->json()['message'];
+                $this->LogsApi($curp_logs = Auth::user()->UserParticipant->first()->curp, $type = 'AGENDAR CITA', $register = $error, $description = 'ERROR AL AGENDAR REGISTRO DE CITA');
+                $this->notification()->send([
+                    'icon' => 'info',
+                    'title' => 'AVISO!',
+                    'description' => 'ERROR',
+                    'timeout' => '3100'
+                ]);
+            }
+        } else {
+            $this->notification()->send([
+                'icon' => 'info',
+                'title' => 'Sin conexión!',
+                'description' => 'No hay conexión, vuelve a intentarlo.',
+                'timeout' => '3100'
+            ]);
+            $this->LogsApi($curp_logs = Auth::user()->UserParticipant->first()->curp, $type = 'AGENDAR CITA', $register = 'SIN CONEXION', $description = 'No hay conexión, vuelve a intentarlo');
+
         }
-
-        // // $id_reserve = $DataMedReser->load('documents');
-        // // $morph_document = $id_reserve->documents();
-        // $extension = $this->document_pay->getClientOriginalExtension();
-        // $fileName = Str::uuid() . '.' . $extension;
-        // TenantmedicinaDocument::create([
-        //     'name_document' => $this->document_pay->storeAs('siafac/documents/directions/medical', $fileName, 'public'),
-        //     'documentable_type' => MedRservation::class,
-        //     // 'App\Models\Medical\MedReservation',
-        //     'documentable_id' => $DataMedReser->id
-        // ]);
     }
-
+    public function LogsApi($curp_logs, $type, $register, $description)
+    {
+        $url = url()->previous();
+        $logs =  LogsApi::create([
+            'curp_logs' => $curp_logs,
+            'url' => $url,
+            'type' => $type,
+            'register' => $register,
+            'description' => $description
+        ]);
+    }
     public function cleanclass()
     {
         $this->reset([
@@ -1071,7 +1081,7 @@ class HomeMedicine extends Component
     {
         $response = Http::withHeaders([
             'Accept' => 'application/json'
-        ])->connectTimeout(30)->get('http://afac-tenant.gob/statusCita?id=' . $this->id_medicineReserve . '&status_id=8');
+        ])->connectTimeout(30)->get('http://siafac.afac.gob.mx/statusCita?id=' . $this->id_medicineReserve . '&status_id=8');
         if ($response->successful()) {
             $statesSuccess = $response->json()['data'];
         }

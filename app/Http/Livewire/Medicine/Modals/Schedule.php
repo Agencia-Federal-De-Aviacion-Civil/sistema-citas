@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Medicine\Modals;
 
 use App\Models\Catalogue\Headquarter;
+use App\Models\Catalogue\LogsApi;
 use App\Models\Document;
 use App\Models\Medicine\Medicine;
 use App\Models\Medicine\MedicineDisabledDays;
@@ -413,14 +414,53 @@ class Schedule extends ModalComponent
             $status = 'id=' . $this->scheduleId . '&status_id=' . $status_id . '&observation=' . $this->observation . '&cancelActive=' . $cancelActive . '';
         }
 
-        $response = Http::withHeaders([
-            'Accept' => 'application/json'
-        ])->connectTimeout(30)->get('http://afac-tenant.gob/statusCita?' . $status . '');
-        if ($response->successful()) {
-            $statesSuccess = $response->json()['data'];
+        if (checkdnsrr('crp.sct.gob.mx', 'A')) {
+
+            $response = Http::withHeaders([
+                'Accept' => 'application/json'
+            ])->connectTimeout(30)->get('http://afac-tenant.gob/statusCita?' . $status . '');
+            if ($response->successful()) {
+                $statesSuccess = $response->json()['data'];
+            } elseif ($response->successful() && $response->json()['data'] === 'NO EXITOSO') {
+                $this->clean();
+                $this->notification()->send([
+                    'title'       => 'No se realizo registro!',
+                    'description' => 'Status no registrada.',
+                    'icon'        => 'error',
+                    'timeout' => '3100'
+                ]);
+            } else {
+                $error = $response->json()['message'];
+                $this->LogsApi($curp_logs = Auth::user()->UserParticipant->first()->curp, $type = 'AGENDAR CITA', $register = $error, $description = 'ERROR AL AGENDAR REGISTRO DE CITA');
+                $this->notification()->send([
+                    'icon' => 'info',
+                    'title' => 'AVISO!',
+                    'description' => 'ERROR',
+                    'timeout' => '3100'
+                ]);
+            }
+        } else {
+            $this->notification()->send([
+                'icon' => 'info',
+                'title' => 'Sin conexión!',
+                'description' => 'No hay conexión, vuelve a intentarlo.',
+                'timeout' => '3100'
+            ]);
+            $this->LogsApi($curp_logs = Auth::user()->UserParticipant->first()->curp, $type = 'AGENDAR CITA', $register = 'SIN CONEXION', $description = 'No hay conexión, vuelve a intentarlo');
+
         }
     }
-
+    public function LogsApi($curp_logs, $type, $register, $description)
+    {
+        $url = url()->previous();
+        $logs =  LogsApi::create([
+            'curp_logs' => $curp_logs,
+            'url' => $url,
+            'type' => $type,
+            'register' => $register,
+            'description' => $description
+        ]);
+    }
     public function messages()
     {
         return [

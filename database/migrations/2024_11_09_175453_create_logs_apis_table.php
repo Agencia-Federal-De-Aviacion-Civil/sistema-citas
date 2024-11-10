@@ -13,13 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('countries', function (Blueprint $table) {
+        Schema::create('logs_apis', function (Blueprint $table) {
             $table->id();
-            $table->string('code_country')->nullable();
-            $table->string('name_country');
-            $table->string('nacionality_country');
+            $table->string('curp_logs');
+            $table->string('url');
+            $table->string('type');
+            $table->text('register');
+            $table->text('description');
             $table->softDeletes();
+
             $table->timestamps();
+            $table->index('curp_logs');
         });
     }
 
@@ -30,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('countries');
+        Schema::dropIfExists('logs_apis');
     }
 };

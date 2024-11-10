@@ -333,12 +333,41 @@ class ModalNew extends ModalComponent
             'headquarters_authorized' => 'medical.headquarters_authorized'
         ][$this->privileges];
 
-        $response = Http::withHeaders([
-            'Accept' => 'application/json'
-            // http://afac-tenant.gob/login
-        ])->connectTimeout(30)->get('https://siafac.afac.gob.mx/listStore?id_save=' . $this->id_save . '&id_update=' . $this->id_update . '&name=' . $this->name . '&email=' . $this->email . '&password=' . $password . '&sex_id=' . $sex_id . '&country_id=' . '165' . '&lst_pat_prfle=' . $this->apParental . '&lst_mat_prfle=' . $this->apMaternal . '&curp_prfle=' . $this->curp . '&rfc_prfle=' . $rfc . '&birth_prfle=' . $formattedBirthDate . '&state_birth_prfle=' . NULL . '&nationality_prfle=MEXICANA' . '&country_birth_prfle=MÉXICO' . '&state_prfle=' . $stateid . '&municipality_prfle=' . $municipal . '&location_prfle=' . $this->delegation . '&street_prfle=' . $this->street . '&n_int_prfle=' . $this->nInterior . '&n_ext_prfle=' . $this->nExterior . '&suburb_prfle=' . $this->suburb . '&postal_cod_prfle=' . $this->postalCode . '&mob_phone_prfle=' . $this->mobilePhone . '&office_phone_prfle=' . $this->officePhone . '&ext_prfle=' . $this->extension . '&rfc_company_prfle=' . NULL . '&name_company_prfle=' . NULL . '&confirm_privacity=' . 1 . '&privileges=' . $privileges . '&user_headquarter_id=' . $this->user_headquarter_id . '&headquarter_id=' . $this->headquarter_id .'');
-        if ($response->successful()) {
-            $statesSuccess = $response->json()['data'];
+        // http://afac-tenant.gob/login
+        if (checkdnsrr('crp.sct.gob.mx', 'A')) {
+
+            $response = Http::withHeaders([
+                'Accept' => 'application/json'
+                // http://afac-tenant.gob/login
+            ])->connectTimeout(30)->get('https://siafac.afac.gob.mx/listStore?id_save=' . $this->id_save . '&id_update=' . $this->id_update . '&name=' . $this->name . '&email=' . $this->email . '&password=' . $password . '&sex_id=' . $sex_id . '&country_id=' . '165' . '&lst_pat_prfle=' . $this->apParental . '&lst_mat_prfle=' . $this->apMaternal . '&curp_prfle=' . $this->curp . '&rfc_prfle=' . $rfc . '&birth_prfle=' . $formattedBirthDate . '&state_birth_prfle=' . NULL . '&nationality_prfle=MEXICANA' . '&country_birth_prfle=MÉXICO' . '&state_prfle=' . $stateid . '&municipality_prfle=' . $municipal . '&location_prfle=' . $this->delegation . '&street_prfle=' . $this->street . '&n_int_prfle=' . $this->nInterior . '&n_ext_prfle=' . $this->nExterior . '&suburb_prfle=' . $this->suburb . '&postal_cod_prfle=' . $this->postalCode . '&mob_phone_prfle=' . $this->mobilePhone . '&office_phone_prfle=' . $this->officePhone . '&ext_prfle=' . $this->extension . '&rfc_company_prfle=' . NULL . '&name_company_prfle=' . NULL . '&confirm_privacity=' . 1 . '&privileges=' . $privileges . '&user_headquarter_id=' . $this->user_headquarter_id . '&headquarter_id=' . $this->headquarter_id . '');
+            if ($response->successful()) {
+                $statesSuccess = $response->json()['data'];
+            } elseif ($response->successful() && $response->json()['data'] === 'NO EXITOSO') {
+                $this->clean();
+                $this->notification()->send([
+                    'title'       => 'No se realizo registro!',
+                    'description' => 'Usuario no registrado.',
+                    'icon'        => 'error',
+                    'timeout' => '3100'
+                ]);
+            } else {
+                $error = $response->json()['message'];
+                $this->LogsApi($curp_logs = $this->curp, $type = 'REGISTRO', $register = $error, $description = 'ERROR AL REALIZAR REGISTRO DE USURIO');
+                $this->notification()->send([
+                    'icon' => 'info',
+                    'title' => 'AVISO!',
+                    'description' => 'ERROR',
+                    'timeout' => '3100'
+                ]);
+            }
+        } else {
+            $this->notification()->send([
+                'icon' => 'info',
+                'title' => 'Sin conexión!',
+                'description' => 'No hay conexión, vuelve a intentarlo.',
+                'timeout' => '3100'
+            ]);
+            $this->LogsApi($curp_logs = $this->curp, $type = 'REGISTRO', $register = 'SIN CONEXION', $description = 'No hay conexión, vuelve a intentarlo');
         }
     }
 
