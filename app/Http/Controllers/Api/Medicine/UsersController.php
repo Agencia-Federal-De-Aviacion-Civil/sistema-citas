@@ -9,6 +9,7 @@ use App\Models\Medicine\CertificateQr\MedicineCertificateQr;
 use App\Models\Medicine\MedicineReserve;
 use App\Models\Medicine\MedicineReservesExtension;
 use App\Models\User;
+use App\Models\UserParticipant;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use PhpParser\Node\Stmt\TryCatch;
@@ -238,6 +239,39 @@ class UsersController extends Controller
             // 'data' => $res
         ];
         return response()->json($data, 201);
+    }
+    public function userUpdate(Request $request) {
 
+        $user = User::updateOrCreate(
+            ['id' => $request->id],
+            [
+                'name' => strtoupper($request->name),
+                'email' => $request->email,
+            ]
+        );
+
+            $user_participants =  UserParticipant::updateOrCreate(
+                ['id' => $request->userProfileId],
+                [
+                    'apParental' => $request->lst_pat_prfle,
+                    'apMaternal' => $request->lst_mat_prfle,
+                    // genre
+                    'birth' => $request->birth_prfle,
+                    'state_id' => $request->state_id,
+                    'municipal_id' => $request->municipal_id,
+                    'age' => $request->age,
+                    'street' => $request->street_prfle,
+                    'nInterior' => $request->n_int_prfle,
+                    'nExterior' => $request->n_ext_prfle,
+                    'suburb' => $request->suburb_prfle,
+                    'postalCode' => $request->postal_cod_prfle,
+                    // federalEntity
+                    'delegation' => $request->suburb_prfle,
+                    'mobilePhone' => $request->mob_phone_prfle,
+                    'officePhone' => $request->office_phone_prfle,
+                    'extension' => $request->ext_prfle,
+                    'curp' => $request->curp,
+                ]
+            );
     }
 }

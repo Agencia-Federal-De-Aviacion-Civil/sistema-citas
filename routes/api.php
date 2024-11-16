@@ -34,4 +34,5 @@ Route::middleware([
 });
 
 Route::get('/statusCita', [UsersController::class, 'status']);
+Route::get('/userUpdate', [UsersController::class, 'userUpdate']);
 
