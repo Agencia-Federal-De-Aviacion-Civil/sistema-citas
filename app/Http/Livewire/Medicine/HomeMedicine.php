@@ -959,7 +959,7 @@ class HomeMedicine extends Component
     {
         $reference_number = $this->reference_number ?? 'NO APLICA';
         $is_studying =  $this->medicine_question_id ?? 0;
-        $has_extension = ($this->extensionClassId) ? 2 : 0;
+        $has_extension = ($this->extensionClassId) ? 1 : 0;
         $typeClass = ($this->type_class_id <= 3) ? $this->type_class_id : ['4' => 1, '5' => 2, '6' => 3][$this->type_class_id];
         $medicine_question_ex_id = $this->medicine_question_ex_id ?? 0;
 
