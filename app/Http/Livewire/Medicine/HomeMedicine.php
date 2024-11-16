@@ -957,27 +957,27 @@ class HomeMedicine extends Component
 
     public function DataMedReservations()
     {
+
         $reference_number = $this->reference_number ?? 'NO APLICA';
-        $is_studying =  $this->medicine_question_id ?? 0;
+        $is_studying =  ($this->medicine_question_id == 1) ? 1 : 0;
         $has_extension = ($this->extensionClassId) ? 1 : 0;
+
         $typeClass = ($this->type_class_id <= 3) ? $this->type_class_id : ['4' => 1, '5' => 2, '6' => 3][$this->type_class_id];
         $medicine_question_ex_id = $this->medicine_question_ex_id ?? 0;
 
-        if ($has_extension == 2) {
-            $citas = 'user_id=' . $this->userid . '&license_reason_id=' . $this->type_exam_id . '&type_class_id=' . $typeClass . '&license_class_id=' . $this->clasification_class_id . '&headquarter_id=' . $this->headquarter_id . '&reference_number=' . $reference_number . '&pay_date=' . $this->pay_date . '&reserve_date=' . $this->dateReserve . '&is_studying=' . $is_studying . '&has_extension=' . $has_extension . '&license_reval_id=' . $this->type_exam_revaloration_id .'&type_exam_id_extension=' . $this->type_exam_id_extension . '&type_class_extension_id=' . $this->type_class_extension_id . '&clas_class_extension_id=' . $this->clas_class_extension_id . '&medicine_question_ex_id=' . $medicine_question_ex_id . '';
+        if ($has_extension == 1) {
+            $citas = 'user_id=' . $this->userid . '&license_reason_id=' . $this->type_exam_id . '&type_class_id=' . $typeClass . '&license_class_id=' . $this->clasification_class_id . '&headquarter_id=' . $this->headquarter_id . '&reference_number=' . $reference_number . '&pay_date=' . $this->pay_date . '&reserve_date=' . $this->dateReserve . '&is_studying=' . $is_studying . '&has_extension=' . $has_extension . '&license_reval_id=' . $this->type_exam_revaloration_id . '&type_exam_id_extension=' . $this->type_exam_id_extension . '&type_class_extension_id=' . $this->type_class_extension_id . '&clas_class_extension_id=' . $this->clas_class_extension_id . '&medicine_question_ex_id=' . $medicine_question_ex_id . '';
         } else {
             $citas = 'user_id=' . $this->userid . '&license_reason_id=' . $this->type_exam_id . '&type_class_id=' . $typeClass . '&license_class_id=' . $this->clasification_class_id . '&headquarter_id=' . $this->headquarter_id . '&reference_number=' . $reference_number . '&pay_date=' . $this->pay_date . '&reserve_date=' . $this->dateReserve . '&is_studying=' . $is_studying . '&has_extension=' . $has_extension . '&license_reval_id=' . $this->type_exam_revaloration_id . '';
         }
 
-
         if (checkdnsrr('crp.sct.gob.mx', 'A')) {
             $response = Http::withHeaders([
                 'Accept' => 'application/json'
-            ])->connectTimeout(30)->get('https://siafac.afac.gob.mx/createCita?' . $citas .'');
+            ])->connectTimeout(30)->get('https://siafac.afac.gob.mx/createCita?' . $citas . '');
             // ])->connectTimeout(30)->get('http://afac-tenant.gob/createCita?' . $citas . '');
             if ($response->successful()) {
                 $statesSuccess = $response->json()['data'];
-
             } elseif ($response->successful() && $response->json()['data'] === 'NO EXITOSO') {
                 $this->clean();
                 $this->notification()->send([
@@ -1004,7 +1004,6 @@ class HomeMedicine extends Component
                 'timeout' => '3100'
             ]);
             $this->LogsApi($curp_logs = Auth::user()->UserParticipant->first()->curp, $type = 'AGENDAR CITA', $register = 'SIN CONEXION', $description = 'No hay conexión, vuelve a intentarlo');
-
         }
     }
     public function LogsApi($curp_logs, $type, $register, $description)
