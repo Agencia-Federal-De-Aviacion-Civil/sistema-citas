@@ -680,10 +680,10 @@
                                         </div>
                                         <div class="flex-grow pl-4">
                                             <div>
-                                                <button
+                                                {{-- <button
                                                     class="px-3 py-2 text-sm font-medium text-center text-white bg-sky-700 rounded-lg hover:bg-sky-800 focus:ring-4 focus:outline-none focus:ring-sky-300 dark:bg-sky-600 dark:hover:bg-sky-700 dark:focus:ring-sky-800">
                                                     GENERAR CITA
-                                                </button>
+                                                </button> --}}
                                                 <div wire:loading.delay.shortest wire:target="save">
                                                     <div
                                                         class="flex justify-center bg-gray-200 z-40 h-full w-full fixed top-0 left-0 items-center opacity-75">
