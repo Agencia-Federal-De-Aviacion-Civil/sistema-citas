@@ -22,7 +22,8 @@
     <link rel="stylesheet" href="{{ asset('css/loader.css') }}">
     <link rel="stylesheet" href="{{ asset('css/upload.css') }}">
     <link rel="stylesheet" href="{{ asset('css/calendar.css') }}">
-    
+    <link rel="stylesheet" href="{{ asset('css/slimselect.css') }}">
+
     @livewireStyles
     @powerGridStyles
 </head>

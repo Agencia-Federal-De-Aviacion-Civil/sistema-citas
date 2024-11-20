@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Medicine\Modals;
 
 use App\Models\Catalogue\Headquarter;
+use App\Models\Catalogue\LogsApi;
 use App\Models\Document;
 use App\Models\Medicine\Medicine;
 use App\Models\Medicine\MedicineDisabledDays;
@@ -14,6 +15,7 @@ use App\Models\Medicine\MedicineReservesExtension;
 use App\Models\Observation;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use LivewireUI\Modal\ModalComponent;
 use Livewire\WithFileUploads;
 use WireUi\Traits\Actions;
@@ -25,7 +27,7 @@ class Schedule extends ModalComponent
     public $id_appoint, $id_medicine_observation, $scheduleId, $status, $medicineReserves, $name, $type, $class, $typLicense, $sede, $dateReserve, $date, $time, $scheduleMedicines, $sedes,
         $headquarter_id, $medicine_schedule_id, $selectedOption, $observation_reschedule, $observation_cancelate, $hoursReserve, $observation, $medicineId, $accion,
         $disabledDaysFilter, $days, $is_external, $medicineRextension, $typextension, $classxtension, $typLicensextension;
-    public $reference_number, $pay_date, $document_pay,$dateMin,$dateMax;
+    public $reference_number, $pay_date, $document_pay, $dateMin, $dateMax;
     public function mount($scheduleId = null, $medicineId)
     {
         $this->medicineId = $medicineId;
@@ -352,7 +354,9 @@ class Schedule extends ModalComponent
             'process' => $this->name . ' FOLIO CITA:' . $this->id_appoint,
         ]);
         $this->closeModal();
+        $this->confirmStatusApi();
     }
+
     public function saveActive()
     {
         $activeReserve = Medicine::find($this->medicineId);
@@ -379,6 +383,83 @@ class Schedule extends ModalComponent
             'process' => $this->name . ' FOLIO CITA:' . $this->id_appoint,
         ]);
         $this->closeModal();
+
+        $this->scheduleId;
+        $this->selectedOption = 5;
+        $this->confirmStatusApi();
+    }
+
+    public function confirmStatusApi()
+    {
+        // dump($this->selectedOption);
+        $cancelActive = ($this->selectedOption == 5) ? 'ACTIVE' : (($this->selectedOption == 2 || $this->selectedOption == 3) ? 'CANCEL' : NULL);
+        $status_id =
+            [
+                '1' => 1, //PENDIENTE
+                '2' => 6, //CANCELAR CITA
+                '3' => 8, //CANCELA USUARIO
+                '4' => 4, //REAGENDAR CITA
+                '5' => 5, //LIBERADA
+                '6' => 1,   //IMCOMPLETA
+                '7' => 5, //APLAZAR CITA
+                '8' => 2,
+                '9' => 3,
+                '10' => 7 //REAGENDADO USUARIO
+            ][$this->selectedOption];
+
+        if ($status_id == 4 || $status_id == 7) {
+            $status = 'id=' . $this->scheduleId . '&status_id=' . $status_id . '&observation=' . $this->observation . '&headquarter_id=' . $this->headquarter_id . '&dateReserve=' . $this->dateReserve . '';
+        }
+        if ($status_id == 8 || $status_id == 6 || $status_id == 1) {
+            $status = 'id=' . $this->scheduleId . '&status_id=' . $status_id . '&observation=' . $this->observation . '&cancelActive=' . $cancelActive . '';
+        }
+
+        if (checkdnsrr('crp.sct.gob.mx', 'A')) {
+
+            $response = Http::withHeaders([
+                'Accept' => 'application/json'
+            ])->connectTimeout(30)->get('http://afac-tenant.gob/statusCita?' . $status . '');
+            if ($response->successful()) {
+                $statesSuccess = $response->json()['data'];
+            } elseif ($response->successful() && $response->json()['data'] === 'NO EXITOSO') {
+                $this->clean();
+                $this->notification()->send([
+                    'title'       => 'No se realizo registro!',
+                    'description' => 'Status no registrada.',
+                    'icon'        => 'error',
+                    'timeout' => '3100'
+                ]);
+            } else {
+                $error = $response->json()['message'];
+                $this->LogsApi($curp_logs = Auth::user()->UserParticipant->first()->curp, $type = 'AGENDAR CITA', $register = $error, $description = 'ERROR AL AGENDAR REGISTRO DE CITA');
+                $this->notification()->send([
+                    'icon' => 'info',
+                    'title' => 'AVISO!',
+                    'description' => 'ERROR',
+                    'timeout' => '3100'
+                ]);
+            }
+        } else {
+            $this->notification()->send([
+                'icon' => 'info',
+                'title' => 'Sin conexión!',
+                'description' => 'No hay conexión, vuelve a intentarlo.',
+                'timeout' => '3100'
+            ]);
+            $this->LogsApi($curp_logs = Auth::user()->UserParticipant->first()->curp, $type = 'AGENDAR CITA', $register = 'SIN CONEXION', $description = 'No hay conexión, vuelve a intentarlo');
+
+        }
+    }
+    public function LogsApi($curp_logs, $type, $register, $description)
+    {
+        $url = url()->previous();
+        $logs =  LogsApi::create([
+            'curp_logs' => $curp_logs,
+            'url' => $url,
+            'type' => $type,
+            'register' => $register,
+            'description' => $description
+        ]);
     }
     public function messages()
     {

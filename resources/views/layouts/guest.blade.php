@@ -15,6 +15,7 @@
     <script src="{{ mix('js/app.js') }}" defer></script>
     {{-- styles --}}
     <!-- Styles -->
+    <link rel="stylesheet" href="{{ asset('css/slimselect.css') }}">
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('css/loader.css') }}">
     @livewireStyles

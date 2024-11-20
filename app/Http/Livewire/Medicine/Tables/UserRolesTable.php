@@ -70,8 +70,8 @@ class UserRolesTable extends DataTableComponent
 
                 Column::make('FECHA NACIMIENTO', 'UserPart.birth')
                     ->sortable()
-                    ->searchable()
-                    ->format(fn ($value) => Carbon::parse($value)->format('d/m/Y')),
+                    ->searchable(),
+                    // ->format(fn ($value) => Carbon::parse($value)->format('d/m/Y')),
 
                 Column::make('EDAD', 'UserPart.age')
                     ->sortable()

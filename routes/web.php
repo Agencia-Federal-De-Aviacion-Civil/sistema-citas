@@ -25,3 +25,7 @@ Route::middleware([
 ])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('afac.login');
 });
+
+
+// http://sistema-citas.gob/
+

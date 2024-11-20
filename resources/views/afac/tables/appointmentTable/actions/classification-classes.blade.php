@@ -12,7 +12,7 @@
             @endif
         @elseif($licencia->medicineReserveMedicine->medicineTypeExam->id == 4)
                 {{-- {{ $licencia->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->revaluationRenovationClasificationClass->name }} --}}
-                {{ isset($licencia->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->revaluationRenovationClasificationClass) ? $licencia->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->revaluationRenovationClasificationClass->name : '' }}
+                {{ isset($licencia->medicineReserveMedicine->medicineRenovation->first()->renovationClasificationClass) ? $licencia->medicineReserveMedicine->medicineRenovation->first()->renovationClasificationClass->name : '' }}
         @elseif($licencia->medicineReserveMedicine->medicineTypeExam->id == 5)
                 {{ isset($licencia->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->revaluationRenovationClasificationClass) ? $licencia->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->revaluationRenovationClasificationClass->name: ''}}
         @endif
