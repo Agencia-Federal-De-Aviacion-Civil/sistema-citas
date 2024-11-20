@@ -349,7 +349,7 @@
                             </div>
                         </div>
 
-                        <div class="flex items-center">
+                        {{-- <div class="flex items-center">
                             <div class="flex items-center mb-4">
                                 <input type="checkbox" wire:model.blur="confirm_privacity"
                                     class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
@@ -366,7 +366,7 @@
                                     @enderror
                                 </a>
                             </div>
-                        </div>
+                        </div> --}}
 
 
                         <div class="text-right">

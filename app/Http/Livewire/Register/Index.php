@@ -53,7 +53,7 @@ class Index extends Component
             'curp' => 'required|unique:user_participants|max:18|min:18',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6|same:passwordConfirmation',
-            'confirm_privacity' => 'required',
+            // 'confirm_privacity' => 'required',
         ];
     }
 
@@ -314,7 +314,8 @@ class Index extends Component
             $response = Http::withHeaders([
                 'Accept' => 'application/json'
                 // https://siafac.afac.gob.mx/listStore?
-            ])->connectTimeout(30)->get('https://siafac.afac.gob.mx/listStore?name=' . $user->name . '&email=' . $user->email . '&password=' . $password . '&sex_id=' . $this->sex_id . '&country_id=' . $this->country_id . '&lst_pat_prfle=' . $this->apParental . '&lst_mat_prfle=' . $this->apMaternal . '&curp_prfle=' . $this->curp . '&rfc_prfle=' . $this->rfc_participant . '&birth_prfle=' . $this->formattedBirthDate . '&state_birth_prfle=' . $this->state_birth_participant . '&nationality_prfle=' . $this->nationality_participant . '&country_birth_prfle=' . $this->country_birth_participant . '&state_prfle=' . $this->state_name_separated . '&municipality_prfle=' . $this->municipal_name_separated . '&location_prfle=' . $this->delegation . '&street_prfle=' . $this->street . '&n_int_prfle=' . $this->nInterior . '&n_ext_prfle=' . $this->nExterior . '&suburb_prfle=' . $this->suburb . '&postal_cod_prfle=' . $this->postalCode . '&mob_phone_prfle=' . $this->mobilePhone . '&office_phone_prfle=' . $this->officePhone . '&ext_prfle=' . $this->extension . '&rfc_company_prfle=' . $this->rfc_company_participant . '&name_company_prfle=' . $this->name_company_participant . '&confirm_privacity=' . $this->confirm_privacity . '&privileges=medical_user');
+
+            ])->connectTimeout(30)->get('http://afac-tenant.gob/listStore?name=' . $user->name . '&email=' . $user->email . '&password=' . $password . '&sex_id=' . $this->sex_id . '&country_id=' . $this->country_id . '&lst_pat_prfle=' . $this->apParental . '&lst_mat_prfle=' . $this->apMaternal . '&curp_prfle=' . $this->curp . '&rfc_prfle=' . $this->rfc_participant . '&birth_prfle=' . $this->formattedBirthDate . '&state_birth_prfle=' . $this->state_birth_participant . '&nationality_prfle=' . $this->nationality_participant . '&country_birth_prfle=' . $this->country_birth_participant . '&state_prfle=' . $this->state_name_separated . '&municipality_prfle=' . $this->municipal_name_separated . '&location_prfle=' . $this->delegation . '&street_prfle=' . $this->street . '&n_int_prfle=' . $this->nInterior . '&n_ext_prfle=' . $this->nExterior . '&suburb_prfle=' . $this->suburb . '&postal_cod_prfle=' . $this->postalCode . '&mob_phone_prfle=' . $this->mobilePhone . '&office_phone_prfle=' . $this->officePhone . '&ext_prfle=' . $this->extension . '&rfc_company_prfle=' . $this->rfc_company_participant . '&name_company_prfle=' . $this->name_company_participant . '&confirm_privacity=1&privileges=medical_user');
             if ($response->successful()) {
                 $statesSuccess = $response->json()['data'];
             } elseif ($response->successful() && $response->json()['data'] === 'NO EXITOSO') {
@@ -395,7 +396,7 @@ class Index extends Component
             'password.required' => 'Campo obligatorio',
             'password.min' => 'Minímo 8 carácteres',
             'password.same' => 'Las contraseñas no coinciden',
-            'confirm_privacity.required' => 'Debes confirmar que has leído el aviso de privacidad.'
+            // 'confirm_privacity.required' => 'Debes confirmar que has leído el aviso de privacidad.'
         ];
     }
 }

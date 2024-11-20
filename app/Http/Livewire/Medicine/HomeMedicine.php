@@ -958,7 +958,7 @@ class HomeMedicine extends Component
     public function DataMedReservations()
     {
 
-        $reference_number = $this->reference_number ?? 'NO APLICA';
+        $reference_number = $this->reference_number ?? 'NO APLICA-'.$this->saveMedicine->id;
         $is_studying =  ($this->medicine_question_id == 1) ? 1 : 0;
         $has_extension = ($this->extensionClassId) ? 1 : 0;
 
