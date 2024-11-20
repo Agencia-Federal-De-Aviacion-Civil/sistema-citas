@@ -43,13 +43,13 @@
         {{-- <x-banner-modal-icon :title="'USUARIO'" :size="'w-16 h-16'" :icon="'user'" :titlesize="'xl'" /> --}}
         <div class="grid xl:grid-cols-3 xl:gap-9 py-4">
             <div class="mt-1 relative w-full group">
-                <x-input wire:model="name" label="NOMBRE" placeholder="ESCRIBE..." class="uppercase" readonly/>
+                <x-input wire:model="name" label="NOMBRE" placeholder="ESCRIBE..." class="uppercase" />
             </div>
             <div class="mt-1 relative w-full group">
-                <x-input wire:model="apParental" label="APELLIDO PATERNO" placeholder="ESCRIBE..." class="uppercase" readonly/>
+                <x-input wire:model="apParental" label="APELLIDO PATERNO" placeholder="ESCRIBE..." class="uppercase" />
             </div>
             <div class="mt-1 relative w-full group">
-                <x-input wire:model="apMaternal" label="APELLIDO MATERNO" placeholder="ESCRIBE..." class="uppercase" readonly/>
+                <x-input wire:model="apMaternal" label="APELLIDO MATERNO" placeholder="ESCRIBE..." class="uppercase" />
             </div>
         </div>
         <div class="grid xl:grid-cols-1 xl:gap-6">
@@ -159,7 +159,7 @@
 
                 <div class="grid xl:grid-cols-3 xl:gap-6">
                     <div class="mt-4 relative w-full group">
-                        <x-select label="GENERO" placeholder="SELECCIONE..." wire:model.defer="genre" readonly>
+                        <x-select label="GENERO" placeholder="SELECCIONE..." wire:model.defer="genre" >
                             <x-select.option label="FEMENINO" value="FEMENINO" />
                             <x-select.option label="MASCULINO" value="MASCULINO" />
                         </x-select>
@@ -169,17 +169,13 @@
                     </div> --}}
                     <div class="mt-4 relative w-full group">
                         <x-datetime-picker label="NACIMIENTO" placeholder="SELECCIONE FECHA..."
-                            parse-format="YYYY-MM-DD" without-time="false" wire:model.defer="birth" readonly/>
+                            parse-format="YYYY-MM-DD" without-time="false" wire:model.defer="birth" />
                     </div>
                     <div class="mt-4 relative w-full group">
                         <x-inputs.maskable label="EDAD" mask="##" placeholder="ESCRIBE..."
-                            wire:model.defer="age" readonly/>
-                    </div>
-                </div>
-                <div class="grid xl:grid-cols-2 xl:gap-6">
-
-                    <div class="mt-4 relative w-full group">
-                        <label for="systems"
+                            wire:model.defer="age" />
+          wire:model.defer="age" readonly/>
+                   <label for="systems"
                             class="block text-sm font-medium text-gray-900 dark:text-white">ESTADO</label>
                         <select wire:model.lazy="state_id"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">

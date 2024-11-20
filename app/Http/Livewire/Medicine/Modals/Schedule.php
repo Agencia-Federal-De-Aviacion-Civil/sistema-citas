@@ -407,7 +407,7 @@ class Schedule extends ModalComponent
                 '10' => 7 //REAGENDADO USUARIO
             ][$this->selectedOption];
 
-        if ($status_id == 4 || $status_id == 7) {
+        if ($status_id == 4 || $status_id == 5 || $status_id == 7) {
             $status = 'id=' . $this->scheduleId . '&status_id=' . $status_id . '&observation=' . $this->observation . '&headquarter_id=' . $this->headquarter_id . '&dateReserve=' . $this->dateReserve . '';
         }
         if ($status_id == 8 || $status_id == 6 || $status_id == 1) {
