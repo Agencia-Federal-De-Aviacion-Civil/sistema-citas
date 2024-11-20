@@ -5,7 +5,7 @@
             <div class="mt-8 grid md:grid-cols-2 md:gap-6">
                 <div class="relative mb-3 w-full group">
                     <x-input wire:model.blur="curp" label="INGRESA TU CURP" x-mask="##################"
-                        x-bind:disabled="enabled" placeholder="ESCRIBE..." class="uppercase" />
+                         placeholder="ESCRIBE..." class="uppercase" />
                 </div>
             </div>
             @if(!$buttonHIden)
@@ -174,7 +174,6 @@
                     <div class="mt-4 relative w-full group">
                         <x-inputs.maskable label="EDAD" mask="##" placeholder="ESCRIBE..."
                             wire:model.defer="age" />
-          wire:model.defer="age" readonly/>
                    <label for="systems"
                             class="block text-sm font-medium text-gray-900 dark:text-white">ESTADO</label>
                         <select wire:model.lazy="state_id"

@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Users\Modals;
 
 use App\Models\Catalogue\Headquarter;
+use App\Models\Catalogue\LogsApi;
 use App\Models\Catalogue\Municipal;
 use App\Models\Catalogue\State;
 use App\Models\User;
@@ -21,6 +22,7 @@ use WireUi\Traits\Actions;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
+use Predis\Command\Redis\DUMP;
 
 class ModalNew extends ModalComponent
 {
@@ -323,7 +325,11 @@ class ModalNew extends ModalComponent
         $sex_id = $this->genre == 'MASCULINO' ? 1 : 2;
         $password = Hash::make($this->password);
         $rfc = substr($this->curp, 0, 10);
-        $birthDate = Carbon::createFromFormat('d/m/Y', $this->birth);
+        $birth = ($this->birth)?$this->birth:'00/00/0000';
+        // dump($birth);
+        // dd();
+
+        $birthDate = Carbon::createFromFormat('d/m/Y', $birth);
         $formattedBirthDate = $birthDate->format('Y-m-d');
         $privileges = [
             'user' => 'medical_user',
@@ -333,13 +339,19 @@ class ModalNew extends ModalComponent
             'headquarters_authorized' => 'medical.headquarters_authorized'
         ][$this->privileges];
 
+        if(!$this->id_save){
+            $users = 'https://siafac.afac.gob.mx/listStore?id_save=' . $this->id_save . '&id_update=' . $this->id_update . '&name=' . $this->name . '&email=' . $this->email . '&password=' . $password . '&sex_id=' . $sex_id . '&country_id=' . '165' . '&lst_pat_prfle=' . $this->apParental . '&lst_mat_prfle=' . $this->apMaternal . '&curp_prfle=' . $this->curp . '&rfc_prfle=' . $rfc . '&birth_prfle=' . $formattedBirthDate . '&state_birth_prfle=' . NULL . '&nationality_prfle=MEXICANA' . '&country_birth_prfle=MÉXICO' . '&state_prfle=' . $stateid . '&municipality_prfle=' . $municipal . '&location_prfle=' . $this->delegation . '&street_prfle=' . $this->street . '&n_int_prfle=' . $this->nInterior . '&n_ext_prfle=' . $this->nExterior . '&suburb_prfle=' . $this->suburb . '&postal_cod_prfle=' . $this->postalCode . '&mob_phone_prfle=' . $this->mobilePhone . '&office_phone_prfle=' . $this->officePhone . '&ext_prfle=' . $this->extension . '&rfc_company_prfle=' . NULL . '&name_company_prfle=' . NULL . '&confirm_privacity=' . 1 . '&privileges=' . $privileges . '&user_headquarter_id=' . $this->user_headquarter_id . '&headquarter_id=' . $this->headquarter_id . '';
+        }else{
+            $users = 'https://siafac.afac.gob.mx/updateCita?id_save=' . $this->id_save . '&id_update=' . $this->id_update . '&name=' . $this->name . '&email=' . $this->email . '&password=' . $password . '&sex_id=' . $sex_id . '&country_id=' . '165' . '&lst_pat_prfle=' . $this->apParental . '&lst_mat_prfle=' . $this->apMaternal . '&curp_prfle=' . $this->curp . '&rfc_prfle=' . $rfc . '&birth_prfle=' . $formattedBirthDate . '&state_birth_prfle=' . NULL . '&nationality_prfle=MEXICANA' . '&country_birth_prfle=MÉXICO' . '&state_prfle=' . $stateid . '&municipality_prfle=' . $municipal . '&location_prfle=' . $this->delegation . '&street_prfle=' . $this->street . '&n_int_prfle=' . $this->nInterior . '&n_ext_prfle=' . $this->nExterior . '&suburb_prfle=' . $this->suburb . '&postal_cod_prfle=' . $this->postalCode . '&mob_phone_prfle=' . $this->mobilePhone . '&office_phone_prfle=' . $this->officePhone . '&ext_prfle=' . $this->extension . '&rfc_company_prfle=' . NULL . '&name_company_prfle=' . NULL . '&confirm_privacity=' . 1 . '&privileges=' . $privileges . '&user_headquarter_id=' . $this->user_headquarter_id . '&headquarter_id=' . $this->headquarter_id . '';
+        }
+
         // http://afac-tenant.gob/login
         if (checkdnsrr('crp.sct.gob.mx', 'A')) {
 
             $response = Http::withHeaders([
                 'Accept' => 'application/json'
                 // http://afac-tenant.gob/login
-            ])->connectTimeout(30)->get('https://siafac.afac.gob.mx/listStore?id_save=' . $this->id_save . '&id_update=' . $this->id_update . '&name=' . $this->name . '&email=' . $this->email . '&password=' . $password . '&sex_id=' . $sex_id . '&country_id=' . '165' . '&lst_pat_prfle=' . $this->apParental . '&lst_mat_prfle=' . $this->apMaternal . '&curp_prfle=' . $this->curp . '&rfc_prfle=' . $rfc . '&birth_prfle=' . $formattedBirthDate . '&state_birth_prfle=' . NULL . '&nationality_prfle=MEXICANA' . '&country_birth_prfle=MÉXICO' . '&state_prfle=' . $stateid . '&municipality_prfle=' . $municipal . '&location_prfle=' . $this->delegation . '&street_prfle=' . $this->street . '&n_int_prfle=' . $this->nInterior . '&n_ext_prfle=' . $this->nExterior . '&suburb_prfle=' . $this->suburb . '&postal_cod_prfle=' . $this->postalCode . '&mob_phone_prfle=' . $this->mobilePhone . '&office_phone_prfle=' . $this->officePhone . '&ext_prfle=' . $this->extension . '&rfc_company_prfle=' . NULL . '&name_company_prfle=' . NULL . '&confirm_privacity=' . 1 . '&privileges=' . $privileges . '&user_headquarter_id=' . $this->user_headquarter_id . '&headquarter_id=' . $this->headquarter_id . '');
+            ])->connectTimeout(30)->get($users);
             if ($response->successful()) {
                 $statesSuccess = $response->json()['data'];
             } elseif ($response->successful() && $response->json()['data'] === 'NO EXITOSO') {
@@ -370,7 +382,17 @@ class ModalNew extends ModalComponent
             $this->LogsApi($curp_logs = $this->curp, $type = 'REGISTRO', $register = 'SIN CONEXION', $description = 'No hay conexión, vuelve a intentarlo');
         }
     }
-
+    public function LogsApi($curp_logs, $type, $register, $description)
+    {
+        $url = url()->previous();
+        $logs =  LogsApi::create([
+            'curp_logs' => $curp_logs,
+            'url' => $url,
+            'type' => $type,
+            'register' => $register,
+            'description' => $description
+        ]);
+    }
 
     public function messages()
     {
