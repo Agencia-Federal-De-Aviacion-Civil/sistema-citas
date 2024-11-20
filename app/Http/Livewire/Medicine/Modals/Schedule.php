@@ -418,7 +418,7 @@ class Schedule extends ModalComponent
 
             $response = Http::withHeaders([
                 'Accept' => 'application/json'
-            ])->connectTimeout(30)->get('http://afac-tenant.gob/statusCita?' . $status . '');
+            ])->connectTimeout(30)->get('https://siafac.afac.gob.mx/statusCita?' . $status . '');
             if ($response->successful()) {
                 $statesSuccess = $response->json()['data'];
             } elseif ($response->successful() && $response->json()['data'] === 'NO EXITOSO') {
