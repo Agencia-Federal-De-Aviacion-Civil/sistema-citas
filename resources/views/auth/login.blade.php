@@ -98,7 +98,7 @@
                 </div>
             </div>
         </div>
-    </section> --}}
+    </section>
     <section class="min-h-screen bg-cover " style="background-image: url('{{ asset('images/AFAC_citas_fondo.jpg') }}')">
         <div class="flex flex-col min-h-screen bg-black/0">
             <div class="container flex flex-col flex-1 px-6 py-12 mx-auto">
@@ -181,10 +181,10 @@
                                         @endif
                                     </div>
                                 </div>
-                                <button
+                                {{-- <button
                                     class="bg-[#003764] w-full px-6 py-2 mt-6 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform rounded-md hover:bg-[#BC955C] focus:outline-none focus:ring focus:ring-blue-400 focus:ring-opacity-50">
                                     INICIAR SESIÓN
-                                </button>
+                                </button> --}}
                                 <div
                                     class="flex items-center justify-center py-4 text-center bg-gray-100 dark:bg-gray-700">
                                     <a href="{{ route('register') }}"
