@@ -134,11 +134,16 @@
                                 <div class="flex flex-col pt-4">
                                     <x-jet-label class="inline-block mb-1 font-medium text-base" for="login"
                                         value="{{ __('CURP') }}" />
-                                    <x-jet-input id="login"
+                                        <x-jet-input id="login"
+                                        class="uppercase flex-grow w-full h-10 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline"
+                                        type="login" name="login" :value="old('login')" required autofocus
+                                        autocomplete="username"/>
+                                        {{-- TODO --}}
+                                    {{-- <x-jet-input id="login"
                                         class="uppercase flex-grow w-full h-10 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline"
                                         type="login" name="login" :value="old('login')" required autofocus
                                         minlength="18" maxLength="18" autocomplete="username"
-                                        onkeypress="return ((event.charCode >= 48 && event.charCode <= 57) || (event.charCode >= 65 && event.charCode <= 90) || (event.charCode >= 97 && event.charCode <= 122))" />
+                                        onkeypress="return ((event.charCode >= 48 && event.charCode <= 57) || (event.charCode >= 65 && event.charCode <= 90) || (event.charCode >= 97 && event.charCode <= 122))" /> --}}
                                 </div>
                                 <div class="flex flex-col pt-4" x-data="{ show: false }">
                                     <div class="mb-6">
