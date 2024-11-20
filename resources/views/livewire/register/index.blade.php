@@ -43,7 +43,7 @@
                         </div>
                     </div>
                     <div class="text-left">
-                        <x-button wire:click="searchRenapo" label="CONSULTAR" blue />
+                        {{-- <x-button wire:click="searchRenapo" label="CONSULTAR" blue /> --}}
                         <x-button wire:click="cleanSearch" secondary label="LIMPIAR" />
                         <div wire:loading wire:target="searchRenapo">
                             <div
