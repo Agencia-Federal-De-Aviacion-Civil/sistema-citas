@@ -83,7 +83,7 @@
                                     {{-- <x-jet-button
                                         class="w-full flex justify-center bg-blue-800  hover:bg-blue-900 text-gray-100 p-3  rounded-full tracking-wide font-semibold  shadow-lg cursor-pointer transition ease-in duration-500">
                                         {{ __('Iniciar Sesión') }}
-                                    </x-jet-button> --}}
+                                    </x-jet-button>
                                     <div class="w-full px-4 py-2 border-b border-gray-200 dark:border-gray-300">
                                     </div>
                                     <a class="py-3 w-full flex justify-center text-sm text-gray-400 hover:text-gray-500"
@@ -98,7 +98,9 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> --}}
+
+
     <section class="min-h-screen bg-cover " style="background-image: url('{{ asset('images/AFAC_citas_fondo.jpg') }}')">
         <div class="flex flex-col min-h-screen bg-black/0">
             <div class="container flex flex-col flex-1 px-6 py-12 mx-auto">
