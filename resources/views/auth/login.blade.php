@@ -181,10 +181,10 @@
                                         @endif
                                     </div>
                                 </div>
-                                {{-- <button
+                                <button
                                     class="bg-[#003764] w-full px-6 py-2 mt-6 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform rounded-md hover:bg-[#BC955C] focus:outline-none focus:ring focus:ring-blue-400 focus:ring-opacity-50">
                                     INICIAR SESIÓN
-                                </button> --}}
+                                </button>
                                 <div
                                     class="flex items-center justify-center py-4 text-center bg-gray-100 dark:bg-gray-700">
                                     <a href="{{ route('register') }}"
