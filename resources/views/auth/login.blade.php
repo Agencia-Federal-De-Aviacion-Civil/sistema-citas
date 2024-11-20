@@ -79,10 +79,10 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <x-jet-button
+                                    {{-- <x-jet-button
                                         class="w-full flex justify-center bg-blue-800  hover:bg-blue-900 text-gray-100 p-3  rounded-full tracking-wide font-semibold  shadow-lg cursor-pointer transition ease-in duration-500">
                                         {{ __('Iniciar Sesión') }}
-                                    </x-jet-button>
+                                    </x-jet-button> --}}
                                     <div class="w-full px-4 py-2 border-b border-gray-200 dark:border-gray-300">
                                     </div>
                                     <a class="py-3 w-full flex justify-center text-sm text-gray-400 hover:text-gray-500"
