@@ -169,14 +169,14 @@
                                 </x-select>
                             </div>
 
-                            <div class="mt-4 relative w-full group">
+                            {{-- <div class="mt-4 relative w-full group">
                                 <x-input label="Fecha de nacimiento" placeholder="SELECCIONE FECHA..."
                                     without-time="false" wire:model.live="birth" />
-                            </div>
-                            {{-- <div class="mt-4 relative w-full group">
+                            </div> --}}
+                            <div class="mt-4 relative w-full group">
                                 <x-datetime-picker label="NACIMIENTO" placeholder="SELECCIONE FECHA..."
                                     parse-format="YYYY-MM-DD" without-time="false" wire:model.defer="birth" />
-                            </div> --}}
+                            </div>
                             <div class="mt-4 relative w-full group">
                                 <x-inputs.maskable label="EDAD" mask="##" placeholder="ESCRIBE..."
                                     wire:model.defer="age" />
