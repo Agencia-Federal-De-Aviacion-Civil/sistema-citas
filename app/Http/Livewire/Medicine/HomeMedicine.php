@@ -940,7 +940,7 @@ class HomeMedicine extends Component
                     $citaExtension->clas_class_extension_id = $this->clas_class_extension_id;
                     $citaExtension->save();
                 }
-                $this->DataMedReservations();
+                // $this->DataMedReservations();
                 session(['saved_medicine_id' => $this->saveMedicine->id]);
                 $this->generatePdf();
                 $this->clean();
@@ -1074,7 +1074,7 @@ class HomeMedicine extends Component
             'timeout' => '3100'
         ]);
 
-        $this->confirmDeleteApi();
+        // $this->confirmDeleteApi();
     }
 
     public function confirmDeleteApi()

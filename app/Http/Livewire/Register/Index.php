@@ -303,7 +303,7 @@ class Index extends Component
             'curp' => $this->curp,
         ]);
         auth()->login($user);
-        $this->registerTenantUser($user);
+        // $this->registerTenantUser($user);
         return redirect()->route('afac.home');
     }
 

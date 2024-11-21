@@ -311,7 +311,7 @@ class ModalNew extends ModalComponent
                 'icon'        => 'error',
             ]);
         }
-        $this->registerTenantUser();
+        // $this->registerTenantUser();
         $this->closeModal();
     }
 

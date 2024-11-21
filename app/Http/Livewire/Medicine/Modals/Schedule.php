@@ -354,7 +354,7 @@ class Schedule extends ModalComponent
             'process' => $this->name . ' FOLIO CITA:' . $this->id_appoint,
         ]);
         $this->closeModal();
-        $this->confirmStatusApi();
+        // $this->confirmStatusApi();
     }
 
     public function saveActive()
@@ -386,7 +386,7 @@ class Schedule extends ModalComponent
 
         $this->scheduleId;
         $this->selectedOption = 5;
-        $this->confirmStatusApi();
+        // $this->confirmStatusApi();
     }
 
     public function confirmStatusApi()
