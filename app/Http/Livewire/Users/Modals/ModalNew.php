@@ -35,7 +35,7 @@ class ModalNew extends ModalComponent
 
     public $rfc_participant, $enabled, $sex_api, $formattedBirthDate, $age_participant, $rfc_participant_api, $curp_api, $sexes, $country_birth, $state_birth_participant, $nationality_participant, $countries;
     public $country_birth_participant, $rfc_company_participant, $name_company_participant, $apiStates = [], $country_id, $apiMunicipals = [], $confirm_privacity;
-    public $user, $sex_id, $state_name_separated, $municipal_name_separated, $birth_years, $buttonHIden;
+    public $user, $sex_id, $state_name_separated, $municipal_name_separated, $birth_years, $buttonHIden, $userparticipantid, $privilegesUserid;
 
 
     public function rules()
@@ -311,7 +311,11 @@ class ModalNew extends ModalComponent
                 'icon'        => 'error',
             ]);
         }
-        // $this->registerTenantUser();
+
+
+        $this->privilegesUserid = $privilegesUser->id;
+        $this->userparticipantid = $user_participants->id;
+        $this->registerTenantUser();
         $this->closeModal();
     }
 
@@ -338,20 +342,100 @@ class ModalNew extends ModalComponent
             'sub_headquarters' => 'medical.sub_headquarters',
             'headquarters_authorized' => 'medical.headquarters_authorized'
         ][$this->privileges];
+        // https://siafac.afac.gob.mx/updateCita
 
-        if(!$this->id_save){
-            $users = 'https://siafac.afac.gob.mx/listStore?id_save=' . $this->id_save . '&id_update=' . $this->id_update . '&name=' . $this->name . '&email=' . $this->email . '&password=' . $password . '&sex_id=' . $sex_id . '&country_id=' . '165' . '&lst_pat_prfle=' . $this->apParental . '&lst_mat_prfle=' . $this->apMaternal . '&curp_prfle=' . $this->curp . '&rfc_prfle=' . $rfc . '&birth_prfle=' . $this->formattedBirthDate . '&state_birth_prfle=' . NULL . '&nationality_prfle=MEXICANA' . '&country_birth_prfle=MÉXICO' . '&state_prfle=' . $stateid . '&municipality_prfle=' . $municipal . '&location_prfle=' . $this->delegation . '&street_prfle=' . $this->street . '&n_int_prfle=' . $this->nInterior . '&n_ext_prfle=' . $this->nExterior . '&suburb_prfle=' . $this->suburb . '&postal_cod_prfle=' . $this->postalCode . '&mob_phone_prfle=' . $this->mobilePhone . '&office_phone_prfle=' . $this->officePhone . '&ext_prfle=' . $this->extension . '&rfc_company_prfle=' . NULL . '&name_company_prfle=' . NULL . '&confirm_privacity=' . 1 . '&privileges=' . $privileges . '&user_headquarter_id=' . $this->user_headquarter_id . '&headquarter_id=' . $this->headquarter_id . '';
-        }else{
-            $users = 'https://siafac.afac.gob.mx/updateCita?id_save=' . $this->id_save . '&id_update=' . $this->id_update . '&name=' . $this->name . '&email=' . $this->email . '&password=' . $password . '&sex_id=' . $sex_id . '&country_id=' . '165' . '&lst_pat_prfle=' . $this->apParental . '&lst_mat_prfle=' . $this->apMaternal . '&curp_prfle=' . $this->curp . '&rfc_prfle=' . $rfc . '&birth_prfle=' . $this->birth . '&state_birth_prfle=' . NULL . '&nationality_prfle=MEXICANA' . '&country_birth_prfle=MÉXICO' . '&state_prfle=' . $stateid . '&municipality_prfle=' . $municipal . '&location_prfle=' . $this->delegation . '&street_prfle=' . $this->street . '&n_int_prfle=' . $this->nInterior . '&n_ext_prfle=' . $this->nExterior . '&suburb_prfle=' . $this->suburb . '&postal_cod_prfle=' . $this->postalCode . '&mob_phone_prfle=' . $this->mobilePhone . '&office_phone_prfle=' . $this->officePhone . '&ext_prfle=' . $this->extension . '&rfc_company_prfle=' . NULL . '&name_company_prfle=' . NULL . '&confirm_privacity=' . 1 . '&privileges=' . $privileges . '&user_headquarter_id=' . $this->user_headquarter_id . '&headquarter_id=' . $this->headquarter_id . '';
-        }
-
-        // http://afac-tenant.gob/login
         if (checkdnsrr('crp.sct.gob.mx', 'A')) {
+// dump($this->id_save);
 
-            $response = Http::withHeaders([
-                'Accept' => 'application/json'
-                // http://afac-tenant.gob/login
-            ])->connectTimeout(30)->get($users);
+
+            if (!$this->id_save) {
+                $response = Http::withHeaders([
+                    'Accept' => 'application/json'
+                    // https://siafac.afac.gob.mx/login
+                ])->connectTimeout(30)->post(
+                    'https://siafac.afac.gob.mx/listStore?',
+                    [
+                        'id' => $this->privilegesUserid,
+                        'name' => $this->name,
+                        'email' => $this->email,
+                        'password' => $password,
+                        'userParticipantid' => $this->userparticipantid,
+                        'sex_id' => $sex_id,
+                        'country_id' => '165',
+                        'lst_pat_prfle' => $this->apParental,
+                        'lst_mat_prfle' => $this->apMaternal,
+                        'curp_prfle' => $this->curp,
+                        'rfc_prfle' => $this->rfc_participant,
+                        'birth_prfle' => $this->formattedBirthDate,
+                        'state_birth_prfle' => NULL,
+                        'nationality_prfleM=>ECANA',
+                        'country_birth_prfleM=>ÉCO',
+                        'state_prfle' => $stateid,
+                        'municipality_prfle' => $municipal,
+                        'location_prfle' => $this->delegation,
+                        'street_prfle' => $this->street,
+                        'n_int_prfle' => $this->nInterior,
+                        'n_ext_prfle' => $this->nExterior,
+                        'suburb_prfle' => $this->suburb,
+                        'postal_cod_prfle' => $this->postalCode,
+                        'mob_phone_prfle' => $this->mobilePhone,
+                        'office_phone_prfle' => $this->officePhone,
+                        'ext_prfle' => $this->extension,
+                        'rfc_company_prfle' => NULL,
+                        'name_company_prfle' => NULL,
+                        'confirm_privacity' => 1,
+                        'privileges' => $privileges,
+                        'user_headquarter_id' => $this->user_headquarter_id,
+                        'headquarter_id' => $this->headquarter_id
+                    ]
+                );
+            } else {
+
+                $rfc_participant = ($this->rfc_participant) ? $this->rfc_participant : $rfc ;
+                $birthDate = Carbon::createFromFormat('d/m/Y', $this->birth);
+                $formattedBirthDate = $birthDate->format('Y-m-d');
+
+                $response = Http::withHeaders([
+                    'Accept' => 'application/json'
+                ])->connectTimeout(30)->put(
+                    'https://siafac.afac.gob.mx/updateCita?',
+                    [
+                        'id_save' => $this->privilegesUserid,
+                        'id_update' => $this->userparticipantid,
+                        'name' => $this->name,
+                        'email' => $this->email,
+                        'password' => $password,
+                        'sex_id' => $sex_id,
+                        'country_id' => '165',
+                        'lst_pat_prfle' => $this->apParental,
+                        'lst_mat_prfle' => $this->apMaternal,
+                        'curp_prfle' => $this->curp,
+                        'rfc_prfle' => $rfc_participant,
+                        'birth_prfle' => $formattedBirthDate,
+                        'state_birth_prfle' => NULL,
+                        'nationality_prfleM =>ICANA',
+                        'country_birth_prfleM =>ICO',
+                        'state_prfle' => $stateid,
+                        'municipality_prfle' => $municipal,
+                        'location_prfle' => $this->delegation,
+                        'street_prfle' => $this->street,
+                        'n_int_prfle' => $this->nInterior,
+                        'n_ext_prfle' => $this->nExterior,
+                        'suburb_prfle' => $this->suburb,
+                        'postal_cod_prfle' => $this->postalCode,
+                        'mob_phone_prfle' => $this->mobilePhone,
+                        'office_phone_prfle' => $this->officePhone,
+                        'ext_prfle' => $this->extension,
+                        'rfc_company_prfle' => NULL,
+                        'name_company_prfle' => NULL,
+                        'confirm_privacity' => 1,
+                        'privileges' => $privileges,
+                        'user_headquarter_id' => $this->user_headquarter_id,
+                        'headquarter_id' => $this->headquarter_id
+                    ]
+                );
+            }
+
             if ($response->successful()) {
                 $statesSuccess = $response->json()['data'];
             } elseif ($response->successful() && $response->json()['data'] === 'NO EXITOSO') {

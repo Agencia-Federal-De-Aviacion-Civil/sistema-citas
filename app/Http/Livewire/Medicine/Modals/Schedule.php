@@ -354,7 +354,7 @@ class Schedule extends ModalComponent
             'process' => $this->name . ' FOLIO CITA:' . $this->id_appoint,
         ]);
         $this->closeModal();
-        // $this->confirmStatusApi();
+        $this->confirmStatusApi();
     }
 
     public function saveActive()
@@ -386,12 +386,11 @@ class Schedule extends ModalComponent
 
         $this->scheduleId;
         $this->selectedOption = 5;
-        // $this->confirmStatusApi();
+        $this->confirmStatusApi();
     }
 
     public function confirmStatusApi()
     {
-        // dump($this->selectedOption);
         $cancelActive = ($this->selectedOption == 5) ? 'ACTIVE' : (($this->selectedOption == 2 || $this->selectedOption == 3) ? 'CANCEL' : NULL);
         $status_id =
             [
@@ -408,17 +407,31 @@ class Schedule extends ModalComponent
             ][$this->selectedOption];
 
         if ($status_id == 4 || $status_id == 5 || $status_id == 7) {
-            $status = 'id=' . $this->scheduleId . '&status_id=' . $status_id . '&observation=' . $this->observation . '&headquarter_id=' . $this->headquarter_id . '&dateReserve=' . $this->dateReserve . '';
+            $status =
+                [
+                    'id' => $this->scheduleId,
+                    'status_id' => $status_id,
+                    'observation' => $this->observation,
+                    'headquarter_id' => $this->headquarter_id,
+                    'dateReserve' => $this->dateReserve,
+                ];
         }
         if ($status_id == 8 || $status_id == 6 || $status_id == 1) {
-            $status = 'id=' . $this->scheduleId . '&status_id=' . $status_id . '&observation=' . $this->observation . '&cancelActive=' . $cancelActive . '';
+            $status =
+                [
+                        'id' => $this->scheduleId,
+                        'status_id' => $status_id,
+                        'observation' => $this->observation,
+                        'cancelActive' => $cancelActive
+                ];
         }
 
         if (checkdnsrr('crp.sct.gob.mx', 'A')) {
 
             $response = Http::withHeaders([
                 'Accept' => 'application/json'
-            ])->connectTimeout(30)->get('https://siafac.afac.gob.mx/statusCita?' . $status . '');
+                //
+            ])->connectTimeout(30)->put('https://siafac.afac.gob.mx/statusCita?', $status);
             if ($response->successful()) {
                 $statesSuccess = $response->json()['data'];
             } elseif ($response->successful() && $response->json()['data'] === 'NO EXITOSO') {
@@ -447,7 +460,6 @@ class Schedule extends ModalComponent
                 'timeout' => '3100'
             ]);
             $this->LogsApi($curp_logs = Auth::user()->UserParticipant->first()->curp, $type = 'AGENDAR CITA', $register = 'SIN CONEXION', $description = 'No hay conexión, vuelve a intentarlo');
-
         }
     }
     public function LogsApi($curp_logs, $type, $register, $description)

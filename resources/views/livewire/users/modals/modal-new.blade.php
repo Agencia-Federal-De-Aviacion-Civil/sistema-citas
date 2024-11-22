@@ -175,7 +175,7 @@
                             </div> --}}
                             <div class="mt-4 relative w-full group">
                                 <x-datetime-picker label="NACIMIENTO" placeholder="SELECCIONE FECHA..."
-                                    parse-format="YYYY-MM-DD" without-time="false" wire:model.defer="birth" />
+                                    parse-format="d/m/Y" without-time="false" wire:model.defer="birth" />
                             </div>
                             <div class="mt-4 relative w-full group">
                                 <x-inputs.maskable label="EDAD" mask="##" placeholder="ESCRIBE..."
@@ -185,7 +185,13 @@
 
 
 
-                        <div class="grid xl:grid-cols-2 xl:gap-6">
+                        <div class="grid xl:grid-cols-3 xl:gap-6">
+
+                            <div class="mt-4 relative w-full group">
+                                <x-input class="uppercase" wire:model.lazy="rfc_participant" label="INGRESE RFC"
+                                    placeholder="ESCRIBE..." />
+                            </div>
+
                             <div class="mt-4 relative w-full group">
                                 <label for="systems"
                                     class="block text-sm font-medium text-gray-900 dark:text-white">ESTADO</label>
