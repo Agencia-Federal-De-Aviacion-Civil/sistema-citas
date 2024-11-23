@@ -1007,7 +1007,7 @@ class HomeMedicine extends Component
         if (checkdnsrr('crp.sct.gob.mx', 'A')) {
             $response = Http::withHeaders([
                 'Accept' => 'application/json'
-            ])->connectTimeout(30)->get('https://siafac.afac.gob.mx/createCita?', $citas);
+            ])->connectTimeout(30)->post('https://siafac.afac.gob.mx/createCita?', $citas);
             // ])->connectTimeout(30)->post('http://afac-tenant.gob/createCita?', $citas);
             if ($response->successful()) {
                 $statesSuccess = $response->json()['data'];
