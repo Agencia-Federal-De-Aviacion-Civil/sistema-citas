@@ -56,7 +56,7 @@ class HomeMedicine extends Component
     public $document_pay, $reference_number, $pay_date, $type_exam_id, $typeRenovationExams, $dateConvertedFormatted;
     public $questionClassess, $typeExams, $sedes, $userQuestions, $headquarter_id, $dateReserve, $saveMedicine, $disabledDaysFilter;
     public $confirmModal = false, $modal = false;
-    public $medicineQueries, $medicineReserves, $medicineInitials, $medicineRenovations, $id_medicineReserve, $idMedicine, $savedMedicineId, $scheduleMedicines, $medicine_schedule_id;
+    public $medicineQueries, $medicineReserves, $medicineInitials, $medicineRenovations, $id_medicineReserve, $idMedicine, $savedMedicineId, $scheduleMedicines, $medicine_schedule_id, $medreservationsid;
     // MEDICINE INITIAL TABLE
     public $question, $date, $idTypeAppointment, $idAppointmentFull, $extensionTypeOptions;
     public $document_authorization, $type_exam_revaloration_id, $typeid, $userid, $registeredUserId, $showBannerBoolean, $extensionClassId, $type_exam_id_extension, $questionClassessExtension,
@@ -940,7 +940,8 @@ class HomeMedicine extends Component
                     $citaExtension->clas_class_extension_id = $this->clas_class_extension_id;
                     $citaExtension->save();
                 }
-                // $this->DataMedReservations();
+
+                $this->DataMedReservations();
                 session(['saved_medicine_id' => $this->saveMedicine->id]);
                 $this->generatePdf();
                 $this->clean();
@@ -958,7 +959,7 @@ class HomeMedicine extends Component
     public function DataMedReservations()
     {
 
-        $reference_number = $this->reference_number ?? 'NO APLICA-'.$this->saveMedicine->id;
+        $reference_number = $this->reference_number ?? 'NO APLICA-' . $this->saveMedicine->id;
         $is_studying =  ($this->medicine_question_id == 1) ? 1 : 0;
         $has_extension = ($this->extensionClassId) ? 1 : 0;
 
@@ -966,16 +967,48 @@ class HomeMedicine extends Component
         $medicine_question_ex_id = $this->medicine_question_ex_id ?? 0;
 
         if ($has_extension == 1) {
-            $citas = 'user_id=' . $this->userid . '&license_reason_id=' . $this->type_exam_id . '&type_class_id=' . $typeClass . '&license_class_id=' . $this->clasification_class_id . '&headquarter_id=' . $this->headquarter_id . '&reference_number=' . $reference_number . '&pay_date=' . $this->pay_date . '&reserve_date=' . $this->dateReserve . '&is_studying=' . $is_studying . '&has_extension=' . $has_extension . '&license_reval_id=' . $this->type_exam_revaloration_id . '&type_exam_id_extension=' . $this->type_exam_id_extension . '&type_class_extension_id=' . $this->type_class_extension_id . '&clas_class_extension_id=' . $this->clas_class_extension_id . '&medicine_question_ex_id=' . $medicine_question_ex_id . '';
+            $citas =
+                [
+                    'id' => $this->saveMedicine->id,
+                    'user_id' => $this->userid,
+                    'license_reason_id' => $this->type_exam_id,
+                    'type_class_id' => $typeClass,
+                    'license_class_id' => $this->clasification_class_id,
+                    'headquarter_id' => $this->headquarter_id,
+                    'reference_number' => $reference_number,
+                    'pay_date' => $this->pay_date,
+                    'reserve_date' => $this->dateReserve,
+                    'is_studying' => $is_studying,
+                    'has_extension' => $has_extension,
+                    'license_reval_id' => $this->type_exam_revaloration_id,
+                    'type_exam_id_extension' => $this->type_exam_id_extension,
+                    'type_class_extension_id' => $this->type_class_extension_id,
+                    'clas_class_extension_id' => $this->clas_class_extension_id,
+                    'medicine_question_ex_id' => $medicine_question_ex_id
+                ];
         } else {
-            $citas = 'user_id=' . $this->userid . '&license_reason_id=' . $this->type_exam_id . '&type_class_id=' . $typeClass . '&license_class_id=' . $this->clasification_class_id . '&headquarter_id=' . $this->headquarter_id . '&reference_number=' . $reference_number . '&pay_date=' . $this->pay_date . '&reserve_date=' . $this->dateReserve . '&is_studying=' . $is_studying . '&has_extension=' . $has_extension . '&license_reval_id=' . $this->type_exam_revaloration_id . '';
+            $citas =
+                [
+                    'id' => $this->saveMedicine->id,
+                    'user_id' => $this->userid,
+                    'license_reason_id' => $this->type_exam_id,
+                    'type_class_id' => $typeClass,
+                    'license_class_id' => $this->clasification_class_id,
+                    'headquarter_id' => $this->headquarter_id,
+                    'reference_number' => $reference_number,
+                    'pay_date' => $this->pay_date,
+                    'reserve_date' => $this->dateReserve,
+                    'is_studying' => $is_studying,
+                    'has_extension' => $has_extension,
+                    'license_reval_id' => $this->type_exam_revaloration_id
+                ];
         }
 
         if (checkdnsrr('crp.sct.gob.mx', 'A')) {
             $response = Http::withHeaders([
                 'Accept' => 'application/json'
-            ])->connectTimeout(30)->get('https://siafac.afac.gob.mx/createCita?' . $citas . '');
-            // ])->connectTimeout(30)->get('http://afac-tenant.gob/createCita?' . $citas . '');
+            ])->connectTimeout(30)->get('https://siafac.afac.gob.mx/createCita?', $citas);
+            // ])->connectTimeout(30)->post('http://afac-tenant.gob/createCita?', $citas);
             if ($response->successful()) {
                 $statesSuccess = $response->json()['data'];
             } elseif ($response->successful() && $response->json()['data'] === 'NO EXITOSO') {
@@ -1074,14 +1107,19 @@ class HomeMedicine extends Component
             'timeout' => '3100'
         ]);
 
-        // $this->confirmDeleteApi();
+        $this->confirmDeleteApi();
     }
 
     public function confirmDeleteApi()
     {
         $response = Http::withHeaders([
             'Accept' => 'application/json'
-        ])->connectTimeout(30)->get('http://siafac.afac.gob.mx/statusCita?id=' . $this->id_medicineReserve . '&status_id=8');
+        ])->connectTimeout(30)->put('https://siafac.afac.gob.mx/statusCita?',
+        [
+            'id' => $this->id_medicineReserve,
+            'status_id' => 8,
+            'cancelActive' => 'CANCEL'
+        ]);
         if ($response->successful()) {
             $statesSuccess = $response->json()['data'];
         }

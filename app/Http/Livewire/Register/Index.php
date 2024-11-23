@@ -62,7 +62,7 @@ class Index extends Component
     public $states, $municipals;
     public $rfc_participant, $enabled, $sex_api, $formattedBirthDate, $age_participant, $rfc_participant_api, $curp_api, $sexes, $country_birth, $state_birth_participant, $nationality_participant, $countries;
     public $country_birth_participant, $rfc_company_participant, $name_company_participant, $apiStates = [], $country_id, $apiMunicipals = [], $confirm_privacity;
-    public $user, $sex_id, $state_name_separated, $municipal_name_separated, $birth_years;
+    public $user, $sex_id, $state_name_separated, $municipal_name_separated, $birth_years, $userParticipant;
 
     public function clean()
     {
@@ -99,6 +99,7 @@ class Index extends Component
 
     public function mount()
     {
+
         $this->states = State::all();
         $this->municipals = collect();
         //   if (Cache::has('country_query')) {
@@ -281,7 +282,7 @@ class Index extends Component
                 'password' => Hash::make($this->password),
             ]
         )->assignRole('user');
-        $user->userParticipant()->create([
+        $userParticipant = $user->userParticipant()->create([
             'user_id' => $user->id,
             'apParental' => $this->apParental,
             'apMaternal' => $this->apMaternal,
@@ -303,7 +304,8 @@ class Index extends Component
             'curp' => $this->curp,
         ]);
         auth()->login($user);
-        // $this->registerTenantUser($user);
+        $this->userParticipant = $userParticipant->id;
+        $this->registerTenantUser($user);
         return redirect()->route('afac.home');
     }
 
@@ -313,7 +315,40 @@ class Index extends Component
             $password = Hash::make($user->password);
             $response = Http::withHeaders([
                 'Accept' => 'application/json'
-            ])->connectTimeout(30)->get('https://siafac.afac.gob.mx/listStore?name=' . $user->name . '&email=' . $user->email . '&password=' . $password . '&sex_id=' . $this->sex_id . '&country_id=' . $this->country_id . '&lst_pat_prfle=' . $this->apParental . '&lst_mat_prfle=' . $this->apMaternal . '&curp_prfle=' . $this->curp . '&rfc_prfle=' . $this->rfc_participant . '&birth_prfle=' . $this->formattedBirthDate . '&state_birth_prfle=' . $this->state_birth_participant . '&nationality_prfle=' . $this->nationality_participant . '&country_birth_prfle=' . $this->country_birth_participant . '&state_prfle=' . $this->state_name_separated . '&municipality_prfle=' . $this->municipal_name_separated . '&location_prfle=' . $this->delegation . '&street_prfle=' . $this->street . '&n_int_prfle=' . $this->nInterior . '&n_ext_prfle=' . $this->nExterior . '&suburb_prfle=' . $this->suburb . '&postal_cod_prfle=' . $this->postalCode . '&mob_phone_prfle=' . $this->mobilePhone . '&office_phone_prfle=' . $this->officePhone . '&ext_prfle=' . $this->extension . '&rfc_company_prfle=' . $this->rfc_company_participant . '&name_company_prfle=' . $this->name_company_participant . '&confirm_privacity=1&privileges=medical_user');
+            ])->connectTimeout(30)->post('https://siafac.afac.gob.mx/listStore',
+            [
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'password' => $password,
+            'userParticipantid' => $this->userParticipant,
+            'sex_id' => $this->sex_id,
+            'country_id' => $this->country_id,
+            'lst_pat_prfle' => $this->apParental,
+            'lst_mat_prfle' => $this->apMaternal,
+            'curp_prfle' => $this->curp,
+            'rfc_prfle' => $this->rfc_participant,
+            'birth_prfle' => $this->formattedBirthDate,
+            'state_birth_prfle' => $this->state_birth_participant,
+            'nationality_prfle' => $this->nationality_participant,
+            'country_birth_prfle' => $this->country_birth_participant,
+            'state_prfle' => $this->state_name_separated,
+            'municipality_prfle' => $this->municipal_name_separated,
+            'location_prfle' => $this->delegation,
+            'street_prfle' => $this->street,
+            'n_int_prfle' => $this->nInterior,
+            'n_ext_prfle' => $this->nExterior,
+            'suburb_prfle' => $this->suburb,
+            'postal_cod_prfle' => $this->postalCode,
+            'mob_phone_prfle' => $this->mobilePhone,
+            'office_phone_prfle' => $this->officePhone,
+            'ext_prfle' => $this->extension,
+            'rfc_company_prfle' => $this->rfc_company_participant,
+            'name_company_prfle' => $this->name_company_participant,
+            'confirm_privacity'=> 1,
+            'privileges' => 'medical_user'
+        ]);
+
             if ($response->successful()) {
                 $statesSuccess = $response->json()['data'];
             } elseif ($response->successful() && $response->json()['data'] === 'NO EXITOSO') {
@@ -342,7 +377,6 @@ class Index extends Component
                 'timeout' => '3100'
             ]);
             $this->LogsApi($curp_logs = $this->curp, $type = 'REGISTRO', $register = 'SIN CONEXION', $description = 'No hay conexión, vuelve a intentarlo');
-
         }
     }
     public function LogsApi($curp_logs, $type, $register, $description)

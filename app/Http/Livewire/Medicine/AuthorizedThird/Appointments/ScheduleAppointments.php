@@ -24,7 +24,7 @@ class ScheduleAppointments extends Component
         $delegation, $mobilePhone, $officePhone, $extension, $curp, $email, $password = '', $passwordConfirmation = '', $edad;
     public $rfc_participant, $enabled, $sex_api, $formattedBirthDate, $age_participant, $rfc_participant_api, $curp_api, $sexes, $country_birth, $state_birth_participant, $nationality_participant, $countries;
     public $country_birth_participant, $rfc_company_participant, $name_company_participant, $apiStates = [], $country_id, $apiMunicipals = [], $confirm_privacity;
-    public $user, $sex_id, $state_name_separated, $municipal_name_separated, $birth_years;
+    public $user, $sex_id, $state_name_separated, $municipal_name_separated, $birth_years, $userParticipantid;
     use Actions;
     public function rules()
     {
@@ -223,7 +223,7 @@ class ScheduleAppointments extends Component
                     'password' => Hash::make($this->password),
                 ]
             )->assignRole('user');
-                $user->userParticipant()->create([
+            $userParticipantid = $user->userParticipant()->create([
                 'user_id' => $user->id,
                 'apParental' => $this->apParental,
                 'apMaternal' => $this->apMaternal,
@@ -253,6 +253,7 @@ class ScheduleAppointments extends Component
                 'timeout' => '3100'
             ]);
             $this->curp_searchs = $this->curp;
+            $this->userParticipantid = $userParticipantid->id;
             $this->registerTenantUser($user);
             $this->clean();
             $this->searchcurp();
@@ -269,13 +270,48 @@ class ScheduleAppointments extends Component
         $state_id = State::where('id', $this->state_id)->pluck('name')->first();
         $municipal_id = Municipal::where('id', $this->municipal_id)->pluck('name')->first();
 
+        // dump($user->id.'---'.$this->userParticipantid);
         if (checkdnsrr('crp.sct.gob.mx', 'A')) {
             $password = Hash::make($user->password);
             $response = Http::withHeaders([
                 'Accept' => 'application/json'
                 // https://siafac.afac.gob.mx/listStore?
 
-            ])->connectTimeout(30)->get('http://afac-tenant.gob/listStore?name=' . $user->name . '&email=' . $user->email . '&password=' . $password . '&sex_id=' . $this->sex_id . '&country_id=165&lst_pat_prfle=' . $this->apParental . '&lst_mat_prfle=' . $this->apMaternal . '&curp_prfle=' . $this->curp . '&rfc_prfle=' . $this->rfc_participant . '&birth_prfle=' . $this->formattedBirthDate . '&state_birth_prfle=' . $this->state_birth_participant . '&nationality_prfle=' . $this->nationality_participant . '&country_birth_prfle=' . $this->country_birth_participant . '&state_prfle=' . $state_id . '&municipality_prfle=' . $municipal_id . '&location_prfle=' . $this->delegation . '&street_prfle=' . $this->street . '&n_int_prfle=' . $this->nInterior . '&n_ext_prfle=' . $this->nExterior . '&suburb_prfle=' . $this->suburb . '&postal_cod_prfle=' . $this->postalCode . '&mob_phone_prfle=' . $this->mobilePhone . '&office_phone_prfle=' . $this->officePhone . '&ext_prfle=' . $this->extension . '&rfc_company_prfle=' . $this->rfc_company_participant . '&name_company_prfle=' . $this->name_company_participant . '&confirm_privacity=1&privileges=medical_user');
+            ])->connectTimeout(30)->post(
+                'https://siafac.afac.gob.mx/listStore?',
+                [
+                        'id' => $user->id,
+                        'name' =>  $user->name,
+                        'email' =>  $user->email,
+                        'password' =>  $password,
+                        'userParticipantid' => $this->userParticipantid,
+                        'sex_id' =>  $this->sex_id,
+                        'country_id' => 165,
+                        'lst_pat_prfle' =>  $this->apParental,
+                        'lst_mat_prfle' =>  $this->apMaternal,
+                        'curp_prfle' =>  $this->curp,
+                        'rfc_prfle' =>  $this->rfc_participant,
+                        'birth_prfle' =>  $this->formattedBirthDate,
+                        'state_birth_prfle' =>  $this->state_birth_participant,
+                        'nationality_prfle' =>  $this->nationality_participant,
+                        'country_birth_prfle' =>  $this->country_birth_participant,
+                        'state_prfle' =>  $state_id,
+                        'municipality_prfle' =>  $municipal_id,
+                        'location_prfle' =>  $this->delegation,
+                        'street_prfle' =>  $this->street,
+                        'n_int_prfle' =>  $this->nInterior,
+                        'n_ext_prfle' =>  $this->nExterior,
+                        'suburb_prfle' =>  $this->suburb,
+                        'postal_cod_prfle' =>  $this->postalCode,
+                        'mob_phone_prfle' =>  $this->mobilePhone,
+                        'office_phone_prfle' =>  $this->officePhone,
+                        'ext_prfle' =>  $this->extension,
+                        'rfc_company_prfle' =>  $this->rfc_company_participant,
+                        'name_company_prfle' =>  $this->name_company_participant,
+                        'confirm_privacity'=> 1,
+                        'privileges' => 'medical_user'
+                ]
+            );
             if ($response->successful()) {
                 $statesSuccess = $response->json()['data'];
             } elseif ($response->successful() && $response->json()['data'] === 'NO EXITOSO') {
@@ -304,7 +340,6 @@ class ScheduleAppointments extends Component
                 'timeout' => '3100'
             ]);
             $this->LogsApi($curp_logs = $this->curp, $type = 'REGISTRO', $register = 'SIN CONEXION', $description = 'No hay conexión, vuelve a intentarlo');
-
         }
     }
 
