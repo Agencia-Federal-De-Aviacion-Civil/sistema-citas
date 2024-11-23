@@ -60,7 +60,7 @@ class HomeMedicine extends Component
     // MEDICINE INITIAL TABLE
     public $question, $date, $idTypeAppointment, $idAppointmentFull, $extensionTypeOptions;
     public $document_authorization, $type_exam_revaloration_id, $typeid, $userid, $registeredUserId, $showBannerBoolean, $extensionClassId, $type_exam_id_extension, $questionClassessExtension,
-        $type_class_extension_id, $typeClassId, $selectedTypeClassIds, $clasificationClassExtension, $clas_class_extension_id, $medicine_question_ex_id;
+        $type_class_extension_id, $typeClassId, $selectedTypeClassIds, $clasificationClassExtension, $clas_class_extension_id, $medicine_question_ex_id, $saveMedicineid;
     protected $listeners = [
         'saveDisabledDays' => '$refresh',
         'registeredEmit',
@@ -933,6 +933,8 @@ class HomeMedicine extends Component
                 $cita->is_external = $this->idTypeAppointment;
                 $cita->save();
 
+                $this->saveMedicineid = $cita->id;
+
                 if ($this->extensionClassId == 1) {
                     $citaExtension = new MedicineReservesExtension();
                     $citaExtension->medicine_reserve_id = $cita->id;
@@ -969,7 +971,7 @@ class HomeMedicine extends Component
         if ($has_extension == 1) {
             $citas =
                 [
-                    'id' => $this->saveMedicine->id,
+                    'id' => $this->saveMedicineid,
                     'user_id' => $this->userid,
                     'license_reason_id' => $this->type_exam_id,
                     'type_class_id' => $typeClass,
@@ -989,7 +991,7 @@ class HomeMedicine extends Component
         } else {
             $citas =
                 [
-                    'id' => $this->saveMedicine->id,
+                    'id' => $this->saveMedicineid,
                     'user_id' => $this->userid,
                     'license_reason_id' => $this->type_exam_id,
                     'type_class_id' => $typeClass,
