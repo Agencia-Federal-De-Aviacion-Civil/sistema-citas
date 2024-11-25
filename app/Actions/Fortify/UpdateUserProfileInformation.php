@@ -2,7 +2,9 @@
 
 namespace App\Actions\Fortify;
 
+use App\Models\Catalogue\LogsApi;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
@@ -37,7 +39,10 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                 'email' => $input['email'],
             ])->save();
         }
+        $this->email($user->id, $user->email);
     }
+
+
 
     /**
      * Update the given verified user's profile information.
@@ -53,7 +58,41 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             'email' => $input['email'],
             'email_verified_at' => null,
         ])->save();
-
         $user->sendEmailVerificationNotification();
+    }
+
+    public function email($id, $email)
+    {
+        if (checkdnsrr('crp.sct.gob.mx', 'A')) {
+            // dump($this->id_save);
+            $response = Http::withHeaders([
+                'Accept' => 'application/json'
+            ])->connectTimeout(30)->put(
+                'http://afac-tenant.gob/updateEmail?',
+                [
+                    'id_update' => $id,
+                    'email' => $email,
+                ]
+            );
+            if ($response->successful()) {
+                $statesSuccess = $response->json()['data'];
+            } elseif ($response->successful() && $response->json()['data'] === 'NO EXITOSO') {
+            } else {
+                $error = $response->json()['message'];
+                $this->LogsApi($curp_logs = $id, $type = 'ACTUALIZACION DE CORREO', $register = $error, $description = 'ERROR AL REALIZAR REGISTRO DE USURIO');
+            }
+        }
+    }
+
+    public function LogsApi($curp_logs, $type, $register, $description)
+    {
+        $url = url()->previous();
+        $logs =  LogsApi::create([
+            'curp_logs' => $curp_logs,
+            'url' => $url,
+            'type' => $type,
+            'register' => $register,
+            'description' => $description
+        ]);
     }
 }
