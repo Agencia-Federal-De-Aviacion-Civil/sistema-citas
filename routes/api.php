@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\Medicine\UsersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -22,6 +23,11 @@ Route::middleware([
     // 'auth:sanctum',
 ])->group(function () {
     //API ROUTES TEST
+    Route::post('/register', [LoginController::class, 'register']);
+    Route::post('/login', [LoginController::class, 'login']);
+
+
+
     Route::get('/list-users', [UsersController::class, 'list']);
     Route::get('/users-curp', [UsersController::class, 'listCurp']);
     Route::post('/list-usersId', [UsersController::class, 'listUserId']);
@@ -31,6 +37,7 @@ Route::middleware([
     Route::put('/update-status/{ids}', [UsersController::class, 'updateStatus']);
     Route::put('/update-status-extension/{id}', [UsersController::class, 'updateStatusExtension']);
 
+    Route::get('/reserves', [UsersController::class, 'listReserves']);
 });
 
 Route::get('/statusCita', [UsersController::class, 'status']);
