@@ -99,9 +99,9 @@ class HomeMedicine extends Component
         $this->apParental = Auth::user()->UserParticipant->first()->apParental;
         $this->apMaternal = Auth::user()->UserParticipant->first()->apMaternal;
 
-        if (Auth::user()->UserParticipant->first()->curp=='CANR950626HZSRXB04') {
+        // if (Auth::user()->UserParticipant->first()->curp=='CANR950626HZSRXB04') {
 
-            $this->openValidateModal = true;
+        //     $this->openValidateModal = true;
             // $this->name = 'YONI GUADALUPE';
             // $this->apParental = 'CRUZ';
             // $this->apMaternal = 'BALLESTEROS';
@@ -110,7 +110,7 @@ class HomeMedicine extends Component
             // $this->dependency_chain = '00442510033177';
             // $this->total_paid = '2104';
             // $this->reference_number = 'A82ADDB476';
-        }
+        // }
 
     }
     public function registeredEmit($payload)
