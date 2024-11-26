@@ -395,9 +395,6 @@ class ModalNew extends ModalComponent
                 $this->birth = Carbon::parse($this->birth);
                 $formattedBirthDate = $this->birth->format('Y-m-d');
 
-                // $birthDate = Carbon::createFromFormat('Y-m-d', $this->birth);
-                // $formattedBirthDate = $birthDate->format('Y-m-d');
-
                 $response = Http::withHeaders([
                     'Accept' => 'application/json'
                 ])->connectTimeout(30)->put(
