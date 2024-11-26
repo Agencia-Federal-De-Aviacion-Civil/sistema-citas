@@ -30,7 +30,7 @@ class Index extends Component
         return [
             'name' => 'required',
             'apParental' => 'required',
-            'apMaternal' => 'required',
+            // 'apMaternal' => 'required',
             'genre' => 'required',
             'country_birth_participant' => 'required',
             'nationality_participant' => 'required',
@@ -404,7 +404,7 @@ class Index extends Component
             'rfc_participant.min' => 'Mínimo 10 caracteres en el RFC',
             'name.required' => 'Campo obligatorio',
             'apParental.required' => 'Campo obligatorio',
-            'apMaternal.required' => 'Campo obligatorio',
+            // 'apMaternal.required' => 'Campo obligatorio',
             'genre.required' => 'Campo obligatorio',
             'birth.required' => 'Campo obligatorio',
             'state_id.required' => 'Campo obligatorio',
