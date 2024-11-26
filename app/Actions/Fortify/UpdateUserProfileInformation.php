@@ -68,7 +68,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             $response = Http::withHeaders([
                 'Accept' => 'application/json'
             ])->connectTimeout(30)->put(
-                'http://afac-tenant.gob/updateEmail?',
+                'https://siafac.afac.gob.mx/updateEmail?',
                 [
                     'id_update' => $id,
                     'email' => $email,
