@@ -99,16 +99,18 @@ class HomeMedicine extends Component
         $this->apParental = Auth::user()->UserParticipant->first()->apParental;
         $this->apMaternal = Auth::user()->UserParticipant->first()->apMaternal;
 
-        // if ($this->name != 'YONI GUADALUPE') {
-        //     $this->name = 'YONI GUADALUPE';
-        //     $this->apParental = 'CRUZ';
-        //     $this->apMaternal = 'BALLESTEROS';
-        //     $this->pay_date = '2024-07-02';
-        //     $this->operation_number = '800642';
-        //     $this->dependency_chain = '00442510033177';
-        //     $this->total_paid = '2104';
-        //     $this->reference_number = 'A82ADDB476';
-        // }
+        if (Auth::user()->UserParticipant->first()->curp=='CANR950626HZSRXB04') {
+
+            $this->openValidateModal = true;
+            // $this->name = 'YONI GUADALUPE';
+            // $this->apParental = 'CRUZ';
+            // $this->apMaternal = 'BALLESTEROS';
+            // $this->pay_date = '2024-07-02';
+            // $this->operation_number = '800642';
+            // $this->dependency_chain = '00442510033177';
+            // $this->total_paid = '2104';
+            // $this->reference_number = 'A82ADDB476';
+        }
 
     }
     public function registeredEmit($payload)
