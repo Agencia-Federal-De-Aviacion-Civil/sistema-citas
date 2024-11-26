@@ -205,10 +205,10 @@
                                 <div wire:ignore>
                                     <div class="relative w-full mb-3 group">
                                         <label class="leading-7 text-sm text-gray-600">ESTADO*</label>
-                                        <select id="selectState" wire:model.change="state_id"
+                                        <select id="selectState" wire:model.live="state_id"
                                             x-bind:disabled="!enabled">
-                                            <option data-placeholder="true">SELECCIONE...
-                                            </option>
+                                            {{-- <option data-placeholder="true">SELECCIONE...
+                                            </option> --}}
                                         </select>
                                     </div>
                                 </div>
@@ -414,7 +414,7 @@
             Livewire.on('updated-state', (options) => {
                 const defaultSelect = [{
                     'placeholder': true,
-                    'text': 'SELECCIONE...'
+                    'text': ''
                 }];
                 const formattedOptions = options.map(option => ({
                     text: option.name_state,
