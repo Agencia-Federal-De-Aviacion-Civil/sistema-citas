@@ -392,8 +392,11 @@ class ModalNew extends ModalComponent
             } else {
 
                 $rfc_participant = ($this->rfc_participant) ? $this->rfc_participant : $rfc ;
-                $birthDate = Carbon::createFromFormat('Y-m-d', $this->birth);
-                $formattedBirthDate = $birthDate->format('Y-m-d');
+                $this->birth = Carbon::parse($this->birth);
+                $formattedBirthDate = $this->birth->format('Y-m-d');
+
+                // $birthDate = Carbon::createFromFormat('Y-m-d', $this->birth);
+                // $formattedBirthDate = $birthDate->format('Y-m-d');
 
                 $response = Http::withHeaders([
                     'Accept' => 'application/json'
