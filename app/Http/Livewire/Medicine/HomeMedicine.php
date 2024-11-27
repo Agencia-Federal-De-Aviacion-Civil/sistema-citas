@@ -102,14 +102,14 @@ class HomeMedicine extends Component
         // if (Auth::user()->UserParticipant->first()->curp=='CANR950626HZSRXB04') {
 
         //     $this->openValidateModal = true;
-            // $this->name = 'YONI GUADALUPE';
-            // $this->apParental = 'CRUZ';
-            // $this->apMaternal = 'BALLESTEROS';
-            // $this->pay_date = '2024-07-02';
-            // $this->operation_number = '800642';
-            // $this->dependency_chain = '00442510033177';
-            // $this->total_paid = '2104';
-            // $this->reference_number = 'A82ADDB476';
+        // $this->name = 'YONI GUADALUPE';
+        // $this->apParental = 'CRUZ';
+        // $this->apMaternal = 'BALLESTEROS';
+        // $this->pay_date = '2024-07-02';
+        // $this->operation_number = '800642';
+        // $this->dependency_chain = '00442510033177';
+        // $this->total_paid = '2104';
+        // $this->reference_number = 'A82ADDB476';
         // }
 
     }
@@ -968,6 +968,8 @@ class HomeMedicine extends Component
         $has_extension = ($this->extensionClassId) ? 1 : 0;
 
         $typeClass = ($this->type_class_id <= 3) ? $this->type_class_id : ['4' => 1, '5' => 2, '6' => 3][$this->type_class_id];
+
+        $this->type_class_extension_id = ($this->type_class_extension_id == [] ? null : $this->type_class_extension_id);
         $type_class_extension_id = ($this->type_class_extension_id <= 3) ? $this->type_class_extension_id : ['4' => 1, '5' => 2, '6' => 3][$this->type_class_extension_id];
         $medicine_question_ex_id = $this->medicine_question_ex_id ?? 0;
 
@@ -1012,7 +1014,7 @@ class HomeMedicine extends Component
         if (checkdnsrr('crp.sct.gob.mx', 'A')) {
             $response = Http::withHeaders([
                 'Accept' => 'application/json'
-            ])->connectTimeout(30)->post('https://siafac.afac.gob.mx/createCita?', $citas);
+                ])->connectTimeout(30)->post('https://siafac.afac.gob.mx/createCita?', $citas);
             // ])->connectTimeout(30)->post('http://afac-tenant.gob/createCita?', $citas);
             if ($response->successful()) {
                 $statesSuccess = $response->json()['data'];
@@ -1120,11 +1122,11 @@ class HomeMedicine extends Component
         $response = Http::withHeaders([
             'Accept' => 'application/json'
         ])->connectTimeout(30)->put('https://siafac.afac.gob.mx/statusCita?',
-        [
-            'id' => $this->id_medicineReserve,
-            'status_id' => 8,
-            'cancelActive' => 'CANCEL'
-        ]);
+            [
+                'id' => $this->id_medicineReserve,
+                'status_id' => 8,
+                'cancelActive' => 'CANCEL'
+            ]);
         if ($response->successful()) {
             $statesSuccess = $response->json()['data'];
         }
