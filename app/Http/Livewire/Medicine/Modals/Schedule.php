@@ -227,6 +227,10 @@ class Schedule extends ModalComponent
             $cancelReserve->update([
                 'status' => $this->selectedOption,
             ]);
+            $updateReservePay = Medicine::find($cancelReserve->medicine_id);
+            $updateReservePay->update([
+                'reference_number' => "CANCELADO" . '-' . $cancelReserve->medicine_id
+            ]);
             $this->emit('cancelReserve');
             $accion = 'CANCELO CITA';
             //REAGENDO
