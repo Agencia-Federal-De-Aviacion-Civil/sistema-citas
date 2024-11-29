@@ -228,7 +228,7 @@ class ScheduleAppointments extends Component
                 'apParental' => $this->apParental,
                 'apMaternal' => $this->apMaternal,
                 'genre' => $this->genre,
-                'birth' => $this->birth,
+                'birth' => $this->formattedBirthDate,
                 'state_id' => $this->state_id,
                 'municipal_id' => $this->municipal_id,
                 // 'state_id' => $state_id,
