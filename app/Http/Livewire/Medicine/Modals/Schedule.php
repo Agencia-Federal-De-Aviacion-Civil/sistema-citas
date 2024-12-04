@@ -402,7 +402,7 @@ class Schedule extends ModalComponent
                 '2' => 6, //CANCELAR CITA
                 '3' => 8, //CANCELA USUARIO
                 '4' => 4, //REAGENDAR CITA
-                '5' => 5, //LIBERADA
+                '5' => 6, //LIBERADA
                 '6' => 1,   //IMCOMPLETA
                 '7' => 5, //APLAZAR CITA
                 '8' => 2,

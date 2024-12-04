@@ -307,10 +307,10 @@
                     @hasrole('super_admin|super_admin_medicine')
                         @if ($this->status == 3 || $this->status == 2)
 
-                            {{-- <div class="float-right mt-6">
+                            <div class="float-right mt-6">
                                 <x-button wire:click.prevent="saveActive" spinner="saveActive" loading-delay="short" sm
                                     icon="key" positive label="LIBERAR LLAVE DE PAGO" />
-                            </div> --}}
+                            </div>
                         @endif
                     @endhasrole
                     <div class="float-left mt-6">
