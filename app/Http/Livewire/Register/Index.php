@@ -25,6 +25,13 @@ use Illuminate\Support\Facades\Cache;
 class Index extends Component
 {
     use Actions;
+    public $user_id, $id_register, $name, $apParental, $apMaternal, $genre, $birth, $state_id, $municipal_id, $age, $street, $nInterior, $nExterior, $suburb, $postalCode, $federalEntity,
+        $delegation, $mobilePhone, $officePhone, $extension, $curp, $email, $password = '', $passwordConfirmation = '';
+    public $states, $municipals;
+    public $rfc_participant, $enabled, $sex_api, $formattedBirthDate, $age_participant, $rfc_participant_api, $curp_api, $sexes, $country_birth, $state_birth_participant, $nationality_participant, $countries;
+    public $country_birth_participant, $rfc_company_participant, $name_company_participant, $apiStates = [], $country_id, $apiMunicipals = [], $confirm_privacity;
+    public $user, $sex_id, $state_name_separated, $municipal_name_separated, $birth_years, $userParticipant;
+
     public function rules()
     {
         return [
@@ -50,19 +57,13 @@ class Index extends Component
             'mobilePhone' => 'required|max:10',
             'officePhone' => 'max:10',
             'extension' => '',
+            'rfc_participant' => 'required|min:13|max:13',
             'curp' => 'required|unique:user_participants|max:18|min:18',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6|same:passwordConfirmation',
             // 'confirm_privacity' => 'required',
         ];
     }
-
-    public $user_id, $id_register, $name, $apParental, $apMaternal, $genre, $birth, $state_id, $municipal_id, $age, $street, $nInterior, $nExterior, $suburb, $postalCode, $federalEntity,
-        $delegation, $mobilePhone, $officePhone, $extension, $curp, $email, $password = '', $passwordConfirmation = '';
-    public $states, $municipals;
-    public $rfc_participant, $enabled, $sex_api, $formattedBirthDate, $age_participant, $rfc_participant_api, $curp_api, $sexes, $country_birth, $state_birth_participant, $nationality_participant, $countries;
-    public $country_birth_participant, $rfc_company_participant, $name_company_participant, $apiStates = [], $country_id, $apiMunicipals = [], $confirm_privacity;
-    public $user, $sex_id, $state_name_separated, $municipal_name_separated, $birth_years, $userParticipant;
 
     public function clean()
     {
@@ -400,8 +401,9 @@ class Index extends Component
             'nationality_participant.required' => 'Campo obligatorio',
             'state_birth_participant.required' => 'Campo obligatorio',
             'rfc_participant.required' => 'Homoclave de RFC campo obligatorio',
-            'rfc_participant.unique' => 'El RFC ya se encuentra registrado',
-            'rfc_participant.min' => 'Mínimo 10 caracteres en el RFC',
+            // 'rfc_participant.unique' => 'El RFC ya se encuentra registrado',
+            'rfc_participant.min' => 'Homoclave de RFC campo obligatorio',
+            'rfc_participant.max' => 'Mínimo 13 caracteres en el RFC',
             'name.required' => 'Campo obligatorio',
             'apParental.required' => 'Campo obligatorio',
             // 'apMaternal.required' => 'Campo obligatorio',
