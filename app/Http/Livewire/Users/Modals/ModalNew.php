@@ -96,6 +96,7 @@ class ModalNew extends ModalComponent
 
             $this->enabled = true;
             $this->buttonHIden = true;
+            $this->rfc_participant = $this->userPrivileges->first()->id.' - SIN RFC';
         } else {
             $this->privilegesId = null;
             $buttonHIden = null;
