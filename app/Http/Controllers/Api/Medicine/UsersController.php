@@ -148,7 +148,7 @@ class UsersController extends Controller
         )
             ->whereIn('status', [1, 8, 9])
             ->whereYear('dateReserve', Carbon::now()->year)
-            ->get();
+            ->paginate(20); 
         return response([
             "status" => 1,
             "message" => "Lista de usuarios",
@@ -263,7 +263,8 @@ class UsersController extends Controller
         ];
         return response()->json($data, 201);
     }
-    public function userUpdate(Request $request) {
+    public function userUpdate(Request $request)
+    {
 
         $user = User::updateOrCreate(
             ['id' => $request->id],
@@ -273,28 +274,28 @@ class UsersController extends Controller
             ]
         );
 
-            $user_participants =  UserParticipant::updateOrCreate(
-                ['id' => $request->userProfileId],
-                [
-                    'apParental' => $request->lst_pat_prfle,
-                    'apMaternal' => $request->lst_mat_prfle,
-                    // genre
-                    'birth' => $request->birth_prfle,
-                    'state_id' => $request->state_id,
-                    'municipal_id' => $request->municipal_id,
-                    'age' => $request->age,
-                    'street' => $request->street_prfle,
-                    'nInterior' => $request->n_int_prfle,
-                    'nExterior' => $request->n_ext_prfle,
-                    'suburb' => $request->suburb_prfle,
-                    'postalCode' => $request->postal_cod_prfle,
-                    // federalEntity
-                    'delegation' => $request->suburb_prfle,
-                    'mobilePhone' => $request->mob_phone_prfle,
-                    'officePhone' => $request->office_phone_prfle,
-                    'extension' => $request->ext_prfle,
-                    'curp' => $request->curp,
-                ]
-            );
+        $user_participants =  UserParticipant::updateOrCreate(
+            ['id' => $request->userProfileId],
+            [
+                'apParental' => $request->lst_pat_prfle,
+                'apMaternal' => $request->lst_mat_prfle,
+                // genre
+                'birth' => $request->birth_prfle,
+                'state_id' => $request->state_id,
+                'municipal_id' => $request->municipal_id,
+                'age' => $request->age,
+                'street' => $request->street_prfle,
+                'nInterior' => $request->n_int_prfle,
+                'nExterior' => $request->n_ext_prfle,
+                'suburb' => $request->suburb_prfle,
+                'postalCode' => $request->postal_cod_prfle,
+                // federalEntity
+                'delegation' => $request->suburb_prfle,
+                'mobilePhone' => $request->mob_phone_prfle,
+                'officePhone' => $request->office_phone_prfle,
+                'extension' => $request->ext_prfle,
+                'curp' => $request->curp,
+            ]
+        );
     }
 }
