@@ -25,12 +25,19 @@ use Illuminate\Support\Facades\Cache;
 class Index extends Component
 {
     use Actions;
+    public $user_id, $id_register, $name, $apParental, $apMaternal, $genre, $birth, $state_id, $municipal_id, $age, $street, $nInterior, $nExterior, $suburb, $postalCode, $federalEntity,
+        $delegation, $mobilePhone, $officePhone, $extension, $curp, $email, $password = '', $passwordConfirmation = '';
+    public $states, $municipals;
+    public $rfc_participant, $enabled, $sex_api, $formattedBirthDate, $age_participant, $rfc_participant_api, $curp_api, $sexes, $country_birth, $state_birth_participant, $nationality_participant, $countries;
+    public $country_birth_participant, $rfc_company_participant, $name_company_participant, $apiStates = [], $country_id, $apiMunicipals = [], $confirm_privacity;
+    public $user, $sex_id, $state_name_separated, $municipal_name_separated, $birth_years, $userParticipant;
+
     public function rules()
     {
         return [
             'name' => 'required',
             'apParental' => 'required',
-            'apMaternal' => 'required',
+            // 'apMaternal' => 'required',
             'genre' => 'required',
             'country_birth_participant' => 'required',
             'nationality_participant' => 'required',
@@ -50,19 +57,13 @@ class Index extends Component
             'mobilePhone' => 'required|max:10',
             'officePhone' => 'max:10',
             'extension' => '',
+            'rfc_participant' => 'required|min:13|max:13',
             'curp' => 'required|unique:user_participants|max:18|min:18',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6|same:passwordConfirmation',
             // 'confirm_privacity' => 'required',
         ];
     }
-
-    public $user_id, $id_register, $name, $apParental, $apMaternal, $genre, $birth, $state_id, $municipal_id, $age, $street, $nInterior, $nExterior, $suburb, $postalCode, $federalEntity,
-        $delegation, $mobilePhone, $officePhone, $extension, $curp, $email, $password = '', $passwordConfirmation = '';
-    public $states, $municipals;
-    public $rfc_participant, $enabled, $sex_api, $formattedBirthDate, $age_participant, $rfc_participant_api, $curp_api, $sexes, $country_birth, $state_birth_participant, $nationality_participant, $countries;
-    public $country_birth_participant, $rfc_company_participant, $name_company_participant, $apiStates = [], $country_id, $apiMunicipals = [], $confirm_privacity;
-    public $user, $sex_id, $state_name_separated, $municipal_name_separated, $birth_years, $userParticipant;
 
     public function clean()
     {
@@ -287,7 +288,7 @@ class Index extends Component
             'apParental' => $this->apParental,
             'apMaternal' => $this->apMaternal,
             'genre' => $this->genre,
-            'birth' => $this->birth,
+            'birth' => $this->formattedBirthDate,
             'state_id' => $state_id,
             'municipal_id' => $municipal_id,
             'age' => $this->age,
@@ -316,38 +317,38 @@ class Index extends Component
             $response = Http::withHeaders([
                 'Accept' => 'application/json'
             ])->connectTimeout(30)->post('https://siafac.afac.gob.mx/listStore',
-            [
-            'id' => $user->id,
-            'name' => $user->name,
-            'email' => $user->email,
-            'password' => $password,
-            'userParticipantid' => $this->userParticipant,
-            'sex_id' => $this->sex_id,
-            'country_id' => $this->country_id,
-            'lst_pat_prfle' => $this->apParental,
-            'lst_mat_prfle' => $this->apMaternal,
-            'curp_prfle' => $this->curp,
-            'rfc_prfle' => $this->rfc_participant,
-            'birth_prfle' => $this->formattedBirthDate,
-            'state_birth_prfle' => $this->state_birth_participant,
-            'nationality_prfle' => $this->nationality_participant,
-            'country_birth_prfle' => $this->country_birth_participant,
-            'state_prfle' => $this->state_name_separated,
-            'municipality_prfle' => $this->municipal_name_separated,
-            'location_prfle' => $this->delegation,
-            'street_prfle' => $this->street,
-            'n_int_prfle' => $this->nInterior,
-            'n_ext_prfle' => $this->nExterior,
-            'suburb_prfle' => $this->suburb,
-            'postal_cod_prfle' => $this->postalCode,
-            'mob_phone_prfle' => $this->mobilePhone,
-            'office_phone_prfle' => $this->officePhone,
-            'ext_prfle' => $this->extension,
-            'rfc_company_prfle' => $this->rfc_company_participant,
-            'name_company_prfle' => $this->name_company_participant,
-            'confirm_privacity'=> 1,
-            'privileges' => 'medical_user'
-        ]);
+                [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'password' => $password,
+                    'userParticipantid' => $this->userParticipant,
+                    'sex_id' => $this->sex_id,
+                    'country_id' => $this->country_id,
+                    'lst_pat_prfle' => $this->apParental,
+                    'lst_mat_prfle' => $this->apMaternal,
+                    'curp_prfle' => $this->curp,
+                    'rfc_prfle' => $this->rfc_participant,
+                    'birth_prfle' => $this->formattedBirthDate,
+                    'state_birth_prfle' => $this->state_birth_participant,
+                    'nationality_prfle' => $this->nationality_participant,
+                    'country_birth_prfle' => $this->country_birth_participant,
+                    'state_prfle' => $this->state_name_separated,
+                    'municipality_prfle' => $this->municipal_name_separated,
+                    'location_prfle' => $this->delegation,
+                    'street_prfle' => $this->street,
+                    'n_int_prfle' => $this->nInterior,
+                    'n_ext_prfle' => $this->nExterior,
+                    'suburb_prfle' => $this->suburb,
+                    'postal_cod_prfle' => $this->postalCode,
+                    'mob_phone_prfle' => $this->mobilePhone,
+                    'office_phone_prfle' => $this->officePhone,
+                    'ext_prfle' => $this->extension,
+                    'rfc_company_prfle' => $this->rfc_company_participant,
+                    'name_company_prfle' => $this->name_company_participant,
+                    'confirm_privacity'=> 1,
+                    'privileges' => 'medical_user'
+                ]);
 
             if ($response->successful()) {
                 $statesSuccess = $response->json()['data'];
@@ -400,11 +401,12 @@ class Index extends Component
             'nationality_participant.required' => 'Campo obligatorio',
             'state_birth_participant.required' => 'Campo obligatorio',
             'rfc_participant.required' => 'Homoclave de RFC campo obligatorio',
-            'rfc_participant.unique' => 'El RFC ya se encuentra registrado',
-            'rfc_participant.min' => 'Mínimo 10 caracteres en el RFC',
+            // 'rfc_participant.unique' => 'El RFC ya se encuentra registrado',
+            'rfc_participant.min' => 'Homoclave de RFC campo obligatorio',
+            'rfc_participant.max' => 'Mínimo 13 caracteres en el RFC',
             'name.required' => 'Campo obligatorio',
             'apParental.required' => 'Campo obligatorio',
-            'apMaternal.required' => 'Campo obligatorio',
+            // 'apMaternal.required' => 'Campo obligatorio',
             'genre.required' => 'Campo obligatorio',
             'birth.required' => 'Campo obligatorio',
             'state_id.required' => 'Campo obligatorio',

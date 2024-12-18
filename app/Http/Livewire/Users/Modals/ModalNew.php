@@ -96,6 +96,7 @@ class ModalNew extends ModalComponent
 
             $this->enabled = true;
             $this->buttonHIden = true;
+            $this->rfc_participant = $this->userPrivileges->first()->id.' - SIN RFC';
         } else {
             $this->privilegesId = null;
             $buttonHIden = null;
@@ -392,8 +393,8 @@ class ModalNew extends ModalComponent
             } else {
 
                 $rfc_participant = ($this->rfc_participant) ? $this->rfc_participant : $rfc ;
-                $birthDate = Carbon::createFromFormat('Y-m-d', $this->birth);
-                $formattedBirthDate = $birthDate->format('Y-m-d');
+                $this->birth = Carbon::parse($this->birth);
+                $formattedBirthDate = $this->birth->format('Y-m-d');
 
                 $response = Http::withHeaders([
                     'Accept' => 'application/json'

@@ -211,6 +211,10 @@ class Schedule extends ModalComponent
             $cancelReserve->update([
                 'status' => $this->selectedOption,
             ]);
+            $updateReservePay = Medicine::find($cancelReserve->medicine_id);
+            $updateReservePay->update([
+                'reference_number' => "CANCELADO" . '-' . $cancelReserve->medicine_id
+            ]);
             $this->emit('cancelReserve');
             $accion = 'CANCELO CITA';
             //REAGENDO
@@ -226,6 +230,10 @@ class Schedule extends ModalComponent
             $cancelReserve = MedicineReserve::find($this->scheduleId);
             $cancelReserve->update([
                 'status' => $this->selectedOption,
+            ]);
+            $updateReservePay = Medicine::find($cancelReserve->medicine_id);
+            $updateReservePay->update([
+                'reference_number' => "CANCELADO" . '-' . $cancelReserve->medicine_id
             ]);
             $this->emit('cancelReserve');
             $accion = 'CANCELO CITA';
@@ -398,7 +406,7 @@ class Schedule extends ModalComponent
                 '2' => 6, //CANCELAR CITA
                 '3' => 8, //CANCELA USUARIO
                 '4' => 4, //REAGENDAR CITA
-                '5' => 5, //LIBERADA
+                '5' => 6, //LIBERADA
                 '6' => 1,   //IMCOMPLETA
                 '7' => 5, //APLAZAR CITA
                 '8' => 2,

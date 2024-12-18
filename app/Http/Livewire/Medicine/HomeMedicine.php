@@ -99,15 +99,17 @@ class HomeMedicine extends Component
         $this->apParental = Auth::user()->UserParticipant->first()->apParental;
         $this->apMaternal = Auth::user()->UserParticipant->first()->apMaternal;
 
-        // if ($this->name != 'YONI GUADALUPE') {
-        //     $this->name = 'YONI GUADALUPE';
-        //     $this->apParental = 'CRUZ';
-        //     $this->apMaternal = 'BALLESTEROS';
-        //     $this->pay_date = '2024-07-02';
-        //     $this->operation_number = '800642';
-        //     $this->dependency_chain = '00442510033177';
-        //     $this->total_paid = '2104';
-        //     $this->reference_number = 'A82ADDB476';
+        // if (Auth::user()->UserParticipant->first()->curp=='CANR950626HZSRXB04') {
+
+        //     $this->openValidateModal = true;
+        // $this->name = 'YONI GUADALUPE';
+        // $this->apParental = 'CRUZ';
+        // $this->apMaternal = 'BALLESTEROS';
+        // $this->pay_date = '2024-07-02';
+        // $this->operation_number = '800642';
+        // $this->dependency_chain = '00442510033177';
+        // $this->total_paid = '2104';
+        // $this->reference_number = 'A82ADDB476';
         // }
 
     }
@@ -543,7 +545,7 @@ class HomeMedicine extends Component
             ->pluck('disabled_days')
             ->toArray();
         $occupiedDays = MedicineReserve::where('headquarter_id', $value)
-            ->whereIn('status', [0, 1, 4, 10])
+            ->whereIn('status', [0, 1, 2, 3, 4, 10])
             ->pluck('dateReserve')
             ->toArray();
         $disabledDaysArray = [];
@@ -966,6 +968,9 @@ class HomeMedicine extends Component
         $has_extension = ($this->extensionClassId) ? 1 : 0;
 
         $typeClass = ($this->type_class_id <= 3) ? $this->type_class_id : ['4' => 1, '5' => 2, '6' => 3][$this->type_class_id];
+
+        $this->type_class_extension_id = ($this->type_class_extension_id == [] ? null : $this->type_class_extension_id);
+        $type_class_extension_id = ($this->type_class_extension_id <= 3) ? $this->type_class_extension_id : ['4' => 1, '5' => 2, '6' => 3][$this->type_class_extension_id];
         $medicine_question_ex_id = $this->medicine_question_ex_id ?? 0;
 
         if ($has_extension == 1) {
@@ -984,7 +989,7 @@ class HomeMedicine extends Component
                     'has_extension' => $has_extension,
                     'license_reval_id' => $this->type_exam_revaloration_id,
                     'type_exam_id_extension' => $this->type_exam_id_extension,
-                    'type_class_extension_id' => $this->type_class_extension_id,
+                    'type_class_extension_id' => $type_class_extension_id,
                     'clas_class_extension_id' => $this->clas_class_extension_id,
                     'medicine_question_ex_id' => $medicine_question_ex_id
                 ];
@@ -1009,7 +1014,7 @@ class HomeMedicine extends Component
         if (checkdnsrr('crp.sct.gob.mx', 'A')) {
             $response = Http::withHeaders([
                 'Accept' => 'application/json'
-            ])->connectTimeout(30)->post('https://siafac.afac.gob.mx/createCita?', $citas);
+                ])->connectTimeout(30)->post('https://siafac.afac.gob.mx/createCita?', $citas);
             // ])->connectTimeout(30)->post('http://afac-tenant.gob/createCita?', $citas);
             if ($response->successful()) {
                 $statesSuccess = $response->json()['data'];
@@ -1117,11 +1122,11 @@ class HomeMedicine extends Component
         $response = Http::withHeaders([
             'Accept' => 'application/json'
         ])->connectTimeout(30)->put('https://siafac.afac.gob.mx/statusCita?',
-        [
-            'id' => $this->id_medicineReserve,
-            'status_id' => 8,
-            'cancelActive' => 'CANCEL'
-        ]);
+            [
+                'id' => $this->id_medicineReserve,
+                'status_id' => 8,
+                'cancelActive' => 'CANCEL'
+            ]);
         if ($response->successful()) {
             $statesSuccess = $response->json()['data'];
         }

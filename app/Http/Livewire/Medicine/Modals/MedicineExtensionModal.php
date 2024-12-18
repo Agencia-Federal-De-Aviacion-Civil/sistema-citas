@@ -3,24 +3,29 @@
 namespace App\Http\Livewire\Medicine\Modals;
 
 use App\Models\Catalogue\ClasificationClass;
+use App\Models\Catalogue\LogsApi;
 use App\Models\Catalogue\TypeClass;
 use App\Models\Catalogue\TypeExam;
 use App\Models\Document;
 use App\Models\Medicine\MedicineQuestion;
 use App\Models\Medicine\MedicineReserve;
 use App\Models\Medicine\MedicineReservesExtension;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use LivewireUI\Modal\ModalComponent;
+use WireUi\Traits\Actions;
 
 class MedicineExtensionModal extends ModalComponent
 {
+    use Actions;
     use WithFileUploads;
     public $scheduleId, $medicineReservesExtension, $extensionCurp, $type_exam, $type_class, $clasification_class, $inicialId,
         $id_extension, $reference_number_ext, $document_ext_id, $date_reserve_ext, $type_exam_id_extension, $medicine_question_ex_id, $clas_class_extension_id;
     public $typeExams, $userQuestions, $questionClassessExtension, $type_class_extension_id, $clasificationClassExtension, $selectedTypeClassIds, $typeClassId,
-    $is_external,$id_type_class_extension,$ext_reference_number;
+        $is_external, $id_type_class_extension, $ext_reference_number;
     public function mount($scheduleId = null)
     {
         if (isset($scheduleId)) {
@@ -142,9 +147,9 @@ class MedicineExtensionModal extends ModalComponent
     }
     public function saveExtension()
     {
-        if($this->is_external==1){
+        if ($this->is_external == 1) {
 
-            MedicineReservesExtension::updateOrCreate(
+            $extensionId = MedicineReservesExtension::updateOrCreate(
                 ['id' => $this->id_extension],
                 [
                     'medicine_reserve_id' => $this->medicineReservesExtension[0]->id,
@@ -168,8 +173,9 @@ class MedicineExtensionModal extends ModalComponent
             $saveDocument = Document::create([
                 'name_document' => $this->document_ext_id->storeAs('documentos/medicina/extension', $fileName, 'public'),
             ]);
+
             if (!is_null($this->type_class_extension_id) && !is_null($this->clas_class_extension_id)) {
-                MedicineReservesExtension::updateOrCreate(
+                $extensionId = MedicineReservesExtension::updateOrCreate(
                     ['id' => $this->id_extension],
                     [
                         'medicine_reserve_id' => $this->medicineReservesExtension[0]->id,
@@ -181,7 +187,7 @@ class MedicineExtensionModal extends ModalComponent
                     ]
                 );
             } else {
-                MedicineReservesExtension::updateOrCreate(
+                $extensionId = MedicineReservesExtension::updateOrCreate(
                     ['id' => $this->id_extension],
                     [
                         'medicine_reserve_id' => $this->medicineReservesExtension[0]->id,
@@ -194,7 +200,105 @@ class MedicineExtensionModal extends ModalComponent
         }
         $this->closeModal();
         $this->emit('addExtension');
+
+        $this->extensionApi($extensionId);
     }
+
+
+    public function extensionApi($extensionId)
+    {
+        $this->type_class_extension_id = ($this->type_class_extension_id == [] ? null : $this->type_class_extension_id);
+        $type_class_extension_id = ($this->type_class_extension_id <= 3) ? $this->type_class_extension_id : ['4' => 1, '5' => 2, '6' => 3][$this->type_class_extension_id];
+
+
+        if ($this->is_external == 1) {
+            $citas =
+                [
+
+                    'id' => $extensionId->id,
+                    'medicine_reserve_id' => $this->medicineReservesExtension[0]->id,
+                    'license_reason_id' => $this->type_exam_id_extension,
+                    'type_class_id' => $type_class_extension_id,
+                    'license_class_id' => $this->clas_class_extension_id,
+                    'reference_number_ext' => null,
+                    'pay_date_ext' => null,
+                    'is_external' => $this->is_external
+
+                ];
+        } else {
+
+            if (!$this->id_extension) {
+                $extension = 'citaExtension?';
+                $citas =
+                    [
+                        'id' => $extensionId->id,
+                        'medicine_reserve_id' => $this->medicineReservesExtension[0]->id,
+                        'license_reason_id' => $this->type_exam_id_extension,
+                        'type_class_id' => $type_class_extension_id,
+                        'license_class_id' => $this->clas_class_extension_id,
+                        'reference_number_ext' => $this->reference_number_ext,
+                        'pay_date_ext' => $this->date_reserve_ext,
+                        'is_studying' =>  $this->medicine_question_ex_id,
+                        'is_external' => $this->is_external
+                    ];
+            }else{
+                $extension = 'citaupdateXtension?';
+                $citas =[
+                'id' => $extensionId->id,
+                'medicine_reserve_id' => $this->medicineReservesExtension[0]->id,
+                'reference_number_ext' => $this->reference_number_ext,
+                'pay_date_ext' => $this->date_reserve_ext,
+                ];
+
+            }
+        }
+
+        if (checkdnsrr('crp.sct.gob.mx', 'A')) {
+            $response = Http::withHeaders([
+                'Accept' => 'application/json'
+            ])->connectTimeout(30)->post('https://siafac.afac.gob.mx/' . $extension, $citas);
+            if ($response->successful()) {
+                $statesSuccess = $response->json()['data'];
+            } elseif ($response->successful() && $response->json()['data'] === 'NO EXITOSO') {
+                $this->clean();
+                $this->notification()->send([
+                    'title'       => 'No se realizo registro!',
+                    'description' => 'Cita no registrada.',
+                    'icon'        => 'error',
+                    'timeout' => '3100'
+                ]);
+            } else {
+                $error = $response->json()['message'];
+                $this->LogsApi($curp_logs = Auth::user()->UserParticipant->first()->curp, $type = 'AGENDAR CITA', $register = $error, $description = 'ERROR AL AGENDAR REGISTRO DE CITA');
+                $this->notification()->send([
+                    'icon' => 'info',
+                    'title' => 'AVISO!',
+                    'description' => 'ERROR',
+                    'timeout' => '3100'
+                ]);
+            }
+        } else {
+            $this->notification()->send([
+                'icon' => 'info',
+                'title' => 'Sin conexión!',
+                'description' => 'No hay conexión, vuelve a intentarlo.',
+                'timeout' => '3100'
+            ]);
+            $this->LogsApi($curp_logs = Auth::user()->UserParticipant->first()->curp, $type = 'EXTENSION', $register = 'SIN CONEXION', $description = 'No hay conexión, vuelve a intentarlo');
+        }
+    }
+    public function LogsApi($curp_logs, $type, $register, $description)
+    {
+        $url = url()->previous();
+        $logs =  LogsApi::create([
+            'curp_logs' => $curp_logs,
+            'url' => $url,
+            'type' => $type,
+            'register' => $register,
+            'description' => $description
+        ]);
+    }
+
 
     public function messages()
     {
