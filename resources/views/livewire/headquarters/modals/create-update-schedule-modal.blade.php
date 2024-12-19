@@ -90,7 +90,7 @@
             disableMobile: "true",
             mode: 'multiple',
             minDate: "today",
-            maxDate: '2024-12-31',
+            maxDate: '2025-12-31',
             disable: [
                 function(date) {
                     // Devuelve 'true' si la fecha es un sábado o domingo
