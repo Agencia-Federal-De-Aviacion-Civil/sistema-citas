@@ -454,7 +454,7 @@
                 // minDate: dateMin,
                 // maxDate: dateMax,
                 minDate: "today",
-                maxDate: new Date(new Date().getFullYear(), 11, 31),
+                maxDate: new Date(new Date().getFullYear() + 1, 11, 31),
                 disable: event.detail.disabledDaysFilter,
                 onDayCreate: function(dObj, dStr, fp, dayElem) {
                     /* if (dayElem.dateObj.getDay() === 0 || dayElem.dateObj.getDay() === 6 || dayElem
