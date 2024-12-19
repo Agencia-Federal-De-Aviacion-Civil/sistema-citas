@@ -45,8 +45,8 @@
     flatpickr("#date_pay", {
         dateFormat: "Y-m-d",
         disableMobile: "true",
-        minDate: "2023-10-01",
-        maxDate: "2024-01-31",
+        minDate: "2025-01-01",
+        maxDate: "2025-01-31",
         locale: {
             weekdays: {
                 shorthand: ['Dom', 'Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab'],

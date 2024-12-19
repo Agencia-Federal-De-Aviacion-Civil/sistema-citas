@@ -12,7 +12,6 @@ use App\Models\Medicine\MedicineReserve;
 use App\Models\Medicine\MedicineSchedule;
 use App\Models\Medicine\medicine_history_movements;
 use App\Models\Medicine\MedicineReservesExtension;
-use App\Models\Observation;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -27,7 +26,7 @@ class Schedule extends ModalComponent
     public $id_appoint, $id_medicine_observation, $scheduleId, $status, $medicineReserves, $name, $type, $class, $typLicense, $sede, $dateReserve, $date, $time, $scheduleMedicines, $sedes,
         $headquarter_id, $medicine_schedule_id, $selectedOption, $observation_reschedule, $observation_cancelate, $hoursReserve, $observation, $medicineId, $accion,
         $disabledDaysFilter, $days, $is_external, $medicineRextension, $typextension, $classxtension, $typLicensextension;
-    public $reference_number, $pay_date, $document_pay, $dateMin, $dateMax;
+    public $reference_number, $pay_date, $document_pay, $januaryAppointment, $dateMin, $dateMax;
     public function mount($scheduleId = null, $medicineId)
     {
         $this->medicineId = $medicineId;
@@ -39,6 +38,7 @@ class Schedule extends ModalComponent
             $medicineReserves = MedicineReserve::with(['medicineReserveMedicine', 'medicineReserveFromUser', 'medicineReserveHeadquarter'])
                 ->where('id', $this->scheduleId)->get();
             $this->name = $medicineReserves[0]->medicineReserveMedicine->medicineUser->name . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant[0]->apParental . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant[0]->apMaternal;
+            $this->januaryAppointment = $medicineReserves[0]->medicineReserveMedicine;
             $this->type = $medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->name;
             $this->id_appoint = $medicineReserves[0]->id;
             if ($medicineReserves[0]->medicineReserveMedicine->medicineTypeExam->id == 1) {
@@ -164,11 +164,11 @@ class Schedule extends ModalComponent
 
         // TODO TEMPORALY
         if ($this->is_external === 0) {
-            $dateMin = Carbon::create(2024, 1, 1)->format('Y-m-d');
-            $dateMax = Carbon::create(2024, 1, 31)->format('Y-m-d');
+            $dateMin = Carbon::now()->format('Y-m-d');;
+            $dateMax = Carbon::create(2025, 1, 31)->format('Y-m-d');
         } elseif ($this->is_external === 1) {
             $dateMin = Carbon::now()->format('Y-m-d');
-            $dateMax = Carbon::create(2024, 12, 31)->format('Y-m-d');
+            $dateMax = Carbon::create(2025, 12, 31)->format('Y-m-d');
         }
         $this->dispatchBrowserEvent('headquartersUpdated', [
             'disabledDaysFilter' => $disabledDaysArray,
@@ -190,6 +190,21 @@ class Schedule extends ModalComponent
     public function reschedules()
     {
         $this->validate();
+        // // TODO IMPLEMENT APPOITNMENT JANUARY
+        // if (!empty($this->januaryAppointment->document_id)) {
+        //     $completedJanuaryReserve = Medicine::find($this->medicineId);
+        //     $completedJanuaryReserve->update([
+        //         'reference_number' => $this->reference_number ?? 'NO APLICA',
+        //         'pay_date' => $this->pay_date ?? null,
+        //     ]);
+        //     $updateJanuaryDocument = Document::find($completedJanuaryReserve->document_id);
+        //     $extension = $this->document_pay->getClientOriginalExtension();
+        //     $fileName = $this->reference_number . '-' . $this->pay_date . '.' . $extension;
+        //     $updateJanuaryDocument->update([
+        //         'name_document' => $this->document_pay->storeAs('documentos/medicina', $fileName, 'public'),
+        //     ]);
+        //     // TODO END
+        // }
         if ($this->selectedOption == 1) {
             $attendeReserve = MedicineReserve::find($this->scheduleId);
             $attendeReserve->update([
@@ -427,10 +442,10 @@ class Schedule extends ModalComponent
         if ($status_id == 8 || $status_id == 6 || $status_id == 1) {
             $status =
                 [
-                        'id' => $this->scheduleId,
-                        'status_id' => $status_id,
-                        'observation' => $this->observation,
-                        'cancelActive' => $cancelActive
+                    'id' => $this->scheduleId,
+                    'status_id' => $status_id,
+                    'observation' => $this->observation,
+                    'cancelActive' => $cancelActive
                 ];
         }
 
@@ -440,6 +455,7 @@ class Schedule extends ModalComponent
                 'Accept' => 'application/json'
                 //
             ])->connectTimeout(30)->put('https://siafac.afac.gob.mx/statusCita?', $status);
+            // ])->connectTimeout(30)->put('http://siafac.afac.gob.mx/statusCita?', $status);
             if ($response->successful()) {
                 $statesSuccess = $response->json()['data'];
             } elseif ($response->successful() && $response->json()['data'] === 'NO EXITOSO') {
