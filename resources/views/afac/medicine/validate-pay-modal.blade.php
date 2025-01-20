@@ -71,7 +71,7 @@
                                 </div>
                                 <div class="relative w-full mb-6 group">
                                     <x-input wire:model.live="reference_key" label="CLAVE DE REFERENCIA*"
-                                        class="bg-gray-100" placeholder="INGRESE..." readonly />
+                                        class="bg-gray-100" placeholder="INGRESE..." />
                                 </div>
                                 {{-- <div class="relative w-full mb-6 group">
                                     <label class="select-none text-gray-700">PAGO REALIZADO POR:</label>

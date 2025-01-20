@@ -136,12 +136,12 @@ class HomeMedicine extends Component
             'extensionClassId' => ''
         ];
         if (!$this->idTypeAppointment) {
-            // $rules['document_pay'] = 'required|mimetypes:application/pdf|max:5000';
-            // $rules['reference_number'] = 'required|unique:medicines';
-            // $rules['pay_date'] = 'required';
-            $rules['document_pay'] = '';
-            $rules['reference_number'] = '';
-            $rules['pay_date'] = '';
+            $rules['document_pay'] = 'required|mimetypes:application/pdf|max:5000';
+            $rules['reference_number'] = 'required|unique:medicines';
+            $rules['pay_date'] = 'required';
+            // $rules['document_pay'] = '';
+            // $rules['reference_number'] = '';
+            // $rules['pay_date'] = '';
         }
         return $rules;
     }
@@ -589,17 +589,17 @@ class HomeMedicine extends Component
 
         $this->disabledDaysFilter = $disabledDaysArray;
         // TODO TEMPORALY ONLY APPOINTMENT JANUARY
-        if ($this->idAppointmentFull === 0) {
-            $dateMin = Carbon::now()->format('Y-m-d');;
-            $dateMax = Carbon::create(2025, 1, 31)->format('Y-m-d');
-        } elseif ($this->idAppointmentFull === 1) {
-            $dateMin = Carbon::now()->format('Y-m-d');
-            $dateMax = Carbon::create(2025, 12, 31)->format('Y-m-d');
-        }
+        // if ($this->idAppointmentFull === 0) {
+        //     $dateMin = Carbon::now()->format('Y-m-d');;
+        //     $dateMax = Carbon::create(2025, 1, 31)->format('Y-m-d');
+        // } elseif ($this->idAppointmentFull === 1) {
+        //     $dateMin = Carbon::now()->format('Y-m-d');
+        //     $dateMax = Carbon::create(2025, 12, 31)->format('Y-m-d');
+        // }
         $this->dispatchBrowserEvent('headquartersUpdated', [
             'disabledDaysFilter' => $disabledDaysArray,
-            'dateMin' => $dateMin,
-            'dateMax' => $dateMax
+            // 'dateMin' => $dateMin,
+            // 'dateMax' => $dateMax
         ]);
     }
     public function openModalPdf()

@@ -163,17 +163,17 @@ class Schedule extends ModalComponent
         // ]);
 
         // TODO TEMPORALY
-        if ($this->is_external === 0) {
-            $dateMin = Carbon::now()->format('Y-m-d');;
-            $dateMax = Carbon::create(2025, 1, 31)->format('Y-m-d');
-        } elseif ($this->is_external === 1) {
-            $dateMin = Carbon::now()->format('Y-m-d');
-            $dateMax = Carbon::create(2025, 12, 31)->format('Y-m-d');
-        }
+        // if ($this->is_external === 0) {
+        //     $dateMin = Carbon::now()->format('Y-m-d');;
+        //     $dateMax = Carbon::create(2025, 1, 31)->format('Y-m-d');
+        // } elseif ($this->is_external === 1) {
+        //     $dateMin = Carbon::now()->format('Y-m-d');
+        //     $dateMax = Carbon::create(2025, 12, 31)->format('Y-m-d');
+        // }
         $this->dispatchBrowserEvent('headquartersUpdated', [
             'disabledDaysFilter' => $disabledDaysArray,
-            'dateMin' => $dateMin,
-            'dateMax' => $dateMax
+            // 'dateMin' => $dateMin,
+            // 'dateMax' => $dateMax
         ]);
     }
     public function updatedToUserHeadquarters($value)
