@@ -90,7 +90,7 @@ class HomeMedicine extends Component
         $this->disabledDaysFilter = collect();
 
         $this->yearExercise = Carbon::now()->year;
-        $this->reference_key = '126000812';
+        $this->reference_key = '126001014';
         $authUser =  is_null($this->userId) ? Auth::user()->load('UserParticipant')->UserParticipant : User::with([
             'UserParticipant:id,user_id,apParental,apMaternal'
         ])->find($this->userId);
