@@ -78,11 +78,11 @@
 <body class="bgsize">
     <footer>
         @if ($medicineReserves[0]->dateReserve > '2023-12-31')
-            <center><img src="{{ public_path('images/fooderafac2024.png') }}" width="112%" height=80" alt="">
-            </center>
+        <center><img src="{{ public_path('images/fooderafac2024.png') }}" width="112%" height=80" alt="">
+        </center>
         @else
-            <center><img src="{{ public_path('images/fooderafac2023.png') }}" width="112%" height=80" alt="">
-            </center>
+        <center><img src="{{ public_path('images/fooderafac2023.png') }}" width="112%" height=80" alt="">
+        </center>
         @endif
     </footer>
     <div>
@@ -90,9 +90,9 @@
         <img src="{{ public_path('images/banner2023afac.png') }}" width="450" height="45" alt="">
         <div class="cuadrado-2">
             @if ($idExternalInternal === false)
-                <p>Folio de cita: <b>MED-{{ $medicineReserves[0]->id }}</b></p>
+            <p>Folio de cita: <b>MED-{{ $medicineReserves[0]->id }}</b></p>
             @else
-                <p>Folio de cita: <b>MED-EXT-{{ $medicineReserves[0]->id }}</b></p>
+            <p>Folio de cita: <b>MED-EXT-{{ $medicineReserves[0]->id }}</b></p>
             @endif
         </div>
         <div class="titulo">
@@ -103,16 +103,20 @@
                 <td>NOMBRE:</td>
                 <td>
                     {{ $medicineReserves[0]->medicineReserveMedicine->medicineUser->name .
-                        ' ' .
-                        $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apParental')->first() .
-                        ' ' .
-                        $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apMaternal')->first() }}
+                    ' ' .
+                    $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apParental')->first()
+                    .
+                    ' ' .
+                    $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apMaternal')->first()
+                    }}
                 </td>
             </tr>
             <tr>
                 <td>CURP:</td>
                 <td>
-                    {{ $medicineReserves[0]->medicineReserveMedicine->medicineUser->userParticipant->pluck('curp')->first() }}
+                    {{
+                    $medicineReserves[0]->medicineReserveMedicine->medicineUser->userParticipant->pluck('curp')->first()
+                    }}
                 </td>
             </tr>
             <tr>
@@ -127,46 +131,49 @@
             <tr>
                 <td>TIPO DE CLASE:</td>
                 <td>
-                    {{ $medicineReserves[0]->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name }}
+                    {{ $medicineReserves[0]->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name
+                    }}
                 </td>
             </tr>
             <tr>
                 <td>TIPO DE LICENCIA:</td>
                 <td>
                     @foreach ($medicineReserves[0]->medicineReserveMedicine->medicineRenovation as $renovationEach)
-                        {{-- MAS DE UNA LICENCIA --}}
-                        @if ($medicineReserves[0]->medicineReserveMedicine->medicineRenovation->count() > 1)
-                            <ul>
-                                <li>
-                                    {{ $renovationEach->renovationClasificationClass->name }}
-                                </li>
-                            </ul>
-                        @else
-                            {{-- UNA SOLA LICENCIA --}}
+                    {{-- MAS DE UNA LICENCIA --}}
+                    @if ($medicineReserves[0]->medicineReserveMedicine->medicineRenovation->count() > 1)
+                    <ul>
+                        <li>
                             {{ $renovationEach->renovationClasificationClass->name }}
-                        @endif
+                        </li>
+                    </ul>
+                    @else
+                    {{-- UNA SOLA LICENCIA --}}
+                    {{ $renovationEach->renovationClasificationClass->name }}
+                    @endif
                     @endforeach
                 </td>
             </tr>
             @if ($medicineReserves[0]->medicineReserveMedicineExtension->count() > 0)
-                <tr>
-                    <td>EXT.TIPO DE EXAMEN:</td>
-                    <td>
-                        {{ $medicineReserves[0]->medicineReserveMedicineExtension[0]->extensionTypeClass->typeClassTypeExam->name }}
-                    </td>
-                </tr>
-                <tr>
-                    <td>EXT.TIPO DE CLASE:</td>
-                    <td>
-                        {{ $medicineReserves[0]->medicineReserveMedicineExtension[0]->extensionTypeClass->name }}
-                    </td>
-                </tr>
-                <tr>
-                    <td>EXT.TIPO DE LICENCIA:</td>
-                    <td>
-                        {{ $medicineReserves[0]->medicineReserveMedicineExtension[0]->extensionClasificationClass->name }}
-                    </td>
-                </tr>
+            <tr>
+                <td>EXT.TIPO DE EXAMEN:</td>
+                <td>
+                    {{
+                    $medicineReserves[0]->medicineReserveMedicineExtension[0]->extensionTypeClass->typeClassTypeExam->name
+                    }}
+                </td>
+            </tr>
+            <tr>
+                <td>EXT.TIPO DE CLASE:</td>
+                <td>
+                    {{ $medicineReserves[0]->medicineReserveMedicineExtension[0]->extensionTypeClass->name }}
+                </td>
+            </tr>
+            <tr>
+                <td>EXT.TIPO DE LICENCIA:</td>
+                <td>
+                    {{ $medicineReserves[0]->medicineReserveMedicineExtension[0]->extensionClasificationClass->name }}
+                </td>
+            </tr>
             @endif
             <tr>
                 <td>TRAMITE:</td>
@@ -174,18 +181,22 @@
             </tr>
             <tr>
                 @if ($idExternalInternal === false)
-                    <td>UNIDAD MÉDICA:</td>
-                    <td> <b>{{ $medicineReserves[0]->medicineReserveHeadquarter->name_headquarter }}</b></p>
-                    </td>
+                <td>UNIDAD MÉDICA:</td>
+                <td> <b>{{ $medicineReserves[0]->medicineReserveHeadquarter->name_headquarter }}</b></p>
+                </td>
                 @else
-                    <td>MÉDICO EXAMINADOR AUTORIZADO:</td>
-                    <td> <b>{{ $medicineReserves[0]->medicineReserveHeadquarter->HeadquarterUserHeadquarter[0]->userHeadquarterUserParticipant->userParticipantUser->name .
+                <td>MÉDICO EXAMINADOR AUTORIZADO:</td>
+                <td> <b>{{
+                        $medicineReserves[0]->medicineReserveHeadquarter->HeadquarterUserHeadquarter[0]->userHeadquarterUserParticipant->userParticipantUser->name
+                        .
                         ' ' .
-                        $medicineReserves[0]->medicineReserveHeadquarter->HeadquarterUserHeadquarter[0]->userHeadquarterUserParticipant->apParental .
+                        $medicineReserves[0]->medicineReserveHeadquarter->HeadquarterUserHeadquarter[0]->userHeadquarterUserParticipant->apParental
+                        .
                         ' ' .
-                        $medicineReserves[0]->medicineReserveHeadquarter->HeadquarterUserHeadquarter[0]->userHeadquarterUserParticipant->apMaternal }}</b>
-                        </p>
-                    </td>
+                        $medicineReserves[0]->medicineReserveHeadquarter->HeadquarterUserHeadquarter[0]->userHeadquarterUserParticipant->apMaternal
+                        }}</b>
+                    </p>
+                </td>
                 @endif
             </tr>
             <tr>
@@ -202,10 +213,17 @@
                 <td>{{ $medicineReserves[0]->reserveSchedule->time_start }}</td>
             </tr>
             @if ($idExternalInternal === false)
-                <tr>
-                    <td>LLAVE DE PAGO</td>
-                    <td>{{ $medicineReserves[0]->medicineReserveMedicine->reference_number }}</td>
-                </tr>
+            <tr>
+                <td>LLAVE DE PAGO</td>
+                <td>{{ $medicineReserves[0]->medicineReserveMedicine->reference_number }}</td>
+            </tr>
+            <!-- CADENA DE DEPENDECIA PARTIR DE 24/01/2025  -->
+            @if($medicineReserves[0]->medicineReserveMedicine->dep_chain != '')
+            <tr>
+                <td>CADENA DE DEPENDENCIA</td>
+                <td>{{ $medicineReserves[0]->medicineReserveMedicine->dep_chain }}</td>
+            </tr>
+            @endif
             @endif
         </table>
         <div class="codigoqr">
@@ -300,8 +318,8 @@
         </div>
         <footer>
             {{-- <div class="codigoqr">
-                <img src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ $keyEncrypt }}"
-                    width="120" height="120" />
+                <img src="http://chart.googleapis.com/chart?chs=70x70&chld=L|0&cht=qr&chl={{ $keyEncrypt }}" width="120"
+                    height="120" />
             </div> --}}
         </footer>
         {{-- PAGINA 2 --}} {{--
@@ -405,11 +423,11 @@
                 cabecera que lleve control de su padecimiento</p>
         </div>
         @if ($idExternalInternal === true)
-            <div class="cuadrado-2" style="margin-top: 70%">
-                {{ $thirdAppointment .
-                    '/' .
-                    $medicineReserves[0]->medicineReserveHeadquarter->headquarterSchedule->max_schedules }}
-            </div>
+        <div class="cuadrado-2" style="margin-top: 70%">
+            {{ $thirdAppointment .
+            '/' .
+            $medicineReserves[0]->medicineReserveHeadquarter->headquarterSchedule->max_schedules }}
+        </div>
         @endif
         {{--
         <p>*Pasos para el registro de la toma de tensión arterial:</p>

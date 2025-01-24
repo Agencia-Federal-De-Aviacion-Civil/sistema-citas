@@ -8,7 +8,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
     <title>
-        {{-- {{ $printQuery->appointmentUser->name . ' ' . $printQuery->appointmentUser->apParental . ' ' . $printQuery->appointmentUser->apMaternal }} --}}
+        {{-- {{ $printQuery->appointmentUser->name . ' ' . $printQuery->appointmentUser->apParental . ' ' .
+        $printQuery->appointmentUser->apMaternal }} --}}
     </title>
 </head>
 <style>
@@ -78,11 +79,11 @@
 <body class="bgsize">
     <footer>
         @if ($medicineReserves[0]->dateReserve > '2023-12-31')
-            <center><img src="{{ public_path('images/fooderafac2024.png') }}" width="112%" height=80" alt="">
-            </center>
+        <center><img src="{{ public_path('images/fooderafac2024.png') }}" width="112%" height=80" alt="">
+        </center>
         @else
-            <center><img src="{{ public_path('images/fooderafac2023.png') }}" width="112%" height=80" alt="">
-            </center>
+        <center><img src="{{ public_path('images/fooderafac2023.png') }}" width="112%" height=80" alt="">
+        </center>
         @endif
     </footer>
     <div>
@@ -98,12 +99,18 @@
             <tr>
                 <td>NOMBRE:</td>
                 <td>
-                    {{ $medicineReserves[0]->medicineReserveMedicine->medicineUser->name . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apParental')->first() . ' ' . $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apMaternal')->first() }}
+                    {{ $medicineReserves[0]->medicineReserveMedicine->medicineUser->name . ' ' .
+                    $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apParental')->first()
+                    . ' ' .
+                    $medicineReserves[0]->medicineReserveMedicine->medicineUser->UserParticipant->pluck('apMaternal')->first()
+                    }}
                 </td>
             </tr>
             <tr>
                 <td>CURP:</td>
-                <td>{{ $medicineReserves[0]->medicineReserveMedicine->medicineUser->userParticipant->pluck('curp')->first() }}
+                <td>{{
+                    $medicineReserves[0]->medicineReserveMedicine->medicineUser->userParticipant->pluck('curp')->first()
+                    }}
                 </td>
             </tr>
             <tr>
@@ -118,35 +125,44 @@
             <tr>
                 <td>TIPO DE REVALORACIÓN:</td>
                 <td>
-                    {{ $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->RevaluationTypeExam->name }}
+                    {{ $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->RevaluationTypeExam->name
+                    }}
                 </td>
             </tr>
             @if ($medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->RevaluationTypeExam->id === 1)
-                <tr>
-                    <td>TIPO DE CLASE:</td>
-                    <td>
-                        {{ $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->revaluationInitialTypeClass->name }}
-                    </td>
-                </tr>
-                <tr>
-                    <td>TIPO DE LICENCIA:</td>
-                    <td>
-                        {{ $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->revaluationInitialClasificationClass->name }}
-                    </td>
-                </tr>
+            <tr>
+                <td>TIPO DE CLASE:</td>
+                <td>
+                    {{
+                    $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->revaluationInitialTypeClass->name
+                    }}
+                </td>
+            </tr>
+            <tr>
+                <td>TIPO DE LICENCIA:</td>
+                <td>
+                    {{
+                    $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->revaluationInitialClasificationClass->name
+                    }}
+                </td>
+            </tr>
             @else
-                <tr>
-                    <td>TIPO DE CLASE:</td>
-                    <td>
-                        {{ $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->revaluationRenovationTypeClass->name }}
-                    </td>
-                </tr>
-                <tr>
-                    <td>TIPO DE LICENCIA:</td>
-                    <td>
-                        {{ $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->revaluationRenovationClasificationClass->name }}
-                    </td>
-                </tr>
+            <tr>
+                <td>TIPO DE CLASE:</td>
+                <td>
+                    {{
+                    $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->revaluationRenovationTypeClass->name
+                    }}
+                </td>
+            </tr>
+            <tr>
+                <td>TIPO DE LICENCIA:</td>
+                <td>
+                    {{
+                    $medicineReserves[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->revaluationRenovationClasificationClass->name
+                    }}
+                </td>
+            </tr>
             @endif
             <tr>
                 <td>TRAMITE:</td>
@@ -177,6 +193,13 @@
                 <td>LLAVE DE PAGO</td>
                 <td>{{ $medicineReserves[0]->medicineReserveMedicine->reference_number }}</td>
             </tr>
+            <!-- CADENA DE DEPENDECIA PARTIR DE 24/01/2025  -->
+            @if($medicineReserves[0]->medicineReserveMedicine->dep_chain != '')
+            <tr>
+                <td>CADENA DE DEPENDENCIA</td>
+                <td>{{ $medicineReserves[0]->medicineReserveMedicine->dep_chain }}</td>
+            </tr>
+            @endif
         </table>
         <div class="codigoqr">
             <img src="{{ $keyEncrypt }}" width="120" height="120" />

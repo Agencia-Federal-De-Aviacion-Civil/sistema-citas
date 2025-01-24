@@ -175,6 +175,13 @@
                 <td>LLAVE DE PAGO</td>
                 <td>{{ $medicineReserves[0]->medicineReserveMedicine->reference_number }}</td>
             </tr>
+            <!-- CADENA DE DEPENDECIA PARTIR DE 24/01/2025  -->
+            @if($medicineReserves[0]->medicineReserveMedicine->dep_chain != '')
+            <tr>
+                <td>CADENA DE DEPENDENCIA</td>
+                <td>{{ $medicineReserves[0]->medicineReserveMedicine->dep_chain }}</td>
+            </tr>
+            @endif
         </table>
         <div class="codigoqr">
             <img src="{{ $keyEncrypt }}"
