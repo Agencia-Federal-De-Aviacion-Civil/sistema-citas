@@ -786,6 +786,7 @@ class HomeMedicine extends Component
                     'user_id' => $this->userid,
                     'reference_number' => $this->reference_number ?? 'NO APLICA',
                     'pay_date' => $this->pay_date ?? null,
+                    'dep_chain' => $this->dependency_chain ?? null,
                     'document_id' => $saveDocument->id ?? null,
                     'type_exam_id' => $this->type_exam_id
                 ]);

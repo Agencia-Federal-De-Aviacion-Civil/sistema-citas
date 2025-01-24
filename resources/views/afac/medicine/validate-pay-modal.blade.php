@@ -14,11 +14,18 @@
                 <div
                     class="relative inline-block px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl dark:bg-gray-900 sm:my-8 sm:align-middle sm:max-w-3xl sm:w-full sm:p-6">
                     <div>
-                        {{-- <x-banner-modal-icon :title="'VALIDACIÓN DE PAGO'" :size="'w-16 h-16 animate-pulse'"
-                            :icon="'bell'" :titlesize="'xl'" /> --}}
+                        <div class="flex items-center justify-center">
+                            <svg class="w-20 h-20 text-blue-800" aria-hidden="trueF"
+                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="m10.827 5.465-.435-2.324m.435 2.324a5.338 5.338 0 0 1 6.033 4.333l.331 1.769c.44 2.345 2.383 2.588 2.6 3.761.11.586.22 1.171-.31 1.271l-12.7 2.377c-.529.099-.639-.488-.749-1.074C5.813 16.73 7.538 15.8 7.1 13.455c-.219-1.169.218 1.162-.33-1.769a5.338 5.338 0 0 1 4.058-6.221Zm-7.046 4.41c.143-1.877.822-3.461 2.086-4.856m2.646 13.633a3.472 3.472 0 0 0 6.728-.777l.09-.5-6.818 1.277Z" />
+                            </svg>
+                        </div>
                         <div class="flex mt-2 bg-gray-100 border border-gray-200 text-sm text-gray-800 rounded-lg p-4 dark:bg-white/10 dark:border-white/20 dark:text-white"
                             role="alert">
-                            <svg aria-hidden="true" class="flex-shrink-0 inline w-5 h-5 mr-3 text-[#269999]"
+                            <svg aria-hidden="true" class="flex-shrink-0 inline w-5 h-5 mr-3 text-blue-800"
                                 fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd"
                                     d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
@@ -32,7 +39,8 @@
                             </div>
                         </div>
                         <div class="mt-2">
-                            {{-- <x-errors /> --}}
+                            {{--
+                            <x-errors /> --}}
                             <div class="mt-6 grid md:grid-cols-3 md:gap-6">
                                 <div class="relative w-full mb-6 group">
                                     <x-input label="Nombre(s)*" class="uppercase" wire:model.live="name"
@@ -49,7 +57,7 @@
                             </div>
                             <div class="grid md:grid-cols-3 md:gap-6">
                                 {{-- <div class="relative w-full mb-6 group">
-                                        <x-input wire:model.live="pay_date" id="fecha-pago" label="FECHA DE PAGO"
+                                    <x-input wire:model.live="pay_date" id="fecha-pago" label="FECHA DE PAGO"
                                         placeholder="INGRESE..." />
                                 </div> --}}
                                 <div class="relative z-auto w-full group">
@@ -58,10 +66,10 @@
 
 
                                     {{-- <div class="mt-1 relative z-auto w-full group"> --}}
-                                        <x-input wire:model.lazy="pay_date" id="fecha-pago"
-                                            label="FECHA DE PAGO" placeholder="INGRESE..."
-                                            readonly />
-                                    {{-- </div> --}}
+                                        <x-input wire:model.lazy="pay_date" id="fecha-pago" label="FECHA DE PAGO"
+                                            placeholder="INGRESE..." readonly />
+                                        {{--
+                                    </div> --}}
 
 
                                 </div>
@@ -109,20 +117,20 @@
                             </div>
                             <div class="grid md:grid-cols-2 md:gap-6">
                                 <div class="relative w-full mb-6 group">
-                                    <x-input wire:model.live="total_paid"
-                                        label="TOTAL EFECTIVAMENTE PAGADO*" mask="######" placeholder="INGRESE..." />
+                                    <x-input wire:model.live="total_paid" label="TOTAL EFECTIVAMENTE PAGADO*"
+                                        mask="######" placeholder="INGRESE..." />
                                 </div>
                                 <div class="relative w-full mb-6 group">
-                                    <x-input class="uppercase" wire:model.live="reference_number"
-                                        label="LLAVE DE PAGO*" placeholder="INGRESE..."
+                                    <x-input class="uppercase" wire:model.live="reference_number" label="LLAVE DE PAGO*"
+                                        placeholder="INGRESE..."
                                         hint="verifique que la llave de pago de su voucher bancario sea igual a la que está ingresando" />
                                 </div>
                             </div>
                             {{-- <div x-show="ownName == '0'">
                                 <div class="grid md:grid-cols-2 md:gap-6">
                                     <div class="relative w-full mb-6 group">
-                                        <x-input class="uppercase" wire:model.live="curp_search"
-                                            label="INGRESA CURP" x-mask="******************" placeholder="ESCRIBE..." />
+                                        <x-input class="uppercase" wire:model.live="curp_search" label="INGRESA CURP"
+                                            x-mask="******************" placeholder="ESCRIBE..." />
                                         <div class="text-right mt-2 mb-2">
                                             <x-filament::link x-on:click="$wire.curp_search = ''" tag="button"
                                                 color="gray" icon="heroicon-m-backspace" icon-position="after"
@@ -145,12 +153,12 @@
                                             placeholder="INGRESE..." />
                                     </div>
                                     <div class="relative w-full mb-6 group">
-                                        <x-input label="Apellido 1*" class="uppercase"
-                                            wire:model.live="apParental" placeholder="INGRESE..." />
+                                        <x-input label="Apellido 1*" class="uppercase" wire:model.live="apParental"
+                                            placeholder="INGRESE..." />
                                     </div>
                                     <div class="relative w-full mb-6 group">
-                                        <x-input label="Apellido 2*" class="uppercase"
-                                            wire:model.live="apMaternal" placeholder="INGRESE..." />
+                                        <x-input label="Apellido 2*" class="uppercase" wire:model.live="apMaternal"
+                                            placeholder="INGRESE..." />
                                     </div>
                                 </div>
                             </div> --}}
@@ -158,8 +166,8 @@
                                 x-show="kindPersonId == '1' && ownName == '1' || searchSuccess || kindPersonId == '2'">
                                 <div class="grid md:grid-cols-3 md:gap-6">
                                     <div class="relative w-full mb-6 group">
-                                        <x-input wire:model.live="yearExercise" label="EJERCICIO"
-                                            class="bg-gray-100" placeholder="INGRESE..." readonly />
+                                        <x-input wire:model.live="yearExercise" label="EJERCICIO" class="bg-gray-100"
+                                            placeholder="INGRESE..." readonly />
                                     </div>
                                     <div class="relative w-full mb-6 group">
                                         <x-input wire:model.live="reference_key" label="CLAVE DE REFERENCIA*"
@@ -172,8 +180,8 @@
                                 </div>
                                 <div class="grid md:grid-cols-3 md:gap-4">
                                     <div class="relative w-full mb-6 group">
-                                        <x-input wire:model.live="dependency_chain"
-                                            label="CADENA DE LA DEPENDENCIA" placeholder="INGRESE..." />
+                                        <x-input wire:model.live="dependency_chain" label="CADENA DE LA DEPENDENCIA"
+                                            placeholder="INGRESE..." />
                                     </div>
                                     <div class="relative w-full mb-6 group">
                                         <x-inputs.maskable wire:model.live="total_paid"
@@ -203,7 +211,8 @@
         </div>
         {{-- <div wire:loading.delay.shortest wire:target="searchKey">
             <div class="flex justify-center bg-gray-600 z-40 h-full w-full fixed top-0 left-0 items-center opacity-75">
-                <img src="{{ asset('images/isologo_AFAC_azul.png') }}" width="30%" class="opacity-80 animate-pulse mr-2">
+                <img src="{{ asset('images/isologo_AFAC_azul.png') }}" width="30%"
+                    class="opacity-80 animate-pulse mr-2">
             </div>
         </div> --}}
     </div>
