@@ -361,7 +361,7 @@ class Index extends Component
                     'timeout' => '3100'
                 ]);
             } else {
-                $error = $response->json()['message'];
+                $error = $response->json()['data'];
                 $this->LogsApi($curp_logs = $this->curp, $type = 'REGISTRO', $register = $error, $description = 'ERROR AL REALIZAR REGISTRO DE USURIO');
                 $this->notification()->send([
                     'icon' => 'info',
