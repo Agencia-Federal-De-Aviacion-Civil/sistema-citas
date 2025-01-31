@@ -6,6 +6,7 @@ use App\Models\catalogue\Countrie;
 use App\Models\Catalogue\LogsApi;
 use App\Models\Catalogue\Municipal;
 use App\Models\Catalogue\State;
+use App\Models\Medicine\medicine_history_movements;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -303,6 +304,11 @@ class Index extends Component
             'officePhone' => $this->officePhone,
             'extension' => $this->extension,
             'curp' => $this->curp,
+        ]);
+        medicine_history_movements::create([
+            'user_id' => $user->id,
+            'action' => 'REGISTRO',
+            'process' => $user->name.' '.$this->apParental.' '.$this->apMaternal.' CON SU CORREO: '.$user->email
         ]);
         auth()->login($user);
         $this->userParticipant = $userParticipant->id;

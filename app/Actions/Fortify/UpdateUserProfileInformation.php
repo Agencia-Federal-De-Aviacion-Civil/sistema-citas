@@ -3,6 +3,7 @@
 namespace App\Actions\Fortify;
 
 use App\Models\Catalogue\LogsApi;
+use App\Models\Medicine\medicine_history_movements;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
@@ -38,6 +39,12 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                 'name' => $input['name'],
                 'email' => $input['email'],
             ])->save();
+
+            medicine_history_movements::create([
+                'user_id' => $user->id,
+                'action' => 'ACTUALIZACIÓN',
+                'process' => $input['name'].' ACTUALIZO CORREO: '.$input['email']
+            ]);
         }
         $this->email($user->id, $user->email);
     }
