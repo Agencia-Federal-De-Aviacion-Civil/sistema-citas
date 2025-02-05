@@ -1,5 +1,5 @@
 <div>
-    <div class="relative flex justify-center">
+    <div x-data="{kindPersonId:$wire.entangle('kind_person_id')}" class="relative flex justify-center">
         <div x-transition:enter-start="translate-y-4 opacity-0 sm:translate-y-0 sm:scale-95"
             x-transition:enter-end="translate-y-0 opacity-100 sm:scale-100"
             x-transition:leave="transition duration-150 ease-in"
@@ -15,9 +15,8 @@
                     class="relative inline-block px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl dark:bg-gray-900 sm:my-8 sm:align-middle sm:max-w-3xl sm:w-full sm:p-6">
                     <div>
                         <div class="flex items-center justify-center">
-                            <svg class="w-20 h-20 text-blue-800" aria-hidden="trueF"
-                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                                viewBox="0 0 24 24">
+                            <svg class="w-20 h-20 text-blue-800" aria-hidden="trueF" xmlns="http://www.w3.org/2000/svg"
+                                width="24" height="24" fill="none" viewBox="0 0 24 24">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                     stroke-width="2"
                                     d="m10.827 5.465-.435-2.324m.435 2.324a5.338 5.338 0 0 1 6.033 4.333l.331 1.769c.44 2.345 2.383 2.588 2.6 3.761.11.586.22 1.171-.31 1.271l-12.7 2.377c-.529.099-.639-.488-.749-1.074C5.813 16.73 7.538 15.8 7.1 13.455c-.219-1.169.218 1.162-.33-1.769a5.338 5.338 0 0 1 4.058-6.221Zm-7.046 4.41c.143-1.877.822-3.461 2.086-4.856m2.646 13.633a3.472 3.472 0 0 0 6.728-.777l.09-.5-6.818 1.277Z" />
@@ -41,18 +40,43 @@
                         <div class="mt-2">
                             {{--
                             <x-errors /> --}}
-                            <div class="mt-6 grid md:grid-cols-3 md:gap-6">
-                                <div class="relative w-full mb-6 group">
-                                    <x-input label="Nombre(s)*" class="uppercase" wire:model.live="name"
-                                        placeholder="INGRESE..." />
-                                </div>
-                                <div class="relative w-full mb-6 group">
-                                    <x-input label="Apellido 1*" class="uppercase" wire:model.live="apParental"
-                                        placeholder="INGRESE..." />
-                                </div>
-                                <div class="relative w-full mb-6 group">
-                                    <x-input label="Apellido 2*" class="uppercase" wire:model.live="apMaternal"
-                                        placeholder="INGRESE..." />
+                            <div class="relative w-full mb-6 group">
+                                <label class="select-none text-gray-700">PAGO REALIZADO POR:</label>
+                                <select wire:model.live="kind_person_id" x-model="kindPersonId"
+                                    class="block w-full p-2 mb-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <option value="" selected>Seleccione...</option>
+                                    <option value="1">PERSONA FÍSICA</option>
+                                    <option value="2">PERSONA MORAL</option>
+                                </select>
+                            </div>
+                            {{-- <div x-show="kindPersonId == '1'" class="relative w-full mb-6 group">
+                                <label class="select-none text-gray-700">¿EL PAGO ES A TU
+                                    NOMBRE?</label>
+                                <select wire:model.live="own_name" x-model="ownName"
+                                    class="block w-full p-2 mb-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <option value="" selected>Seleccione...</option>
+                                    <option value="1">SI</option>
+                                    <option value="0">NO</option>
+                                </select>
+                            </div> --}}
+                            <div x-show="kindPersonId == '2'" class="relative w-full mb-6 group">
+                                <x-input class="uppercase" wire:model.live="business_name" label="RAZON SOCIAL"
+                                    placeholder="INGRESE..." />
+                            </div>
+                            <div x-show="kindPersonId == '1'">
+                                <div class="mt-6 grid md:grid-cols-3 md:gap-6">
+                                    <div class="relative w-full mb-6 group">
+                                        <x-input label="Nombre(s)*" class="uppercase" wire:model.live="name"
+                                            placeholder="INGRESE..." />
+                                    </div>
+                                    <div class="relative w-full mb-6 group">
+                                        <x-input label="Apellido 1*" class="uppercase" wire:model.live="apParental"
+                                            placeholder="INGRESE..." />
+                                    </div>
+                                    <div class="relative w-full mb-6 group">
+                                        <x-input label="Apellido 2*" class="uppercase" wire:model.live="apMaternal"
+                                            placeholder="INGRESE..." />
+                                    </div>
                                 </div>
                             </div>
                             <div class="grid md:grid-cols-3 md:gap-6">
@@ -81,29 +105,7 @@
                                     <x-input wire:model.live="reference_key" label="CLAVE DE REFERENCIA*"
                                         class="bg-gray-100" placeholder="INGRESE..." />
                                 </div>
-                                {{-- <div class="relative w-full mb-6 group">
-                                    <label class="select-none text-gray-700">PAGO REALIZADO POR:</label>
-                                    <select wire:model.live="kind_person_id" x-model="kindPersonId"
-                                        class="block w-full p-2 mb-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                        <option value="" selected>Seleccione...</option>
-                                        <option value="1">PERSONA FÍSICA</option>
-                                        <option value="2">PERSONA MORAL</option>
-                                    </select>
-                                </div> --}}
-                                {{-- <div x-show="kindPersonId == '1'" class="relative w-full mb-6 group">
-                                    <label class="select-none text-gray-700">¿EL PAGO ES A TU
-                                        NOMBRE?</label>
-                                    <select wire:model.live="own_name" x-model="ownName"
-                                        class="block w-full p-2 mb-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                        <option value="" selected>Seleccione...</option>
-                                        <option value="1">SI</option>
-                                        <option value="0">NO</option>
-                                    </select>
-                                </div> --}}
-                                {{-- <div x-show="kindPersonId == '2'" class="relative w-full mb-6 group">
-                                    <x-input class="uppercase" wire:model.live="business_name" label="RAZON SOCIAL"
-                                        placeholder="INGRESE..." />
-                                </div> --}}
+
                             </div>
                             <div class="grid md:grid-cols-2 md:gap-6">
                                 <div class="relative w-full mb-6 group">
