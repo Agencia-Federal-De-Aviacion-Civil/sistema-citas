@@ -51,7 +51,7 @@ class HomeMedicine extends Component
     use Actions;
     use WithFileUploads;
 
-    public $name, $apParental, $apMaternal, $userId, $yearExercise, $reference_key, $operation_number, $dependency_chain, $total_paid, $openValidateModal = false;
+    public $name, $apParental, $apMaternal, $userId, $yearExercise, $reference_key, $operation_number, $dependency_chain, $total_paid,$kind_person_id,$business_name, $openValidateModal = false;
     public $medicine_question_id, $type_class_id, $clasificationClass, $clasification_class_id, $type_exception_id;
     public $document_pay, $reference_number, $pay_date, $type_exam_id, $typeRenovationExams, $dateConvertedFormatted;
     public $questionClassess, $typeExams, $sedes, $userQuestions, $headquarter_id, $dateReserve, $saveMedicine, $disabledDaysFilter;
@@ -178,9 +178,9 @@ class HomeMedicine extends Component
         // dump($payDate);
         $payDate = Carbon::parse($pay_date)->format('dmY');
         if (checkdnsrr('pagos.sct.gob.mx', 'A')) {
-            // $pay_for = $this->kind_person_id == 1 ? 'PA=' . Str::upper($this->apParental) . '&MA=' . Str::upper($this->apMaternal) .
-            //     '&NOM=' . Str::upper($this->name) : 'RZ=' . Str::upper($this->business_name);
-            $pay_for = 'PA=' . Str::upper($this->apParental) . '&MA=' . Str::upper($this->apMaternal) . '&NOM=' . Str::upper($this->name);
+            $pay_for = $this->kind_person_id == 1 ? 'PA=' . Str::upper($this->apParental) . '&MA=' . Str::upper($this->apMaternal) .
+                '&NOM=' . Str::upper($this->name) : 'RZ=' . Str::upper($this->business_name);
+            // $pay_for = 'PA=' . Str::upper($this->apParental) . '&MA=' . Str::upper($this->apMaternal) . '&NOM=' . Str::upper($this->name);
             $response = Http::withHeaders([
                 'api-key' =>
                 // env('API_KEY_PAY'),
