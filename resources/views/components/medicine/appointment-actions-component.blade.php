@@ -12,7 +12,7 @@
                 wire:click="$emit('openModal', 'medicine.modals.schedule', {{ json_encode(['scheduleId' => $scheduleId, 'medicineId' => $medicineId]) }})"
                 label="PENDIENTE" xs silver />
         @else
-            @hasrole('admin_medicine_v4')
+            @hasrole('admin_medicine_v4|admin_medicine_v5')
                 <x-badge flat info label="SIN ACCIONES" />
             @else
                 @if ($buttonExpire)
