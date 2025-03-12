@@ -19,25 +19,31 @@ class DashboardController extends Controller
         $date2 = Date::now()->format('d-m-Y');
         $nameHeadquarter = '';
         $appointmentReserves = '';
-        $headquarters = Headquarter::with([
-            'HeadquarterUserHeadquarter.userHeadquarterUserParticipant'
-        ])
-            ->when(Auth::user()->canany(['headquarters.see.dashboard', 'sub_headquarters.see.dashboard']), function ($headquarters) {
-                $headquarters->whereHas('HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q1) {
-                    $q1->where('user_id', Auth::user()->id);
-                });
-            })
-            ->get();
-        $nameHeadquarter = (Auth::user()->canany(['headquarters.see.dashboard', 'sub_headquarters.see.dashboard']) ? $headquarters->first()->name_headquarter : 'DASHBOARD');
+        // $headquarters = Headquarter::with([
+        //     'HeadquarterUserHeadquarter.userHeadquarterUserParticipant'
+        // ])
+        //     ->when(Auth::user()->canany(['headquarters.see.dashboard', 'sub_headquarters.see.dashboard']), function ($headquarters) {
+        //         $headquarters->whereHas('HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q1) {
+        //             $q1->where('user_id', Auth::user()->id);
+        //         });
+        //     })
+        //     ->get();
+        // $nameHeadquarter = (Auth::user()->canany(['headquarters.see.dashboard', 'sub_headquarters.see.dashboard']) ? $headquarters->first()->name_headquarter : 'DASHBOARD');
 
-        $appointmentReserves = MedicineReserve::query()
-            ->select('status', DB::raw('count(*) as count'), 'dateReserve')
-            ->groupBy('status', 'dateReserve')
-            ->get();
+        // $appointmentReserves = MedicineReserve::query()
+        //     ->select('status', DB::raw('count(*) as count'), 'dateReserve')
+        //     ->groupBy('status', 'dateReserve')
+        //     ->get();
 
-        $appointmentReservesNow = $appointmentReserves ? $appointmentReserves->where('dateReserve', $date1) : '';
-        $registradas = $appointmentReserves ? $appointmentReserves->sum('count') : '';
-        $medicine =  round($registradas ? $registradas * 100 / $registradas : '0');
+        // $appointmentReservesNow = $appointmentReserves ? $appointmentReserves->where('dateReserve', $date1) : '';
+        // $registradas = $appointmentReserves ? $appointmentReserves->sum('count') : '';
+        // $medicine =  round($registradas ? $registradas * 100 / $registradas : '0');
+
+        $registradas = 0;
+        $medicine =  0;
+        $nameHeadquarter =0;
+
+
         return view('afac.dashboard.index', compact('date1', 'date2', 'registradas', 'medicine', 'nameHeadquarter'));
     }
 }
