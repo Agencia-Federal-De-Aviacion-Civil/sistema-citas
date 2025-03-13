@@ -38,7 +38,14 @@ class DashboardController extends Controller
             return MedicineReserve::query()
                 ->select('status', DB::raw('count(*) as count'), 'dateReserve')
                 ->groupBy('status', 'dateReserve')
-                ->get();
+                ->get()
+                ->map(function ($item) {
+                    return [
+                        'status' => $item->status,
+                        'count' => $item->count,
+                        'dateReserve' => $item->dateReserve,
+                    ];
+                });
         });
 
         $appointmentReservesNow = $appointmentReserves->where('dateReserve', $date1);
