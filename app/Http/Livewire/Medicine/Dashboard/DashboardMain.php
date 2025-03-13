@@ -20,92 +20,135 @@ class DashboardMain extends Component
         $this->id_dashboard = $id_dashboard;
         $this->date1 = $date1;
         $this->date2 = $date2;
-        $user = Auth::user();
         $tomorrow = Date::tomorrow()->format('Y-m-d');
-        $isAdmin  = $id_dashboard === 0 || Auth::user()->can('medicine_admin.see.dashboard');
-        $iDashboard = $id_dashboard === 1;
-        $canSeeDashboard = Auth::user()->canany(['headquarters.see.dashboard', 'headquarters_authorized.see.dashboard']);
-        $headquartersDashboard = Auth::user()->can('sub_headquarters.see.dashboard');
-        $headquarterSubHeadquarters = $user->canany(['headquarters.see.dashboard', 'sub_headquarters.see.dashboard', 'headquarters_authorized.see.dashboard']);
 
-        $cacheKey = "appointmentDashboard_{$id_dashboard}_{$date1}_{$date2}";
-        $appointmentDashboard = Cache::remember($cacheKey, now()->addMinutes(120), function () use ($isAdmin, $iDashboard, $canSeeDashboard, $headquartersDashboard, $date1) {
-        return MedicineReserve::query()
-            ->when($isAdmin, function ($query) {
-                $query->where('is_external', false);
-            })
-            ->when($iDashboard, function ($query) {
-                $query->where('is_external', true);
-            })
-            ->when($canSeeDashboard, function ($query) {
-                $query->with('medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant')
-                    ->whereHas('medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q1) {
-                        $q1->where('user_id', Auth::user()->id);
-                    });
-            })
-            ->when($headquartersDashboard, function ($query) use ($date1) {
-                $query->with('medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant')
-                    ->whereHas('medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q1) {
-                        $q1->where('user_id', Auth::user()->id);
-                    });
-                $query->where('headquarter_id', 6)->where('dateReserve', $date1);
-            })
-            ->select('status', DB::raw('count(*) as count'), 'dateReserve')
-            ->groupBy('status', 'dateReserve')
-            ->get();
-        });
+        $appointmentDashboard = $this->getAppointmentDashboard($id_dashboard, $date1);
+        $headquarters = $this->getHeadquarters($id_dashboard, $date1, $tomorrow);
 
-
-        // HEADQUARTERS QUERY OPTIMIZED
-
-        $cacheKeyHeadquarters = "headquarters_{$id_dashboard}";
-        $headquarters = Cache::remember($cacheKeyHeadquarters, now()->addMinutes(120), function () use ($headquarterSubHeadquarters, $isAdmin, $date1, $iDashboard, $tomorrow) {
-            return Headquarter::query()
-            ->when($headquarterSubHeadquarters, function ($query) {
-                $query->with(['HeadquarterUserHeadquarter.userHeadquarterUserParticipant'])
-                    ->whereHas('HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q3) {
-                        $q3->where('user_id', Auth::user()->id);
-                    });
-            })
-            ->when($isAdmin, function ($headquarters) {
-                $headquarters->where('is_external', 0)->where('status', 0);
-            })
-            ->when($iDashboard, function ($query) {
-                $query->where('is_external', 1)->where('status', 0);
-            })
-            ->withCount(['headquarterMedicineReserve as countNow' => function ($query1) use ($date1) {
-                $query1->where('dateReserve', $date1)->whereIn('status', ['0', '1', '4', '10', '8', '9']);
-            }])
-            ->withCount(['headquarterMedicineReserve as countTomorrow' => function ($query2) use ($tomorrow) {
-                $query2->where('dateReserve', $tomorrow)->whereIn('status', ['0', '1', '4', '10', '8', '9']);
-            }])
-            ->withCount(['headquarterMedicineReserve as countTotal'])
-            ->get(['id', 'name_headquarter', 'direction', 'is_external']);
-        });
-
-        $this->headquarterQueries = $headquarters;
         $this->headquarterQueries = $headquarters;
         $this->appointmentNow = $appointmentDashboard->where('dateReserve', $date1);
-        $this->nowDate = ($id_dashboard === 0 || Auth::user()->canany(['headquarters.see.dashboard', 'sub_headquarters.see.dashboard', 'medicine_admin.see.dashboard'])) ? $this->appointmentNow->whereIn('status', ['0', '1', '4', '10'])->sum('count') : ($iDashboard || Auth::user()->can('headquarters_authorized.see.dashboard') ? $this->appointmentNow->whereIn('status', ['0', '1', '4', '10', '7', '8', '9'])->sum('count') : null);
-        $this->registerCount =  $appointmentDashboard->sum('count');
-        $this->porConfirDashboard = $this->registerCount != 0 ? round($appointmentDashboard->where('status', '1')->sum('count') * 100 / $this->registerCount, 0) : 0;
-        $this->validateDashboard = $appointmentDashboard->where('status', '1')->sum('count');
-        $this->penDashboard = $appointmentDashboard->where('status', '0')->sum('count');
-        $this->porPenDashboard = $this->registerCount != 0 ? round($appointmentDashboard->where('status', '0')->sum('count') * 100 / $this->registerCount, 0) : 0;
-        $this->cancelDashboard = $appointmentDashboard->whereIn('status', ['2', '3', '5'])->sum('count');
+        $this->registerCount = $appointmentDashboard->sum('count');
 
-        $this->reagDashboard = ($id_dashboard === 0 || Auth::user()->canany(['headquarters.see.dashboard', 'sub_headquarters.see.dashboard', 'medicine_admin.see.dashboard'])) ? round($appointmentDashboard->where('status', '4')->sum('count')) : ($iDashboard || Auth::user()->can('headquarters_authorized.see.dashboard') ? round($appointmentDashboard->whereIn('status', ['4', '10'])->sum('count')) : null);
-        $this->porReagDashboard = ($id_dashboard === 0 || Auth::user()->canany(['headquarters.see.dashboard', 'sub_headquarters.see.dashboard', 'medicine_admin.see.dashboard'])) ? ($this->registerCount != 0 ? round($appointmentDashboard->where('status', '4')->sum('count') * 100 / $this->registerCount) : 0) : ($iDashboard || Auth::user()->can('headquarters_authorized.see.dashboard') ? ($this->registerCount != 0 ? round($appointmentDashboard->whereIn('status', ['4', '10'])->sum('count') * 100 / $this->registerCount) : 0) : null);
-        $this->porCancelDashboard = $this->registerCount != 0 ? round($appointmentDashboard->whereIn('status', ['2', '3', '5'])->sum('count') * 100 / $this->registerCount, 0) : 0;
-        $this->apto = $appointmentDashboard->where('status', '8')->sum('count');
-        $this->porApto = $this->registerCount != 0 ? round($appointmentDashboard->where('status', '8')->sum('count') * 100 / $this->registerCount, 0) : 0;
-        $this->noApto = $appointmentDashboard->where('status', '9')->sum('count');
-        $this->porNoApto = $this->registerCount != 0 ? round($appointmentDashboard->where('status', '9')->sum('count') * 100 / $this->registerCount, 0) : 0;
-        $this->aplazadas = $appointmentDashboard->where('status', '7')->sum('count');
-        $this->porAplazada = $this->registerCount != 0 ? round($appointmentDashboard->where('status', '7')->sum('count') * 100 / $this->registerCount, 0) : 0;
+        $this->calculateDashboardMetrics($appointmentDashboard, $id_dashboard);
     }
+
     public function render()
     {
         return view('livewire.medicine.dashboard.dashboard-main');
+    }
+    private function getAppointmentDashboard($id_dashboard, $date1)
+    {
+        $cacheKey = "appointment_dashboard_{$id_dashboard}_{$date1}";
+        return Cache::remember($cacheKey, 120, function () use ($id_dashboard, $date1) {
+            $query = MedicineReserve::query();
+
+            if ($id_dashboard === 0 || Auth::user()->can('medicine_admin.see.dashboard')) {
+                $query->where('is_external', false);
+            } elseif ($id_dashboard === 1) {
+                $query->where('is_external', true);
+            }
+
+            if (Auth::user()->canany(['headquarters.see.dashboard', 'headquarters_authorized.see.dashboard'])) {
+                $query->with('medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant')
+                    ->whereHas('medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q) {
+                        $q->where('user_id', Auth::user()->id);
+                    });
+            }
+
+            if (Auth::user()->can('sub_headquarters.see.dashboard')) {
+                $query->with('medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant')
+                    ->whereHas('medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q) {
+                        $q->where('user_id', Auth::user()->id);
+                    })
+                    ->where('headquarter_id', 6)
+                    ->where('dateReserve', $date1);
+            }
+
+            return $query->select('status', DB::raw('count(*) as count'), 'dateReserve')
+                ->groupBy('status', 'dateReserve')
+                ->get();
+        });
+    }
+
+    private function getHeadquarters($id_dashboard, $date1, $tomorrow)
+    {
+        $cacheKey = "headquarters_{$id_dashboard}_{$date1}_{$tomorrow}";
+        return Cache::remember($cacheKey, 120, function () use ($id_dashboard, $date1, $tomorrow) {
+            $query = Headquarter::query();
+
+            if (Auth::user()->canany(['headquarters.see.dashboard', 'sub_headquarters.see.dashboard', 'headquarters_authorized.see.dashboard'])) {
+                $query->with(['HeadquarterUserHeadquarter.userHeadquarterUserParticipant'])
+                    ->whereHas('HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q) {
+                        $q->where('user_id', Auth::user()->id);
+                    });
+            }
+
+            if ($id_dashboard === 0 || Auth::user()->can('medicine_admin.see.dashboard')) {
+                $query->where('is_external', 0)->where('status', 0);
+            } elseif ($id_dashboard === 1) {
+                $query->where('is_external', 1)->where('status', 0);
+            }
+
+            return $query->withCount([
+                'headquarterMedicineReserve as countNow' => function ($query) use ($date1) {
+                    $query->where('dateReserve', $date1)->whereIn('status', ['0', '1', '4', '10', '8', '9']);
+                },
+                'headquarterMedicineReserve as countTomorrow' => function ($query) use ($tomorrow) {
+                    $query->where('dateReserve', $tomorrow)->whereIn('status', ['0', '1', '4', '10', '8', '9']);
+                },
+                'headquarterMedicineReserve as countTotal'
+            ])->get(['id', 'name_headquarter', 'direction', 'is_external']);
+        });
+    }
+
+    private function calculateDashboardMetrics($appointmentDashboard, $id_dashboard)
+    {
+        $this->nowDate = $this->calculateNowDate($appointmentDashboard, $id_dashboard);
+        $this->porConfirDashboard = $this->calculatePercentage($appointmentDashboard, '1');
+        $this->validateDashboard = $appointmentDashboard->where('status', '1')->sum('count');
+        $this->penDashboard = $appointmentDashboard->where('status', '0')->sum('count');
+        $this->porPenDashboard = $this->calculatePercentage($appointmentDashboard, '0');
+        $this->cancelDashboard = $appointmentDashboard->whereIn('status', ['2', '3', '5'])->sum('count');
+        $this->reagDashboard = $this->calculateReagDashboard($appointmentDashboard, $id_dashboard);
+        $this->porReagDashboard = $this->calculateReagPercentage($appointmentDashboard, $id_dashboard);
+        $this->porCancelDashboard = $this->calculatePercentage($appointmentDashboard, ['2', '3', '5']);
+        $this->apto = $appointmentDashboard->where('status', '8')->sum('count');
+        $this->porApto = $this->calculatePercentage($appointmentDashboard, '8');
+        $this->noApto = $appointmentDashboard->where('status', '9')->sum('count');
+        $this->porNoApto = $this->calculatePercentage($appointmentDashboard, '9');
+        $this->aplazadas = $appointmentDashboard->where('status', '7')->sum('count');
+        $this->porAplazada = $this->calculatePercentage($appointmentDashboard, '7');
+    }
+
+    private function calculateNowDate($appointmentDashboard, $id_dashboard)
+    {
+        $statuses = ['0', '1', '4', '10'];
+        if ($id_dashboard === 1 || Auth::user()->can('headquarters_authorized.see.dashboard')) {
+            $statuses = array_merge($statuses, ['7', '8', '9']);
+        }
+        return $appointmentDashboard->whereIn('status', $statuses)->sum('count');
+    }
+
+    private function calculatePercentage($appointmentDashboard, $status)
+    {
+        return $this->registerCount != 0 ? round($appointmentDashboard->whereIn('status', (array)$status)->sum('count') * 100 / $this->registerCount, 0) : 0;
+    }
+
+    private function calculateReagDashboard($appointmentDashboard, $id_dashboard)
+    {
+        $statuses = ['4'];
+        if ($id_dashboard === 1 || Auth::user()->can('headquarters_authorized.see.dashboard')) {
+            $statuses = array_merge($statuses, ['10']);
+        }
+        return round($appointmentDashboard->whereIn('status', $statuses)->sum('count'));
+    }
+
+    private function calculateReagPercentage($appointmentDashboard, $id_dashboard)
+    {
+        $statuses = ['4'];
+        if ($id_dashboard === 1 || Auth::user()->can('headquarters_authorized.see.dashboard')) {
+            $statuses = array_merge($statuses, ['10']);
+        }
+        return $this->registerCount != 0 ? round($appointmentDashboard->whereIn('status', $statuses)->sum('count') * 100 / $this->registerCount) : 0;
     }
 }
