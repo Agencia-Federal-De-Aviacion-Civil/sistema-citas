@@ -95,18 +95,18 @@
                     </ul>
                     <div class="mt-6">
                         <div x-show="activeTab === 'headquarters'">
-                            @livewire('medicine.dashboard.dashboard-main', [
+                            {{-- @livewire('medicine.dashboard.dashboard-main', [
                             'id_dashboard' => 0,
                             'date1' => $date1,
                             'date2' => $date2,
-                            ])
+                            ]) --}}
                         </div>
                         <div x-show="activeTab === 'schedules'">
-                            @livewire('medicine.dashboard.dashboard-main', [
+                            {{-- @livewire('medicine.dashboard.dashboard-main', [
                             'id_dashboard' => 1,
                             'date1' => $date1,
                             'date2' => $date2,
-                            ])
+                            ]) --}}
                         </div>
                     </div>
                 </div>
