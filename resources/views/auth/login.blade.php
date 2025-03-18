@@ -181,10 +181,10 @@
                                     </div>
                                     <div class="text-sm">
                                         @if (Route::has('password.request'))
-                                        {{-- <a class="text-gray-400 hover:text-gray-500"
+                                        <a class="text-gray-400 hover:text-gray-500"
                                             href="{{ route('password.request') }}">
                                             {{ __('¿Olvidaste tu contraseña?') }}
-                                        </a> --}}
+                                        </a>
                                         @endif
                                     </div>
                                 </div>
