@@ -24,8 +24,7 @@ use Spatie\Permission\Traits\HasRoles;
 use App\Notifications\MyResetPassword;
 use App\Notifications\MyVerifyEmail;
 
-class User extends Authenticatable 
-// implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens;
     use HasFactory;
