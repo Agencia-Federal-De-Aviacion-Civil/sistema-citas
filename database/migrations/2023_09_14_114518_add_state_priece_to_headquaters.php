@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::table('headquarters', function (Blueprint $table) {
             // $table->string('state')->default(0)->after('is_external');
-            $table->string('price')->default(0)->after('state');
+            // $table->string('price')->default(0)->after('state');
         });
     }
 
@@ -27,8 +27,8 @@ return new class extends Migration
     public function down()
     {
         Schema::table('headquaters', function (Blueprint $table) {
-            $table->dropColumn('state');
-            $table->dropColumn('price');
+            // $table->dropColumn('state');
+            // $table->dropColumn('price');
             // AQUI
         });
     }
