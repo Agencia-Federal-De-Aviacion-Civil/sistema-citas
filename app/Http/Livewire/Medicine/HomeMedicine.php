@@ -698,13 +698,18 @@ class HomeMedicine extends Component
                 ->where(function ($queryStop) {
                     // $queryStop->where('status', 0)
                     //     ->orWhere('status', 4);
-                    $queryStop->whereIn('status', [0, 4, 9]);
+                    $queryStop->whereIn('status', [0, 4, 9, 7]);
                 })
                 ->get();
             foreach ($userMedicines as $userMedicine) {
                 if ($userMedicine->id) {
                     if ($userMedicine->status == 9) {
                         $message = !$this->idTypeAppointment ? 'NO ERES APTO PARA AGENDAR EN ESTA CLASE, CONSIDERA HACER REVALORACIÓN' : 'HAS SIDO NO APTO PARA ESTA CLASE POR PARTE DE LA AUTORIDAD, CONSIDERA REALIZAR UNA REVALORACIÓN';
+                        throw new \Exception($message);
+                        return;
+                    }
+                    if ($userMedicine->status == 7) {
+                        $message = 'NO PUEDES AGENDAR CITA YA QUE CUENTAS CON UNA CITA PENDIENTE';
                         throw new \Exception($message);
                         return;
                     }
