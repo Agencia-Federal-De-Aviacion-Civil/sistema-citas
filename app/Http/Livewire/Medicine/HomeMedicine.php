@@ -708,6 +708,7 @@ class HomeMedicine extends Component
                         throw new \Exception($message);
                         return;
                     }
+                     //se establece si esta aplazada
                     if ($userMedicine->status == 7) {
                         $message = 'NO PUEDES AGENDAR CITA YA QUE CUENTAS CON UNA CITA PENDIENTE';
                         throw new \Exception($message);
