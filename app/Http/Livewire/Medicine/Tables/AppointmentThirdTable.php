@@ -3,6 +3,8 @@
 namespace App\Http\Livewire\Medicine\Tables;
 
 use App\Jobs\ExportSelectedJob;
+use App\Models\Catalogue\Headquarter;
+use App\Models\Catalogue\TypeClass;
 use App\Models\Medicine\MedicineExportHistory;
 use App\Models\Medicine\MedicineReserve;
 use Carbon\Carbon;
@@ -365,12 +367,10 @@ class AppointmentThirdTable extends DataTableComponent
                         $query->where('type_exam_id', $value);
                     }),
                 SelectFilter::make('CLASE')
-                    ->options([
-                        '' => 'TODOS',
-                        '1' => 'CLASE I',
-                        '2' => 'CLASE II',
-                        '3' => 'CLASE III',
-                    ])
+                ->options([
+                    '' => 'TODOS',
+                    TypeClass::whereIn('id',[1,2,3])->pluck('name','id')
+                ])
                     ->filter(function ($query, $value) {
                         if ($value === '1') {
                             $query->whereHas('medicineReserveMedicine.medicineInitial', function ($query) {
@@ -424,26 +424,9 @@ class AppointmentThirdTable extends DataTableComponent
                         $query->whereDate('dateReserve', '<=', $value);
                     }),
                 SelectFilter::make('SEDE')
-                    ->options([
-                        '' => 'TODOS',
-                        '14' => 'MEA LILIA MARIBEL DEL VALLE MARTíNEZ',
-                        '15' => 'MEA KATYA DEYANIRA MAGAÑA MUÑOZ',
-                        '16' => 'MEA CÉSAR ULISES BLAS TORRES',
-                        '17' => 'MEA JOSÉ MANUEL CÓRDOVA CERVANTES',
-                        '18' => 'MEA ROSEMBERG CASTILLEJOS VARGAS',
-                        '19' => 'MEA MARILIN MELISSA GUERRERO MATEO',
-                        '20' => 'MEA ITZEL MONSERRAT GÓNZALEZ MARTINEZ',
-                        '21' => 'MEA JAHAZIEL ROBLES MORENO',
-                        '22' => 'MEA MARÍA FERNANDA CEJA ESQUIVEZ',
-                        '23' => 'MEA ANABEL BAILÓN BECERRA',
-                        '24' => 'MEA FRANCISCO JAVIER ANTIGA LÓPEZ',
-                        '25' => 'MEA MANUEL ALEJANDRO RODRÍGUEZ GÓMEZ',
-                        '26' => 'MEA LUIS ALBERTO MENA SEPÚLVEDA',
-                        '27' => 'MEA JOSE RAÚL MÉNDEZ COLÍN',
-                        '29' => 'MEA SOFÍA GRACIELA CAMARGO HERNÁNDEZ',
-                        '30' => 'MEA FRANCISCO JAVIER SAINZ HERNÁNDEZ',
-                        '31' => 'MEA DAFNE FERNANDA SÁNCHEZ YÉPEZ',
-                        '32' => 'MEA ELBA SUSANA PADILLA ÁVILA',
+                ->options([
+                    '' => 'TODOS',
+                    Headquarter::where('is_external',1)->pluck('name_headquarter', 'id')
                     ])
                     ->filter(function ($query, $value) {
                         $query->where('headquarter_id', $value);
