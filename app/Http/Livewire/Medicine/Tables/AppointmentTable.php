@@ -632,7 +632,8 @@ class AppointmentTable extends DataTableComponent
                         '13' => 'SINALOA CULIACAN',
                         '28' => 'CD. DEL CARMEN AEROPUERTO',
                         '33' => 'TULUM AEROPUERTO',
-                        '34' => 'CAMPECHE CAMPECHE'
+                        '34' => 'CAMPECHE CAMPECHE',
+                        '35' => 'TEPIC NAYARIT'
                     ])
                     ->filter(function ($query, $value) {
                         $query->where('headquarter_id', $value);
