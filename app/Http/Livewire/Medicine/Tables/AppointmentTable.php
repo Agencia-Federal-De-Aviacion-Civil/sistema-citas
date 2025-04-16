@@ -539,7 +539,7 @@ class AppointmentTable extends DataTableComponent
                 SelectFilter::make('TIPO')
                     ->options([
                         '' => 'TODOS',
-                        TypeExam::pluck('name', 'id')
+                        ' ' => TypeExam::pluck('name', 'id')
                         ])
                     ->filter(function ($query, $value) {
                         $query->where('type_exam_id', $value);
@@ -547,7 +547,7 @@ class AppointmentTable extends DataTableComponent
                 SelectFilter::make('CLASE')
                     ->options([
                         '' => 'TODOS',
-                        TypeClass::whereIn('id',[1,2,3])->pluck('name','id')
+                        ' ' => TypeClass::whereIn('id',[1,2,3])->pluck('name','id')
                     ])
                     ->filter(function ($query, $value) {
                         if ($value === '1') {
@@ -614,7 +614,7 @@ class AppointmentTable extends DataTableComponent
                 SelectFilter::make('SEDE')
                     ->options([
                         '' => 'TODOS',
-                        Headquarter::where('is_external',0)->pluck('name_headquarter', 'id')
+                        ' ' => Headquarter::where('is_external',0)->pluck('name_headquarter', 'id')
                     ])
                     ->filter(function ($query, $value) {
                         $query->where('headquarter_id', $value);
@@ -654,7 +654,7 @@ class AppointmentTable extends DataTableComponent
                 SelectFilter::make('TIPO')
                     ->options([
                         '' => 'TODOS',
-                        TypeExam::whereIn('id',[1,2,3])->pluck('name', 'id')
+                        ' ' => TypeExam::whereIn('id',[1,2,3])->pluck('name', 'id')
                         ])
                     ->filter(function ($query, $value) {
                         $query->where('type_exam_id', $value);

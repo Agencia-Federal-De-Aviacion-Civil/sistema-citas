@@ -369,7 +369,7 @@ class AppointmentThirdTable extends DataTableComponent
                 SelectFilter::make('CLASE')
                 ->options([
                     '' => 'TODOS',
-                    TypeClass::whereIn('id',[1,2,3])->pluck('name','id')
+                    ' ' => TypeClass::whereIn('id',[1,2,3])->pluck('name','id')
                 ])
                     ->filter(function ($query, $value) {
                         if ($value === '1') {
@@ -426,7 +426,7 @@ class AppointmentThirdTable extends DataTableComponent
                 SelectFilter::make('SEDE')
                 ->options([
                     '' => 'TODOS',
-                    Headquarter::where('is_external',1)->pluck('name_headquarter', 'id')
+                    ' ' => Headquarter::where('is_external',1)->pluck('name_headquarter', 'id')
                     ])
                     ->filter(function ($query, $value) {
                         $query->where('headquarter_id', $value);
