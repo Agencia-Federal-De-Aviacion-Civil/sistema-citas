@@ -3,6 +3,9 @@
 namespace App\Http\Livewire\Medicine\Tables;
 
 use App\Jobs\ExportSelectedJob;
+use App\Models\Catalogue\Headquarter;
+use App\Models\Catalogue\TypeClass;
+use App\Models\Catalogue\TypeExam;
 use App\Models\Medicine\MedicineExportHistory;
 use App\Models\Medicine\MedicineReserve;
 use App\Models\UserParticipant;
@@ -536,21 +539,15 @@ class AppointmentTable extends DataTableComponent
                 SelectFilter::make('TIPO')
                     ->options([
                         '' => 'TODOS',
-                        '1' => 'INICIAL',
-                        '2' => 'RENOVACIÓN',
-                        '3' => 'REVALORACIÓN',
-                        '4' => 'REVALORACIÓN POST ACCIDENTE',
-                        '5' => 'FLEXIBILIDAD'
-                    ])
+                        TypeExam::pluck('name', 'id')
+                        ])
                     ->filter(function ($query, $value) {
                         $query->where('type_exam_id', $value);
                     }),
                 SelectFilter::make('CLASE')
                     ->options([
                         '' => 'TODOS',
-                        '1' => 'CLASE I',
-                        '2' => 'CLASE II',
-                        '3' => 'CLASE III',
+                        TypeClass::whereIn('id',[1,2,3])->pluck('name','id')
                     ])
                     ->filter(function ($query, $value) {
                         if ($value === '1') {
@@ -617,23 +614,7 @@ class AppointmentTable extends DataTableComponent
                 SelectFilter::make('SEDE')
                     ->options([
                         '' => 'TODOS',
-                        '1' => 'CANCUN QUINTANA ROO',
-                        '2' => 'TIJUANA BC',
-                        '3' => 'TOLUCA AEROPUERTO',
-                        '4' => 'MONTERREY AEROPUERTO',
-                        '5' => 'GUADALAJARA AEROPUERTO',
-                        '6' => 'CIUDAD DE MÉXICO AEROPUERTO BJ',
-                        '7' => 'MAZATLAN SINALOA',
-                        '8' => 'TUXTLA GTZ. CHIAPAS',
-                        '9' => 'VERACRUZ VERACRUZ',
-                        '10' => 'HERMOSILLO SONORA',
-                        '11' => 'QUERETARO QRO',
-                        '12' => 'MERIDA YUCATAN',
-                        '13' => 'SINALOA CULIACAN',
-                        '28' => 'CD. DEL CARMEN AEROPUERTO',
-                        '33' => 'TULUM AEROPUERTO',
-                        '34' => 'CAMPECHE CAMPECHE',
-                        '35' => 'TEPIC NAYARIT'
+                        Headquarter::where('is_external',0)->pluck('name_headquarter', 'id')
                     ])
                     ->filter(function ($query, $value) {
                         $query->where('headquarter_id', $value);
@@ -673,10 +654,8 @@ class AppointmentTable extends DataTableComponent
                 SelectFilter::make('TIPO')
                     ->options([
                         '' => 'TODOS',
-                        '1' => 'INICIAL',
-                        '2' => 'RENOVACIÓN',
-                        '3' => 'REVALORACIÓN'
-                    ])
+                        TypeExam::whereIn('id',[1,2,3])->pluck('name', 'id')
+                        ])
                     ->filter(function ($query, $value) {
                         $query->where('type_exam_id', $value);
                     }),
