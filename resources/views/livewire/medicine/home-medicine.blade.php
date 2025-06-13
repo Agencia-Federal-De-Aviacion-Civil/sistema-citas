@@ -553,7 +553,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div x-show="questionException > '0' && extensionClass === '1' || tipoExamenExtension === '2'"
+                                            <div x-show="questionException > '0' && extensionClass === '1' || tipoExamenExtension === '2' || tipoExamenExtension == 2" 
                                                 class="flex relative pb-6">
                                                 <div
                                                     class="h-full w-10 absolute inset-0 flex items-center justify-center">
