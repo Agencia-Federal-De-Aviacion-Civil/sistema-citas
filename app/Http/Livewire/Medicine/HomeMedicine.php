@@ -574,7 +574,7 @@ class HomeMedicine extends Component
             // dd($maxCitas);
             $datesExceedingLimit = MedicineReserve::select('dateReserve')
                 ->where('headquarter_id', $this->headquarter_id)
-                ->whereIn('status', [0, 1, 4, 10, 7])
+                ->whereIn('status', [0, 1, 4, 10, 6, 7])
                 ->groupBy('dateReserve')
                 ->havingRaw('COUNT(*) >= ?', [$maxCitas])
                 ->pluck('dateReserve')
@@ -621,9 +621,11 @@ class HomeMedicine extends Component
             $citas = MedicineReserve::where('headquarter_id', $this->headquarter_id)
                 ->where('dateReserve', $this->dateReserve)
                 ->where(function ($query) {
-                    $query->where('status', 0)
-                        ->orWhere('status', 1)
-                        ->orWhere('status', 4);
+                    $query->where('status', 0) # PENDIENTE 
+                        ->orWhere('status', 1) # ASISITIO
+                        ->orWhere('status', 4) # REAGENDADO POR SEDE
+                        ->orWhere('status', 10); # REAGENDADO POR USUARIO
+
                 })
                 ->count();
             // dd($citas);
@@ -667,19 +669,19 @@ class HomeMedicine extends Component
             $userMedicines = MedicineReserve::with(['medicineReserveMedicine'])
                 ->whereHas('medicineReserveMedicine', function ($q1) {
                     $q1->where('user_id', $this->userid);
-                    $q1->where('type_exam_id', $this->type_exam_id);
+                    // $q1->where('type_exam_id', $this->type_exam_id);
                 })
-                ->where(function ($q) {
-                    $q->where(function ($q2) {
-                        $q2->whereHas('medicineReserveMedicine.medicineInitial', function ($q3) {
-                            $q3->where('type_class_id', $this->type_class_id);
-                        });
-                    })
-                        ->orWhere(function ($q2) {
-                            $q2->whereHas('medicineReserveMedicine.medicineRenovation', function ($q3) {
-                                $q3->where('type_class_id', $this->type_class_id);
-                            });
-                        });
+                // ->where(function ($q) {
+                //     $q->where(function ($q2) {
+                //         $q2->whereHas('medicineReserveMedicine.medicineInitial', function ($q3) {
+                //             $q3->where('type_class_id', $this->type_class_id);
+                //         });
+                //     })
+                //         ->orWhere(function ($q2) {
+                //             $q2->whereHas('medicineReserveMedicine.medicineRenovation', function ($q3) {
+                //                 $q3->where('type_class_id', $this->type_class_id);
+                //             });
+                //         });
                     // ->orWhere(function ($q2) {
                     //     $q2->whereHas('medicineReserveMedicine.medicineRevaluation', function ($q3) {
                     //         $q3->whereHas('revaluationMedicineInitial', function ($q4) {
@@ -694,11 +696,11 @@ class HomeMedicine extends Component
                     //         });
                     //     });
                     // });
-                })
+                // })
                 ->where(function ($queryStop) {
                     // $queryStop->where('status', 0)
                     //     ->orWhere('status', 4);
-                    $queryStop->whereIn('status', [0, 4, 9, 7]);
+                    $queryStop->whereIn('status', [0, 4, 7, 9, 10]);
                 })
                 ->get();
             foreach ($userMedicines as $userMedicine) {
@@ -714,38 +716,49 @@ class HomeMedicine extends Component
                         throw new \Exception($message);
                         return;
                     }
-                    if ($userMedicine->medicineReserveMedicine->medicineInitial->count() > 0 && $userMedicine->medicineReserveMedicine->medicineInitial[0]->type_class_id == $this->type_class_id) {
+                    #TODO: PENDIENTE PARA AJUSTE 
+                    if ($userMedicine->status == 0) {
                         $this->notification([
                             'title'       => 'CITA NO GENERADA!',
-                            'description' => 'YA TIENES UNA CITA AGENDADA PARA EXAMEN INICIAL' . ' ' . $userMedicine->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name,
+                            'description' => 'YA TIENES UNA CITA AGENDADA',
                             'icon'        => 'error',
                             'timeout' => '3100'
                         ]);
                         return;
-                    } else if ($userMedicine->medicineReserveMedicine->medicineRenovation->count() > 0 && $userMedicine->medicineReserveMedicine->medicineRenovation[0]->type_class_id == $this->type_class_id) {
-                        $this->notification([
-                            'title'       => 'CITA NO GENERADA!',
-                            'description' => 'YA TIENES UNA CITA AGENDADA PARA EXAMEN DE RENOVACIÓN' . ' ' . $userMedicine->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name,
-                            'icon'        => 'error',
-                            'timeout' => '2500'
-                        ]);
-                        return;
-                    } else if ($userMedicine->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial->count() > 0 && $userMedicine->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->type_class_id == $this->type_class_id) {
-                        $this->notification([
-                            'title'       => 'ERROR DE CITA!',
-                            'description' => 'YA TIENES UNA CITA AGENDADA PARA EXAMEN DE REVALORACÍÓN INICIAL' . ' ' . $userMedicine->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->revaluationInitialTypeClass->name,
-                            'icon'        => 'error',
-                            'timeout' => '2500'
-                        ]);
-                        return;
-                    } else if ($userMedicine->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation->count() > 0 && $userMedicine->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->type_class_id == $this->type_class_id) {
-                        $this->notification([
-                            'title'       => 'ERROR DE CITA!',
-                            'description' => 'YA TIENES UNA CITA AGENDADA PARA EXAMEN DE REVALORACÍÓN RENOVACIÓN' . ' ' . $userMedicine->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->revaluationRenovationTypeClass->name,
-                            'icon'        => 'error',
-                            'timeout' => '2500'
-                        ]);
                     }
+
+                    // if ($userMedicine->medicineReserveMedicine->medicineInitial->count() > 0 && $userMedicine->medicineReserveMedicine->medicineInitial[0]->type_class_id == $this->type_class_id) {
+                    //     $this->notification([
+                    //         'title'       => 'CITA NO GENERADA!',
+                    //         'description' => 'YA TIENES UNA CITA AGENDADA PARA EXAMEN INICIAL' . ' ' . $userMedicine->medicineReserveMedicine->medicineInitial[0]->medicineInitialTypeClass->name,
+                    //         'icon'        => 'error',
+                    //         'timeout' => '3100'
+                    //     ]);
+                    //     return;
+                    // } else if ($userMedicine->medicineReserveMedicine->medicineRenovation->count() > 0 && $userMedicine->medicineReserveMedicine->medicineRenovation[0]->type_class_id == $this->type_class_id) {
+                    //     $this->notification([
+                    //         'title'       => 'CITA NO GENERADA!',
+                    //         'description' => 'YA TIENES UNA CITA AGENDADA PARA EXAMEN DE RENOVACIÓN' . ' ' . $userMedicine->medicineReserveMedicine->medicineRenovation[0]->renovationTypeClass->name,
+                    //         'icon'        => 'error',
+                    //         'timeout' => '2500'
+                    //     ]);
+                    //     return;
+                    // } else if ($userMedicine->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial->count() > 0 && $userMedicine->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->type_class_id == $this->type_class_id) {
+                    //     $this->notification([
+                    //         'title'       => 'ERROR DE CITA!',
+                    //         'description' => 'YA TIENES UNA CITA AGENDADA PARA EXAMEN DE REVALORACÍÓN INICIAL' . ' ' . $userMedicine->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineInitial[0]->revaluationInitialTypeClass->name,
+                    //         'icon'        => 'error',
+                    //         'timeout' => '2500'
+                    //     ]);
+                    //     return;
+                    // } else if ($userMedicine->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation->count() > 0 && $userMedicine->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->type_class_id == $this->type_class_id) {
+                    //     $this->notification([
+                    //         'title'       => 'ERROR DE CITA!',
+                    //         'description' => 'YA TIENES UNA CITA AGENDADA PARA EXAMEN DE REVALORACÍÓN RENOVACIÓN' . ' ' . $userMedicine->medicineReserveMedicine->medicineRevaluation[0]->revaluationMedicineRenovation[0]->revaluationRenovationTypeClass->name,
+                    //         'icon'        => 'error',
+                    //         'timeout' => '2500'
+                    //     ]);
+                    // }
                     return;
                 }
             }
