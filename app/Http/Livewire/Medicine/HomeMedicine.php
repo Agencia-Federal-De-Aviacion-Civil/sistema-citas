@@ -716,7 +716,8 @@ class HomeMedicine extends Component
                         throw new \Exception($message);
                         return;
                     }
-                    #TODO: PENDIENTE PARA AJUSTE 
+                    #NEW ALGORIDMO FOLIO 001
+                    #ONLY ONE ACTIVE APPOINTMENT PER USER
                     if ($userMedicine->status == 0) {
                         $this->notification([
                             'title'       => 'CITA NO GENERADA!',
@@ -762,7 +763,9 @@ class HomeMedicine extends Component
                     return;
                 }
             }
-            
+
+            #ALGORIDMO NEW FOLIO 002
+            #STATUS "NO APTO" RULE IN STATUS 9 WHEN  type_exam_id IS 2 AND 1 EXCLUDE type_exam_id 3,4,5
             $userMedicinesN = MedicineReserve::with(['medicineReserveMedicine','reserveMedicine'])
                 ->whereHas('medicineReserveMedicine', function ($q2) {
                     $q2->where('user_id', $this->userid);
@@ -773,7 +776,8 @@ class HomeMedicine extends Component
                         $message = !$this->idTypeAppointment ? 'NO ERES APTO PARA AGENDAR EN ESTA CLASE, CONSIDERA HACER REVALORACIÓN' : 'HAS SIDO NO APTO PARA ESTA CLASE POR PARTE DE LA AUTORIDAD, CONSIDERA REALIZAR UNA REVALORACIÓN';
                         throw new \Exception($message);
                         return;                    
-                }            
+                }           
+             
             // $maxCitasHorario = $schedule->max_schedules;
             //  if ($citas >= $maxCitas || $citas >= $maxCitasHorario) ALFORITMO QUE SEPARA CITAS POR HORAS
             // $maxCitas = MedicineSchedule::where('user_id', $this->to_user_headquarters)->value('max_schedules');
