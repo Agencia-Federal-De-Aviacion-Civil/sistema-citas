@@ -700,16 +700,16 @@ class HomeMedicine extends Component
                 ->where(function ($queryStop) {
                     // $queryStop->where('status', 0)
                     //     ->orWhere('status', 4);
-                    $queryStop->whereIn('status', [0, 4, 7, 9, 10]);
+                    $queryStop->whereIn('status', [0, 4, 7, 10]);
                 })
                 ->get();
             foreach ($userMedicines as $userMedicine) {
                 if ($userMedicine->id) {
-                    if ($userMedicine->status == 9) {
-                        $message = !$this->idTypeAppointment ? 'NO ERES APTO PARA AGENDAR EN ESTA CLASE, CONSIDERA HACER REVALORACIÓN' : 'HAS SIDO NO APTO PARA ESTA CLASE POR PARTE DE LA AUTORIDAD, CONSIDERA REALIZAR UNA REVALORACIÓN';
-                        throw new \Exception($message);
-                        return;
-                    }
+                    // if ($userMedicine->status == 9) {
+                    //     $message = !$this->idTypeAppointment ? 'NO ERES APTO PARA AGENDAR EN ESTA CLASE, CONSIDERA HACER REVALORACIÓN' : 'HAS SIDO NO APTO PARA ESTA CLASE POR PARTE DE LA AUTORIDAD, CONSIDERA REALIZAR UNA REVALORACIÓN';
+                    //     throw new \Exception($message);
+                    //     return;
+                    // }
                     #se establece esta regla si esta aplazada la cita estatus 7
                     if ($userMedicine->status == 7) {
                         $message = 'NO PUEDES AGENDAR CITA YA QUE CUENTAS CON UNA CITA PENDIENTE';
@@ -762,6 +762,18 @@ class HomeMedicine extends Component
                     return;
                 }
             }
+            
+            $userMedicinesN = MedicineReserve::with(['medicineReserveMedicine','reserveMedicine'])
+                ->whereHas('medicineReserveMedicine', function ($q2) {
+                    $q2->where('user_id', $this->userid);
+                })->latest()->get();
+
+                $id_status =  $userMedicinesN->first() ? $userMedicinesN->first()->status : null ;
+                if($id_status == 9 && $this->type_exam_id == 1 || $id_status == 9 && $this->type_exam_id == 2){
+                        $message = !$this->idTypeAppointment ? 'NO ERES APTO PARA AGENDAR EN ESTA CLASE, CONSIDERA HACER REVALORACIÓN' : 'HAS SIDO NO APTO PARA ESTA CLASE POR PARTE DE LA AUTORIDAD, CONSIDERA REALIZAR UNA REVALORACIÓN';
+                        throw new \Exception($message);
+                        return;                    
+                }            
             // $maxCitasHorario = $schedule->max_schedules;
             //  if ($citas >= $maxCitas || $citas >= $maxCitasHorario) ALFORITMO QUE SEPARA CITAS POR HORAS
             // $maxCitas = MedicineSchedule::where('user_id', $this->to_user_headquarters)->value('max_schedules');
