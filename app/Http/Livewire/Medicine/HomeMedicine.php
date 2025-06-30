@@ -771,7 +771,7 @@ class HomeMedicine extends Component
                     $q2->where('user_id', $this->userid);
                 })->latest()->get();
 
-                $id_status =  $userMedicinesN->first() ? $userMedicinesN->status : null ;
+                $id_status =  $userMedicinesN->first() ? $userMedicinesN->first()->status : null ;
                 if($id_status == 9 && $this->type_exam_id == 1 || $id_status == 9 && $this->type_exam_id == 2){
                         $message = !$this->idTypeAppointment ? 'NO ERES APTO PARA AGENDAR EN ESTA CLASE, CONSIDERA HACER REVALORACIÓN' : 'HAS SIDO NO APTO PARA ESTA CLASE POR PARTE DE LA AUTORIDAD, CONSIDERA REALIZAR UNA REVALORACIÓN';
                         throw new \Exception($message);
