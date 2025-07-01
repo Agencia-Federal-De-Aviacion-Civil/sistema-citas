@@ -67,5 +67,6 @@ class Kernel extends HttpKernel
         'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
         'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
         'validate.encrypted.url' => \App\Http\Middleware\ValidateEncryptedUrl::class,
+        'api.token' => \App\Http\Middleware\VerifyApiToken::class,
     ];
 }
