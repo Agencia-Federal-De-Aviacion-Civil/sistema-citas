@@ -19,12 +19,13 @@ class Dashboard extends Component
     {
 
 
-        $userMedicinesN = MedicineReserve::with(['medicineReserveMedicine','reserveMedicine'])
-        ->whereHas('medicineReserveMedicine', function ($q2) {
-        $q2->where('user_id', Auth::user()->id);
-        })->latest()->first();
-        $this->id_status =  $userMedicinesN->first() ? $userMedicinesN->status : null ;
+        // $userMedicinesN = MedicineReserve::with(['medicineReserveMedicine','reserveMedicine'])
+        // ->whereHas('medicineReserveMedicine', function ($q2) {
+        // $q2->where('user_id', Auth::user()->id);
+        // })->latest()->first();
+        // $this->id_status =  $userMedicinesN->first() ? $userMedicinesN->status : null ;
 
+        $this->id_status = null;
         $this->headquartersAfac = Headquarter::where('status', 0)->get();
         $stategrup = $this->headquartersAfac->groupBy('state');
         $this->stategrup = $stategrup->all();
