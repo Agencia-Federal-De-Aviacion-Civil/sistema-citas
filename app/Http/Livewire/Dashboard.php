@@ -41,7 +41,7 @@ class Dashboard extends Component
              if($this->id_status == 9){
                 Cache::forget($key);
             }
-            $this->revaluation = Cache::remember($key,now()->addMonth(), function(){
+            // $this->revaluation = Cache::remember($key,now()->addMonth(), function(){
             $endpoint = env('SIMA_API_REVALUATION', null);   
             $response = Http::withHeaders([
                 'AuthorizationSima' => env('API_TOKEN_SIMA'),                                
@@ -57,7 +57,7 @@ class Dashboard extends Component
                     return null;
                 }
             }
-           });
+        //    });
            
         } else {
 
