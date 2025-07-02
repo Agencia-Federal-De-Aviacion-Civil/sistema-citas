@@ -40,23 +40,24 @@ class Dashboard extends Component
              if($this->id_status == 9){
                 Cache::forget($key);
             }
-            $this->revaluation = Cache::remember($key,now()->addMonth(), function(){
-            $endpoint = env('SIMA_API_REVALUATION', null);   
-            $response = Http::withHeaders([
-                'AuthorizationSima' => env('API_TOKEN_SIMA'),                                
-                'Accept' => 'application/json'
-            ])->connectTimeout(30)->get($endpoint. 'user_id=' . Auth::user()->id);
-            // https://siafac.afac.gob.mx/revaluation
-            if ($response->successful()) {
-                $statesSuccess = $response->json()['data'];
-                if ($statesSuccess) {
-                    $end = end($statesSuccess);
-                    return $end['status'];
-                } else {
-                    return null;
-                }
-            }
-           });
+        //     $this->revaluation = Cache::remember($key,now()->addMonth(), function(){
+        //     $endpoint = env('SIMA_API_REVALUATION', null);   
+        //     $response = Http::withHeaders([
+        //         'AuthorizationSima' => env('API_TOKEN_SIMA'),                                
+        //         'Accept' => 'application/json'
+        //     ])->connectTimeout(30)->get($endpoint. 'user_id=' . Auth::user()->id);
+        //     // https://siafac.afac.gob.mx/revaluation
+        //     if ($response->successful()) {
+        //         $statesSuccess = $response->json()['data'];
+        //         if ($statesSuccess) {
+        //             $end = end($statesSuccess);
+        //             return $end['status'];
+        //         } else {
+        //             return null;
+        //         }
+        //     }
+        //    });
+
         } else {
 
             $this->notification()->send([
