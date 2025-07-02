@@ -254,9 +254,11 @@ class MedicineExtensionModal extends ModalComponent
         }
 
         if (checkdnsrr('crp.sct.gob.mx', 'A')) {
+            $endpoint = env('SIMA_API_EXTENTION', null);
             $response = Http::withHeaders([
+                'AuthorizationSima' => env('API_TOKEN_SIMA'),                                
                 'Accept' => 'application/json'
-            ])->connectTimeout(30)->post('https://siafac.afac.gob.mx/' . $extension, $citas);
+            ])->connectTimeout(30)->post($endpoint . $extension, $citas);
             if ($response->successful()) {
                 $statesSuccess = $response->json()['data'];
             } elseif ($response->successful() && $response->json()['data'] === 'NO EXITOSO') {
@@ -267,6 +269,7 @@ class MedicineExtensionModal extends ModalComponent
                     'icon'        => 'error',
                     'timeout' => '3100'
                 ]);
+                // https://siafac.afac.gob.mx
             } else {
                 $error = $response->json()['message'];
                 $this->LogsApi($curp_logs = Auth::user()->UserParticipant->first()->curp, $type = 'AGENDAR CITA', $register = $error, $description = 'ERROR AL AGENDAR REGISTRO DE CITA');

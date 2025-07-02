@@ -343,18 +343,15 @@ class ModalNew extends ModalComponent
             'sub_headquarters' => 'medical.sub_headquarters',
             'headquarters_authorized' => 'medical.headquarters_authorized'
         ][$this->privileges];
-        // https://siafac.afac.gob.mx/updateCita
 
         if (checkdnsrr('crp.sct.gob.mx', 'A')) {
-// dump($this->id_save);
-
-
             if (!$this->id_save) {
-                $response = Http::withHeaders([
+            $endpoint = env('SIMA_API_REGISTER', null);
+            $response = Http::withHeaders([
+                'AuthorizationSima' => env('API_TOKEN_SIMA'),                
                     'Accept' => 'application/json'
-                    // https://siafac.afac.gob.mx/login
                 ])->connectTimeout(30)->post(
-                    'https://siafac.afac.gob.mx/listStore?',
+                    $endpoint,
                     [
                         'id' => $this->privilegesUserid,
                         'name' => $this->name,
@@ -396,10 +393,12 @@ class ModalNew extends ModalComponent
                 $this->birth = Carbon::parse($this->birth);
                 $formattedBirthDate = $this->birth->format('Y-m-d');
 
+                $endpoint = env('SIMA_API_USERUPDATE', null);
                 $response = Http::withHeaders([
+                    'AuthorizationSima' => env('API_TOKEN_SIMA'),                
                     'Accept' => 'application/json'
                 ])->connectTimeout(30)->put(
-                    'https://siafac.afac.gob.mx/updateCita?',
+                    $endpoint,
                     [
                         'id_save' => $this->privilegesUserid,
                         'id_update' => $this->userparticipantid,
@@ -436,7 +435,7 @@ class ModalNew extends ModalComponent
                     ]
                 );
             }
-
+            // https://siafac.afac.gob.mx/updateCita?
             if ($response->successful()) {
                 $statesSuccess = $response->json()['data'];
             } elseif ($response->successful() && $response->json()['data'] === 'NO EXITOSO') {

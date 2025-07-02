@@ -44,7 +44,7 @@ class ModalDelete extends ModalComponent
         $this->emit('deleteUser');
         $this->closeModal();
 
-        $this->deleterUsers($this->privilegesId);
+        // $this->deleterUsers($this->privilegesId);
 
         $this->notification([
             'title'       => 'USUARIO ELIMINADO CON EXITO',
@@ -60,9 +60,12 @@ class ModalDelete extends ModalComponent
             if (checkdnsrr('crp.sct.gob.mx', 'A')) {
                 // http://afac-tenant.gob/deleteUsers?
                 $deleted_at = Date::now()->format('Y-m-d H:m');
+                $endpoint = env('SIMA_API_USERDELETE', null);
                 $response = Http::withHeaders([
+                    'AuthorizationSima' => env('API_TOKEN_SIMA'),                                
                     'Accept' => 'application/json'
-                ])->connectTimeout(30)->get('https://siafac.afac.gob.mx/deleteUsers?id=' . $privilegesId . '&deleted=' . $deleted_at .'');
+                ])->connectTimeout(30)->get($endpoint.'id=' . $privilegesId . '&deleted=' . $deleted_at .'');
+                // https://siafac.afac.gob.mx/deleteUsers?
                 if ($response->successful()) {
                     $statesSuccess = $response->json()['data'];
 

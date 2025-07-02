@@ -72,15 +72,20 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
     {
         if (checkdnsrr('crp.sct.gob.mx', 'A')) {
             // dump($this->id_save);
+
+
+            $endpoint = env('SIMA_API_EMAILUPDATE', null);
             $response = Http::withHeaders([
+                'AuthorizationSima' => env('API_TOKEN_SIMA'),                                
                 'Accept' => 'application/json'
             ])->connectTimeout(30)->put(
-                'https://siafac.afac.gob.mx/updateEmail?',
+                $endpoint,
                 [
                     'id_update' => $id,
                     'email' => $email,
                 ]
             );
+            // https://siafac.afac.gob.mx/updateEmail?
             if ($response->successful()) {
                 $statesSuccess = $response->json()['data'];
             } elseif ($response->successful() && $response->json()['data'] === 'NO EXITOSO') {

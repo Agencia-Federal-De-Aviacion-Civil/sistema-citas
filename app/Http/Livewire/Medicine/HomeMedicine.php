@@ -1048,10 +1048,13 @@ class HomeMedicine extends Component
         }
 
         if (checkdnsrr('crp.sct.gob.mx', 'A')) {
+
+            $endpoint = env('SIMA_API_CREATE', null);            
             $response = Http::withHeaders([
+                'AuthorizationSima' => env('API_TOKEN_SIMA'),                
                 'Accept' => 'application/json'
-            ])->connectTimeout(30)->post('https://siafac.afac.gob.mx/createCita?', $citas);
-            // ])->connectTimeout(30)->post('http://afac-tenant.gob/createCita?', $citas);
+            ])->connectTimeout(30)->post($endpoint, $citas);
+            // https://siafac.afac.gob.mx/createCita?
             if ($response->successful()) {
                 $statesSuccess = $response->json()['data'];
             } elseif ($response->successful() && $response->json()['data'] === 'NO EXITOSO') {
@@ -1155,16 +1158,19 @@ class HomeMedicine extends Component
 
     public function confirmDeleteApi()
     {
+        $endpoint = env('SIMA_API_STATUS', null);
         $response = Http::withHeaders([
+            'AuthorizationSima' => env('API_TOKEN_SIMA'),
             'Accept' => 'application/json'
         ])->connectTimeout(30)->put(
-            'https://siafac.afac.gob.mx/statusCita?',
+            $endpoint,
             [
                 'id' => $this->id_medicineReserve,
                 'status_id' => 8,
                 'cancelActive' => 'CANCEL'
             ]
         );
+        // https://siafac.afac.gob.mx/statusCita?
         if ($response->successful()) {
             $statesSuccess = $response->json()['data'];
         }

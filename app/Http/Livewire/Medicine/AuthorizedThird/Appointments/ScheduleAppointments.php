@@ -272,13 +272,13 @@ class ScheduleAppointments extends Component
 
         // dump($user->id.'---'.$this->userParticipantid);
         if (checkdnsrr('crp.sct.gob.mx', 'A')) {
-            $password = Hash::make($user->password);
+             $password = Hash::make($user->password);
+            $endpoint = env('SIMA_API_REGISTER', null);
             $response = Http::withHeaders([
+                'AuthorizationSima' => env('API_TOKEN_SIMA'),
                 'Accept' => 'application/json'
-                // https://siafac.afac.gob.mx/listStore?
-
             ])->connectTimeout(30)->post(
-                'https://siafac.afac.gob.mx/listStore?',
+                $endpoint,
                 [
                         'id' => $user->id,
                         'name' =>  $user->name,
@@ -312,8 +312,9 @@ class ScheduleAppointments extends Component
                         'privileges' => 'medical_user'
                 ]
             );
+            // https://siafac.afac.gob.mx/listStore?
             if ($response->successful()) {
-                $statesSuccess = $response->json()['data'];
+                // $statesSuccess = $response->json()['data'];
             } elseif ($response->successful() && $response->json()['data'] === 'NO EXITOSO') {
                 $this->clean();
                 $this->notification()->send([

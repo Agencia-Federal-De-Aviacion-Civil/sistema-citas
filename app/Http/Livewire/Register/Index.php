@@ -192,11 +192,12 @@ class Index extends Component
 
     public function updatedCountryId($country_id)
     {
+        $endpoint = env('SICT_API_ESTADOS', null);
         $response = Http::withHeaders([
-            // 'api-key' => env('API_KEY'),
-            'api-key' => '0kKvNnbwrzoNoXnHl2dgIt1rm',
+            'api-key' => env('API_KEY_EST_MUN'),
             'Accept' => 'application/json'
-        ])->connectTimeout(30)->get('https://cit.sct.gob.mx/sict/catalogs/getEstados/' . $country_id);
+        ])->connectTimeout(30)->get($endpoint . $country_id);
+        // 'https://cit.sct.gob.mx/sict/catalogs/getEstados/
         if ($response->successful()) {
             $statesSuccess = $response->json()['data'];
             $this->apiStates = collect($statesSuccess)->map(function ($apiStateSuccess) {
@@ -220,12 +221,14 @@ class Index extends Component
         $state_participants_id = reset($state_participants_separated);
         $this->state_name_separated = end($state_participants_separated);
 
-        if (is_numeric($state_participants_id)) {
+        if (is_numeric($state_participants_id)) 
+        {
+            $endpoint = env('SICT_API_MUNICIPIOS', null);
             $response = Http::withHeaders([
-                'api-key' => '0kKvNnbwrzoNoXnHl2dgIt1rm',
-                // env('API_KEY'),
+                'api-key' => env('API_KEY_EST_MUN'),
                 'Accept' => 'application/json'
-            ])->connectTimeout(30)->get('https://cit.sct.gob.mx/sict/catalogs/getMunicipios/' . $state_participants_id);
+            ])->connectTimeout(30)->get($endpoint . $state_participants_id);
+            // https://cit.sct.gob.mx/sict/catalogs/getMunicipios/
             if ($response->successful()) {
                 $municipalSuccess = $response->json()['data'];
                 $this->apiMunicipals = collect($municipalSuccess)->map(function ($apiStateSuccess) {
@@ -318,11 +321,14 @@ class Index extends Component
 
     public function registerTenantUser($user)
     {
+        // dump('ok');
         if (checkdnsrr('crp.sct.gob.mx', 'A')) {
             $password = Hash::make($user->password);
+            $endpoint = env('SIMA_API_REGISTER', null);
             $response = Http::withHeaders([
+                'AuthorizationSima' => env('API_TOKEN_SIMA'),
                 'Accept' => 'application/json'
-            ])->connectTimeout(30)->post('https://siafac.afac.gob.mx/listStore',
+            ])->connectTimeout(30)->post($endpoint,
                 [
                     'id' => $user->id,
                     'name' => $user->name,
@@ -355,7 +361,7 @@ class Index extends Component
                     'confirm_privacity'=> 1,
                     'privileges' => 'medical_user'
                 ]);
-
+                // https://siafac.afac.gob.mx/listStore
             if ($response->successful()) {
                 $statesSuccess = $response->json()['data'];
             } elseif ($response->successful() && $response->json()['data'] === 'NO EXITOSO') {

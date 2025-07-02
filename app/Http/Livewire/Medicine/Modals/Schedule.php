@@ -414,6 +414,7 @@ class Schedule extends ModalComponent
 
     public function confirmStatusApi()
     {
+
         $cancelActive = ($this->selectedOption == 5) ? 'ACTIVE' : (($this->selectedOption == 2 || $this->selectedOption == 3) ? 'CANCEL' : NULL);
         $status_id =
             [
@@ -450,12 +451,13 @@ class Schedule extends ModalComponent
         }
 
         if (checkdnsrr('crp.sct.gob.mx', 'A')) {
-
+            // dump($status);
+            $endpoint = env('SIMA_API_STATUS', null);
             $response = Http::withHeaders([
+                'AuthorizationSima' => env('API_TOKEN_SIMA'),
                 'Accept' => 'application/json'
-                //
-            ])->connectTimeout(30)->put('https://siafac.afac.gob.mx/statusCita?', $status);
-            // ])->connectTimeout(30)->put('http://siafac.afac.gob.mx/statusCita?', $status);
+            ])->connectTimeout(30)->put($endpoint, $status);
+            // http://siafac.afac.gob.mx/statusCita?
             if ($response->successful()) {
                 $statesSuccess = $response->json()['data'];
             } elseif ($response->successful() && $response->json()['data'] === 'NO EXITOSO') {
