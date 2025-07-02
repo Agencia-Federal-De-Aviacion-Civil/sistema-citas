@@ -79,7 +79,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                 'AuthorizationSima' => env('API_TOKEN_SIMA'),                                
                 'Accept' => 'application/json'
             ])->connectTimeout(30)->put(
-                $endpoint,
+                'https://siafac.afac.gob.mx/updateEmail?',
                 [
                     'id_update' => $id,
                     'email' => $email,

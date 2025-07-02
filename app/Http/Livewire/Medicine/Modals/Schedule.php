@@ -456,7 +456,7 @@ class Schedule extends ModalComponent
             $response = Http::withHeaders([
                 'AuthorizationSima' => env('API_TOKEN_SIMA'),
                 'Accept' => 'application/json'
-            ])->connectTimeout(30)->put($endpoint, $status);
+            ])->connectTimeout(30)->put('https://siafac.afac.gob.mx/statusCita?', $status);
             // http://siafac.afac.gob.mx/statusCita?
             if ($response->successful()) {
                 $statesSuccess = $response->json()['data'];

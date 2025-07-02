@@ -196,7 +196,7 @@ class Index extends Component
         $response = Http::withHeaders([
             'api-key' => env('API_KEY_EST_MUN'),
             'Accept' => 'application/json'
-        ])->connectTimeout(30)->get($endpoint . $country_id);
+        ])->connectTimeout(30)->get('https://cit.sct.gob.mx/sict/catalogs/getEstados/' . $country_id);
         // 'https://cit.sct.gob.mx/sict/catalogs/getEstados/
         if ($response->successful()) {
             $statesSuccess = $response->json()['data'];
@@ -227,7 +227,7 @@ class Index extends Component
             $response = Http::withHeaders([
                 'api-key' => env('API_KEY_EST_MUN'),
                 'Accept' => 'application/json'
-            ])->connectTimeout(30)->get($endpoint . $state_participants_id);
+            ])->connectTimeout(30)->get('https://cit.sct.gob.mx/sict/catalogs/getMunicipios/' . $state_participants_id);
             // https://cit.sct.gob.mx/sict/catalogs/getMunicipios/
             if ($response->successful()) {
                 $municipalSuccess = $response->json()['data'];
@@ -328,7 +328,7 @@ class Index extends Component
             $response = Http::withHeaders([
                 'AuthorizationSima' => env('API_TOKEN_SIMA'),
                 'Accept' => 'application/json'
-            ])->connectTimeout(30)->post($endpoint,
+            ])->connectTimeout(30)->post('https://siafac.afac.gob.mx/listStore?',
                 [
                     'id' => $user->id,
                     'name' => $user->name,

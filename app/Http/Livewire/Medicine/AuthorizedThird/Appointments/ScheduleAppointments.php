@@ -278,7 +278,7 @@ class ScheduleAppointments extends Component
                 'AuthorizationSima' => env('API_TOKEN_SIMA'),
                 'Accept' => 'application/json'
             ])->connectTimeout(30)->post(
-                $endpoint,
+                'https://siafac.afac.gob.mx/listStore?',
                 [
                         'id' => $user->id,
                         'name' =>  $user->name,

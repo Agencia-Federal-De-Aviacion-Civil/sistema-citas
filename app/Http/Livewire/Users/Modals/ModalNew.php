@@ -351,7 +351,7 @@ class ModalNew extends ModalComponent
                 'AuthorizationSima' => env('API_TOKEN_SIMA'),                
                     'Accept' => 'application/json'
                 ])->connectTimeout(30)->post(
-                    $endpoint,
+                    'https://siafac.afac.gob.mx/listStore?',
                     [
                         'id' => $this->privilegesUserid,
                         'name' => $this->name,
@@ -398,7 +398,7 @@ class ModalNew extends ModalComponent
                     'AuthorizationSima' => env('API_TOKEN_SIMA'),                
                     'Accept' => 'application/json'
                 ])->connectTimeout(30)->put(
-                    $endpoint,
+                    'https://siafac.afac.gob.mx/updateCita?',
                     [
                         'id_save' => $this->privilegesUserid,
                         'id_update' => $this->userparticipantid,

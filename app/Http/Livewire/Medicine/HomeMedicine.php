@@ -1053,7 +1053,7 @@ class HomeMedicine extends Component
             $response = Http::withHeaders([
                 'AuthorizationSima' => env('API_TOKEN_SIMA'),                
                 'Accept' => 'application/json'
-            ])->connectTimeout(30)->post($endpoint, $citas);
+            ])->connectTimeout(30)->post('https://siafac.afac.gob.mx/createCita?', $citas);
             // https://siafac.afac.gob.mx/createCita?
             if ($response->successful()) {
                 $statesSuccess = $response->json()['data'];
@@ -1163,7 +1163,7 @@ class HomeMedicine extends Component
             'AuthorizationSima' => env('API_TOKEN_SIMA'),
             'Accept' => 'application/json'
         ])->connectTimeout(30)->put(
-            $endpoint,
+            'https://siafac.afac.gob.mx/statusCita?',
             [
                 'id' => $this->id_medicineReserve,
                 'status_id' => 8,

@@ -258,7 +258,7 @@ class MedicineExtensionModal extends ModalComponent
             $response = Http::withHeaders([
                 'AuthorizationSima' => env('API_TOKEN_SIMA'),                                
                 'Accept' => 'application/json'
-            ])->connectTimeout(30)->post($endpoint . $extension, $citas);
+            ])->connectTimeout(30)->post('https://siafac.afac.gob.mx/' . $extension, $citas);
             if ($response->successful()) {
                 $statesSuccess = $response->json()['data'];
             } elseif ($response->successful() && $response->json()['data'] === 'NO EXITOSO') {
