@@ -194,7 +194,7 @@ class Index extends Component
     {
         $endpoint = env('SICT_API_ESTADOS', null);
         $response = Http::withHeaders([
-            'api-key' => env('API_KEY_EST_MUN'),
+            'api-key' => '0kKvNnbwrzoNoXnHl2dgIt1rm',
             'Accept' => 'application/json'
         ])->connectTimeout(30)->get('https://cit.sct.gob.mx/sict/catalogs/getEstados/' . $country_id);
         // 'https://cit.sct.gob.mx/sict/catalogs/getEstados/
@@ -225,7 +225,7 @@ class Index extends Component
         {
             $endpoint = env('SICT_API_MUNICIPIOS', null);
             $response = Http::withHeaders([
-                'api-key' => env('API_KEY_EST_MUN'),
+                'api-key' => '0kKvNnbwrzoNoXnHl2dgIt1rm',
                 'Accept' => 'application/json'
             ])->connectTimeout(30)->get('https://cit.sct.gob.mx/sict/catalogs/getMunicipios/' . $state_participants_id);
             // https://cit.sct.gob.mx/sict/catalogs/getMunicipios/
