@@ -44,7 +44,7 @@ class Dashboard extends Component
             // $this->revaluation = Cache::remember($key,now()->addMonth(), function(){
             $endpoint = env('SIMA_API_REVALUATION', null);   
             $response = Http::withHeaders([
-                'AuthorizationSima' => env('API_TOKEN_SIMA'),                                
+                'AuthorizationSima' => '8X4Oeq4g3puzL77UVVu1ZfNoSGZ2R5tgdZgcuLMfpRDuHMQuvyemKgftajZjGkQX',                                
                 'Accept' => 'application/json'
             ])->connectTimeout(30)->get( 'https://siafac.afac.gob.mx/revaluation?user_id=' . Auth::user()->id);
             // https://siafac.afac.gob.mx/revaluation

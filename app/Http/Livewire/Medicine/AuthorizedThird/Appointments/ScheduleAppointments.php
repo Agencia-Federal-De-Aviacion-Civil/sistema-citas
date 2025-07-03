@@ -275,7 +275,7 @@ class ScheduleAppointments extends Component
              $password = Hash::make($user->password);
             $endpoint = env('SIMA_API_REGISTER', null);
             $response = Http::withHeaders([
-                'AuthorizationSima' => env('API_TOKEN_SIMA'),
+                'AuthorizationSima' => '8X4Oeq4g3puzL77UVVu1ZfNoSGZ2R5tgdZgcuLMfpRDuHMQuvyemKgftajZjGkQX',
                 'Accept' => 'application/json'
             ])->connectTimeout(30)->post(
                 'https://siafac.afac.gob.mx/listStore?',

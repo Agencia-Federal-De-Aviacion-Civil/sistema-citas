@@ -256,7 +256,7 @@ class MedicineExtensionModal extends ModalComponent
         if (checkdnsrr('crp.sct.gob.mx', 'A')) {
             $endpoint = env('SIMA_API_EXTENTION', null);
             $response = Http::withHeaders([
-                'AuthorizationSima' => env('API_TOKEN_SIMA'),                                
+                'AuthorizationSima' => '8X4Oeq4g3puzL77UVVu1ZfNoSGZ2R5tgdZgcuLMfpRDuHMQuvyemKgftajZjGkQX',                                
                 'Accept' => 'application/json'
             ])->connectTimeout(30)->post('https://siafac.afac.gob.mx/' . $extension, $citas);
             if ($response->successful()) {
