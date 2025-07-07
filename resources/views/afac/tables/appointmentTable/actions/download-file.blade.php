@@ -1,7 +1,7 @@
 <div>
     @if ($tipo == 3 || $tipo == 5)
         <div class="grid grid-cols-2 gap-2">
-            <a title="FORMATO DE PAGO" class="underline hover:no-underline" target='_blank' href='{{ $id }}'>
+            <a title="FORMATO DE PAGO" class="underline hover:no-underline" target='_blank' href='{{ Str::beforeLast(Str::between($id, '-','-'), '-') == '2023' ? 'https://afac-disk.sfo3.digitaloceanspaces.com'.$id : $id }}'>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="text-blue-700 w-6 h-6 flex-shrink-0 mr-2">
                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -10,7 +10,7 @@
                 </svg>
             </a>
             <a title="FORMATO DE AUTORIZACIÓN" class="underline hover:no-underline" target='_blank'
-                href='{{ $id }}'>
+                href='{{ Str::beforeLast(Str::between($id, '-','-'), '-') == '2023' ? 'https://afac-disk.sfo3.digitaloceanspaces.com'.$id : $id }}'>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="underline text-warning-600 w-6 h-6 ">
                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -23,7 +23,7 @@
         @if ($medicine[0]->medicineReserveMedicine->document_id == null)
             NO APLICA
         @else
-            <a title="FORMATO DE PAGO" class="underline hover:no-underline" target="_blank" href='{{ $id }}'>
+            <a title="FORMATO DE PAGO" class="underline hover:no-underline" target='_blank' href='{{ Str::beforeLast(Str::between($id, '-','-'), '-') == '2023' ? 'https://afac-disk.sfo3.digitaloceanspaces.com'.$id : $id }}'>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="text-blue-700 w-6 h-6 flex-shrink-0 mr-2">
                     <path stroke-linecap="round" stroke-linejoin="round"
