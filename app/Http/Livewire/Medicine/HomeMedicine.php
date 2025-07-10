@@ -769,7 +769,7 @@ class HomeMedicine extends Component
             $userMedicinesN = MedicineReserve::with(['medicineReserveMedicine','reserveMedicine'])
                 ->whereHas('medicineReserveMedicine', function ($q2) {
                     $q2->where('user_id', $this->userid);
-                })->latest()->get();
+                })->whereNotIn('status',[1,2,3,4,5,6,7,10])->latest()->get();
 
                 $id_status =  $userMedicinesN->first() ? $userMedicinesN->first()->status : null ;
                 if($id_status == 9 && $this->type_exam_id == 1 || $id_status == 9 && $this->type_exam_id == 2){
