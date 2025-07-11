@@ -120,6 +120,7 @@ class Index extends Component
             'curp' => 'required|unique:user_participants|max:18|min:18', // 'curp' => 'required|unique:user_profiles|max:18|min:18',
         ]);
         if (checkdnsrr('crp.sct.gob.mx', 'A')) {
+            try{
             $curp = Str::upper($this->curp);
             $response = Http::connectTimeout(10)->get('https://crp.sct.gob.mx/RenapoSct/consulta/porCurp?curp=' . $curp);
             if ($response->successful() && $response->json()['resultado']['data']['statusOper'] === 'EXITOSO') {
@@ -173,6 +174,14 @@ class Index extends Component
             } else {
                 // $this->dispatch('openModal', 'tools.exception-modal', (['codeError' => $response->status()]));
             }
+        } catch (\Exception $e) {
+            $this->notification()->send([
+                'title'       => '¡ATENCION!',
+                'description' => 'INTERMITENCIA AL INTERNET, VERIFICA TU CONEXIÓN',
+                'icon'        => 'info',
+                'timeout'     => '3100'
+            ]);
+        }
         } else {
             $this->notification()->send([
                 'icon' => 'info',
