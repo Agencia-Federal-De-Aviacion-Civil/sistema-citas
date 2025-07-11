@@ -178,6 +178,7 @@ class HomeMedicine extends Component
         // dump($payDate);
         $payDate = Carbon::parse($pay_date)->format('dmY');
         if (checkdnsrr('pagos.sct.gob.mx', 'A')) {
+            try{
             $pay_for = $this->kind_person_id == 1 ? 'PA=' . Str::upper($this->apParental) . '&MA=' . Str::upper($this->apMaternal) .
                 '&NOM=' . Str::upper($this->name) : 'RZ=' . Str::upper($this->business_name);
             // $pay_for = 'PA=' . Str::upper($this->apParental) . '&MA=' . Str::upper($this->apMaternal) . '&NOM=' . Str::upper($this->name);
@@ -205,6 +206,15 @@ class HomeMedicine extends Component
                     'timeout' => '2500'
                 ]);
             }
+        } catch (\Exception $e) {
+            $this->notification()->send([
+                'title'       => '¡ATENCION!',
+                'description' => 'INTERMITENCIA EN EL SERVICIO DE INTERNET. VERIFICA TU CONEXIÓN',
+                'icon'        => 'info',
+                'timeout'     => '3100'
+            ]);
+        }
+            
         } else {
             $this->notification([
                 'title'       => 'ERROR DE CONEXIÓN',

@@ -193,6 +193,7 @@ class Index extends Component
     public function updatedCountryId($country_id)
     {
         $endpoint = env('SICT_API_ESTADOS', null);
+        try{
         $response = Http::withHeaders([
             'api-key' => '0kKvNnbwrzoNoXnHl2dgIt1rm',
             'Accept' => 'application/json'
@@ -213,6 +214,14 @@ class Index extends Component
         } elseif ($response->failed()) {
             // $this->dispatch('openModal', 'tools.exception-modal', (['codeError' => 'OCURRIO UN ERROR AL CONSULTAR LOS ESTADOS, VUELVE A INTENTARLO. ERROR ' . $response->status()]));
         }
+       } catch (\Exception $e) {
+            $this->notification()->send([
+                'title'       => '¡ATENCION!',
+                'description' => 'INTERMITENCIA AL INTERNET, VERIFICA TU CONEXIÓN',
+                'icon'        => 'info',
+                'timeout'     => '3100'
+            ]);
+        }
     }
 
     public function updatedStateId($state_id)
@@ -224,6 +233,7 @@ class Index extends Component
         if (is_numeric($state_participants_id)) 
         {
             $endpoint = env('SICT_API_MUNICIPIOS', null);
+            try{
             $response = Http::withHeaders([
                 'api-key' => '0kKvNnbwrzoNoXnHl2dgIt1rm',
                 'Accept' => 'application/json'
@@ -243,6 +253,14 @@ class Index extends Component
                 );
             } elseif ($response->failed()) {
                 // $this->dispatch('openModal', 'tools.exception-modal', (['codeError' => 'OCURRIO UN ERROR AL CONSULTAR LOS MUNICIPIOS, VUELVE A INTENTARLO. ERROR ' . $response->status()]));
+            }
+            } catch (\Exception $e) {
+                $this->notification()->send([
+                    'title'       => '¡ATENCION!',
+                    'description' => 'INTERMITENCIA AL INTERNET, VERIFICA TU CONEXIÓN',
+                    'icon'        => 'info',
+                    'timeout'     => '3100'
+                ]);
             }
         }
     }
