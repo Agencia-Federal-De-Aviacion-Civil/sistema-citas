@@ -177,7 +177,7 @@ class Index extends Component
         } catch (\Exception $e) {
             $this->notification()->send([
                 'title'       => '¡ATENCION!',
-                'description' => 'INTERMITENCIA AL INTERNET, VERIFICA TU CONEXIÓN',
+                'description' => 'INTERMITENCIA EN EL SERVICIO DE INTERNET. VERIFICA TU CONEXIÓN',
                 'icon'        => 'info',
                 'timeout'     => '3100'
             ]);
@@ -226,7 +226,7 @@ class Index extends Component
        } catch (\Exception $e) {
             $this->notification()->send([
                 'title'       => '¡ATENCION!',
-                'description' => 'INTERMITENCIA AL INTERNET, VERIFICA TU CONEXIÓN',
+                'description' => 'INTERMITENCIA EN EL SERVICIO DE INTERNET. VERIFICA TU CONEXIÓN',
                 'icon'        => 'info',
                 'timeout'     => '3100'
             ]);
@@ -266,7 +266,7 @@ class Index extends Component
             } catch (\Exception $e) {
                 $this->notification()->send([
                     'title'       => '¡ATENCION!',
-                    'description' => 'INTERMITENCIA AL INTERNET, VERIFICA TU CONEXIÓN',
+                    'description' => 'INTERMITENCIA EN EL SERVICIO DE INTERNET. VERIFICA TU CONEXIÓN',
                     'icon'        => 'info',
                     'timeout'     => '3100'
                 ]);
