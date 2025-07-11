@@ -12,6 +12,7 @@ use App\Http\Livewire\Medicine\HistoryMedicieMovements;
 use App\Http\Livewire\Linguistics\HistoryLinguisticsMovements;
 use App\Http\Livewire\Catalogue\HomeCatalogs;
 use App\Http\Livewire\Dashboard\DashboardController as DashboardDashboardController;
+use App\Http\Livewire\Document\PaymentFormat;
 use App\Http\Livewire\Medicine\External\HomeMedicineExternal;
 use App\Http\Livewire\Medicine\AuthorizedThird\Appointments\ScheduleAppointments;
 use App\Http\Livewire\Prueba\Prueba;
@@ -54,6 +55,8 @@ Route::middleware([
     Route::middleware(['role:super_admin|medicine_admin|super_admin_medicine|admin_medicine_v2|sub_headquarters|headquarters|headquarters_authorized|admin_medicine_v3|admin_medicine_v4'])->group(function () {
         Route::get('/validate', ValidateQr::class)->name('validate');
         Route::get('/link/{keyEncrypt}', UrlHome::class)->name('validateUrl')->middleware('validate.encrypted.url');
+        Route::get('/paymentformat/{paymentformat}', PaymentFormat::class)->name('afac.payment');
+
     });
     Route::middleware(['role:headquarters_authorized'])->group(function () {
         Route::get('/appointmenthird', ScheduleAppointments::class)->name('third.appointments');
