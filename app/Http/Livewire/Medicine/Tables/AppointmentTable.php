@@ -6,14 +6,19 @@ use App\Jobs\ExportSelectedJob;
 use App\Models\Catalogue\Headquarter;
 use App\Models\Catalogue\TypeClass;
 use App\Models\Catalogue\TypeExam;
+use App\Models\Document;
 use App\Models\Medicine\MedicineExportHistory;
 use App\Models\Medicine\MedicineReserve;
 use App\Models\UserParticipant;
+use Aws\Credentials\Credentials;
+use Aws\S3\S3Client;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Str;
 use Jenssegers\Date\Date;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
@@ -137,6 +142,9 @@ class AppointmentTable extends DataTableComponent
                                 'medicineReserveMedicine'
                             )->where('id', $row->id)->get(),
                             'medicine' => $medicine,
+                            'id_document' => $medicine[0]->medicineReserveMedicine->type_exam_id == 3
+                            ? $medicine[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationDocument->id
+                            : $medicine[0]->medicineReserveMedicine->medicineDocument->id,
                             'tipo' => $medicine[0]->medicineReserveMedicine->medicineTypeExam->id,
                             'id' => $medicine[0]->medicineReserveMedicine->type_exam_id == 3
                                 ? Storage::url($medicine[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationDocument->name_document)
@@ -316,6 +324,9 @@ class AppointmentTable extends DataTableComponent
                                 'medicineReserveMedicine'
                             )->where('id', $row->id)->get(),
                             'medicine' => $medicine,
+                            'id_document' => $medicine[0]->medicineReserveMedicine->type_exam_id == 3
+                            ? $medicine[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationDocument->id
+                            : $medicine[0]->medicineReserveMedicine->medicineDocument->id,
                             'tipo' => $medicine[0]->medicineReserveMedicine->medicineTypeExam->id,
                             'id' => $medicine[0]->medicineReserveMedicine->type_exam_id == 3
                                 ? Storage::url($medicine[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationDocument->name_document)
@@ -438,6 +449,9 @@ class AppointmentTable extends DataTableComponent
                                 'medicineReserveMedicine'
                             )->where('id', $row->id)->get(),
                             'medicine' => $medicine,
+                            'id_document' => $medicine[0]->medicineReserveMedicine->type_exam_id == 3
+                            ? $medicine[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationDocument->id
+                            : $medicine[0]->medicineReserveMedicine->medicineDocument->id,
                             'tipo' => $medicine[0]->medicineReserveMedicine->medicineTypeExam->id,
                             'id' => $medicine[0]->medicineReserveMedicine->type_exam_id == 3
                                 ? Storage::url($medicine[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationDocument->name_document)
@@ -492,6 +506,61 @@ class AppointmentTable extends DataTableComponent
                         )
                     ),
             ];
+        }
+    }
+
+    public function documentDownload($id)
+    {
+        try {
+            $doc = Document::find($id);
+
+            $document = Str::afterLast($doc->name_document, '/');
+
+            if (Storage::disk('spaces')->get('citas-medicina/' . $document)) {
+
+                $this->notification([
+                'title'       => 'UN MOMENTO POR FAVOR',
+                'description' => 'DESCARGANDO DOCUMENTO...',
+                'icon'        => 'info',
+                'timeout'     => '3100',
+                ]);
+
+                $client = new S3Client([
+                    'version'     => 'latest',
+                    'region'      => config('filesystems.disks.spaces.region'),
+                    'endpoint'    => config('filesystems.disks.spaces.endpoint'),
+                    'credentials' => new Credentials(
+                        config('filesystems.disks.spaces.key'),
+                        config('filesystems.disks.spaces.secret')
+                    ),
+                ]);
+                $command = $client->getCommand('GetObject', [
+                    'Bucket' => config('filesystems.disks.spaces.bucket'),
+                    'Key'    => 'citas-medicina/' . $document,
+                    'ResponseContentDisposition' => 'attachment; filename="'.$document.'"'
+                ]);
+
+                $presignedUrl = $client->createPresignedRequest($command, '+5 minutes')->getUri();
+
+                return response()->json([
+                        redirect((string) $presignedUrl),
+                    ]);
+
+            } else {
+                $this->notification([
+                    'title'       => 'DOCUMENTO NO ENCONTRADO',
+                    'description' => 'EL DOCUMENTO NO SE HA ENCONTRADO',
+                    'icon'        => 'info',
+                    'timeout'     => '5000',
+                ]);
+            }
+        } catch (\Exception $e) {
+            $this->notification([
+                'title'       => 'DOCUMENTO NO ENCONTRADO',
+                'description' => $e->getMessage(),
+                'icon'        => 'info',
+                'timeout'     => '3100',
+            ]);
         }
     }
     public function builder(): Builder
