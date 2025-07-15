@@ -1,23 +1,25 @@
 <?php
-
 namespace App\Http\Livewire\Medicine\Tables;
 
 use App\Jobs\ExportSelectedJob;
 use App\Models\Catalogue\Headquarter;
 use App\Models\Catalogue\TypeClass;
 use App\Models\Catalogue\TypeExam;
+use App\Models\Document as ModelsDocument;
 use App\Models\Medicine\MedicineExportHistory;
 use App\Models\Medicine\MedicineReserve;
-use App\Models\UserParticipant;
+use Aws\Credentials\Credentials;
+use Aws\S3\S3Client;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Jenssegers\Date\Date;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
-use Rappasoft\LaravelLivewireTables\Views\Columns\BooleanColumn;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateFilter;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 use Rappasoft\LaravelLivewireTables\Views\Filters\TextFilter;
@@ -35,13 +37,13 @@ class AppointmentTable extends DataTableComponent
         return array_merge(
             parent::getListeners(),
             [
-                'postponeReserve' => '$refresh',
-                'cancelReserve' => '$refresh',
-                'attendeReserve' => '$refresh',
+                'postponeReserve'    => '$refresh',
+                'cancelReserve'      => '$refresh',
+                'attendeReserve'     => '$refresh',
                 'updateReleaseShare' => '$refresh',
                 'reserveAppointment' => '$refresh',
-                'addExtension' => '$refresh',
-                'updatePayJanuary' => '$refresh',
+                'addExtension'       => '$refresh',
+                'updatePayJanuary'   => '$refresh',
             ]
         );
     }
@@ -54,13 +56,13 @@ class AppointmentTable extends DataTableComponent
         $this->setPrimaryKey('id');
 
         $this->setBulkActions([
-            'exportSelected' => 'EXPORTAR'
+            'exportSelected' => 'EXPORTAR',
         ]);
         $this->setPerPageAccepted([
             10,
             20,
             50,
-            100
+            100,
         ]);
         $this->setOfflineIndicatorEnabled();
         $this->setEagerLoadAllRelationsEnabled();
@@ -94,9 +96,9 @@ class AppointmentTable extends DataTableComponent
                             $class = MedicineReserve::with([
                                 'medicineReserveMedicine',
                                 'medicineReserveFromUser',
-                                'userParticipantUser'
+                                'userParticipantUser',
                             ])->where('id', $row->id)->get(),
-                            'class' => $class
+                            'class' => $class,
                         ]
                     ))->sortable(),
 
@@ -109,7 +111,7 @@ class AppointmentTable extends DataTableComponent
                                 'medicineReserveFromUser',
                                 'userParticipantUser',
                             ])->where('id', $row->id)->get(),
-                            'licencias' => $licencia
+                            'licencias' => $licencia,
                         ]
                     )),
                 Column::make("FECHA", "dateReserve")
@@ -136,11 +138,12 @@ class AppointmentTable extends DataTableComponent
                             $medicine = MedicineReserve::with(
                                 'medicineReserveMedicine'
                             )->where('id', $row->id)->get(),
-                            'medicine' => $medicine,
-                            'tipo' => $medicine[0]->medicineReserveMedicine->medicineTypeExam->id,
-                            'id' => $medicine[0]->medicineReserveMedicine->type_exam_id == 3
-                                ? Storage::url($medicine[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationDocument->name_document)
-                                : Storage::url($medicine[0]->medicineReserveMedicine->medicineDocument->name_document),
+                            'id_document' => $medicine[0]->medicineReserveMedicine->medicineDocument->id,
+                            'medicine'    => $medicine,
+                            'tipo'        => $medicine[0]->medicineReserveMedicine->medicineTypeExam->id,
+                            'id'          => $medicine[0]->medicineReserveMedicine->type_exam_id == 3
+                            ? Storage::url($medicine[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationDocument->name_document)
+                            : Storage::url($medicine[0]->medicineReserveMedicine->medicineDocument->name_document),
                         ]
                     )),
 
@@ -174,18 +177,18 @@ class AppointmentTable extends DataTableComponent
                                 $dateExpire = Carbon::parse($action[0]->dateReserve),
                                 $showExpireButton = Carbon::now()->isSameDay($dateExpire),
                                 $januaryAppointment = $action[0]->medicineReserveMedicine,
-                                'januaryTemp' => $januaryAppointment,
-                                'status' => $action[0]->status,
-                                'scheduleId' => $action[0]->id,
-                                'medicineId' => $action[0]->medicine_id,
-                                'medicineExtensionExist' => $action[0]->medicineReserveMedicineExtension[0]->reference_number_ext ?? null,
+                                'januaryTemp'              => $januaryAppointment,
+                                'status'                   => $action[0]->status,
+                                'scheduleId'               => $action[0]->id,
+                                'medicineId'               => $action[0]->medicine_id,
+                                'medicineExtensionExist'   => $action[0]->medicineReserveMedicineExtension[0]->reference_number_ext ?? null,
                                 'medicineExtensionNothing' => $action[0]->medicineReserveMedicineExtension,
-                                'showExpireButton' => $showExpireButton,
+                                'showExpireButton'         => $showExpireButton,
                                 $wait_date = new Carbon($action[0]->dateReserve, 'America/Mexico_City'),
                                 $days_wait = $this->date->diffInDays($wait_date),
-                                'days' => $days_wait,
-                                'wait_date' => $wait_date,
-                                'is_external' => $action[0]->is_external
+                                'days'                     => $days_wait,
+                                'wait_date'                => $wait_date,
+                                'is_external'              => $action[0]->is_external,
                             ]
                         )
                     ),
@@ -207,9 +210,9 @@ class AppointmentTable extends DataTableComponent
                             $class = MedicineReserve::with([
                                 'medicineReserveMedicine',
                                 'medicineReserveFromUser',
-                                'userParticipantUser'
+                                'userParticipantUser',
                             ])->where('id', $row->id)->get(),
-                            'class' => $class
+                            'class' => $class,
                         ]
                     )),
                 Column::make("TIPO DE LICENCIA", "licencia")
@@ -222,7 +225,7 @@ class AppointmentTable extends DataTableComponent
                                 'userParticipantUser',
 
                             ])->where('id', $row->id)->get(),
-                            'licencias' => $licencia
+                            'licencias' => $licencia,
                         ]
                     )),
                 Column::make("FECHA", "dateReserve")
@@ -241,14 +244,14 @@ class AppointmentTable extends DataTableComponent
                                 $dateExpire = Carbon::parse($action[0]->dateReserve),
                                 $showExpireButton = Auth::user()->hasRole('user') && Carbon::now()->lt($dateExpire),
                                 'buttonExpire' => $showExpireButton,
-                                'status' => $action[0]->status,
-                                'scheduleId' => $action[0]->id,
-                                'medicineId' => $action[0]->medicine_id,
+                                'status'       => $action[0]->status,
+                                'scheduleId'   => $action[0]->id,
+                                'medicineId'   => $action[0]->medicine_id,
                                 $wait_date = new Carbon($action[0]->dateReserve, 'America/Mexico_City'),
                                 $days_wait = $this->date->diffInDays($wait_date),
-                                'days' => $days_wait,
-                                'wait_date' => $wait_date,
-                                'is_external' => $action[0]->is_external
+                                'days'         => $days_wait,
+                                'wait_date'    => $wait_date,
+                                'is_external'  => $action[0]->is_external,
                             ]
                         )
                     ),
@@ -277,9 +280,9 @@ class AppointmentTable extends DataTableComponent
                             $class = MedicineReserve::with([
                                 'medicineReserveMedicine',
                                 'medicineReserveFromUser',
-                                'userParticipantUser'
+                                'userParticipantUser',
                             ])->where('id', $row->id)->get(),
-                            'class' => $class
+                            'class' => $class,
                         ]
                     )),
                 Column::make("TIPO DE LICENCIA", "licencia")
@@ -289,9 +292,9 @@ class AppointmentTable extends DataTableComponent
                             $licencia = MedicineReserve::with([
                                 'medicineReserveMedicine',
                                 'medicineReserveFromUser',
-                                'userParticipantUser'
+                                'userParticipantUser',
                             ])->where('id', $row->id)->get(),
-                            'licencias' => $licencia
+                            'licencias' => $licencia,
                         ]
                     )),
                 Column::make("FECHA", "dateReserve")
@@ -315,11 +318,12 @@ class AppointmentTable extends DataTableComponent
                             $medicine = MedicineReserve::with(
                                 'medicineReserveMedicine'
                             )->where('id', $row->id)->get(),
-                            'medicine' => $medicine,
-                            'tipo' => $medicine[0]->medicineReserveMedicine->medicineTypeExam->id,
-                            'id' => $medicine[0]->medicineReserveMedicine->type_exam_id == 3
-                                ? Storage::url($medicine[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationDocument->name_document)
-                                : Storage::url($medicine[0]->medicineReserveMedicine->medicineDocument->name_document),
+                            'id_document' => $medicine[0]->medicineReserveMedicine->medicineDocument->id,
+                            'medicine'    => $medicine,
+                            'tipo'        => $medicine[0]->medicineReserveMedicine->medicineTypeExam->id,
+                            'id'          => $medicine[0]->medicineReserveMedicine->type_exam_id == 3
+                            ? Storage::url($medicine[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationDocument->name_document)
+                            : Storage::url($medicine[0]->medicineReserveMedicine->medicineDocument->name_document),
                         ]
                     )),
                 Column::make("GENERO", "userParticipantUser.genre")
@@ -352,18 +356,18 @@ class AppointmentTable extends DataTableComponent
                                 $dateExpire = Carbon::parse($action[0]->dateReserve),
                                 $showExpireButton = Carbon::now()->isSameDay($dateExpire),
                                 $januaryAppointment = $action[0]->medicineReserveMedicine,
-                                'januaryTemp' => $januaryAppointment,
-                                'medicineExtensionExist' => $action[0]->medicineReserveMedicineExtension[0]->reference_number_ext ?? null,
+                                'januaryTemp'              => $januaryAppointment,
+                                'medicineExtensionExist'   => $action[0]->medicineReserveMedicineExtension[0]->reference_number_ext ?? null,
                                 'medicineExtensionNothing' => $action[0]->medicineReserveMedicineExtension,
-                                'showExpireButton' => $showExpireButton,
-                                'status' => $action[0]->status,
-                                'scheduleId' => $action[0]->id,
-                                'medicineId' => $action[0]->medicine_id,
+                                'showExpireButton'         => $showExpireButton,
+                                'status'                   => $action[0]->status,
+                                'scheduleId'               => $action[0]->id,
+                                'medicineId'               => $action[0]->medicine_id,
                                 $wait_date = new Carbon($action[0]->dateReserve, 'America/Mexico_City'),
                                 $days_wait = $this->date->diffInDays($wait_date),
-                                'days' => $days_wait,
-                                'wait_date' => $wait_date,
-                                'is_external' => $action[0]->is_external
+                                'days'                     => $days_wait,
+                                'wait_date'                => $wait_date,
+                                'is_external'              => $action[0]->is_external,
                             ]
                         )
                     ),
@@ -395,9 +399,9 @@ class AppointmentTable extends DataTableComponent
                             $class = MedicineReserve::with([
                                 'medicineReserveMedicine',
                                 'medicineReserveFromUser',
-                                'userParticipantUser'
+                                'userParticipantUser',
                             ])->where('id', $row->id)->get(),
-                            'class' => $class
+                            'class' => $class,
                         ]
                     )),
 
@@ -408,9 +412,9 @@ class AppointmentTable extends DataTableComponent
                             $licencia = MedicineReserve::with([
                                 'medicineReserveMedicine',
                                 'medicineReserveFromUser',
-                                'userParticipantUser'
+                                'userParticipantUser',
                             ])->where('id', $row->id)->get(),
-                            'licencias' => $licencia
+                            'licencias' => $licencia,
                         ]
                     )),
                 Column::make("FECHA", "dateReserve")
@@ -437,11 +441,12 @@ class AppointmentTable extends DataTableComponent
                             $medicine = MedicineReserve::with(
                                 'medicineReserveMedicine'
                             )->where('id', $row->id)->get(),
-                            'medicine' => $medicine,
-                            'tipo' => $medicine[0]->medicineReserveMedicine->medicineTypeExam->id,
-                            'id' => $medicine[0]->medicineReserveMedicine->type_exam_id == 3
-                                ? Storage::url($medicine[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationDocument->name_document)
-                                : Storage::url($medicine[0]->medicineReserveMedicine->medicineDocument->name_document),
+                            'id_document' => $medicine[0]->medicineReserveMedicine->medicineDocument->id,
+                            'medicine'    => $medicine,
+                            'tipo'        => $medicine[0]->medicineReserveMedicine->medicineTypeExam->id,
+                            'id'          => $medicine[0]->medicineReserveMedicine->type_exam_id == 3
+                            ? Storage::url($medicine[0]->medicineReserveMedicine->medicineRevaluation[0]->revaluationDocument->name_document)
+                            : Storage::url($medicine[0]->medicineReserveMedicine->medicineDocument->name_document),
                         ]
                     )),
 
@@ -475,18 +480,18 @@ class AppointmentTable extends DataTableComponent
                                 $dateExpire = Carbon::parse($action[0]->dateReserve),
                                 $showExpireButton = Carbon::now()->isSameDay($dateExpire),
                                 $januaryAppointment = $action[0]->medicineReserveMedicine,
-                                'januaryTemp' => $januaryAppointment,
-                                'status' => $action[0]->status,
-                                'scheduleId' => $action[0]->id,
-                                'medicineId' => $action[0]->medicine_id,
-                                'medicineExtensionExist' => $action[0]->medicineReserveMedicineExtension[0]->reference_number_ext ?? null,
+                                'januaryTemp'              => $januaryAppointment,
+                                'status'                   => $action[0]->status,
+                                'scheduleId'               => $action[0]->id,
+                                'medicineId'               => $action[0]->medicine_id,
+                                'medicineExtensionExist'   => $action[0]->medicineReserveMedicineExtension[0]->reference_number_ext ?? null,
                                 'medicineExtensionNothing' => $action[0]->medicineReserveMedicineExtension,
-                                'showExpireButton' => $showExpireButton,
+                                'showExpireButton'         => $showExpireButton,
                                 $wait_date = new Carbon($action[0]->dateReserve, 'America/Mexico_City'),
                                 $days_wait = $this->date->diffInDays($wait_date),
-                                'days' => $days_wait,
-                                'wait_date' => $wait_date,
-                                'is_external' => $action[0]->is_external
+                                'days'                     => $days_wait,
+                                'wait_date'                => $wait_date,
+                                'is_external'              => $action[0]->is_external,
 
                             ]
                         )
@@ -494,6 +499,52 @@ class AppointmentTable extends DataTableComponent
             ];
         }
     }
+
+    public function documentDownload($id)
+    {
+
+        try {
+            $doc = ModelsDocument::find($id);
+
+            $document = Str::afterLast($doc->name_document, '/');
+
+            if (Storage::disk('spaces')->get('citas-medicina/' . $document)) {
+
+                $client = new S3Client([
+                    'version'     => 'latest',
+                    'region'      => config('filesystems.disks.spaces.region'),
+                    'endpoint'    => config('filesystems.disks.spaces.endpoint'),
+                    'credentials' => new Credentials(
+                        config('filesystems.disks.spaces.key'),
+                        config('filesystems.disks.spaces.secret')
+                    ),
+                ]);
+                $command = $client->getCommand('GetObject', [
+                    'Bucket' => config('filesystems.disks.spaces.bucket'),
+                    'Key'    => 'citas-medicina/' . $document,
+                ]);
+
+                $presignedUrl = $client->createPresignedRequest($command, '+5 minutes')->getUri();
+                return redirect((string) $presignedUrl);
+
+            } else {
+                $this->notification([
+                    'title'       => 'DOCUMENTO NO ENCONTRADO',
+                    'description' => 'EL DOCUMENTO NO SE HA ENCONTRADO',
+                    'icon'        => 'error',
+                    'timeout'     => '3100',
+                ]);
+            }
+        } catch (\Exception $e) {
+            $this->notification([
+                'title'       => 'DOCUMENTO NO ENCONTRADO',
+                'description' => $e->getMessage(),
+                'icon'        => 'error',
+                'timeout'     => '3100',
+            ]);
+        }
+    }
+
     public function builder(): Builder
     {
         // return MedicineReserve::query()
@@ -502,13 +553,13 @@ class AppointmentTable extends DataTableComponent
             return MedicineReserve::query()->with([
                 'medicineReserveMedicine',
                 'medicineReserveFromUser',
-                'userParticipantUser'
+                'userParticipantUser',
             ])->where('medicine_reserves.is_external', false);
         } else if (Auth::user()->can('user.see.schedule.table')) {
             return MedicineReserve::query()->with([
                 'medicineReserveMedicine',
                 'medicineReserveFromUser',
-                'userParticipantUser'
+                'userParticipantUser',
             ])->whereHas('medicineReserveMedicine', function ($q1) {
                 $q1->where('user_id', Auth::user()->id);
             })->where('medicine_reserves.is_external', false);
@@ -517,7 +568,7 @@ class AppointmentTable extends DataTableComponent
                 'medicineReserveMedicine',
                 'medicineReserveFromUser',
                 'userParticipantUser',
-                'medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant'
+                'medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant',
             ])->whereHas('medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant', function ($q1) {
                 $q1->where('user_id', Auth::user()->id);
             });
@@ -528,7 +579,7 @@ class AppointmentTable extends DataTableComponent
                 'medicineReserveMedicine',
                 'medicineReserveFromUser',
                 'userParticipantUser',
-                'medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant'
+                'medicineReserveHeadquarter.HeadquarterUserHeadquarter.userHeadquarterUserParticipant',
             ])->where('headquarter_id', 6)->where('dateReserve', $day);
         }
     }
@@ -538,16 +589,16 @@ class AppointmentTable extends DataTableComponent
             return [
                 SelectFilter::make('TIPO')
                     ->options([
-                        '' => 'TODOS',
-                        ' ' => TypeExam::pluck('name', 'id')
-                        ])
+                        ''  => 'TODOS',
+                        ' ' => TypeExam::pluck('name', 'id'),
+                    ])
                     ->filter(function ($query, $value) {
                         $query->where('type_exam_id', $value);
                     }),
                 SelectFilter::make('CLASE')
                     ->options([
-                        '' => 'TODOS',
-                        ' ' => TypeClass::whereIn('id',[1,2,3])->pluck('name','id')
+                        ''  => 'TODOS',
+                        ' ' => TypeClass::whereIn('id', [1, 2, 3])->pluck('name', 'id'),
                     ])
                     ->filter(function ($query, $value) {
                         if ($value === '1') {
@@ -585,19 +636,19 @@ class AppointmentTable extends DataTableComponent
                     }),
                 SelectFilter::make('STATUS')
                     ->options([
-                        '' => 'TODOS',
-                        '0' => 'PENDIENTE',
-                        '1' => 'ASISTIÓ',
-                        '2' => 'CANCELADO',
-                        '3' => 'CANCELO',
-                        '4' => 'REAGENDADA',
-                        '5' => 'LIBERADA',
-                        '6' => 'INCOMPLETAS',
-                        '7' => 'EXPIRO',
-                        '8' => 'CONCLUYÓ APTO',
-                        '9' => 'CONCLUYÓ NO APTO',
+                        ''   => 'TODOS',
+                        '0'  => 'PENDIENTE',
+                        '1'  => 'ASISTIÓ',
+                        '2'  => 'CANCELADO',
+                        '3'  => 'CANCELO',
+                        '4'  => 'REAGENDADA',
+                        '5'  => 'LIBERADA',
+                        '6'  => 'INCOMPLETAS',
+                        '7'  => 'EXPIRO',
+                        '8'  => 'CONCLUYÓ APTO',
+                        '9'  => 'CONCLUYÓ NO APTO',
                         '10' => 'REAGENDÓ',
-                        '11' => 'ACCIONES EXPIRADAS'
+                        '11' => 'ACCIONES EXPIRADAS',
 
                     ])
                     ->filter(function ($query, $value) {
@@ -613,16 +664,16 @@ class AppointmentTable extends DataTableComponent
                     }),
                 SelectFilter::make('SEDE')
                     ->options([
-                        '' => 'TODOS',
-                        ' ' => Headquarter::where('is_external',0)->pluck('name_headquarter', 'id')
+                        ''  => 'TODOS',
+                        ' ' => Headquarter::where('is_external', 0)->pluck('name_headquarter', 'id'),
                     ])
                     ->filter(function ($query, $value) {
                         $query->where('headquarter_id', $value);
                     }),
                 SelectFilter::make('GENERO')
                     ->options([
-                        '' => 'TODOS',
-                        'FEMENINO' => 'FEMENINO',
+                        ''          => 'TODOS',
+                        'FEMENINO'  => 'FEMENINO',
                         'MASCULINO' => 'MASCULINO',
                     ])
                     ->filter(function ($query, $value) {
@@ -630,7 +681,7 @@ class AppointmentTable extends DataTableComponent
                     }),
                 SelectFilter::make('EDAD')
                     ->options([
-                        '' => 'TODOS',
+                        ''    => 'TODOS',
                         'min' => 'MENOR A 40',
                         'max' => 'MAYOR E IGUAL A 40',
                     ])
@@ -653,35 +704,35 @@ class AppointmentTable extends DataTableComponent
             return [
                 SelectFilter::make('TIPO')
                     ->options([
-                        '' => 'TODOS',
-                        ' ' => TypeExam::whereIn('id',[1,2,3])->pluck('name', 'id')
-                        ])
+                        ''  => 'TODOS',
+                        ' ' => TypeExam::whereIn('id', [1, 2, 3])->pluck('name', 'id'),
+                    ])
                     ->filter(function ($query, $value) {
                         $query->where('type_exam_id', $value);
                     }),
                 SelectFilter::make('STATUS')
                     ->options([
-                        '' => 'TODOS',
-                        '0' => 'PENDIENTE',
-                        '1' => 'ASISTIÓ',
-                        '2' => 'CANCELADO',
-                        '3' => 'CANCELÓ',
-                        '4' => 'REAGENDADA',
-                        '5' => 'LIBERADA',
-                        '6' => 'INCOMPLETAS',
-                        '7' => 'EXPIRO',
-                        '8' => 'CONCLUYÓ APTO',
-                        '9' => 'CONCLUYÓ NO APTO',
+                        ''   => 'TODOS',
+                        '0'  => 'PENDIENTE',
+                        '1'  => 'ASISTIÓ',
+                        '2'  => 'CANCELADO',
+                        '3'  => 'CANCELÓ',
+                        '4'  => 'REAGENDADA',
+                        '5'  => 'LIBERADA',
+                        '6'  => 'INCOMPLETAS',
+                        '7'  => 'EXPIRO',
+                        '8'  => 'CONCLUYÓ APTO',
+                        '9'  => 'CONCLUYÓ NO APTO',
                         '10' => 'REAGENDÓ',
-                        '11' => 'ACCIONES EXPIRADAS'
+                        '11' => 'ACCIONES EXPIRADAS',
                     ])
                     ->filter(function ($query, $value) {
                         $query->where('medicine_reserves.status', $value);
                     }),
                 SelectFilter::make('GENERO')
                     ->options([
-                        '' => 'TODOS',
-                        'FEMENINO' => 'FEMENINO',
+                        ''          => 'TODOS',
+                        'FEMENINO'  => 'FEMENINO',
                         'MASCULINO' => 'MASCULINO',
                     ])
                     ->filter(function ($query, $value) {
@@ -689,7 +740,7 @@ class AppointmentTable extends DataTableComponent
                     }),
                 SelectFilter::make('EDAD')
                     ->options([
-                        '' => 'TODOS',
+                        ''    => 'TODOS',
                         'min' => 'MENOR A 40',
                         'max' => 'MAYOR A 40',
                     ])
@@ -725,18 +776,18 @@ class AppointmentTable extends DataTableComponent
                     'medicineReserveMedicine.medicineTypeExam:name',
                     'userParticipantUser:id,apParental,apMaternal,curp,genre,birth,age,mobilePhone,officePhone,extension',
                     'userParticipantUser.participantState:id,name',
-                    'reserveSchedule:id,time_start'
+                    'reserveSchedule:id,time_start',
                 ])->whereIn('id', $this->getSelected());
-                $results = $query->get();
-                $this->exporting = true;
+                $results              = $query->get();
+                $this->exporting      = true;
                 $this->exportFinished = false;
-                $saveExports = MedicineExportHistory::create(
+                $saveExports          = MedicineExportHistory::create(
                     [
                         'auth' => Auth::user()->id,
                     ]
                 );
                 $dataExports = $saveExports->auth . '-' . $saveExports->created_at;
-                $batch = Bus::batch([
+                $batch       = Bus::batch([
                     new ExportSelectedJob($results, $dataExports),
                 ])->dispatch();
                 $this->batchId = $batch->id;
@@ -744,9 +795,9 @@ class AppointmentTable extends DataTableComponent
             } catch (\Exception $e) {
                 $this->notification([
                     'title'       => 'ERROR DE EXPORTACIÓN!',
-                    'description' =>  $e->getMessage(),
+                    'description' => $e->getMessage(),
                     'icon'        => 'error',
-                    'timeout' => '3100'
+                    'timeout'     => '3100',
                 ]);
             }
         } else {
