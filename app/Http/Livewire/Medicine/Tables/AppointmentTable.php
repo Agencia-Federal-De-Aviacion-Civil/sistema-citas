@@ -516,14 +516,14 @@ class AppointmentTable extends DataTableComponent
 
             $document = Str::afterLast($doc->name_document, '/');
 
-            if (Storage::disk('spaces')->get('citas-medicina/' . $document)) {
+            $this->notification([
+            'title'       => 'UN MOMENTO POR FAVOR',
+            'description' => 'LA DESCARGA DE SU DOCUMENTO ESTA EN CURSO...',
+            'icon'        => 'info',
+            'timeout'     => '5000',
+            ]);
 
-                $this->notification([
-                'title'       => 'UN MOMENTO POR FAVOR',
-                'description' => 'DESCARGANDO DOCUMENTO...',
-                'icon'        => 'info',
-                'timeout'     => '3100',
-                ]);
+            if (Storage::disk('spaces')->get('citas-medicina/' . $document)) {
 
                 $client = new S3Client([
                     'version'     => 'latest',
@@ -548,15 +548,15 @@ class AppointmentTable extends DataTableComponent
 
             } else {
                 $this->notification([
-                    'title'       => 'DOCUMENTO NO ENCONTRADO',
-                    'description' => 'EL DOCUMENTO NO SE HA ENCONTRADO',
+                    'title'       => 'DOCUMENTO NO LOCALIZADO',
+                    'description' => 'LO SENTIMOS, NO PUDIMOS ENCONTRAR EL DOCUMENTO SOLICITADO.',
                     'icon'        => 'info',
                     'timeout'     => '5000',
                 ]);
             }
         } catch (\Exception $e) {
             $this->notification([
-                'title'       => 'DOCUMENTO NO ENCONTRADO',
+                'title'       => 'NO SE ENCONTRO DOCUMENTO, VERIFIQUE SU CONEXIÓN A INTERNET',
                 'description' => $e->getMessage(),
                 'icon'        => 'info',
                 'timeout'     => '3100',
