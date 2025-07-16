@@ -9,7 +9,7 @@
         @if(Str::beforeLast(Str::between($id, '-','-'), '-') <='2023') {{-- 1 --}} 
         <buttom title="FORMATO DE PAGO"
             class="cursor-pointer underline hover:no-underline" wire:click='documentDownload({{ $id_document }})'>
-            <span wire:loading wire:target="documentDownload({{ $id_document }})">
+            <span class="text-sm" wire:loading wire:target="documentDownload({{ $id_document }})">
                 <i class="fas fa_spinner fa-spin"></i> Procesando
             </span>            
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -33,7 +33,7 @@
             @if (Str::beforeLast(Str::between($id, '-','-'), '-') <='2023') {{-- 2 --}} 
             <buttom title="FORMATO DE AUTORIZACIÓN" class="cursor-pointer underline hover:no-underline"
                 wire:click='documentDownload({{ $id_document }})'>
-                <span wire:loading wire:target="documentDownload({{ $id_document }})">
+                <span class="text-sm" wire:loading wire:target="documentDownload({{ $id_document }})">
                     <i class="fas fa_spinner fa-spin"></i> Procesando
                 </span>                
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -63,7 +63,7 @@
     @if (Str::beforeLast(Str::between($id, '-','-'), '-') <='2023') 
     <buttom title="FORMATO DE PAGO"
         class="cursor-pointer underline hover:no-underline" wire:click='documentDownload({{ $id_document }})'>
-        <span wire:loading wire:target="documentDownload({{ $id_document }})">
+        <span class="text-sm" wire:loading wire:target="documentDownload({{ $id_document }})">
             <i class="fas fa_spinner fa-spin"></i> Procesando
         </span>
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
@@ -73,9 +73,7 @@
             </path>
         </svg>
         </buttom>
-
         @else
-
         <a title="FORMATO DE PAGO" class="underline hover:no-underline" target="_blank" href='{{ $id }}'>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                 stroke="currentColor" class="text-blue-700 w-6 h-6 flex-shrink-0 mr-2">
