@@ -516,14 +516,14 @@ class AppointmentTable extends DataTableComponent
 
             $document = Str::afterLast($doc->name_document, '/');
 
-            $this->notification([
-            'title'       => 'UN MOMENTO POR FAVOR',
-            'description' => 'LA DESCARGA DE SU DOCUMENTO ESTA EN CURSO...',
-            'icon'        => 'info',
-            'timeout'     => '5000',
-            ]);
+            if (Storage::disk('spaces')->exists('citas-medicina/' . $document)) {
 
-            if (Storage::disk('spaces')->get('citas-medicina/' . $document)) {
+                $this->notification([
+                'title'       => 'UN MOMENTO POR FAVOR',
+                'description' => 'LA DESCARGA DE SU DOCUMENTO ESTA EN CURSO...',
+                'icon'        => 'info',
+                'timeout'     => '5000',
+                ]);                
 
                 $client = new S3Client([
                     'version'     => 'latest',
