@@ -511,12 +511,12 @@ class AppointmentTable extends DataTableComponent
 
     public function documentDownload($id)
     {
-        $this->notification([
-        'title'       => 'UN MOMENTO POR FAVOR',
-        'description' => 'LA DESCARGA DE SU DOCUMENTO ESTA EN CURSO...',
-        'icon'        => 'info',
-        'timeout'     => '5000',
-        ]);                
+        // $this->notification([
+        // 'title'       => 'UN MOMENTO POR FAVOR',
+        // 'description' => 'LA DESCARGA DE SU DOCUMENTO ESTA EN CURSO...',
+        // 'icon'        => 'info',
+        // 'timeout'     => '5000',
+        // ]);                
 
         try {
             $doc = Document::find($id);
