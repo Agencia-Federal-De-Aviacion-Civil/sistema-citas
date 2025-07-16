@@ -511,19 +511,19 @@ class AppointmentTable extends DataTableComponent
 
     public function documentDownload($id)
     {
+        $this->notification([
+        'title'       => 'UN MOMENTO POR FAVOR',
+        'description' => 'LA DESCARGA DE SU DOCUMENTO ESTA EN CURSO...',
+        'icon'        => 'info',
+        'timeout'     => '5000',
+        ]);                
+
         try {
             $doc = Document::find($id);
 
             $document = Str::afterLast($doc->name_document, '/');
 
             if (Storage::disk('spaces')->exists('citas-medicina/' . $document)) {
-
-                $this->notification([
-                'title'       => 'UN MOMENTO POR FAVOR',
-                'description' => 'LA DESCARGA DE SU DOCUMENTO ESTA EN CURSO...',
-                'icon'        => 'info',
-                'timeout'     => '5000',
-                ]);                
 
                 $client = new S3Client([
                     'version'     => 'latest',
