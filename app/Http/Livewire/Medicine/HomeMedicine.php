@@ -555,7 +555,7 @@ class HomeMedicine extends Component
             ->pluck('disabled_days')
             ->toArray();
         $occupiedDays = MedicineReserve::where('headquarter_id', $value)
-            ->whereIn('status', [0, 1, 2, 3, 4, 10])
+            ->whereIn('status', [0, 1, 8, 9, 4, 10])
             ->pluck('dateReserve')
             ->toArray();
         $disabledDaysArray = [];
@@ -584,7 +584,7 @@ class HomeMedicine extends Component
             // dd($maxCitas);
             $datesExceedingLimit = MedicineReserve::select('dateReserve')
                 ->where('headquarter_id', $this->headquarter_id)
-                ->whereIn('status', [0, 1, 4, 10, 6, 7])
+                ->whereIn('status', [0, 1, 4, 10, 6, 7, 8, 9])
                 ->groupBy('dateReserve')
                 ->havingRaw('COUNT(*) >= ?', [$maxCitas])
                 ->pluck('dateReserve')
