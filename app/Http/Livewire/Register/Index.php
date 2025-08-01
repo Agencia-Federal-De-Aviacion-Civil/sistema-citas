@@ -120,68 +120,99 @@ class Index extends Component
             'curp' => 'required|unique:user_participants|max:18|min:18', // 'curp' => 'required|unique:user_profiles|max:18|min:18',
         ]);
         if (checkdnsrr('crp.sct.gob.mx', 'A')) {
-            try{
-            $curp = Str::upper($this->curp);
-            $response = Http::connectTimeout(10)->get('https://crp.sct.gob.mx/RenapoSct/consulta/porCurp?curp=' . $curp);
-            if ($response->successful() && $response->json()['resultado']['data']['statusOper'] === 'EXITOSO') {
-                $response->json()['resultado'];
-                $this->enabled = true;
-                $this->name = $response->json()['resultado']['data']['nombres'];
-                $this->apParental = $response->json()['resultado']['data']['apPaterno'];
-                $this->apMaternal = $response->json()['resultado']['data']['apMaterno'];
-                $this->birth = $response->json()['resultado']['data']['fechNac'];
-                $this->curp_api = $response->json()['resultado']['data']['curp'];
-                $this->rfc_participant_api = Str::upper(substr($this->curp_api, 0, 10));
-                $this->rfc_participant = $this->rfc_participant_api;
-                $this->sex_api = $response->json()['resultado']['data']['sexo'];
-                $this->genre = $this->sex_api == 'H' ? 'Masculino' : ($this->sex_api === 'M' ? 'Femenino' : ($this->sex_api === 'X' ? 3 : ''));
-                $this->sex_id = $this->sex_api == 'H' ? 1 : ($this->sex_api === 'M' ? 2 : ($this->sex_api === 'X' ? 3 : ''));
-                $this->state_birth_participant = $response->json()['resultado']['data']['cveEntidadNac'];
-                $codeCountry = $response->json()['resultado']['data']['nacionalidad'];
-                // foreach ($this->countries as $country) {
-                // if ($country->code_country === $codeCountry) {
-                // $this->country_birth_participant = $country->name_country;
-                // $this->nationality_participant = $country->nacionality_country;
-                $this->country_birth_participant = 'MEX';
-                $this->nationality_participant = 'MEXICANA';
-                //     break;
-                // }
-                // }
+            try {
+                $curp = Str::upper($this->curp);
+                $response = Http::connectTimeout(10)->get('https://crp.sct.gob.mx/RenapoSct/consulta/porCurp?curp=' . $curp);
+                #RENAPO status mapping section
+                #AN	    Alta Normal
+                #AH	    Alta con Homonimia
+                #RCC	Registro de cambio afectando a CURP
+                #RCN	Registro de cambio no afectando a CURP
+                #BAP	Baja por documento apócrifo
+                #BSU	Baja sin uso
+                #BD	    Baja por defunción
+                #BDM	Baja administrativa
+                #BDP	Baja por adopción
+                #BJD	Baja Judicial
+                $statusAllowed = collect(['AN', 'AH', 'RCC', 'RCN']);
+                $statusNotallowed = collect(['BAP', 'BSU', 'BD', 'BDM', 'BDP', 'BJD']);
+                $descriptions = [
+                    'BAP'  => 'BAJA POR DOCUMENTO APÓCRIFO',
+                    'BSU'  => 'BAJA SIN USO',
+                    'BD' => 'BAJA POR DEFUNCIÓN',
+                    'BDM' => 'BAJA ADMINISTRATIVA',
+                    'BDP' => 'BAJA POR ADOPCIÓN',
+                    'BJD' => 'BAJA JUDICIAL',
+                ];
+                $status = $response->json()['resultado']['data']['statusCurp'];
+                
+                if ($response->successful() && $response->json()['resultado']['data']['statusOper'] === 'EXITOSO' && $statusAllowed->contains($status)) {
+                    $response->json()['resultado'];
+                    $this->enabled = true;
+                    $this->name = $response->json()['resultado']['data']['nombres'];
+                    $this->apParental = $response->json()['resultado']['data']['apPaterno'];
+                    $this->apMaternal = $response->json()['resultado']['data']['apMaterno'];
+                    $this->birth = $response->json()['resultado']['data']['fechNac'];
+                    $this->curp_api = $response->json()['resultado']['data']['curp'];
+                    $this->rfc_participant_api = Str::upper(substr($this->curp_api, 0, 10));
+                    $this->rfc_participant = $this->rfc_participant_api;
+                    $this->sex_api = $response->json()['resultado']['data']['sexo'];
+                    $this->genre = $this->sex_api == 'H' ? 'Masculino' : ($this->sex_api === 'M' ? 'Femenino' : ($this->sex_api === 'X' ? 3 : ''));
+                    $this->sex_id = $this->sex_api == 'H' ? 1 : ($this->sex_api === 'M' ? 2 : ($this->sex_api === 'X' ? 3 : ''));
+                    $this->state_birth_participant = $response->json()['resultado']['data']['cveEntidadNac'];
+                    $codeCountry = $response->json()['resultado']['data']['nacionalidad'];
+                    // foreach ($this->countries as $country) {
+                    // if ($country->code_country === $codeCountry) {
+                    // $this->country_birth_participant = $country->name_country;
+                    // $this->nationality_participant = $country->nacionality_country;
+                    $this->country_birth_participant = 'MEX';
+                    $this->nationality_participant = 'MEXICANA';
+                    //     break;
+                    // }
+                    // }
 
-                $birthDate = Carbon::createFromFormat('d/m/Y', $this->birth);
-                $this->formattedBirthDate = $birthDate->format('Y-m-d');
-                $currentDate = Carbon::now();
-                $age = $currentDate->diff($birthDate)->format('%y');
-                $this->age = intval($age);
-                $this->notification([
-                    'title'       => 'Búsqueda éxitosa!',
-                    'description' => 'Usuario localizado con éxito.',
-                    'icon'        => 'success',
-                    'timeout' => '3100'
-                ]);
+                    $birthDate = Carbon::createFromFormat('d/m/Y', $this->birth);
+                    $this->formattedBirthDate = $birthDate->format('Y-m-d');
+                    $currentDate = Carbon::now();
+                    $age = $currentDate->diff($birthDate)->format('%y');
+                    $this->age = intval($age);
+                    $this->notification([
+                        'title'       => 'Búsqueda éxitosa!',
+                        'description' => 'Usuario localizado con éxito.',
+                        'icon'        => 'success',
+                        'timeout' => '3100'
+                    ]);
 
 
-                // $this->emit('BatchDispatch', [$this->batchId, $this->exporting, $this->exportFinished]);
+                    // $this->emit('BatchDispatch', [$this->batchId, $this->exporting, $this->exportFinished]);
 
-            } elseif ($response->successful() && $response->json()['resultado']['data']['statusOper'] === 'NO EXITOSO') {
-                $this->clean();
+                } elseif ($response->successful() && $response->json()['resultado']['data']['statusOper'] === 'NO EXITOSO') {
+                    $this->clean();
+                    $this->notification()->send([
+                        'title'       => 'Búsqueda no éxitosa!',
+                        'description' => 'Usuario no localizado.',
+                        'icon'        => 'error',
+                        'timeout' => '3100'
+                    ]);
+                } elseif ($response->successful() && $statusNotallowed->contains($status)) {
+                    $this->clean();
+                    $this->notification()->send([
+                        'title'       => 'BUSQUEDA NO EXITOSA',
+                        'description' => $descriptions[$status] ?? 'El CURP tiene un estatus desconocido',
+                        'icon'        => 'warning',
+                        'timeout' => 3100
+                    ]);
+                } else {
+                    // $this->dispatch('openModal', 'tools.exception-modal', (['codeError' => $response->status()]));
+                }
+            } catch (\Exception $e) {
                 $this->notification()->send([
-                    'title'       => 'Búsqueda no éxitosa!',
-                    'description' => 'Usuario no localizado.',
-                    'icon'        => 'error',
-                    'timeout' => '3100'
+                    'title'       => '¡ATENCION!',
+                    'description' => 'INTERMITENCIA EN EL SERVICIO DE INTERNET. VERIFICA TU CONEXIÓN',
+                    'icon'        => 'info',
+                    'timeout'     => '3100'
                 ]);
-            } else {
-                // $this->dispatch('openModal', 'tools.exception-modal', (['codeError' => $response->status()]));
             }
-        } catch (\Exception $e) {
-            $this->notification()->send([
-                'title'       => '¡ATENCION!',
-                'description' => 'INTERMITENCIA EN EL SERVICIO DE INTERNET. VERIFICA TU CONEXIÓN',
-                'icon'        => 'info',
-                'timeout'     => '3100'
-            ]);
-        }
         } else {
             $this->notification()->send([
                 'icon' => 'info',
@@ -202,28 +233,28 @@ class Index extends Component
     public function updatedCountryId($country_id)
     {
         $endpoint = env('SICT_API_ESTADOS', null);
-        try{
-        $response = Http::withHeaders([
-            'api-key' => '0kKvNnbwrzoNoXnHl2dgIt1rm',
-            'Accept' => 'application/json'
-        ])->connectTimeout(30)->get('https://cit.sct.gob.mx/sict/catalogs/getEstados/' . $country_id);
-        // 'https://cit.sct.gob.mx/sict/catalogs/getEstados/
-        if ($response->successful()) {
-            $statesSuccess = $response->json()['data'];
-            $this->apiStates = collect($statesSuccess)->map(function ($apiStateSuccess) {
-                return [
-                    'id' => $apiStateSuccess['estadoIdDTO'],
-                    'name_state' => Str::upper($apiStateSuccess['nombreEstadoDTO'])
-                ];
-            });
-            $this->emit(
-                'updated-state',
-                $this->apiStates
-            );
-        } elseif ($response->failed()) {
-            // $this->dispatch('openModal', 'tools.exception-modal', (['codeError' => 'OCURRIO UN ERROR AL CONSULTAR LOS ESTADOS, VUELVE A INTENTARLO. ERROR ' . $response->status()]));
-        }
-       } catch (\Exception $e) {
+        try {
+            $response = Http::withHeaders([
+                'api-key' => '0kKvNnbwrzoNoXnHl2dgIt1rm',
+                'Accept' => 'application/json'
+            ])->connectTimeout(30)->get('https://cit.sct.gob.mx/sict/catalogs/getEstados/' . $country_id);
+            // 'https://cit.sct.gob.mx/sict/catalogs/getEstados/
+            if ($response->successful()) {
+                $statesSuccess = $response->json()['data'];
+                $this->apiStates = collect($statesSuccess)->map(function ($apiStateSuccess) {
+                    return [
+                        'id' => $apiStateSuccess['estadoIdDTO'],
+                        'name_state' => Str::upper($apiStateSuccess['nombreEstadoDTO'])
+                    ];
+                });
+                $this->emit(
+                    'updated-state',
+                    $this->apiStates
+                );
+            } elseif ($response->failed()) {
+                // $this->dispatch('openModal', 'tools.exception-modal', (['codeError' => 'OCURRIO UN ERROR AL CONSULTAR LOS ESTADOS, VUELVE A INTENTARLO. ERROR ' . $response->status()]));
+            }
+        } catch (\Exception $e) {
             $this->notification()->send([
                 'title'       => '¡ATENCION!',
                 'description' => 'INTERMITENCIA EN EL SERVICIO DE INTERNET. VERIFICA TU CONEXIÓN',
@@ -239,30 +270,29 @@ class Index extends Component
         $state_participants_id = reset($state_participants_separated);
         $this->state_name_separated = end($state_participants_separated);
 
-        if (is_numeric($state_participants_id)) 
-        {
+        if (is_numeric($state_participants_id)) {
             $endpoint = env('SICT_API_MUNICIPIOS', null);
-            try{
-            $response = Http::withHeaders([
-                'api-key' => '0kKvNnbwrzoNoXnHl2dgIt1rm',
-                'Accept' => 'application/json'
-            ])->connectTimeout(30)->get('https://cit.sct.gob.mx/sict/catalogs/getMunicipios/' . $state_participants_id);
-            // https://cit.sct.gob.mx/sict/catalogs/getMunicipios/
-            if ($response->successful()) {
-                $municipalSuccess = $response->json()['data'];
-                $this->apiMunicipals = collect($municipalSuccess)->map(function ($apiStateSuccess) {
-                    return [
-                        'id' => $apiStateSuccess['municipioIdDTO'],
-                        'name_municipal' => Str::upper($apiStateSuccess['nombreMunicipioDTO'])
-                    ];
-                });
-                $this->emit(
-                    'updated-municipal',
-                    $this->apiMunicipals
-                );
-            } elseif ($response->failed()) {
-                // $this->dispatch('openModal', 'tools.exception-modal', (['codeError' => 'OCURRIO UN ERROR AL CONSULTAR LOS MUNICIPIOS, VUELVE A INTENTARLO. ERROR ' . $response->status()]));
-            }
+            try {
+                $response = Http::withHeaders([
+                    'api-key' => '0kKvNnbwrzoNoXnHl2dgIt1rm',
+                    'Accept' => 'application/json'
+                ])->connectTimeout(30)->get('https://cit.sct.gob.mx/sict/catalogs/getMunicipios/' . $state_participants_id);
+                // https://cit.sct.gob.mx/sict/catalogs/getMunicipios/
+                if ($response->successful()) {
+                    $municipalSuccess = $response->json()['data'];
+                    $this->apiMunicipals = collect($municipalSuccess)->map(function ($apiStateSuccess) {
+                        return [
+                            'id' => $apiStateSuccess['municipioIdDTO'],
+                            'name_municipal' => Str::upper($apiStateSuccess['nombreMunicipioDTO'])
+                        ];
+                    });
+                    $this->emit(
+                        'updated-municipal',
+                        $this->apiMunicipals
+                    );
+                } elseif ($response->failed()) {
+                    // $this->dispatch('openModal', 'tools.exception-modal', (['codeError' => 'OCURRIO UN ERROR AL CONSULTAR LOS MUNICIPIOS, VUELVE A INTENTARLO. ERROR ' . $response->status()]));
+                }
             } catch (\Exception $e) {
                 $this->notification()->send([
                     'title'       => '¡ATENCION!',
@@ -338,7 +368,7 @@ class Index extends Component
         medicine_history_movements::create([
             'user_id' => $user->id,
             'action' => 'REGISTRO',
-            'process' => $user->name.' '.$this->apParental.' '.$this->apMaternal.' CON SU CORREO: '.$user->email
+            'process' => $user->name . ' ' . $this->apParental . ' ' . $this->apMaternal . ' CON SU CORREO: ' . $user->email
         ]);
         auth()->login($user);
         $this->userParticipant = $userParticipant->id;
@@ -355,7 +385,8 @@ class Index extends Component
             $response = Http::withHeaders([
                 'AuthorizationSima' => '8X4Oeq4g3puzL77UVVu1ZfNoSGZ2R5tgdZgcuLMfpRDuHMQuvyemKgftajZjGkQX',
                 'Accept' => 'application/json'
-            ])->connectTimeout(30)->post('https://siafac.afac.gob.mx/listStore?',
+            ])->connectTimeout(30)->post(
+                'https://siafac.afac.gob.mx/listStore?',
                 [
                     'id' => $user->id,
                     'name' => $user->name,
@@ -385,10 +416,11 @@ class Index extends Component
                     'ext_prfle' => $this->extension,
                     'rfc_company_prfle' => $this->rfc_company_participant,
                     'name_company_prfle' => $this->name_company_participant,
-                    'confirm_privacity'=> 1,
+                    'confirm_privacity' => 1,
                     'privileges' => 'medical_user'
-                ]);
-                // https://siafac.afac.gob.mx/listStore
+                ]
+            );
+            // https://siafac.afac.gob.mx/listStore
             if ($response->successful()) {
                 $statesSuccess = $response->json()['data'];
             } elseif ($response->successful() && $response->json()['data'] === 'NO EXITOSO') {
