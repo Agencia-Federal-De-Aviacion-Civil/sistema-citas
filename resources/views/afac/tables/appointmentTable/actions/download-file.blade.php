@@ -6,7 +6,7 @@
 
 
     <div class="grid grid-cols-2 gap-2">
-        @if(Str::beforeLast(Str::between($id, '-','-'), '-') <='2024') {{-- 1 --}} 
+        @if(Str::beforeLast(Str::between($id, '-','-'), '-') <='2025') {{-- 1 --}} 
         <buttom title="FORMATO DE PAGO"
             class="cursor-pointer underline hover:no-underline" wire:click='documentDownload({{ $id_document }})'>
             <span class="text-sm" wire:loading wire:target="documentDownload({{ $id_document }})">
@@ -30,7 +30,7 @@
             </a>
             @endif
 
-            @if (Str::beforeLast(Str::between($id, '-','-'), '-') <='2024') {{-- 2 --}} 
+            @if (Str::beforeLast(Str::between($id, '-','-'), '-') <='2025') {{-- 2 --}} 
             <buttom title="FORMATO DE AUTORIZACIÓN" class="cursor-pointer underline hover:no-underline"
                 wire:click='documentDownload({{ $id_document }})'>
                 <span class="text-sm" wire:loading wire:target="documentDownload({{ $id_document }})">
@@ -60,7 +60,7 @@
     NO APLICA
     @else
 
-    @if (Str::beforeLast(Str::between($id, '-','-'), '-') <='2024') 
+    @if (Str::beforeLast(Str::between($id, '-','-'), '-') <='2025') 
     <buttom title="FORMATO DE PAGO"
         class="cursor-pointer underline hover:no-underline" wire:click='documentDownload({{ $id_document }})'>
         <span class="text-sm" wire:loading wire:target="documentDownload({{ $id_document }})">
