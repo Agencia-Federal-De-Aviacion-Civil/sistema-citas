@@ -363,7 +363,7 @@ class Index extends Component
             'mobilePhone' => $this->mobilePhone,
             'officePhone' => $this->officePhone,
             'extension' => $this->extension,
-            'curp' => $this->curp,
+            'curp' => $this->curp_api,
         ]);
         medicine_history_movements::create([
             'user_id' => $user->id,
