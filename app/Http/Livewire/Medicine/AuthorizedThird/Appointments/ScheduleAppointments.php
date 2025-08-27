@@ -31,7 +31,7 @@ class ScheduleAppointments extends Component
         return [
             'name' => 'required',
             'apParental' => 'required',
-            'apMaternal' => 'required',
+            // 'apMaternal' => 'required',
             'genre' => 'required',
             'birth' => 'required',
             'state_id' => 'required',
@@ -226,7 +226,7 @@ class ScheduleAppointments extends Component
             $userParticipantid = $user->userParticipant()->create([
                 'user_id' => $user->id,
                 'apParental' => $this->apParental,
-                'apMaternal' => $this->apMaternal,
+                'apMaternal' => $this->apMaternal ?? null,
                 'genre' => $this->genre,
                 'birth' => $this->formattedBirthDate,
                 'state_id' => $this->state_id,
@@ -288,7 +288,7 @@ class ScheduleAppointments extends Component
                         'sex_id' =>  $this->sex_id,
                         'country_id' => 165,
                         'lst_pat_prfle' =>  $this->apParental,
-                        'lst_mat_prfle' =>  $this->apMaternal,
+                        'lst_mat_prfle' =>  $this->apMaternal ?? null,
                         'curp_prfle' =>  $this->curp,
                         'rfc_prfle' =>  $this->rfc_participant,
                         'birth_prfle' =>  $this->formattedBirthDate,
